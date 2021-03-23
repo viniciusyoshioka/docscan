@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react"
-import { BackHandler, FlatList, ToastAndroid, View } from "react-native"
+import { Alert, BackHandler, FlatList, ToastAndroid, View } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 
 import { DocumentItem } from "../../component/DocumentItem"
@@ -11,6 +11,7 @@ import { DebugButton } from "../../component/DebugButton"
 import { SwitchThemeContext } from "../../service/theme"
 import { debugHomeHide, debugHomeShow, themeDark, themeLight } from "../../service/constant"
 import { MenuProvider } from "react-native-popup-menu"
+import { deleteDocument } from "../../service/document-handler"
 
 
 export default function Home() {
@@ -131,6 +132,21 @@ export default function Home() {
         )
     }, [backhandlerFunction])
 
+    const deleteSelectedDocument = useCallback(() => {
+        Alert.alert(
+            "Apagar documento?",
+            "Esta ação não poderá ser desfeita. Deseja apagar?",
+            [
+                {text: "Apagar", onPress: async () => {
+                    await deleteDocument(selectedDocument, true)
+                    getDocument()
+                }},
+                {text: "Cancelar", onPress: () => {}}
+            ],
+            {cancelable: false}
+        )
+    }, [selectedDocument])
+
 
     useEffect(() => {
         debugGetDebugHome()
@@ -173,6 +189,8 @@ export default function Home() {
         <MenuProvider>
             <SafeScreen>
                 <HomeHeader
+                    selectionMode={selectionMode}
+                    deleteSelectedDocument={deleteSelectedDocument}
                     switchDebugHome={debugSwitchDebugHome}
                 />
 
