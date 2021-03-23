@@ -7,6 +7,7 @@ import HomeMenu from "./HomeMenu"
 export interface HomeHeaderProps {
     selectionMode: boolean,
     deleteSelectedDocument: () => void,
+    scanNewDocument: () => void,
     switchDebugHome: () => void,
 }
 
@@ -25,6 +26,12 @@ export default function HomeHeader(props: HomeHeaderProps) {
                     iconName={"md-trash-outline"}
                     onPress={props.deleteSelectedDocument}
                     style={{opacity: props.selectionMode ? 1 : 0}}
+                />
+
+                <HeaderButton
+                    iconName={"md-add"}
+                    iconSize={30}
+                    onPress={props.scanNewDocument}
                 />
 
                 <HomeMenu

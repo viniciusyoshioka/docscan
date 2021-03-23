@@ -148,6 +148,10 @@ export default function Home() {
         )
     }, [selectedDocument])
 
+    const scanNewDocument = useCallback(() => {
+        navigation.navigate("Camera")
+    }, [])
+
 
     useEffect(() => {
         createAllFolder()
@@ -193,6 +197,7 @@ export default function Home() {
                 <HomeHeader
                     selectionMode={selectionMode}
                     deleteSelectedDocument={deleteSelectedDocument}
+                    scanNewDocument={scanNewDocument}
                     switchDebugHome={debugSwitchDebugHome}
                 />
 
