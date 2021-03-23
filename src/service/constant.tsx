@@ -1,5 +1,7 @@
 import RNFS from "react-native-fs"
 
+import { SettingsCameraProps, SettingsProps } from "./object-types"
+
 
 // Development
 export const appInDevelopment = true
@@ -7,7 +9,7 @@ export const appInDevelopment = true
 // App
 export const appName = appInDevelopment ? "DocScanBeta" : "DocScan"
 export const appFName = appInDevelopment ? "DocScan Beta" : "DocScan"
-export const appVersion = "0.0.27"
+export const appVersion = "0.0.28"
 export const appType = appInDevelopment ? "beta" : "release"
 
 // // App icon
@@ -44,6 +46,7 @@ export const storageTheme = "theme"
 export const storageDocumentId = "document-id"
 export const storageDocument = "document"
 export const storageDebugHome = "debug-home"
+export const storageSettings = "settings"
 
 // Theme
 export const themeAuto = "auto"
@@ -55,3 +58,15 @@ export const themeDefault = themeAuto
 export const debugHomeShow = "show"
 export const debugHomeHide = "hide"
 export const debugHomeDefault = debugHomeShow
+
+// Settings
+// Settings camera
+export const settingsDefaultCamera: SettingsCameraProps = {
+    flash: "off",
+    focus: 0.5,
+    whiteBalance: "auto"
+}
+// Settings
+export const settingsDefault: SettingsProps = {
+    camera: settingsDefaultCamera
+}

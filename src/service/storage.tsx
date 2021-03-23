@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
-import { debugHomeDefault, storageDebugHome, storageDocument, storageDocumentId, storageTheme, themeDefault } from "./constant"
-import { Document } from "./object-types"
+import { debugHomeDefault, settingsDefault, storageDebugHome, storageDocument, storageDocumentId, storageSettings, storageTheme, themeDefault } from "./constant"
+import { Document, SettingsProps } from "./object-types"
 
 
 export async function writeTheme(newTheme: string) {
@@ -57,4 +57,18 @@ export async function readDebugHome(): Promise<string> {
         return debugHomeDefault
     }
     return debugHome
+}
+
+
+export async function writeSettings(newSettings: SettingsProps) {
+    await AsyncStorage.setItem(storageSettings, JSON.stringify(newSettings))
+}
+
+export async function readSettings(): Promise<SettingsProps> {
+    let settings = await AsyncStorage.getItem(storageSettings)
+    if (settings === null) {
+        await writeSettings(settingsDefault)
+        return settingsDefault
+    }
+    return JSON.parse(settings)
 }

@@ -1,12 +1,13 @@
 import React from "react"
 import Icon from "react-native-vector-icons/Ionicons"
 
-import { Header, BlockLeft, headerIconSize } from "../../component/Header"
-import { CameraControlButtonBase } from "../../component/CameraControl"
+import { Header, BlockLeft, BlockRight, headerIconSize } from "../../component/Header"
+import { cameraControlIconSize, CameraControlButtonBase } from "../../component/CameraControl"
 
 
 export interface CameraHeaderProps {
     goBack: () => void,
+    openSettings: () => void,
 }
 
 
@@ -22,6 +23,16 @@ export default function CameraHeader(props: CameraHeaderProps) {
                     />
                 </CameraControlButtonBase>
             </BlockLeft>
+
+            <BlockRight>
+                <CameraControlButtonBase onPress={() => props.openSettings()}>
+                    <Icon 
+                        name={"md-settings-outline"} 
+                        size={cameraControlIconSize} 
+                        color={"rgb(255, 255, 255)"}
+                    />
+                </CameraControlButtonBase>
+            </BlockRight>
         </Header>  
     )
 }
