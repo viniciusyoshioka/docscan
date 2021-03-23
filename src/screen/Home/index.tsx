@@ -5,11 +5,12 @@ import { useNavigation } from "@react-navigation/core"
 import { DocumentItem } from "../../component/DocumentItem"
 import { SafeScreen } from "../../component/Screen"
 import { Document } from "../../service/object-types"
-import { readDocument, readDocumentId, writeDocument, writeDocumentId } from "../../service/storage"
+import { readDebugHome, readDocument, readDocumentId, writeDebugHome, writeDocument, writeDocumentId } from "../../service/storage"
 import HomeHeader from "./Header"
 import { DebugButton } from "../../component/DebugButton"
 import { SwitchThemeContext } from "../../service/theme"
-import { themeDark, themeLight } from "../../service/constant"
+import { debugHomeHide, debugHomeShow, themeDark, themeLight } from "../../service/constant"
+import { MenuProvider } from "react-native-popup-menu"
 
 
 export default function Home() {
@@ -19,6 +20,7 @@ export default function Home() {
 
     const navigation = useNavigation()
 
+    const [debugHome, setDebugHome] = useState("")
     const [document, setDocument] = useState<Array<Document>>([])
     const [selectionMode, setSelectionMode] = useState(false)
     const [selectedDocument, setSelectedDocument] = useState<Array<number>>([])
@@ -60,6 +62,21 @@ export default function Home() {
 
         console.log("document, documentId - CLEAR")
     }, [])
+
+    const debugGetDebugHome = useCallback(async () => {
+        const getDebugHome = await readDebugHome()
+        setDebugHome(getDebugHome)
+    }, [])
+
+    const debugSwitchDebugHome = useCallback(async () => {
+        if (debugHome === debugHomeShow) {
+            setDebugHome(debugHomeHide)
+            await writeDebugHome(debugHomeHide)
+        } else if (debugHome === debugHomeHide) {
+            setDebugHome(debugHomeShow)
+            await writeDebugHome(debugHomeShow)
+        }
+    }, [debugHome])
 
 
     const getDocument = useCallback(async () => {
@@ -116,6 +133,7 @@ export default function Home() {
 
 
     useEffect(() => {
+        debugGetDebugHome()
         getDocument()
     }, [])
 
@@ -152,46 +170,52 @@ export default function Home() {
 
 
     return (
-        <SafeScreen>
-            <HomeHeader />
+        <MenuProvider>
+            <SafeScreen>
+                <HomeHeader
+                    switchDebugHome={debugSwitchDebugHome}
+                />
 
-            <FlatList
-                data={document}
-                renderItem={({ item }) => (
-                    <DocumentItem
-                        click={() => openDocument(item)}
-                        select={() => selectDocument(item.id)}
-                        deselect={() => deselectDocument(item.id)}
-                        selectionMode={selectionMode}
-                        document={item}
-                    />
+                <FlatList
+                    data={document}
+                    renderItem={({ item }) => (
+                        <DocumentItem
+                            click={() => openDocument(item)}
+                            select={() => selectDocument(item.id)}
+                            deselect={() => deselectDocument(item.id)}
+                            selectionMode={selectionMode}
+                            document={item}
+                        />
+                    )}
+                    keyExtractor={(item) => item.id.toString()}
+                />
+
+                {(debugHome === debugHomeShow) && (
+                    <View>
+                        <DebugButton 
+                            text={"Ler"} 
+                            onPress={async () => await debugReadDocument()} 
+                            style={{bottom: 115}} />
+                        <DebugButton 
+                            text={"Escre"} 
+                            onPress={async () => await debugWriteDocument()} 
+                            style={{bottom: 60}} />
+                        <DebugButton 
+                            text={"Limpar"} 
+                            onPress={async () => await debugClearDocument()} 
+                            style={{bottom: 5}} />
+
+                        <DebugButton 
+                            text={"Claro"} 
+                            onPress={async () => await switchTheme(themeLight)} 
+                            style={{bottom: 60, left: 60}} />
+                        <DebugButton 
+                            text={"Escuro"} 
+                            onPress={async () => await switchTheme(themeDark)} 
+                            style={{bottom: 5, left: 60}} />
+                    </View>
                 )}
-                keyExtractor={(item) => item.id.toString()}
-            />
-
-            <View>
-                <DebugButton 
-                    text={"Ler"} 
-                    onPress={async () => await debugReadDocument()} 
-                    style={{bottom: 115}} />
-                <DebugButton 
-                    text={"Escre"} 
-                    onPress={async () => await debugWriteDocument()} 
-                    style={{bottom: 60}} />
-                <DebugButton 
-                    text={"Limpar"} 
-                    onPress={async () => await debugClearDocument()} 
-                    style={{bottom: 5}} />
-
-                <DebugButton 
-                    text={"Claro"} 
-                    onPress={async () => await switchTheme(themeLight)} 
-                    style={{bottom: 60, left: 60}} />
-                <DebugButton 
-                    text={"Escuro"} 
-                    onPress={async () => await switchTheme(themeDark)} 
-                    style={{bottom: 5, left: 60}} />
-            </View>
-        </SafeScreen>
+            </SafeScreen>
+        </MenuProvider>
     )
 }

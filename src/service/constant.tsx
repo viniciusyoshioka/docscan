@@ -19,9 +19,15 @@ export const appType = appInDevelopment ? "beta" : "release"
 export const storageTheme = "theme"
 export const storageDocumentId = "document-id"
 export const storageDocument = "document"
+export const storageDebugHome = "debug-home"
 
 // Theme
 export const themeAuto = "auto"
 export const themeLight = "light"
 export const themeDark = "dark"
 export const themeDefault = themeAuto
+
+// DebugHome
+export const debugHomeShow = "show"
+export const debugHomeHide = "hide"
+export const debugHomeDefault = debugHomeShow

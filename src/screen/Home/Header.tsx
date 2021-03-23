@@ -1,9 +1,12 @@
 import React from "react"
 
-import { BlockCenter, Header, HeaderTitle } from "../../component/Header"
+import { BlockCenter, BlockRight, Header, HeaderTitle } from "../../component/Header"
+import HomeMenu from "./HomeMenu"
 
 
-export interface HomeHeaderProps {}
+export interface HomeHeaderProps {
+    switchDebugHome: () => void,
+}
 
 
 export default function HomeHeader(props: HomeHeaderProps) {
@@ -14,6 +17,12 @@ export default function HomeHeader(props: HomeHeaderProps) {
                     DocScan
                 </HeaderTitle>
             </BlockCenter>
+
+            <BlockRight>
+                <HomeMenu
+                    switchDebugHome={props.switchDebugHome}
+                />                
+            </BlockRight>
         </Header>  
     )
 }
