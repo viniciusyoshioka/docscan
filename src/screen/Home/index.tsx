@@ -12,6 +12,7 @@ import { SwitchThemeContext } from "../../service/theme"
 import { debugHomeHide, debugHomeShow, themeDark, themeLight } from "../../service/constant"
 import { MenuProvider } from "react-native-popup-menu"
 import { deleteDocument } from "../../service/document-handler"
+import { createAllFolder } from "../../service/folder-handler"
 
 
 export default function Home() {
@@ -149,6 +150,7 @@ export default function Home() {
 
 
     useEffect(() => {
+        createAllFolder()
         debugGetDebugHome()
         getDocument()
     }, [])
