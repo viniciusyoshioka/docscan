@@ -1,0 +1,51 @@
+
+# Camera
+# Arrumar
+melhorar slider do modal do foco
+verificar design da camera pra ficar/voltar
+# Bug
+bug de orientacao automatica ao sair da tela
+# Fazer
+importar imagens da galeria para documento
+
+# EditDocument
+# Arrumar
+autofocus nao funciona direito no Input do RenameDocument
+# Fazer
+exportar pdf
+adicionar drag drop pra ordenar as fotos
+
+# Home
+# Bug
+nome do documento vaza do botao quando é grande e ta no modo de selecao
+
+# VisualizePicture
+# Arrumar
+tamanho/posicao/proparcao da imagem
+# Fazer
+adicionar opcao de cortar imagem
+arrastar pro lado pra mudar de foto
+
+
+
+# Components
+
+# PictureItem*
+# Arrumar
+cor e posicao da checkbox
+tamanho/posicao/proparcao da imagem
+nome do arquivo no item
+
+
+
+# Imagens
+# Fazer
+adicionar imagens no app
+adicionar imagens nas constantes
+adicionar icon de documento vazio na Home e EditDocument
+
+
+
+# Outros
+# Arrumar
+quebrar linha de imports e components

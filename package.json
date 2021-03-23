@@ -1,0 +1,42 @@
+{
+  "name": "docscan",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "react-native start",
+    "android": "react-native run-android"
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.14.1",
+    "@react-native-community/checkbox": "^0.5.7",
+    "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-community/slider": "^3.0.3",
+    "@react-navigation/native": "^5.9.3",
+    "@react-navigation/stack": "^5.14.3",
+    "react": "17.0.1",
+    "react-native": "0.64.0",
+    "react-native-camera": "^3.43.0",
+    "react-native-fs": "^2.16.6",
+    "react-native-gesture-handler": "^1.10.3",
+    "react-native-orientation-locker": "^1.2.0",
+    "react-native-popup-menu": "^0.15.10",
+    "react-native-reanimated": "^2.0.0",
+    "react-native-safe-area-context": "^3.2.0",
+    "react-native-screens": "^2.18.1",
+    "react-native-svg": "^12.1.0",
+    "react-native-vector-icons": "^8.1.0",
+    "styled-components": "^5.2.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/runtime": "^7.12.5",
+    "@types/react": "^17.0.3",
+    "@types/react-native": "^0.64.0",
+    "@types/react-native-vector-icons": "^6.4.6",
+    "@types/styled-components": "^5.1.9",
+    "@types/styled-components-react-native": "^5.1.1",
+    "metro-react-native-babel-preset": "^0.64.0",
+    "react-native-svg-transformer": "^0.14.3",
+    "typescript": "^4.2.3"
+  }
+}
