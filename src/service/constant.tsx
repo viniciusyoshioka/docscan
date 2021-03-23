@@ -5,7 +5,7 @@ export const appInDevelopment = true
 // App
 export const appName = appInDevelopment ? "DocScanBeta" : "DocScan"
 export const appFName = appInDevelopment ? "DocScan Beta" : "DocScan"
-export const appVersion = "0.0.6"
+export const appVersion = "0.0.7"
 export const appType = appInDevelopment ? "beta" : "release"
 
 // // App icon
@@ -17,6 +17,8 @@ export const appType = appInDevelopment ? "beta" : "release"
 
 // AsyncStorage
 export const storageTheme = "theme"
+export const storageDocumentId = "document-id"
+export const storageDocument = "document"
 
 // Theme
 export const themeAuto = "auto"
