@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native"
 import Orientation from "react-native-orientation-locker"
 
 import { SafeScreen } from "../../component/Screen"
+import CameraHeader from "./Header"
 
 
 export default function Camera() {
@@ -82,6 +83,10 @@ export default function Camera() {
             />
 
             {/* <View style={{flex: 1, backgroundColor: "rgb(180, 180, 180)"}} /> */}
+
+            <CameraHeader 
+                goBack={goBack} 
+            />
         </SafeScreen>
     )
 }
