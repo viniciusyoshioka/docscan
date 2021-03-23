@@ -90,7 +90,7 @@ export default function Home() {
         }
     }, [selectedDocument, selectionMode])
 
-    const setBackhandler = useCallback(() => {
+    const backhandlerFunction = useCallback(() => {
         if (selectionMode) {
             setSelectedDocument([])
             setSelectionMode(false)
@@ -100,18 +100,32 @@ export default function Home() {
         return true
     }, [selectionMode])
 
+    const setBackhandler = useCallback(() => {
+        BackHandler.addEventListener(
+            "hardwareBackPress", 
+            () => backhandlerFunction()
+        )
+    }, [backhandlerFunction])
+
+    const removeBackhandler = useCallback(() => {
+        BackHandler.removeEventListener(
+            "hardwareBackPress", 
+            () => backhandlerFunction()
+        )
+    }, [backhandlerFunction])
+
 
     useEffect(() => {
         getDocument()
     }, [])
 
     useEffect(() => {
-        BackHandler.addEventListener("hardwareBackPress", setBackhandler)
+        setBackhandler()
 
         return () => {
-            BackHandler.removeEventListener("hardwareBackPress", setBackhandler)
+            removeBackhandler()
         }
-    }, [selectionMode])
+    }, [backhandlerFunction])
 
     useEffect(() => {
         navigation.addListener("focus", setBackhandler)
@@ -119,19 +133,15 @@ export default function Home() {
         return () => {
             navigation.removeListener("focus", setBackhandler)
         }
-    }, [])
+    }, [setBackhandler])
 
     useEffect(() => {
-        navigation.addListener("blur", () => {
-            BackHandler.removeEventListener("hardwareBackPress", setBackhandler)
-        })
+        navigation.addListener("blur", removeBackhandler)
 
         return () => {
-            navigation.removeListener("blur", () => {
-                BackHandler.removeEventListener("hardwareBackPress", setBackhandler)
-            })
+            navigation.removeListener("blur", removeBackhandler)
         }
-    }, [])
+    }, [removeBackhandler])
 
     useEffect(() => {
         if (selectionMode) {
@@ -163,7 +173,7 @@ export default function Home() {
                 <DebugButton 
                     text={"Ler"} 
                     onPress={async () => await debugReadDocument()} 
-                    style={{bottom: 105}} />
+                    style={{bottom: 115}} />
                 <DebugButton 
                     text={"Escre"} 
                     onPress={async () => await debugWriteDocument()} 
