@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from "react"
-import { Alert, BackHandler } from "react-native"
+import { BackHandler } from "react-native"
 import { RNCamera } from "react-native-camera"
 import { useNavigation } from "@react-navigation/native"
 import Orientation from "react-native-orientation-locker"
