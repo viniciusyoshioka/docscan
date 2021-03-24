@@ -6,6 +6,7 @@ import { SafeScreen } from "../../component/Screen"
 import SettingsHeader from "./Header"
 import { TextVersion, ViewVersion } from "./style"
 import { appFName, appType, appVersion } from "../../service/constant"
+import { SettingsButton } from "../../component/SettingsButton"
 
 
 export default function Settings() {
@@ -51,6 +52,11 @@ export default function Settings() {
         <SafeScreen>
             <SettingsHeader
                 goBack={goBack}
+            />
+
+            <SettingsButton
+                title={"Tema"}
+                description={"Mudar tema de cores do aplicativo"}
             />
 
             <ViewVersion>
