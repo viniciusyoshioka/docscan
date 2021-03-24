@@ -8,6 +8,7 @@ import EditDocumentHeader from "./Header"
 import PictureItem from "../../component/Pictureitem"
 import { Document } from "../../service/object-types"
 import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../service/document-handler"
+import RenameDocument from "./RenameDocument"
 
 
 type EditDocumentParams = {
@@ -272,6 +273,13 @@ export default function EditDocument() {
 
     return (
         <SafeScreen>
+            <RenameDocument
+                visible={renameDocumentVisible} 
+                setVisible={setRenameDocumentVisible} 
+                documentName={documentName} 
+                setDocumentName={renameDocument}
+            />
+
             <EditDocumentHeader
                 goBack={goBack}
                 documentName={documentName}
