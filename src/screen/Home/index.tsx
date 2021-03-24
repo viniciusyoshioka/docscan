@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react"
-import { Alert, BackHandler, FlatList, ToastAndroid, View } from "react-native"
+import { Alert, BackHandler, FlatList, View } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 
 import { DocumentItem } from "../../component/DocumentItem"
@@ -87,7 +87,9 @@ export default function Home() {
     }, [])
 
     const openDocument = useCallback((documentObject: Document) => {
-        ToastAndroid.show("Open document is not available yet", 10)
+        navigation.navigate("EditDocument", {
+            document: documentObject
+        })
     }, [])
 
     const selectDocument = useCallback((documentId: number) => {
