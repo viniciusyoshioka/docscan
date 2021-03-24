@@ -8,6 +8,7 @@ import { PopupMenuButton } from "../../component/PopupMenuButton"
 
 
 export interface HomeMenuProps {
+    openSettings: () => void,
     switchDebugHome: () => void,
 }
 
@@ -67,6 +68,14 @@ export default function HomeMenu(props: HomeMenuProps) {
             </MenuTrigger>
 
             <MenuOptions>
+                <PopupMenuButton 
+                    text={"Configurações"} 
+                    onPress={() => {
+                        closeMenu()
+                        props.openSettings()
+                    }}
+                />
+
                 <PopupMenuButton 
                     text={"Debug Home"} 
                     onPress={() => {

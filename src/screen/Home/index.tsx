@@ -198,6 +198,7 @@ export default function Home() {
                     selectionMode={selectionMode}
                     deleteSelectedDocument={deleteSelectedDocument}
                     scanNewDocument={scanNewDocument}
+                    openSettings={() => navigation.navigate("Settings")}
                     switchDebugHome={debugSwitchDebugHome}
                 />
 

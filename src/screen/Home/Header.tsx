@@ -8,6 +8,7 @@ export interface HomeHeaderProps {
     selectionMode: boolean,
     deleteSelectedDocument: () => void,
     scanNewDocument: () => void,
+    openSettings: () => void,
     switchDebugHome: () => void,
 }
 
@@ -35,6 +36,7 @@ export default function HomeHeader(props: HomeHeaderProps) {
                 />
 
                 <HomeMenu
+                    openSettings={props.openSettings}
                     switchDebugHome={props.switchDebugHome}
                 />                
             </BlockRight>

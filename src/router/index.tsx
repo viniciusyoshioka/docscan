@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack"
 
 import Home from "../screen/Home"
 import Camera from "../screen/Camera"
+import Settings from "../screen/Settings"
 
 
 const Stack = createStackNavigator()
@@ -15,6 +16,7 @@ export default function Router() {
             <Stack.Navigator initialRouteName={"HomeScreen"} screenOptions={{headerShown: false}}>
                 <Stack.Screen name={"Home"} component={Home} />
                 <Stack.Screen name={"Camera"} component={Camera} />
+                <Stack.Screen name={"Settings"} component={Settings} />
             </Stack.Navigator>
         </NavigationContainer>
     )
