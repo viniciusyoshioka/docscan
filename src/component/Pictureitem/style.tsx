@@ -38,6 +38,7 @@ export const FileNameView = styled.View`
 
 
 export const FileNameText = styled.Text`
+    width: 100%;
     font-size: 15px;
     color: ${(props: styledProps) => props.theme.color.colorLight};
 `
@@ -48,7 +49,7 @@ export const CheckBoxView = StyleSheet.create({
         alignItems: "center", 
         justifyContent: "center",
         position: "absolute", 
-        left: 5, 
-        top: 5
+        left: 2, 
+        top: 2,
     }
 }).checkbox
