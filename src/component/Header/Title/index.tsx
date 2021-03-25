@@ -11,7 +11,7 @@ export interface HeaderTitleProps extends TextProps {
 
 
 export const HeaderTitleBase = styled.Text`
-    margin: 0px 5px;
+    width: 100%;
     font-size: 19px;
     color: ${(props: styledProps) => props.theme.color.colorLight};
 `

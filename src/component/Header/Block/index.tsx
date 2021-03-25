@@ -13,6 +13,7 @@ export const BlockCenter = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    padding: 0px 5px;
 `
 
 
