@@ -92,23 +92,40 @@ export default function EditDocument() {
     }, [selectedPictures, selectionMode])
 
     const deletePicture = useCallback(() => {
-        const pictures = pictureList.reverse()
+        Alert.alert(
+            "Apagar foto?",
+            "Esta ação é irreversível e apagará a foto deste documento",
+            [
+                {
+                    text: "Apagar", 
+                    onPress: () => {
+                        const pictures = pictureList.reverse()
 
-        const newPicture: Array<string> = []
-        pictures.forEach(async (item: string) => {
-            if (selectedPictures.indexOf(item) === -1) {
-                newPicture.push(item)
-            } else {
-                await RNFS.unlink(item)
-            }
-        })
-        newPicture.reverse()
-
-        setPictureList(newPicture)
-
-        if (!changed) {
-            setChanged(true)
-        }
+                        const newPicture: Array<string> = []
+                        pictures.forEach((item: string) => {
+                            if (selectedPictures.indexOf(item) === -1) {
+                                newPicture.push(item)
+                            } else {
+                                RNFS.unlink(item)
+                                    .catch(() => {})
+                            }
+                        })
+                        newPicture.reverse()
+                
+                        setPictureList(newPicture)
+                
+                        if (!changed) {
+                            setChanged(true)
+                        }
+                    }
+                },
+                {
+                    text: "Cancelar", 
+                    onPress: () => {}
+                }
+            ],
+            {cancelable: false}
+        )
     }, [pictureList, selectedPictures, changed])
 
     const openCamera = useCallback(() => {
@@ -275,12 +292,12 @@ export default function EditDocument() {
                     selectionMode={selectionMode} 
                     changed={changed}
                     isNewDocument={document === undefined}
-                    deletePicture={() => deletePicture()}
-                    openCamera={() => openCamera()}
-                    saveDocument={() => saveDocument()}
+                    deletePicture={deletePicture}
+                    openCamera={openCamera}
+                    saveDocument={saveDocument}
                     renameDocument={() => setRenameDocumentVisible(true)}
-                    exportToPdf={() => exportDocumentToPdf()}
-                    discardDocument={() => discardDocument()}
+                    exportToPdf={exportDocumentToPdf}
+                    discardDocument={discardDocument}
                 />
 
                 <FlatList 
