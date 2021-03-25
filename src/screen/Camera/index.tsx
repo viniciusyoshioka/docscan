@@ -81,7 +81,8 @@ export default function Camera() {
                     text: "Cancelar", 
                     onPress: () => {}
                 }
-            ]
+            ],
+            {cancelable: false}
         )
     }, [pictureList])
 
@@ -108,7 +109,9 @@ export default function Camera() {
         } catch {
             Alert.alert(
                 "Erro ao tirar foto", 
-                "Não foi possível tirar foto, ocorreu erro desconhecido"
+                "Não foi possível tirar foto, ocorreu erro desconhecido",
+                [{text: "Ok", onPress: () => {}}],
+                {cancelable: false}
             )
         }
     }, [cameraRef, pictureList, documentName])

@@ -71,7 +71,8 @@ export default function EditDocument() {
                             text: "Cancelar",
                             onPress: () => {}
                         }
-                    ]
+                    ],
+                    {cancelable: false}
                 )
                 return
             }
@@ -162,7 +163,8 @@ export default function EditDocument() {
                     text: "Cancelar",
                     onPress: () => {}
                 }
-            ]
+            ],
+            {cancelable: false}
         )
     }, [document, pictureList])
 
@@ -170,7 +172,9 @@ export default function EditDocument() {
         if (pictureList.length === 0) {
             Alert.alert(
                 "Não há fotos para salvar",
-                "Não é possível salvar um documento vazio"
+                "Não é possível salvar um documento vazio",
+                [{text: "Ok", onPress: () => {}}],
+                {cancelable: false}
             )
             return
         }
@@ -193,7 +197,8 @@ export default function EditDocument() {
                         text: "Cancelar",
                         onPress: () => {}
                     }
-                ]
+                ],
+                {cancelable: false}
             )
             return
         }
