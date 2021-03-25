@@ -1,12 +1,6 @@
 import React from "react"
 
-import {
-    Header,
-    BlockLeft,
-    HeaderButton,
-    BlockCenter,
-    HeaderTitle,
-} from "../../component/Header"
+import { Header, BlockLeft, HeaderButton, BlockCenter, HeaderTitle } from "../../component/Header"
 
 
 export interface VisualizePictureHeaderProps {

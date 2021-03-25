@@ -101,8 +101,9 @@ export async function deleteDocument(ids: Array<number>, deleteFiles=false) {
             documentIndex.push(index)
             // Delete all pictures from this document
             if (deleteFiles) {
-                item.pictureList.forEach(async (picturePath: string) => {
-                    await RNFS.unlink(picturePath)
+                item.pictureList.forEach((picturePath: string) => {
+                    RNFS.unlink(picturePath)
+                        .catch(() => {})
                 })
             }
         }

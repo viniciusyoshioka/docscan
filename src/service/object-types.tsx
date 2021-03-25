@@ -1,6 +1,7 @@
 
 // Settings object type
 export type flashType = "auto" | "on" | "off"
+
 export type whiteBalanceType = "auto" | "sunny" | "cloudy" | "shadow" | "incandescent" | "fluorescent"
 
 export interface SettingsCameraProps {
@@ -10,7 +11,7 @@ export interface SettingsCameraProps {
 }
 
 export interface SettingsProps {
-    camera: SettingsCameraProps
+    camera: SettingsCameraProps,
 }
 
 

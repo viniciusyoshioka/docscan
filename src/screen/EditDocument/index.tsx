@@ -115,7 +115,6 @@ export default function EditDocument() {
         })
     }, [])
 
-
     const deletePicture = useCallback(() => {
         const pictures = pictureList.reverse()
 
