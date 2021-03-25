@@ -16,7 +16,7 @@ export interface PictureItemProps {
 }
 
 
-export default function PictureItem(props: PictureItemProps) {
+export function PictureItem(props: PictureItemProps) {
 
 
     const { color } = useContext(ThemeContext)

@@ -2,11 +2,12 @@
 # Camera
 # Arrumar
 melhorar slider do modal do foco
-verificar design da camera pra ficar/voltar
 # Bug
 bug de orientacao automatica ao sair da tela
+trava se entrar, sair, entar
 # Fazer
 importar imagens da galeria para documento
+focar clicando na camera
 
 # EditDocument
 # Arrumar
@@ -14,10 +15,13 @@ autofocus nao funciona direito no Input do RenameDocument
 # Fazer
 exportar pdf
 adicionar drag drop pra ordenar as fotos
+mudar header no modo de selecao
 
 # Home
 # Bug
 nome do documento vaza do botao quando é grande e ta no modo de selecao
+# Fazer
+mudar header no modo de selecao
 
 # VisualizePicture
 # Arrumar

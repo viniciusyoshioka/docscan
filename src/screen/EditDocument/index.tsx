@@ -7,7 +7,7 @@ import { useBackHandler } from "@react-native-community/hooks"
 
 import { SafeScreen } from "../../component/Screen"
 import EditDocumentHeader from "./Header"
-import PictureItem from "../../component/Pictureitem"
+import { PictureItem } from "../../component/Pictureitem"
 import { Document } from "../../service/object-types"
 import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../service/document-handler"
 import RenameDocument from "./RenameDocument"
