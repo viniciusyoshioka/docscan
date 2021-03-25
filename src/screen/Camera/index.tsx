@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { Alert, BackHandler, ToastAndroid } from "react-native"
+import { Alert, ToastAndroid } from "react-native"
 import { RNCamera } from "react-native-camera"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import Orientation from "react-native-orientation-locker"
 import Icon from "react-native-vector-icons/Ionicons"
+import { useBackHandler } from "@react-native-community/hooks"
 
 import { SafeScreen } from "../../component/Screen"
 import CameraHeader from "./Header"
@@ -44,6 +45,12 @@ export default function Camera() {
     const [documentObject, setDocumentObject] = useState<Document | undefined>(undefined)
 
 
+    useBackHandler(() => {
+        goBack()
+        return true
+    })
+
+
     const readCameraSettings = useCallback(async () => {
         // Read camera settings
         const currentSettings = await readSettings()
@@ -77,25 +84,6 @@ export default function Camera() {
             ]
         )
     }, [pictureList])
-
-    const backhandlerFunction = useCallback(() => {
-        goBack()
-        return true
-    }, [goBack])
-
-    const setBackhandler = useCallback(() => {
-        BackHandler.addEventListener(
-            "hardwareBackPress",
-            backhandlerFunction
-        )
-    }, [backhandlerFunction])
-
-    const removeBackhandler = useCallback(() => {
-        BackHandler.removeEventListener(
-            "hardwareBackPress",
-            backhandlerFunction
-        )
-    }, [backhandlerFunction])
 
     const addPictureFromGalery = useCallback(() => {
         ToastAndroid.show("Add picture from galery is not available yet", 10)
@@ -142,30 +130,6 @@ export default function Camera() {
             Orientation.unlockAllOrientations()
         }
     }, [])
-
-    useEffect(() => {
-        setBackhandler()
-
-        return () => {
-            removeBackhandler()
-        }
-    }, [backhandlerFunction])
-
-    useEffect(() => {
-        navigation.addListener("focus", setBackhandler)
-
-        return () => {
-            navigation.removeListener("focus", setBackhandler)
-        }
-    }, [setBackhandler])
-
-    useEffect(() => {
-        navigation.addListener("blur", removeBackhandler)
-
-        return () => {
-            navigation.removeListener("blur", removeBackhandler)
-        }
-    }, [removeBackhandler])
 
     useEffect(() => {
         if (params !== undefined) {
