@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react"
-import { BackHandler } from "react-native"
 import { useNavigation } from "@react-navigation/core"
+import { useBackHandler } from "@react-native-community/hooks"
 
 import { SafeScreen } from "../../component/Screen"
 import SettingsHeader from "./Header"
@@ -22,6 +22,12 @@ export default function Settings() {
     const [currentTheme, setCurrentTheme] = useState("")
 
 
+    useBackHandler(() => {
+        goBack()
+        return true
+    })
+
+
     const getCurrentTheme = useCallback(async () => {
         const theme = await readTheme()
         setCurrentTheme(theme)
@@ -30,38 +36,11 @@ export default function Settings() {
     const goBack = useCallback(() => {
         navigation.navigate("Home")
     }, [])
-
-    const backhandlerFunction = useCallback(() => {
-        goBack()
-        return true
-    }, [])
-
-    const setBackhandler = useCallback(() => {
-        BackHandler.addEventListener(
-            "hardwareBackPress", 
-            () => backhandlerFunction()
-        )
-    }, [])
-
-    const removeBackhandler = useCallback(() => {
-        BackHandler.removeEventListener(
-            "hardwareBackPress", 
-            () => backhandlerFunction()
-        )
-    }, [])
   
 
     useEffect(() => {
         getCurrentTheme()
     }, [changeThemeVisible])
-
-    useEffect(() => {
-        setBackhandler()
-
-        return () => {
-            removeBackhandler()
-        }
-    }, [])
 
 
     return (
