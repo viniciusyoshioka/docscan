@@ -1,6 +1,8 @@
 import React, { useCallback, useContext, useEffect, useState } from "react"
 import { Alert, BackHandler, FlatList, View } from "react-native"
 import { useNavigation } from "@react-navigation/core"
+import { useBackHandler } from "@react-native-community/hooks"
+import { MenuProvider } from "react-native-popup-menu"
 
 import { DocumentItem } from "../../component/DocumentItem"
 import { SafeScreen } from "../../component/Screen"
@@ -10,7 +12,6 @@ import HomeHeader from "./Header"
 import { DebugButton } from "../../component/DebugButton"
 import { SwitchThemeContext } from "../../service/theme"
 import { debugHomeHide, debugHomeShow, themeDark, themeLight } from "../../service/constant"
-import { MenuProvider } from "react-native-popup-menu"
 import { deleteDocument } from "../../service/document-handler"
 import { createAllFolder } from "../../service/folder-handler"
 
@@ -26,6 +27,17 @@ export default function Home() {
     const [document, setDocument] = useState<Array<Document>>([])
     const [selectionMode, setSelectionMode] = useState(false)
     const [selectedDocument, setSelectedDocument] = useState<Array<number>>([])
+
+
+    useBackHandler(() => {
+        if (selectionMode) {
+            setSelectedDocument([])
+            setSelectionMode(false)
+        } else {
+            BackHandler.exitApp()
+        }
+        return true
+    })
 
 
     const debugReadDocument = useCallback(async () => {
@@ -111,30 +123,6 @@ export default function Home() {
         }
     }, [selectedDocument, selectionMode])
 
-    const backhandlerFunction = useCallback(() => {
-        if (selectionMode) {
-            setSelectedDocument([])
-            setSelectionMode(false)
-        } else {
-            BackHandler.exitApp()
-        }
-        return true
-    }, [selectionMode])
-
-    const setBackhandler = useCallback(() => {
-        BackHandler.addEventListener(
-            "hardwareBackPress", 
-            () => backhandlerFunction()
-        )
-    }, [backhandlerFunction])
-
-    const removeBackhandler = useCallback(() => {
-        BackHandler.removeEventListener(
-            "hardwareBackPress", 
-            () => backhandlerFunction()
-        )
-    }, [backhandlerFunction])
-
     const deleteSelectedDocument = useCallback(() => {
         Alert.alert(
             "Apagar documento?",
@@ -160,30 +148,6 @@ export default function Home() {
         debugGetDebugHome()
         getDocument()
     }, [])
-
-    useEffect(() => {
-        setBackhandler()
-
-        return () => {
-            removeBackhandler()
-        }
-    }, [backhandlerFunction])
-
-    useEffect(() => {
-        navigation.addListener("focus", setBackhandler)
-
-        return () => {
-            navigation.removeListener("focus", setBackhandler)
-        }
-    }, [setBackhandler])
-
-    useEffect(() => {
-        navigation.addListener("blur", removeBackhandler)
-
-        return () => {
-            navigation.removeListener("blur", removeBackhandler)
-        }
-    }, [removeBackhandler])
 
     useEffect(() => {
         if (selectionMode) {
