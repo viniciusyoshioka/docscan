@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect } from "react"
-import { BackHandler, Image } from "react-native"
+import React, { useCallback } from "react"
+import { Image } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import { useBackHandler } from "@react-native-community/hooks"
 
 import VisualizePictureHeader from "./Header"
 import { SafeScreen } from "../../component/Screen"
@@ -20,50 +21,22 @@ export default function VisualizePicture() {
     const { params } = useRoute<RouteProp<VisualizePictureParams, "VisualizePicture">>()
 
 
-    const goBack = useCallback(() => {
-        navigation.goBack()
-    }, [])
-
-    const backhandlerFunction = useCallback(() => {
+    useBackHandler(() => {
         goBack()
         return true
-    }, [])
-
-    const setBackhandler = useCallback(() => {
-        BackHandler.addEventListener(
-            "hardwareBackPress", 
-            () => backhandlerFunction()
-        )
-    }, [])
-
-    const removeBackhandler = useCallback(() => {
-        BackHandler.removeEventListener(
-            "hardwareBackPress", 
-            () => backhandlerFunction()
-        )
-    }, [])
+    })
 
 
-    useEffect(() => {
-        navigation.addListener("focus", setBackhandler)
-
-        return () => {
-            navigation.removeListener("focus", setBackhandler)
-        }
-    }, [])
-
-    useEffect(() => {
-        navigation.addListener("blur", removeBackhandler)
-
-        return () => {
-            navigation.removeListener("blur", removeBackhandler)
-        }
+    const goBack = useCallback(() => {
+        navigation.goBack()
     }, [])
 
 
     return (
         <SafeScreen>
-            <VisualizePictureHeader goBack={() => goBack()} />
+            <VisualizePictureHeader
+                goBack={goBack}
+            />
 
             <Image
                 source={{uri: `file://${params.picturePath}`}}
