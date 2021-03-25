@@ -39,8 +39,7 @@ export default function EditDocument() {
 
     const goBack = useCallback(() => {
         if (selectionMode) {
-            setSelectedPictures([])
-            setSelectionMode(false)
+            exitSelectionMode()
             return
         }
 
@@ -208,6 +207,11 @@ export default function EditDocument() {
         }
     }, [document, saveNotExistingDocument, saveExistingDocument])
 
+    const exitSelectionMode = useCallback(() => {
+        setSelectedPictures([])
+        setSelectionMode(false)
+    }, [])
+
 
     useEffect(() => {
         function backhandlerFunction() {
@@ -226,7 +230,7 @@ export default function EditDocument() {
                 backhandlerFunction
             )
         }
-    }, [])
+    }, [goBack])
 
     useEffect(() => {
         if (selectionMode) {
@@ -266,6 +270,7 @@ export default function EditDocument() {
 
                 <EditDocumentHeader
                     goBack={goBack}
+                    exitSelectionMode={exitSelectionMode}
                     documentName={documentName}
                     selectionMode={selectionMode} 
                     changed={changed}
