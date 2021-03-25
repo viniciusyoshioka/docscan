@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from "react"
+import React, { useCallback, useRef } from "react"
 import { BackHandler } from "react-native"
 import { Menu, MenuOptions, MenuTrigger } from "react-native-popup-menu"
 import { RectButton } from "react-native-gesture-handler"
@@ -19,59 +19,44 @@ export default function HomeMenu(props: HomeMenuProps) {
     const menuRef = useRef<Menu>(null)
 
 
-    const closeMenu = useCallback(() => {
-        menuRef.current?.close()
-    }, [menuRef])
-
-    const backhandlerMenuFunction = useCallback(() => {
+    const backhandlerFunction = useCallback(() => {
         if (menuRef.current?.isOpen()) {
-            closeMenu()
+            menuRef.current?.close()
             return true
         }
         return false
-    }, [menuRef, closeMenu])
+    }, [menuRef])
 
-    const setBackhandlerMenu = useCallback(() => {
+    const setBackhandler = useCallback(() => {
         BackHandler.addEventListener(
-            "hardwareBackPress", 
-            backhandlerMenuFunction
+            "hardwareBackPress",
+            backhandlerFunction
         )
-    }, [backhandlerMenuFunction])
+    }, [backhandlerFunction])
 
-    const removeBackhandlerMenu = useCallback(() => [
+    const removeBackhandler = useCallback(() => {
         BackHandler.removeEventListener(
             "hardwareBackPress",
-            backhandlerMenuFunction
+            backhandlerFunction
         )
-    ], [backhandlerMenuFunction])
-
-    const openMenu = useCallback(() => {
-        setBackhandlerMenu()
-        menuRef.current?.open()
-    }, [setBackhandlerMenu, menuRef])
-
-
-    useEffect(() => {
-        return () => {
-            removeBackhandlerMenu()
-        }
-    }, [removeBackhandlerMenu])
+    }, [backhandlerFunction])
 
 
     return (
-        <Menu ref={menuRef}>
+        <Menu ref={menuRef} onClose={removeBackhandler} onOpen={setBackhandler}>
             <MenuTrigger customStyles={{TriggerTouchableComponent: RectButton}}>
                 <HeaderButton 
                     iconName={"md-ellipsis-vertical"}
                     iconSize={22} 
-                    onPress={() => openMenu()} />
+                    onPress={() => menuRef.current?.open()}
+                />
             </MenuTrigger>
 
             <MenuOptions>
                 <PopupMenuButton 
                     text={"Configurações"} 
                     onPress={() => {
-                        closeMenu()
+                        menuRef.current?.close()
                         props.openSettings()
                     }}
                 />
@@ -79,7 +64,7 @@ export default function HomeMenu(props: HomeMenuProps) {
                 <PopupMenuButton 
                     text={"Debug Home"} 
                     onPress={() => {
-                        closeMenu()
+                        menuRef.current?.close()
                         props.switchDebugHome()
                     }}
                 />
