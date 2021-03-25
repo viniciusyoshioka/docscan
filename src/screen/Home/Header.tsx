@@ -1,11 +1,12 @@
 import React from "react"
 
-import { BlockCenter, BlockRight, Header, HeaderButton, HeaderTitle } from "../../component/Header"
+import { BlockCenter, BlockLeft, BlockRight, Header, HeaderButton, HeaderTitle } from "../../component/Header"
 import HomeMenu from "./HomeMenu"
 
 
 export interface HomeHeaderProps {
     selectionMode: boolean,
+    exitSelectionMode: () => void,
     deleteSelectedDocument: () => void,
     scanNewDocument: () => void,
     openSettings: () => void,
@@ -16,30 +17,47 @@ export interface HomeHeaderProps {
 export default function HomeHeader(props: HomeHeaderProps) {
     return (
         <Header>
-            <BlockCenter>
-                <HeaderTitle>
-                    DocScan
-                </HeaderTitle>
-            </BlockCenter>
+            {props.selectionMode && (
+                <BlockLeft>
+                    <HeaderButton
+                        iconName={"md-close"}
+                        onPress={props.exitSelectionMode}
+                    />
+                </BlockLeft>
+            )}
 
-            <BlockRight>
-                <HeaderButton
-                    iconName={"md-trash-outline"}
-                    onPress={props.deleteSelectedDocument}
-                    style={{opacity: props.selectionMode ? 1 : 0}}
-                />
+            {!props.selectionMode && (
+                <BlockCenter>
+                    <HeaderTitle>
+                        DocScan
+                    </HeaderTitle>
+                </BlockCenter>
+            )}
 
-                <HeaderButton
-                    iconName={"md-add"}
-                    iconSize={30}
-                    onPress={props.scanNewDocument}
-                />
+            {props.selectionMode && (
+                <BlockRight>
+                    <HeaderButton
+                        iconName={"md-trash-outline"}
+                        onPress={props.deleteSelectedDocument}
+                        style={{opacity: props.selectionMode ? 1 : 0}}
+                    />
+                </BlockRight>
+            )}
 
-                <HomeMenu
-                    openSettings={props.openSettings}
-                    switchDebugHome={props.switchDebugHome}
-                />                
-            </BlockRight>
+            {!props.selectionMode && (
+                <BlockRight>
+                    <HeaderButton
+                        iconName={"md-add"}
+                        iconSize={30}
+                        onPress={props.scanNewDocument}
+                    />
+
+                    <HomeMenu
+                        openSettings={props.openSettings}
+                        switchDebugHome={props.switchDebugHome}
+                    />
+                </BlockRight>
+            )}
         </Header>  
     )
 }

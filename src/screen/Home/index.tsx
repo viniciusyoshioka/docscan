@@ -31,8 +31,7 @@ export default function Home() {
 
     useBackHandler(() => {
         if (selectionMode) {
-            setSelectedDocument([])
-            setSelectionMode(false)
+            exitSelectionMode()
         } else {
             BackHandler.exitApp()
         }
@@ -132,6 +131,10 @@ export default function Home() {
         )
     }, [selectedDocument])
 
+    const exitSelectionMode = useCallback(() => {
+        setSelectedDocument([])
+        setSelectionMode(false)
+    }, [])
 
     useEffect(() => {
         createAllFolder()
@@ -152,6 +155,7 @@ export default function Home() {
             <SafeScreen>
                 <HomeHeader
                     selectionMode={selectionMode}
+                    exitSelectionMode={exitSelectionMode}
                     deleteSelectedDocument={deleteSelectedDocument}
                     scanNewDocument={() => navigation.navigate("Camera")}
                     openSettings={() => navigation.navigate("Settings")}
