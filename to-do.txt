@@ -6,7 +6,6 @@ melhorar slider do modal do foco
 bug de orientacao automatica ao sair da tela
 trava se entrar, sair, entar
 # Fazer
-importar imagens da galeria para documento
 focar clicando na camera
 
 # EditDocument
@@ -14,19 +13,21 @@ focar clicando na camera
 autofocus nao funciona direito no Input do RenameDocument
 # Fazer
 exportar pdf
-adicionar drag drop pra ordenar as fotos
-mudar header no modo de selecao
 
 # Home
 # Bug
 nome do documento vaza do botao quando é grande e ta no modo de selecao
-# Fazer
-mudar header no modo de selecao
 
 # VisualizePicture
 # Arrumar
 tamanho/posicao/proparcao da imagem
-# Fazer
+
+
+
+# Fazer agora
+importar imagens da galeria para documento
+# Fazer depois
+adicionar drag drop pra ordenar as fotos
 adicionar opcao de cortar imagem
 arrastar pro lado pra mudar de foto
 
@@ -44,8 +45,6 @@ nome do arquivo no item
 
 # Imagens
 # Fazer
-adicionar imagens no app
-adicionar imagens nas constantes
 adicionar icon de documento vazio na Home e EditDocument
 
 

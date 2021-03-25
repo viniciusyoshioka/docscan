@@ -52,35 +52,31 @@ export function DocumentItem(props: DocumentItemProps) {
 
     useEffect(() => {
         if (props.selectionMode === true) {
-            Animated.sequence([
+            Animated.parallel([
+                Animated.timing(animatedWidth, {
+                    toValue: 35,
+                    duration: 50,
+                    useNativeDriver: false
+                }),
+                Animated.timing(animatedOpacity, {
+                    toValue: 1,
+                    duration: 50,
+                    useNativeDriver: false
+                })
+            ]).start()
+        } else if (props.selectionMode === false) {
+            if (selected === false) {
                 Animated.parallel([
                     Animated.timing(animatedWidth, {
-                        toValue: 35,
+                        toValue: 0,
                         duration: 50,
                         useNativeDriver: false
                     }),
                     Animated.timing(animatedOpacity, {
-                        toValue: 1,
+                        toValue: 0,
                         duration: 50,
                         useNativeDriver: false
                     })
-                ])
-            ]).start()
-        } else if (props.selectionMode === false) {
-            if (selected === false) {
-                Animated.sequence([
-                    Animated.parallel([
-                        Animated.timing(animatedWidth, {
-                            toValue: 0,
-                            duration: 50,
-                            useNativeDriver: false
-                        }),
-                        Animated.timing(animatedOpacity, {
-                            toValue: 0,
-                            duration: 50,
-                            useNativeDriver: false
-                        })
-                    ])
                 ]).start()
             } else {
                 setSelected(false)
@@ -90,19 +86,17 @@ export function DocumentItem(props: DocumentItemProps) {
 
     useEffect(() => {
         if (props.selectionMode === false && selected === false) {
-            Animated.sequence([
-                Animated.parallel([
-                    Animated.timing(animatedWidth, {
-                        toValue: 0,
-                        duration: 50,
-                        useNativeDriver: false
-                    }),
-                    Animated.timing(animatedOpacity, {
-                        toValue: 0,
-                        duration: 50,
-                        useNativeDriver: false
-                    })
-                ])
+            Animated.parallel([
+                Animated.timing(animatedWidth, {
+                    toValue: 0,
+                    duration: 50,
+                    useNativeDriver: false
+                }),
+                Animated.timing(animatedOpacity, {
+                    toValue: 0,
+                    duration: 50,
+                    useNativeDriver: false
+                })
             ]).start()
         }
     }, [selected])
