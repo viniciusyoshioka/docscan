@@ -9,6 +9,7 @@ import PictureItem from "../../component/Pictureitem"
 import { Document } from "../../service/object-types"
 import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../service/document-handler"
 import RenameDocument from "./RenameDocument"
+import { MenuProvider } from "react-native-popup-menu"
 
 
 type EditDocumentParams = {
@@ -74,21 +75,21 @@ export default function EditDocument() {
     const backhandlerFunction = useCallback(() => {
         goBack()
         return true
-    }, [])
+    }, [goBack])
 
     const setBackhandler = useCallback(() => {
         BackHandler.addEventListener(
             "hardwareBackPress", 
             () => backhandlerFunction()
         )
-    }, [])
+    }, [backhandlerFunction])
 
     const removeBackhandler = useCallback(() => {
         BackHandler.removeEventListener(
             "hardwareBackPress", 
             () => backhandlerFunction()
         )
-    }, [])
+    }, [backhandlerFunction])
 
     const selectPicture = useCallback((picturePath: string) => {
         if (!selectionMode) {
@@ -229,6 +230,14 @@ export default function EditDocument() {
 
 
     useEffect(() => {
+        setBackhandler()
+
+        return () => {
+            removeBackhandler()
+        }
+    }, [backhandlerFunction])
+
+    useEffect(() => {
         navigation.addListener("focus", setBackhandler)
 
         return () => {
@@ -271,41 +280,43 @@ export default function EditDocument() {
 
 
     return (
-        <SafeScreen>
-            <RenameDocument
-                visible={renameDocumentVisible} 
-                setVisible={setRenameDocumentVisible} 
-                documentName={documentName} 
-                setDocumentName={renameDocument}
-            />
+        <MenuProvider skipInstanceCheck>
+            <SafeScreen>
+                <RenameDocument
+                    visible={renameDocumentVisible} 
+                    setVisible={setRenameDocumentVisible} 
+                    documentName={documentName} 
+                    setDocumentName={renameDocument}
+                />
 
-            <EditDocumentHeader
-                goBack={goBack}
-                documentName={documentName}
-                selectionMode={selectionMode} 
-                changed={changed}
-                isNewDocument={document === undefined}
-                deletePicture={() => deletePicture()}
-                openCamera={() => openCamera()}
-                saveDocument={() => saveDocument()}
-                renameDocument={() => setRenameDocumentVisible(true)}
-                exportToPdf={() => exportDocumentToPdf()}
-                discardDocument={() => discardDocument()}
-            />
+                <EditDocumentHeader
+                    goBack={goBack}
+                    documentName={documentName}
+                    selectionMode={selectionMode} 
+                    changed={changed}
+                    isNewDocument={document === undefined}
+                    deletePicture={() => deletePicture()}
+                    openCamera={() => openCamera()}
+                    saveDocument={() => saveDocument()}
+                    renameDocument={() => setRenameDocumentVisible(true)}
+                    exportToPdf={() => exportDocumentToPdf()}
+                    discardDocument={() => discardDocument()}
+                />
 
-            <FlatList 
-                numColumns={2}
-                data={pictureList} 
-                renderItem={({ item }) => (
-                    <PictureItem 
-                        picturePath={item}
-                        click={() => openPicture(item)}
-                        select={() => selectPicture(item)}
-                        deselect={() => deselectPicture(item)}
-                        selectionMode={selectionMode} />
-                )}
-                keyExtractor={(item, index) => index.toString()}
-            />
-        </SafeScreen>
+                <FlatList 
+                    numColumns={2}
+                    data={pictureList} 
+                    renderItem={({ item }) => (
+                        <PictureItem 
+                            picturePath={item}
+                            click={() => openPicture(item)}
+                            select={() => selectPicture(item)}
+                            deselect={() => deselectPicture(item)}
+                            selectionMode={selectionMode} />
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+            </SafeScreen>
+        </MenuProvider>
     )
 }
