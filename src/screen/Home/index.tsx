@@ -98,12 +98,6 @@ export default function Home() {
         setDocument(readDocumentList)
     }, [])
 
-    const openDocument = useCallback((documentObject: Document) => {
-        navigation.navigate("EditDocument", {
-            document: documentObject
-        })
-    }, [])
-
     const selectDocument = useCallback((documentId: number) => {
         if (!selectionMode) {
             setSelectionMode(true)
@@ -130,17 +124,13 @@ export default function Home() {
             [
                 {text: "Apagar", onPress: async () => {
                     await deleteDocument(selectedDocument, true)
-                    getDocument()
+                    await getDocument()
                 }},
                 {text: "Cancelar", onPress: () => {}}
             ],
             {cancelable: false}
         )
     }, [selectedDocument])
-
-    const scanNewDocument = useCallback(() => {
-        navigation.navigate("Camera")
-    }, [])
 
 
     useEffect(() => {
@@ -163,7 +153,7 @@ export default function Home() {
                 <HomeHeader
                     selectionMode={selectionMode}
                     deleteSelectedDocument={deleteSelectedDocument}
-                    scanNewDocument={scanNewDocument}
+                    scanNewDocument={() => navigation.navigate("Camera")}
                     openSettings={() => navigation.navigate("Settings")}
                     switchDebugHome={debugSwitchDebugHome}
                 />
@@ -172,7 +162,7 @@ export default function Home() {
                     data={document}
                     renderItem={({ item }) => (
                         <DocumentItem
-                            click={() => openDocument(item)}
+                            click={() => navigation.navigate("EditDocument", {document: item})}
                             select={() => selectDocument(item.id)}
                             deselect={() => deselectDocument(item.id)}
                             selectionMode={selectionMode}
