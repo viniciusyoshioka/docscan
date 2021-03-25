@@ -98,12 +98,6 @@ export default function EditDocument() {
         }
     }, [selectedPictures, selectionMode])
 
-    const openPicture = useCallback((picturePath: string) => {
-        navigation.navigate("VisualizePicture", {
-            picturePath: picturePath
-        })
-    }, [])
-
     const deletePicture = useCallback(() => {
         const pictures = pictureList.reverse()
 
@@ -273,10 +267,11 @@ export default function EditDocument() {
                     renderItem={({ item }) => (
                         <PictureItem 
                             picturePath={item}
-                            click={() => openPicture(item)}
+                            click={() => navigation.navigate("VisualizePicture", {picturePath: item})}
                             select={() => selectPicture(item)}
                             deselect={() => deselectPicture(item)}
-                            selectionMode={selectionMode} />
+                            selectionMode={selectionMode}
+                        />
                     )}
                     keyExtractor={(item, index) => index.toString()}
                 />
