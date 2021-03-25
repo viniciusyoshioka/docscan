@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react"
-import { Alert, BackHandler, FlatList, ToastAndroid } from "react-native"
+import { Alert, FlatList, ToastAndroid } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
+import { MenuProvider } from "react-native-popup-menu"
+import { useBackHandler } from "@react-native-community/hooks"
 
 import { SafeScreen } from "../../component/Screen"
 import EditDocumentHeader from "./Header"
@@ -9,7 +11,6 @@ import PictureItem from "../../component/Pictureitem"
 import { Document } from "../../service/object-types"
 import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../service/document-handler"
 import RenameDocument from "./RenameDocument"
-import { MenuProvider } from "react-native-popup-menu"
 
 
 type EditDocumentParams = {
@@ -35,6 +36,12 @@ export default function EditDocument() {
     const [selectedPictures, setSelectedPictures] = useState<Array<string>>([])
     const [renameDocumentVisible, setRenameDocumentVisible] = useState(false)
     const [changed, setChanged] = useState(false)
+
+
+    useBackHandler(() => {
+        goBack()
+        return true
+    })
 
 
     const goBack = useCallback(() => {
@@ -71,25 +78,6 @@ export default function EditDocument() {
             navigation.navigate("Home")
         }
     }, [document, selectionMode, pictureList, changed, documentName])
-
-    const backhandlerFunction = useCallback(() => {
-        goBack()
-        return true
-    }, [goBack])
-
-    const setBackhandler = useCallback(() => {
-        BackHandler.addEventListener(
-            "hardwareBackPress", 
-            () => backhandlerFunction()
-        )
-    }, [backhandlerFunction])
-
-    const removeBackhandler = useCallback(() => {
-        BackHandler.removeEventListener(
-            "hardwareBackPress", 
-            () => backhandlerFunction()
-        )
-    }, [backhandlerFunction])
 
     const selectPicture = useCallback((picturePath: string) => {
         if (!selectionMode) {
@@ -228,30 +216,6 @@ export default function EditDocument() {
         }
     }, [document, saveNotExistingDocument, saveExistingDocument])
 
-
-    useEffect(() => {
-        setBackhandler()
-
-        return () => {
-            removeBackhandler()
-        }
-    }, [backhandlerFunction])
-
-    useEffect(() => {
-        navigation.addListener("focus", setBackhandler)
-
-        return () => {
-            navigation.removeListener("focus", setBackhandler)
-        }
-    }, [setBackhandler])
-
-    useEffect(() => {
-        navigation.addListener("blur", removeBackhandler)
-
-        return () => {
-            navigation.removeListener("blur", removeBackhandler)
-        }
-    }, [removeBackhandler])
 
     useEffect(() => {
         if (selectionMode) {
