@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react"
-import { Alert, FlatList, ToastAndroid } from "react-native"
+import { Alert, BackHandler, FlatList, ToastAndroid } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 import { MenuProvider } from "react-native-popup-menu"
-import { useBackHandler } from "@react-native-community/hooks"
 
 import { SafeScreen } from "../../component/Screen"
 import EditDocumentHeader from "./Header"
@@ -36,12 +35,6 @@ export default function EditDocument() {
     const [selectedPictures, setSelectedPictures] = useState<Array<string>>([])
     const [renameDocumentVisible, setRenameDocumentVisible] = useState(false)
     const [changed, setChanged] = useState(false)
-
-
-    useBackHandler(() => {
-        goBack()
-        return true
-    })
 
 
     const goBack = useCallback(() => {
@@ -215,6 +208,25 @@ export default function EditDocument() {
         }
     }, [document, saveNotExistingDocument, saveExistingDocument])
 
+
+    useEffect(() => {
+        function backhandlerFunction() {
+            goBack()
+            return true
+        }
+
+        BackHandler.addEventListener(
+            "hardwareBackPress",
+            backhandlerFunction
+        )
+
+        return () => {
+            BackHandler.removeEventListener(
+                "hardwareBackPress",
+                backhandlerFunction
+            )
+        }
+    }, [])
 
     useEffect(() => {
         if (selectionMode) {
