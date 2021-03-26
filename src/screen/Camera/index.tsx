@@ -87,7 +87,9 @@ export default function Camera() {
     }, [pictureList])
 
     const addPictureFromGalery = useCallback(() => {
-        ToastAndroid.show("Add picture from galery is not available yet", 10)
+        // ToastAndroid.show("Add picture from galery is not available yet", 10)
+
+        navigation.navigate("ImportImageFromGalery")
     }, [])
 
     const takePicture = useCallback(async () => {
