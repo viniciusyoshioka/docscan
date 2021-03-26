@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react"
-import { Alert, BackHandler, FlatList, ToastAndroid } from "react-native"
+import { Alert, BackHandler, FlatList } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 import { MenuProvider } from "react-native-popup-menu"
@@ -10,6 +10,7 @@ import { PictureItem } from "../../component/Pictureitem"
 import { Document } from "../../service/object-types"
 import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../service/document-handler"
 import RenameDocument from "./RenameDocument"
+import { createPdf } from "../../service/pdf-handler"
 
 
 type EditDocumentParams = {
@@ -145,8 +146,23 @@ export default function EditDocument() {
     }, [changed])
 
     const exportDocumentToPdf = useCallback(() => {
-        ToastAndroid.show("Export document to PDF is not available yet", 10)
-    }, [])
+        if (documentName === "") {
+            Alert.alert(
+                "Nome do documento vazio",
+                "Não é possível exportar documento sem nome pra PDF"
+            )
+            return
+        }
+        if (pictureList.length === 0) {
+            Alert.alert(
+                "Documento sem fotos",
+                "Não é possível exportar documento sem fotos pra PDF"
+            )
+            return
+        }
+
+        createPdf(documentName, pictureList)
+    }, [documentName, pictureList])
     
     const discardDocument = useCallback(() => {
         Alert.alert(
