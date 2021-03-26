@@ -11,8 +11,6 @@ focar clicando na camera
 # EditDocument
 # Arrumar
 autofocus nao funciona direito no Input do RenameDocument
-# Fazer
-exportar pdf
 
 # Home
 # Bug
