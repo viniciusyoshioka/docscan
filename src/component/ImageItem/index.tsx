@@ -1,6 +1,6 @@
 import CheckBox from "@react-native-community/checkbox"
 import React, { useCallback, useContext, useEffect, useState } from "react"
-import { Animated, Image } from "react-native"
+import { Animated, Dimensions, Image } from "react-native"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 
 import { ThemeContext } from "../../service/theme"
@@ -25,6 +25,7 @@ export function ImageItem(props: ImageItemProps) {
     const animatedOpacity = new Animated.Value(0)
 
     const [selected, setSelected] = useState(false)
+    const [imageSize, setImageSize] = useState(Dimensions.get("window").width / 3)
 
 
     const normalPress = useCallback(() => {
@@ -100,6 +101,20 @@ export function ImageItem(props: ImageItemProps) {
         }
     }, [selected])
 
+    useEffect(() => {
+        Dimensions.addEventListener(
+            "change", 
+            ({ window }) => setImageSize(window.width / 3)
+        )
+
+        return () => {
+            Dimensions.removeEventListener(
+                "change", 
+                ({ window }) => setImageSize(window.width / 3)
+            )
+        }
+    }, [])
+
 
     return (
         <LongPressGestureHandler 
@@ -110,7 +125,9 @@ export function ImageItem(props: ImageItemProps) {
             <Button onPress={normalPress}>
                 <Image
                     source={{uri: `file://${props.imagePath}`}}
-                    style={{width: 200, height: 200, aspectRatio: 1}}
+                    style={{
+                        width: imageSize, height: imageSize,
+                    }}
                 />
 
                 <Animated.View style={[ViewCheckBox, {width: animatedWidth, opacity: animatedOpacity}]}>

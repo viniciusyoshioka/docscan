@@ -4,7 +4,6 @@ import styled from "styled-components/native"
 
 
 export const Button = styled(RectButton)`
-    flex: 1;
     aspect-ratio: 1;
 `
 
