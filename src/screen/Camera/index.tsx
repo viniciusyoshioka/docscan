@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { Alert, ToastAndroid } from "react-native"
+import { Alert } from "react-native"
 import { RNCamera } from "react-native-camera"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import Orientation from "react-native-orientation-locker"
@@ -87,10 +87,12 @@ export default function Camera() {
     }, [pictureList])
 
     const addPictureFromGalery = useCallback(() => {
-        // ToastAndroid.show("Add picture from galery is not available yet", 10)
-
-        navigation.navigate("ImportImageFromGalery")
-    }, [])
+        navigation.navigate("ImportImageFromGalery", {
+            pictureList: pictureList,
+            documentName: documentName,
+            documentObject: documentObject,
+        })
+    }, [pictureList, documentName, documentObject])
 
     const takePicture = useCallback(async () => {
         await createAllFolder()

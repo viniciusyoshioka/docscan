@@ -5,6 +5,7 @@ import { BlockCenter, BlockLeft, BlockRight, Header, HeaderButton, HeaderTitle }
 
 export interface ImportImageFromGaleryHeaderProps {
     goBack: () => void,
+    exitSelectionMode: () => void,
     importImage: () => void,
     selectionMode: boolean,
 }
@@ -14,17 +15,28 @@ export default function ImportImageFromGaleryHeader(props: ImportImageFromGalery
     return (
         <Header>
             <BlockLeft>
-                <HeaderButton
-                    iconName={"md-arrow-back"}
-                    onPress={props.goBack}
-                />
+                {props.selectionMode && (
+                    <HeaderButton
+                        iconName={"md-close"}
+                        onPress={props.exitSelectionMode}
+                    />
+                )}
+
+                {!props.selectionMode && (
+                    <HeaderButton
+                        iconName={"md-arrow-back"}
+                        onPress={props.goBack}
+                    />
+                )}
             </BlockLeft>
 
-            <BlockCenter>
-                <HeaderTitle>
-                    Importar imagem
-                </HeaderTitle>
-            </BlockCenter>
+            {!props.selectionMode && (
+                <BlockCenter>
+                    <HeaderTitle>
+                        Importar imagem
+                    </HeaderTitle>
+                </BlockCenter>
+            )}
 
             {props.selectionMode && (
                 <BlockRight>

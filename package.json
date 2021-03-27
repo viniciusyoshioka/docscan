@@ -1,6 +1,6 @@
 {
   "name": "docscan",
-  "version": "0.0.65",
+  "version": "0.0.66",
   "private": true,
   "scripts": {
     "start": "react-native start",
@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.14.1",
+    "@react-native-community/cameraroll": "^4.0.4",
     "@react-native-community/checkbox": "^0.5.7",
     "@react-native-community/hooks": "^2.6.0",
     "@react-native-community/masked-view": "^0.1.10",
