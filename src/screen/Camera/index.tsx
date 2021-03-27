@@ -11,7 +11,7 @@ import CameraHeader from "./Header"
 import CameraSettings from "./CameraSetings"
 import { fullPathPictureOriginal, settingsDefaultCamera } from "../../service/constant"
 import { readSettings } from "../../service/storage"
-import { CameraControlButtonBase, cameraControlIconSize, CameraControlView } from "../../component/CameraControl"
+import { CameraControlButtonBase, CameraControlViewButtonIndex, cameraControlIconSize, CameraControlView, IndexControl } from "../../component/CameraControl"
 import { createAllFolder } from "../../service/folder-handler"
 import { getDateTime } from "../../service/date"
 import { getDocumentName } from "../../service/document-handler"
@@ -168,19 +168,18 @@ export default function Camera() {
                 whiteBalance={whiteBalance}
             />
 
-            {/* <View style={{flex: 1, backgroundColor: "rgb(180, 180, 180)"}} /> */}
-
             <CameraHeader 
                 goBack={goBack} 
                 openSettings={() => setCameraSettingsVisible(true)}
             />
 
             <CameraControlView style={{position: "absolute", bottom: 0, left: 0, right: 0, backgroundColor: "transparent"}}>
-                <CameraControlButtonBase onPress={() => addPictureFromGalery()}>
+                <CameraControlButtonBase onPress={addPictureFromGalery}>
                     <Icon 
                         name={"md-image-outline"} 
                         size={cameraControlIconSize} 
-                        color={"rgb(255, 255, 255)"} />
+                        color={"rgb(255, 255, 255)"}
+                    />
                 </CameraControlButtonBase>
 
                 <CameraControlButtonBase 
@@ -188,11 +187,18 @@ export default function Camera() {
                     style={{backgroundColor: "rgb(255, 255, 255)"}}
                 />
 
-                <CameraControlButtonBase onPress={() => editDocument()}>
-                    <Icon 
-                        name={"md-document-outline"} 
-                        size={cameraControlIconSize} 
-                        color={"rgb(255, 255, 255)"} />
+                <CameraControlButtonBase onPress={editDocument}>
+                    <CameraControlViewButtonIndex>
+                        <Icon 
+                            name={"md-document-outline"} 
+                            size={cameraControlIconSize} 
+                            color={"rgb(255, 255, 255)"}
+                        />
+
+                        <IndexControl>
+                            {`${pictureList.length}`}
+                        </IndexControl>
+                    </CameraControlViewButtonIndex>
                 </CameraControlButtonBase>
             </CameraControlView>
         </SafeScreen>

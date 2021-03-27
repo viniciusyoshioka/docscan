@@ -2,9 +2,7 @@
 # Camera
 # Arrumar
 melhorar slider do modal do foco
-# Bug
-bug de orientacao automatica ao sair da tela
-trava se entrar, sair, entar
+arrumar orientacao da interface da camera quando mudar a orientacao
 # Fazer
 focar clicando na camera
 
@@ -20,10 +18,15 @@ nome do documento vaza do botao quando é grande e ta no modo de selecao
 # Arrumar
 tamanho/posicao/proparcao da imagem
 
+# ImageItem
+# Testar
+imagem com component ImageBackground
+
 
 
 # Fazer agora
-importar imagens da galeria para documento
+arrumar layout
+arrumar design de cor dos temas claro e escuro
 # Fazer depois
 adicionar drag drop pra ordenar as fotos
 adicionar opcao de cortar imagem

@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 import { TouchableOpacityProps } from "react-native"
 import Icon from "react-native-vector-icons/Ionicons"
 
-import { CameraControlButtonBase } from "./style"
+import { CameraControlButtonBase, CameraControlViewButtonIndex } from "./style"
 import { CameraControlIconProps, cameraControlIconSize } from "../Icon"
 import { ThemeContext } from "../../../service/theme"
 
@@ -27,4 +27,4 @@ export function CameraControlButton(props: CameraControlButtonProps) {
 }
 
 
-export { CameraControlButtonBase }
+export { CameraControlButtonBase, CameraControlViewButtonIndex }
