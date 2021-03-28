@@ -107,16 +107,16 @@ export function DocumentItem(props: DocumentItemProps) {
             minDurationMs={800} 
             onHandlerStateChange={({ nativeEvent }) => longPress(nativeEvent)}
         >
-            <Button onPress={() => normalPress()}>
+            <Button onPress={normalPress}>
                 <Animated.View 
                     style={[Block, {
                         width: animatedWidth, opacity: animatedOpacity, 
-                        marginRight: 5
+                        marginRight: props.selectionMode ? 5 : 0,
                     }]}
                 >
                     <CheckBox 
                         value={selected}
-                        onChange={() => normalPress()}
+                        onChange={normalPress}
                         tintColors={{
                             true: color.icon,
                             false: color.icon
@@ -124,7 +124,7 @@ export function DocumentItem(props: DocumentItemProps) {
                     />
                 </Animated.View>
 
-                <View style={[Block, {alignItems: "flex-start"}]}>
+                <View style={[Block, {alignItems: "flex-start", flex: 1}]}>
                     <Line>
                         <Title numberOfLines={1}>
                             {props.document.name}
