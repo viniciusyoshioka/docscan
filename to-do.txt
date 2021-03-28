@@ -3,6 +3,7 @@
 # Arrumar
 melhorar slider do modal do foco
 arrumar orientacao da interface da camera quando mudar a orientacao
+arrumar area da foto
 # Fazer
 focar clicando na camera
 

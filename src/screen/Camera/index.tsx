@@ -157,7 +157,7 @@ export default function Camera() {
             />
 
             <RNCamera
-                style={{flex: 1}}
+                style={{flex: 1, overflow: "scroll"}}
                 ref={cameraRef}
                 captureAudio={false}
                 playSoundOnCapture={false}

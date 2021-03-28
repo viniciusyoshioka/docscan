@@ -37,7 +37,10 @@ export default function ImportImageFromGalery() {
 
 
     const getImage = useCallback(() => {
-        CameraRoll.getPhotos({first: imageGalery.length + 15})
+        CameraRoll.getPhotos({
+            first: imageGalery.length + 15,
+            assetType: "Photos",
+        })
             .then((item) => {
                 setImageGalery(item.edges)
             })
@@ -65,7 +68,7 @@ export default function ImportImageFromGalery() {
         }
     }, [selectionMode, selectedImage])
 
-    const deselectDocument = useCallback((imagePath: string) => {
+    const deselectImage = useCallback((imagePath: string) => {
         const index = selectedImage.indexOf(imagePath)
         if (index !== -1) {
             selectedImage.splice(index, 1)
@@ -103,6 +106,18 @@ export default function ImportImageFromGalery() {
         })
     }, [selectedImage])
 
+    const renderImageItem = useCallback(({ item }: {item: PhotoIdentifier}) => {
+        return (
+            <ImageItem
+                click={() => importSingleImage(item.node.image.uri)}
+                select={() => selectImage(item.node.image.uri)}
+                deselect={() => deselectImage(item.node.image.uri)}
+                selectionMode={selectionMode}
+                imagePath={item.node.image.uri}
+            />
+        )
+    }, [selectionMode, selectImage, deselectImage])
+
 
     useEffect(() => {
         getImage()
@@ -120,19 +135,11 @@ export default function ImportImageFromGalery() {
 
             <FlatList
                 data={imageGalery}
-                renderItem={({ item }) => (
-                    <ImageItem
-                        click={() => importSingleImage(item.node.image.uri)}
-                        select={() => selectImage(item.node.image.uri)}
-                        deselect={() => deselectDocument(item.node.image.uri)}
-                        selectionMode={selectionMode}
-                        imagePath={item.node.image.uri}
-                    />
-                )}
+                renderItem={renderImageItem}
                 onEndReached={() => {
                     getImage()
                 }}
-                onEndReachedThreshold={0.4}
+                onEndReachedThreshold={0.5}
                 numColumns={3}
                 keyExtractor={(item, index) => index.toString()}
             />

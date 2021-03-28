@@ -21,11 +21,9 @@ export function ImageItem(props: ImageItemProps) {
 
     const { color } = useContext(ThemeContext)
 
-    const animatedWidth = new Animated.Value(0)
-    const animatedOpacity = new Animated.Value(0)
-
     const [selected, setSelected] = useState(false)
     const [imageSize, setImageSize] = useState(Dimensions.get("window").width / 3)
+    const animatedOpacity = new Animated.Value(0)
 
 
     const normalPress = useCallback(() => {
@@ -52,12 +50,7 @@ export function ImageItem(props: ImageItemProps) {
 
     useEffect(() => {
         if (props.selectionMode === true) {
-            Animated.parallel([
-                Animated.timing(animatedWidth, {
-                    toValue: 35,
-                    duration: 50,
-                    useNativeDriver: false
-                }),
+            Animated.sequence([
                 Animated.timing(animatedOpacity, {
                     toValue: 1,
                     duration: 50,
@@ -66,12 +59,7 @@ export function ImageItem(props: ImageItemProps) {
             ]).start()
         } else if (props.selectionMode === false) {
             if (selected === false) {
-                Animated.parallel([
-                    Animated.timing(animatedWidth, {
-                        toValue: 0,
-                        duration: 50,
-                        useNativeDriver: false
-                    }),
+                Animated.sequence([
                     Animated.timing(animatedOpacity, {
                         toValue: 0,
                         duration: 50,
@@ -85,13 +73,8 @@ export function ImageItem(props: ImageItemProps) {
     }, [props.selectionMode])
 
     useEffect(() => {
-        if (props.selectionMode === false && selected === false) {
-            Animated.parallel([
-                Animated.timing(animatedWidth, {
-                    toValue: 0,
-                    duration: 50,
-                    useNativeDriver: false
-                }),
+        if (!props.selectionMode && !selected) {
+            Animated.sequence([
                 Animated.timing(animatedOpacity, {
                     toValue: 0,
                     duration: 50,
@@ -130,7 +113,7 @@ export function ImageItem(props: ImageItemProps) {
                     }}
                 />
 
-                <Animated.View style={[ViewCheckBox, {width: animatedWidth, opacity: animatedOpacity}]}>
+                <Animated.View style={[ViewCheckBox, {opacity: animatedOpacity}]}>
                     <CheckBox
                         value={selected}
                         onValueChange={normalPress}
