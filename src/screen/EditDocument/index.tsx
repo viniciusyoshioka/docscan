@@ -245,6 +245,18 @@ export default function EditDocument() {
         setSelectionMode(false)
     }, [])
 
+    const renderPictureItem = useCallback(({ item }: {item: string}) => {
+        return (
+            <PictureItem 
+                picturePath={item}
+                click={() => navigation.navigate("VisualizePicture", {picturePath: item})}
+                select={() => selectPicture(item)}
+                deselect={() => deselectPicture(item)}
+                selectionMode={selectionMode}
+            />
+        )
+    }, [selectionMode, selectPicture, deselectPicture])
+
 
     useEffect(() => {
         function backhandlerFunction() {
@@ -317,17 +329,9 @@ export default function EditDocument() {
                 />
 
                 <FlatList 
-                    numColumns={2}
                     data={pictureList} 
-                    renderItem={({ item }) => (
-                        <PictureItem 
-                            picturePath={item}
-                            click={() => navigation.navigate("VisualizePicture", {picturePath: item})}
-                            select={() => selectPicture(item)}
-                            deselect={() => deselectPicture(item)}
-                            selectionMode={selectionMode}
-                        />
-                    )}
+                    renderItem={renderPictureItem}
+                    numColumns={2}
                     keyExtractor={(item, index) => index.toString()}
                 />
             </SafeScreen>

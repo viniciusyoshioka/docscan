@@ -21,10 +21,8 @@ export function PictureItem(props: PictureItemProps) {
 
     const { color } = useContext(ThemeContext)
 
-    const animatedWidth = new Animated.Value(0)
-    const animatedOpacity = new Animated.Value(0)
-
     const [selected, setSelected] = useState(false)
+    const animatedOpacity = new Animated.Value(0)
 
 
     const getPictureName = useCallback(() => {
@@ -57,34 +55,20 @@ export function PictureItem(props: PictureItemProps) {
     useEffect(() => {
         if (props.selectionMode === true) {
             Animated.sequence([
-                Animated.parallel([
-                    Animated.timing(animatedWidth, {
-                        toValue: 30,
-                        duration: 50,
-                        useNativeDriver: false
-                    }),
-                    Animated.timing(animatedOpacity, {
-                        toValue: 1,
-                        duration: 50,
-                        useNativeDriver: false
-                    })
-                ])
+                Animated.timing(animatedOpacity, {
+                    toValue: 1,
+                    duration: 50,
+                    useNativeDriver: false
+                })
             ]).start()
         } else if (props.selectionMode === false) {
             if (selected === false) {
                 Animated.sequence([
-                    Animated.parallel([
-                        Animated.timing(animatedWidth, {
-                            toValue: 0,
-                            duration: 50,
-                            useNativeDriver: false
-                        }),
-                        Animated.timing(animatedOpacity, {
-                            toValue: 0,
-                            duration: 50,
-                            useNativeDriver: false
-                        })
-                    ])
+                    Animated.timing(animatedOpacity, {
+                        toValue: 0,
+                        duration: 50,
+                        useNativeDriver: false
+                    })
                 ]).start()
             } else {
                 setSelected(false)
@@ -95,18 +79,11 @@ export function PictureItem(props: PictureItemProps) {
     useEffect(() => {
         if (props.selectionMode === false && selected === false) {
             Animated.sequence([
-                Animated.parallel([
-                    Animated.timing(animatedWidth, {
-                        toValue: 0,
-                        duration: 50,
-                        useNativeDriver: false
-                    }),
-                    Animated.timing(animatedOpacity, {
-                        toValue: 0,
-                        duration: 50,
-                        useNativeDriver: false
-                    })
-                ])
+                Animated.timing(animatedOpacity, {
+                    toValue: 0,
+                    duration: 50,
+                    useNativeDriver: false
+                })
             ]).start()
         }
     }, [selected])
@@ -118,7 +95,7 @@ export function PictureItem(props: PictureItemProps) {
             minDurationMs={800} 
             onHandlerStateChange={({ nativeEvent }) => longPress(nativeEvent)}
         >
-            <PictureButton style={{aspectRatio: 2/3}} onPress={() => normalPress()}>
+            <PictureButton style={{aspectRatio: 2/3}} onPress={normalPress}>
                 <PictureImage 
                     source={{uri: `file://${props.picturePath}`}} 
                     style={{aspectRatio: 2/3, resizeMode: "contain"}}
@@ -130,10 +107,10 @@ export function PictureItem(props: PictureItemProps) {
                     </FileNameText>
                 </FileNameView>
 
-                <Animated.View style={[CheckBoxView, {opacity: animatedOpacity, width: animatedWidth}]}>
+                <Animated.View style={[CheckBoxView, {opacity: animatedOpacity}]}>
                     <CheckBox 
                         value={selected}
-                        onChange={() => normalPress()}
+                        onChange={normalPress}
                         tintColors={{
                             true: color.icon,
                             false: color.icon
