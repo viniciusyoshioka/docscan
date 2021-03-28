@@ -11,7 +11,7 @@ import { readDebugHome, readDocument, readDocumentId, writeDebugHome, writeDocum
 import HomeHeader from "./Header"
 import { DebugButton } from "../../component/DebugButton"
 import { SwitchThemeContext } from "../../service/theme"
-import { debugHomeHide, debugHomeShow, themeDark, themeLight } from "../../service/constant"
+import { appInDevelopment, debugHomeHide, debugHomeShow, themeDark, themeLight } from "../../service/constant"
 import { deleteDocument } from "../../service/document-handler"
 import { createAllFolder } from "../../service/folder-handler"
 
@@ -77,8 +77,12 @@ export default function Home() {
     }, [])
 
     const debugGetDebugHome = useCallback(async () => {
-        const getDebugHome = await readDebugHome()
-        setDebugHome(getDebugHome)
+        if (appInDevelopment) {
+            const getDebugHome = await readDebugHome()
+            setDebugHome(getDebugHome)
+        } else {
+            setDebugHome(debugHomeHide)
+        }
     }, [])
 
     const debugSwitchDebugHome = useCallback(async () => {
@@ -136,6 +140,19 @@ export default function Home() {
         setSelectionMode(false)
     }, [])
 
+    const renderDocumentItem = useCallback(({ item }: {item: Document}) => {
+        return (
+            <DocumentItem
+                click={() => navigation.navigate("EditDocument", {document: item})}
+                select={() => selectDocument(item.id)}
+                deselect={() => deselectDocument(item.id)}
+                selectionMode={selectionMode}
+                document={item}
+            />
+        )
+    }, [selectionMode, selectDocument, deselectDocument])
+
+
     useEffect(() => {
         createAllFolder()
         debugGetDebugHome()
@@ -144,8 +161,7 @@ export default function Home() {
 
     useEffect(() => {
         if (selectionMode) {
-            setSelectedDocument([])
-            setSelectionMode(false)
+            exitSelectionMode()
         }
     }, [document])
 
@@ -164,15 +180,7 @@ export default function Home() {
 
                 <FlatList
                     data={document}
-                    renderItem={({ item }) => (
-                        <DocumentItem
-                            click={() => navigation.navigate("EditDocument", {document: item})}
-                            select={() => selectDocument(item.id)}
-                            deselect={() => deselectDocument(item.id)}
-                            selectionMode={selectionMode}
-                            document={item}
-                        />
-                    )}
+                    renderItem={renderDocumentItem}
                     keyExtractor={(item) => item.id.toString()}
                 />
 

@@ -22,10 +22,9 @@ export function DocumentItem(props: DocumentItemProps) {
 
     const { color } = useContext(ThemeContext)
 
+    const [selected, setSelected] = useState(false)
     const animatedWidth = new Animated.Value(0)
     const animatedOpacity = new Animated.Value(0)
-
-    const [selected, setSelected] = useState(false)
 
 
     const normalPress = useCallback(() => {
@@ -51,8 +50,8 @@ export function DocumentItem(props: DocumentItemProps) {
 
 
     useEffect(() => {
-        if (props.selectionMode === true) {
-            Animated.parallel([
+        if (props.selectionMode) {
+            Animated.sequence([
                 Animated.timing(animatedWidth, {
                     toValue: 35,
                     duration: 50,
@@ -64,9 +63,9 @@ export function DocumentItem(props: DocumentItemProps) {
                     useNativeDriver: false
                 })
             ]).start()
-        } else if (props.selectionMode === false) {
-            if (selected === false) {
-                Animated.parallel([
+        } else if (!props.selectionMode) {
+            if (!selected) {
+                Animated.sequence([
                     Animated.timing(animatedWidth, {
                         toValue: 0,
                         duration: 50,
@@ -85,8 +84,8 @@ export function DocumentItem(props: DocumentItemProps) {
     }, [props.selectionMode])
 
     useEffect(() => {
-        if (props.selectionMode === false && selected === false) {
-            Animated.parallel([
+        if (!props.selectionMode && !selected) {
+            Animated.sequence([
                 Animated.timing(animatedWidth, {
                     toValue: 0,
                     duration: 50,
