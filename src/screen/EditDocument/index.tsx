@@ -11,6 +11,8 @@ import { Document } from "../../service/object-types"
 import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../service/document-handler"
 import RenameDocument from "./RenameDocument"
 import { createPdf } from "../../service/pdf-handler"
+import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
+import { appIconOutline } from "../../service/constant"
 
 
 type EditDocumentParams = {
@@ -257,6 +259,16 @@ export default function EditDocument() {
         )
     }, [selectionMode, selectPicture, deselectPicture])
 
+    const RenderEmptyList = useCallback(() => (
+        <EmptyListView>
+            <EmptyListImage source={appIconOutline} />
+
+            <EmptyListText>
+                Nenhuma foto
+            </EmptyListText>
+        </EmptyListView>
+    ), [])
+
 
     useEffect(() => {
         function backhandlerFunction() {
@@ -334,6 +346,10 @@ export default function EditDocument() {
                     numColumns={2}
                     keyExtractor={(item, index) => index.toString()}
                 />
+
+                {pictureList.length === 0 && (
+                    <RenderEmptyList />
+                )}
             </SafeScreen>
         </MenuProvider>
     )
