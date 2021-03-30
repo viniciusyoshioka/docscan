@@ -5,6 +5,7 @@ import { RectButton } from "react-native-gesture-handler"
 
 import { HeaderButton } from "../../component/Header"
 import { PopupMenuButton } from "../../component/PopupMenuButton"
+import { appInDevelopment } from "../../service/constant"
 
 
 export interface HomeMenuProps {
@@ -60,14 +61,15 @@ export default function HomeMenu(props: HomeMenuProps) {
                         props.openSettings()
                     }}
                 />
-
-                <PopupMenuButton 
-                    text={"Debug Home"} 
-                    onPress={() => {
-                        menuRef.current?.close()
-                        props.switchDebugHome()
-                    }}
-                />
+                {appInDevelopment && (
+                    <PopupMenuButton 
+                        text={"Debug Home"} 
+                        onPress={() => {
+                            menuRef.current?.close()
+                            props.switchDebugHome()
+                        }}
+                    />
+                )}
             </MenuOptions>
         </Menu>
     )

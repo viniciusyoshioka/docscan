@@ -26,6 +26,3 @@ autofocus nao funciona direito no Input do RenameDocument
 
 # VisualizePicture
 arrumar tela
-
-# PictureItem
-arrumar componente
