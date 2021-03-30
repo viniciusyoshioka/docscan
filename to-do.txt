@@ -3,10 +3,10 @@
 imagem com component ImageBackground no componente ImageItem da tela ImportImageFromGalery
 
 # Fazer agora
+criar icone DocScan, DocScanOutline, DocScanBeta, DocScanBetaOutline, EmptyGalery, EmptyPicture
 arrumar layout
 arrumar design de cor dos temas claro e escuro
-copiar arquivo da galeria pra pasta do app ao importar imagem da galeria
-adicionar icon de items vazios na Home, EditDocument e ImportImageFromGalery
+melhorar renomear arquivos ao importar da galeria e copiar na pasta de fotos
 adicionar suporte pra muitas camera no celular
 
 # Fazer depois
@@ -25,9 +25,7 @@ focar clicando na camera
 autofocus nao funciona direito no Input do RenameDocument
 
 # VisualizePicture
-tamanho/posicao/proparcao da imagem
+arrumar tela
 
 # PictureItem
-cor e posicao da checkbox
-tamanho/posicao/proparcao da imagem
-nome do arquivo no item
+arrumar componente

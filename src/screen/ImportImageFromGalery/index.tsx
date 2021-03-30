@@ -3,13 +3,14 @@ import { FlatList } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import CameraRoll, { PhotoIdentifier } from "@react-native-community/cameraroll"
 import { useBackHandler } from "@react-native-community/hooks"
+import RNFS from "react-native-fs"
 
 import { SafeScreen } from "../../component/Screen"
 import ImportImageFromGaleryHeader from "./Header"
 import { ImageItem } from "../../component/ImageItem"
 import { Document } from "../../service/object-types"
 import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
-import { appIconOutline } from "../../service/constant"
+import { appIconOutline, fullPathPictureOriginal } from "../../service/constant"
 
 
 type ImportImageFromGaleryParam = {
@@ -86,8 +87,13 @@ export default function ImportImageFromGalery() {
     }, [])
 
     const importSingleImage = useCallback((imagePath: string) => {
+        const splitedImageName = imagePath.split("/")
+        const newImageName = splitedImageName[splitedImageName.length - 1]
+        const newImagePath = `${fullPathPictureOriginal}/${newImageName}`
+        RNFS.copyFile(imagePath, newImagePath)
+            .catch(() => {})
         navigation.navigate("Camera", {
-            newPictureList: [...params.pictureList, imagePath],
+            newPictureList: [...params.pictureList, newImagePath],
             newDocumentName: params.documentName,
             documentObject: params.documentObject,
         })
@@ -99,7 +105,12 @@ export default function ImportImageFromGalery() {
             imagesToImport.push(item)
         })
         selectedImage.forEach((item: string) =>{ 
-            imagesToImport.push(item)
+            const splitedImageName = item.split("/")
+            const newImageName = splitedImageName[splitedImageName.length - 1]
+            const newImagePath = `${fullPathPictureOriginal}/${newImageName}`
+            RNFS.copyFile(item, newImagePath)
+                .catch(() => {})
+            imagesToImport.push(newImagePath)
         })
         navigation.navigate("Camera", {
             newPictureList: imagesToImport,
