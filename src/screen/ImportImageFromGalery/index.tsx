@@ -8,6 +8,8 @@ import { SafeScreen } from "../../component/Screen"
 import ImportImageFromGaleryHeader from "./Header"
 import { ImageItem } from "../../component/ImageItem"
 import { Document } from "../../service/object-types"
+import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
+import { appIconOutline } from "../../service/constant"
 
 
 type ImportImageFromGaleryParam = {
@@ -118,6 +120,16 @@ export default function ImportImageFromGalery() {
         )
     }, [selectionMode, selectImage, deselectImage])
 
+    const RenderEmptyList = useCallback(() => (
+        <EmptyListView>
+            <EmptyListImage source={appIconOutline} />
+
+            <EmptyListText>
+                Nenhuma imagem
+            </EmptyListText>
+        </EmptyListView>
+    ), [])
+
 
     useEffect(() => {
         getImage()
@@ -143,6 +155,10 @@ export default function ImportImageFromGalery() {
                 numColumns={3}
                 keyExtractor={(item, index) => index.toString()}
             />
+
+            {imageGalery?.length === 0 && (
+                <RenderEmptyList />
+            )}
         </SafeScreen>
     )
 }
