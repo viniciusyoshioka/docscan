@@ -1,56 +1,33 @@
 
-# Camera
-# Arrumar
-melhorar slider do modal do foco
-arrumar orientacao da interface da camera quando mudar a orientacao
-arrumar area da foto
-# Fazer
-focar clicando na camera
-
-# EditDocument
-# Arrumar
-autofocus nao funciona direito no Input do RenameDocument
-
-# Home
-# Bug
-nome do documento vaza do botao quando é grande e ta no modo de selecao
-
-# VisualizePicture
-# Arrumar
-tamanho/posicao/proparcao da imagem
-
-# ImageItem
 # Testar
-imagem com component ImageBackground
-
-
+imagem com component ImageBackground no componente ImageItem da tela ImportImageFromGalery
 
 # Fazer agora
 arrumar layout
 arrumar design de cor dos temas claro e escuro
+copiar arquivo da galeria pra pasta do app ao importar imagem da galeria
+adicionar icon de items vazios na Home, EditDocument e ImportImageFromGalery
+adicionar suporte pra muitas camera no celular
+
 # Fazer depois
+adicionar zoom na imagem em VisualizePicture
 adicionar drag drop pra ordenar as fotos
 adicionar opcao de cortar imagem
 arrastar pro lado pra mudar de foto
 
+# Camera
+melhorar slider do modal do foco
+arrumar orientacao da interface da camera quando mudar a orientacao
+arrumar area da foto
+focar clicando na camera
 
+# EditDocument
+autofocus nao funciona direito no Input do RenameDocument
 
-# Components
+# VisualizePicture
+tamanho/posicao/proparcao da imagem
 
-# PictureItem*
-# Arrumar
+# PictureItem
 cor e posicao da checkbox
 tamanho/posicao/proparcao da imagem
 nome do arquivo no item
-
-
-
-# Imagens
-# Fazer
-adicionar icon de documento vazio na Home e EditDocument
-
-
-
-# Outros
-# Arrumar
-quebrar linha de imports e components

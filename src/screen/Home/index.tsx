@@ -11,9 +11,10 @@ import { readDebugHome, readDocument, readDocumentId, writeDebugHome, writeDocum
 import HomeHeader from "./Header"
 import { DebugButton } from "../../component/DebugButton"
 import { SwitchThemeContext } from "../../service/theme"
-import { appInDevelopment, debugHomeHide, debugHomeShow, themeDark, themeLight } from "../../service/constant"
+import { appIconOutline, appInDevelopment, debugHomeHide, debugHomeShow, themeDark, themeLight } from "../../service/constant"
 import { deleteDocument } from "../../service/document-handler"
 import { createAllFolder } from "../../service/folder-handler"
+import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
 
 
 export default function Home() {
@@ -152,6 +153,16 @@ export default function Home() {
         )
     }, [selectionMode, selectDocument, deselectDocument])
 
+    const RenderEmptyDocument = useCallback(() => (
+        <EmptyListView>
+            <EmptyListImage source={appIconOutline} />
+
+            <EmptyListText>
+                Documentos vazios
+            </EmptyListText>
+        </EmptyListView>
+    ), [])
+
 
     useEffect(() => {
         createAllFolder()
@@ -183,6 +194,10 @@ export default function Home() {
                     renderItem={renderDocumentItem}
                     keyExtractor={(item) => item.id.toString()}
                 />
+
+                {document.length === 0 && (
+                    <RenderEmptyDocument />
+                )}
 
                 {(debugHome === debugHomeShow) && (
                     <View>
