@@ -3,7 +3,7 @@ import { Animated } from "react-native"
 import CheckBox from "@react-native-community/checkbox"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 
-import { CheckBoxView, FileNameText, FileNameView, PictureButton, PictureImage } from "./style"
+import { CheckboxBackground, CheckBoxView, FileNameText, FileNameView, PictureButton, PictureImage } from "./style"
 import { ThemeContext } from "../../service/theme"
 
 
@@ -98,7 +98,7 @@ export function PictureItem(props: PictureItemProps) {
             <PictureButton style={{aspectRatio: 2/3}} onPress={normalPress}>
                 <PictureImage 
                     source={{uri: `file://${props.picturePath}`}} 
-                    style={{aspectRatio: 2/3, resizeMode: "contain"}}
+                    style={{aspectRatio: 2/3}}
                 />
 
                 <FileNameView>
@@ -108,6 +108,8 @@ export function PictureItem(props: PictureItemProps) {
                 </FileNameView>
 
                 <Animated.View style={[CheckBoxView, {opacity: animatedOpacity}]}>
+                    <CheckboxBackground />
+
                     <CheckBox 
                         value={selected}
                         onChange={normalPress}

@@ -21,6 +21,7 @@ export const PictureImage = styled.Image`
     display: flex;
     flex: 1;
     margin: 2px;
+    resize-mode: contain;
 `
 
 
@@ -49,7 +50,18 @@ export const CheckBoxView = StyleSheet.create({
         alignItems: "center", 
         justifyContent: "center",
         position: "absolute", 
-        left: 2, 
-        top: 2,
+        left: 0, 
+        top: 0,
     }
 }).checkbox
+
+
+export const CheckboxBackground = styled.View`
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 30px;
+    height: 30px;
+    opacity: 0.7;
+    background-color: ${(props: styledProps) => props.theme.color.backgroundDark};
+`
