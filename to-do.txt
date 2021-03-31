@@ -1,7 +1,4 @@
 
-# Testar
-imagem com component ImageBackground no componente ImageItem da tela ImportImageFromGalery
-
 # Fazer agora
 criar icone DocScan, DocScanOutline, DocScanBeta, DocScanBetaOutline, EmptyGalery, EmptyPicture
 arrumar layout

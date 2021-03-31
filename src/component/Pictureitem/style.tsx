@@ -47,10 +47,10 @@ export const FileNameText = styled.Text`
 
 export const CheckBoxView = StyleSheet.create({
     checkbox: {
-        alignItems: "center", 
+        alignItems: "center",
         justifyContent: "center",
-        position: "absolute", 
-        left: 0, 
+        position: "absolute",
+        left: 0,
         top: 0,
     }
 }).checkbox
@@ -63,5 +63,6 @@ export const CheckboxBackground = styled.View`
     width: 30px;
     height: 30px;
     opacity: 0.7;
+    border-bottom-right-radius: 1px;
     background-color: ${(props: styledProps) => props.theme.color.backgroundDark};
 `

@@ -59,7 +59,7 @@ export default function App() {
                 <ThemeProvider theme={(theme === themeLight) ? LightTheme : DarkTheme}>
                     <Router />
                 </ThemeProvider>
-            </SwitchThemeContext.Provider>            
+            </SwitchThemeContext.Provider>
         </ThemeContext.Provider>
-    )    
+    )
 }

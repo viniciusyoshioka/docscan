@@ -4,7 +4,7 @@ import { Animated, Dimensions, Image } from "react-native"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 
 import { ThemeContext } from "../../service/theme"
-import { Button, ViewCheckBox } from "./style"
+import { Button, CheckboxBackground, ViewCheckBox } from "./style"
 
 
 export interface ImageItemProps {
@@ -114,6 +114,8 @@ export function ImageItem(props: ImageItemProps) {
                 />
 
                 <Animated.View style={[ViewCheckBox, {opacity: animatedOpacity}]}>
+                    <CheckboxBackground />
+
                     <CheckBox
                         value={selected}
                         onValueChange={normalPress}
