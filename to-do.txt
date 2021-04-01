@@ -22,3 +22,6 @@ autofocus nao funciona direito no Input do RenameDocument
 
 # VisualizePicture
 arrumar tela
+
+# ImportImageFromGalery
+durante selectionMode, os novos ImageItem nao renderizam com a checkbox
