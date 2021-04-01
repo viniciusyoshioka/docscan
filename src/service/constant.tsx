@@ -9,7 +9,7 @@ export const appInDevelopment = true
 // App
 export const appName = appInDevelopment ? "DocScanBeta" : "DocScan"
 export const appFName = appInDevelopment ? "DocScan Beta" : "DocScan"
-export const appVersion = "0.0.81"
+export const appVersion = "0.0.82"
 export const appType = appInDevelopment ? "beta" : "release"
 
 // App icon
@@ -63,7 +63,6 @@ export const debugHomeDefault = debugHomeShow
 // Settings camera
 export const settingsDefaultCamera: SettingsCameraProps = {
     flash: "off",
-    focus: 0.5,
     whiteBalance: "auto"
 }
 // Settings

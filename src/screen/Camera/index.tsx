@@ -37,7 +37,6 @@ export default function Camera() {
     const [cameraSettingsVisible, setCameraSettingsVisible] = useState(false)
     const [cameraSettings, setCameraSettings] = useState(settingsDefaultCamera)
     const [flash, setFlash] = useState(cameraSettings.flash)
-    const [focus, setFocus] = useState(cameraSettings.focus)
     const [whiteBalance, setWhiteBalance] = useState(cameraSettings.whiteBalance)
 
     const [documentName, setDocumentName] = useState("Documento vazio")
@@ -57,7 +56,6 @@ export default function Camera() {
         setCameraSettings(currentSettings.camera)
         // Set camera attributes
         setFlash(currentSettings.camera.flash)
-        setFocus(currentSettings.camera.focus)
         setWhiteBalance(currentSettings.camera.whiteBalance)
     }, [])
 
@@ -152,8 +150,8 @@ export default function Camera() {
             <CameraSettings
                 visible={cameraSettingsVisible}
                 setVisible={setCameraSettingsVisible}
-                cameraAttributes={{flash, focus, whiteBalance}}
-                buttonFunctions={{setFlash, setFocus, setWhiteBalance}}
+                cameraAttributes={{flash, whiteBalance}}
+                buttonFunctions={{setFlash, setWhiteBalance}}
             />
 
             <RNCamera
@@ -164,7 +162,6 @@ export default function Camera() {
                 type={"back"}
                 useNativeZoom={true}
                 flashMode={flash}
-                focusDepth={focus}
                 whiteBalance={whiteBalance}
             />
 

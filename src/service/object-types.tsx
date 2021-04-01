@@ -6,7 +6,6 @@ export type whiteBalanceType = "auto" | "sunny" | "cloudy" | "shadow" | "incande
 
 export interface SettingsCameraProps {
     flash: flashType,
-    focus: number,
     whiteBalance: whiteBalanceType,
 }
 
