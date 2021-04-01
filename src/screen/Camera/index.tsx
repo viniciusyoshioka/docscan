@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { RNCamera } from "react-native-camera"
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import { RouteProp, useIsFocused, useNavigation, useRoute } from "@react-navigation/native"
 import Orientation from "react-native-orientation-locker"
 import Icon from "react-native-vector-icons/Ionicons"
 import { useBackHandler } from "@react-native-community/hooks"
@@ -31,6 +31,7 @@ export default function Camera() {
 
 
     const navigation = useNavigation()
+    const isFocused = useIsFocused()
     const { params } = useRoute<RouteProp<CameraParams, "Camera">>()
     const cameraRef = useRef<RNCamera>(null)
 
@@ -154,16 +155,18 @@ export default function Camera() {
                 buttonFunctions={{setFlash, setWhiteBalance}}
             />
 
-            <RNCamera
-                style={{flex: 1, overflow: "hidden"}}
-                ref={cameraRef}
-                captureAudio={false}
-                playSoundOnCapture={false}
-                type={"back"}
-                useNativeZoom={true}
-                flashMode={flash}
-                whiteBalance={whiteBalance}
-            />
+            {isFocused && (
+                <RNCamera
+                    style={{flex: 1, overflow: "hidden"}}
+                    ref={cameraRef}
+                    captureAudio={false}
+                    playSoundOnCapture={false}
+                    type={"back"}
+                    useNativeZoom={true}
+                    flashMode={flash}
+                    whiteBalance={whiteBalance}
+                />
+            )}
 
             <CameraHeader 
                 goBack={goBack} 

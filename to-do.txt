@@ -1,10 +1,10 @@
 
 # Fazer agora
-criar icone DocScan, DocScanOutline, DocScanBeta, DocScanBetaOutline, EmptyGalery, EmptyPicture
+retornar resultado da busca da galeria, quando vazia
+adicionar suporte pra muitas camera no celular
+melhorar renomear arquivos ao importar da galeria e copiar na pasta de fotos
 arrumar layout
 arrumar design de cor dos temas claro e escuro
-melhorar renomear arquivos ao importar da galeria e copiar na pasta de fotos
-adicionar suporte pra muitas camera no celular
 
 # Fazer depois
 adicionar zoom na imagem em VisualizePicture
@@ -13,7 +13,6 @@ adicionar opcao de cortar imagem
 arrastar pro lado pra mudar de foto
 
 # Camera
-melhorar slider do modal do foco
 arrumar orientacao da interface da camera quando mudar a orientacao
 arrumar area da foto
 focar clicando na camera

@@ -82,8 +82,7 @@ export default function CameraSettings(props: CameraSettingsProps) {
     return (
         <Modal 
             {...props} 
-            modalStyle={{margin: 5}}
-            backgroundStyle={{position: "absolute", bottom: 60}}
+            modalStyle={{marginHorizontal: 5, justifyContent: "flex-end", bottom: 60}}
         >
             <ScrollView horizontal={true}>
                 <ButtonSettings onPress={async () => await changeFlash()}>
