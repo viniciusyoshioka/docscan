@@ -5,7 +5,7 @@ import { ThemeProvider } from "styled-components/native"
 import Router from "./router"
 import { themeAuto, themeLight } from "./service/constant"
 import { readTheme, writeTheme } from "./service/storage"
-import { DarkTheme, LightTheme, SwitchThemeContext, ThemeContext } from "./service/theme"
+import { DarkTheme, join, LightTheme, SwitchThemeContext, ThemeContext } from "./service/theme"
 
 
 export default function App() {
@@ -13,18 +13,20 @@ export default function App() {
 
     const [theme, setTheme] = useState("")
     const [deviceTheme, setDeviceTheme] = useState(useColorScheme())
+    const [appTheme, setAppTheme] = useState("")
 
 
     const getTheme = useCallback(async () => {
-        const appTheme = await readTheme()
-        if (appTheme === themeAuto) {
+        const readAppTheme = await readTheme()
+        setAppTheme(readAppTheme)
+        if (readAppTheme === themeAuto) {
             if (deviceTheme) {
                 setTheme(deviceTheme)
             } else {
                 setTheme(themeLight)
             }
         } else {
-            setTheme(appTheme)
+            setTheme(readAppTheme)
         }
     }, [deviceTheme])
 
@@ -54,9 +56,9 @@ export default function App() {
 
 
     return (
-        <ThemeContext.Provider value={(theme === themeLight) ? LightTheme : DarkTheme}>
+        <ThemeContext.Provider value={(theme === themeLight) ? join(LightTheme, appTheme) : join(DarkTheme, appTheme)}>
             <SwitchThemeContext.Provider value={switchTheme}>
-                <ThemeProvider theme={(theme === themeLight) ? LightTheme : DarkTheme}>
+                <ThemeProvider theme={(theme === themeLight) ? join(LightTheme, appTheme) : join(DarkTheme, appTheme)}>
                     <Router />
                 </ThemeProvider>
             </SwitchThemeContext.Provider>

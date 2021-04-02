@@ -1,26 +1,22 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useState } from "react"
 
 import { ModalButton, ModalTitle, ModalView, ModalViewButton, ModalViewContent } from "../../component/ModalComponent"
 import { ModalFullscreen, ModalFullscreenProps } from "../../component/ModalFullscreen"
 import { RadioButton } from "../../component/RadioButton"
 import { themeAuto, themeDark, themeLight } from "../../service/constant"
+import { SwitchThemeContext, ThemeContext } from "../../service/theme"
 
 
-export interface ChangeThemeProps extends ModalFullscreenProps {
-    changeTheme: (newTheme: string) => void,
-    currentTheme: string,
-}
+export interface ChangeThemeProps extends ModalFullscreenProps {}
 
 
 export default function ChangeTheme(props: ChangeThemeProps) {
 
 
-    const [selectedTheme, setSelectedTheme] = useState(props.currentTheme)
+    const { appTheme } = useContext(ThemeContext)
+    const switchTheme = useContext(SwitchThemeContext)
 
-
-    useEffect(() => {
-        setSelectedTheme(props.currentTheme)
-    }, [props.visible])
+    const [selectedTheme, setSelectedTheme] = useState(appTheme)
 
 
     return (
@@ -54,7 +50,7 @@ export default function ChangeTheme(props: ChangeThemeProps) {
                     <ModalButton 
                         text={"Ok"} 
                         onPress={() => {
-                            props.changeTheme(selectedTheme)
+                            switchTheme(selectedTheme)
                             props.setVisible(false)
                         }}
                     />

@@ -5,7 +5,7 @@ import { themeDark, themeLight } from "./constant"
 
 export interface ColorTheme {
     name: string,
-    dark: boolean,
+    appTheme: string,
     color: {
         background: string,
         backgroundDark: string,
@@ -22,7 +22,7 @@ export interface ColorTheme {
 
 export const LightTheme: ColorTheme = {
     name: themeLight,
-    dark: false,
+    appTheme: "",
     color: {
         background: "rgb(255, 255, 255)",
         backgroundDark: "rgb(190, 190, 190)",
@@ -38,7 +38,7 @@ export const LightTheme: ColorTheme = {
 
 export const DarkTheme: ColorTheme = {
     name: themeDark,
-    dark: true,
+    appTheme: "",
     color: {
         background: "rgb(30, 30, 30)",
         backgroundDark: "rgb(20, 20, 20)",
@@ -60,4 +60,10 @@ export const SwitchThemeContext = createContext(async (newTheme: string) => {})
 
 export interface styledProps {
     theme: ColorTheme
+}
+
+
+export function join(theme: ColorTheme, value: string): ColorTheme {
+    theme["appTheme"] = value
+    return theme
 }

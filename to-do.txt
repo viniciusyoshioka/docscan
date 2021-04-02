@@ -1,6 +1,5 @@
 
 # Fazer agora
-retornar resultado da busca da galeria, quando vazia
 adicionar suporte pra muitas camera no celular
 melhorar renomear arquivos ao importar da galeria e copiar na pasta de fotos
 arrumar layout
