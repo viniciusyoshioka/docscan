@@ -113,7 +113,7 @@ export function ImageItem(props: ImageItemProps) {
                     }}
                 />
 
-                <Animated.View style={[ViewCheckBox, {opacity: animatedOpacity}]}>
+                <Animated.View style={[ViewCheckBox, {opacity: props.selectionMode ? 1 : animatedOpacity}]}>
                     <CheckboxBackground />
 
                     <CheckBox
