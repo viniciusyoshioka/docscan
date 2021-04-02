@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react"
-import { FlatList } from "react-native"
+import React, { useCallback, useContext, useEffect, useState } from "react"
+import { ActivityIndicator, FlatList } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import CameraRoll, { PhotoIdentifier } from "@react-native-community/cameraroll"
 import { useBackHandler } from "@react-native-community/hooks"
@@ -10,7 +10,8 @@ import ImportImageFromGaleryHeader from "./Header"
 import { ImageItem } from "../../component/ImageItem"
 import { Document } from "../../service/object-types"
 import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
-import { appIconOutline, fullPathPictureOriginal } from "../../service/constant"
+import { fullPathPictureOriginal } from "../../service/constant"
+import { ThemeContext } from "../../service/theme"
 
 
 type ImportImageFromGaleryParam = {
@@ -25,10 +26,11 @@ type ImportImageFromGaleryParam = {
 export default function ImportImageFromGalery() {
 
 
+    const { color } = useContext(ThemeContext)
     const navigation = useNavigation()
     const { params } = useRoute<RouteProp<ImportImageFromGaleryParam, "ImportImageFromGalery">>()
 
-    const [imageGalery, setImageGalery] = useState<Array<PhotoIdentifier>>([])
+    const [imageGalery, setImageGalery] = useState<Array<PhotoIdentifier> | null>(null)
     const [selectionMode, setSelectionMode] = useState(false)
     const [selectedImage, setSelectedImage] = useState<Array<string>>([])
 
@@ -41,7 +43,7 @@ export default function ImportImageFromGalery() {
 
     const getImage = useCallback(() => {
         CameraRoll.getPhotos({
-            first: imageGalery.length + 15,
+            first: imageGalery ? imageGalery.length + 15 : 15,
             assetType: "Photos",
         })
             .then((item) => {
@@ -131,16 +133,6 @@ export default function ImportImageFromGalery() {
         )
     }, [selectionMode, selectImage, deselectImage])
 
-    const RenderEmptyList = useCallback(() => (
-        <EmptyListView>
-            <EmptyListImage source={appIconOutline} />
-
-            <EmptyListText>
-                Nenhuma imagem
-            </EmptyListText>
-        </EmptyListView>
-    ), [])
-
 
     useEffect(() => {
         getImage()
@@ -167,8 +159,20 @@ export default function ImportImageFromGalery() {
                 keyExtractor={(item, index) => index.toString()}
             />
 
+            {imageGalery === null && (
+                <EmptyListView>
+                    <ActivityIndicator color={color.color} size={"large"} />
+                </EmptyListView>
+            )}
+
             {imageGalery?.length === 0 && (
-                <RenderEmptyList />
+                <EmptyListView>
+                    <EmptyListImage source={require("../../image/app/empty_gallery.png")} />
+
+                    <EmptyListText>
+                        Galeria vazia
+                    </EmptyListText>
+                </EmptyListView>
             )}
         </SafeScreen>
     )

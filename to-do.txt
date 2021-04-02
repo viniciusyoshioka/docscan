@@ -25,3 +25,6 @@ arrumar tela
 
 # ImportImageFromGalery
 durante selectionMode, os novos ImageItem nao renderizam com a checkbox
+
+# Settings
+adicionar tema em ThemeContext pra nao ler o tema da memoria toda vez que abrir o ChangeTheme
