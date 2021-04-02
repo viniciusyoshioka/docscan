@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 
 import { ModalButton, ModalTitle, ModalView, ModalViewButton, ModalViewContent } from "../../component/ModalComponent"
 import { ModalFullscreen, ModalFullscreenProps } from "../../component/ModalFullscreen"
@@ -17,6 +17,11 @@ export default function ChangeTheme(props: ChangeThemeProps) {
     const switchTheme = useContext(SwitchThemeContext)
 
     const [selectedTheme, setSelectedTheme] = useState(appTheme)
+
+
+    useEffect(() => {
+        setSelectedTheme(appTheme)
+    }, [props.visible])
 
 
     return (
