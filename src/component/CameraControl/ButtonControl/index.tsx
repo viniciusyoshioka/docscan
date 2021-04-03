@@ -1,10 +1,10 @@
-import React, { useContext } from "react"
+import React from "react"
 import { TouchableOpacityProps } from "react-native"
 import Icon from "react-native-vector-icons/Ionicons"
 
 import { CameraControlButtonBase, CameraControlViewButtonIndex } from "./style"
 import { CameraControlIconProps, cameraControlIconSize } from "../Icon"
-import { ThemeContext } from "../../../service/theme"
+import { useTheme } from "../../../service/theme"
 
 
 export interface CameraControlButtonProps extends TouchableOpacityProps, CameraControlIconProps {}
@@ -13,7 +13,7 @@ export interface CameraControlButtonProps extends TouchableOpacityProps, CameraC
 export function CameraControlButton(props: CameraControlButtonProps) {
 
 
-    const { color } = useContext(ThemeContext)
+    const { color } = useTheme()
 
 
     return (

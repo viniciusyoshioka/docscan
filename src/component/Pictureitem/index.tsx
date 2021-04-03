@@ -1,10 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { Animated } from "react-native"
 import CheckBox from "@react-native-community/checkbox"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 
 import { CheckboxBackground, CheckBoxView, FileNameText, FileNameView, PictureButton, PictureImage } from "./style"
-import { ThemeContext } from "../../service/theme"
+import { useTheme } from "../../service/theme"
 
 
 export interface PictureItemProps {
@@ -19,7 +19,7 @@ export interface PictureItemProps {
 export function PictureItem(props: PictureItemProps) {
 
 
-    const { color } = useContext(ThemeContext)
+    const { color } = useTheme()
 
     const [selected, setSelected] = useState(false)
     const animatedOpacity = new Animated.Value(0)

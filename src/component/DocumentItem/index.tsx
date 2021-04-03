@@ -1,10 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { Animated, View } from "react-native"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 import CheckBox from "@react-native-community/checkbox"
 
 import { Document } from "../../service/object-types"
-import { ThemeContext } from "../../service/theme"
+import { useTheme } from "../../service/theme"
 import { Block, Button, Date, Line, Title } from "./style"
 
 
@@ -20,7 +20,7 @@ export interface DocumentItemProps {
 export function DocumentItem(props: DocumentItemProps) {
 
 
-    const { color } = useContext(ThemeContext)
+    const { color } = useTheme()
 
     const [selected, setSelected] = useState(false)
     const animatedWidth = new Animated.Value(0)

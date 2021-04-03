@@ -1,7 +1,7 @@
-import React, { useContext } from "react"
+import React from "react"
 import Icon from "react-native-vector-icons/Ionicons"
 
-import { ThemeContext } from "../../../service/theme"
+import { useTheme } from "../../../service/theme"
 
 
 export const headerIconSize = 25
@@ -16,7 +16,7 @@ export interface HeaderIconProps {
 export function HeaderIcon(props: HeaderIconProps) {
 
 
-    const { color } = useContext(ThemeContext)
+    const { color } = useTheme()
 
 
     return (

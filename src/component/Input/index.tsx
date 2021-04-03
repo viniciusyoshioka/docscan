@@ -1,14 +1,14 @@
-import React, { forwardRef, useContext } from "react"
+import React, { forwardRef } from "react"
 import { TextInput, TextInputProps } from "react-native"
 
 import { InputBase } from "./style"
-import { ThemeContext } from "../../service/theme"
+import { useTheme } from "../../service/theme"
 
 
 export const Input = forwardRef((props: TextInputProps, ref?: React.Ref<TextInput>) => {
 
 
-    const { color } = useContext(ThemeContext)
+    const { color } = useTheme()
 
 
     return (

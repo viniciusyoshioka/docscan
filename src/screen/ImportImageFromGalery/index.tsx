@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { ActivityIndicator, FlatList } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import CameraRoll, { PhotoIdentifier } from "@react-native-community/cameraroll"
@@ -11,7 +11,7 @@ import { ImageItem } from "../../component/ImageItem"
 import { Document } from "../../service/object-types"
 import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
 import { fullPathPictureOriginal } from "../../service/constant"
-import { ThemeContext } from "../../service/theme"
+import { useTheme } from "../../service/theme"
 
 
 type ImportImageFromGaleryParam = {
@@ -26,7 +26,7 @@ type ImportImageFromGaleryParam = {
 export default function ImportImageFromGalery() {
 
 
-    const { color } = useContext(ThemeContext)
+    const { color } = useTheme()
     const navigation = useNavigation()
     const { params } = useRoute<RouteProp<ImportImageFromGaleryParam, "ImportImageFromGalery">>()
 

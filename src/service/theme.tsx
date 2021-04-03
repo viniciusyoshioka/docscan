@@ -1,4 +1,4 @@
-import { createContext } from "react"
+import { createContext, useContext } from "react"
 
 import { themeDark, themeLight } from "./constant"
 
@@ -47,6 +47,17 @@ export const DarkTheme: ColorTheme = {
 export const ThemeContext = createContext(LightTheme)
 
 export const SwitchThemeContext = createContext(async (newTheme: string) => {})
+
+
+export function useTheme() {
+    const theme = useContext(ThemeContext)
+    return theme
+}
+
+export function useSwitchTheme() {
+    const switchTheme = useContext(SwitchThemeContext)
+    return switchTheme
+}
 
 
 export interface styledProps {

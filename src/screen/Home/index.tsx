@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { Alert, BackHandler, FlatList, View } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import { useBackHandler } from "@react-native-community/hooks"
@@ -10,7 +10,7 @@ import { Document } from "../../service/object-types"
 import { readDebugHome, readDocument, readDocumentId, writeDebugHome, writeDocument, writeDocumentId } from "../../service/storage"
 import HomeHeader from "./Header"
 import { DebugButton } from "../../component/DebugButton"
-import { SwitchThemeContext } from "../../service/theme"
+import { useSwitchTheme } from "../../service/theme"
 import { appIconOutline, appInDevelopment, debugHomeHide, debugHomeShow, themeDark, themeLight } from "../../service/constant"
 import { deleteDocument } from "../../service/document-handler"
 import { createAllFolder } from "../../service/folder-handler"
@@ -20,7 +20,7 @@ import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/Em
 export default function Home() {
 
 
-    const switchTheme = useContext(SwitchThemeContext)
+    const switchTheme = useSwitchTheme()
 
     const navigation = useNavigation()
 

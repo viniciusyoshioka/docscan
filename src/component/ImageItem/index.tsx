@@ -1,9 +1,9 @@
 import CheckBox from "@react-native-community/checkbox"
-import React, { useCallback, useContext, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { Animated, Dimensions, Image } from "react-native"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 
-import { ThemeContext } from "../../service/theme"
+import { useTheme } from "../../service/theme"
 import { Button, CheckboxBackground, ViewCheckBox } from "./style"
 
 
@@ -19,7 +19,7 @@ export interface ImageItemProps {
 export function ImageItem(props: ImageItemProps) {
 
 
-    const { color } = useContext(ThemeContext)
+    const { color } = useTheme()
 
     const [selected, setSelected] = useState(false)
     const [imageSize, setImageSize] = useState(Dimensions.get("window").width / 3)

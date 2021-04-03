@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 
 import { ModalButton, ModalTitle, ModalView, ModalViewButton, ModalViewContent } from "../../component/ModalComponent"
 import { ModalFullscreen, ModalFullscreenProps } from "../../component/ModalFullscreen"
 import { RadioButton } from "../../component/RadioButton"
 import { themeAuto, themeDark, themeLight } from "../../service/constant"
-import { SwitchThemeContext, ThemeContext } from "../../service/theme"
+import { useSwitchTheme, useTheme } from "../../service/theme"
 
 
 export interface ChangeThemeProps extends ModalFullscreenProps {}
@@ -13,8 +13,8 @@ export interface ChangeThemeProps extends ModalFullscreenProps {}
 export default function ChangeTheme(props: ChangeThemeProps) {
 
 
-    const { appTheme } = useContext(ThemeContext)
-    const switchTheme = useContext(SwitchThemeContext)
+    const { appTheme } = useTheme()
+    const switchTheme = useSwitchTheme()
 
     const [selectedTheme, setSelectedTheme] = useState(appTheme)
 
