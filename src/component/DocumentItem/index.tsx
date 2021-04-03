@@ -118,8 +118,8 @@ export function DocumentItem(props: DocumentItemProps) {
                         value={selected}
                         onChange={normalPress}
                         tintColors={{
-                            true: color.icon,
-                            false: color.icon
+                            true: color.color,
+                            false: color.color
                         }}
                     />
                 </Animated.View>

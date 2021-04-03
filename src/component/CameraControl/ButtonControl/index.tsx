@@ -21,7 +21,7 @@ export function CameraControlButton(props: CameraControlButtonProps) {
             <Icon 
                 name={props.iconName} 
                 size={props.iconSize || cameraControlIconSize} 
-                color={color.iconLight} />
+                color={color.colorLight} />
         </CameraControlButtonBase>
     )
 }

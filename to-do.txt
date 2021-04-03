@@ -2,7 +2,6 @@
 # Fazer agora
 adicionar suporte pra muitas camera no celular
 melhorar renomear arquivos ao importar da galeria e copiar na pasta de fotos
-arrumar layout
 arrumar design de cor dos temas claro e escuro
 
 # Fazer depois

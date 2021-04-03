@@ -120,8 +120,8 @@ export function ImageItem(props: ImageItemProps) {
                         value={selected}
                         onValueChange={normalPress}
                         tintColors={{
-                            true: color.icon,
-                            false: color.icon
+                            true: color.color,
+                            false: color.color
                         }}
                     />
                 </Animated.View>
