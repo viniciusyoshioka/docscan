@@ -21,10 +21,10 @@ export const LightTheme: ColorTheme = {
     name: themeLight,
     appTheme: "",
     color: {
-        background: "rgb(255, 255, 255)",
+        background: "rgb(250, 250, 250)",
         backgroundDark: "rgb(190, 190, 190)",
         backgroundLight: "rgb(255, 255, 255)",
-        color: "rgb(0, 0, 0)",
+        color: "rgb(20, 20, 20)",
         colorDark: "rgb(0, 0, 0)",
         colorLight: "rgb(30, 30, 30)",
     }

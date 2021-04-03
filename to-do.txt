@@ -2,13 +2,7 @@
 # Fazer agora
 adicionar suporte pra muitas camera no celular
 melhorar renomear arquivos ao importar da galeria e copiar na pasta de fotos
-arrumar design de cor dos temas claro e escuro
-
-# Fazer depois
-adicionar zoom na imagem em VisualizePicture
-adicionar drag drop pra ordenar as fotos
-adicionar opcao de cortar imagem
-arrastar pro lado pra mudar de foto
+arrumar cor do tema claro
 
 # Camera
 arrumar orientacao da interface da camera quando mudar a orientacao
@@ -17,6 +11,9 @@ focar clicando na camera
 
 # EditDocument
 autofocus nao funciona direito no Input do RenameDocument
+adicionar drag drop pra ordenar as fotos
 
 # VisualizePicture
-arrumar tela
+adicionar zoom na imagem em VisualizePicture
+arrastar pro lado pra mudar de foto
+adicionar opcao de cortar imagem
