@@ -34,12 +34,12 @@ export const DarkTheme: ColorTheme = {
     name: themeDark,
     appTheme: "",
     color: {
-        background: "rgb(30, 30, 30)",
-        backgroundDark: "rgb(20, 20, 20)",
-        backgroundLight: "rgb(45, 45, 45)",
-        color: "rgb(160, 160, 160)",
-        colorDark: "rgb(100, 100, 100)",
-        colorLight: "rgb(200, 200, 200)",
+        background: "rgb(35, 35, 35)",
+        backgroundDark: "rgb(15, 15, 15)",
+        backgroundLight: "rgb(50, 50, 50)",
+        color: "rgb(200, 200, 200)",
+        colorDark: "rgb(128, 128, 128)",
+        colorLight: "rgb(230, 230, 230)",
     }
 }
 
