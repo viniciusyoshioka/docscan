@@ -1,7 +1,6 @@
 
-# Fazer agora
-adicionar suporte pra muitas camera no celular
 melhorar renomear arquivos ao importar da galeria e copiar na pasta de fotos
+adicionar suporte pra muitas camera no celular
 arrumar cor do tema claro
 
 # Camera

@@ -1,6 +1,6 @@
 {
   "name": "docscan",
-  "version": "0.0.92",
+  "version": "0.0.93",
   "private": true,
   "scripts": {
     "start": "react-native start",
@@ -25,6 +25,7 @@
     "react-native-reanimated": "^2.0.0",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^2.18.1",
+    "react-native-share": "^5.1.7",
     "react-native-svg": "^12.1.0",
     "react-native-vector-icons": "^8.1.0",
     "styled-components": "^5.2.1"
@@ -34,6 +35,7 @@
     "@babel/runtime": "^7.12.5",
     "@types/react": "^17.0.3",
     "@types/react-native": "^0.64.0",
+    "@types/react-native-share": "^3.3.2",
     "@types/react-native-vector-icons": "^6.4.6",
     "@types/styled-components": "^5.1.9",
     "@types/styled-components-react-native": "^5.1.1",

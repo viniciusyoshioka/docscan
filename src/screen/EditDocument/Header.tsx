@@ -17,6 +17,7 @@ export interface EditDocumentHeaderProps {
     renameDocument: () => void,
     exportToPdf: () => void,
     discardDocument: () => void,
+    shareDocument: () => void,
 }
 
 
@@ -74,6 +75,7 @@ export default function EditDocumentHeader(props: EditDocumentHeaderProps) {
                         renameDocument={props.renameDocument}
                         exportToPdf={props.exportToPdf}
                         discardDocument={props.discardDocument}
+                        shareDocument={props.shareDocument}
                     />
                 </BlockRight>
             )}

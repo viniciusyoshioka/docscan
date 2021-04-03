@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react"
-import { Alert, BackHandler, FlatList } from "react-native"
+import { Alert, BackHandler, FlatList, ToastAndroid } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 import { MenuProvider } from "react-native-popup-menu"
+import Share from "react-native-share"
 
 import { SafeScreen } from "../../component/Screen"
 import EditDocumentHeader from "./Header"
@@ -11,6 +12,7 @@ import { Document } from "../../service/object-types"
 import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../service/document-handler"
 import RenameDocument from "./RenameDocument"
 import { createPdf } from "../../service/pdf-handler"
+import { fullPathPdf, pathPdf } from "../../service/constant"
 
 
 type EditDocumentParams = {
@@ -146,6 +148,14 @@ export default function EditDocument() {
     }, [changed])
 
     const exportDocumentToPdf = useCallback(() => {
+        if (changed) {
+            Alert.alert(
+                "Alterações não salvas",
+                "Salve as alterações antes de compartilhar o documento"
+            )
+            return
+        }
+
         if (documentName === "") {
             Alert.alert(
                 "Nome do documento vazio",
@@ -162,7 +172,8 @@ export default function EditDocument() {
         }
 
         createPdf(documentName, pictureList)
-    }, [documentName, pictureList])
+        ToastAndroid.show(`Documento exportado para "Memória Externa/${pathPdf}/${documentName}.pdf"`, 10)
+    }, [changed, documentName, pictureList])
     
     const discardDocument = useCallback(() => {
         Alert.alert(
@@ -257,6 +268,39 @@ export default function EditDocument() {
         )
     }, [selectionMode, selectPicture, deselectPicture])
 
+    const shareDocument = useCallback(async () => {
+        if (changed) {
+            Alert.alert(
+                "Alterações não salvas",
+                "Salve as alterações antes de compartilhar o documento"
+            )
+            return
+        }
+
+        const documentPath = `file://${fullPathPdf}/${documentName}.pdf`
+
+        if (!RNFS.exists(documentPath)) {
+            Alert.alert(
+                "Não foi possível compartilhar",
+                "Exporte o documento para PDF antes de compartilhá-lo"
+            )
+        }
+
+        try {
+            await Share.open({
+                title: "Compartilhar documento",
+                type: "pdf/application",
+                url: documentPath,
+                failOnCancel: false
+            })
+        } catch {
+            Alert.alert(
+                "Erro ao compartilhar documento",
+                "Ocorreu erro desconhecido e não foi possível compartilhar documento"
+            )
+        }
+    }, [changed, documentName])
+
 
     useEffect(() => {
         function backhandlerFunction() {
@@ -326,6 +370,7 @@ export default function EditDocument() {
                     renameDocument={() => setRenameDocumentVisible(true)}
                     exportToPdf={exportDocumentToPdf}
                     discardDocument={discardDocument}
+                    shareDocument={shareDocument}
                 />
 
                 <FlatList 

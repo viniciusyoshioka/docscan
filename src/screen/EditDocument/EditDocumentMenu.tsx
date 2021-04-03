@@ -8,8 +8,9 @@ import { PopupMenuButton } from "../../component/PopupMenuButton"
 
 
 export interface EditDocumentMenuProps {
-    renameDocument: () => void,
     exportToPdf: () => void,
+    shareDocument: () => void,
+    renameDocument: () => void,
     discardDocument: () => void,
 }
 
@@ -55,18 +56,26 @@ export default function EditDocumentMenu(props: EditDocumentMenuProps) {
 
             <MenuOptions>
                 <PopupMenuButton 
-                    text={"Renomear"} 
-                    onPress={() => {
-                        menuRef.current?.close()
-                        props.renameDocument()
-                    }}
-                />
-
-                <PopupMenuButton 
                     text={"Exportar PDF"} 
                     onPress={() => {
                         menuRef.current?.close()
                         props.exportToPdf()
+                    }}
+                />
+
+                <PopupMenuButton 
+                    text={"Compartilhar"} 
+                    onPress={() => {
+                        menuRef.current?.close()
+                        props.shareDocument()
+                    }}
+                />
+
+                <PopupMenuButton 
+                    text={"Renomear"} 
+                    onPress={() => {
+                        menuRef.current?.close()
+                        props.renameDocument()
                     }}
                 />
 
