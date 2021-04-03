@@ -9,10 +9,8 @@ arrumar area da foto
 focar clicando na camera
 
 # EditDocument
-autofocus nao funciona direito no Input do RenameDocument
 adicionar drag drop pra ordenar as fotos
 
 # VisualizePicture
 adicionar zoom na imagem em VisualizePicture
-arrastar pro lado pra mudar de foto
 adicionar opcao de cortar imagem

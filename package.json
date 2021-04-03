@@ -1,6 +1,6 @@
 {
   "name": "docscan",
-  "version": "0.0.94",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "react-native start",
