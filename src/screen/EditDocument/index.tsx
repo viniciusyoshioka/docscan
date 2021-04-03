@@ -279,11 +279,12 @@ export default function EditDocument() {
 
         const documentPath = `file://${fullPathPdf}/${documentName}.pdf`
 
-        if (!RNFS.exists(documentPath)) {
+        if (!(await RNFS.exists(documentPath))) {
             Alert.alert(
                 "Não foi possível compartilhar",
                 "Exporte o documento para PDF antes de compartilhá-lo"
             )
+            return
         }
 
         try {
