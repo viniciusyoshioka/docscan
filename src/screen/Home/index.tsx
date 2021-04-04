@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { Alert, BackHandler, FlatList, View } from "react-native"
 import { useNavigation } from "@react-navigation/core"
-import { useBackHandler } from "@react-native-community/hooks"
 import { MenuProvider } from "react-native-popup-menu"
 
 import { DocumentItem } from "../../component/DocumentItem"
@@ -15,6 +14,7 @@ import { appIconOutline, appInDevelopment, debugHomeHide, debugHomeShow, themeDa
 import { deleteDocument } from "../../service/document-handler"
 import { createAllFolder } from "../../service/folder-handler"
 import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
+import { useBackHandler } from "../../service/hook"
 
 
 export default function Home() {

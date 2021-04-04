@@ -1,10 +1,10 @@
 import React, { useCallback } from "react"
 import { Image } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { useBackHandler } from "@react-native-community/hooks"
 
 import VisualizePictureHeader from "./Header"
 import { SafeScreen } from "../../component/Screen"
+import { useBackHandler } from "../../service/hook"
 
 
 type VisualizePictureParams = {

@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from "react"
 import { useNavigation } from "@react-navigation/core"
-import { useBackHandler } from "@react-native-community/hooks"
 
 import { SafeScreen } from "../../component/Screen"
 import SettingsHeader from "./Header"
@@ -8,6 +7,7 @@ import { TextVersion, ViewVersion } from "./style"
 import { appFName, appType, appVersion } from "../../service/constant"
 import { SettingsButton } from "../../component/SettingsButton"
 import ChangeTheme from "./ChangeTheme"
+import { useBackHandler } from "../../service/hook"
 
 
 export default function Settings() {

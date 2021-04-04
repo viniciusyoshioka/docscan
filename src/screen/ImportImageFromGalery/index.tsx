@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from "react"
 import { ActivityIndicator, FlatList } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import CameraRoll, { PhotoIdentifier } from "@react-native-community/cameraroll"
-import { useBackHandler } from "@react-native-community/hooks"
 import RNFS from "react-native-fs"
 
 import { SafeScreen } from "../../component/Screen"
@@ -12,6 +11,7 @@ import { Document } from "../../service/object-types"
 import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
 import { fullPathPictureOriginal } from "../../service/constant"
 import { useTheme } from "../../service/theme"
+import { useBackHandler } from "../../service/hook"
 
 
 type ImportImageFromGaleryParam = {

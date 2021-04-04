@@ -4,7 +4,6 @@ import { RNCamera } from "react-native-camera"
 import { RouteProp, useIsFocused, useNavigation, useRoute } from "@react-navigation/native"
 import Orientation from "react-native-orientation-locker"
 import Icon from "react-native-vector-icons/Ionicons"
-import { useBackHandler } from "@react-native-community/hooks"
 
 import { SafeScreen } from "../../component/Screen"
 import CameraHeader from "./Header"
@@ -16,6 +15,7 @@ import { createAllFolder } from "../../service/folder-handler"
 import { getDateTime } from "../../service/date"
 import { getDocumentName } from "../../service/document-handler"
 import { Document } from "../../service/object-types"
+import { useBackHandler } from "../../service/hook"
 
 
 type CameraParams = {

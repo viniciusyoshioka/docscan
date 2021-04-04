@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react"
-import { Alert, BackHandler, FlatList, ToastAndroid } from "react-native"
+import { Alert, FlatList, ToastAndroid } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 import { MenuProvider } from "react-native-popup-menu"
@@ -13,6 +13,7 @@ import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../servi
 import RenameDocument from "./RenameDocument"
 import { createPdf } from "../../service/pdf-handler"
 import { fullPathPdf, pathPdf } from "../../service/constant"
+import { useBackHandler } from "../../service/hook"
 
 
 type EditDocumentParams = {
@@ -38,6 +39,12 @@ export default function EditDocument() {
     const [selectedPictures, setSelectedPictures] = useState<Array<string>>([])
     const [renameDocumentVisible, setRenameDocumentVisible] = useState(false)
     const [changed, setChanged] = useState(false)
+
+
+    useBackHandler(() => {
+        goBack()
+        return true
+    })
 
 
     const goBack = useCallback(() => {
@@ -302,25 +309,6 @@ export default function EditDocument() {
         }
     }, [changed, documentName])
 
-
-    useEffect(() => {
-        function backhandlerFunction() {
-            goBack()
-            return true
-        }
-
-        BackHandler.addEventListener(
-            "hardwareBackPress",
-            backhandlerFunction
-        )
-
-        return () => {
-            BackHandler.removeEventListener(
-                "hardwareBackPress",
-                backhandlerFunction
-            )
-        }
-    }, [goBack])
 
     useEffect(() => {
         if (selectionMode) {
