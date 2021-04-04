@@ -12,7 +12,6 @@
     "@react-native-community/checkbox": "^0.5.7",
     "@react-native-community/hooks": "^2.6.0",
     "@react-native-community/masked-view": "^0.1.10",
-    "@react-native-community/slider": "^3.0.3",
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.3",
     "react": "17.0.1",
