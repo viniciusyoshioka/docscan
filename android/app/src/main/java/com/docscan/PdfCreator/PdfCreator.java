@@ -15,7 +15,22 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 
+class Size {
+    int width;
+    int height;
+
+    Size(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+}
+
+
 public class PdfCreator extends ReactContextBaseJavaModule {
+
+    int a4Width = 595; // 596
+    int a4Height = 840; // 841
+    int borderSize = 25;
 
     PdfCreator(ReactApplicationContext context) {
         super(context);
@@ -27,12 +42,29 @@ public class PdfCreator extends ReactContextBaseJavaModule {
         return "PdfCreator";
     }
 
+    private Size resizeImage(Bitmap originalImage, PdfDocument.PageInfo pageInfo) {
+        int originalImageWidth = originalImage.getWidth();
+        int originalImageHeight = originalImage.getHeight();
+
+        int newImageWidth = pageInfo.getPageWidth() - (borderSize * 2);
+        int newImageHeight = pageInfo.getPageHeight() - (borderSize * 2);
+
+        if (originalImageWidth > pageInfo.getPageWidth() - (borderSize * 2)) {
+            newImageWidth = pageInfo.getPageWidth() - (borderSize * 2);
+            newImageHeight = (newImageWidth * originalImageHeight) / originalImageWidth;
+        }
+
+        if (newImageHeight > pageInfo.getPageHeight() - (borderSize * 2)) {
+            newImageHeight = pageInfo.getPageHeight() - (borderSize * 2);
+            newImageWidth = (newImageHeight * originalImageWidth) / originalImageHeight;
+        }
+
+        return new Size(newImageWidth, newImageHeight);
+    }
+
     @ReactMethod
     public void exportPicturesToPdf(String documentPath, ReadableArray pictureList, Promise promise) {
         try {
-            int a4Width = 596;
-            int a4Height = 841;
-
             PdfDocument document = new PdfDocument();
             Paint paint = new Paint();
 
@@ -45,22 +77,22 @@ public class PdfCreator extends ReactContextBaseJavaModule {
                 Canvas pageCanvas = page.getCanvas();
                 Bitmap originalPicture = BitmapFactory.decodeFile(pictureList.getString(x));
 
-                int originalPictureWidth = originalPicture.getWidth();
-                int originalPictureHeight = originalPicture.getHeight();
-                int ratio = originalPictureWidth / originalPictureHeight;
-                int newWidth;
-                int newHeight;
-                if (originalPictureWidth > originalPictureHeight) {
-                    newWidth = pageInfo.getPageWidth() - 20;
-                    newHeight = newWidth / ratio;
+                // Resize image
+                Size newImageSize;
+                if ((originalPicture.getWidth() > (pageCanvas.getWidth() - (borderSize * 2))) || (originalPicture.getHeight() > (pageCanvas.getHeight() - (borderSize * 2)))) {
+                    newImageSize = resizeImage(originalPicture, pageInfo);
                 } else {
-                    newHeight = pageInfo.getPageHeight() - 20;
-                    newWidth = newHeight * ratio;
+                    newImageSize = new Size(originalPicture.getWidth(), originalPicture.getHeight());
                 }
-                int posX = (pageInfo.getPageWidth() - newWidth) / 2;
-                int posY = (pageInfo.getPageHeight() - newHeight) / 2;
-
-                Bitmap scaledPicture = Bitmap.createScaledBitmap(originalPicture, newWidth, newHeight, false);
+                Bitmap scaledPicture = Bitmap.createScaledBitmap(
+                        originalPicture,
+                        newImageSize.width,
+                        newImageSize.height,
+                        false);
+                // Get image position
+                int posX = (pageInfo.getPageWidth() - newImageSize.width) / 2;
+                int posY = (pageInfo.getPageHeight() - newImageSize.height) / 2;
+                // Draw image
                 pageCanvas.drawBitmap(scaledPicture, posX, posY, paint);
 
                 // Finish page

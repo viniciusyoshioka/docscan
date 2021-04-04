@@ -4,12 +4,12 @@ import { SettingsCameraProps, SettingsProps } from "./object-types"
 
 
 // Development
-export const appInDevelopment = false
+export const appInDevelopment = true
 
 // App
 export const appName = appInDevelopment ? "DocScanBeta" : "DocScan"
 export const appFName = appInDevelopment ? "DocScan Beta" : "DocScan"
-export const appVersion = "1.0.0"
+export const appVersion = "1.0.1"
 export const appType = appInDevelopment ? "beta" : "release"
 
 // App icon
