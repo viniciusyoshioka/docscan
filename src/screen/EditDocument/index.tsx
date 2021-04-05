@@ -82,78 +82,6 @@ export default function EditDocument() {
         }
     }, [document, selectionMode, pictureList, changed, documentName])
 
-    const selectPicture = useCallback((picturePath: string) => {
-        if (!selectionMode) {
-            setSelectionMode(true)
-        }
-        if (selectedPictures.indexOf(picturePath) === -1) {
-            selectedPictures.push(picturePath)
-        }
-    }, [selectionMode, selectedPictures])
-
-    const deselectPicture = useCallback((picturePath: string) => {
-        const index = selectedPictures.indexOf(picturePath)
-        if (index !== -1) {
-            selectedPictures.splice(index, 1)
-        }
-        if (selectionMode && selectedPictures.length === 0) {
-            setSelectionMode(false)
-        }
-    }, [selectedPictures, selectionMode])
-
-    const deletePicture = useCallback(() => {
-        Alert.alert(
-            "Apagar foto?",
-            "Esta ação é irreversível e apagará a foto deste documento",
-            [
-                {
-                    text: "Apagar", 
-                    onPress: () => {
-                        const pictures = pictureList.reverse()
-
-                        const newPicture: Array<string> = []
-                        pictures.forEach((item: string) => {
-                            if (selectedPictures.indexOf(item) === -1) {
-                                newPicture.push(item)
-                            } else {
-                                RNFS.unlink(item)
-                                    .catch(() => {})
-                            }
-                        })
-                        newPicture.reverse()
-                
-                        setPictureList(newPicture)
-                
-                        if (!changed) {
-                            setChanged(true)
-                        }
-                    }
-                },
-                {
-                    text: "Cancelar", 
-                    onPress: () => {}
-                }
-            ],
-            {cancelable: false}
-        )
-    }, [pictureList, selectedPictures, changed])
-
-    const openCamera = useCallback(() => {
-        navigation.navigate("Camera", {
-            newPictureList: pictureList,
-            newDocumentName: documentName,
-            documentObject: document
-        })
-    }, [pictureList, documentName, document])
-
-    const renameDocument = useCallback((newDocumentName) => {
-        setDocumentName(newDocumentName)
-
-        if (!changed) {
-            setChanged(true)
-        }
-    }, [changed])
-
     const exportDocumentToPdf = useCallback(() => {
         if (changed) {
             Alert.alert(
@@ -181,7 +109,49 @@ export default function EditDocument() {
         createPdf(documentName, pictureList)
         ToastAndroid.show(`Documento exportado para "Memória Externa/${pathPdf}/${documentName}.pdf"`, 10)
     }, [changed, documentName, pictureList])
-    
+
+    const shareDocument = useCallback(async () => {
+        if (changed) {
+            Alert.alert(
+                "Alterações não salvas",
+                "Salve as alterações antes de compartilhar o documento"
+            )
+            return
+        }
+
+        const documentPath = `file://${fullPathPdf}/${documentName}.pdf`
+
+        if (!(await RNFS.exists(documentPath))) {
+            Alert.alert(
+                "Não foi possível compartilhar",
+                "Exporte o documento para PDF antes de compartilhá-lo"
+            )
+            return
+        }
+
+        try {
+            await Share.open({
+                title: "Compartilhar documento",
+                type: "pdf/application",
+                url: documentPath,
+                failOnCancel: false
+            })
+        } catch {
+            Alert.alert(
+                "Erro ao compartilhar documento",
+                "Ocorreu erro desconhecido e não foi possível compartilhar documento"
+            )
+        }
+    }, [changed, documentName])
+
+    const renameDocument = useCallback((newDocumentName) => {
+        setDocumentName(newDocumentName)
+
+        if (!changed) {
+            setChanged(true)
+        }
+    }, [changed])
+
     const discardDocument = useCallback(() => {
         Alert.alert(
             "Apagar documento?",
@@ -194,7 +164,7 @@ export default function EditDocument() {
                             pictureList.forEach(async (item) => {
                                 await RNFS.unlink(item)
                             })
-    
+
                             navigation.navigate("Home")
                         } else {
                             await deleteDocument([document.id], true)
@@ -210,6 +180,14 @@ export default function EditDocument() {
             {cancelable: false}
         )
     }, [document, pictureList])
+
+    const openCamera = useCallback(() => {
+        navigation.navigate("Camera", {
+            newPictureList: pictureList,
+            newDocumentName: documentName,
+            documentObject: document
+        })
+    }, [pictureList, documentName, document])
 
     const saveNotExistingDocument = useCallback(async () => {
         if (pictureList.length === 0) {
@@ -258,10 +236,61 @@ export default function EditDocument() {
         }
     }, [document, saveNotExistingDocument, saveExistingDocument])
 
-    const exitSelectionMode = useCallback(() => {
-        setSelectedPictures([])
-        setSelectionMode(false)
-    }, [])
+    const deletePicture = useCallback(() => {
+        Alert.alert(
+            "Apagar foto?",
+            "Esta ação é irreversível e apagará a foto deste documento",
+            [
+                {
+                    text: "Apagar", 
+                    onPress: () => {
+                        const pictures = pictureList.reverse()
+
+                        const newPicture: Array<string> = []
+                        pictures.forEach((item: string) => {
+                            if (selectedPictures.indexOf(item) === -1) {
+                                newPicture.push(item)
+                            } else {
+                                RNFS.unlink(item)
+                                    .catch(() => {})
+                            }
+                        })
+                        newPicture.reverse()
+                
+                        setPictureList(newPicture)
+                
+                        if (!changed) {
+                            setChanged(true)
+                        }
+                    }
+                },
+                {
+                    text: "Cancelar", 
+                    onPress: () => {}
+                }
+            ],
+            {cancelable: false}
+        )
+    }, [pictureList, selectedPictures, changed])
+
+    const selectPicture = useCallback((picturePath: string) => {
+        if (!selectionMode) {
+            setSelectionMode(true)
+        }
+        if (selectedPictures.indexOf(picturePath) === -1) {
+            selectedPictures.push(picturePath)
+        }
+    }, [selectionMode, selectedPictures])
+
+    const deselectPicture = useCallback((picturePath: string) => {
+        const index = selectedPictures.indexOf(picturePath)
+        if (index !== -1) {
+            selectedPictures.splice(index, 1)
+        }
+        if (selectionMode && selectedPictures.length === 0) {
+            setSelectionMode(false)
+        }
+    }, [selectedPictures, selectionMode])
 
     const renderPictureItem = useCallback(({ item }: {item: string}) => {
         return (
@@ -275,39 +304,10 @@ export default function EditDocument() {
         )
     }, [selectionMode, selectPicture, deselectPicture])
 
-    const shareDocument = useCallback(async () => {
-        if (changed) {
-            Alert.alert(
-                "Alterações não salvas",
-                "Salve as alterações antes de compartilhar o documento"
-            )
-            return
-        }
-
-        const documentPath = `file://${fullPathPdf}/${documentName}.pdf`
-
-        if (!(await RNFS.exists(documentPath))) {
-            Alert.alert(
-                "Não foi possível compartilhar",
-                "Exporte o documento para PDF antes de compartilhá-lo"
-            )
-            return
-        }
-
-        try {
-            await Share.open({
-                title: "Compartilhar documento",
-                type: "pdf/application",
-                url: documentPath,
-                failOnCancel: false
-            })
-        } catch {
-            Alert.alert(
-                "Erro ao compartilhar documento",
-                "Ocorreu erro desconhecido e não foi possível compartilhar documento"
-            )
-        }
-    }, [changed, documentName])
+    const exitSelectionMode = useCallback(() => {
+        setSelectedPictures([])
+        setSelectionMode(false)
+    }, [])
 
 
     useEffect(() => {
