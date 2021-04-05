@@ -59,19 +59,27 @@ public class PdfCreator extends ReactContextBaseJavaModule {
     private Size resizeImage(Bitmap originalImage, PdfDocument.PageInfo pageInfo) {
         int originalImageWidth = originalImage.getWidth();
         int originalImageHeight = originalImage.getHeight();
+        float imageAspectRatio = (float) originalImageWidth / originalImageHeight;
 
-        int newImageWidth = pageInfo.getPageWidth() - (borderSize * 2);
-        int newImageHeight = pageInfo.getPageHeight() - (borderSize * 2);
+        int newImageWidth = 0; // = pageInfo.getPageWidth() - (borderSize * 2);
+        int newImageHeight = 0; // = pageInfo.getPageHeight() - (borderSize * 2);
 
         if (originalImageWidth > pageInfo.getPageWidth() - (borderSize * 2)) {
             newImageWidth = pageInfo.getPageWidth() - (borderSize * 2);
-            newImageHeight = (newImageWidth * originalImageHeight) / originalImageWidth;
+            newImageHeight = (int) (newImageWidth / imageAspectRatio);
+        } else if (originalImageHeight > pageInfo.getPageHeight() - (borderSize * 2)) {
+            newImageHeight = pageInfo.getPageHeight() - (borderSize * 2);
+            newImageWidth = (int) (newImageHeight * imageAspectRatio);
         }
 
-        if (newImageHeight > pageInfo.getPageHeight() - (borderSize * 2)) {
-            newImageHeight = pageInfo.getPageHeight() - (borderSize * 2);
-            newImageWidth = (newImageHeight * originalImageWidth) / originalImageHeight;
-        }
+//        if (originalImageWidth > pageInfo.getPageWidth() - (borderSize * 2)) {
+//            newImageWidth = pageInfo.getPageWidth() - (borderSize * 2);
+//            newImageHeight = (newImageWidth * originalImageHeight) / originalImageWidth;
+//        }
+//        if (newImageHeight > pageInfo.getPageHeight() - (borderSize * 2)) {
+//            newImageHeight = pageInfo.getPageHeight() - (borderSize * 2);
+//            newImageWidth = (newImageHeight * originalImageWidth) / originalImageHeight;
+//        }
 
         return new Size(newImageWidth, newImageHeight);
     }
