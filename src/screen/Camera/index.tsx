@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { Alert, PermissionsAndroid } from "react-native"
+import { Alert } from "react-native"
 import { RNCamera } from "react-native-camera"
 import { RouteProp, useIsFocused, useNavigation, useRoute } from "@react-navigation/native"
 import Orientation from "react-native-orientation-locker"

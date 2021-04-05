@@ -97,10 +97,27 @@ export default function Home() {
     }, [debugHome])
 
 
-    const getDocument = useCallback(async () => {
-        const readDocumentList = await readDocument()
-        setDocument(readDocumentList)
+    const getDocument = useCallback(() => {
+        readDocument()
+            .then((result) => {
+                setDocument(result)
+            })
     }, [])
+
+    const deleteSelectedDocument = useCallback(() => {
+        Alert.alert(
+            "Apagar documento?",
+            "Esta ação não poderá ser desfeita. Deseja apagar?",
+            [
+                {text: "Apagar", onPress: async () => {
+                    await deleteDocument(selectedDocument, true)
+                    getDocument()
+                }},
+                {text: "Cancelar", onPress: () => {}}
+            ],
+            {cancelable: false}
+        )
+    }, [selectedDocument])
 
     const selectDocument = useCallback((documentId: number) => {
         if (!selectionMode) {
@@ -121,26 +138,6 @@ export default function Home() {
         }
     }, [selectedDocument, selectionMode])
 
-    const deleteSelectedDocument = useCallback(() => {
-        Alert.alert(
-            "Apagar documento?",
-            "Esta ação não poderá ser desfeita. Deseja apagar?",
-            [
-                {text: "Apagar", onPress: async () => {
-                    await deleteDocument(selectedDocument, true)
-                    await getDocument()
-                }},
-                {text: "Cancelar", onPress: () => {}}
-            ],
-            {cancelable: false}
-        )
-    }, [selectedDocument])
-
-    const exitSelectionMode = useCallback(() => {
-        setSelectedDocument([])
-        setSelectionMode(false)
-    }, [])
-
     const renderDocumentItem = useCallback(({ item }: {item: Document}) => {
         return (
             <DocumentItem
@@ -153,15 +150,10 @@ export default function Home() {
         )
     }, [selectionMode, selectDocument, deselectDocument])
 
-    const RenderEmptyDocument = useCallback(() => (
-        <EmptyListView>
-            <EmptyListImage source={appIconOutline} />
-
-            <EmptyListText>
-                Documentos vazios
-            </EmptyListText>
-        </EmptyListView>
-    ), [])
+    const exitSelectionMode = useCallback(() => {
+        setSelectedDocument([])
+        setSelectionMode(false)
+    }, [])
 
 
     useEffect(() => {
@@ -196,7 +188,13 @@ export default function Home() {
                 />
 
                 {document.length === 0 && (
-                    <RenderEmptyDocument />
+                    <EmptyListView>
+                        <EmptyListImage source={appIconOutline} />
+
+                        <EmptyListText>
+                            Nenhum documento
+                        </EmptyListText>
+                    </EmptyListView>
                 )}
 
                 {(debugHome === debugHomeShow) && (
