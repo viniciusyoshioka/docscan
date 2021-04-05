@@ -3,8 +3,10 @@ package com.docscan.PdfCreator;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
+import android.media.ExifInterface;
 import androidx.annotation.NonNull;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -42,6 +44,18 @@ public class PdfCreator extends ReactContextBaseJavaModule {
         return "PdfCreator";
     }
 
+    private int convertRotationToDegree(int orientation) {
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (orientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (orientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        } else {
+            return 0;
+        }
+    }
+
     private Size resizeImage(Bitmap originalImage, PdfDocument.PageInfo pageInfo) {
         int originalImageWidth = originalImage.getWidth();
         int originalImageHeight = originalImage.getHeight();
@@ -76,6 +90,23 @@ public class PdfCreator extends ReactContextBaseJavaModule {
                 // Create page content
                 Canvas pageCanvas = page.getCanvas();
                 Bitmap originalPicture = BitmapFactory.decodeFile(pictureList.getString(x));
+
+                // Get exif orientation
+                ExifInterface pictureExif = new ExifInterface(pictureList.getString(x));
+                int pictureOrientation = pictureExif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                int pictureRotation = convertRotationToDegree(pictureOrientation);
+                Matrix matrix = new Matrix();
+                if (pictureOrientation != 0) {
+                    matrix.preRotate(pictureRotation);
+                }
+                originalPicture = Bitmap.createBitmap(
+                        originalPicture,
+                        0,
+                        0,
+                        originalPicture.getWidth(),
+                        originalPicture.getHeight(),
+                        matrix,
+                        false);
 
                 // Resize image
                 Size newImageSize;
