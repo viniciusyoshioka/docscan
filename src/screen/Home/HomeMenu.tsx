@@ -49,7 +49,7 @@ export default function HomeMenu(props: HomeMenuProps) {
                 <HeaderButton 
                     iconName={"md-ellipsis-vertical"}
                     iconSize={22} 
-                    onPress={menuRef.current?.open}
+                    onPress={() => menuRef.current?.open()}
                 />
             </MenuTrigger>
 
