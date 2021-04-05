@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react"
-import { ActivityIndicator, FlatList } from "react-native"
+import { ActivityIndicator, Alert, FlatList } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import CameraRoll, { PhotoIdentifier } from "@react-native-community/cameraroll"
 import RNFS from "react-native-fs"
@@ -12,6 +12,7 @@ import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/Em
 import { fullPathPictureOriginal } from "../../service/constant"
 import { useTheme } from "../../service/theme"
 import { useBackHandler } from "../../service/hook"
+import { getCameraRollPermission } from "../../service/permission"
 
 
 type ImportImageFromGaleryParam = {
@@ -41,7 +42,18 @@ export default function ImportImageFromGalery() {
     })
 
 
-    const getImage = useCallback(() => {
+    const getImage = useCallback(async () => {
+
+        const hasCameraRollPermission = await getCameraRollPermission()
+        if (!hasCameraRollPermission) {
+            setImageGalery([])
+            Alert.alert(
+                "Falha em abrir galeria",
+                "Permissão negada. Não foi possível abrir a galeria."
+            )
+            return
+        }
+
         CameraRoll.getPhotos({
             first: imageGalery ? imageGalery.length + 15 : 15,
             assetType: "Photos",
