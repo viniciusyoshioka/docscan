@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { Alert } from "react-native"
+import { Alert, PermissionsAndroid } from "react-native"
 import { RNCamera } from "react-native-camera"
 import { RouteProp, useIsFocused, useNavigation, useRoute } from "@react-navigation/native"
 import Orientation from "react-native-orientation-locker"
@@ -16,6 +16,7 @@ import { getDateTime } from "../../service/date"
 import { getDocumentName } from "../../service/document-handler"
 import { Document } from "../../service/object-types"
 import { useBackHandler } from "../../service/hook"
+import { getCameraPermission } from "../../service/permission"
 
 
 type CameraParams = {
@@ -99,8 +100,13 @@ export default function Camera() {
         const date = getDateTime("-", "-", true)
         const picturePath = `${fullPathPictureOriginal}/${date}.jpg`
         const options = {
-            quality: 0.3,
+            quality: 0.2,
             path: picturePath
+        }
+
+        const hasCameraPermission = await getCameraPermission()
+        if (!hasCameraPermission) {
+            return
         }
 
         try {
