@@ -43,7 +43,6 @@ export default function ImportImageFromGalery() {
 
 
     const getImage = useCallback(async () => {
-
         const hasCameraRollPermission = await getCameraRollPermission()
         if (!hasCameraRollPermission) {
             setImageGalery([])
@@ -69,6 +68,7 @@ export default function ImportImageFromGalery() {
             exitSelectionMode()
             return
         }
+
         navigation.navigate("Camera", {
             newPictureList: params.pictureList,
             newDocumentName: params.documentName,
@@ -95,44 +95,6 @@ export default function ImportImageFromGalery() {
         }
     }, [selectedImage, selectionMode])
 
-    const exitSelectionMode = useCallback(() => {
-        setSelectedImage([])
-        setSelectionMode(false)
-    }, [])
-
-    const importSingleImage = useCallback((imagePath: string) => {
-        const splitedImageName = imagePath.split("/")
-        const newImageName = splitedImageName[splitedImageName.length - 1]
-        const newImagePath = `${fullPathPictureOriginal}/${newImageName}`
-        RNFS.copyFile(imagePath, newImagePath)
-            .catch(() => {})
-        navigation.navigate("Camera", {
-            newPictureList: [...params.pictureList, newImagePath],
-            newDocumentName: params.documentName,
-            documentObject: params.documentObject,
-        })
-    }, [])
-
-    const importMultipleImage = useCallback(() => {
-        const imagesToImport: Array<string> = []
-        params.pictureList.forEach((item: string) => {
-            imagesToImport.push(item)
-        })
-        selectedImage.forEach((item: string) =>{ 
-            const splitedImageName = item.split("/")
-            const newImageName = splitedImageName[splitedImageName.length - 1]
-            const newImagePath = `${fullPathPictureOriginal}/${newImageName}`
-            RNFS.copyFile(item, newImagePath)
-                .catch(() => {})
-            imagesToImport.push(newImagePath)
-        })
-        navigation.navigate("Camera", {
-            newPictureList: imagesToImport,
-            newDocumentName: params.documentName,
-            documentObject: params.documentObject,
-        })
-    }, [selectedImage])
-
     const renderImageItem = useCallback(({ item }: {item: PhotoIdentifier}) => {
         return (
             <ImageItem
@@ -144,6 +106,49 @@ export default function ImportImageFromGalery() {
             />
         )
     }, [selectionMode, selectImage, deselectImage])
+
+    const importSingleImage = useCallback((imagePath: string) => {
+        const splitedImagePath = imagePath.split("/")
+        const newImageName = splitedImagePath[splitedImagePath.length - 1]
+        const newImagePath = `${fullPathPictureOriginal}/${newImageName}`
+
+        RNFS.copyFile(imagePath, newImagePath)
+            .catch(() => {})
+
+        navigation.navigate("Camera", {
+            newPictureList: [...params.pictureList, newImagePath],
+            newDocumentName: params.documentName,
+            documentObject: params.documentObject,
+        })
+    }, [])
+
+    const importMultipleImage = useCallback(() => {
+        const imagesToImport: Array<string> = []
+
+        params.pictureList.forEach((item: string) => {
+            imagesToImport.push(item)
+        })
+
+        selectedImage.forEach((item: string) =>{ 
+            const splitedImagePath = item.split("/")
+            const newImageName = splitedImagePath[splitedImagePath.length - 1]
+            const newImagePath = `${fullPathPictureOriginal}/${newImageName}`
+            RNFS.copyFile(item, newImagePath)
+                .catch(() => {})
+            imagesToImport.push(newImagePath)
+        })
+
+        navigation.navigate("Camera", {
+            newPictureList: imagesToImport,
+            newDocumentName: params.documentName,
+            documentObject: params.documentObject,
+        })
+    }, [selectedImage])
+
+    const exitSelectionMode = useCallback(() => {
+        setSelectedImage([])
+        setSelectionMode(false)
+    }, [])
 
 
     useEffect(() => {
@@ -163,12 +168,10 @@ export default function ImportImageFromGalery() {
             <FlatList
                 data={imageGalery}
                 renderItem={renderImageItem}
-                onEndReached={() => {
-                    getImage()
-                }}
-                onEndReachedThreshold={0.5}
-                numColumns={3}
                 keyExtractor={(item, index) => index.toString()}
+                numColumns={3}
+                onEndReachedThreshold={0.5}
+                onEndReached={() => getImage()}
             />
 
             {imageGalery === null && (
