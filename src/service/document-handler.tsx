@@ -91,7 +91,6 @@ export async function deleteDocument(ids: Array<number>, deleteFiles=false) {
     })
     await writeDocumentId(documentId)
 
-
     // document
     const document = await readDocument()
     const documentIndex: Array<number> = []
@@ -101,9 +100,12 @@ export async function deleteDocument(ids: Array<number>, deleteFiles=false) {
             documentIndex.push(index)
             // Delete all pictures from this document
             if (deleteFiles) {
-                item.pictureList.forEach((picturePath: string) => {
-                    RNFS.unlink(picturePath)
-                        .catch(() => {})
+                item.pictureList.forEach(async (picturePath: string) => {
+                    try {
+                        await RNFS.unlink(picturePath)
+                    } catch (error) {
+                        console.log(error)
+                    }
                 })
             }
         }
