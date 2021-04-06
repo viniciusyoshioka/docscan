@@ -31,12 +31,12 @@ export function PictureItem(props: PictureItemProps) {
     }, [props.picturePath])
 
     const normalPress = useCallback(() => {
-        if (props.selectionMode === false) {
+        if (!props.selectionMode) {
             props.click()
-        } else if (selected === false) {
+        } else if (!selected) {
             props.select()
             setSelected(true)
-        } else if (selected === true) {
+        } else if (selected) {
             props.deselect()
             setSelected(false)
         }
@@ -44,7 +44,7 @@ export function PictureItem(props: PictureItemProps) {
 
     const longPress = useCallback((nativeEvent) => {
         if (nativeEvent.state === State.ACTIVE) {
-            if (props.selectionMode === false) {
+            if (props.selectionMode) {
                 props.select()
                 setSelected(true)
             }
@@ -53,7 +53,7 @@ export function PictureItem(props: PictureItemProps) {
 
 
     useEffect(() => {
-        if (props.selectionMode === true) {
+        if (props.selectionMode) {
             Animated.sequence([
                 Animated.timing(animatedOpacity, {
                     toValue: 1,
@@ -61,8 +61,8 @@ export function PictureItem(props: PictureItemProps) {
                     useNativeDriver: false
                 })
             ]).start()
-        } else if (props.selectionMode === false) {
-            if (selected === false) {
+        } else if (!props.selectionMode) {
+            if (!selected) {
                 Animated.sequence([
                     Animated.timing(animatedOpacity, {
                         toValue: 0,
@@ -77,7 +77,7 @@ export function PictureItem(props: PictureItemProps) {
     }, [props.selectionMode])
 
     useEffect(() => {
-        if (props.selectionMode === false && selected === false) {
+        if (!props.selectionMode && !selected) {
             Animated.sequence([
                 Animated.timing(animatedOpacity, {
                     toValue: 0,

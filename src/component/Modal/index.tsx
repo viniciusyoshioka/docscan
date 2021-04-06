@@ -26,16 +26,8 @@ export function Modal(props: ModalProps) {
 
 
     return (
-        <RNModal 
-            transparent={true} 
-            visible={props.visible} 
-            onRequestClose={() => closeModal()}
-        >
-            <TouchableOpacity
-                style={{flex: 1}}
-                activeOpacity={1}
-                onPress={() => closeModal()}
-            >
+        <RNModal transparent={true} visible={props.visible} onRequestClose={closeModal}>
+            <TouchableOpacity style={{flex: 1}} activeOpacity={1} onPress={closeModal}>
                 <ModalView style={props.modalStyle}>
                     <ModalBackground activeOpacity={1} style={props.backgroundStyle}>
                         <ModalContent>

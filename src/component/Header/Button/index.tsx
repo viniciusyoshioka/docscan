@@ -19,7 +19,10 @@ export const HeaderButtonBase = styled(RectButton)`
 export function HeaderButton(props: HeaderButtonProps) {
     return (
         <HeaderButtonBase {...props}>
-            <HeaderIcon iconName={props.iconName} iconSize={props.iconSize} />
+            <HeaderIcon
+                iconName={props.iconName}
+                iconSize={props.iconSize}
+            />
         </HeaderButtonBase>
     )
 }

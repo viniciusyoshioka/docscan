@@ -23,6 +23,7 @@ export function HeaderIcon(props: HeaderIconProps) {
         <Icon 
             name={props.iconName} 
             size={props.iconSize || headerIconSize} 
-            color={color.colorLight} />
+            color={color.colorLight}
+        />
     )
 }

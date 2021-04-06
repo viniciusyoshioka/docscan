@@ -28,12 +28,12 @@ export function DocumentItem(props: DocumentItemProps) {
 
 
     const normalPress = useCallback(() => {
-        if (props.selectionMode === false) {
+        if (!props.selectionMode) {
             props.click()
-        } else if (selected === false) {
+        } else if (!selected) {
             props.select()
             setSelected(true)
-        } else if (selected === true) {
+        } else if (selected) {
             props.deselect()
             setSelected(false)
         }
@@ -41,7 +41,7 @@ export function DocumentItem(props: DocumentItemProps) {
 
     const longPress = useCallback((nativeEvent) => {
         if (nativeEvent.state === State.ACTIVE) {
-            if (props.selectionMode === false) {
+            if (!props.selectionMode) {
                 props.select()
                 setSelected(true)
             }

@@ -26,8 +26,8 @@ export function ModalFullscreen(props: ModalFullscreenProps) {
 
 
     return (
-        <RNModal transparent={true} visible={props.visible} onRequestClose={() => closeModal()}>
-            <TouchableWithoutFeedback onPress={() => closeModal()}>
+        <RNModal transparent={true} visible={props.visible} onRequestClose={closeModal}>
+            <TouchableWithoutFeedback onPress={closeModal}>
                 <ModalView style={props.modalStyle}>
                     <ModalBackground style={props.backgroundStyle} />
 
