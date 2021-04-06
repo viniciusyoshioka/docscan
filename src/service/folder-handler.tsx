@@ -3,33 +3,53 @@ import RNFS from "react-native-fs"
 import { fullPathRoot, fullPathPdf, fullPathPicture, fullPathPictureOriginal, fullPathPictureCropped } from "./constant"
 
 
-export async function createRootFolder() {
-    if (!(await RNFS.exists(fullPathRoot))) {
-        RNFS.mkdir(fullPathRoot)
+async function createRootFolder() {
+    try {
+        if (!(await RNFS.exists(fullPathRoot))) {
+            await RNFS.mkdir(fullPathRoot)
+        }
+    } catch (error) {
+        console.log(error)
     }
 }
 
-export async function createPdfFolder() {
-    if (!(await RNFS.exists(fullPathPdf))) {
-        RNFS.mkdir(fullPathPdf)
+async function createPdfFolder() {
+    try {
+        if (!(await RNFS.exists(fullPathPdf))) {
+            await RNFS.mkdir(fullPathPdf)
+        }
+    } catch (error) {
+        console.log(error)
     }
 }
 
-export async function createPictureFolder() {
-    if (!(await RNFS.exists(fullPathPicture))) {
-        RNFS.mkdir(fullPathPicture)
+async function createPictureFolder() {
+    try {
+        if (!(await RNFS.exists(fullPathPicture))) {
+            await RNFS.mkdir(fullPathPicture)
+        }
+    } catch (error) {
+        console.log(error)
     }
 }
 
-export async function createPictureOriginalFolder() {
-    if (!(await RNFS.exists(fullPathPictureOriginal))) {
-        RNFS.mkdir(fullPathPictureOriginal)
+async function createPictureOriginalFolder() {
+    try {
+        if (!(await RNFS.exists(fullPathPictureOriginal))) {
+            await RNFS.mkdir(fullPathPictureOriginal)
+        }
+    } catch (error) {
+        console.log(error)
     }
 }
 
-export async function createPictureCroppedFolder() {
-    if (!(await RNFS.exists(fullPathPictureCropped))) {
-        RNFS.mkdir(fullPathPictureCropped)
+async function createPictureCroppedFolder() {
+    try {
+        if (!(await RNFS.exists(fullPathPictureCropped))) {
+            await RNFS.mkdir(fullPathPictureCropped)
+        }
+    } catch (error) {
+        console.log(error)
     }
 }
 
