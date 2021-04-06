@@ -4,12 +4,31 @@ import { debugHomeDefault, settingsDefault, storageDebugHome, storageDocument, s
 import { Document, SettingsProps } from "./object-types"
 
 
+async function write(key: string, value: string) {
+    try {
+        await AsyncStorage.setItem(key, value)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function read(key: string): Promise<string | null> {
+    try {
+        const readValue = await AsyncStorage.getItem(key)
+        return readValue
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}
+
+
 export async function writeTheme(newTheme: string) {
-    await AsyncStorage.setItem(storageTheme, newTheme)
+    await write(storageTheme, newTheme)
 }
 
 export async function readTheme(): Promise<string> {
-    let theme = await AsyncStorage.getItem(storageTheme)
+    let theme = await read(storageTheme)
     if (theme === null) {
         await writeTheme(themeDefault)
         return themeDefault
@@ -19,11 +38,11 @@ export async function readTheme(): Promise<string> {
 
 
 export async function writeDocumentId(newDocumentId: Array<number>) {
-    await AsyncStorage.setItem(storageDocumentId, JSON.stringify(newDocumentId))
+    await write(storageDocumentId, JSON.stringify(newDocumentId))
 }
 
 export async function readDocumentId(): Promise<Array<number>> {
-    let documentId = await AsyncStorage.getItem(storageDocumentId)
+    let documentId = await read(storageDocumentId)
     if (documentId === null) {
         await writeDocumentId([])
         return []
@@ -33,11 +52,11 @@ export async function readDocumentId(): Promise<Array<number>> {
 
 
 export async function writeDocument(newDocument: Array<Document>) {
-    await AsyncStorage.setItem(storageDocument, JSON.stringify(newDocument))
+    await write(storageDocument, JSON.stringify(newDocument))
 }
 
 export async function readDocument(): Promise<Array<Document>> {
-    let document = await AsyncStorage.getItem(storageDocument)
+    let document = await read(storageDocument)
     if (document === null) {
         await writeDocument([])
         return []
@@ -47,11 +66,11 @@ export async function readDocument(): Promise<Array<Document>> {
 
 
 export async function writeDebugHome(newDebugHome: string) {
-    await AsyncStorage.setItem(storageDebugHome, newDebugHome)
+    await write(storageDebugHome, newDebugHome)
 }
 
 export async function readDebugHome(): Promise<string> {
-    let debugHome = await AsyncStorage.getItem(storageDebugHome)
+    let debugHome = await read(storageDebugHome)
     if (debugHome === null) {
         await writeDebugHome(debugHomeDefault)
         return debugHomeDefault
@@ -61,11 +80,11 @@ export async function readDebugHome(): Promise<string> {
 
 
 export async function writeSettings(newSettings: SettingsProps) {
-    await AsyncStorage.setItem(storageSettings, JSON.stringify(newSettings))
+    await write(storageSettings, JSON.stringify(newSettings))
 }
 
 export async function readSettings(): Promise<SettingsProps> {
-    let settings = await AsyncStorage.getItem(storageSettings)
+    let settings = await read(storageSettings)
     if (settings === null) {
         await writeSettings(settingsDefault)
         return settingsDefault
