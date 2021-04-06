@@ -53,14 +53,15 @@ export default function ImportImageFromGalery() {
             return
         }
 
-        CameraRoll.getPhotos({
-            first: imageGalery ? imageGalery.length + 15 : 15,
-            assetType: "Photos",
-        })
-            .then((item) => {
-                setImageGalery(item.edges)
+        try {
+            const cameraRollPhotos = await CameraRoll.getPhotos({
+                first: imageGalery ? imageGalery.length + 15 : 15,
+                assetType: "Photos",
             })
-            .catch(() => {})
+            setImageGalery(cameraRollPhotos.edges)
+        } catch (error) {
+            console.log(error)
+        }
     }, [imageGalery])
 
     const goBack = useCallback(() => {
@@ -107,13 +108,19 @@ export default function ImportImageFromGalery() {
         )
     }, [selectionMode, selectImage, deselectImage])
 
-    const importSingleImage = useCallback((imagePath: string) => {
+    const getNewImagePath = useCallback((imagePath: string) => {
         const splitedImagePath = imagePath.split("/")
         const newImageName = splitedImagePath[splitedImagePath.length - 1]
-        const newImagePath = `${fullPathPictureOriginal}/${newImageName}`
+        return `${fullPathPictureOriginal}/${newImageName}`
+    }, [])
 
-        RNFS.copyFile(imagePath, newImagePath)
-            .catch(() => {})
+    const importSingleImage = useCallback(async (imagePath: string) => {
+        const newImagePath = getNewImagePath(imagePath)
+        try {
+            await RNFS.copyFile(imagePath, newImagePath)
+        } catch (error) {
+            console.log(error)
+        }
 
         navigation.navigate("Camera", {
             newPictureList: [...params.pictureList, newImagePath],
@@ -129,12 +136,13 @@ export default function ImportImageFromGalery() {
             imagesToImport.push(item)
         })
 
-        selectedImage.forEach((item: string) =>{ 
-            const splitedImagePath = item.split("/")
-            const newImageName = splitedImagePath[splitedImagePath.length - 1]
-            const newImagePath = `${fullPathPictureOriginal}/${newImageName}`
-            RNFS.copyFile(item, newImagePath)
-                .catch(() => {})
+        selectedImage.forEach(async (item: string) =>{ 
+            const newImagePath = getNewImagePath(item)
+            try {
+                await RNFS.copyFile(item, newImagePath)
+            } catch (error) {
+                console.log(error)
+            }
             imagesToImport.push(newImagePath)
         })
 
