@@ -34,6 +34,7 @@ export default function ImportImageFromGalery() {
     const [imageGalery, setImageGalery] = useState<Array<PhotoIdentifier> | null>(null)
     const [selectionMode, setSelectionMode] = useState(false)
     const [selectedImage, setSelectedImage] = useState<Array<string>>([])
+    const [refreshingList, setRefreshingList] = useState(false)
 
 
     useBackHandler(() => {
@@ -180,6 +181,12 @@ export default function ImportImageFromGalery() {
                 numColumns={3}
                 onEndReachedThreshold={0.5}
                 onEndReached={getImage}
+                onRefresh={async () => {
+                    setImageGalery(null)
+                    await getImage()
+                    setRefreshingList(false)
+                }}
+                refreshing={refreshingList}
             />
 
             {imageGalery === null && (
