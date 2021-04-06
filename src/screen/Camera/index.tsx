@@ -115,7 +115,8 @@ export default function Camera() {
             if (documentName === "" || documentName === "Documento vazio") {
                 setDocumentName(getDocumentName())
             }
-        } catch {
+        } catch (error) {
+            console.log(error)
             Alert.alert(
                 "Erro ao tirar foto", 
                 "Não foi possível tirar foto, ocorreu erro desconhecido",
