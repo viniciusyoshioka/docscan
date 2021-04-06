@@ -171,7 +171,7 @@ export default function ImportImageFromGalery() {
                 keyExtractor={(item, index) => index.toString()}
                 numColumns={3}
                 onEndReachedThreshold={0.5}
-                onEndReached={() => getImage()}
+                onEndReached={getImage}
             />
 
             {imageGalery === null && (

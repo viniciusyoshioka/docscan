@@ -201,15 +201,15 @@ export default function Home() {
                     <View>
                         <DebugButton 
                             text={"Ler"} 
-                            onPress={async () => await debugReadDocument()} 
+                            onPress={debugReadDocument} 
                             style={{bottom: 115}} />
                         <DebugButton 
                             text={"Escre"} 
-                            onPress={async () => await debugWriteDocument()} 
+                            onPress={debugWriteDocument} 
                             style={{bottom: 60}} />
                         <DebugButton 
                             text={"Limpar"} 
-                            onPress={async () => await debugClearDocument()} 
+                            onPress={debugClearDocument} 
                             style={{bottom: 5}} />
 
                         <DebugButton 

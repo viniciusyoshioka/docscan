@@ -189,7 +189,7 @@ export default function Camera() {
                 </CameraControlButtonBase>
 
                 <CameraControlButtonBase 
-                    onPress={async () => await takePicture()} 
+                    onPress={takePicture} 
                     style={{backgroundColor: "rgb(255, 255, 255)"}}
                 />
 

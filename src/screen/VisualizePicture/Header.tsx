@@ -12,9 +12,10 @@ export default function VisualizePictureHeader(props: VisualizePictureHeaderProp
     return (
         <Header>
             <BlockLeft>
-                <HeaderButton 
-                    onPress={() => props.goBack()} 
-                    iconName={"md-arrow-back"} />
+                <HeaderButton
+                    onPress={props.goBack}
+                    iconName={"md-arrow-back"}
+                />
             </BlockLeft>
 
             <BlockCenter>

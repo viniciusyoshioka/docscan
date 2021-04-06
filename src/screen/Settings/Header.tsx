@@ -13,7 +13,7 @@ export default function SettingsHeader(props: SettingsHeaderProps) {
         <Header>
             <BlockLeft>
                 <HeaderButton 
-                    onPress={() => props.goBack()} 
+                    onPress={props.goBack} 
                     iconName={"md-arrow-back"}
                 />
             </BlockLeft>

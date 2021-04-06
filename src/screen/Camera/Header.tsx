@@ -15,7 +15,7 @@ export default function CameraHeader(props: CameraHeaderProps) {
     return (
         <Header style={{position: "absolute", top: 0, left: 0, right: 0, backgroundColor: "transparent"}}>
             <BlockLeft>
-                <CameraControlButtonBase onPress={() => props.goBack()}>
+                <CameraControlButtonBase onPress={props.goBack}>
                     <Icon 
                         name={"md-arrow-back"} 
                         size={headerIconSize} 
@@ -25,7 +25,7 @@ export default function CameraHeader(props: CameraHeaderProps) {
             </BlockLeft>
 
             <BlockRight>
-                <CameraControlButtonBase onPress={() => props.openSettings()}>
+                <CameraControlButtonBase onPress={props.openSettings}>
                     <Icon 
                         name={"md-settings-outline"} 
                         size={cameraControlIconSize} 

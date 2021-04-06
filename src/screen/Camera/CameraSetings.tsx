@@ -85,7 +85,7 @@ export default function CameraSettings(props: CameraSettingsProps) {
             modalStyle={{marginHorizontal: 5, justifyContent: "flex-end", bottom: 60}}
         >
             <ScrollView horizontal={true}>
-                <ButtonSettings onPress={async () => await changeFlash()}>
+                <ButtonSettings onPress={changeFlash}>
                     {(props.cameraAttributes.flash === "auto")
                         ? <FlashAuto 
                             width={cameraSettingsIconSize - 3} 
@@ -102,7 +102,7 @@ export default function CameraSettings(props: CameraSettingsProps) {
                                 fill={"rgb(255, 255, 255)"} />}
                 </ButtonSettings>
 
-                <ButtonSettings onPress={async () => await changeWhiteBalance()}>
+                <ButtonSettings onPress={changeWhiteBalance}>
                     {(props.cameraAttributes.whiteBalance === "auto")
                         ? <WBAuto
                             width={cameraSettingsIconSize}
@@ -131,7 +131,7 @@ export default function CameraSettings(props: CameraSettingsProps) {
 
                 <ButtonSettings 
                     iconName={"md-refresh-outline"} 
-                    onPress={async () => await resetCameraSettings()}
+                    onPress={resetCameraSettings}
                 />
             </ScrollView>
         </Modal>
