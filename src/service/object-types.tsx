@@ -21,3 +21,7 @@ export interface Document {
     pictureList: Array<string>,
     lastModificationDate: string,
 }
+
+
+// Log
+export type logCode = "INFO" | "WARN" | "ERROR"
