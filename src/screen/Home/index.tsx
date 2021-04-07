@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from "react"
 import { Alert, BackHandler, FlatList, View } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import { MenuProvider } from "react-native-popup-menu"
+import RNFS from "react-native-fs"
+import Share from "react-native-share"
 
 import { DocumentItem } from "../../component/DocumentItem"
 import { SafeScreen } from "../../component/Screen"
@@ -10,7 +12,7 @@ import { readDebugHome, readDocument, readDocumentId, writeDebugHome, writeDocum
 import HomeHeader from "./Header"
 import { DebugButton } from "../../component/DebugButton"
 import { useSwitchTheme } from "../../service/theme"
-import { appIconOutline, appInDevelopment, debugHomeHide, debugHomeShow, themeDark, themeLight } from "../../service/constant"
+import { appIconOutline, appInDevelopment, debugHomeHide, debugHomeShow, fullPathLog, fullPathRoot, themeDark, themeLight } from "../../service/constant"
 import { deleteDocument } from "../../service/document-handler"
 import { createAllFolder } from "../../service/folder-handler"
 import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
@@ -95,6 +97,52 @@ export default function Home() {
             await writeDebugHome(debugHomeShow)
         }
     }, [debugHome])
+
+    const debugShareLog = useCallback(async () => {
+        try {
+            if (await RNFS.exists(fullPathLog)) {
+                await Share.open({
+                    title: "Compartilhar log",
+                    type: "text/plain",
+                    url: `file://${fullPathRoot}/docscanlog.log`,
+                    failOnCancel: false
+                })
+                return
+            }
+
+            Alert.alert(
+                "INFO",
+                "Não há arquivo de log para compartilhar"
+            )
+        } catch (error) {
+            console.log(`FALHA MODERADA - Erro ao compartilhar arquivo de log. Mensagem: "${error}"`)
+            Alert.alert(
+                "FALHA MODERADA",
+                `Erro ao compartilhar arquivo de log. Mensagem: "${error}"`
+            )
+        }
+    }, [])
+
+    const debugReadLog = useCallback(async () => {
+        try {
+            if (await RNFS.exists(fullPathLog)) {
+                const logContent = await RNFS.readFile(`${fullPathRoot}/docscanlog.log`)
+                console.log(`Arquivo de Log: "${logContent}"`)
+                return
+            }
+
+            Alert.alert(
+                "INFO",
+                "Não há arquivo de log para ler"
+            )
+        } catch (error) {
+            console.log(`FALHA MODERADA - Erro ao ler arquivo de log. Mensagem: "${error}"`)
+            Alert.alert(
+                "FALHA MODERADA",
+                `Erro ao ler arquivo de log. Mensagem: "${error}"`
+            )
+        }
+    }, [])
 
 
     const getDocument = useCallback(() => {
@@ -199,27 +247,36 @@ export default function Home() {
 
                 {(debugHome === debugHomeShow) && (
                     <View>
-                        <DebugButton 
-                            text={"Ler"} 
-                            onPress={debugReadDocument} 
+                        <DebugButton
+                            text={"Ler"}
+                            onPress={debugReadDocument}
                             style={{bottom: 115}} />
-                        <DebugButton 
-                            text={"Escre"} 
-                            onPress={debugWriteDocument} 
+                        <DebugButton
+                            text={"Escre"}
+                            onPress={debugWriteDocument}
                             style={{bottom: 60}} />
-                        <DebugButton 
-                            text={"Limpar"} 
-                            onPress={debugClearDocument} 
+                        <DebugButton
+                            text={"Limpar"}
+                            onPress={debugClearDocument}
                             style={{bottom: 5}} />
 
-                        <DebugButton 
-                            text={"Claro"} 
-                            onPress={async () => await switchTheme(themeLight)} 
+                        <DebugButton
+                            text={"Claro"}
+                            onPress={async () => await switchTheme(themeLight)}
                             style={{bottom: 60, left: 60}} />
-                        <DebugButton 
-                            text={"Escuro"} 
-                            onPress={async () => await switchTheme(themeDark)} 
+                        <DebugButton
+                            text={"Escuro"}
+                            onPress={async () => await switchTheme(themeDark)}
                             style={{bottom: 5, left: 60}} />
+
+                        <DebugButton
+                            text={"Log Ler"}
+                            onPress={debugReadLog}
+                            style={{bottom: 60, left: 115}} />
+                        <DebugButton
+                            text={"Log Comp"}
+                            onPress={debugShareLog}
+                            style={{bottom: 5, left: 115}} />
                     </View>
                 )}
             </SafeScreen>

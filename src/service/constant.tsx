@@ -9,7 +9,7 @@ export const appInDevelopment = true
 // App
 export const appName = appInDevelopment ? "DocScanBeta" : "DocScan"
 export const appFName = appInDevelopment ? "DocScan Beta" : "DocScan"
-export const appVersion = "1.2.0"
+export const appVersion = "1.2.1"
 export const appType = appInDevelopment ? "beta" : "release"
 
 // App icon
@@ -40,6 +40,12 @@ export const fullPathPictureOriginal = `${RNFS.ExternalStorageDirectoryPath}/${p
 export const folderPictureCropped = "Cropped"
 export const pathPictureCropped = `${pathPicture}/${folderPictureCropped}`
 export const fullPathPictureCropped = `${RNFS.ExternalStorageDirectoryPath}/${pathPictureCropped}`
+
+// External file
+// Log
+export const fileLog = "docscanlog.log"
+export const pathLog = `${pathRoot}/${fileLog}`
+export const fullPathLog = `${RNFS.ExternalStorageDirectoryPath}/${pathLog}`
 
 // AsyncStorage
 export const storageTheme = "theme"

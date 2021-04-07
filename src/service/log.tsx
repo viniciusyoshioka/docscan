@@ -1,20 +1,19 @@
 import { Alert } from "react-native"
 import RNFS from "react-native-fs"
 
-import { fullPathRoot } from "./constant"
-import { getDate } from "./date"
+import { fullPathLog } from "./constant"
 import { logCode } from "./object-types"
 
 
-async function createLogFile(filePath: string) {
-    if (await RNFS.exists(filePath)) {
+async function createLogFile() {
+    if (await RNFS.exists(fullPathLog)) {
         return
     }
 
     try {
-        await RNFS.writeFile(filePath, "")
+        await RNFS.writeFile(fullPathLog, "")
     } catch (error) {
-        console.log(error)
+        console.log(`FALHA CRÍTICA - Erro criando arquivo de log. Mensagem: "${error}"`)
         Alert.alert(
             "FALHA CRÍTICA",
             `Erro criando arquivo de log. Mensagem: "${error}"`
@@ -24,15 +23,12 @@ async function createLogFile(filePath: string) {
 
 
 export async function log(code: logCode, data: string) {
-    const dateTime = getDate(Date(), "-")
-    const logFilePath = `${fullPathRoot}/${dateTime}.log`
-
-    await createLogFile(logFilePath)
+    await createLogFile()
 
     try {
-        await RNFS.appendFile(logFilePath, `${code} - ${data}`)
+        await RNFS.appendFile(fullPathLog, `${code} - ${data}\n`)
     } catch (error) {
-        console.log(error)
+        console.log(`FALHA CRÍTICA - Erro registrando log. Mensagem: "${error}"`)
         Alert.alert(
             "FALHA CRÍTICA",
             `Erro registrando log. Mensagem: "${error}"`
