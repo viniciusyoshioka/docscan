@@ -17,6 +17,7 @@ import { getDocumentName } from "../../service/document-handler"
 import { Document } from "../../service/object-types"
 import { useBackHandler } from "../../service/hook"
 import { getCameraPermission } from "../../service/permission"
+import { log } from "../../service/log"
 
 
 type CameraParams = {
@@ -68,21 +69,18 @@ export default function Camera() {
         }
 
         Alert.alert(
-            "Este documento não foi salvo", 
-            "Sair agora descartará este documento, e esta ação não poderá ser desfeita",
+            "Este documento foi alterado", 
+            "Sair agora descartará as alterações feitas neste documento, esta ação é irreversível",
             [
                 {
                     text: "Voltar", 
-                    onPress: () => {
-                        navigation.navigate("Home")
-                    }
+                    onPress: () => navigation.navigate("Home")
                 }, 
                 {
                     text: "Cancelar", 
                     onPress: () => {}
                 }
-            ],
-            {cancelable: false}
+            ]
         )
     }, [pictureList])
 
@@ -106,22 +104,21 @@ export default function Camera() {
 
         const hasCameraPermission = await getCameraPermission()
         if (!hasCameraPermission) {
+            await log("INFO", "Camera takePicture - Não tem permissão para tirar foto")
             return
         }
 
         try {
             await cameraRef.current?.takePictureAsync(options)
             setPictureList([...pictureList, picturePath])
-            if (documentName === "" || documentName === "Documento vazio") {
+            if (documentName === "Documento vazio") {
                 setDocumentName(getDocumentName())
             }
         } catch (error) {
-            console.log(error)
+            await log("ERROR", `Camera takePicture - Erro ao tirar foto. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro ao tirar foto", 
-                "Não foi possível tirar foto, ocorreu erro desconhecido",
-                [{text: "Ok", onPress: () => {}}],
-                {cancelable: false}
+                "Não foi possível tirar foto, erro desconhecido"
             )
         }
     }, [cameraRef, pictureList, documentName])

@@ -1,6 +1,7 @@
 import RNFS from "react-native-fs"
 
 import { getDateTime } from "./date"
+import { log } from "./log";
 import { Document } from "./object-types";
 import { readDocument, readDocumentId, writeDocument, writeDocumentId } from "./storage";
 
@@ -104,7 +105,7 @@ export async function deleteDocument(ids: Array<number>, deleteFiles=false) {
                     try {
                         await RNFS.unlink(picturePath)
                     } catch (error) {
-                        console.log(error)
+                        await log("ERROR", `document-handler deleteDocument - Erro ao apagar picture da pictureList no processo de apagar documento. Mensagem: "${error}"`)
                     }
                 })
             }

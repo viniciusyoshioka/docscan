@@ -14,6 +14,7 @@ import RenameDocument from "./RenameDocument"
 import { createPdf } from "../../service/pdf-handler"
 import { fullPathPdf, pathPdf } from "../../service/constant"
 import { useBackHandler } from "../../service/hook"
+import { log } from "../../service/log"
 
 
 type EditDocumentParams = {
@@ -73,8 +74,7 @@ export default function EditDocument() {
                             text: "Cancelar",
                             onPress: () => {}
                         }
-                    ],
-                    {cancelable: false}
+                    ]
                 )
                 return
             }
@@ -83,7 +83,7 @@ export default function EditDocument() {
         }
     }, [document, selectionMode, pictureList, isChanged, documentName])
 
-    const exportDocumentToPdf = useCallback(() => {
+    const exportDocumentToPdf = useCallback(async () => {
         if (isChanged) {
             Alert.alert(
                 "Alterações não salvas",
@@ -108,8 +108,16 @@ export default function EditDocument() {
             return
         }
 
-        createPdf(documentName, pictureList)
-        ToastAndroid.show(`Documento exportado para "Memória Externa/${pathPdf}/${documentName}.pdf"`, 10)
+        try {
+            createPdf(documentName, pictureList)
+            ToastAndroid.show(`Documento exportado para "Memória Externa/${pathPdf}/${documentName}.pdf"`, 10)
+        } catch (error) {
+            await log("ERROR", `EditDocument exportDocumentToPdf - Erro ao export documento para PDF. Mensagem: "${error}"`)
+            Alert.alert(
+                "Erro ao exportar documento",
+                "Não foi possível exportar documento para PDF"
+            )
+        }
     }, [isChanged, documentName, pictureList])
 
     const shareDocument = useCallback(async () => {
@@ -138,7 +146,11 @@ export default function EditDocument() {
                 failOnCancel: false
             })
         } catch (error) {
-            console.log(error)
+            await log("ERROR", `EditDocument shareDocument - Erro ao compartilhar documento. Mensagem: "${error}"`)
+            Alert.alert(
+                "Não foi possível compartilhar documento",
+                "Erro desconhecido ao compartilhar documento"
+            )
         }
     }, [isChanged, documentName])
 
@@ -163,7 +175,11 @@ export default function EditDocument() {
                                 try {
                                     await RNFS.unlink(item)
                                 } catch (error) {
-                                    console.log(error)
+                                    await log("ERROR", `EditDocument discardDocument - Erro ao apagar fotos do documento durante seu descarte. Mensagem: "${error}"`)
+                                    Alert.alert(
+                                        "Erro ao descartar documento",
+                                        "Erro ao apagar fotos do documento durante seu descarte"
+                                    )
                                 }
                             })
 
@@ -178,8 +194,7 @@ export default function EditDocument() {
                     text: "Cancelar",
                     onPress: () => {}
                 }
-            ],
-            {cancelable: false}
+            ]
         )
     }, [document, pictureList])
 
@@ -195,9 +210,7 @@ export default function EditDocument() {
         if (pictureList.length === 0) {
             Alert.alert(
                 "Não há fotos para salvar",
-                "Não é possível salvar um documento vazio",
-                [{text: "Ok", onPress: () => {}}],
-                {cancelable: false}
+                "Não é possível salvar um documento vazio"
             )
             return
         }
@@ -220,8 +233,7 @@ export default function EditDocument() {
                         text: "Cancelar",
                         onPress: () => {}
                     }
-                ],
-                {cancelable: false}
+                ]
             )
             return
         }
@@ -256,7 +268,11 @@ export default function EditDocument() {
                                 try {
                                     await RNFS.unlink(item)
                                 } catch (error) {
-                                    console.log(error)
+                                    await log("ERROR", `EditDocument deletePicture - Erro ao apagar foto do documento. Mensagem: "${error}"`)
+                                    Alert.alert(
+                                        "Erro ao apagar foto",
+                                        "Não foi possível apagar foto do documento"
+                                    )
                                 }
                             }
                         })
@@ -273,8 +289,7 @@ export default function EditDocument() {
                     text: "Cancelar", 
                     onPress: () => {}
                 }
-            ],
-            {cancelable: false}
+            ]
         )
     }, [pictureList, selectedPictures, isChanged])
 

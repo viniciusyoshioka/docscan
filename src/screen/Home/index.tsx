@@ -157,13 +157,18 @@ export default function Home() {
             "Apagar documento?",
             "Esta ação não poderá ser desfeita. Deseja apagar?",
             [
-                {text: "Apagar", onPress: async () => {
-                    await deleteDocument(selectedDocument, true)
-                    getDocument()
-                }},
-                {text: "Cancelar", onPress: () => {}}
-            ],
-            {cancelable: false}
+                {
+                    text: "Apagar", 
+                    onPress: async () => {
+                        await deleteDocument(selectedDocument, true)
+                        getDocument()
+                    }
+                },
+                {
+                    text: "Cancelar",
+                    onPress: () => {}
+                }
+            ]
         )
     }, [selectedDocument])
 

@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 import { debugHomeDefault, settingsDefault, storageDebugHome, storageDocument, storageDocumentId, storageSettings, storageTheme, themeDefault } from "./constant"
+import { log } from "./log"
 import { Document, SettingsProps } from "./object-types"
 
 
@@ -8,7 +9,7 @@ async function write(key: string, value: string) {
     try {
         await AsyncStorage.setItem(key, value)
     } catch (error) {
-        console.log(error)
+        await log("ERROR", `storage write - Erro ao definir item no AsyncStorage. Mensagem: "${error}"`)
     }
 }
 
@@ -17,7 +18,7 @@ async function read(key: string): Promise<string | null> {
         const readValue = await AsyncStorage.getItem(key)
         return readValue
     } catch (error) {
-        console.log(error)
+        await log("ERROR", `storage read - Erro ao ler item do AsyncStorage. Mensagem: "${error}"`)
         return null
     }
 }

@@ -1,6 +1,7 @@
 import RNFS from "react-native-fs"
 
 import { fullPathRoot, fullPathPdf, fullPathPicture, fullPathPictureOriginal, fullPathPictureCropped } from "./constant"
+import { log } from "./log"
 
 
 async function createRootFolder() {
@@ -9,7 +10,7 @@ async function createRootFolder() {
             await RNFS.mkdir(fullPathRoot)
         }
     } catch (error) {
-        console.log(error)
+        await log("ERROR", `folder-handler createRootFolder - Erro ao criar pasta. Mensagem: "${error}"`)
     }
 }
 
@@ -19,7 +20,7 @@ async function createPdfFolder() {
             await RNFS.mkdir(fullPathPdf)
         }
     } catch (error) {
-        console.log(error)
+        await log("ERROR", `folder-handler createPdfFolder - Erro ao criar pasta. Mensagem: "${error}"`)
     }
 }
 
@@ -29,7 +30,7 @@ async function createPictureFolder() {
             await RNFS.mkdir(fullPathPicture)
         }
     } catch (error) {
-        console.log(error)
+        await log("ERROR", `folder-handler createPictureFolder - Erro ao criar pasta. Mensagem: "${error}"`)
     }
 }
 
@@ -39,7 +40,7 @@ async function createPictureOriginalFolder() {
             await RNFS.mkdir(fullPathPictureOriginal)
         }
     } catch (error) {
-        console.log(error)
+        await log("ERROR", `folder-handler createPictureOriginalFolder - Erro ao criar pasta. Mensagem: "${error}"`)
     }
 }
 
@@ -49,7 +50,7 @@ async function createPictureCroppedFolder() {
             await RNFS.mkdir(fullPathPictureCropped)
         }
     } catch (error) {
-        console.log(error)
+        await log("ERROR", `folder-handler createPictureCroppedFolder - Erro ao criar pasta. Mensagem: "${error}"`)
     }
 }
 
