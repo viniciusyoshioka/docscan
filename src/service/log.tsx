@@ -5,33 +5,34 @@ import { fullPathLog } from "./constant"
 import { logCode } from "./object-types"
 
 
-async function createLogFile() {
-    if (await RNFS.exists(fullPathLog)) {
-        return
-    }
-
-    try {
-        await RNFS.writeFile(fullPathLog, "")
-    } catch (error) {
-        console.log(`FALHA CRÍTICA - Erro criando arquivo de log. Mensagem: "${error}"`)
-        Alert.alert(
-            "FALHA CRÍTICA",
-            `Erro criando arquivo de log. Mensagem: "${error}"`
-        )
-    }
+function createLogFile() {
+    RNFS.exists(fullPathLog)
+        .then((exists) => {
+            if (!exists) {
+                RNFS.writeFile(fullPathLog, "")
+                    .catch((error) => {
+                        console.log(`FALHA CRÍTICA - Erro criando arquivo de log. Mensagem: "${error}"`)
+                        Alert.alert(
+                            "FALHA CRÍTICA",
+                            `Erro criando arquivo de log. Mensagem: "${error}"`
+                        )
+                    })
+            }
+        })
 }
 
 
-export async function log(code: logCode, data: string) {
-    await createLogFile()
+export function log(code: logCode, data: string) {
+    createLogFile()
 
-    try {
-        await RNFS.appendFile(fullPathLog, `${code} - ${data}\n`)
-    } catch (error) {
-        console.log(`FALHA CRÍTICA - Erro registrando log. Mensagem: "${error}"`)
-        Alert.alert(
-            "FALHA CRÍTICA",
-            `Erro registrando log. Mensagem: "${error}"`
-        )
-    }
+    console.log(`${code} - ${data}`)
+
+    RNFS.appendFile(fullPathLog, `${code} - ${data}\n`)
+        .catch((error) => {
+            console.log(`FALHA CRÍTICA - Erro registrando log. Mensagem: "${error}"`)
+            Alert.alert(
+                "FALHA CRÍTICA",
+                `Erro registrando log. Mensagem: "${error}"`
+            )
+        })
 }

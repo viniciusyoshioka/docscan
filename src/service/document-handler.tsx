@@ -105,7 +105,7 @@ export async function deleteDocument(ids: Array<number>, deleteFiles=false) {
                     try {
                         await RNFS.unlink(picturePath)
                     } catch (error) {
-                        await log("ERROR", `document-handler deleteDocument - Erro ao apagar picture da pictureList no processo de apagar documento. Mensagem: "${error}"`)
+                        log("ERROR", `document-handler deleteDocument - Erro ao apagar picture da pictureList no processo de apagar documento. Mensagem: "${error}"`)
                     }
                 })
             }

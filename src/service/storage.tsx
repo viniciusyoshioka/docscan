@@ -9,7 +9,7 @@ async function write(key: string, value: string) {
     try {
         await AsyncStorage.setItem(key, value)
     } catch (error) {
-        await log("ERROR", `storage write - Erro ao definir item no AsyncStorage. Mensagem: "${error}"`)
+        log("ERROR", `storage write - Erro ao definir item no AsyncStorage. Mensagem: "${error}"`)
     }
 }
 
@@ -18,7 +18,7 @@ async function read(key: string): Promise<string | null> {
         const readValue = await AsyncStorage.getItem(key)
         return readValue
     } catch (error) {
-        await log("ERROR", `storage read - Erro ao ler item do AsyncStorage. Mensagem: "${error}"`)
+        log("ERROR", `storage read - Erro ao ler item do AsyncStorage. Mensagem: "${error}"`)
         return null
     }
 }

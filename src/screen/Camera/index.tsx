@@ -104,7 +104,7 @@ export default function Camera() {
 
         const hasCameraPermission = await getCameraPermission()
         if (!hasCameraPermission) {
-            await log("INFO", "Camera takePicture - Não tem permissão para tirar foto")
+            log("INFO", "Camera takePicture - Não tem permissão para tirar foto")
             return
         }
 
@@ -115,7 +115,7 @@ export default function Camera() {
                 setDocumentName(getDocumentName())
             }
         } catch (error) {
-            await log("ERROR", `Camera takePicture - Erro ao tirar foto. Mensagem: "${error}"`)
+            log("ERROR", `Camera takePicture - Erro ao tirar foto. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro ao tirar foto", 
                 "Não foi possível tirar foto, erro desconhecido"

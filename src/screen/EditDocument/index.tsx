@@ -112,7 +112,7 @@ export default function EditDocument() {
             createPdf(documentName, pictureList)
             ToastAndroid.show(`Documento exportado para "Memória Externa/${pathPdf}/${documentName}.pdf"`, 10)
         } catch (error) {
-            await log("ERROR", `EditDocument exportDocumentToPdf - Erro ao export documento para PDF. Mensagem: "${error}"`)
+            log("ERROR", `EditDocument exportDocumentToPdf - Erro ao export documento para PDF. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro ao exportar documento",
                 "Não foi possível exportar documento para PDF"
@@ -146,7 +146,7 @@ export default function EditDocument() {
                 failOnCancel: false
             })
         } catch (error) {
-            await log("ERROR", `EditDocument shareDocument - Erro ao compartilhar documento. Mensagem: "${error}"`)
+            log("ERROR", `EditDocument shareDocument - Erro ao compartilhar documento. Mensagem: "${error}"`)
             Alert.alert(
                 "Não foi possível compartilhar documento",
                 "Erro desconhecido ao compartilhar documento"
@@ -175,7 +175,7 @@ export default function EditDocument() {
                                 try {
                                     await RNFS.unlink(item)
                                 } catch (error) {
-                                    await log("ERROR", `EditDocument discardDocument - Erro ao apagar fotos do documento durante seu descarte. Mensagem: "${error}"`)
+                                    log("ERROR", `EditDocument discardDocument - Erro ao apagar fotos do documento durante seu descarte. Mensagem: "${error}"`)
                                     Alert.alert(
                                         "Erro ao descartar documento",
                                         "Erro ao apagar fotos do documento durante seu descarte"
@@ -268,7 +268,7 @@ export default function EditDocument() {
                                 try {
                                     await RNFS.unlink(item)
                                 } catch (error) {
-                                    await log("ERROR", `EditDocument deletePicture - Erro ao apagar foto do documento. Mensagem: "${error}"`)
+                                    log("ERROR", `EditDocument deletePicture - Erro ao apagar foto do documento. Mensagem: "${error}"`)
                                     Alert.alert(
                                         "Erro ao apagar foto",
                                         "Não foi possível apagar foto do documento"

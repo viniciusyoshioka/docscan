@@ -48,7 +48,7 @@ export default function ImportImageFromGalery() {
         const hasCameraRollPermission = await getCameraRollPermission()
         if (!hasCameraRollPermission) {
             setImageGalery([])
-            await log("INFO", "ImportImageFromGalery getImage - Não tem permissão pra usar a CameraRoll")
+            log("INFO", "ImportImageFromGalery getImage - Não tem permissão pra usar a CameraRoll")
             Alert.alert(
                 "Falha em abrir galeria",
                 "Permissão negada. Não foi possível abrir a galeria."
@@ -63,7 +63,7 @@ export default function ImportImageFromGalery() {
             })
             setImageGalery(cameraRollPhotos.edges)
         } catch (error) {
-            await log("ERROR", `ImportImageFromGalery getImage - Erro ao pegar imagens da CameraRoll. Mensagem: "${error}"`)
+            log("ERROR", `ImportImageFromGalery getImage - Erro ao pegar imagens da CameraRoll. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro ao carregar galeria",
                 "Não foi possível carregar galeria"
@@ -126,7 +126,7 @@ export default function ImportImageFromGalery() {
         try {
             await RNFS.copyFile(imagePath, newImagePath)
         } catch (error) {
-            await log("ERROR", `ImportImageFromGalery importSingleImage - Erro ao importar uma imagem da galeria. Mensagem: "${error}"`)
+            log("ERROR", `ImportImageFromGalery importSingleImage - Erro ao importar uma imagem da galeria. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro ao importar imagem", 
                 "Não foi possível importar uma imagem da galeria"
@@ -152,7 +152,7 @@ export default function ImportImageFromGalery() {
             try {
                 await RNFS.copyFile(item, newImagePath)
             } catch (error) {
-                await log("ERROR", `ImportImageFromGalery importMultipleImage - Erro ao importar multiplas imagens da galeria. Mensagem: "${error}"`)
+                log("ERROR", `ImportImageFromGalery importMultipleImage - Erro ao importar multiplas imagens da galeria. Mensagem: "${error}"`)
                 Alert.alert(
                     "Erro ao importar imagens",
                     "Não foi possível importar multiplas imagens da galeria"
