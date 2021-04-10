@@ -9,7 +9,7 @@ export const appInDevelopment = true
 // App
 export const appName = appInDevelopment ? "DocScanBeta" : "DocScan"
 export const appFName = appInDevelopment ? "DocScan Beta" : "DocScan"
-export const appVersion = "1.2.2"
+export const appVersion = "1.2.3"
 export const appType = appInDevelopment ? "beta" : "release"
 
 // App icon

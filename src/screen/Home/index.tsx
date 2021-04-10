@@ -12,7 +12,7 @@ import { readDebugHome, readDocument, readDocumentId, writeDebugHome, writeDocum
 import HomeHeader from "./Header"
 import { DebugButton } from "../../component/DebugButton"
 import { useSwitchTheme } from "../../service/theme"
-import { appIconOutline, appInDevelopment, debugHomeHide, debugHomeShow, fullPathLog, fullPathRoot, themeDark, themeLight } from "../../service/constant"
+import { appIconOutline, appInDevelopment, debugHomeHide, debugHomeShow, fullPathLog, fullPathRoot, themeAuto, themeDark, themeLight } from "../../service/constant"
 import { deleteDocument } from "../../service/document-handler"
 import { createAllFolder } from "../../service/folder-handler"
 import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
@@ -266,6 +266,10 @@ export default function Home() {
                             style={{bottom: 5}} />
 
                         <DebugButton
+                            text={"Auto"}
+                            onPress={async () => await switchTheme(themeAuto)}
+                            style={{bottom: 115, left: 60}} />
+                        <DebugButton
                             text={"Claro"}
                             onPress={async () => await switchTheme(themeLight)}
                             style={{bottom: 60, left: 60}} />
@@ -275,11 +279,11 @@ export default function Home() {
                             style={{bottom: 5, left: 60}} />
 
                         <DebugButton
-                            text={"Log Ler"}
+                            text={"Ler"}
                             onPress={debugReadLog}
                             style={{bottom: 60, left: 115}} />
                         <DebugButton
-                            text={"Log Comp"}
+                            text={"Compar"}
                             onPress={debugShareLog}
                             style={{bottom: 5, left: 115}} />
                     </View>
