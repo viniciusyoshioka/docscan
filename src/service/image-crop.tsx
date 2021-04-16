@@ -1,21 +1,14 @@
-import React, { createRef, PureComponent } from "react"
-import { findNodeHandle, NativeSyntheticEvent, requireNativeComponent, StyleProp, UIManager, ViewStyle } from "react-native"
+import React, { Component } from "react"
+import { findNodeHandle, NativeModules, requireNativeComponent, StyleProp, ViewStyle } from "react-native"
 
 
 const RNImageCrop = requireNativeComponent("RNImageCrop")
+const RNImageCropModule = NativeModules.ImageCropModule
 
 
-interface Response {
-    uri: string,
-    width: number,
-    height: number,
-}
-
-
-interface ImageCropProps {
-    sourceUrl: string,
+export interface ImageCropProps {
     style?: StyleProp<ViewStyle>,
-    onImageCrop?: (res: Response) => void,
+    sourceUrl: string,
     keepAspectRatio?: boolean,
     aspectRatio?: {
         width: number;
@@ -23,19 +16,25 @@ interface ImageCropProps {
     },
 }
 
-
-interface saveImageOptions {
-    quality: number,
-    preserveTransparency: boolean,
+export interface saveImageOptions {
+    path?: string,
+    quality?: number,
+    preserveTransparency?: boolean,
 }
 
 const defaultSaveImageOptions: saveImageOptions = {
+    path: "",
     quality: 100,
     preserveTransparency: true
 }
 
 
-export default class ImageCrop extends PureComponent<ImageCropProps> {
+export default class ImageCrop extends Component<ImageCropProps> {
+
+
+    constructor(props: ImageCropProps) {
+        super(props)
+    }
 
 
     public static defaultProps = {
@@ -43,37 +42,44 @@ export default class ImageCrop extends PureComponent<ImageCropProps> {
     }
 
 
-    private viewRef = createRef<any>()
+    _ref: any = null
+    _imageCropHandle: any = null
 
 
-    public saveImage = (path: string, options: saveImageOptions = defaultSaveImageOptions) => {
-        UIManager.dispatchViewManagerCommand(
-            findNodeHandle(this.viewRef.current),
-            UIManager.getViewManagerConfig("RNImageCrop").Commands.saveImage,
-            [path, options]
-        )
-    }
-
-    public rotateImage = (clockwise: boolean = true) => {
-        UIManager.dispatchViewManagerCommand(
-            findNodeHandle(this.viewRef.current),
-            UIManager.getViewManagerConfig("RNImageCrop").Commands.rotateImage,
-            [clockwise]
-        )
+    _setRef = (ref: any) => {
+        if (ref) {
+            this._ref = ref
+            this._imageCropHandle = findNodeHandle(ref)
+        } else {
+            this._ref = null
+            this._imageCropHandle = null
+        }
     }
 
 
-    public render() {
-        const { sourceUrl, style, onImageCrop, keepAspectRatio, aspectRatio } = this.props
+    saveImage = async (options: saveImageOptions = defaultSaveImageOptions): Promise<string> => {
+        if (!this._imageCropHandle) {
+            throw 'ImageCrop is null'
+        }
+        return await RNImageCropModule.saveImage(options, this._imageCropHandle)
+    }
+
+    rotateImage = (clockwise: boolean = true): void => {
+        if (!this._imageCropHandle) {
+            throw 'ImageCrop is null'
+        }
+        RNImageCropModule.rotateImage(clockwise, this._imageCropHandle)
+    }
+
+
+    render() {
+        const { style, sourceUrl, keepAspectRatio, aspectRatio } = this.props
 
         return (
             <RNImageCrop
-                ref={this.viewRef}
-                sourceUrl={sourceUrl}
+                ref={this._setRef}
                 style={style}
-                onImageSaved={(event: NativeSyntheticEvent<Response>) => {
-                    onImageCrop!(event.nativeEvent)
-                }}
+                sourceUrl={sourceUrl}
                 keepAspectRatio={keepAspectRatio}
                 cropAspectRatio={aspectRatio}
             />
