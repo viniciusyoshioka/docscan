@@ -1,5 +1,6 @@
 package com.docscan;
 
+import com.docscan.ImageCrop.ImageCropPackage;
 import com.docscan.PdfCreator.PdfCreatorPackage;
 import androidx.multidex.MultiDexApplication;
 import android.content.Context;
@@ -24,11 +25,11 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
 
         @Override
         protected List<ReactPackage> getPackages() {
-          @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
           packages.add(new PdfCreatorPackage());
+          packages.add(new ImageCropPackage());
           return packages;
         }
 
