@@ -1,9 +1,8 @@
-import React, { Component } from "react"
-import { findNodeHandle, NativeModules, requireNativeComponent, StyleProp, ViewStyle } from "react-native"
+import React, { Component, createRef } from "react"
+import { findNodeHandle, NativeSyntheticEvent, requireNativeComponent, StyleProp, UIManager, ViewStyle } from "react-native"
 
 
 const RNImageCrop = requireNativeComponent("RNImageCrop")
-const RNImageCropModule = NativeModules.ImageCropModule
 
 
 export interface ImageCropProps {
@@ -14,18 +13,18 @@ export interface ImageCropProps {
         width: number;
         height: number
     },
+    onImageSaved?: (response: imageSavedResponse) => void,
+    onSaveImageError?: (response: string) => void,
 }
 
-export interface saveImageOptions {
-    path?: string,
-    quality?: number,
-    preserveTransparency?: boolean,
+export interface imageSavedResponse {
+    uri: string,
+    width: number,
+    height: number,
 }
 
-const defaultSaveImageOptions: saveImageOptions = {
-    path: "",
-    quality: 100,
-    preserveTransparency: true
+interface saveImageErrorResponse {
+    message: string,
 }
 
 
@@ -42,46 +41,42 @@ export default class ImageCrop extends Component<ImageCropProps> {
     }
 
 
-    _ref: any = null
-    _imageCropHandle: any = null
+    cropImageRef = createRef<any>()
 
 
-    _setRef = (ref: any) => {
-        if (ref) {
-            this._ref = ref
-            this._imageCropHandle = findNodeHandle(ref)
-        } else {
-            this._ref = null
-            this._imageCropHandle = null
-        }
-    }
-
-
-    saveImage = async (options: saveImageOptions = defaultSaveImageOptions): Promise<string> => {
-        if (!this._imageCropHandle) {
-            throw 'ImageCrop is null'
-        }
-        return await RNImageCropModule.saveImage(options, this._imageCropHandle)
+    saveImage = (quality: number = 100, preserveTransparency: boolean = true) => {
+        UIManager.dispatchViewManagerCommand(
+            findNodeHandle(this.cropImageRef.current),
+            UIManager.getViewManagerConfig("RNImageCrop").Commands.saveImage,
+            [quality, preserveTransparency]
+        )
     }
 
     rotateImage = (clockwise: boolean = true): void => {
-        if (!this._imageCropHandle) {
-            throw 'ImageCrop is null'
-        }
-        RNImageCropModule.rotateImage(clockwise, this._imageCropHandle)
+        UIManager.dispatchViewManagerCommand(
+            findNodeHandle(this.cropImageRef.current),
+            UIManager.getViewManagerConfig("RNImageCrop").Commands.rotateImage,
+            [clockwise]
+        )
     }
 
 
     render() {
-        const { style, sourceUrl, keepAspectRatio, aspectRatio } = this.props
+        const { style, sourceUrl, keepAspectRatio, aspectRatio, onImageSaved, onSaveImageError } = this.props
 
         return (
             <RNImageCrop
-                ref={this._setRef}
+                ref={this.cropImageRef}
                 style={style}
                 sourceUrl={sourceUrl}
                 keepAspectRatio={keepAspectRatio}
-                cropAspectRatio={aspectRatio}
+                aspectRatio={aspectRatio}
+                onImageSaved={(event: NativeSyntheticEvent<imageSavedResponse>) => {
+                    onImageSaved!(event.nativeEvent)
+                }}
+                onSaveImageError={(event: NativeSyntheticEvent<saveImageErrorResponse>) => {
+                    onSaveImageError!(event.nativeEvent.message)
+                }}
             />
         )
     }
