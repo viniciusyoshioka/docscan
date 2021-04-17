@@ -13,4 +13,3 @@ adicionar drag drop pra ordenar as fotos
 
 # VisualizePicture
 adicionar zoom na imagem em VisualizePicture
-adicionar opcao de cortar imagem

@@ -7,42 +7,39 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
 import android.media.ExifInterface;
-import androidx.annotation.NonNull;
-import com.facebook.react.bridge.Promise;
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
-import com.facebook.react.bridge.ReactMethod;
+
+import androidx.annotation.Nullable;
+
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.WritableMap;
+
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.UUID;
 
 
-class Size {
-    int width;
-    int height;
+public class PdfCreator {
 
-    Size(int width, int height) {
-        this.width = width;
-        this.height = height;
+
+    private final int A4_WIDTH = 595; // 596
+    private final int A4_HEIGHT = 840; // 841
+    private final int BORDER_SIZE = 25;
+
+    private final ReactContext mReactContext;
+    private final ReadableArray mPictureList;
+    private final @Nullable String mDocumentPath;
+    private OnExportComplete mOnExportComplete;
+    private OnExportFailure mOnExportFailure;
+
+
+    public PdfCreator(ReactContext reactContext, ReadableArray pictureList, @Nullable String documentPath) {
+        mReactContext = reactContext;
+        mPictureList = pictureList;
+        mDocumentPath = documentPath;
     }
-}
 
-
-public class PdfCreator extends ReactContextBaseJavaModule {
-
-    int a4Width = 595; // 596
-    int a4Height = 840; // 841
-    int borderSize = 25;
-
-    PdfCreator(ReactApplicationContext context) {
-        super(context);
-    }
-
-    @NonNull
-    @Override
-    public String getName() {
-        return "PdfCreator";
-    }
 
     private int convertRotationToDegree(int orientation) {
         if (orientation == ExifInterface.ORIENTATION_ROTATE_90) {
@@ -61,46 +58,58 @@ public class PdfCreator extends ReactContextBaseJavaModule {
         int originalImageHeight = originalImage.getHeight();
         float imageAspectRatio = (float) originalImageWidth / originalImageHeight;
 
-        int newImageWidth = 0; // = pageInfo.getPageWidth() - (borderSize * 2);
-        int newImageHeight = 0; // = pageInfo.getPageHeight() - (borderSize * 2);
+        // int newImageWidth = pageInfo.getPageWidth() - (borderSize * 2);
+        // int newImageHeight = pageInfo.getPageHeight() - (borderSize * 2);
+        int newImageWidth = 0;
+        int newImageHeight = 0;
 
+        /*
         if (originalImageWidth > pageInfo.getPageWidth() - (borderSize * 2)) {
             newImageWidth = pageInfo.getPageWidth() - (borderSize * 2);
-            newImageHeight = (int) (newImageWidth / imageAspectRatio);
-        } else if (originalImageHeight > pageInfo.getPageHeight() - (borderSize * 2)) {
+            newImageHeight = (newImageWidth * originalImageHeight) / originalImageWidth;
+        }
+        if (newImageHeight > pageInfo.getPageHeight() - (borderSize * 2)) {
             newImageHeight = pageInfo.getPageHeight() - (borderSize * 2);
+            newImageWidth = (newImageHeight * originalImageWidth) / originalImageHeight;
+        }
+        */
+        if (originalImageWidth > pageInfo.getPageWidth() - (BORDER_SIZE * 2)) {
+            newImageWidth = pageInfo.getPageWidth() - (BORDER_SIZE * 2);
+            newImageHeight = (int) (newImageWidth / imageAspectRatio);
+        } else if (originalImageHeight > pageInfo.getPageHeight() - (BORDER_SIZE * 2)) {
+            newImageHeight = pageInfo.getPageHeight() - (BORDER_SIZE * 2);
             newImageWidth = (int) (newImageHeight * imageAspectRatio);
         }
-
-//        if (originalImageWidth > pageInfo.getPageWidth() - (borderSize * 2)) {
-//            newImageWidth = pageInfo.getPageWidth() - (borderSize * 2);
-//            newImageHeight = (newImageWidth * originalImageHeight) / originalImageWidth;
-//        }
-//        if (newImageHeight > pageInfo.getPageHeight() - (borderSize * 2)) {
-//            newImageHeight = pageInfo.getPageHeight() - (borderSize * 2);
-//            newImageWidth = (newImageHeight * originalImageWidth) / originalImageHeight;
-//        }
 
         return new Size(newImageWidth, newImageHeight);
     }
 
-    @ReactMethod
-    public void exportPicturesToPdf(String documentPath, ReadableArray pictureList, Promise promise) {
+
+    public void exportPicturesToPdf() {
+        String destinyPath;
+        if (mDocumentPath == null) {
+            destinyPath = new File(mReactContext.getCacheDir().toURI().toString(), UUID.randomUUID() + ".pdf")
+                    .toURI()
+                    .toString();
+        } else {
+            destinyPath = mDocumentPath;
+        }
+
         try {
             PdfDocument document = new PdfDocument();
             Paint paint = new Paint();
 
-            for (int x = 0; x < pictureList.size(); x++) {
+            for (int x = 0; x < mPictureList.size(); x++) {
                 // Create and start page
-                PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(a4Width, a4Height, 1).create();
+                PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(A4_WIDTH, A4_HEIGHT, 1).create();
                 PdfDocument.Page page = document.startPage(pageInfo);
 
                 // Create page content
                 Canvas pageCanvas = page.getCanvas();
-                Bitmap originalPicture = BitmapFactory.decodeFile(pictureList.getString(x));
+                Bitmap originalPicture = BitmapFactory.decodeFile(mPictureList.getString(x));
 
                 // Get exif orientation
-                ExifInterface pictureExif = new ExifInterface(pictureList.getString(x));
+                ExifInterface pictureExif = new ExifInterface(mPictureList.getString(x));
                 int pictureOrientation = pictureExif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
                 int pictureRotation = convertRotationToDegree(pictureOrientation);
                 Matrix matrix = new Matrix();
@@ -118,7 +127,7 @@ public class PdfCreator extends ReactContextBaseJavaModule {
 
                 // Resize image
                 Size newImageSize;
-                if ((originalPicture.getWidth() > (pageCanvas.getWidth() - (borderSize * 2))) || (originalPicture.getHeight() > (pageCanvas.getHeight() - (borderSize * 2)))) {
+                if ((originalPicture.getWidth() > (pageCanvas.getWidth() - (BORDER_SIZE * 2))) || (originalPicture.getHeight() > (pageCanvas.getHeight() - (BORDER_SIZE * 2)))) {
                     newImageSize = resizeImage(originalPicture, pageInfo);
                 } else {
                     newImageSize = new Size(originalPicture.getWidth(), originalPicture.getHeight());
@@ -139,16 +148,54 @@ public class PdfCreator extends ReactContextBaseJavaModule {
             }
 
             // Write file
-            File file = new File(documentPath);
+            File file = new File(destinyPath);
             document.writeTo(new FileOutputStream(file));
 
             // Close file
             document.close();
 
             // Return result
-            promise.resolve(true);
-        } catch (Exception error) {
-            promise.reject(error);
+            OnExportComplete listener = mOnExportComplete;
+            if (listener != null) {
+                WritableMap response = Arguments.createMap();
+                response.putString("uri", mDocumentPath);
+
+                listener.onExportComplete(response);
+            }
+        } catch (Exception e) {
+            OnExportFailure listener = mOnExportFailure;
+            if (listener != null) {
+                listener.onExportFailure(e.getMessage());
+            }
+        }
+    }
+
+
+    public void setOnExportComplete(OnExportComplete listener) {
+        mOnExportComplete = listener;
+    }
+
+    public void setOnExportFailure(OnExportFailure listener) {
+        mOnExportFailure = listener;
+    }
+
+
+    public interface OnExportComplete {
+        void onExportComplete(WritableMap response);
+    }
+
+    public interface OnExportFailure {
+        void onExportFailure(String message);
+    }
+
+
+    private static class Size {
+        int width;
+        int height;
+
+        Size(int width, int height) {
+            this.width = width;
+            this.height = height;
         }
     }
 }

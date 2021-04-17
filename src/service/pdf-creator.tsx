@@ -5,7 +5,12 @@ const { PdfCreator } = NativeModules
 
 
 export interface PdfCreatorProps {
-    exportPicturesToPdf: (documentPath: string, pictureList: Array<string>) => Promise<boolean>,
+    exportPicturesToPdf: (pictureList: Array<string>, documentPath: string | null) => Promise<ExportResponse>,
+}
+
+
+export interface ExportResponse {
+    uri: string,
 }
 
 

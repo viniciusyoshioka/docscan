@@ -2,7 +2,13 @@ import { fullPathPdf } from "./constant"
 import PdfCreator from "./pdf-creator"
 
 
-export function createPdf(documentName: string, pictureList: Array<string>) {
-    const documentPath = `${fullPathPdf}/${documentName}.pdf`
-    PdfCreator.exportPicturesToPdf(documentPath, pictureList)
+export async function createPdf(pictureList: Array<string>, documentName: string | null = null) {
+    let documentPath: string | null
+    if (documentName === null) {
+        documentPath = null
+    } else {
+        documentPath = `${fullPathPdf}/${documentName}.pdf`
+    }
+
+    return await PdfCreator.exportPicturesToPdf(pictureList, documentPath)
 }
