@@ -15,6 +15,7 @@ import { createPdf } from "../../service/pdf-handler"
 import { fullPathPdf, pathPdf } from "../../service/constant"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
+import { ExportResponse } from "../../service/pdf-creator"
 
 
 type EditDocumentParams = {
@@ -83,7 +84,7 @@ export default function EditDocument() {
         }
     }, [document, selectionMode, pictureList, isChanged, documentName])
 
-    const exportDocumentToPdf = useCallback(async () => {
+    const exportDocumentToPdf = useCallback(() => {
         if (isChanged) {
             Alert.alert(
                 "Alterações não salvas",
@@ -108,16 +109,26 @@ export default function EditDocument() {
             return
         }
 
-        try {
-            createPdf(documentName, pictureList)
-            ToastAndroid.show(`Documento exportado para "Memória Externa/${pathPdf}/${documentName}.pdf"`, 10)
-        } catch (error) {
-            log("ERROR", `EditDocument exportDocumentToPdf - Erro ao export documento para PDF. Mensagem: "${error}"`)
-            Alert.alert(
-                "Erro ao exportar documento",
-                "Não foi possível exportar documento para PDF"
-            )
-        }
+        createPdf(pictureList, documentName)
+            .then((response: ExportResponse) => {
+                if (response.uri.includes(fullPathPdf)) {
+                    ToastAndroid.show(`Documento exportado para "Memória Externa/${pathPdf}/${documentName}.pdf"`, 10)
+                    return
+                }
+                ToastAndroid.show(`Documento exportado para "${response.uri}"`, 10)
+            })
+            .catch((error) => {
+                log("ERROR", `EditDocument exportDocumentToPdf - Erro ao export documento para PDF. Mensagem: "${error}"`)
+                Alert.alert(
+                    "Erro ao exportar documento",
+                    "Não foi possível exportar documento para PDF"
+                )
+            })
+
+        Alert.alert(
+            "Aguarde", 
+            "Exportar documento pode demorar alguns segundos"
+        )
     }, [isChanged, documentName, pictureList])
 
     const shareDocument = useCallback(async () => {
