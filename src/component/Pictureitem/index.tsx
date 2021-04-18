@@ -44,7 +44,7 @@ export function PictureItem(props: PictureItemProps) {
 
     const longPress = useCallback((nativeEvent) => {
         if (nativeEvent.state === State.ACTIVE) {
-            if (props.selectionMode) {
+            if (!props.selectionMode) {
                 props.select()
                 setSelected(true)
             }
