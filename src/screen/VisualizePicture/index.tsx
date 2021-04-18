@@ -81,6 +81,16 @@ export default function VisualizePicture() {
             return
         }
 
+        try {
+            await RNFS.unlink(params.picturePath)
+        } catch (error) {
+            log("ERROR", `VisualizePicture onImageSaved - Error deleting original image file. Message: "${error}"`)
+            Alert.alert(
+                "Erro ao apagar imagem original",
+                "Não foi possível apagar a imagem original após cortá-la"
+            )
+        }
+
         params.pictureList[params.pictureIndex] = filePath
 
         navigation.navigate("EditDocument", {

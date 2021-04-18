@@ -93,7 +93,7 @@ export default function Camera() {
     }, [pictureList, documentName, documentObject])
 
     const takePicture = useCallback(async () => {
-        await createAllFolder()
+        createAllFolder()
 
         const date = getDateTime("-", "-", true)
         const picturePath = `${fullPathPictureOriginal}/${date}.jpg`
