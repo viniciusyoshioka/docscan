@@ -49,12 +49,12 @@ export const ThemeContext = createContext(LightTheme)
 export const SwitchThemeContext = createContext(async (newTheme: string) => {})
 
 
-export function useTheme() {
+export function useTheme(): ColorTheme {
     const theme = useContext(ThemeContext)
     return theme
 }
 
-export function useSwitchTheme() {
+export function useSwitchTheme(): (newTheme: string) => Promise<void> {
     const switchTheme = useContext(SwitchThemeContext)
     return switchTheme
 }

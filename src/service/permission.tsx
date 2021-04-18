@@ -2,14 +2,10 @@ import { PermissionsAndroid, Rationale } from "react-native";
 
 
 export async function getCameraPermission(): Promise<boolean> {
-    const cameraPermission = PermissionsAndroid.PERMISSIONS.CAMERA
-
-    const hasPermission = await PermissionsAndroid.check(cameraPermission)
-    
-    if (hasPermission) {
+    if (await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA)) {
         return true
     }
-    
+
     const cameraPermissionOption: Rationale = {
         title: "Permitir uso da câmera",
         message: "Para usar a câmera é necessário dar permissão",
@@ -17,7 +13,10 @@ export async function getCameraPermission(): Promise<boolean> {
         buttonNegative: "Negar",
         buttonNeutral: "Perguntar mais tarde"
     }
-    const permissionStatus = await PermissionsAndroid.request(cameraPermission, cameraPermissionOption)
+    const permissionStatus = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA, 
+        cameraPermissionOption
+    )
     if (permissionStatus == "granted") {
         return true
     }
@@ -26,14 +25,10 @@ export async function getCameraPermission(): Promise<boolean> {
 
 
 export async function getCameraRollPermission(): Promise<boolean> {
-    const cameraRollPermission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-
-    const hasPermission = await PermissionsAndroid.check(cameraRollPermission)
-    
-    if (hasPermission) {
+    if (await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE)) {
         return true
     }
-    
+
     const cameraRollPermissionOption: Rationale = {
         title: "Permitir uso da galeria",
         message: "Para usar a galeria é necessário dar permissão",
@@ -41,7 +36,10 @@ export async function getCameraRollPermission(): Promise<boolean> {
         buttonNegative: "Negar",
         buttonNeutral: "Perguntar mais tarde"
     }
-    const permissionStatus = await PermissionsAndroid.request(cameraRollPermission, cameraRollPermissionOption)
+    const permissionStatus = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, 
+        cameraRollPermissionOption
+    )
     if (permissionStatus == "granted") {
         return true
     }

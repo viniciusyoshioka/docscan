@@ -52,7 +52,7 @@ export default class ImageCrop extends Component<ImageCropProps> {
         )
     }
 
-    rotateImage = (clockwise: boolean = true): void => {
+    rotateImage = (clockwise: boolean = true) => {
         UIManager.dispatchViewManagerCommand(
             findNodeHandle(this.cropImageRef.current),
             UIManager.getViewManagerConfig("RNImageCrop").Commands.rotateImage,

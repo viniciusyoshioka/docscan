@@ -18,16 +18,18 @@ export default function App() {
 
     const getTheme = useCallback(async () => {
         const readAppTheme = await readTheme()
-        setAppTheme(readAppTheme)
         if (readAppTheme === themeAuto) {
             if (deviceTheme) {
+                setAppTheme(readAppTheme)
                 setTheme(deviceTheme)
-            } else {
-                setTheme(themeLight)
+                return
             }
-        } else {
-            setTheme(readAppTheme)
+            setAppTheme(readAppTheme)
+            setTheme(themeLight)
+            return
         }
+        setAppTheme(readAppTheme)
+        setTheme(readAppTheme)
     }, [deviceTheme])
 
     const switchTheme = useCallback(async (newTheme: string) => {
@@ -36,14 +38,38 @@ export default function App() {
     }, [])
 
 
+    /* 
+    useEffect(() => {
+        getTheme()
+    }, [deviceTheme])
+
     useEffect(() => {
         const themeListener: any = Appearance.addChangeListener(({ colorScheme }) => {
             setDeviceTheme(colorScheme)
+            console.log("themeListener mudou")
         })
+
+        console.log("themeListener adicionado")
+
         return () => {
+            console.log("themeListener removido")
             Appearance.removeChangeListener(themeListener)
         }
     }, [])
+    */
+
+
+    useEffect(() => {
+        getTheme()
+
+        const themeListener: any = Appearance.addChangeListener(({ colorScheme }) => {
+            setDeviceTheme(colorScheme)
+        })
+        
+        return () => {
+            Appearance.removeChangeListener(themeListener)
+        }
+    }, [getTheme])
 
     useEffect(() => {
         getTheme()
