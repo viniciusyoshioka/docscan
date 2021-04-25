@@ -18,19 +18,20 @@ import { log } from "../../service/log"
 
 type ImportImageFromGaleryParam = {
     ImportImageFromGalery: {
-        pictureList: Array<string>,
+        document: Document | undefined,
         documentName: string,
-        documentObject: Document,
+        pictureList: Array<string>,
     }
 }
 
 
 export default function ImportImageFromGalery() {
 
-
-    const { color } = useTheme()
+    
     const navigation = useNavigation()
     const { params } = useRoute<RouteProp<ImportImageFromGaleryParam, "ImportImageFromGalery">>()
+
+    const { color } = useTheme()
 
     const [imageGalery, setImageGalery] = useState<Array<PhotoIdentifier> | null>(null)
     const [selectionMode, setSelectionMode] = useState(false)
@@ -78,9 +79,9 @@ export default function ImportImageFromGalery() {
         }
 
         navigation.navigate("Camera", {
-            newPictureList: params.pictureList,
-            newDocumentName: params.documentName,
-            documentObject: params.documentObject,
+            document: params.document,
+            documentName: params.documentName,
+            pictureList: params.pictureList,
         })
     }, [selectionMode])
 
@@ -134,9 +135,9 @@ export default function ImportImageFromGalery() {
         }
 
         navigation.navigate("Camera", {
-            newPictureList: [...params.pictureList, newImagePath],
-            newDocumentName: params.documentName,
-            documentObject: params.documentObject,
+            document: params.document,
+            pictureList: [...params.pictureList, newImagePath],
+            documentName: params.documentName,
         })
     }, [])
 
@@ -162,9 +163,9 @@ export default function ImportImageFromGalery() {
         })
 
         navigation.navigate("Camera", {
-            newPictureList: imagesToImport,
-            newDocumentName: params.documentName,
-            documentObject: params.documentObject,
+            document: params.document,
+            documentName: params.documentName,
+            pictureList: imagesToImport,
         })
     }, [selectedImage])
 

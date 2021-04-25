@@ -9,17 +9,17 @@ export const appInDevelopment = true
 // App
 export const appName = appInDevelopment ? "DocScanBeta" : "DocScan"
 export const appFName = appInDevelopment ? "DocScan Beta" : "DocScan"
-export const appVersion = "1.5.2"
+export const appVersion = "1.5.3"
 export const appType = appInDevelopment ? "beta" : "release"
 
-// App icon
+// Icon
 const appIconPath = "./../image/app/"
 const appIconImage = appInDevelopment ? "docscanbeta.png" : "docscan.png"
 const appIconImageOutline = appInDevelopment ? "docscanbeta_outline.png" : "docscan_outline.png"
 export const appIcon = require(`${appIconPath}${appIconImage}`)
 export const appIconOutline = require(`${appIconPath}${appIconImageOutline}`)
 
-// External folder
+// Folder
 // Root
 export const folderRoot = appFName
 export const pathRoot = appFName
@@ -41,18 +41,18 @@ export const folderPictureCropped = "Cropped"
 export const pathPictureCropped = `${pathPicture}/${folderPictureCropped}`
 export const fullPathPictureCropped = `${RNFS.ExternalStorageDirectoryPath}/${pathPictureCropped}`
 
-// External file
+// File
 // Log
 export const fileLog = "docscanlog.log"
 export const pathLog = `${pathRoot}/${fileLog}`
 export const fullPathLog = `${RNFS.ExternalStorageDirectoryPath}/${pathLog}`
 
 // AsyncStorage
-export const storageTheme = "theme"
-export const storageDocumentId = "document-id"
-export const storageDocument = "document"
-export const storageDebugHome = "debug-home"
-export const storageSettings = "settings"
+export const storageTheme = "@docscan:theme"
+export const storageDocumentId = "@docscan:document-id"
+export const storageDocument = "@docscan:document"
+export const storageDebugHome = "@docscan:debug-home"
+export const storageSettings = "@docscan:settings"
 
 // Theme
 export const themeAuto = "auto"

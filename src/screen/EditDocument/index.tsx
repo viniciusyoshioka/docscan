@@ -20,10 +20,9 @@ import { ExportResponse } from "../../service/pdf-creator"
 
 type EditDocumentParams = {
     EditDocument: {
-        document: Document,
-        documentObject: Document,
-        documentName: string,
-        pictureList: Array<string>,
+        document: Document | undefined,
+        documentName?: string,
+        pictureList?: Array<string>,
     }
 }
 
@@ -34,9 +33,10 @@ export default function EditDocument() {
     const navigation = useNavigation()
     const { params } = useRoute<RouteProp<EditDocumentParams, "EditDocument">>()
 
-    const [document, setDocument] = useState(params.document || params.documentObject)
-    const [documentName, setDocumentName] = useState(document ? document.name : params.documentName)
-    const [pictureList, setPictureList] = useState(document ? document.pictureList : params.pictureList)
+    const [document, setDocument] = useState<Document | undefined>(undefined)
+    const [documentName, setDocumentName] = useState<string>("Nome do Documento")
+    const [pictureList, setPictureList] = useState<Array<string>>([])
+
     const [selectionMode, setSelectionMode] = useState(false)
     const [selectedPictures, setSelectedPictures] = useState<Array<string>>([])
     const [renameDocumentVisible, setRenameDocumentVisible] = useState(false)
@@ -57,25 +57,22 @@ export default function EditDocument() {
 
         if (document === undefined) {
             navigation.navigate("Camera", {
-                newPictureList: pictureList,
-                newDocumentName: documentName,
-                documentObject: undefined
+                document: undefined,
+                documentName: documentName,
+                pictureList: pictureList,
             })
         } else {
             if (isChanged) {
                 Alert.alert(
                     "Descartar alterações?",
                     "O documento foi alterado, sair agora irá descartar todas as alterações",
-                    [
-                        {
-                            text: "Voltar",
-                            onPress: () => navigation.navigate("Home")
-                        },
-                        {
-                            text: "Cancelar",
-                            onPress: () => {}
-                        }
-                    ]
+                    [{
+                        text: "Voltar",
+                        onPress: () => navigation.navigate("Home")
+                    }, {
+                        text: "Cancelar",
+                        onPress: () => {}
+                    }]
                 )
                 return
             }
@@ -167,11 +164,8 @@ export default function EditDocument() {
 
     const renameDocument = useCallback((newDocumentName: string) => {
         setDocumentName(newDocumentName)
-
-        if (!isChanged) {
-            setIsChanged(true)
-        }
-    }, [isChanged])
+        setIsChanged(true)
+    }, [])
 
     const discardDocument = useCallback(() => {
         Alert.alert(
@@ -211,55 +205,47 @@ export default function EditDocument() {
 
     const openCamera = useCallback(() => {
         navigation.navigate("Camera", {
-            newPictureList: pictureList,
-            newDocumentName: documentName,
-            documentObject: document
+            document: document,
+            documentName: documentName,
+            pictureList: pictureList,
         })
     }, [pictureList, documentName, document])
 
-    const saveNotExistingDocument = useCallback(async () => {
-        if (pictureList.length === 0) {
-            Alert.alert(
-                "Não há fotos para salvar",
-                "Não é possível salvar um documento vazio"
-            )
-            return
-        }
-
-        await saveNewDocument(documentName, pictureList)
-        navigation.reset({routes: [{name: "Home"}]})
-    }, [documentName, pictureList])
-
-    const saveExistingDocument = useCallback(async () => {
-        if (pictureList.length === 0) {
-            Alert.alert(
-                "Não há fotos para salvar",
-                "Não é possível salvar um documento vazio. Descartar documento?",
-                [
-                    {
-                        text: "Descartar",
-                        onPress: () => discardDocument()
-                    },
-                    {
-                        text: "Cancelar",
-                        onPress: () => {}
-                    }
-                ]
-            )
-            return
-        }
-
-        await saveEditedDocument(document, documentName, pictureList)
-        navigation.reset({routes: [{name: "Home"}]})
-    }, [document, documentName, pictureList, discardDocument])
-
     const saveDocument = useCallback(async () => {
         if (document === undefined) {
-            await saveNotExistingDocument()
+            if (pictureList.length === 0) {
+                Alert.alert(
+                    "Não há fotos para salvar",
+                    "Não é possível salvar um documento vazio"
+                )
+                return
+            }
+
+            await saveNewDocument(documentName, pictureList)
+            navigation.reset({routes: [{name: "Home"}]})
         } else {
-            await saveExistingDocument()
+            if (pictureList.length === 0) {
+                Alert.alert(
+                    "Não há fotos para salvar",
+                    "Não é possível salvar um documento vazio. Descartar documento?",
+                    [
+                        {
+                            text: "Descartar",
+                            onPress: () => discardDocument()
+                        },
+                        {
+                            text: "Cancelar",
+                            onPress: () => {}
+                        }
+                    ]
+                )
+                return
+            }
+
+            await saveEditedDocument(document, documentName, pictureList)
+            navigation.reset({routes: [{name: "Home"}]})
         }
-    }, [document, saveNotExistingDocument, saveExistingDocument])
+    }, [document, documentName, pictureList, discardDocument])
 
     const deletePicture = useCallback(() => {
         Alert.alert(
@@ -329,7 +315,7 @@ export default function EditDocument() {
             pictureIndex: index,
             documentName: documentName,
             pictureList: pictureList,
-            documentObject: document
+            document: document
         })
     }, [documentName, pictureList, document])
 
@@ -358,18 +344,20 @@ export default function EditDocument() {
     }, [pictureList])
 
     useEffect(() => {
-        if (params !== undefined) {
-            const paramsKeys = Object.keys(params)
+        if (params) {
+            const paramKeys = Object.keys(params)
 
-            if (paramsKeys.length === 4 && paramsKeys.indexOf("document") !== -1) {
-                setDocumentName(params.documentName)
-                setPictureList(params.pictureList)
-                setDocument(params.documentObject)
-    
+            if (paramKeys.length === 1 && params.document) {
+                setDocument(params.document)
+                setDocumentName(params.document.name)
+                setPictureList(params.document.pictureList)
+            } else {
+                setDocument(params.document)
+                if (params.documentName) {
+                    setDocumentName(params.documentName)
+                }
                 if (params.pictureList) {
-                    if (pictureList.length !== params.pictureList.length) {
-                        setIsChanged(true)
-                    }
+                    setPictureList(params.pictureList)
                 }
             }
         }

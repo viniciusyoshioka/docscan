@@ -16,9 +16,9 @@ type VisualizePictureParams = {
     VisualizePicture: {
         picturePath: string,
         pictureIndex: number,
+        document: Document | undefined,
         documentName: string,
         pictureList: Array<string>,
-        documentObject: Document
     }
 }
 
@@ -74,9 +74,9 @@ export default function VisualizePicture() {
                 "Não foi possível salvar imagem cortada"
             )
             navigation.navigate("EditDocument", {
+                document: params.document,
                 documentName: params.documentName,
                 pictureList: params.pictureList,
-                documentObject: params.documentObject,
             })
             return
         }
@@ -94,9 +94,9 @@ export default function VisualizePicture() {
         params.pictureList[params.pictureIndex] = filePath
 
         navigation.navigate("EditDocument", {
+            document: params.document,
             documentName: params.documentName,
             pictureList: params.pictureList,
-            documentObject: params.documentObject,
         })
     }
 

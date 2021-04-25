@@ -22,10 +22,10 @@ import { log } from "../../service/log"
 
 type CameraParams = {
     Camera: {
-        newPictureList: Array<string>,
-        newDocumentName: string,
-        documentObject: Document,
-    }
+        document: Document | undefined,
+        documentName: string,
+        pictureList: Array<string>,
+    } | undefined
 }
 
 
@@ -35,16 +35,15 @@ export default function Camera() {
     const navigation = useNavigation()
     const isFocused = useIsFocused()
     const { params } = useRoute<RouteProp<CameraParams, "Camera">>()
-    const cameraRef = useRef<RNCamera>(null)
 
+    const cameraRef = useRef<RNCamera>(null)
     const [cameraSettingsVisible, setCameraSettingsVisible] = useState(false)
     const [cameraSettings, setCameraSettings] = useState(settingsDefaultCamera)
     const [flash, setFlash] = useState(cameraSettings.flash)
     const [whiteBalance, setWhiteBalance] = useState(cameraSettings.whiteBalance)
 
-    const [documentName, setDocumentName] = useState("Documento vazio")
+    const [documentName, setDocumentName] = useState<string>("Documento Vazio")
     const [pictureList, setPictureList] = useState<Array<string>>([])
-    const [documentObject, setDocumentObject] = useState<Document | undefined>(undefined)
 
 
     useBackHandler(() => {
@@ -86,11 +85,11 @@ export default function Camera() {
 
     const addPictureFromGalery = useCallback(() => {
         navigation.navigate("ImportImageFromGalery", {
-            pictureList: pictureList,
+            document: params?.document,
             documentName: documentName,
-            documentObject: documentObject,
+            pictureList: pictureList,
         })
-    }, [pictureList, documentName, documentObject])
+    }, [pictureList, documentName])
 
     const takePicture = useCallback(async () => {
         createAllFolder()
@@ -110,10 +109,7 @@ export default function Camera() {
 
         try {
             await cameraRef.current?.takePictureAsync(options)
-            setPictureList([...pictureList, picturePath])
-            if (documentName === "Documento vazio") {
-                setDocumentName(getDocumentName())
-            }
+            setPictureList(oldValue => [...oldValue, picturePath])
         } catch (error) {
             log("ERROR", `Camera takePicture - Erro ao tirar foto. Mensagem: "${error}"`)
             Alert.alert(
@@ -121,15 +117,21 @@ export default function Camera() {
                 "Não foi possível tirar foto, erro desconhecido"
             )
         }
-    }, [cameraRef, pictureList, documentName])
+    }, [cameraRef])
 
     const editDocument = useCallback(() => {
+        let newDocumentName = "Documento Vazio"
+        if (documentName === "Documento Vazio" && pictureList.length > 0) {
+            newDocumentName = getDocumentName()
+            setDocumentName(newDocumentName)
+        }
+
         navigation.navigate("EditDocument", {
+            document: params?.document,
+            documentName: documentName === "Documento Vazio" ? newDocumentName : documentName,
             pictureList: pictureList,
-            documentName: documentName,
-            documentObject: documentObject,
         })
-    }, [pictureList, documentName, documentObject])
+    }, [pictureList, documentName])
 
 
     useEffect(() => {
@@ -142,10 +144,9 @@ export default function Camera() {
     }, [])
 
     useEffect(() => {
-        if (params !== undefined) {
-            setPictureList(params.newPictureList)
-            setDocumentName(params.newDocumentName)
-            setDocumentObject(params.documentObject)
+        if (params) {
+            setDocumentName(params.documentName)
+            setPictureList(params.pictureList)
         }
     }, [params])
 
