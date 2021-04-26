@@ -1,4 +1,4 @@
-import React, { useCallback } from "react"
+import React, { Dispatch, useCallback } from "react"
 import { ScrollView } from "react-native"
 
 import { ButtonSettings, cameraSettingsIconSize } from "../../component/CameraSettings"
@@ -6,6 +6,7 @@ import { Modal, ModalProps } from "../../component/Modal"
 import { settingsDefaultCamera } from "../../service/constant"
 import { flashType, SettingsCameraProps, whiteBalanceType } from "../../service/object-types"
 import { readSettings, writeSettings } from "../../service/storage"
+import { cameraReducerAction } from "../../service/reducer"
 
 import FlashAuto from "../../image/icon/flash-auto.svg"
 import FlashOn from "../../image/icon/flash-on.svg"
@@ -19,10 +20,7 @@ import WBSun from "../../image/icon/wb-sun.svg"
 
 export interface CameraSettingsProps extends ModalProps {
     cameraAttributes: SettingsCameraProps,
-    buttonFunctions: {
-        setFlash: (newFlashMode: flashType) => void,
-        setWhiteBalance: (newWhiteBalance: whiteBalanceType) => void,
-    }
+    setCameraAttributes: Dispatch<cameraReducerAction>,
 }
 
 
@@ -40,7 +38,7 @@ export default function CameraSettings(props: CameraSettingsProps) {
             newFlash = "auto"
         }
         // Set camera attribute
-        props.buttonFunctions.setFlash(newFlash)
+        props.setCameraAttributes({type: "flash", payload: newFlash})
         // Write settings
         const currentSettings = await readSettings()
         currentSettings.camera.flash = newFlash
@@ -62,7 +60,7 @@ export default function CameraSettings(props: CameraSettingsProps) {
             newWhiteBalance = "auto"
         }
         // Set camera attribute
-        props.buttonFunctions.setWhiteBalance(newWhiteBalance)
+        props.setCameraAttributes({type: "white-balance", payload: newWhiteBalance})
         // Write settings
         const currentSettings = await readSettings()
         currentSettings.camera.whiteBalance = newWhiteBalance
@@ -70,8 +68,7 @@ export default function CameraSettings(props: CameraSettingsProps) {
     }, [props.cameraAttributes.whiteBalance])
 
     const resetCameraSettings = useCallback(async () => {
-        props.buttonFunctions.setFlash(settingsDefaultCamera.flash)
-        props.buttonFunctions.setWhiteBalance(settingsDefaultCamera.whiteBalance)
+        props.setCameraAttributes({type: "reset"})
 
         const currentSettings = await readSettings()
         currentSettings.camera = settingsDefaultCamera

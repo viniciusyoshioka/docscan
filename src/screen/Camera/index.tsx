@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import React, { useCallback, useEffect, useReducer, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { RNCamera } from "react-native-camera"
 import { RouteProp, useIsFocused, useNavigation, useRoute } from "@react-navigation/native"
@@ -7,7 +7,7 @@ import Icon from "react-native-vector-icons/Ionicons"
 
 import { SafeScreen } from "../../component/Screen"
 import CameraHeader from "./Header"
-import CameraSettings from "./CameraSetings"
+import CameraSettings from "./CameraSettings"
 import { fullPathPictureOriginal, settingsDefaultCamera } from "../../service/constant"
 import { readSettings } from "../../service/storage"
 import { CameraControlButtonBase, CameraControlViewButtonIndex, cameraControlIconSize, CameraControlView, IndexControl } from "../../component/CameraControl"
@@ -18,6 +18,7 @@ import { Document } from "../../service/object-types"
 import { useBackHandler } from "../../service/hook"
 import { getCameraPermission } from "../../service/permission"
 import { log } from "../../service/log"
+import { cameraReducerAction, cameraReducerState } from "../../service/reducer"
 
 
 type CameraParams = {
@@ -29,6 +30,39 @@ type CameraParams = {
 }
 
 
+const initialCameraSettings: cameraReducerState = {
+    flash: settingsDefaultCamera.flash,
+    whiteBalance: settingsDefaultCamera.whiteBalance
+}
+
+function reducerCameraSettings(state: cameraReducerState, action: cameraReducerAction): cameraReducerState {
+    switch (action.type) {
+        case "flash":
+            return {
+                flash: action.payload,
+                whiteBalance: state.whiteBalance,
+            }
+        case "white-balance":
+            return {
+                flash: state.flash,
+                whiteBalance: action.payload,
+            }
+        case "set":
+            return {
+                flash: action.payload.flash,
+                whiteBalance: action.payload.whiteBalance,
+            }
+        case "reset":
+            return {
+                flash: settingsDefaultCamera.flash,
+                whiteBalance: settingsDefaultCamera.whiteBalance,
+            }
+        default:
+            throw new Error("Unknown action type")
+    }
+}
+
+
 export default function Camera() {
 
 
@@ -37,10 +71,8 @@ export default function Camera() {
     const { params } = useRoute<RouteProp<CameraParams, "Camera">>()
 
     const cameraRef = useRef<RNCamera>(null)
+    const [stateCameraSettings, dispatchCameraSettings] = useReducer(reducerCameraSettings, initialCameraSettings)
     const [cameraSettingsVisible, setCameraSettingsVisible] = useState(false)
-    const [cameraSettings, setCameraSettings] = useState(settingsDefaultCamera)
-    const [flash, setFlash] = useState(cameraSettings.flash)
-    const [whiteBalance, setWhiteBalance] = useState(cameraSettings.whiteBalance)
 
     const [documentName, setDocumentName] = useState<string>("Documento Vazio")
     const [pictureList, setPictureList] = useState<Array<string>>([])
@@ -51,15 +83,6 @@ export default function Camera() {
         return true
     })
 
-
-    const readCameraSettings = useCallback(async () => {
-        // Read camera settings
-        const currentSettings = await readSettings()
-        setCameraSettings(currentSettings.camera)
-        // Set camera attributes
-        setFlash(currentSettings.camera.flash)
-        setWhiteBalance(currentSettings.camera.whiteBalance)
-    }, [])
 
     const goBack = useCallback(() => {
         if (params?.document === undefined && pictureList.length === 0) {
@@ -134,7 +157,17 @@ export default function Camera() {
 
 
     useEffect(() => {
-        readCameraSettings()
+        async function getCameraSettings() {
+            const cameraSettings = await readSettings()
+            dispatchCameraSettings({
+                type: "set", 
+                payload: {
+                    flash: cameraSettings.camera.flash,
+                    whiteBalance: cameraSettings.camera.whiteBalance,
+                }
+            })
+        }
+        getCameraSettings()
 
         Orientation.lockToPortrait()
         return () => {
@@ -155,8 +188,11 @@ export default function Camera() {
             <CameraSettings
                 visible={cameraSettingsVisible}
                 setVisible={setCameraSettingsVisible}
-                cameraAttributes={{flash, whiteBalance}}
-                buttonFunctions={{setFlash, setWhiteBalance}}
+                cameraAttributes={{
+                    flash: stateCameraSettings.flash,
+                    whiteBalance: stateCameraSettings.whiteBalance
+                }}
+                setCameraAttributes={dispatchCameraSettings}
             />
 
             {isFocused && (
@@ -167,8 +203,8 @@ export default function Camera() {
                     playSoundOnCapture={false}
                     type={"back"}
                     useNativeZoom={true}
-                    flashMode={flash}
-                    whiteBalance={whiteBalance}
+                    flashMode={stateCameraSettings.flash}
+                    whiteBalance={stateCameraSettings.whiteBalance}
                 />
             )}
 
