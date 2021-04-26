@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { Appearance, useColorScheme } from "react-native"
+import { MenuProvider } from "react-native-popup-menu"
 import { ThemeProvider } from "styled-components/native"
 
 import Router from "./router"
@@ -85,7 +86,9 @@ export default function App() {
         <ThemeContext.Provider value={(theme === themeLight) ? join(LightTheme, appTheme) : join(DarkTheme, appTheme)}>
             <SwitchThemeContext.Provider value={switchTheme}>
                 <ThemeProvider theme={(theme === themeLight) ? join(LightTheme, appTheme) : join(DarkTheme, appTheme)}>
-                    <Router />
+                    <MenuProvider>
+                        <Router />
+                    </MenuProvider>
                 </ThemeProvider>
             </SwitchThemeContext.Provider>
         </ThemeContext.Provider>

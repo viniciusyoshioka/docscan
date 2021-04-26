@@ -9,11 +9,8 @@ export interface EditDocumentHeaderProps {
     exitSelectionMode: () => void,
     documentName: string,
     selectionMode: boolean,
-    changed: boolean,
-    isNewDocument: boolean,
     deletePicture: () => void,
     openCamera: () => void,
-    saveDocument: () => void,
     renameDocument: () => void,
     exportToPdf: () => void,
     discardDocument: () => void,
@@ -43,7 +40,7 @@ export default function EditDocumentHeader(props: EditDocumentHeaderProps) {
             {!props.selectionMode && (
                 <BlockCenter>
                     <HeaderTitle>
-                        {`${props.changed ? "*" : ""}${props.documentName}`}
+                        {props.documentName}
                     </HeaderTitle>
                 </BlockCenter>
             )}
@@ -59,16 +56,9 @@ export default function EditDocumentHeader(props: EditDocumentHeaderProps) {
 
             {!props.selectionMode && (
                 <BlockRight>
-                    {(props.isNewDocument === false) && (
-                        <HeaderButton
-                            iconName={"md-camera-outline"}
-                            onPress={props.openCamera}
-                        />
-                    )}
-
-                    <HeaderButton 
-                        iconName={"md-save-outline"}
-                        onPress={props.saveDocument}
+                    <HeaderButton
+                        iconName={"md-camera-outline"}
+                        onPress={props.openCamera}
                     />
 
                     <EditDocumentMenu 

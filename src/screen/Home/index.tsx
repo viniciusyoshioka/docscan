@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { Alert, BackHandler, FlatList, View } from "react-native"
 import { useNavigation } from "@react-navigation/core"
-import { MenuProvider } from "react-native-popup-menu"
 import RNFS from "react-native-fs"
 import Share from "react-native-share"
 
@@ -223,72 +222,70 @@ export default function Home() {
 
 
     return (
-        <MenuProvider>
-            <SafeScreen>
-                <HomeHeader
-                    selectionMode={selectionMode}
-                    exitSelectionMode={exitSelectionMode}
-                    deleteSelectedDocument={deleteSelectedDocument}
-                    scanNewDocument={() => navigation.navigate("Camera")}
-                    openSettings={() => navigation.navigate("Settings")}
-                    switchDebugHome={debugSwitchDebugHome}
-                />
+        <SafeScreen>
+            <HomeHeader
+                selectionMode={selectionMode}
+                exitSelectionMode={exitSelectionMode}
+                deleteSelectedDocument={deleteSelectedDocument}
+                scanNewDocument={() => navigation.navigate("Camera")}
+                openSettings={() => navigation.navigate("Settings")}
+                switchDebugHome={debugSwitchDebugHome}
+            />
 
-                <FlatList
-                    data={document}
-                    renderItem={renderDocumentItem}
-                    keyExtractor={(item) => item.id.toString()}
-                />
+            <FlatList
+                data={document}
+                renderItem={renderDocumentItem}
+                keyExtractor={(item) => item.id.toString()}
+            />
 
-                {document.length === 0 && (
-                    <EmptyListView>
-                        <EmptyListImage source={appIconOutline} />
+            {document.length === 0 && (
+                <EmptyListView>
+                    <EmptyListImage source={appIconOutline} />
 
-                        <EmptyListText>
-                            Nenhum documento
-                        </EmptyListText>
-                    </EmptyListView>
-                )}
+                    <EmptyListText>
+                        Nenhum documento
+                    </EmptyListText>
+                </EmptyListView>
+            )}
 
-                {(debugHome === debugHomeShow) && (
-                    <View>
-                        <DebugButton
-                            text={"Ler"}
-                            onPress={debugReadDocument}
-                            style={{bottom: 115}} />
-                        <DebugButton
-                            text={"Escre"}
-                            onPress={debugWriteDocument}
-                            style={{bottom: 60}} />
-                        <DebugButton
-                            text={"Limpar"}
-                            onPress={debugClearDocument}
-                            style={{bottom: 5}} />
+            {(debugHome === debugHomeShow) && (
+                <View>
+                    <DebugButton
+                        text={"Ler"}
+                        onPress={debugReadDocument}
+                        style={{bottom: 115}} />
+                    <DebugButton
+                        text={"Escre"}
+                        onPress={debugWriteDocument}
+                        style={{bottom: 60}} />
+                    <DebugButton
+                        text={"Limpar"}
+                        onPress={debugClearDocument}
+                        style={{bottom: 5}} />
 
-                        <DebugButton
-                            text={"Auto"}
-                            onPress={async () => await switchTheme(themeAuto)}
-                            style={{bottom: 115, left: 60}} />
-                        <DebugButton
-                            text={"Claro"}
-                            onPress={async () => await switchTheme(themeLight)}
-                            style={{bottom: 60, left: 60}} />
-                        <DebugButton
-                            text={"Escuro"}
-                            onPress={async () => await switchTheme(themeDark)}
-                            style={{bottom: 5, left: 60}} />
+                    <DebugButton
+                        text={"Auto"}
+                        onPress={async () => await switchTheme(themeAuto)}
+                        style={{bottom: 115, left: 60}} />
+                    <DebugButton
+                        text={"Claro"}
+                        onPress={async () => await switchTheme(themeLight)}
+                        style={{bottom: 60, left: 60}} />
+                    <DebugButton
+                        text={"Escuro"}
+                        onPress={async () => await switchTheme(themeDark)}
+                        style={{bottom: 5, left: 60}} />
 
-                        <DebugButton
-                            text={"Ler"}
-                            onPress={debugReadLog}
-                            style={{bottom: 60, left: 115}} />
-                        <DebugButton
-                            text={"Compar"}
-                            onPress={debugShareLog}
-                            style={{bottom: 5, left: 115}} />
-                    </View>
-                )}
-            </SafeScreen>
-        </MenuProvider>
+                    <DebugButton
+                        text={"Ler"}
+                        onPress={debugReadLog}
+                        style={{bottom: 60, left: 115}} />
+                    <DebugButton
+                        text={"Compar"}
+                        onPress={debugShareLog}
+                        style={{bottom: 5, left: 115}} />
+                </View>
+            )}
+        </SafeScreen>
     )
 }

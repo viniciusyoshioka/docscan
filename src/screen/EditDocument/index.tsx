@@ -40,7 +40,6 @@ export default function EditDocument() {
     const [selectionMode, setSelectionMode] = useState(false)
     const [selectedPictures, setSelectedPictures] = useState<Array<string>>([])
     const [renameDocumentVisible, setRenameDocumentVisible] = useState(false)
-    const [isChanged, setIsChanged] = useState(false)
 
 
     useBackHandler(() => {
@@ -49,47 +48,46 @@ export default function EditDocument() {
     })
 
 
-    const goBack = useCallback(() => {
+    const saveDocument = useCallback(async (): Promise<boolean> => {
+        // Return true to navigate to Home, false otherwise
+        if (document) {
+            if (documentName === "") {
+                Alert.alert(
+                    "Nome do documento vazio",
+                    "Não é possível salvar um documento sem nome"
+                )
+                return false
+            }
+            await saveEditedDocument(document, documentName, pictureList)
+            return true
+        } else {
+            if (pictureList.length === 0) {
+                return true
+            } else if (documentName === "") {
+                Alert.alert(
+                    "Nome do documento vazio",
+                    "Não é possível salvar um documento sem nome"
+                )
+                return false
+            }
+            await saveNewDocument(documentName, pictureList)
+            return true
+        }
+    }, [document, documentName, pictureList])
+
+    const goBack = useCallback(async () => {
         if (selectionMode) {
             exitSelectionMode()
             return
         }
 
-        if (document === undefined) {
-            navigation.navigate("Camera", {
-                document: undefined,
-                documentName: documentName,
-                pictureList: pictureList,
-            })
-        } else {
-            if (isChanged) {
-                Alert.alert(
-                    "Descartar alterações?",
-                    "O documento foi alterado, sair agora irá descartar todas as alterações",
-                    [{
-                        text: "Voltar",
-                        onPress: () => navigation.navigate("Home")
-                    }, {
-                        text: "Cancelar",
-                        onPress: () => {}
-                    }]
-                )
-                return
-            }
-
-            navigation.navigate("Home")
+        const isSaved = await saveDocument()
+        if (isSaved) {
+            navigation.reset({routes: [{name: "Home"}]})
         }
-    }, [document, selectionMode, pictureList, isChanged, documentName])
+    }, [selectionMode, saveDocument])
 
     const exportDocumentToPdf = useCallback(() => {
-        if (isChanged) {
-            Alert.alert(
-                "Alterações não salvas",
-                "Salve as alterações antes de exportar o documento"
-            )
-            return
-        }
-
         if (documentName === "") {
             Alert.alert(
                 "Nome do documento vazio",
@@ -126,17 +124,9 @@ export default function EditDocument() {
             "Aguarde", 
             "Exportar documento pode demorar alguns segundos"
         )
-    }, [isChanged, documentName, pictureList])
+    }, [documentName, pictureList])
 
     const shareDocument = useCallback(async () => {
-        if (isChanged) {
-            Alert.alert(
-                "Alterações não salvas",
-                "Salve as alterações antes de compartilhar o documento"
-            )
-            return
-        }
-
         const documentPath = `file://${fullPathPdf}/${documentName}.pdf`
         if (!(await RNFS.exists(documentPath))) {
             Alert.alert(
@@ -160,12 +150,13 @@ export default function EditDocument() {
                 "Erro desconhecido ao compartilhar documento"
             )
         }
-    }, [isChanged, documentName])
+    }, [documentName])
 
-    const renameDocument = useCallback((newDocumentName: string) => {
+    const renameDocument = useCallback(async (newDocumentName: string) => {
         setDocumentName(newDocumentName)
-        setIsChanged(true)
-    }, [])
+
+        await saveDocument()
+    }, [saveDocument])
 
     const discardDocument = useCallback(() => {
         Alert.alert(
@@ -175,7 +166,10 @@ export default function EditDocument() {
                 {
                     text: "Apagar",
                     onPress: async () => {
-                        if (document === undefined) {
+                        if (document) {
+                            await deleteDocument([document.id], true)
+                            navigation.reset({routes: [{name: "Home"}]})
+                        } else {
                             pictureList.forEach(async (item) => {
                                 try {
                                     await RNFS.unlink(item)
@@ -189,9 +183,6 @@ export default function EditDocument() {
                             })
 
                             navigation.navigate("Home")
-                        } else {
-                            await deleteDocument([document.id], true)
-                            navigation.reset({routes: [{name: "Home"}]})
                         }
                     }
                 },
@@ -211,57 +202,20 @@ export default function EditDocument() {
         })
     }, [pictureList, documentName, document])
 
-    const saveDocument = useCallback(async () => {
-        if (document === undefined) {
-            if (pictureList.length === 0) {
-                Alert.alert(
-                    "Não há fotos para salvar",
-                    "Não é possível salvar um documento vazio"
-                )
-                return
-            }
-
-            await saveNewDocument(documentName, pictureList)
-            navigation.reset({routes: [{name: "Home"}]})
-        } else {
-            if (pictureList.length === 0) {
-                Alert.alert(
-                    "Não há fotos para salvar",
-                    "Não é possível salvar um documento vazio. Descartar documento?",
-                    [
-                        {
-                            text: "Descartar",
-                            onPress: () => discardDocument()
-                        },
-                        {
-                            text: "Cancelar",
-                            onPress: () => {}
-                        }
-                    ]
-                )
-                return
-            }
-
-            await saveEditedDocument(document, documentName, pictureList)
-            navigation.reset({routes: [{name: "Home"}]})
-        }
-    }, [document, documentName, pictureList, discardDocument])
-
     const deletePicture = useCallback(() => {
         Alert.alert(
-            "Apagar foto?",
-            "Esta ação é irreversível e apagará a foto deste documento",
+            "Apagar foto",
+            "Esta foto será apagada e a ação não poderá ser desfeita",
             [
                 {
                     text: "Apagar", 
-                    onPress: () => {
+                    onPress: async () => {
                         const pictures = pictureList.reverse()
 
                         const newPicture: Array<string> = []
-                        pictures.forEach(async (item: string) => {
-                            if (selectedPictures.indexOf(item) === -1) {
-                                newPicture.push(item)
-                            } else {
+
+                        pictures.forEach(async (item) => {
+                            if (selectedPictures.includes(item)) {
                                 try {
                                     await RNFS.unlink(item)
                                 } catch (error) {
@@ -271,15 +225,16 @@ export default function EditDocument() {
                                         "Não foi possível apagar foto do documento"
                                     )
                                 }
+                            } else {
+                                newPicture.push(item)
                             }
                         })
+
                         newPicture.reverse()
-                
+
                         setPictureList(newPicture)
-                
-                        if (!isChanged) {
-                            setIsChanged(true)
-                        }
+
+                        await saveDocument()
                     }
                 },
                 {
@@ -288,7 +243,7 @@ export default function EditDocument() {
                 }
             ]
         )
-    }, [pictureList, selectedPictures, isChanged])
+    }, [pictureList, selectedPictures, saveDocument])
 
     const selectPicture = useCallback((picturePath: string) => {
         if (!selectionMode) {
@@ -329,7 +284,7 @@ export default function EditDocument() {
                 selectionMode={selectionMode}
             />
         )
-    }, [selectionMode, selectPicture, deselectPicture])
+    }, [selectionMode, selectPicture, deselectPicture, openPicture])
 
     const exitSelectionMode = useCallback(() => {
         setSelectedPictures([])
@@ -365,38 +320,33 @@ export default function EditDocument() {
 
 
     return (
-        <MenuProvider skipInstanceCheck>
-            <SafeScreen>
-                <RenameDocument
-                    visible={renameDocumentVisible} 
-                    setVisible={setRenameDocumentVisible} 
-                    documentName={documentName} 
-                    setDocumentName={renameDocument}
-                />
+        <SafeScreen>
+            <RenameDocument
+                visible={renameDocumentVisible} 
+                setVisible={setRenameDocumentVisible} 
+                documentName={documentName} 
+                setDocumentName={renameDocument}
+            />
 
-                <EditDocumentHeader
-                    goBack={goBack}
-                    exitSelectionMode={exitSelectionMode}
-                    documentName={documentName}
-                    selectionMode={selectionMode} 
-                    changed={isChanged}
-                    isNewDocument={document === undefined}
-                    deletePicture={deletePicture}
-                    openCamera={openCamera}
-                    saveDocument={saveDocument}
-                    renameDocument={() => setRenameDocumentVisible(true)}
-                    exportToPdf={exportDocumentToPdf}
-                    discardDocument={discardDocument}
-                    shareDocument={shareDocument}
-                />
+            <EditDocumentHeader
+                goBack={goBack}
+                exitSelectionMode={exitSelectionMode}
+                documentName={documentName}
+                selectionMode={selectionMode}
+                deletePicture={deletePicture}
+                openCamera={openCamera}
+                renameDocument={() => setRenameDocumentVisible(true)}
+                exportToPdf={exportDocumentToPdf}
+                discardDocument={discardDocument}
+                shareDocument={shareDocument}
+            />
 
-                <FlatList 
-                    data={pictureList} 
-                    renderItem={renderPictureItem}
-                    numColumns={2}
-                    keyExtractor={(item, index) => index.toString()}
-                />
-            </SafeScreen>
-        </MenuProvider>
+            <FlatList 
+                data={pictureList} 
+                renderItem={renderPictureItem}
+                numColumns={2}
+                keyExtractor={(item, index) => index.toString()}
+            />
+        </SafeScreen>
     )
 }

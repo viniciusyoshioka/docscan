@@ -62,7 +62,7 @@ export default function Camera() {
     }, [])
 
     const goBack = useCallback(() => {
-        if (pictureList.length === 0) {
+        if (params?.document === undefined && pictureList.length === 0) {
             navigation.navigate("Home")
             return
         }
@@ -123,7 +123,6 @@ export default function Camera() {
         let newDocumentName = "Documento Vazio"
         if (documentName === "Documento Vazio" && pictureList.length > 0) {
             newDocumentName = getDocumentName()
-            setDocumentName(newDocumentName)
         }
 
         navigation.navigate("EditDocument", {
