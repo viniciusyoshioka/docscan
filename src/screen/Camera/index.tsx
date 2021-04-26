@@ -26,6 +26,8 @@ type CameraParams = {
         document: Document | undefined,
         documentName: string,
         pictureList: Array<string>,
+        screenAction?: "replace-picture",
+        replaceIndex?: number,
     } | undefined
 }
 
@@ -74,7 +76,7 @@ export default function Camera() {
     const [stateCameraSettings, dispatchCameraSettings] = useReducer(reducerCameraSettings, initialCameraSettings)
     const [cameraSettingsVisible, setCameraSettingsVisible] = useState(false)
 
-    const [documentName, setDocumentName] = useState<string>("Documento Vazio")
+    const [documentName, setDocumentName] = useState<string | null>(null)
     const [pictureList, setPictureList] = useState<Array<string>>([])
 
 
@@ -85,6 +87,11 @@ export default function Camera() {
 
 
     const goBack = useCallback(() => {
+        if (params && params.screenAction === "replace-picture" && params.replaceIndex) {
+            navigation.goBack()
+            return
+        }
+
         if (params?.document === undefined && pictureList.length === 0) {
             navigation.navigate("Home")
             return
@@ -132,7 +139,19 @@ export default function Camera() {
 
         try {
             await cameraRef.current?.takePictureAsync(options)
-            setPictureList(oldValue => [...oldValue, picturePath])
+            if (!params?.screenAction && !params?.screenAction) {
+                setPictureList(oldValue => [...oldValue, picturePath])
+            } else if (params !== undefined && params.screenAction === "replace-picture" && params.replaceIndex !== undefined) {
+                params.pictureList[params.replaceIndex] = picturePath
+
+                navigation.navigate("VisualizePicture", {
+                    picturePath: picturePath,
+                    pictureIndex: params.replaceIndex,
+                    document: params.document,
+                    documentName: params.documentName,
+                    pictureList: params.pictureList,
+                })
+            }
         } catch (error) {
             log("ERROR", `Camera takePicture - Erro ao tirar foto. Mensagem: "${error}"`)
             Alert.alert(
@@ -143,15 +162,11 @@ export default function Camera() {
     }, [cameraRef])
 
     const editDocument = useCallback(() => {
-        let newDocumentName = "Documento Vazio"
-        if (documentName === "Documento Vazio" && pictureList.length > 0) {
-            newDocumentName = getDocumentName()
-        }
-
         navigation.navigate("EditDocument", {
             document: params?.document,
-            documentName: documentName === "Documento Vazio" ? newDocumentName : documentName,
+            documentName: documentName !== null ? documentName : getDocumentName(),
             pictureList: pictureList,
+            isChanged: params ? pictureList.length !== params.pictureList.length : false
         })
     }, [pictureList, documentName])
 
@@ -222,24 +237,32 @@ export default function Camera() {
                     />
                 </CameraControlButtonBase>
 
+
                 <CameraControlButtonBase 
                     onPress={takePicture} 
                     style={{backgroundColor: "rgb(255, 255, 255)"}}
                 />
 
-                <CameraControlButtonBase onPress={editDocument}>
-                    <CameraControlViewButtonIndex>
-                        <Icon 
-                            name={"md-document-outline"} 
-                            size={cameraControlIconSize} 
-                            color={"rgb(255, 255, 255)"}
-                        />
 
-                        <IndexControl>
-                            {`${pictureList.length}`}
-                        </IndexControl>
-                    </CameraControlViewButtonIndex>
-                </CameraControlButtonBase>
+                {params?.screenAction !== "replace-picture" && (
+                    <CameraControlButtonBase onPress={editDocument}>
+                        <CameraControlViewButtonIndex>
+                            <Icon 
+                                name={"md-document-outline"} 
+                                size={cameraControlIconSize} 
+                                color={"rgb(255, 255, 255)"}
+                            />
+
+                            <IndexControl>
+                                {`${pictureList.length}`}
+                            </IndexControl>
+                        </CameraControlViewButtonIndex>
+                    </CameraControlButtonBase>
+                )}
+
+                {params?.screenAction === "replace-picture" && (
+                    <CameraControlButtonBase />
+                )}
             </CameraControlView>
         </SafeScreen>
     )

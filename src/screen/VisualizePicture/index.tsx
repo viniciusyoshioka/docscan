@@ -45,10 +45,14 @@ export default function VisualizePicture() {
             return
         }
 
-        navigation.goBack()
+        navigation.navigate("EditDocument", {
+            document: params.document,
+            documentName: params.documentName,
+            pictureList: params.pictureList,
+        })
     }, [isCropping])
 
-    const onImageSaved = async (response: imageSavedResponse) => {
+    const onImageSaved = useCallback(async (response: imageSavedResponse) => {
         // Split file path
         const splitedPath = params.picturePath.split("/")
         const fileName = splitedPath[splitedPath.length - 1]
@@ -68,6 +72,8 @@ export default function VisualizePicture() {
         try {
             await RNFS.moveFile(response.uri, filePath)
         } catch (error) {
+            await RNFS.unlink(response.uri)
+
             log("ERROR", `VisualizePicture onImageSaved - Error moving file. Message: "${error}"`)
             Alert.alert(
                 "Erro ao salvar imagem",
@@ -97,8 +103,19 @@ export default function VisualizePicture() {
             document: params.document,
             documentName: params.documentName,
             pictureList: params.pictureList,
+            isChanged: true,
         })
-    }
+    }, [])
+
+    const openCamera = useCallback(() => {
+        navigation.navigate("Camera", {
+            document: params.document,
+            documentName: params.documentName,
+            pictureList: params.pictureList,
+            screenAction: "replace-picture",
+            replaceIndex: params.pictureIndex
+        })
+    }, [params])
 
 
     return (
@@ -106,6 +123,7 @@ export default function VisualizePicture() {
             <VisualizePictureHeader
                 goBack={goBack}
                 isCropping={isCropping}
+                openCamera={openCamera}
                 setIsCropping={setIsCropping}
                 saveCroppedPicture={() => cropViewRef.current?.saveImage()}
             />

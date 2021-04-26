@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from "react"
 import { Alert, FlatList, ToastAndroid } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
-import { MenuProvider } from "react-native-popup-menu"
 import Share from "react-native-share"
 
 import { SafeScreen } from "../../component/Screen"
@@ -23,6 +22,7 @@ type EditDocumentParams = {
         document: Document | undefined,
         documentName?: string,
         pictureList?: Array<string>,
+        isChanged?: boolean,
     }
 }
 
@@ -313,6 +313,10 @@ export default function EditDocument() {
                 }
                 if (params.pictureList) {
                     setPictureList(params.pictureList)
+                }
+
+                if (params.isChanged) {
+                    saveDocument()
                 }
             }
         }

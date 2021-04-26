@@ -19,7 +19,7 @@ import { log } from "../../service/log"
 type ImportImageFromGaleryParam = {
     ImportImageFromGalery: {
         document: Document | undefined,
-        documentName: string,
+        documentName: string | null,
         pictureList: Array<string>,
     }
 }
@@ -36,7 +36,7 @@ export default function ImportImageFromGalery() {
     const [imageGalery, setImageGalery] = useState<Array<PhotoIdentifier> | null>(null)
     const [selectionMode, setSelectionMode] = useState(false)
     const [selectedImage, setSelectedImage] = useState<Array<string>>([])
-    const [refreshingList, setRefreshingList] = useState(false)
+    const [isRefreshingList, setIsRefreshingList] = useState(false)
 
 
     useBackHandler(() => {
@@ -132,6 +132,12 @@ export default function ImportImageFromGalery() {
                 "Erro ao importar imagem", 
                 "Não foi possível importar uma imagem da galeria"
             )
+            navigation.navigate("Camera", {
+                document: params.document,
+                pictureList: params.pictureList,
+                documentName: params.documentName,
+            })
+            return
         }
 
         navigation.navigate("Camera", {
@@ -142,11 +148,7 @@ export default function ImportImageFromGalery() {
     }, [])
 
     const importMultipleImage = useCallback(() => {
-        const imagesToImport: Array<string> = []
-
-        params.pictureList.forEach((item: string) => {
-            imagesToImport.push(item)
-        })
+        const imagesToImport: Array<string> = [...params.pictureList]
 
         selectedImage.forEach(async (item: string) =>{ 
             const newImagePath = getNewImagePath(item)
@@ -199,9 +201,9 @@ export default function ImportImageFromGalery() {
                 onRefresh={async () => {
                     setImageGalery(null)
                     await getImage()
-                    setRefreshingList(false)
+                    setIsRefreshingList(false)
                 }}
-                refreshing={refreshingList}
+                refreshing={isRefreshingList}
             />
 
             {imageGalery === null && (

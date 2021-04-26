@@ -144,11 +144,9 @@ export default function Home() {
     }, [])
 
 
-    const getDocument = useCallback(() => {
-        readDocument()
-            .then((result) => {
-                setDocument(result)
-            })
+    const getDocument = useCallback(async () => {
+        const documents = await readDocument()
+        setDocument(documents)
     }, [])
 
     const deleteSelectedDocument = useCallback(() => {
@@ -160,7 +158,7 @@ export default function Home() {
                     text: "Apagar", 
                     onPress: async () => {
                         await deleteDocument(selectedDocument, true)
-                        getDocument()
+                        await getDocument()
                     }
                 },
                 {

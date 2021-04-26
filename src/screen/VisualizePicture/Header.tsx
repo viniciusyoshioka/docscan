@@ -6,6 +6,7 @@ import { Header, BlockLeft, HeaderButton, BlockCenter, HeaderTitle, BlockRight }
 export interface VisualizePictureHeaderProps {
     goBack: () => void,
     isCropping: boolean,
+    openCamera: () => void,
     setIsCropping: (newIsCropping: boolean) => void,
     saveCroppedPicture: () => void,
 }
@@ -45,6 +46,12 @@ export default function VisualizePictureHeader(props: VisualizePictureHeaderProp
             </BlockCenter>
 
             <BlockRight>
+                {!props.isCropping && (
+                    <HeaderButton
+                        iconName={"md-camera-outline"}
+                        onPress={props.openCamera}
+                    />
+                )}
                 {!props.isCropping && (
                     <HeaderButton
                         iconName={"md-crop"}
