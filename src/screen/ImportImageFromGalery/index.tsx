@@ -21,6 +21,8 @@ type ImportImageFromGaleryParam = {
         document: Document | undefined,
         documentName: string | null,
         pictureList: Array<string>,
+        screenAction?: "replace-picture",
+        replaceIndex?: number,
     }
 }
 
@@ -112,6 +114,7 @@ export default function ImportImageFromGalery() {
                 deselect={() => deselectImage(item.node.image.uri)}
                 selectionMode={selectionMode}
                 imagePath={item.node.image.uri}
+                screenAction={params.screenAction}
             />
         )
     }, [selectionMode, selectImage, deselectImage])
@@ -130,7 +133,7 @@ export default function ImportImageFromGalery() {
             log("ERROR", `ImportImageFromGalery importSingleImage - Erro ao importar uma imagem da galeria. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro ao importar imagem", 
-                "Não foi possível importar uma imagem da galeria"
+                "Não foi possível importar imagem da galeria"
             )
             navigation.navigate("Camera", {
                 document: params.document,
@@ -140,11 +143,22 @@ export default function ImportImageFromGalery() {
             return
         }
 
-        navigation.navigate("Camera", {
-            document: params.document,
-            pictureList: [...params.pictureList, newImagePath],
-            documentName: params.documentName,
-        })
+        if (!params?.screenAction && !params?.screenAction) {
+            navigation.navigate("Camera", {
+                document: params.document,
+                pictureList: [...params.pictureList, newImagePath],
+                documentName: params.documentName,
+            })
+        } else if (params !== undefined && params.screenAction === "replace-picture" && params.replaceIndex !== undefined) {
+            params.pictureList[params.replaceIndex] = newImagePath
+            navigation.navigate("VisualizePicture", {
+                picturePath: newImagePath,
+                pictureIndex: params.replaceIndex,
+                document: params.document,
+                documentName: params.documentName,
+                pictureList: params.pictureList,
+            })
+        }
     }, [])
 
     const importMultipleImage = useCallback(() => {

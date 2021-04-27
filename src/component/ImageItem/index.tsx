@@ -13,6 +13,7 @@ export interface ImageItemProps {
     deselect: () => void,
     selectionMode: boolean,
     imagePath: string,
+    screenAction: "replace-picture" | undefined,
 }
 
 
@@ -39,7 +40,7 @@ export function ImageItem(props: ImageItemProps) {
     }, [props.selectionMode, selected, props.click])
 
     const longPress = useCallback((nativeEvent) => {
-        if (nativeEvent.state === State.ACTIVE) {
+        if (nativeEvent.state === State.ACTIVE && props.screenAction === undefined) {
             if (!props.selectionMode) {
                 props.select()
                 setSelected(true)

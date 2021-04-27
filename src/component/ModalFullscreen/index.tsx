@@ -18,7 +18,9 @@ export function ModalFullscreen(props: ModalFullscreenProps) {
 
 
     const closeModal = useCallback(() => {
-        props.onClose!()
+        if (props.onClose) {
+            props.onClose()
+        }
         props.setVisible(false)
     }, [])
 

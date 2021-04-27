@@ -18,7 +18,9 @@ export function Modal(props: ModalProps) {
 
 
     const closeModal = useCallback(() => {
-        props.onClose!()
+        if (props.onClose) {
+            props.onClose()
+        }
         props.setVisible(false)
     }, [])
 

@@ -118,6 +118,8 @@ export default function Camera() {
             document: params?.document,
             documentName: documentName,
             pictureList: pictureList,
+            screenAction: params?.screenAction,
+            replaceIndex: params?.replaceIndex,
         })
     }, [pictureList, documentName])
 
