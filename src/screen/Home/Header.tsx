@@ -1,7 +1,8 @@
-import React from "react"
+import React, { Component } from "react"
 
 import { BlockCenter, BlockLeft, BlockRight, Header, HeaderButton, HeaderTitle } from "../../component/Header"
-import HomeMenu from "./HomeMenu"
+import { appFName } from "../../service/constant"
+import { HomeMenu } from "./HomeMenu"
 
 
 export interface HomeHeaderProps {
@@ -14,50 +15,68 @@ export interface HomeHeaderProps {
 }
 
 
-export default function HomeHeader(props: HomeHeaderProps) {
-    return (
-        <Header>
-            {props.selectionMode && (
-                <BlockLeft>
-                    <HeaderButton
-                        iconName={"md-close"}
-                        onPress={props.exitSelectionMode}
-                    />
-                </BlockLeft>
-            )}
+export class HomeHeader extends Component<HomeHeaderProps> {
 
-            {!props.selectionMode && (
-                <BlockCenter>
-                    <HeaderTitle>
-                        DocScan
-                    </HeaderTitle>
-                </BlockCenter>
-            )}
 
-            {props.selectionMode && (
-                <BlockRight>
-                    <HeaderButton
-                        iconName={"md-trash-outline"}
-                        onPress={props.deleteSelectedDocument}
-                        style={{opacity: props.selectionMode ? 1 : 0}}
-                    />
-                </BlockRight>
-            )}
+    constructor(props: HomeHeaderProps) {
+        super(props)
+    }
 
-            {!props.selectionMode && (
-                <BlockRight>
-                    <HeaderButton
-                        iconName={"md-add"}
-                        iconSize={30}
-                        onPress={props.scanNewDocument}
-                    />
 
-                    <HomeMenu
-                        openSettings={props.openSettings}
-                        switchDebugHome={props.switchDebugHome}
-                    />
-                </BlockRight>
-            )}
-        </Header>  
-    )
+    shouldComponentUpdate(nextProps: HomeHeaderProps) {
+        if (this.props.selectionMode !== nextProps.selectionMode) {
+            return true
+        } else if (this.props.switchDebugHome !== nextProps.switchDebugHome) {
+            return true
+        }
+        return false
+    }
+
+
+    render() {
+        return (
+            <Header>
+                {this.props.selectionMode && (
+                    <BlockLeft>
+                        <HeaderButton
+                            iconName={"md-close"}
+                            onPress={this.props.exitSelectionMode}
+                        />
+                    </BlockLeft>
+                )}
+
+                {!this.props.selectionMode && (
+                    <BlockCenter>
+                        <HeaderTitle>
+                            {appFName}
+                        </HeaderTitle>
+                    </BlockCenter>
+                )}
+
+                {this.props.selectionMode && (
+                    <BlockRight>
+                        <HeaderButton
+                            iconName={"md-trash-outline"}
+                            onPress={this.props.deleteSelectedDocument}
+                        />
+                    </BlockRight>
+                )}
+
+                {!this.props.selectionMode && (
+                    <BlockRight>
+                        <HeaderButton
+                            iconName={"md-add"}
+                            iconSize={30}
+                            onPress={this.props.scanNewDocument}
+                        />
+
+                        <HomeMenu
+                            openSettings={this.props.openSettings}
+                            switchDebugHome={this.props.switchDebugHome}
+                        />
+                    </BlockRight>
+                )}
+            </Header>
+        )
+    }
 }

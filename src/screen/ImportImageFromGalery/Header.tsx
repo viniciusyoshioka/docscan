@@ -11,7 +11,7 @@ export interface ImportImageFromGaleryHeaderProps {
 }
 
 
-export default function ImportImageFromGaleryHeader(props: ImportImageFromGaleryHeaderProps) {
+export function ImportImageFromGaleryHeader(props: ImportImageFromGaleryHeaderProps) {
     return (
         <Header>
             <BlockLeft>

@@ -5,7 +5,7 @@ import CameraRoll, { PhotoIdentifier } from "@react-native-community/cameraroll"
 import RNFS from "react-native-fs"
 
 import { SafeScreen } from "../../component/Screen"
-import ImportImageFromGaleryHeader from "./Header"
+import { ImportImageFromGaleryHeader } from "./Header"
 import { ImageItem } from "../../component/ImageItem"
 import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
 import { fullPathPictureOriginal } from "../../service/constant"
@@ -16,7 +16,7 @@ import { log } from "../../service/log"
 import { ScreenParams } from "../../service/screen-params"
 
 
-export default function ImportImageFromGalery() {
+export function ImportImageFromGalery() {
 
     
     const navigation = useNavigation()

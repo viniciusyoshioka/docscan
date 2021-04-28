@@ -8,7 +8,7 @@ import { DocumentItem } from "../../component/DocumentItem"
 import { SafeScreen } from "../../component/Screen"
 import { Document } from "../../service/object-types"
 import { readDebugHome, readDocument, readDocumentId, writeDebugHome, writeDocument, writeDocumentId } from "../../service/storage"
-import HomeHeader from "./Header"
+import { HomeHeader } from "./Header"
 import { DebugButton } from "../../component/DebugButton"
 import { useSwitchTheme } from "../../service/theme"
 import { appIconOutline, appInDevelopment, debugHomeHide, debugHomeShow, fullPathLog, fullPathRoot, themeAuto, themeDark, themeLight } from "../../service/constant"
@@ -18,12 +18,12 @@ import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/Em
 import { useBackHandler } from "../../service/hook"
 
 
-export default function Home() {
+export function Home() {
 
-
-    const switchTheme = useSwitchTheme()
 
     const navigation = useNavigation()
+
+    const switchTheme = useSwitchTheme()
 
     const [debugHome, setDebugHome] = useState("")
     const [document, setDocument] = useState<Array<Document>>([])

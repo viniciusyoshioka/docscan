@@ -12,7 +12,7 @@ export interface VisualizePictureHeaderProps {
 }
 
 
-export default function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
+export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
     return (
         <Header>
             <BlockLeft>

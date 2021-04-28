@@ -11,7 +11,7 @@ export interface CameraHeaderProps {
 }
 
 
-export default function CameraHeader(props: CameraHeaderProps) {
+export function CameraHeader(props: CameraHeaderProps) {
     return (
         <Header style={{position: "absolute", top: 0, left: 0, right: 0, backgroundColor: "transparent"}}>
             <BlockLeft>

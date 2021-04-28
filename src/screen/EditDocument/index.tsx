@@ -5,10 +5,10 @@ import RNFS from "react-native-fs"
 import Share from "react-native-share"
 
 import { SafeScreen } from "../../component/Screen"
-import EditDocumentHeader from "./Header"
+import { EditDocumentHeader } from "./Header"
 import { PictureItem } from "../../component/Pictureitem"
 import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../service/document-handler"
-import RenameDocument from "./RenameDocument"
+import { RenameDocument } from "./RenameDocument"
 import { createPdf } from "../../service/pdf-creator"
 import { fullPathPdf, pathPdf } from "../../service/constant"
 import { useBackHandler } from "../../service/hook"
@@ -17,7 +17,7 @@ import { ExportResponse } from "../../service/pdf-creator"
 import { ScreenParams } from "../../service/screen-params"
 
 
-export default function EditDocument() {
+export function EditDocument() {
 
 
     const navigation = useNavigation()

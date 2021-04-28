@@ -11,7 +11,7 @@ export interface RenameDocumentProps extends ModalFullscreenProps {
 }
 
 
-export default function RenameDocument(props: RenameDocumentProps) {
+export function RenameDocument(props: RenameDocumentProps) {
 
 
     const [documentName, setDocumentName] = useState(props.documentName)

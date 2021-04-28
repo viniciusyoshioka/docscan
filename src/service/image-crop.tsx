@@ -23,12 +23,12 @@ export interface imageSavedResponse {
     height: number,
 }
 
-interface saveImageErrorResponse {
+export interface saveImageErrorResponse {
     message: string,
 }
 
 
-export default class ImageCrop extends Component<ImageCropProps> {
+export class ImageCrop extends Component<ImageCropProps> {
 
 
     constructor(props: ImageCropProps) {

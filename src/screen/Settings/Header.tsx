@@ -8,7 +8,7 @@ export interface SettingsHeaderProps {
 }
 
 
-export default function SettingsHeader(props: SettingsHeaderProps) {
+export function SettingsHeader(props: SettingsHeaderProps) {
     return (
         <Header>
             <BlockLeft>

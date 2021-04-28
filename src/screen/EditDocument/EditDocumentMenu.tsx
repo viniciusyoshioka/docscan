@@ -15,7 +15,7 @@ export interface EditDocumentMenuProps {
 }
 
 
-export default function EditDocumentMenu(props: EditDocumentMenuProps) {
+export function EditDocumentMenu(props: EditDocumentMenuProps) {
 
 
     const menuRef = useRef<Menu>(null)

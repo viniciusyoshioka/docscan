@@ -3,13 +3,13 @@ import { Appearance, useColorScheme } from "react-native"
 import { MenuProvider } from "react-native-popup-menu"
 import { ThemeProvider } from "styled-components/native"
 
-import Router from "./router"
+import { Router } from "./router"
 import { themeAuto, themeLight } from "./service/constant"
 import { readTheme, writeTheme } from "./service/storage"
 import { DarkTheme, join, LightTheme, SwitchThemeContext, ThemeContext } from "./service/theme"
 
 
-export default function App() {
+export function App() {
 
 
     const [theme, setTheme] = useState("")

@@ -1,7 +1,7 @@
 import React from "react"
 
 import { Header, BlockLeft, HeaderButton, BlockCenter, HeaderTitle, BlockRight } from "../../component/Header"
-import EditDocumentMenu from "./EditDocumentMenu"
+import { EditDocumentMenu } from "./EditDocumentMenu"
 
 
 export interface EditDocumentHeaderProps {
@@ -18,7 +18,7 @@ export interface EditDocumentHeaderProps {
 }
 
 
-export default function EditDocumentHeader(props: EditDocumentHeaderProps) {
+export function EditDocumentHeader(props: EditDocumentHeaderProps) {
     return (
         <Header>
             <BlockLeft>

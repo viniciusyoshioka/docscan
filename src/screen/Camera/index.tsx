@@ -6,8 +6,8 @@ import Orientation from "react-native-orientation-locker"
 import Icon from "react-native-vector-icons/Ionicons"
 
 import { SafeScreen } from "../../component/Screen"
-import CameraHeader from "./Header"
-import CameraSettings from "./CameraSettings"
+import { CameraHeader } from "./Header"
+import { CameraSettings } from "./CameraSettings"
 import { fullPathPictureOriginal, settingsDefaultCamera } from "../../service/constant"
 import { readSettings } from "../../service/storage"
 import { CameraControlButtonBase, CameraControlViewButtonIndex, cameraControlIconSize, CameraControlView, IndexControl } from "../../component/CameraControl"
@@ -54,7 +54,7 @@ function reducerCameraSettings(state: cameraReducerState, action: cameraReducerA
 }
 
 
-export default function Camera() {
+export function Camera() {
 
 
     const navigation = useNavigation()

@@ -3,8 +3,8 @@ import { Alert, Image } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import RNFS from "react-native-fs"
 
-import ImageCrop, { imageSavedResponse } from "../../service/image-crop"
-import VisualizePictureHeader from "./Header"
+import { ImageCrop, imageSavedResponse } from "../../service/image-crop"
+import { VisualizePictureHeader } from "./Header"
 import { SafeScreen } from "../../component/Screen"
 import { useBackHandler } from "../../service/hook"
 import { fullPathPictureCropped } from "../../service/constant"
@@ -12,7 +12,7 @@ import { log } from "../../service/log"
 import { ScreenParams } from "../../service/screen-params"
 
 
-export default function VisualizePicture() {
+export function VisualizePicture() {
 
 
     const navigation = useNavigation()

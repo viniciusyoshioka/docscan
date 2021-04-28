@@ -24,7 +24,7 @@ export interface CameraSettingsProps extends ModalProps {
 }
 
 
-export default function CameraSettings(props: CameraSettingsProps) {
+export function CameraSettings(props: CameraSettingsProps) {
 
 
     const changeFlash = useCallback(async () => {

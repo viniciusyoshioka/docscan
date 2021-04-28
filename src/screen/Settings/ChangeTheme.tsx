@@ -10,7 +10,7 @@ import { useSwitchTheme, useTheme } from "../../service/theme"
 export interface ChangeThemeProps extends ModalFullscreenProps {}
 
 
-export default function ChangeTheme(props: ChangeThemeProps) {
+export function ChangeTheme(props: ChangeThemeProps) {
 
 
     const { appTheme } = useTheme()
