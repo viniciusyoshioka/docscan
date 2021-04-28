@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Component } from "react"
 
 import { Header, BlockLeft, HeaderButton, BlockCenter, HeaderTitle } from "../../component/Header"
 
@@ -8,21 +8,35 @@ export interface SettingsHeaderProps {
 }
 
 
-export function SettingsHeader(props: SettingsHeaderProps) {
-    return (
-        <Header>
-            <BlockLeft>
-                <HeaderButton 
-                    onPress={props.goBack} 
-                    iconName={"md-arrow-back"}
-                />
-            </BlockLeft>
+export class SettingsHeader extends Component<SettingsHeaderProps> {
 
-            <BlockCenter>
-                <HeaderTitle>
-                    Configurações
-                </HeaderTitle>
-            </BlockCenter>
-        </Header>  
-    )
+
+    constructor(props: SettingsHeaderProps) {
+        super(props)
+    }
+
+
+    shouldComponentUpdate() {
+        return false
+    }
+
+
+    render() {
+        return (
+            <Header>
+                <BlockLeft>
+                    <HeaderButton 
+                        onPress={this.props.goBack} 
+                        iconName={"md-arrow-back"}
+                    />
+                </BlockLeft>
+
+                <BlockCenter>
+                    <HeaderTitle>
+                        Configurações
+                    </HeaderTitle>
+                </BlockCenter>
+            </Header>  
+        )
+    }
 }
