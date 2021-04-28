@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Component } from "react"
 
 import { BlockCenter, BlockLeft, BlockRight, Header, HeaderButton, HeaderTitle } from "../../component/Header"
 
@@ -11,41 +11,58 @@ export interface ImportImageFromGaleryHeaderProps {
 }
 
 
-export function ImportImageFromGaleryHeader(props: ImportImageFromGaleryHeaderProps) {
-    return (
-        <Header>
-            <BlockLeft>
-                {props.selectionMode && (
-                    <HeaderButton
-                        iconName={"md-close"}
-                        onPress={props.exitSelectionMode}
-                    />
+export class ImportImageFromGaleryHeader extends Component<ImportImageFromGaleryHeaderProps> {
+
+
+    constructor(props: ImportImageFromGaleryHeaderProps) {
+        super(props)
+    }
+
+
+    shouldComponentUpdate(nextProps: ImportImageFromGaleryHeaderProps) {
+        if (this.props.selectionMode !== nextProps.selectionMode) {
+            return true
+        }
+        return false
+    }
+
+
+    render() {
+        return (
+            <Header>
+                <BlockLeft>
+                    {this.props.selectionMode && (
+                        <HeaderButton
+                            iconName={"md-close"}
+                            onPress={this.props.exitSelectionMode}
+                        />
+                    )}
+
+                    {!this.props.selectionMode && (
+                        <HeaderButton
+                            iconName={"md-arrow-back"}
+                            onPress={this.props.goBack}
+                        />
+                    )}
+                </BlockLeft>
+
+                {!this.props.selectionMode && (
+                    <BlockCenter>
+                        <HeaderTitle>
+                            Importar imagem
+                        </HeaderTitle>
+                    </BlockCenter>
                 )}
 
-                {!props.selectionMode && (
-                    <HeaderButton
-                        iconName={"md-arrow-back"}
-                        onPress={props.goBack}
-                    />
+                {this.props.selectionMode && (
+                    <BlockRight>
+                        <HeaderButton
+                            iconName={"md-checkmark"}
+                            onPress={this.props.importImage}
+                        />
+                    </BlockRight>
                 )}
-            </BlockLeft>
-
-            {!props.selectionMode && (
-                <BlockCenter>
-                    <HeaderTitle>
-                        Importar imagem
-                    </HeaderTitle>
-                </BlockCenter>
-            )}
-
-            {props.selectionMode && (
-                <BlockRight>
-                    <HeaderButton
-                        iconName={"md-checkmark"}
-                        onPress={props.importImage}
-                    />
-                </BlockRight>
-            )}
-        </Header>
-    )
+            </Header>
+        )
+    }
 }
