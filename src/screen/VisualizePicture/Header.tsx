@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Component } from "react"
 
 import { Header, BlockLeft, HeaderButton, BlockCenter, HeaderTitle, BlockRight } from "../../component/Header"
 
@@ -12,60 +12,77 @@ export interface VisualizePictureHeaderProps {
 }
 
 
-export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
-    return (
-        <Header>
-            <BlockLeft>
-                {!props.isCropping && (
-                    <HeaderButton
-                        iconName={"md-arrow-back"}
-                        onPress={props.goBack}
-                    />
-                )}
+export class VisualizePictureHeader extends Component<VisualizePictureHeaderProps> {
 
-                {props.isCropping && (
-                    <HeaderButton
-                        iconName={"md-close"}
-                        onPress={() => props.setIsCropping(false)}
-                    />
-                )}
-            </BlockLeft>
 
-            <BlockCenter>
-                {!props.isCropping && (
-                    <HeaderTitle>
-                        Visualizar foto
-                    </HeaderTitle>
-                )}
+    constructor(props: VisualizePictureHeaderProps) {
+        super(props)
+    }
 
-                {props.isCropping && (
-                    <HeaderTitle>
-                        Cortar foto
-                    </HeaderTitle>
-                )}
-            </BlockCenter>
 
-            <BlockRight>
-                {!props.isCropping && (
-                    <HeaderButton
-                        iconName={"md-camera-outline"}
-                        onPress={props.openCamera}
-                    />
-                )}
-                {!props.isCropping && (
-                    <HeaderButton
-                        iconName={"md-crop"}
-                        onPress={() => props.setIsCropping(true)}
-                    />
-                )}
+    shouldComponentUpdate(nextProps: VisualizePictureHeaderProps) {
+        if (this.props.isCropping !== nextProps.isCropping) {
+            return true
+        }
+        return false
+    }
 
-                {props.isCropping && (
-                    <HeaderButton
-                        iconName={"md-checkmark-sharp"}
-                        onPress={props.saveCroppedPicture}
-                    />
-                )}
-            </BlockRight>
-        </Header>
-    )
+
+    render() {
+        return (
+            <Header>
+                <BlockLeft>
+                    {!this.props.isCropping && (
+                        <HeaderButton
+                            iconName={"md-arrow-back"}
+                            onPress={this.props.goBack}
+                        />
+                    )}
+
+                    {this.props.isCropping && (
+                        <HeaderButton
+                            iconName={"md-close"}
+                            onPress={() => this.props.setIsCropping(false)}
+                        />
+                    )}
+                </BlockLeft>
+
+                <BlockCenter>
+                    {!this.props.isCropping && (
+                        <HeaderTitle>
+                            Visualizar foto
+                        </HeaderTitle>
+                    )}
+
+                    {this.props.isCropping && (
+                        <HeaderTitle>
+                            Cortar foto
+                        </HeaderTitle>
+                    )}
+                </BlockCenter>
+
+                <BlockRight>
+                    {!this.props.isCropping && (
+                        <HeaderButton
+                            iconName={"md-camera-outline"}
+                            onPress={this.props.openCamera}
+                        />
+                    )}
+                    {!this.props.isCropping && (
+                        <HeaderButton
+                            iconName={"md-crop"}
+                            onPress={() => this.props.setIsCropping(true)}
+                        />
+                    )}
+
+                    {this.props.isCropping && (
+                        <HeaderButton
+                            iconName={"md-checkmark-sharp"}
+                            onPress={this.props.saveCroppedPicture}
+                        />
+                    )}
+                </BlockRight>
+            </Header>
+        )
+    }
 }
