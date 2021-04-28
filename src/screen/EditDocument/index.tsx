@@ -47,7 +47,12 @@ export function EditDocument() {
                 )
                 return false
             }
-            await saveEditedDocument(params.document, documentName, pictureList)
+            const savedDocument = await saveEditedDocument(params.document, documentName, pictureList)
+            navigation.setParams({
+                document: savedDocument,
+                documentName: documentName,
+                pictureList: pictureList,
+            })
             return true
         } else {
             if (pictureList.length === 0) {
@@ -59,10 +64,15 @@ export function EditDocument() {
                 )
                 return false
             }
-            await saveNewDocument(documentName, pictureList)
+            const savedDocument = await saveNewDocument(documentName, pictureList)
+            navigation.setParams({
+                document: savedDocument,
+                documentName: documentName,
+                pictureList: pictureList,
+            })
             return true
         }
-    }, [documentName, pictureList])
+    }, [params, documentName, pictureList])
 
     const goBack = useCallback(async () => {
         if (selectionMode) {
@@ -181,7 +191,7 @@ export function EditDocument() {
                 }
             ]
         )
-    }, [pictureList])
+    }, [params, pictureList])
 
     const openCamera = useCallback(() => {
         navigation.navigate("Camera", {
@@ -189,7 +199,7 @@ export function EditDocument() {
             documentName: documentName,
             pictureList: pictureList,
         })
-    }, [pictureList, documentName])
+    }, [params, pictureList, documentName])
 
     const deletePicture = useCallback(() => {
         Alert.alert(
@@ -261,7 +271,7 @@ export function EditDocument() {
             pictureList: pictureList,
             document: params.document
         })
-    }, [documentName, pictureList])
+    }, [params, documentName, pictureList])
 
     const renderPictureItem = useCallback(({ item, index }: {item: string, index: number}) => {
         return (
@@ -289,27 +299,20 @@ export function EditDocument() {
 
     useEffect(() => {
         if (params) {
-            const paramKeys = Object.keys(params)
-
-            if (paramKeys.length === 1 && params.document) {
-                // setDocument(params.document)
-                // setDocumentName(params.document.name)
-                // setPictureList(params.document.pictureList)
-            } else {
-                // setDocument(params.document)
-                // if (params.documentName) {
-                //     setDocumentName(params.documentName)
-                // }
-                // if (params.pictureList) {
-                //     setPictureList(params.pictureList)
-                // }
+            if (Object.keys(params).length > 1) {
+                if (params.documentName) {
+                    setDocumentName(params.documentName)
+                }
+                if (params.pictureList) {
+                    setPictureList(params.pictureList)
+                }
 
                 if (params.isChanged) {
                     saveDocument()
                 }
             }
         }
-    }, [params])
+    }, [])
 
 
     return (

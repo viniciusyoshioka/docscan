@@ -35,7 +35,7 @@ async function createDocument(name: string, pictureList: Array<string>): Promise
     }
 }
 
-export async function saveNewDocument(name: string, pictureList: Array<string>) {
+export async function saveNewDocument(name: string, pictureList: Array<string>): Promise<Document> {
     const newDocument = await createDocument(name, pictureList)
 
     // documentId
@@ -47,6 +47,8 @@ export async function saveNewDocument(name: string, pictureList: Array<string>) 
     const documentList = await readDocument()
     documentList.unshift(newDocument)
     await writeDocument(documentList)
+
+    return newDocument
 }
 
 
@@ -60,7 +62,7 @@ async function editDocument(document: Document, name: string, pictureList: Array
     }
 }
 
-export async function saveEditedDocument(document: Document, name: string, pictureList: Array<string>) {
+export async function saveEditedDocument(document: Document, name: string, pictureList: Array<string>): Promise<Document> {
     await deleteDocument([document.id])
     
     const editedDocument = await editDocument(document, name, pictureList)
@@ -74,6 +76,8 @@ export async function saveEditedDocument(document: Document, name: string, pictu
     const documentList = await readDocument()
     documentList.unshift(editedDocument)
     await writeDocument(documentList)
+
+    return editedDocument
 }
 
 

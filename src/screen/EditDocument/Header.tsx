@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Component } from "react"
 
 import { Header, BlockLeft, HeaderButton, BlockCenter, HeaderTitle, BlockRight } from "../../component/Header"
 import { EditDocumentMenu } from "./EditDocumentMenu"
@@ -18,57 +18,76 @@ export interface EditDocumentHeaderProps {
 }
 
 
-export function EditDocumentHeader(props: EditDocumentHeaderProps) {
-    return (
-        <Header>
-            <BlockLeft>
-                {props.selectionMode && (
-                    <HeaderButton
-                        iconName={"md-close"}
-                        onPress={props.exitSelectionMode}
-                    />
+export class EditDocumentHeader extends Component<EditDocumentHeaderProps> {
+
+
+    constructor(props: EditDocumentHeaderProps) {
+        super(props)
+    }
+
+
+    shouldComponentUpdate(nextProps: EditDocumentHeaderProps) {
+        if (this.props.selectionMode !== nextProps.selectionMode) {
+            return true
+        } else if (this.props.documentName !== nextProps.documentName) {
+            return true
+        }
+        return false
+    }
+
+
+    render() {
+        return (
+            <Header>
+                <BlockLeft>
+                    {this.props.selectionMode && (
+                        <HeaderButton
+                            iconName={"md-close"}
+                            onPress={this.props.exitSelectionMode}
+                        />
+                    )}
+
+                    {!this.props.selectionMode && (
+                        <HeaderButton 
+                            iconName={"md-arrow-back"}
+                            onPress={this.props.goBack} 
+                        />
+                    )}
+                </BlockLeft>
+
+                {!this.props.selectionMode && (
+                    <BlockCenter>
+                        <HeaderTitle>
+                            {this.props.documentName}
+                        </HeaderTitle>
+                    </BlockCenter>
                 )}
 
-                {!props.selectionMode && (
-                    <HeaderButton 
-                        iconName={"md-arrow-back"}
-                        onPress={props.goBack} 
-                    />
+                {this.props.selectionMode && (
+                    <BlockRight>
+                        <HeaderButton
+                            iconName={"md-trash-outline"}
+                            onPress={this.props.deletePicture} 
+                        />
+                    </BlockRight>
                 )}
-            </BlockLeft>
 
-            {!props.selectionMode && (
-                <BlockCenter>
-                    <HeaderTitle>
-                        {props.documentName}
-                    </HeaderTitle>
-                </BlockCenter>
-            )}
+                {!this.props.selectionMode && (
+                    <BlockRight>
+                        <HeaderButton
+                            iconName={"md-camera-outline"}
+                            onPress={this.props.openCamera}
+                        />
 
-            {props.selectionMode && (
-                <BlockRight>
-                    <HeaderButton
-                        iconName={"md-trash-outline"}
-                        onPress={props.deletePicture} 
-                    />
-                </BlockRight>
-            )}
-
-            {!props.selectionMode && (
-                <BlockRight>
-                    <HeaderButton
-                        iconName={"md-camera-outline"}
-                        onPress={props.openCamera}
-                    />
-
-                    <EditDocumentMenu 
-                        renameDocument={props.renameDocument}
-                        exportToPdf={props.exportToPdf}
-                        discardDocument={props.discardDocument}
-                        shareDocument={props.shareDocument}
-                    />
-                </BlockRight>
-            )}
-        </Header>
-    )
+                        <EditDocumentMenu 
+                            renameDocument={this.props.renameDocument}
+                            exportToPdf={this.props.exportToPdf}
+                            discardDocument={this.props.discardDocument}
+                            shareDocument={this.props.shareDocument}
+                        />
+                    </BlockRight>
+                )}
+            </Header>
+        )
+    }
 }
