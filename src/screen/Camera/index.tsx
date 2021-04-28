@@ -3,14 +3,13 @@ import { Alert } from "react-native"
 import { RNCamera } from "react-native-camera"
 import { RouteProp, useIsFocused, useNavigation, useRoute } from "@react-navigation/native"
 import Orientation from "react-native-orientation-locker"
-import Icon from "react-native-vector-icons/Ionicons"
 
 import { SafeScreen } from "../../component/Screen"
 import { CameraHeader } from "./Header"
+import { CameraControl } from "./Control"
 import { CameraSettings } from "./CameraSettings"
 import { fullPathPictureOriginal, settingsDefaultCamera } from "../../service/constant"
 import { readSettings } from "../../service/storage"
-import { CameraControlButtonBase, CameraControlViewButtonIndex, cameraControlIconSize, CameraControlView, IndexControl } from "../../component/CameraControl"
 import { createAllFolder } from "../../service/folder-handler"
 import { getDateTime } from "../../service/date"
 import { getDocumentName } from "../../service/document-handler"
@@ -219,42 +218,13 @@ export function Camera() {
                 openSettings={() => setCameraSettingsVisible(true)}
             />
 
-            <CameraControlView style={{position: "absolute", bottom: 0, left: 0, right: 0, backgroundColor: "transparent"}}>
-                <CameraControlButtonBase onPress={addPictureFromGalery}>
-                    <Icon 
-                        name={"md-image-outline"} 
-                        size={cameraControlIconSize} 
-                        color={"rgb(255, 255, 255)"}
-                    />
-                </CameraControlButtonBase>
-
-
-                <CameraControlButtonBase 
-                    onPress={takePicture} 
-                    style={{backgroundColor: "rgb(255, 255, 255)"}}
-                />
-
-
-                {params?.screenAction !== "replace-picture" && (
-                    <CameraControlButtonBase onPress={editDocument}>
-                        <CameraControlViewButtonIndex>
-                            <Icon 
-                                name={"md-document-outline"} 
-                                size={cameraControlIconSize} 
-                                color={"rgb(255, 255, 255)"}
-                            />
-
-                            <IndexControl>
-                                {`${pictureList.length}`}
-                            </IndexControl>
-                        </CameraControlViewButtonIndex>
-                    </CameraControlButtonBase>
-                )}
-
-                {params?.screenAction === "replace-picture" && (
-                    <CameraControlButtonBase />
-                )}
-            </CameraControlView>
+            <CameraControl
+                pictureListLength={pictureList.length}
+                screenAction={params?.screenAction}
+                addPictureFromGalery={addPictureFromGalery}
+                takePicture={takePicture}
+                editDocument={editDocument}
+            />
         </SafeScreen>
     )
 }
