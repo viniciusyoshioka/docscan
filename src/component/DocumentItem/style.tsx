@@ -1,4 +1,3 @@
-import { StyleSheet } from "react-native"
 import { RectButton } from "react-native-gesture-handler"
 import styled from "styled-components/native"
 
@@ -18,12 +17,11 @@ export const Button = styled(RectButton)`
 `
 
 
-export const Block = StyleSheet.create({
-    block: {
-        alignItems: "center",
-        justifyContent: "center"
-    }
-}).block
+export const Block = styled.View`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
 
 
 export const Line = styled.View`

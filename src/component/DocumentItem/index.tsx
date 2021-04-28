@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
-import { Animated, View } from "react-native"
+import React, { useCallback, useState } from "react"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 import CheckBox from "@react-native-community/checkbox"
 
@@ -23,8 +22,6 @@ export function DocumentItem(props: DocumentItemProps) {
     const { color } = useTheme()
 
     const [selected, setSelected] = useState(false)
-    const animatedWidth = new Animated.Value(0)
-    const animatedOpacity = new Animated.Value(0)
 
 
     const normalPress = useCallback(() => {
@@ -49,82 +46,27 @@ export function DocumentItem(props: DocumentItemProps) {
     }, [props.selectionMode])
 
 
-    useEffect(() => {
-        if (props.selectionMode) {
-            Animated.sequence([
-                Animated.timing(animatedWidth, {
-                    toValue: 35,
-                    duration: 50,
-                    useNativeDriver: false
-                }),
-                Animated.timing(animatedOpacity, {
-                    toValue: 1,
-                    duration: 50,
-                    useNativeDriver: false
-                })
-            ]).start()
-        } else if (!props.selectionMode) {
-            if (!selected) {
-                Animated.sequence([
-                    Animated.timing(animatedWidth, {
-                        toValue: 0,
-                        duration: 50,
-                        useNativeDriver: false
-                    }),
-                    Animated.timing(animatedOpacity, {
-                        toValue: 0,
-                        duration: 50,
-                        useNativeDriver: false
-                    })
-                ]).start()
-            } else {
-                setSelected(false)
-            }
-        }
-    }, [props.selectionMode])
-
-    useEffect(() => {
-        if (!props.selectionMode && !selected) {
-            Animated.sequence([
-                Animated.timing(animatedWidth, {
-                    toValue: 0,
-                    duration: 50,
-                    useNativeDriver: false
-                }),
-                Animated.timing(animatedOpacity, {
-                    toValue: 0,
-                    duration: 50,
-                    useNativeDriver: false
-                })
-            ]).start()
-        }
-    }, [selected])
-
-
     return (
         <LongPressGestureHandler 
             maxDist={30} 
-            minDurationMs={800} 
+            minDurationMs={500} 
             onHandlerStateChange={({ nativeEvent }) => longPress(nativeEvent)}
         >
             <Button onPress={normalPress}>
-                <Animated.View 
-                    style={[Block, {
-                        width: animatedWidth, opacity: animatedOpacity, 
-                        marginRight: props.selectionMode ? 5 : 0,
-                    }]}
-                >
-                    <CheckBox 
-                        value={selected}
-                        onChange={normalPress}
-                        tintColors={{
-                            true: color.color,
-                            false: color.color
-                        }}
-                    />
-                </Animated.View>
+                {props.selectionMode && (
+                    <Block style={{marginRight: 5}}>
+                        <CheckBox 
+                            value={selected}
+                            onChange={normalPress}
+                            tintColors={{
+                                true: color.color,
+                                false: color.color
+                            }}
+                        />
+                    </Block>
+                )}
 
-                <View style={[Block, {alignItems: "flex-start", flex: 1}]}>
+                <Block style={{alignItems: "flex-start", flex: 1}}>
                     <Line>
                         <Title numberOfLines={1}>
                             {props.document.name}
@@ -136,7 +78,7 @@ export function DocumentItem(props: DocumentItemProps) {
                             {props.document.lastModificationDate}
                         </Date>
                     </Line>
-                </View>
+                </Block>
             </Button>
         </LongPressGestureHandler>
     )
