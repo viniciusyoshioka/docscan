@@ -7,7 +7,6 @@ import Share from "react-native-share"
 import { SafeScreen } from "../../component/Screen"
 import EditDocumentHeader from "./Header"
 import { PictureItem } from "../../component/Pictureitem"
-import { Document } from "../../service/object-types"
 import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../service/document-handler"
 import RenameDocument from "./RenameDocument"
 import { createPdf } from "../../service/pdf-creator"
@@ -15,27 +14,17 @@ import { fullPathPdf, pathPdf } from "../../service/constant"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
 import { ExportResponse } from "../../service/pdf-creator"
-
-
-type EditDocumentParams = {
-    EditDocument: {
-        document: Document | undefined,
-        documentName?: string,
-        pictureList?: Array<string>,
-        isChanged?: boolean,
-    }
-}
+import { ScreenParams } from "../../service/screen-params"
 
 
 export default function EditDocument() {
 
 
     const navigation = useNavigation()
-    const { params } = useRoute<RouteProp<EditDocumentParams, "EditDocument">>()
+    const { params } = useRoute<RouteProp<ScreenParams, "EditDocument">>()
 
-    const [document, setDocument] = useState<Document | undefined>(undefined)
-    const [documentName, setDocumentName] = useState<string>("Nome do Documento")
-    const [pictureList, setPictureList] = useState<Array<string>>([])
+    const [documentName, setDocumentName] = useState<string>(params.document ? params.document.name : params.documentName ? params.documentName : "Nome do Documento")
+    const [pictureList, setPictureList] = useState<Array<string>>(params.document ? params.document.pictureList : params.pictureList ? params.pictureList : [])
 
     const [selectionMode, setSelectionMode] = useState(false)
     const [selectedPictures, setSelectedPictures] = useState<Array<string>>([])
@@ -50,7 +39,7 @@ export default function EditDocument() {
 
     const saveDocument = useCallback(async (): Promise<boolean> => {
         // Return true to navigate to Home, false otherwise
-        if (document) {
+        if (params.document) {
             if (documentName === "") {
                 Alert.alert(
                     "Nome do documento vazio",
@@ -58,7 +47,7 @@ export default function EditDocument() {
                 )
                 return false
             }
-            await saveEditedDocument(document, documentName, pictureList)
+            await saveEditedDocument(params.document, documentName, pictureList)
             return true
         } else {
             if (pictureList.length === 0) {
@@ -73,7 +62,7 @@ export default function EditDocument() {
             await saveNewDocument(documentName, pictureList)
             return true
         }
-    }, [document, documentName, pictureList])
+    }, [documentName, pictureList])
 
     const goBack = useCallback(async () => {
         if (selectionMode) {
@@ -166,8 +155,8 @@ export default function EditDocument() {
                 {
                     text: "Apagar",
                     onPress: async () => {
-                        if (document) {
-                            await deleteDocument([document.id], true)
+                        if (params.document) {
+                            await deleteDocument([params.document.id], true)
                             navigation.reset({routes: [{name: "Home"}]})
                         } else {
                             pictureList.forEach(async (item) => {
@@ -192,15 +181,15 @@ export default function EditDocument() {
                 }
             ]
         )
-    }, [document, pictureList])
+    }, [pictureList])
 
     const openCamera = useCallback(() => {
         navigation.navigate("Camera", {
-            document: document,
+            document: params.document,
             documentName: documentName,
             pictureList: pictureList,
         })
-    }, [pictureList, documentName, document])
+    }, [pictureList, documentName])
 
     const deletePicture = useCallback(() => {
         Alert.alert(
@@ -270,9 +259,9 @@ export default function EditDocument() {
             pictureIndex: index,
             documentName: documentName,
             pictureList: pictureList,
-            document: document
+            document: params.document
         })
-    }, [documentName, pictureList, document])
+    }, [documentName, pictureList])
 
     const renderPictureItem = useCallback(({ item, index }: {item: string, index: number}) => {
         return (
@@ -303,17 +292,17 @@ export default function EditDocument() {
             const paramKeys = Object.keys(params)
 
             if (paramKeys.length === 1 && params.document) {
-                setDocument(params.document)
-                setDocumentName(params.document.name)
-                setPictureList(params.document.pictureList)
+                // setDocument(params.document)
+                // setDocumentName(params.document.name)
+                // setPictureList(params.document.pictureList)
             } else {
-                setDocument(params.document)
-                if (params.documentName) {
-                    setDocumentName(params.documentName)
-                }
-                if (params.pictureList) {
-                    setPictureList(params.pictureList)
-                }
+                // setDocument(params.document)
+                // if (params.documentName) {
+                //     setDocumentName(params.documentName)
+                // }
+                // if (params.pictureList) {
+                //     setPictureList(params.pictureList)
+                // }
 
                 if (params.isChanged) {
                     saveDocument()

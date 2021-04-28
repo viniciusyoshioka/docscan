@@ -7,31 +7,20 @@ import RNFS from "react-native-fs"
 import { SafeScreen } from "../../component/Screen"
 import ImportImageFromGaleryHeader from "./Header"
 import { ImageItem } from "../../component/ImageItem"
-import { Document } from "../../service/object-types"
 import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
 import { fullPathPictureOriginal } from "../../service/constant"
 import { useTheme } from "../../service/theme"
 import { useBackHandler } from "../../service/hook"
 import { getCameraRollPermission } from "../../service/permission"
 import { log } from "../../service/log"
-
-
-type ImportImageFromGaleryParam = {
-    ImportImageFromGalery: {
-        document: Document | undefined,
-        documentName: string | null,
-        pictureList: Array<string>,
-        screenAction?: "replace-picture",
-        replaceIndex?: number,
-    }
-}
+import { ScreenParams } from "../../service/screen-params"
 
 
 export default function ImportImageFromGalery() {
 
     
     const navigation = useNavigation()
-    const { params } = useRoute<RouteProp<ImportImageFromGaleryParam, "ImportImageFromGalery">>()
+    const { params } = useRoute<RouteProp<ScreenParams, "ImportImageFromGalery">>()
 
     const { color } = useTheme()
 

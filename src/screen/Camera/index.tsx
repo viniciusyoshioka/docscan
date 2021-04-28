@@ -14,22 +14,11 @@ import { CameraControlButtonBase, CameraControlViewButtonIndex, cameraControlIco
 import { createAllFolder } from "../../service/folder-handler"
 import { getDateTime } from "../../service/date"
 import { getDocumentName } from "../../service/document-handler"
-import { Document } from "../../service/object-types"
 import { useBackHandler } from "../../service/hook"
 import { getCameraPermission } from "../../service/permission"
 import { log } from "../../service/log"
 import { cameraReducerAction, cameraReducerState } from "../../service/reducer"
-
-
-type CameraParams = {
-    Camera: {
-        document: Document | undefined,
-        documentName: string,
-        pictureList: Array<string>,
-        screenAction?: "replace-picture",
-        replaceIndex?: number,
-    } | undefined
-}
+import { ScreenParams } from "../../service/screen-params"
 
 
 const initialCameraSettings: cameraReducerState = {
@@ -70,7 +59,7 @@ export default function Camera() {
 
     const navigation = useNavigation()
     const isFocused = useIsFocused()
-    const { params } = useRoute<RouteProp<CameraParams, "Camera">>()
+    const { params } = useRoute<RouteProp<ScreenParams, "Camera">>()
 
     const cameraRef = useRef<RNCamera>(null)
     const [stateCameraSettings, dispatchCameraSettings] = useReducer(reducerCameraSettings, initialCameraSettings)

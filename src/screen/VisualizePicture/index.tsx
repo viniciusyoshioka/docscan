@@ -9,25 +9,14 @@ import { SafeScreen } from "../../component/Screen"
 import { useBackHandler } from "../../service/hook"
 import { fullPathPictureCropped } from "../../service/constant"
 import { log } from "../../service/log"
-import { Document } from "../../service/object-types"
-
-
-type VisualizePictureParams = {
-    VisualizePicture: {
-        picturePath: string,
-        pictureIndex: number,
-        document: Document | undefined,
-        documentName: string,
-        pictureList: Array<string>,
-    }
-}
+import { ScreenParams } from "../../service/screen-params"
 
 
 export default function VisualizePicture() {
 
 
     const navigation = useNavigation()
-    const { params } = useRoute<RouteProp<VisualizePictureParams, "VisualizePicture">>()
+    const { params } = useRoute<RouteProp<ScreenParams, "VisualizePicture">>()
 
     const cropViewRef = useRef<ImageCrop>(null)
     const [isCropping, setIsCropping] = useState(false)
