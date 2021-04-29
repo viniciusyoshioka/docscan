@@ -234,6 +234,8 @@ export function EditDocument() {
                         setPictureList(newPicture)
 
                         await saveDocument()
+
+                        exitSelectionMode()
                     }
                 },
                 {
@@ -292,12 +294,6 @@ export function EditDocument() {
 
 
     useEffect(() => {
-        if (selectionMode) {
-            exitSelectionMode()
-        }
-    }, [pictureList])
-
-    useEffect(() => {
         if (params) {
             if (Object.keys(params).length > 1) {
                 if (params.documentName) {
@@ -340,8 +336,9 @@ export function EditDocument() {
             <FlatList 
                 data={pictureList} 
                 renderItem={renderPictureItem}
-                numColumns={2}
                 keyExtractor={(item, index) => index.toString()}
+                extraData={[selectPicture, deselectPicture]}
+                numColumns={2}
             />
         </SafeScreen>
     )
