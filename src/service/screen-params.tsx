@@ -1,18 +1,14 @@
 import { Document } from "./object-types"
 
 
-// Camera
-interface CameraParam {
-    document: Document | undefined,
-    documentName: string,
-    pictureList: Array<string>,
-    screenAction?: "replace-picture",
-    replaceIndex?: number,
-}
-
-
 export type ScreenParams = {
-    Camera: CameraParam | undefined,
+    Camera: {
+        document: Document | undefined,
+        documentName: string,
+        pictureList: Array<string>,
+        screenAction?: "replace-picture",
+        replaceIndex?: number,
+    } | undefined,
     EditDocument: {
         document: Document | undefined,
         documentName?: string,
