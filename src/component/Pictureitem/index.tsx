@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
-import { Animated } from "react-native"
+import React, { useCallback, useState } from "react"
 import CheckBox from "@react-native-community/checkbox"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 
@@ -22,7 +21,6 @@ export function PictureItem(props: PictureItemProps) {
     const { color } = useTheme()
 
     const [selected, setSelected] = useState(false)
-    const animatedOpacity = new Animated.Value(0)
 
 
     const getPictureName = useCallback(() => {
@@ -52,47 +50,10 @@ export function PictureItem(props: PictureItemProps) {
     }, [props.selectionMode])
 
 
-    useEffect(() => {
-        if (props.selectionMode) {
-            Animated.sequence([
-                Animated.timing(animatedOpacity, {
-                    toValue: 1,
-                    duration: 50,
-                    useNativeDriver: false
-                })
-            ]).start()
-        } else if (!props.selectionMode) {
-            if (!selected) {
-                Animated.sequence([
-                    Animated.timing(animatedOpacity, {
-                        toValue: 0,
-                        duration: 50,
-                        useNativeDriver: false
-                    })
-                ]).start()
-            } else {
-                setSelected(false)
-            }
-        }
-    }, [props.selectionMode])
-
-    useEffect(() => {
-        if (!props.selectionMode && !selected) {
-            Animated.sequence([
-                Animated.timing(animatedOpacity, {
-                    toValue: 0,
-                    duration: 50,
-                    useNativeDriver: false
-                })
-            ]).start()
-        }
-    }, [selected])
-
-
     return (
         <LongPressGestureHandler
             maxDist={30} 
-            minDurationMs={800} 
+            minDurationMs={350} 
             onHandlerStateChange={({ nativeEvent }) => longPress(nativeEvent)}
         >
             <PictureButton style={{aspectRatio: 2/3}} onPress={normalPress}>
@@ -107,18 +68,20 @@ export function PictureItem(props: PictureItemProps) {
                     </FileNameText>
                 </FileNameView>
 
-                <Animated.View style={[CheckBoxView, {opacity: animatedOpacity}]}>
-                    <CheckboxBackground />
+                {props.selectionMode && (
+                    <CheckBoxView>
+                        <CheckboxBackground />
 
-                    <CheckBox 
-                        value={selected}
-                        onChange={normalPress}
-                        tintColors={{
-                            true: color.color,
-                            false: color.color
-                        }}
-                    />
-                </Animated.View>
+                        <CheckBox 
+                            value={selected}
+                            onChange={normalPress}
+                            tintColors={{
+                                true: color.color,
+                                false: color.color
+                            }}
+                        />
+                    </CheckBoxView>
+                )}
             </PictureButton>
         </LongPressGestureHandler>
     )

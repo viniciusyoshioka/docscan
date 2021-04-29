@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet } from "react-native"
+import { Dimensions } from "react-native"
 import { RectButton } from "react-native-gesture-handler"
 import styled from "styled-components/native"
 
@@ -45,15 +45,14 @@ export const FileNameText = styled.Text`
 `
 
 
-export const CheckBoxView = StyleSheet.create({
-    checkbox: {
-        alignItems: "center",
-        justifyContent: "center",
-        position: "absolute",
-        left: 0,
-        top: 0,
-    }
-}).checkbox
+export const CheckBoxView = styled.View`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+`
 
 
 export const CheckboxBackground = styled.View`
