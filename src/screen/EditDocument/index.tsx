@@ -15,6 +15,7 @@ import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
 import { ExportResponse } from "../../service/pdf-creator"
 import { ScreenParams } from "../../service/screen-params"
+import { Document } from "../../service/object-types"
 
 
 export function EditDocument() {
@@ -23,8 +24,9 @@ export function EditDocument() {
     const navigation = useNavigation()
     const { params } = useRoute<RouteProp<ScreenParams, "EditDocument">>()
 
+    const [document, setDocument] = useState<Document | undefined>(params.document)
     const [documentName, setDocumentName] = useState<string>(params.document ? params.document.name : params.documentName ? params.documentName : "Nome do Documento")
-    const [pictureList, setPictureList] = useState<Array<string>>(params.document ? params.document.pictureList : params.pictureList ? params.pictureList : [])
+    const [pictureList, setPictureList] = useState<Array<string>>((params.document && !params.pictureList) ? params.document.pictureList : (params.pictureList) ? params.pictureList : [])
 
     const [selectionMode, setSelectionMode] = useState(false)
     const [selectedPicturesIndex, setSelectedPicturesIndex] = useState<Array<number>>([])
@@ -37,49 +39,48 @@ export function EditDocument() {
     })
 
 
-    const saveDocument = useCallback(async (givenDocumentName: string | undefined = undefined, givenPictureList: Array<string> | undefined = undefined): Promise<boolean> => {
+    const saveDocument = useCallback(async (givenDocumentName: string | undefined = undefined, givenPictureList: Array<string> | undefined = undefined) => {
         // Return true to navigate to Home, false otherwise
 
         const thisDocumentName: string = givenDocumentName || documentName
         const thisPictureList: Array<string> = givenPictureList || pictureList
 
-        if (params.document) {
+        if (document) {
             if (thisDocumentName === "") {
                 Alert.alert(
                     "Nome do documento vazio",
                     "Não é possível salvar um documento sem nome"
                 )
-                return false
+                return
             }
 
-            const savedDocument = await saveEditedDocument(params.document, thisDocumentName, thisPictureList)
+            const savedDocument = await saveEditedDocument(document, thisDocumentName, thisPictureList)
             navigation.setParams({
                 document: savedDocument,
                 documentName: thisDocumentName,
                 pictureList: thisPictureList,
+                isChanged: undefined,
             })
-            return true
+        } else {
+            if (thisPictureList.length === 0) {
+                return
+            } else if (thisDocumentName === "") {
+                Alert.alert(
+                    "Nome do documento vazio",
+                    "Não é possível salvar um documento sem nome"
+                )
+                return
+            }
+
+            const savedDocument = await saveNewDocument(thisDocumentName, thisPictureList)
+            navigation.setParams({
+                document: savedDocument,
+                documentName: thisDocumentName,
+                pictureList: thisPictureList,
+                isChanged: undefined,
+            })
         }
-
-
-        if (thisPictureList.length === 0) {
-            return true
-        } else if (thisDocumentName === "") {
-            Alert.alert(
-                "Nome do documento vazio",
-                "Não é possível salvar um documento sem nome"
-            )
-            return false
-        }
-
-        const savedDocument = await saveNewDocument(thisDocumentName, thisPictureList)
-        navigation.setParams({
-            document: savedDocument,
-            documentName: thisDocumentName,
-            pictureList: thisPictureList,
-        })
-        return true
-    }, [params, documentName, pictureList])
+    }, [document, documentName, pictureList])
 
     const goBack = useCallback(async () => {
         if (selectionMode) {
@@ -88,7 +89,7 @@ export function EditDocument() {
         }
 
         navigation.reset({routes: [{name: "Home"}]})
-    }, [selectionMode, saveDocument])
+    }, [selectionMode])
 
     const exportDocumentToPdf = useCallback(() => {
         if (documentName === "") {
@@ -169,8 +170,8 @@ export function EditDocument() {
                 {
                     text: "Apagar",
                     onPress: async () => {
-                        if (params.document) {
-                            await deleteDocument([params.document.id], true)
+                        if (document) {
+                            await deleteDocument([document.id], true)
                             navigation.reset({routes: [{name: "Home"}]})
                         } else {
                             pictureList.forEach(async (item) => {
@@ -195,15 +196,15 @@ export function EditDocument() {
                 }
             ]
         )
-    }, [params, pictureList])
+    }, [document, pictureList])
 
     const openCamera = useCallback(() => {
         navigation.navigate("Camera", {
-            document: params.document,
+            document: document,
             documentName: documentName,
             pictureList: pictureList,
         })
-    }, [params, pictureList, documentName])
+    }, [document, pictureList, documentName])
 
     const deletePicture = useCallback(() => {
         Alert.alert(
@@ -262,9 +263,9 @@ export function EditDocument() {
             pictureIndex: index,
             documentName: documentName,
             pictureList: pictureList,
-            document: params.document
+            document: document
         })
-    }, [params, documentName, pictureList])
+    }, [document, documentName, pictureList])
 
     const renderPictureItem = useCallback(({ item, index }: {item: string, index: number}) => {
         return (
@@ -286,23 +287,29 @@ export function EditDocument() {
 
     useEffect(() => {
         if (params) {
-            const paramKeys = Object.keys(params)
-            if (paramKeys.length === 1 && paramKeys.includes("document")) {
+            setDocument(params.document)
 
-            } else {
-                if (params.documentName) {
-                    setDocumentName(params.documentName)
-                }
-                if (params.pictureList) {
-                    setPictureList(params.pictureList)
-                }
+            setDocumentName(
+                params.document
+                    ? params.document.name
+                    : params.documentName
+                        ? params.documentName
+                        : "Nome do Documento"
+            )
 
-                if (params.isChanged) {
-                    saveDocument()
-                }
+            setPictureList(
+                (params.document && !params.pictureList)
+                    ? params.document.pictureList
+                    : (params.pictureList)
+                        ? params.pictureList
+                        : []
+            )
+
+            if (params.isChanged) {
+                saveDocument()
             }
         }
-    }, [])
+    }, [params])
 
 
     return (
@@ -330,7 +337,7 @@ export function EditDocument() {
             <FlatList 
                 data={pictureList} 
                 renderItem={renderPictureItem}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(_item, index) => index.toString()}
                 extraData={[selectPicture, deselectPicture]}
                 numColumns={2}
             />
