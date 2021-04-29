@@ -156,7 +156,7 @@ export function Camera() {
             document: params?.document,
             documentName: documentName !== null ? documentName : getDocumentName(),
             pictureList: pictureList,
-            isChanged: params ? pictureList.length !== params.pictureList.length : false
+            isChanged: true,
         })
     }, [pictureList, documentName])
 
