@@ -159,6 +159,7 @@ export function Home() {
                     onPress: async () => {
                         await deleteDocument(selectedDocument, true)
                         await getDocument()
+                        exitSelectionMode()
                     }
                 },
                 {
@@ -212,12 +213,6 @@ export function Home() {
         getDocument()
     }, [])
 
-    useEffect(() => {
-        if (selectionMode) {
-            exitSelectionMode()
-        }
-    }, [document])
-
 
     return (
         <SafeScreen>
@@ -234,6 +229,7 @@ export function Home() {
                 data={document}
                 renderItem={renderDocumentItem}
                 keyExtractor={(item) => item.id.toString()}
+                extraData={[selectDocument, deselectDocument]}
             />
 
             {document.length === 0 && (
