@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useReducer, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { RNCamera } from "react-native-camera"
-import { RouteProp, useIsFocused, useNavigation, useRoute } from "@react-navigation/native"
-import Orientation from "react-native-orientation-locker"
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 
 import { SafeScreen } from "../../component/Screen"
 import { CameraHeader } from "./Header"
@@ -57,15 +56,13 @@ export function Camera() {
 
 
     const navigation = useNavigation()
-    const isFocused = useIsFocused()
     const { params } = useRoute<RouteProp<ScreenParams, "Camera">>()
 
     const cameraRef = useRef<RNCamera>(null)
     const [stateCameraSettings, dispatchCameraSettings] = useReducer(reducerCameraSettings, initialCameraSettings)
     const [cameraSettingsVisible, setCameraSettingsVisible] = useState(false)
 
-    const [documentName, setDocumentName] = useState<string | null>(null)
-    const [pictureList, setPictureList] = useState<Array<string>>([])
+    const [pictureList, setPictureList] = useState<Array<string>>(params ? params.pictureList : [])
 
 
     useBackHandler(() => {
@@ -104,12 +101,12 @@ export function Camera() {
     const addPictureFromGalery = useCallback(() => {
         navigation.navigate("ImportImageFromGalery", {
             document: params?.document,
-            documentName: documentName,
+            documentName: params?.documentName,
             pictureList: pictureList,
             screenAction: params?.screenAction,
             replaceIndex: params?.replaceIndex,
         })
-    }, [pictureList, documentName])
+    }, [pictureList])
 
     const takePicture = useCallback(async () => {
         createAllFolder()
@@ -154,11 +151,11 @@ export function Camera() {
     const editDocument = useCallback(() => {
         navigation.navigate("EditDocument", {
             document: params?.document,
-            documentName: documentName !== null ? documentName : getDocumentName(),
+            documentName: params?.documentName !== undefined ? params?.documentName : getDocumentName(),
             pictureList: pictureList,
             isChanged: true,
         })
-    }, [pictureList, documentName])
+    }, [pictureList])
 
 
     useEffect(() => {
@@ -172,20 +169,9 @@ export function Camera() {
                 }
             })
         }
+
         getCameraSettings()
-
-        Orientation.lockToPortrait()
-        return () => {
-            Orientation.unlockAllOrientations()
-        }
     }, [])
-
-    useEffect(() => {
-        if (params) {
-            setDocumentName(params.documentName)
-            setPictureList(params.pictureList)
-        }
-    }, [params])
 
 
     return (
@@ -200,18 +186,16 @@ export function Camera() {
                 setCameraAttributes={dispatchCameraSettings}
             />
 
-            {isFocused && (
-                <RNCamera
-                    style={{flex: 1, overflow: "hidden"}}
-                    ref={cameraRef}
-                    captureAudio={false}
-                    playSoundOnCapture={false}
-                    type={"back"}
-                    useNativeZoom={true}
-                    flashMode={stateCameraSettings.flash}
-                    whiteBalance={stateCameraSettings.whiteBalance}
-                />
-            )}
+            <RNCamera
+                style={{flex: 1, overflow: "hidden"}}
+                ref={cameraRef}
+                captureAudio={false}
+                playSoundOnCapture={false}
+                type={"back"}
+                useNativeZoom={true}
+                flashMode={stateCameraSettings.flash}
+                whiteBalance={stateCameraSettings.whiteBalance}
+            />
 
             <CameraHeader 
                 goBack={goBack} 

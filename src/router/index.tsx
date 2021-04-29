@@ -26,33 +26,12 @@ export function Router() {
                     stackAnimation: "fade",
                 }}
             >
-                <Stack.Screen
-                    name={"Home"}
-                    component={Home}
-                />
-                <Stack.Screen
-                    name={"Camera"}
-                    component={Camera}
-                    options={{
-                        screenOrientation: "portrait"
-                    }}
-                />
-                <Stack.Screen
-                    name={"Settings"}
-                    component={Settings}
-                />
-                <Stack.Screen
-                    name={"EditDocument"}
-                    component={EditDocument}
-                />
-                <Stack.Screen
-                    name={"VisualizePicture"}
-                    component={VisualizePicture}
-                />
-                <Stack.Screen
-                    name={"ImportImageFromGalery"}
-                    component={ImportImageFromGalery}
-                />
+                <Stack.Screen name={"Home"} component={Home} />
+                <Stack.Screen name={"Camera"} component={Camera} options={{screenOrientation: "portrait"}} />
+                <Stack.Screen name={"Settings"} component={Settings} />
+                <Stack.Screen name={"EditDocument"} component={EditDocument} />
+                <Stack.Screen name={"VisualizePicture"} component={VisualizePicture} />
+                <Stack.Screen name={"ImportImageFromGalery"} component={ImportImageFromGalery} />
             </Stack.Navigator>
         </NavigationContainer>
     )

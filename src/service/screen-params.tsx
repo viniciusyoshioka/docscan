@@ -17,7 +17,7 @@ export type ScreenParams = {
     },
     ImportImageFromGalery: {
         document: Document | undefined,
-        documentName: string | null,
+        documentName: string | undefined,
         pictureList: Array<string>,
         screenAction?: "replace-picture",
         replaceIndex?: number,
