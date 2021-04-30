@@ -1,7 +1,7 @@
-import CheckBox from "@react-native-community/checkbox"
 import React, { useCallback, useEffect, useState } from "react"
-import { Animated, Dimensions, Image } from "react-native"
+import { Image, useWindowDimensions } from "react-native"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
+import CheckBox from "@react-native-community/checkbox"
 
 import { useTheme } from "../../service/theme"
 import { Button, CheckboxBackground, ViewCheckBox } from "./style"
@@ -23,8 +23,7 @@ export function ImageItem(props: ImageItemProps) {
     const { color } = useTheme()
 
     const [selected, setSelected] = useState(false)
-    const [imageSize, setImageSize] = useState(Dimensions.get("window").width / 3)
-    const animatedOpacity = new Animated.Value(0)
+    const imageSize = useWindowDimensions().width / 3
 
 
     const normalPress = useCallback(() => {
@@ -50,60 +49,16 @@ export function ImageItem(props: ImageItemProps) {
 
 
     useEffect(() => {
-        if (props.selectionMode) {
-            Animated.sequence([
-                Animated.timing(animatedOpacity, {
-                    toValue: 1,
-                    duration: 50,
-                    useNativeDriver: false
-                })
-            ]).start()
-        } else if (!props.selectionMode) {
-            if (!selected) {
-                Animated.sequence([
-                    Animated.timing(animatedOpacity, {
-                        toValue: 0,
-                        duration: 50,
-                        useNativeDriver: false
-                    })
-                ]).start()
-            } else {
-                setSelected(false)
-            }
+        if (!props.selectionMode && selected) {
+            setSelected(false)
         }
     }, [props.selectionMode])
-
-    useEffect(() => {
-        if (!props.selectionMode && !selected) {
-            Animated.sequence([
-                Animated.timing(animatedOpacity, {
-                    toValue: 0,
-                    duration: 50,
-                    useNativeDriver: false
-                })
-            ]).start()
-        }
-    }, [selected])
-
-    useEffect(() => {
-        Dimensions.addEventListener(
-            "change", 
-            ({ window }) => setImageSize(window.width / 3)
-        )
-
-        return () => {
-            Dimensions.removeEventListener(
-                "change", 
-                ({ window }) => setImageSize(window.width / 3)
-            )
-        }
-    }, [])
 
 
     return (
         <LongPressGestureHandler 
             maxDist={30} 
-            minDurationMs={800} 
+            minDurationMs={350} 
             onHandlerStateChange={({ nativeEvent }) => longPress(nativeEvent)}
         >
             <Button onPress={normalPress}>
@@ -114,18 +69,20 @@ export function ImageItem(props: ImageItemProps) {
                     }}
                 />
 
-                <Animated.View style={[ViewCheckBox, {opacity: props.selectionMode ? 1 : animatedOpacity}]}>
-                    <CheckboxBackground />
+                {props.selectionMode && (
+                    <ViewCheckBox>
+                        <CheckboxBackground />
 
-                    <CheckBox
-                        value={selected}
-                        onValueChange={normalPress}
-                        tintColors={{
-                            true: color.color,
-                            false: color.color
-                        }}
-                    />
-                </Animated.View>
+                        <CheckBox
+                            value={selected}
+                            onValueChange={normalPress}
+                            tintColors={{
+                                true: color.color,
+                                false: color.color
+                            }}
+                        />
+                    </ViewCheckBox>
+                )}
             </Button>
         </LongPressGestureHandler>
     )

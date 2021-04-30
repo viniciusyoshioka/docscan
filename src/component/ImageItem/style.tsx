@@ -1,4 +1,3 @@
-import { StyleSheet } from "react-native"
 import { RectButton } from "react-native-gesture-handler"
 import styled from "styled-components/native"
 
@@ -10,15 +9,14 @@ export const Button = styled(RectButton)`
 `
 
 
-export const ViewCheckBox = StyleSheet.create({
-    viewCheckbox: {
-        alignItems: "center",
-        justifyContent: "center",
-        position: "absolute",
-        top: 0,
-        left: 0,
-    }
-}).viewCheckbox
+export const ViewCheckBox = styled.View`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+`
 
 
 export const CheckboxBackground = styled.View`

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 import CheckBox from "@react-native-community/checkbox"
 
@@ -46,10 +46,17 @@ export function DocumentItem(props: DocumentItemProps) {
     }, [props.selectionMode])
 
 
+    useEffect(() => {
+        if (!props.selectionMode && selected) {
+            setSelected(false)
+        }
+    }, [props.selectionMode])
+
+
     return (
         <LongPressGestureHandler 
             maxDist={30} 
-            minDurationMs={500} 
+            minDurationMs={350} 
             onHandlerStateChange={({ nativeEvent }) => longPress(nativeEvent)}
         >
             <Button onPress={normalPress}>

@@ -18,7 +18,7 @@ import { ScreenParams } from "../../service/screen-params"
 
 export function ImportImageFromGalery() {
 
-    
+
     const navigation = useNavigation()
     const { params } = useRoute<RouteProp<ScreenParams, "ImportImageFromGalery">>()
 
@@ -197,7 +197,8 @@ export function ImportImageFromGalery() {
             <FlatList
                 data={imageGalery}
                 renderItem={renderImageItem}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(_item, index) => index.toString()}
+                extraData={[selectImage, deselectImage]}
                 numColumns={3}
                 onEndReachedThreshold={0.5}
                 onEndReached={getImage}

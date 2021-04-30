@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import CheckBox from "@react-native-community/checkbox"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 
@@ -46,6 +46,13 @@ export function PictureItem(props: PictureItemProps) {
                 props.select()
                 setSelected(true)
             }
+        }
+    }, [props.selectionMode])
+
+
+    useEffect(() => {
+        if (!props.selectionMode && selected) {
+            setSelected(false)
         }
     }, [props.selectionMode])
 
