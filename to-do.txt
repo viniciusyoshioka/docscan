@@ -1,11 +1,9 @@
 
+arrumar orientacao da interface da camera quando mudar a orientacao
+
 optimize service/document-handler
-optimize component/DocumentItem
-optimize component/ImageItem
-optimize component/PictureItem
 
 melhorar renomear arquivos ao importar da galeria e copiar na pasta de fotos
-arrumar orientacao da interface da camera quando mudar a orientacao
 
 adicionar suporte pra muitas camera no celular
 arrumar cor do tema claro

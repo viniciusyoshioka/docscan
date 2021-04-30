@@ -26,6 +26,8 @@ export class CameraControl extends Component<CameraControlProps> {
             return true
         } else if (this.props.screenAction !== nextProps.screenAction) {
             return true
+        } else if (this.props.takePicture !== nextProps.takePicture) {
+            return true
         }
         return false
     }
