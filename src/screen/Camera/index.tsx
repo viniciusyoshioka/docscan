@@ -137,6 +137,7 @@ export function Camera() {
                     document: params.document,
                     documentName: params.documentName,
                     pictureList: params.pictureList,
+                    isChanged: true,
                 })
             }
         } catch (error) {

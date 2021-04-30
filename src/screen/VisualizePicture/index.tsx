@@ -38,6 +38,7 @@ export function VisualizePicture() {
             document: params.document,
             documentName: params.documentName,
             pictureList: params.pictureList,
+            isChanged: params.isChanged,
         })
     }, [isCropping])
 
@@ -96,6 +97,14 @@ export function VisualizePicture() {
         })
     }, [])
 
+    const onSaveImageError = useCallback((response: string) => {
+        log("ERROR", `VisualizePicture onSaveImageError - Erro ao cortar imagem. Mensagem: "${response}"`)
+        Alert.alert(
+            "Falha",
+            "Não foi possível cortar imagem"
+        )
+    }, [])
+
     const openCamera = useCallback(() => {
         navigation.navigate("Camera", {
             document: params.document,
@@ -136,10 +145,8 @@ export function VisualizePicture() {
                         margin: 15,
                     }}
                     sourceUrl={`file://${params.picturePath}`}
-                    onImageSaved={(response) => onImageSaved(response)}
-                    onSaveImageError={(response) => {
-                        console.log(response, "ERROR")
-                    }}
+                    onImageSaved={onImageSaved}
+                    onSaveImageError={onSaveImageError}
                 />
             )}
         </SafeScreen>

@@ -28,5 +28,6 @@ export type ScreenParams = {
         document: Document | undefined,
         documentName: string,
         pictureList: Array<string>,
+        isChanged?: boolean,
     },
 }
