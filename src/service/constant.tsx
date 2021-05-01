@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import RNFS from "react-native-fs"
 
 import { SettingsCameraProps, SettingsProps } from "./object-types"

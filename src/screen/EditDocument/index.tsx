@@ -25,8 +25,19 @@ export function EditDocument() {
     const { params } = useRoute<RouteProp<ScreenParams, "EditDocument">>()
 
     const [document, setDocument] = useState<Document | undefined>(params.document)
-    const [documentName, setDocumentName] = useState<string>(params.document ? params.document.name : params.documentName ? params.documentName : "Nome do Documento")
-    const [pictureList, setPictureList] = useState<Array<string>>((params.document && !params.pictureList) ? params.document.pictureList : (params.pictureList) ? params.pictureList : [])
+    const [documentName, setDocumentName] = useState<string>(
+        (params.document)
+            ? params.document.name
+            : params.documentName
+                ? params.documentName
+                : "Nome do Documento")
+    const [pictureList, setPictureList] = useState<Array<string>>(
+        (params.document && !params.pictureList)
+            ? params.document.pictureList
+            : (params.pictureList)
+                ? params.pictureList
+                : []
+    )
 
     const [selectionMode, setSelectionMode] = useState(false)
     const [selectedPicturesIndex, setSelectedPicturesIndex] = useState<Array<number>>([])
@@ -39,7 +50,10 @@ export function EditDocument() {
     })
 
 
-    const saveDocument = useCallback(async (givenDocumentName: string | undefined = undefined, givenPictureList: Array<string> | undefined = undefined) => {
+    const saveDocument = useCallback(async (
+        givenDocumentName: string | undefined = undefined,
+        givenPictureList: Array<string> | undefined = undefined
+    ) => {
         // Return true to navigate to Home, false otherwise
 
         const thisDocumentName: string = givenDocumentName || documentName
@@ -222,7 +236,7 @@ export function EditDocument() {
                                 .catch((error) => {
                                     log("ERROR", `EditDocument deletePicture - Erro ao apagar foto do documento. Mensagem: "${error}"`)
                                 })
-                                pictures.splice(item, 1)
+                            pictures.splice(item, 1)
                         })
 
                         setPictureList(pictures)

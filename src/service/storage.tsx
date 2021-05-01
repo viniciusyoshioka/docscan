@@ -24,12 +24,12 @@ async function read(key: string): Promise<string | null> {
 }
 
 
-export async function writeTheme(newTheme: string) {
-    await write(storageTheme, newTheme)
+export async function writeTheme(value: string) {
+    await write(storageTheme, value)
 }
 
 export async function readTheme(): Promise<string> {
-    let theme = await read(storageTheme)
+    const theme = await read(storageTheme)
     if (theme === null) {
         await writeTheme(themeDefault)
         return themeDefault
@@ -38,12 +38,12 @@ export async function readTheme(): Promise<string> {
 }
 
 
-export async function writeDocumentId(newDocumentId: Array<number>) {
-    await write(storageDocumentId, JSON.stringify(newDocumentId))
+export async function writeDocumentId(value: Array<number>) {
+    await write(storageDocumentId, JSON.stringify(value))
 }
 
 export async function readDocumentId(): Promise<Array<number>> {
-    let documentId = await read(storageDocumentId)
+    const documentId = await read(storageDocumentId)
     if (documentId === null) {
         await writeDocumentId([])
         return []
@@ -52,12 +52,12 @@ export async function readDocumentId(): Promise<Array<number>> {
 }
 
 
-export async function writeDocument(newDocument: Array<Document>) {
-    await write(storageDocument, JSON.stringify(newDocument))
+export async function writeDocument(value: Array<Document>) {
+    await write(storageDocument, JSON.stringify(value))
 }
 
 export async function readDocument(): Promise<Array<Document>> {
-    let document = await read(storageDocument)
+    const document = await read(storageDocument)
     if (document === null) {
         await writeDocument([])
         return []
@@ -66,12 +66,12 @@ export async function readDocument(): Promise<Array<Document>> {
 }
 
 
-export async function writeDebugHome(newDebugHome: string) {
-    await write(storageDebugHome, newDebugHome)
+export async function writeDebugHome(value: string) {
+    await write(storageDebugHome, value)
 }
 
 export async function readDebugHome(): Promise<string> {
-    let debugHome = await read(storageDebugHome)
+    const debugHome = await read(storageDebugHome)
     if (debugHome === null) {
         await writeDebugHome(debugHomeDefault)
         return debugHomeDefault
@@ -80,12 +80,12 @@ export async function readDebugHome(): Promise<string> {
 }
 
 
-export async function writeSettings(newSettings: SettingsProps) {
-    await write(storageSettings, JSON.stringify(newSettings))
+export async function writeSettings(value: SettingsProps) {
+    await write(storageSettings, JSON.stringify(value))
 }
 
 export async function readSettings(): Promise<SettingsProps> {
-    let settings = await read(storageSettings)
+    const settings = await read(storageSettings)
     if (settings === null) {
         await writeSettings(settingsDefault)
         return settingsDefault

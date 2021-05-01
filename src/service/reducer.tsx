@@ -29,4 +29,7 @@ type cameraReducerActionReset = {
     type: "reset"
 }
 
-export type cameraReducerAction = cameraReducerActionFlash | cameraReducerActionWhiteBalance | cameraReducerActionSet | cameraReducerActionReset
+export type cameraReducerAction = cameraReducerActionFlash
+    | cameraReducerActionWhiteBalance
+    | cameraReducerActionSet
+    | cameraReducerActionReset

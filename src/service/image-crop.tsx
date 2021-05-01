@@ -1,4 +1,4 @@
-import React, { Component, createRef } from "react"
+import React, { Component, createRef, ReactElement } from "react"
 import { findNodeHandle, NativeSyntheticEvent, requireNativeComponent, StyleProp, UIManager, ViewStyle } from "react-native"
 
 
@@ -41,10 +41,10 @@ export class ImageCrop extends Component<ImageCropProps> {
     }
 
 
-    cropImageRef = createRef<any>()
+    cropImageRef = createRef<ImageCrop>()
 
 
-    saveImage = (quality: number = 100, preserveTransparency: boolean = true) => {
+    saveImage = (quality = 100, preserveTransparency = true): void => {
         UIManager.dispatchViewManagerCommand(
             findNodeHandle(this.cropImageRef.current),
             UIManager.getViewManagerConfig("RNImageCrop").Commands.saveImage,
@@ -52,7 +52,7 @@ export class ImageCrop extends Component<ImageCropProps> {
         )
     }
 
-    rotateImage = (clockwise: boolean = true) => {
+    rotateImage = (clockwise = true): void => {
         UIManager.dispatchViewManagerCommand(
             findNodeHandle(this.cropImageRef.current),
             UIManager.getViewManagerConfig("RNImageCrop").Commands.rotateImage,
@@ -61,7 +61,7 @@ export class ImageCrop extends Component<ImageCropProps> {
     }
 
 
-    render() {
+    render(): ReactElement {
         const { style, sourceUrl, keepAspectRatio, aspectRatio, onImageSaved, onSaveImageError } = this.props
 
         return (
@@ -72,10 +72,14 @@ export class ImageCrop extends Component<ImageCropProps> {
                 keepAspectRatio={keepAspectRatio}
                 aspectRatio={aspectRatio}
                 onImageSaved={(event: NativeSyntheticEvent<imageSavedResponse>) => {
-                    onImageSaved!(event.nativeEvent)
+                    if (onImageSaved) {
+                        onImageSaved(event.nativeEvent)
+                    }
                 }}
                 onSaveImageError={(event: NativeSyntheticEvent<saveImageErrorResponse>) => {
-                    onSaveImageError!(event.nativeEvent.message)
+                    if (onSaveImageError) {
+                        onSaveImageError(event.nativeEvent.message)
+                    }
                 }}
             />
         )

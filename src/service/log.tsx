@@ -5,7 +5,7 @@ import { fullPathLog } from "./constant"
 import { logCode } from "./object-types"
 
 
-function createLogFile() {
+function createLogFile(): void {
     RNFS.exists(fullPathLog)
         .then((exists) => {
             if (!exists) {
@@ -22,7 +22,7 @@ function createLogFile() {
 }
 
 
-export function log(code: logCode, data: string) {
+export function log(code: logCode, data: string): void {
     createLogFile()
 
     console.log(`${code} - ${data}`)

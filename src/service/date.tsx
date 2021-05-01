@@ -7,7 +7,7 @@ const monthList = {
 }
 
 
-export function getDate(currentDate=Date(), separator="/") {
+export function getDate(currentDate=Date(), separator="/"): string {
     const dateList = currentDate.split(" ")
 
     const day = dateList[2]
@@ -18,7 +18,7 @@ export function getDate(currentDate=Date(), separator="/") {
 }
 
 
-export function getTime(currentDate=Date(), separator=":", hasSecond=false) {
+export function getTime(currentDate=Date(), separator=":", hasSecond=false): string {
     const timeList = currentDate.split(" ")[4].split(":")
 
     const hour = timeList[0]
@@ -29,7 +29,7 @@ export function getTime(currentDate=Date(), separator=":", hasSecond=false) {
 }
 
 
-export function getDateTime(dateSeparator="/", timeSeparator=":", hasSecond=false) {
+export function getDateTime(dateSeparator="/", timeSeparator=":", hasSecond=false): string {
     const currentDate = Date()
 
     const date = getDate(currentDate, dateSeparator)

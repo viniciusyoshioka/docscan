@@ -1,21 +1,19 @@
 import RNFS from "react-native-fs"
 
 import { getDateTime } from "./date"
-import { log } from "./log";
-import { Document } from "./object-types";
-import { readDocument, readDocumentId, writeDocument, writeDocumentId } from "./storage";
+import { log } from "./log"
+import { Document } from "./object-types"
+import { readDocument, readDocumentId, writeDocument, writeDocumentId } from "./storage"
 
 
 export async function getId(): Promise<number> {
     const documentId = await readDocumentId()
 
     let minimumId = 0
-    while (true) {
-        if (documentId.indexOf(minimumId) === -1) {
-            return minimumId
-        }
+    while (documentId.includes(minimumId)) {
         minimumId += 1
     }
+    return minimumId
 }
 
 
@@ -62,9 +60,13 @@ async function editDocument(document: Document, name: string, pictureList: Array
     }
 }
 
-export async function saveEditedDocument(document: Document, name: string, pictureList: Array<string>): Promise<Document> {
+export async function saveEditedDocument(
+    document: Document,
+    name: string,
+    pictureList: Array<string>
+): Promise<Document> {
     await deleteDocument([document.id])
-    
+
     const editedDocument = await editDocument(document, name, pictureList)
 
     // documentId
@@ -81,7 +83,7 @@ export async function saveEditedDocument(document: Document, name: string, pictu
 }
 
 
-export async function deleteDocument(ids: Array<number>, deleteFiles=false) {
+export async function deleteDocument(ids: Array<number>, deleteFiles = false) {
     // documentId
     const documentId = await readDocumentId()
     const documentIdIndex: Array<number> = []

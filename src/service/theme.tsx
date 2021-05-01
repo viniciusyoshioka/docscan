@@ -3,7 +3,7 @@ import { createContext, useContext } from "react"
 import { themeDark, themeLight } from "./constant"
 
 
-export interface ColorTheme {
+export type ColorTheme = {
     name: string,
     appTheme: string,
     color: {
@@ -44,15 +44,19 @@ export const DarkTheme: ColorTheme = {
 }
 
 
-export const ThemeContext = createContext(LightTheme)
+const ThemeContext = createContext(LightTheme)
 
-export const SwitchThemeContext = createContext(async (newTheme: string) => {})
-
+export const ThemeContextProvider = ThemeContext.Provider
 
 export function useTheme(): ColorTheme {
     const theme = useContext(ThemeContext)
     return theme
 }
+
+
+const SwitchThemeContext = createContext(async (_newTheme: string) => {})
+
+export const SwitchThemeContextProvider = SwitchThemeContext.Provider
 
 export function useSwitchTheme(): (newTheme: string) => Promise<void> {
     const switchTheme = useContext(SwitchThemeContext)

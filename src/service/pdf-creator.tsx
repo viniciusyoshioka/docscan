@@ -3,10 +3,10 @@ import { NativeModules } from "react-native"
 import { fullPathPdf } from "./constant"
 
 
-export const PdfCreator: PdfCreatorProps = NativeModules.PdfCreator
+const PdfCreator: PdfCreatorProps = NativeModules.PdfCreator
 
 
-export interface PdfCreatorProps {
+interface PdfCreatorProps {
     exportPicturesToPdf: (pictureList: Array<string>, documentPath: string | null) => Promise<ExportResponse>,
 }
 
@@ -16,7 +16,11 @@ export interface ExportResponse {
 }
 
 
-export async function createPdf(pictureList: Array<string>, documentName: string | null = null): Promise<ExportResponse> {
+export async function createPdf(
+    pictureList: Array<string>,
+    documentName: string | null = null
+): Promise<ExportResponse> {
+
     let documentPath: string | null = null
     if (documentName) {
         documentPath = `${fullPathPdf}/${documentName}.pdf`

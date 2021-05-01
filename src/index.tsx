@@ -6,7 +6,7 @@ import { ThemeProvider } from "styled-components/native"
 import { Router } from "./router"
 import { themeAuto, themeLight } from "./service/constant"
 import { readTheme, writeTheme } from "./service/storage"
-import { DarkTheme, join, LightTheme, SwitchThemeContext, ThemeContext } from "./service/theme"
+import { DarkTheme, join, LightTheme, SwitchThemeContextProvider, ThemeContextProvider } from "./service/theme"
 
 
 export function App() {
@@ -39,37 +39,28 @@ export function App() {
     }, [])
 
 
-    /* 
-    useEffect(() => {
-        getTheme()
-    }, [deviceTheme])
-
-    useEffect(() => {
-        const themeListener: any = Appearance.addChangeListener(({ colorScheme }) => {
-            setDeviceTheme(colorScheme)
-            console.log("themeListener mudou")
-        })
-
-        console.log("themeListener adicionado")
-
-        return () => {
-            console.log("themeListener removido")
-            Appearance.removeChangeListener(themeListener)
-        }
-    }, [])
-    */
+    // useEffect(() => {
+    //     getTheme()
+    // }, [deviceTheme])
+    // 
+    // useEffect(() => {
+    //     function listener(preferences: Appearance.AppearancePreferences) {
+    //         setDeviceTheme(preferences.colorScheme)
+    //     }
+    //     Appearance.addChangeListener(listener)
+    //     return () => Appearance.removeChangeListener(listener)
+    // }, [])
 
 
     useEffect(() => {
         getTheme()
 
-        const themeListener: any = Appearance.addChangeListener(({ colorScheme }) => {
-            setDeviceTheme(colorScheme)
-        })
-        
-        return () => {
-            Appearance.removeChangeListener(themeListener)
+        function listener(preferences: Appearance.AppearancePreferences) {
+            setDeviceTheme(preferences.colorScheme)
         }
+
+        Appearance.addChangeListener(listener)
+        return () => Appearance.removeChangeListener(listener)
     }, [getTheme])
 
     useEffect(() => {
@@ -83,14 +74,14 @@ export function App() {
 
 
     return (
-        <ThemeContext.Provider value={(theme === themeLight) ? join(LightTheme, appTheme) : join(DarkTheme, appTheme)}>
-            <SwitchThemeContext.Provider value={switchTheme}>
+        <ThemeContextProvider value={(theme === themeLight) ? join(LightTheme, appTheme) : join(DarkTheme, appTheme)}>
+            <SwitchThemeContextProvider value={switchTheme}>
                 <ThemeProvider theme={(theme === themeLight) ? join(LightTheme, appTheme) : join(DarkTheme, appTheme)}>
                     <MenuProvider>
                         <Router />
                     </MenuProvider>
                 </ThemeProvider>
-            </SwitchThemeContext.Provider>
-        </ThemeContext.Provider>
+            </SwitchThemeContextProvider>
+        </ThemeContextProvider>
     )
 }

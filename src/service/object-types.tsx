@@ -4,18 +4,18 @@ export type flashType = "auto" | "on" | "off"
 
 export type whiteBalanceType = "auto" | "sunny" | "cloudy" | "shadow" | "incandescent" | "fluorescent"
 
-export interface SettingsCameraProps {
+export type SettingsCameraProps = {
     flash: flashType,
     whiteBalance: whiteBalanceType,
 }
 
-export interface SettingsProps {
+export type SettingsProps = {
     camera: SettingsCameraProps,
 }
 
 
 // Document
-export interface Document {
+export type Document = {
     id: number,
     name: string,
     pictureList: Array<string>,
