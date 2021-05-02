@@ -39,33 +39,17 @@ export function App() {
     }, [])
 
 
-    // useEffect(() => {
-    //     getTheme()
-    // }, [deviceTheme])
-    // 
-    // useEffect(() => {
-    //     function listener(preferences: Appearance.AppearancePreferences) {
-    //         setDeviceTheme(preferences.colorScheme)
-    //     }
-    //     Appearance.addChangeListener(listener)
-    //     return () => Appearance.removeChangeListener(listener)
-    // }, [])
-
-
-    useEffect(() => {
-        getTheme()
-
-        function listener(preferences: Appearance.AppearancePreferences) {
-            setDeviceTheme(preferences.colorScheme)
-        }
-
-        Appearance.addChangeListener(listener)
-        return () => Appearance.removeChangeListener(listener)
-    }, [getTheme])
-
     useEffect(() => {
         getTheme()
     }, [deviceTheme])
+    
+    useEffect(() => {
+        function listener(preferences: Appearance.AppearancePreferences) {
+            setDeviceTheme(preferences.colorScheme)
+        }
+        Appearance.addChangeListener(listener)
+        return () => Appearance.removeChangeListener(listener)
+    }, [])
 
 
     if (theme === "") {
