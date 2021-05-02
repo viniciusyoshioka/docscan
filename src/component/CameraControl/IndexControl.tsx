@@ -1,7 +1,12 @@
 import React from "react"
 import { TextProps } from "react-native"
+import styled from "styled-components/native"
 
-import { IndexControlBase } from "./style"
+
+export const IndexControlBase = styled.Text`
+    font-size: 13px;
+    color: rgb(255, 255, 255);
+`
 
 
 export interface IndexControlProps extends TextProps {
@@ -12,6 +17,3 @@ export interface IndexControlProps extends TextProps {
 export function IndexControl(props: IndexControlProps) {
     return <IndexControlBase {...props} numberOfLines={1} />
 }
-
-
-export { IndexControlBase }

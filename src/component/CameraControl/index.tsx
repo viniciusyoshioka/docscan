@@ -1,7 +1,7 @@
 import styled from "styled-components/native"
 
 import { CameraControlButton, CameraControlButtonBase, CameraControlViewButtonIndex, CameraControlButtonProps } from "./ButtonControl"
-import { CameraControlIconProps, cameraControlIconSize } from "./Icon"
+import { cameraControlIconColor, CameraControlIconProps, cameraControlIconSize } from "./Icon"
 import { IndexControl, IndexControlBase, IndexControlProps } from "./IndexControl"
 import { styledProps } from "../../service/theme"
 
@@ -18,7 +18,9 @@ export const CameraControlView = styled.View`
 
 export type { CameraControlButtonProps }
 export { CameraControlButton, CameraControlButtonBase, CameraControlViewButtonIndex }
+
 export type { CameraControlIconProps }
-export { cameraControlIconSize }
+export { cameraControlIconColor, cameraControlIconSize }
+
 export type { IndexControlProps }
 export { IndexControl, IndexControlBase }
