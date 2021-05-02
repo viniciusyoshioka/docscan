@@ -108,14 +108,32 @@ export function ImportImageFromGalery() {
         )
     }, [selectionMode, selectImage, deselectImage])
 
-    const getNewImagePath = useCallback((imagePath: string) => {
+    const getNewImagePath = useCallback(async (imagePath: string) => {
+        // Get file in path
         const splitedImagePath = imagePath.split("/")
-        const newImageName = splitedImagePath[splitedImagePath.length - 1]
-        return `${fullPathPictureOriginal}/${newImageName}`
+        const fileImage = splitedImagePath[splitedImagePath.length - 1]
+        const splittedFileImage = fileImage.split(".")
+        // Get file name
+        let fileName = ""
+        splittedFileImage.forEach((item: string, index: number) => {
+            if (index !== splittedFileImage.length - 1) {
+                fileName += item
+            }
+        })
+        // Get file extension
+        const fileExtension = splittedFileImage[splittedFileImage.length - 1]
+
+        let counter = 0
+        let newFileName = `${fullPathPictureOriginal}/${fileName}.${fileExtension}`
+        while (await RNFS.exists(newFileName)) {
+            newFileName = `${fullPathPictureOriginal}/${fileName} - ${counter}.${fileExtension}`
+            counter += 1
+        }
+        return newFileName
     }, [])
 
     const importSingleImage = useCallback(async (imagePath: string) => {
-        const newImagePath = getNewImagePath(imagePath)
+        const newImagePath = await getNewImagePath(imagePath)
         try {
             await RNFS.copyFile(imagePath, newImagePath)
         } catch (error) {
@@ -154,17 +172,19 @@ export function ImportImageFromGalery() {
         const imagesToImport: Array<string> = [...params.pictureList]
 
         selectedImage.forEach(async (item: string) =>{ 
-            const newImagePath = getNewImagePath(item)
+            const newImagePath = await getNewImagePath(item)
             try {
                 await RNFS.copyFile(item, newImagePath)
+                imagesToImport.push(newImagePath)
             } catch (error) {
                 log("ERROR", `ImportImageFromGalery importMultipleImage - Erro ao importar multiplas imagens da galeria. Mensagem: "${error}"`)
                 Alert.alert(
                     "Erro ao importar imagens",
                     "Não foi possível importar multiplas imagens da galeria"
                 )
+                return
             }
-            imagesToImport.push(newImagePath)
+            
         })
 
         navigation.navigate("Camera", {

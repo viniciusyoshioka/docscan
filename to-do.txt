@@ -3,8 +3,6 @@ arrumar orientacao da interface da camera quando mudar a orientacao
 
 optimize service/document-handler
 
-melhorar renomear arquivos ao importar da galeria e copiar na pasta de fotos
-
 adicionar suporte pra muitas camera no celular
 arrumar cor do tema claro
 
