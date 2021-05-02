@@ -1,14 +1,11 @@
 
-arrumar orientacao da interface da camera quando mudar a orientacao
-
-optimize service/document-handler
-
-adicionar suporte pra muitas camera no celular
-arrumar cor do tema claro
+add support to multiple cameras
+create light/dark mode compatible with Material UI
+change Camera UI orientation when device orientation changes
 
 # Camera
-arrumar area da foto
-focar clicando na camera
+fix taken picture area
+focus clicking on screen
 
 # VisualizePicture
-adicionar zoom na imagem em VisualizePicture
+add zoom on image
