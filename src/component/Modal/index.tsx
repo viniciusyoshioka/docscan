@@ -7,7 +7,7 @@ import { ModalBackground, ModalContent, ModalView } from "./style"
 export interface ModalProps extends RNModalProps {
     visible: boolean,
     setVisible: (visible: boolean) => void,
-    onClose?: Function,
+    onClose?: () => void,
     children?: ReactChild,
     modalStyle?: StyleProp<ViewStyle>,
     backgroundStyle?: StyleProp<ViewStyle>,
