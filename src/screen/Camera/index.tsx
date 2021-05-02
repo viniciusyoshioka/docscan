@@ -174,6 +174,12 @@ export function Camera() {
         getCameraSettings()
     }, [])
 
+    useEffect(() => {
+        if (params) {
+            setPictureList(params.pictureList)
+        }
+    }, [params])
+
 
     return (
         <SafeScreen>
