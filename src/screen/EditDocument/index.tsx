@@ -301,26 +301,23 @@ export function EditDocument() {
 
     useEffect(() => {
         if (params) {
+            const newDocumentName = params.document
+                ? params.document.name
+                : params.documentName
+                    ? params.documentName
+                    : "Nome do Documento"
+            const newPictureList = (params.document && !params.pictureList)
+                ? params.document.pictureList
+                : (params.pictureList)
+                    ? params.pictureList
+                    : []
+
             setDocument(params.document)
-
-            setDocumentName(
-                params.document
-                    ? params.document.name
-                    : params.documentName
-                        ? params.documentName
-                        : "Nome do Documento"
-            )
-
-            setPictureList(
-                (params.document && !params.pictureList)
-                    ? params.document.pictureList
-                    : (params.pictureList)
-                        ? params.pictureList
-                        : []
-            )
+            setDocumentName(newDocumentName)
+            setPictureList(newPictureList)
 
             if (params.isChanged) {
-                saveDocument()
+                saveDocument(newDocumentName, newPictureList)
             }
         }
     }, [params])
