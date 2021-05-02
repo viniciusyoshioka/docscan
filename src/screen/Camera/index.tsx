@@ -193,16 +193,18 @@ export function Camera() {
                 setCameraAttributes={dispatchCameraSettings}
             />
 
-            <RNCamera
-                style={{flex: 1, overflow: "hidden"}}
-                ref={cameraRef}
-                captureAudio={false}
-                playSoundOnCapture={false}
-                type={"back"}
-                useNativeZoom={true}
-                flashMode={stateCameraSettings.flash}
-                whiteBalance={stateCameraSettings.whiteBalance}
-            />
+            {navigation.isFocused() && (
+                <RNCamera
+                    style={{flex: 1, overflow: "hidden"}}
+                    ref={cameraRef}
+                    captureAudio={false}
+                    playSoundOnCapture={false}
+                    type={"back"}
+                    useNativeZoom={true}
+                    flashMode={stateCameraSettings.flash}
+                    whiteBalance={stateCameraSettings.whiteBalance}
+                />
+            )}
 
             <CameraHeader 
                 goBack={goBack} 

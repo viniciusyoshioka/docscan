@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React from "react"
 import Icon from "react-native-vector-icons/Ionicons"
 
 import { CameraControlButton, CameraControlButtonBase, cameraControlIconSize, CameraControlView, CameraControlViewButtonIndex, IndexControl } from "../../component/CameraControl"
@@ -13,61 +13,40 @@ export interface CameraControlProps {
 }
 
 
-export class CameraControl extends Component<CameraControlProps> {
+export function CameraControl(props: CameraControlProps) {
+    return (
+        <CameraControlView style={{position: "absolute", bottom: 0, left: 0, right: 0, backgroundColor: "transparent"}}>
+            <CameraControlButton
+                iconName={"md-image-outline"}
+                onPress={props.addPictureFromGalery}
+            />
 
 
-    constructor(props: CameraControlProps) {
-        super(props)
-    }
+            <CameraControlButtonBase 
+                onPress={props.takePicture} 
+                style={{backgroundColor: "rgb(255, 255, 255)"}}
+            />
 
 
-    shouldComponentUpdate(nextProps: CameraControlProps) {
-        if (this.props.pictureListLength !== nextProps.pictureListLength) {
-            return true
-        } else if (this.props.screenAction !== nextProps.screenAction) {
-            return true
-        } else if (this.props.takePicture !== nextProps.takePicture) {
-            return true
-        }
-        return false
-    }
+            {props?.screenAction !== "replace-picture" && (
+                <CameraControlButtonBase onPress={props.editDocument}>
+                    <CameraControlViewButtonIndex>
+                        <Icon
+                            name={"md-document-outline"}
+                            size={cameraControlIconSize}
+                            color={"rgb(255, 255, 255)"}
+                        />
 
+                        <IndexControl>
+                            {props.pictureListLength.toString()}
+                        </IndexControl>
+                    </CameraControlViewButtonIndex>
+                </CameraControlButtonBase>
+            )}
 
-    render() {
-        return (
-            <CameraControlView style={{position: "absolute", bottom: 0, left: 0, right: 0, backgroundColor: "transparent"}}>
-                <CameraControlButton
-                    iconName={"md-image-outline"}
-                    onPress={this.props.addPictureFromGalery}
-                />
-
-
-                <CameraControlButtonBase 
-                    onPress={this.props.takePicture} 
-                    style={{backgroundColor: "rgb(255, 255, 255)"}}
-                />
-
-
-                {this.props?.screenAction !== "replace-picture" && (
-                    <CameraControlButtonBase onPress={this.props.editDocument}>
-                        <CameraControlViewButtonIndex>
-                            <Icon
-                                name={"md-document-outline"}
-                                size={cameraControlIconSize}
-                                color={"rgb(255, 255, 255)"}
-                            />
-
-                            <IndexControl>
-                                {this.props.pictureListLength.toString()}
-                            </IndexControl>
-                        </CameraControlViewButtonIndex>
-                    </CameraControlButtonBase>
-                )}
-
-                {this.props?.screenAction === "replace-picture" && (
-                    <CameraControlButtonBase />
-                )}
-            </CameraControlView>
-        )
-    }
+            {props?.screenAction === "replace-picture" && (
+                <CameraControlButtonBase />
+            )}
+        </CameraControlView>
+    )
 }
