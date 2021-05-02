@@ -1,7 +1,30 @@
 import React from "react"
-import { RectButtonProps } from "react-native-gesture-handler"
+import { RectButton, RectButtonProps } from "react-native-gesture-handler"
+import styled from "styled-components/native"
 
-import { ButtonDescription, ButtonTitle, SettingsButtonBase } from "./style"
+import { styledProps } from "../../service/theme"
+
+
+const SettingsButtonBase = styled(RectButton)`
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-horizontal: 10px;
+    width: 100%;
+    height: 60px;
+`
+
+
+const ButtonTitle = styled.Text`
+    font-size: 16px;
+    color: ${(props: styledProps) => props.theme.color.color};
+`
+
+
+const ButtonDescription = styled.Text`
+    font-size: 13px;
+    color: ${(props: styledProps) => props.theme.color.colorDark};
+`
 
 
 export interface SettingsButtonProps extends RectButtonProps {
@@ -27,6 +50,3 @@ export function SettingsButton(props: SettingsButtonProps) {
         </SettingsButtonBase>
     )
 }
-
-
-export { SettingsButtonBase }
