@@ -2,10 +2,7 @@ import React from "react"
 import { RectButton, RectButtonProps } from "react-native-gesture-handler"
 import styled from "styled-components/native"
 
-import { HeaderIcon, HeaderIconProps } from "../Icon"
-
-
-export interface HeaderButtonProps extends RectButtonProps, HeaderIconProps {}
+import { HeaderIcon, HeaderIconProps } from "./Icon"
 
 
 export const HeaderButtonBase = styled(RectButton)`
@@ -14,6 +11,9 @@ export const HeaderButtonBase = styled(RectButton)`
     width: 40px;
     height: 40px;
 `
+
+
+export interface HeaderButtonProps extends RectButtonProps, HeaderIconProps {}
 
 
 export function HeaderButton(props: HeaderButtonProps) {

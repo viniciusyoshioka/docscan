@@ -19,9 +19,12 @@ export const Header = styled.View`
 
 
 export { BlockCenter, BlockLeft, BlockRight }
+
 export type { HeaderButtonProps }
 export { HeaderButton, HeaderButtonBase }
+
 export type { HeaderIconProps }
 export { HeaderIcon, headerIconSize }
+
 export type { HeaderTitleProps }
 export { HeaderTitle, HeaderTitleBase }
