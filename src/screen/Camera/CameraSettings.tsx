@@ -1,7 +1,7 @@
 import React, { Dispatch, useCallback } from "react"
 import { ScrollView } from "react-native"
 
-import { ButtonSettings, cameraSettingsIconSize } from "../../component/CameraSettings"
+import { ButtonSettings, ButtonSettingsBase, cameraSettingsIconSize } from "../../component/CameraSettings"
 import { Modal, ModalProps } from "../../component/Modal"
 import { settingsDefaultCamera } from "../../service/constant"
 import { flashType, SettingsCameraProps, whiteBalanceType } from "../../service/object-types"
@@ -82,7 +82,7 @@ export function CameraSettings(props: CameraSettingsProps) {
             modalStyle={{marginHorizontal: 5, justifyContent: "flex-end", bottom: 60}}
         >
             <ScrollView horizontal={true}>
-                <ButtonSettings onPress={changeFlash}>
+                <ButtonSettingsBase onPress={changeFlash} activeOpacity={0.5}>
                     {(props.cameraAttributes.flash === "auto")
                         ? <FlashAuto 
                             width={cameraSettingsIconSize - 3} 
@@ -97,9 +97,9 @@ export function CameraSettings(props: CameraSettingsProps) {
                                 width={cameraSettingsIconSize - 4} 
                                 height={cameraSettingsIconSize - 4} 
                                 fill={"rgb(255, 255, 255)"} />}
-                </ButtonSettings>
+                </ButtonSettingsBase>
 
-                <ButtonSettings onPress={changeWhiteBalance}>
+                <ButtonSettingsBase onPress={changeWhiteBalance} activeOpacity={0.5}>
                     {(props.cameraAttributes.whiteBalance === "auto")
                         ? <WBAuto
                             width={cameraSettingsIconSize}
@@ -124,7 +124,7 @@ export function CameraSettings(props: CameraSettingsProps) {
                                         width={cameraSettingsIconSize}
                                         height={cameraSettingsIconSize}
                                         fill={"rgb(255, 255, 255)"} />}
-                </ButtonSettings>
+                </ButtonSettingsBase>
 
                 <ButtonSettings 
                     iconName={"md-refresh-outline"} 

@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import Icon from "react-native-vector-icons/Ionicons"
 
-import { CameraControlButtonBase, cameraControlIconSize, CameraControlView, CameraControlViewButtonIndex, IndexControl } from "../../component/CameraControl"
+import { CameraControlButton, CameraControlButtonBase, cameraControlIconSize, CameraControlView, CameraControlViewButtonIndex, IndexControl } from "../../component/CameraControl"
 
 
 export interface CameraControlProps {
@@ -36,13 +36,10 @@ export class CameraControl extends Component<CameraControlProps> {
     render() {
         return (
             <CameraControlView style={{position: "absolute", bottom: 0, left: 0, right: 0, backgroundColor: "transparent"}}>
-                <CameraControlButtonBase onPress={this.props.addPictureFromGalery}>
-                    <Icon 
-                        name={"md-image-outline"} 
-                        size={cameraControlIconSize} 
-                        color={"rgb(255, 255, 255)"}
-                    />
-                </CameraControlButtonBase>
+                <CameraControlButton
+                    iconName={"md-image-outline"}
+                    onPress={this.props.addPictureFromGalery}
+                />
 
 
                 <CameraControlButtonBase 
@@ -54,9 +51,9 @@ export class CameraControl extends Component<CameraControlProps> {
                 {this.props?.screenAction !== "replace-picture" && (
                     <CameraControlButtonBase onPress={this.props.editDocument}>
                         <CameraControlViewButtonIndex>
-                            <Icon 
-                                name={"md-document-outline"} 
-                                size={cameraControlIconSize} 
+                            <Icon
+                                name={"md-document-outline"}
+                                size={cameraControlIconSize}
                                 color={"rgb(255, 255, 255)"}
                             />
 
