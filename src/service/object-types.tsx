@@ -1,5 +1,6 @@
 
-// Settings object type
+// Settings
+// Settings - Camera
 export type flashType = "auto" | "on" | "off"
 
 export type whiteBalanceType = "auto" | "sunny" | "cloudy" | "shadow" | "incandescent" | "fluorescent"
@@ -9,8 +10,13 @@ export type SettingsCameraProps = {
     whiteBalance: whiteBalanceType,
 }
 
+// Settings - Theme
+export type themeType = "auto" | "light" | "dark"
+
+// Settings - Object
 export type SettingsProps = {
     camera: SettingsCameraProps,
+    theme: themeType
 }
 
 
@@ -21,7 +27,3 @@ export type Document = {
     pictureList: Array<string>,
     lastModificationDate: string,
 }
-
-
-// Log
-export type logCode = "INFO" | "WARN" | "ERROR"

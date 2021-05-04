@@ -2,8 +2,10 @@ import { Alert, ToastAndroid } from "react-native"
 import RNFS from "react-native-fs"
 
 import { fullPathLog } from "./constant"
-import { logCode } from "./object-types"
-import { getLogPermission } from "./permission"
+import { getLogPermission, LogPermissionResult } from "./permission"
+
+
+export type logCode = "INFO" | "WARN" | "ERROR"
 
 
 async function createLogFile(): Promise<void> {
@@ -23,24 +25,37 @@ async function createLogFile(): Promise<void> {
 }
 
 
-export async function log(code: logCode, data: string): Promise<void> {
-    const logPermission = await getLogPermission()
-    if (!logPermission.READ_EXTERNAL_STORAGE || !logPermission.WRITE_EXTERNAL_STORAGE) {
-        ToastAndroid.show("Permissão negada para registrar logs", 10)
-        return
-    }
-
-    await createLogFile()
-
-    console.log(`${code} - ${data}`)
-
-    try {
-        await RNFS.appendFile(fullPathLog, `${code} - ${data}\n`)
-    } catch (error) {
-        console.log(`FALHA CRÍTICA - Erro registrando log. Mensagem: "${error}"`)
-        Alert.alert(
-            "FALHA CRÍTICA",
-            `Erro registrando log. Mensagem: "${error}"`
-        )
-    }
+export function log(code: logCode, data: string) {
+    getLogPermission()
+        .then((logPermission: LogPermissionResult) => {
+            if (!logPermission.READ_EXTERNAL_STORAGE || !logPermission.WRITE_EXTERNAL_STORAGE) {
+                ToastAndroid.show("Permissão negada para registrar logs", 10)
+                return false
+            }
+            return true
+        })
+        .then(async (hasPermission: boolean) => {
+            if (!hasPermission) {
+                return false
+            }
+            await createLogFile()
+            return true
+        })
+        .then(async (hasPermission: boolean) => {
+            if (!hasPermission) {
+                return false
+            }
+            console.log(`${code} - ${data}`)
+            try {
+                await RNFS.appendFile(fullPathLog, `${code} - ${data}\n`)
+                return true
+            } catch (error) {
+                console.log(`FALHA CRÍTICA - Erro registrando log. Mensagem: "${error}"`)
+                Alert.alert(
+                    "FALHA CRÍTICA",
+                    `Erro registrando log. Mensagem: "${error}"`
+                )
+                return false
+            }
+        })
 }
