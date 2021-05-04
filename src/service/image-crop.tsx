@@ -1,4 +1,4 @@
-import React, { Component, createRef, ReactElement } from "react"
+import React, { Component, createRef } from "react"
 import { findNodeHandle, NativeSyntheticEvent, requireNativeComponent, StyleProp, UIManager, ViewStyle } from "react-native"
 
 
@@ -17,13 +17,13 @@ export interface ImageCropProps {
     onSaveImageError?: (response: string) => void,
 }
 
-export interface imageSavedResponse {
+export type imageSavedResponse = {
     uri: string,
     width: number,
     height: number,
 }
 
-export interface saveImageErrorResponse {
+export type saveImageErrorResponse = {
     message: string,
 }
 
@@ -41,10 +41,10 @@ export class ImageCrop extends Component<ImageCropProps> {
     }
 
 
-    cropImageRef = createRef<ImageCrop>()
+    private cropImageRef = createRef<ImageCrop>()
 
 
-    saveImage = (quality = 100, preserveTransparency = true): void => {
+    saveImage = (quality = 100, preserveTransparency = true) => {
         UIManager.dispatchViewManagerCommand(
             findNodeHandle(this.cropImageRef.current),
             UIManager.getViewManagerConfig("RNImageCrop").Commands.saveImage,
@@ -52,7 +52,7 @@ export class ImageCrop extends Component<ImageCropProps> {
         )
     }
 
-    rotateImage = (clockwise = true): void => {
+    rotateImage = (clockwise = true) => {
         UIManager.dispatchViewManagerCommand(
             findNodeHandle(this.cropImageRef.current),
             UIManager.getViewManagerConfig("RNImageCrop").Commands.rotateImage,
@@ -61,7 +61,7 @@ export class ImageCrop extends Component<ImageCropProps> {
     }
 
 
-    render(): ReactElement {
+    render() {
         const { style, sourceUrl, keepAspectRatio, aspectRatio, onImageSaved, onSaveImageError } = this.props
 
         return (

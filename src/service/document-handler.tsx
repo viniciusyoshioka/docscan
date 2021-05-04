@@ -88,7 +88,7 @@ export async function deleteDocument(ids: Array<number>, deleteFiles = false) {
     const documentId = await readDocumentId()
     const documentIdIndex: Array<number> = []
     documentId.forEach((item: number, index: number) => {
-        if (ids.indexOf(item) !== -1) {
+        if (ids.includes(item)) {
             documentIdIndex.push(index)
         }
     })
@@ -102,7 +102,7 @@ export async function deleteDocument(ids: Array<number>, deleteFiles = false) {
     const document = await readDocument()
     const documentIndex: Array<number> = []
     document.forEach((item: Document, index: number) => {
-        if (ids.indexOf(item.id) !== -1) {
+        if (ids.includes(item.id)) {
             // Add document index to delete
             documentIndex.push(index)
             // Delete all pictures from this document

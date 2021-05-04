@@ -102,7 +102,7 @@ export function EditDocument() {
             return
         }
 
-        navigation.reset({routes: [{name: "Home"}]})
+        navigation.reset({ routes: [{ name: "Home" }] })
     }, [selectionMode])
 
     const exportDocumentToPdf = useCallback(() => {
@@ -139,7 +139,7 @@ export function EditDocument() {
             })
 
         Alert.alert(
-            "Aguarde", 
+            "Aguarde",
             "Exportar documento pode demorar alguns segundos"
         )
     }, [documentName, pictureList])
@@ -186,7 +186,7 @@ export function EditDocument() {
                     onPress: async () => {
                         if (document) {
                             await deleteDocument([document.id], true)
-                            navigation.reset({routes: [{name: "Home"}]})
+                            navigation.reset({ routes: [{ name: "Home" }] })
                         } else {
                             pictureList.forEach(async (item) => {
                                 try {
@@ -206,7 +206,7 @@ export function EditDocument() {
                 },
                 {
                     text: "Cancelar",
-                    onPress: () => {}
+                    onPress: () => { }
                 }
             ]
         )
@@ -226,16 +226,17 @@ export function EditDocument() {
             "Esta foto será apagada e a ação não poderá ser desfeita",
             [
                 {
-                    text: "Apagar", 
-                    onPress: async () => {
+                    text: "Apagar",
+                    onPress: () => {
                         const pictures = [...pictureList]
 
                         selectedPicturesIndex.sort((a, b) => b - a)
-                        selectedPicturesIndex.forEach((item: number) => {
-                            RNFS.unlink(pictures[item])
-                                .catch((error) => {
-                                    log("ERROR", `EditDocument deletePicture - Erro ao apagar foto do documento. Mensagem: "${error}"`)
-                                })
+                        selectedPicturesIndex.forEach(async (item: number) => {
+                            try {
+                                await RNFS.unlink(pictures[item])
+                            } catch (error) {
+                                log("ERROR", `EditDocument deletePicture - Erro ao apagar foto do documento. Mensagem: "${error}"`)
+                            }
                             pictures.splice(item, 1)
                         })
 
@@ -245,8 +246,8 @@ export function EditDocument() {
                     }
                 },
                 {
-                    text: "Cancelar", 
-                    onPress: () => {}
+                    text: "Cancelar",
+                    onPress: () => { }
                 }
             ]
         )
@@ -281,9 +282,9 @@ export function EditDocument() {
         })
     }, [document, documentName, pictureList])
 
-    const renderPictureItem = useCallback(({ item, index }: {item: string, index: number}) => {
+    const renderPictureItem = useCallback(({ item, index }: { item: string, index: number }) => {
         return (
-            <PictureItem 
+            <PictureItem
                 picturePath={item}
                 click={() => openPicture(item, index)}
                 select={() => selectPicture(index)}
@@ -326,9 +327,9 @@ export function EditDocument() {
     return (
         <SafeScreen>
             <RenameDocument
-                visible={renameDocumentVisible} 
-                setVisible={setRenameDocumentVisible} 
-                documentName={documentName} 
+                visible={renameDocumentVisible}
+                setVisible={setRenameDocumentVisible}
+                documentName={documentName}
                 setDocumentName={renameDocument}
             />
 
@@ -345,8 +346,8 @@ export function EditDocument() {
                 shareDocument={shareDocument}
             />
 
-            <FlatList 
-                data={pictureList} 
+            <FlatList
+                data={pictureList}
                 renderItem={renderPictureItem}
                 keyExtractor={(_item, index) => index.toString()}
                 extraData={[selectPicture, deselectPicture]}
