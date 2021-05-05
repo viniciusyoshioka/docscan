@@ -125,8 +125,10 @@ export function Home() {
     const debugReadLog = useCallback(async () => {
         try {
             if (await RNFS.exists(fullPathLog)) {
-                const logContent = await RNFS.readFile(`${fullPathRoot}/docscanlog.log`)
-                console.log(`Arquivo de Log: "${logContent}"`)
+                RNFS.readFile(`${fullPathRoot}/docscanlog.log`)
+                    .then((logContent) => {
+                        console.log(`Arquivo de Log: "${logContent}"`)
+                    })
                 return
             }
 
@@ -150,17 +152,19 @@ export function Home() {
     }, [])
 
     const deleteSelectedDocument = useCallback(() => {
+        async function alertDelete() {
+            await deleteDocument(selectedDocument, true)
+            await getDocument()
+            exitSelectionMode()
+        }
+
         Alert.alert(
-            "Apagar documento?",
+            "Apagar",
             "Esta ação não poderá ser desfeita. Deseja apagar?",
             [
                 {
                     text: "Apagar", 
-                    onPress: async () => {
-                        await deleteDocument(selectedDocument, true)
-                        await getDocument()
-                        exitSelectionMode()
-                    }
+                    onPress: async () => alertDelete()
                 },
                 {
                     text: "Cancelar",
