@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react"
 import { ModalButton, ModalTitle, ModalView, ModalViewButton, ModalViewContent } from "../../component/ModalComponent"
 import { ModalFullscreen, ModalFullscreenProps } from "../../component/ModalFullscreen"
 import { RadioButton } from "../../component/RadioButton"
-import { themeAuto, themeDark, themeLight } from "../../service/constant"
 import { useSwitchTheme, useTheme } from "../../service/theme"
 
 
@@ -34,16 +33,16 @@ export function ChangeTheme(props: ChangeThemeProps) {
                 <ModalViewContent>
                     <RadioButton 
                         text={"Automático"} 
-                        value={selectedTheme === themeAuto}
-                        onPress={() => setSelectedTheme(themeAuto)} />
+                        value={selectedTheme === "auto"}
+                        onPress={() => setSelectedTheme("auto")} />
                     <RadioButton 
                         text={"Claro"} 
-                        value={selectedTheme === themeLight}
-                        onPress={() => setSelectedTheme(themeLight)} />
+                        value={selectedTheme === "light"}
+                        onPress={() => setSelectedTheme("light")} />
                     <RadioButton 
                         text={"Escuro"} 
-                        value={selectedTheme === themeDark}
-                        onPress={() => setSelectedTheme(themeDark)} />
+                        value={selectedTheme === "dark"}
+                        onPress={() => setSelectedTheme("dark")} />
                 </ModalViewContent>
 
                 <ModalViewButton>

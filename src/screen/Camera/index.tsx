@@ -7,7 +7,7 @@ import { SafeScreen } from "../../component/Screen"
 import { CameraHeader } from "./Header"
 import { CameraControl } from "./Control"
 import { CameraSettings } from "./CameraSettings"
-import { fullPathPictureOriginal, settingsDefaultCamera } from "../../service/constant"
+import { fullPathPictureOriginal } from "../../service/constant"
 import { readSettings } from "../../service/storage"
 import { createAllFolder } from "../../service/folder-handler"
 import { getDateTime } from "../../service/date"
@@ -17,6 +17,7 @@ import { getCameraPermission } from "../../service/permission"
 import { log } from "../../service/log"
 import { cameraReducerAction, cameraReducerState } from "../../service/reducer"
 import { ScreenParams } from "../../service/screen-params"
+import { settingsDefaultCamera } from "../../service/settings"
 
 
 const initialCameraSettings: cameraReducerState = {

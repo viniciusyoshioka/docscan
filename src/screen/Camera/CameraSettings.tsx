@@ -3,10 +3,9 @@ import { ScrollView } from "react-native"
 
 import { ButtonSettings, ButtonSettingsBase, cameraSettingsIconSize } from "../../component/CameraSettings"
 import { Modal, ModalProps } from "../../component/Modal"
-import { settingsDefaultCamera } from "../../service/constant"
-import { flashType, SettingsCameraProps, whiteBalanceType } from "../../service/object-types"
 import { readSettings, writeSettings } from "../../service/storage"
 import { cameraReducerAction } from "../../service/reducer"
+import { flashType, SettingsCameraProps, settingsDefaultCamera, whiteBalanceType } from "../../service/settings"
 
 import FlashAuto from "../../image/icon/flash-auto.svg"
 import FlashOn from "../../image/icon/flash-on.svg"

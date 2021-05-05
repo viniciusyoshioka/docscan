@@ -1,4 +1,6 @@
 
+remove useBackHandler hook
+
 add support to multiple cameras
 create light/dark mode compatible with Material UI
 change Camera UI orientation when device orientation changes

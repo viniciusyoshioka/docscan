@@ -1,8 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
-import { debugHomeDefault, settingsDefault, storageDebugHome, storageDocument, storageDocumentId, storageSettings, storageTheme, themeDefault } from "./constant"
+import { debugHomeDefault, storageDebugHome, storageDocument, storageDocumentId, storageSettings, storageTheme } from "./constant"
 import { log } from "./log"
-import { Document, SettingsProps } from "./object-types"
+import { Document } from "./object-types"
+import { settingsDefault, SettingsProps } from "./settings"
+import { themeDefault, themeType } from "./theme"
 
 
 async function write(key: string, value: string) {
@@ -24,17 +26,17 @@ async function read(key: string): Promise<string | null> {
 }
 
 
-export async function writeTheme(value: string) {
+export async function writeTheme(value: themeType) {
     await write(storageTheme, value)
 }
 
-export async function readTheme(): Promise<string> {
+export async function readTheme(): Promise<themeType> {
     const theme = await read(storageTheme)
     if (theme === null) {
         await writeTheme(themeDefault)
         return themeDefault
     }
-    return theme
+    return theme as themeType
 }
 
 

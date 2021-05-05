@@ -1,4 +1,4 @@
-import { flashType, whiteBalanceType } from "./object-types"
+import { flashType, whiteBalanceType } from "./settings"
 
 
 // Camera

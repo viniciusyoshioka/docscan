@@ -11,7 +11,7 @@ import { readDebugHome, readDocument, readDocumentId, writeDebugHome, writeDocum
 import { HomeHeader } from "./Header"
 import { DebugButton } from "../../component/DebugButton"
 import { useSwitchTheme } from "../../service/theme"
-import { appIconOutline, appInDevelopment, debugHomeHide, debugHomeShow, fullPathLog, fullPathRoot, themeAuto, themeDark, themeLight } from "../../service/constant"
+import { appIconOutline, appInDevelopment, debugHomeHide, debugHomeShow, fullPathLog, fullPathRoot } from "../../service/constant"
 import { deleteDocument } from "../../service/document-handler"
 import { createAllFolder } from "../../service/folder-handler"
 import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
@@ -259,15 +259,15 @@ export function Home() {
 
                     <DebugButton
                         text={"Auto"}
-                        onPress={async () => await switchTheme(themeAuto)}
+                        onPress={async () => await switchTheme("auto")}
                         style={{bottom: 115, left: 60}} />
                     <DebugButton
                         text={"Claro"}
-                        onPress={async () => await switchTheme(themeLight)}
+                        onPress={async () => await switchTheme("light")}
                         style={{bottom: 60, left: 60}} />
                     <DebugButton
                         text={"Escuro"}
-                        onPress={async () => await switchTheme(themeDark)}
+                        onPress={async () => await switchTheme("dark")}
                         style={{bottom: 5, left: 60}} />
 
                     <DebugButton

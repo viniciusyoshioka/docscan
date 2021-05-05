@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import RNFS from "react-native-fs"
 
-import { SettingsCameraProps, SettingsProps } from "./object-types"
-
 
 // Development
 export const appInDevelopment = true
@@ -55,24 +53,7 @@ export const storageDocument = "@docscan:document"
 export const storageDebugHome = "@docscan:debug-home"
 export const storageSettings = "@docscan:settings"
 
-// Theme
-export const themeAuto = "auto"
-export const themeLight = "light"
-export const themeDark = "dark"
-export const themeDefault = themeAuto
-
 // DebugHome
 export const debugHomeShow = "show"
 export const debugHomeHide = "hide"
 export const debugHomeDefault = debugHomeShow
-
-// Settings
-// Settings camera
-export const settingsDefaultCamera: SettingsCameraProps = {
-    flash: "off",
-    whiteBalance: "auto"
-}
-// Settings
-export const settingsDefault: SettingsProps = {
-    camera: settingsDefaultCamera
-}

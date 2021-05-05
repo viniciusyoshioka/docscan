@@ -1,11 +1,15 @@
 import { createContext, useContext } from "react"
 
-import { themeDark, themeLight } from "./constant"
+
+export type themeType = "auto" | "light" | "dark"
+
+
+export const themeDefault: themeType = "auto"
 
 
 export type ColorTheme = {
-    name: string,
-    appTheme: string,
+    name: themeType,
+    appTheme: themeType,
     color: {
         background: string,
         backgroundDark: string,
@@ -18,8 +22,8 @@ export type ColorTheme = {
 
 
 export const LightTheme: ColorTheme = {
-    name: themeLight,
-    appTheme: "",
+    name: "light",
+    appTheme: "auto",
     color: {
         background: "rgb(250, 250, 250)",
         backgroundDark: "rgb(190, 190, 190)",
@@ -31,8 +35,8 @@ export const LightTheme: ColorTheme = {
 }
 
 export const DarkTheme: ColorTheme = {
-    name: themeDark,
-    appTheme: "",
+    name: "dark",
+    appTheme: "auto",
     color: {
         background: "rgb(35, 35, 35)",
         backgroundDark: "rgb(15, 15, 15)",
@@ -54,11 +58,11 @@ export function useTheme(): ColorTheme {
 }
 
 
-const SwitchThemeContext = createContext(async (_newTheme: string) => {})
+const SwitchThemeContext = createContext(async (_newTheme: themeType) => { })
 
 export const SwitchThemeContextProvider = SwitchThemeContext.Provider
 
-export function useSwitchTheme(): (newTheme: string) => Promise<void> {
+export function useSwitchTheme(): (newTheme: themeType) => Promise<void> {
     const switchTheme = useContext(SwitchThemeContext)
     return switchTheme
 }
@@ -69,7 +73,7 @@ export interface styledProps {
 }
 
 
-export function join(theme: ColorTheme, value: string): ColorTheme {
+export function join(theme: ColorTheme, value: themeType): ColorTheme {
     theme["appTheme"] = value
     return theme
 }
