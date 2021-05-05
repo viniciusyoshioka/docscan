@@ -164,7 +164,7 @@ export function Home() {
             [
                 {
                     text: "Apagar", 
-                    onPress: async () => alertDelete()
+                    onPress: async () => await alertDelete()
                 },
                 {
                     text: "Cancelar",

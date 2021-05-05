@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react"
-import { Alert, FlatList, ToastAndroid } from "react-native"
+import { Alert, FlatList } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 import Share from "react-native-share"
@@ -9,11 +9,10 @@ import { EditDocumentHeader } from "./Header"
 import { PictureItem } from "../../component/Pictureitem"
 import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../service/document-handler"
 import { RenameDocument } from "./RenameDocument"
-import { createPdf } from "../../service/pdf-creator"
-import { fullPathPdf, pathPdf } from "../../service/constant"
+import { exportDocumentToPdf } from "../../service/pdf-creator"
+import { fullPathPdf } from "../../service/constant"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
-import { ExportResponse } from "../../service/pdf-creator"
 import { ScreenParams } from "../../service/screen-params"
 import { Document } from "../../service/object-types"
 
@@ -105,45 +104,6 @@ export function EditDocument() {
         navigation.reset({ routes: [{ name: "Home" }] })
     }, [selectionMode])
 
-    const exportDocumentToPdf = useCallback(() => {
-        if (documentName === "") {
-            Alert.alert(
-                "Nome do documento vazio",
-                "Não é possível exportar documento sem nome"
-            )
-            return
-        }
-
-        if (pictureList.length === 0) {
-            Alert.alert(
-                "Documento sem fotos",
-                "Não é possível exportar documento sem fotos"
-            )
-            return
-        }
-
-        createPdf(pictureList, documentName)
-            .then((response: ExportResponse) => {
-                if (response.uri.includes(fullPathPdf)) {
-                    ToastAndroid.show(`Documento exportado para "Memória Externa/${pathPdf}/${documentName}.pdf"`, 10)
-                    return
-                }
-                ToastAndroid.show(`Documento exportado para "${response.uri}"`, 10)
-            })
-            .catch((error) => {
-                log("ERROR", `EditDocument exportDocumentToPdf - Erro ao export documento para PDF. Mensagem: "${error}"`)
-                Alert.alert(
-                    "Erro ao exportar documento",
-                    "Não foi possível exportar documento para PDF"
-                )
-            })
-
-        Alert.alert(
-            "Aguarde",
-            "Exportar documento pode demorar alguns segundos"
-        )
-    }, [documentName, pictureList])
-
     const shareDocument = useCallback(async () => {
         const documentPath = `file://${fullPathPdf}/${documentName}.pdf`
         if (!(await RNFS.exists(documentPath))) {
@@ -164,8 +124,8 @@ export function EditDocument() {
         } catch (error) {
             log("ERROR", `EditDocument shareDocument - Erro ao compartilhar documento. Mensagem: "${error}"`)
             Alert.alert(
-                "Não foi possível compartilhar documento",
-                "Erro desconhecido ao compartilhar documento"
+                "Erro",
+                "Não foi possível compartilhar documento, erro desconhecido"
             )
         }
     }, [documentName])
@@ -177,32 +137,34 @@ export function EditDocument() {
     }, [saveDocument])
 
     const discardDocument = useCallback(() => {
+        async function alertDiscard() {
+            if (document) {
+                await deleteDocument([document.id], true)
+                navigation.reset({ routes: [{ name: "Home" }] })
+            } else {
+                pictureList.forEach(async (item) => {
+                    try {
+                        await RNFS.unlink(item)
+                    } catch (error) {
+                        log("ERROR", `EditDocument discardDocument - Erro ao apagar fotos do documento durante seu descarte. Mensagem: "${error}"`)
+                        Alert.alert(
+                            "Erro ao descartar documento",
+                            "Erro ao apagar fotos do documento durante seu descarte"
+                        )
+                    }
+                })
+
+                navigation.navigate("Home")
+            }
+        }
+
         Alert.alert(
             "Apagar documento?",
             "Esta ação é irreversível e apagará todo o conteúdo. Deseja apagar?",
             [
                 {
                     text: "Apagar",
-                    onPress: async () => {
-                        if (document) {
-                            await deleteDocument([document.id], true)
-                            navigation.reset({ routes: [{ name: "Home" }] })
-                        } else {
-                            pictureList.forEach(async (item) => {
-                                try {
-                                    await RNFS.unlink(item)
-                                } catch (error) {
-                                    log("ERROR", `EditDocument discardDocument - Erro ao apagar fotos do documento durante seu descarte. Mensagem: "${error}"`)
-                                    Alert.alert(
-                                        "Erro ao descartar documento",
-                                        "Erro ao apagar fotos do documento durante seu descarte"
-                                    )
-                                }
-                            })
-
-                            navigation.navigate("Home")
-                        }
-                    }
+                    onPress: async () => await alertDiscard()
                 },
                 {
                     text: "Cancelar",
@@ -221,29 +183,31 @@ export function EditDocument() {
     }, [document, pictureList, documentName])
 
     const deletePicture = useCallback(() => {
+        function alertDelete() {
+            const pictures = [...pictureList]
+
+            selectedPicturesIndex.sort((a, b) => b - a)
+            selectedPicturesIndex.forEach(async (item: number) => {
+                try {
+                    await RNFS.unlink(pictures[item])
+                } catch (error) {
+                    log("ERROR", `EditDocument deletePicture - Erro ao apagar foto do documento. Mensagem: "${error}"`)
+                }
+                pictures.splice(item, 1)
+            })
+
+            setPictureList(pictures)
+            saveDocument(undefined, pictures)
+            exitSelectionMode()
+        }
+
         Alert.alert(
             "Apagar foto",
             "Esta foto será apagada e a ação não poderá ser desfeita",
             [
                 {
                     text: "Apagar",
-                    onPress: () => {
-                        const pictures = [...pictureList]
-
-                        selectedPicturesIndex.sort((a, b) => b - a)
-                        selectedPicturesIndex.forEach(async (item: number) => {
-                            try {
-                                await RNFS.unlink(pictures[item])
-                            } catch (error) {
-                                log("ERROR", `EditDocument deletePicture - Erro ao apagar foto do documento. Mensagem: "${error}"`)
-                            }
-                            pictures.splice(item, 1)
-                        })
-
-                        setPictureList(pictures)
-                        saveDocument(undefined, pictures)
-                        exitSelectionMode()
-                    }
+                    onPress: () => alertDelete()
                 },
                 {
                     text: "Cancelar",
@@ -341,7 +305,7 @@ export function EditDocument() {
                 deletePicture={deletePicture}
                 openCamera={openCamera}
                 renameDocument={() => setRenameDocumentVisible(true)}
-                exportToPdf={exportDocumentToPdf}
+                exportToPdf={() => exportDocumentToPdf(documentName, pictureList)}
                 discardDocument={discardDocument}
                 shareDocument={shareDocument}
             />
