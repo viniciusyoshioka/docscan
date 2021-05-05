@@ -1,7 +1,7 @@
 import { Alert, ToastAndroid } from "react-native"
 import RNFS from "react-native-fs"
 
-import { fullPathLog } from "./constant"
+import { appInDevelopment, fullPathLog } from "./constant"
 import { getLogPermission, LogPermissionResult } from "./permission"
 
 
@@ -26,6 +26,10 @@ async function createLogFile(): Promise<void> {
 
 
 export function log(code: logCode, data: string) {
+    if (!appInDevelopment) {
+        return
+    }
+
     getLogPermission()
         .then((logPermission: LogPermissionResult) => {
             if (!logPermission.READ_EXTERNAL_STORAGE || !logPermission.WRITE_EXTERNAL_STORAGE) {
