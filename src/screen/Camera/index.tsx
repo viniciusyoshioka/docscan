@@ -18,6 +18,7 @@ import { log } from "../../service/log"
 import { cameraReducerAction, cameraReducerState } from "../../service/reducer"
 import { ScreenParams } from "../../service/screen-params"
 import { settingsDefaultCamera } from "../../service/settings"
+import { CameraView } from "./CameraView"
 
 
 const initialCameraSettings: cameraReducerState = {
@@ -198,18 +199,11 @@ export function Camera() {
                 setCameraAttributes={dispatchCameraSettings}
             />
 
-            {navigation.isFocused() && (
-                <RNCamera
-                    style={{flex: 1, overflow: "hidden"}}
-                    ref={cameraRef}
-                    captureAudio={false}
-                    playSoundOnCapture={false}
-                    type={"back"}
-                    useNativeZoom={true}
-                    flashMode={stateCameraSettings.flash}
-                    whiteBalance={stateCameraSettings.whiteBalance}
-                />
-            )}
+            <CameraView
+                ref={cameraRef}
+                flash={stateCameraSettings.flash}
+                whiteBalance={stateCameraSettings.whiteBalance}
+            />
 
             <CameraHeader 
                 goBack={goBack} 
