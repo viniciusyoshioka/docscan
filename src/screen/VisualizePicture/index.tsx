@@ -66,7 +66,7 @@ export function VisualizePicture() {
 
             log("ERROR", `VisualizePicture onImageSaved - Error moving file. Message: "${error}"`)
             Alert.alert(
-                "Erro ao salvar imagem",
+                "Erro",
                 "Não foi possível salvar imagem cortada"
             )
             navigation.navigate("EditDocument", {
@@ -81,10 +81,6 @@ export function VisualizePicture() {
             await RNFS.unlink(params.picturePath)
         } catch (error) {
             log("ERROR", `VisualizePicture onImageSaved - Error deleting original image file. Message: "${error}"`)
-            Alert.alert(
-                "Erro ao apagar imagem original",
-                "Não foi possível apagar a imagem original após cortá-la"
-            )
         }
 
         params.pictureList[params.pictureIndex] = filePath
