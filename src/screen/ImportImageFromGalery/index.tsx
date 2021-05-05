@@ -42,8 +42,8 @@ export function ImportImageFromGalery() {
             setImageGalery([])
             log("INFO", "ImportImageFromGalery getImage - Não tem permissão pra usar a CameraRoll")
             Alert.alert(
-                "Falha em abrir galeria",
-                "Permissão negada. Não foi possível abrir a galeria."
+                "Erro",
+                "Sem permissão para abrir galeria"
             )
             return
         }
@@ -57,7 +57,7 @@ export function ImportImageFromGalery() {
         } catch (error) {
             log("ERROR", `ImportImageFromGalery getImage - Erro ao pegar imagens da CameraRoll. Mensagem: "${error}"`)
             Alert.alert(
-                "Erro ao carregar galeria",
+                "Erro",
                 "Não foi possível carregar galeria"
             )
         }
@@ -139,7 +139,7 @@ export function ImportImageFromGalery() {
         } catch (error) {
             log("ERROR", `ImportImageFromGalery importSingleImage - Erro ao importar uma imagem da galeria. Mensagem: "${error}"`)
             Alert.alert(
-                "Erro ao importar imagem", 
+                "Erro", 
                 "Não foi possível importar imagem da galeria"
             )
             navigation.navigate("Camera", {
@@ -179,12 +179,16 @@ export function ImportImageFromGalery() {
             } catch (error) {
                 log("ERROR", `ImportImageFromGalery importMultipleImage - Erro ao importar multiplas imagens da galeria. Mensagem: "${error}"`)
                 Alert.alert(
-                    "Erro ao importar imagens",
+                    "Erro",
                     "Não foi possível importar multiplas imagens da galeria"
                 )
+                navigation.navigate("Camera", {
+                    document: params.document,
+                    pictureList: params.pictureList,
+                    documentName: params.documentName,
+                })
                 return
             }
-            
         })
 
         navigation.navigate("Camera", {
