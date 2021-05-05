@@ -29,12 +29,16 @@ export function CameraSettings(props: CameraSettingsProps) {
     const changeFlash = useCallback(async () => {
         // Change attribute
         let newFlash: flashType = "auto"
-        if (props.cameraAttributes.flash === "auto") {
-            newFlash = "on"
-        } else if (props.cameraAttributes.flash === "on") {
-            newFlash = "off"
-        } else if (props.cameraAttributes.flash === "off") {
-            newFlash = "auto"
+        switch (props.cameraAttributes.flash) {
+            case "auto":
+                newFlash = "on"
+                break
+            case "on":
+                newFlash = "off"
+                break
+            case "off":
+                newFlash = "auto"
+                break
         }
         // Set camera attribute
         props.setCameraAttributes({type: "flash", payload: newFlash})
@@ -47,16 +51,22 @@ export function CameraSettings(props: CameraSettingsProps) {
     const changeWhiteBalance = useCallback(async () => {
         // Change attribute
         let newWhiteBalance: whiteBalanceType = "auto"
-        if (props.cameraAttributes.whiteBalance === "auto") {
-            newWhiteBalance = "sunny"
-        } else if (props.cameraAttributes.whiteBalance === "sunny") {
-            newWhiteBalance = "cloudy"
-        } else if (props.cameraAttributes.whiteBalance === "cloudy") {
-            newWhiteBalance = "fluorescent"
-        } else if (props.cameraAttributes.whiteBalance === "fluorescent") {
-            newWhiteBalance = "incandescent"
-        } else if (props.cameraAttributes.whiteBalance === "incandescent") {
-            newWhiteBalance = "auto"
+        switch (props.cameraAttributes.whiteBalance) {
+            case "auto":
+                newWhiteBalance = "sunny"
+                break
+            case "sunny":
+                newWhiteBalance = "cloudy"
+                break
+            case "cloudy":
+                newWhiteBalance = "fluorescent"
+                break
+            case "fluorescent":
+                newWhiteBalance = "incandescent"
+                break
+            case "incandescent":
+                newWhiteBalance = "auto"
+                break
         }
         // Set camera attribute
         props.setCameraAttributes({type: "white-balance", payload: newWhiteBalance})
