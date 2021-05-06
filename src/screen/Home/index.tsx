@@ -6,12 +6,12 @@ import Share from "react-native-share"
 
 import { DocumentItem } from "../../component/DocumentItem"
 import { SafeScreen } from "../../component/Screen"
-import { Document } from "../../service/object-types"
+import { debugHome, Document } from "../../service/object-types"
 import { readDebugHome, readDocument, readDocumentId, writeDebugHome, writeDocument, writeDocumentId } from "../../service/storage"
 import { HomeHeader } from "./Header"
 import { DebugButton } from "../../component/DebugButton"
 import { useSwitchTheme } from "../../service/theme"
-import { appIconOutline, appInDevelopment, debugHomeHide, debugHomeShow, fullPathLog, fullPathRoot } from "../../service/constant"
+import { appIconOutline, appInDevelopment, fullPathLog, fullPathRoot } from "../../service/constant"
 import { deleteDocument } from "../../service/document-handler"
 import { createAllFolder } from "../../service/folder-handler"
 import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
@@ -25,7 +25,7 @@ export function Home() {
 
     const switchTheme = useSwitchTheme()
 
-    const [debugHome, setDebugHome] = useState("")
+    const [debugHome, setDebugHome] = useState<debugHome>("show")
     const [document, setDocument] = useState<Array<Document>>([])
     const [selectionMode, setSelectionMode] = useState(false)
     const [selectedDocument, setSelectedDocument] = useState<Array<number>>([])
@@ -83,17 +83,17 @@ export function Home() {
             const getDebugHome = await readDebugHome()
             setDebugHome(getDebugHome)
         } else {
-            setDebugHome(debugHomeHide)
+            setDebugHome("hide")
         }
     }, [])
 
     const debugSwitchDebugHome = useCallback(async () => {
-        if (debugHome === debugHomeShow) {
-            setDebugHome(debugHomeHide)
-            await writeDebugHome(debugHomeHide)
-        } else if (debugHome === debugHomeHide) {
-            setDebugHome(debugHomeShow)
-            await writeDebugHome(debugHomeShow)
+        if (debugHome === "show") {
+            setDebugHome("hide")
+            await writeDebugHome("hide")
+        } else if (debugHome === "hide") {
+            setDebugHome("show")
+            await writeDebugHome("show")
         }
     }, [debugHome])
 
@@ -246,7 +246,7 @@ export function Home() {
                 </EmptyListView>
             )}
 
-            {(debugHome === debugHomeShow) && (
+            {(debugHome === "show") && (
                 <View>
                     <DebugButton
                         text={"Ler"}

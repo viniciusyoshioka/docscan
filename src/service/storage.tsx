@@ -1,8 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
-import { debugHomeDefault, storageDebugHome, storageDocument, storageDocumentId, storageSettings, storageTheme } from "./constant"
+import { storageDebugHome, storageDocument, storageDocumentId, storageSettings, storageTheme } from "./constant"
 import { log } from "./log"
-import { Document } from "./object-types"
+import { debugHome, debugHomeDefault, Document } from "./object-types"
 import { settingsDefault, SettingsProps } from "./settings"
 import { themeDefault, themeType } from "./theme"
 
@@ -68,17 +68,17 @@ export async function readDocument(): Promise<Array<Document>> {
 }
 
 
-export async function writeDebugHome(value: string) {
+export async function writeDebugHome(value: debugHome) {
     await write(storageDebugHome, value)
 }
 
-export async function readDebugHome(): Promise<string> {
+export async function readDebugHome(): Promise<debugHome> {
     const debugHome = await read(storageDebugHome)
     if (debugHome === null) {
         await writeDebugHome(debugHomeDefault)
         return debugHomeDefault
     }
-    return debugHome
+    return debugHome as debugHome
 }
 
 

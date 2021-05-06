@@ -48,8 +48,3 @@ export const storageDocumentId = "@docscan:document-id"
 export const storageDocument = "@docscan:document"
 export const storageDebugHome = "@docscan:debug-home"
 export const storageSettings = "@docscan:settings"
-
-// DebugHome
-export const debugHomeShow = "show"
-export const debugHomeHide = "hide"
-export const debugHomeDefault = debugHomeShow
