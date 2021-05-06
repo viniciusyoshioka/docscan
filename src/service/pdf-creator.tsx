@@ -1,7 +1,7 @@
 import { Alert, NativeModules, ToastAndroid } from "react-native"
 import RNFS from "react-native-fs"
 
-import { fullPathPdf, pathPdf } from "./constant"
+import { fullPathPdf, relativePathPdf } from "./constant"
 import { log } from "./log"
 
 
@@ -48,7 +48,7 @@ export async function exportDocumentToPdf(documentName: string, pictureList: Arr
     PdfCreator.exportPicturesToPdf(pictureList, documentPath)
         .then((response: ExportResponse) => {
             if (response.uri.includes(fullPathPdf)) {
-                ToastAndroid.show(`Documento exportado para "Memória Externa/${pathPdf}/${documentName}.pdf"`, 10)
+                ToastAndroid.show(`Documento exportado para "Memória Externa/${relativePathPdf}/${documentName}.pdf"`, 10)
                 return
             }
             ToastAndroid.show(`Documento exportado para "${response.uri}"`, 10)

@@ -21,30 +21,26 @@ export const appIconOutline = require(`${appIconPath}${appIconImageOutline}`)
 // Folder
 // Root
 export const folderRoot = appFName
-export const pathRoot = appFName
-export const fullPathRoot = `${RNFS.ExternalStorageDirectoryPath}/${pathRoot}`
+export const fullPathRoot = `${RNFS.CachesDirectoryPath}/${folderRoot}`
+export const fullPathRootExternal = `${RNFS.ExternalStorageDirectoryPath}/${folderRoot}`
 // PDF
 export const folderPdf = "PDF"
-export const pathPdf = `${pathRoot}/${folderPdf}`
-export const fullPathPdf = `${RNFS.ExternalStorageDirectoryPath}/${pathPdf}`
-// Pictures
-export const folderPicture = "Pictures"
-export const pathPicture = `${pathRoot}/${folderPicture}`
-export const fullPathPicture = `${RNFS.ExternalStorageDirectoryPath}/${pathPicture}`
-// Pictures/Original
+export const relativePathPdf = folderPdf
+export const fullPathPdf = `${fullPathRootExternal}/${relativePathPdf}`
+// Original
 export const folderPictureOriginal = "Original"
-export const pathPictureOriginal = `${pathPicture}/${folderPictureOriginal}`
-export const fullPathPictureOriginal = `${RNFS.ExternalStorageDirectoryPath}/${pathPictureOriginal}`
-// Pictures/Cropped
+export const relativePathPictureOriginal = folderPictureOriginal
+export const fullPathPictureOriginal = `${fullPathRoot}/${relativePathPictureOriginal}`
+// Cropped
 export const folderPictureCropped = "Cropped"
-export const pathPictureCropped = `${pathPicture}/${folderPictureCropped}`
-export const fullPathPictureCropped = `${RNFS.ExternalStorageDirectoryPath}/${pathPictureCropped}`
+export const relativePathPictureCropped = folderPictureCropped
+export const fullPathPictureCropped = `${fullPathRoot}/${relativePathPictureCropped}`
 
 // File
 // Log
 export const fileLog = "docscanlog.log"
-export const pathLog = `${pathRoot}/${fileLog}`
-export const fullPathLog = `${RNFS.ExternalStorageDirectoryPath}/${pathLog}`
+export const relativePathLog = fileLog
+export const fullPathLog = `${fullPathRoot}/${relativePathLog}`
 
 // AsyncStorage
 export const storageTheme = "@docscan:theme"
