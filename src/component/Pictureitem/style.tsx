@@ -1,4 +1,3 @@
-import { Dimensions } from "react-native"
 import { RectButton } from "react-native-gesture-handler"
 import styled from "styled-components/native"
 
@@ -12,7 +11,6 @@ export const PictureButton = styled(RectButton)`
     justify-content: center;
     margin: 5px;
     border-radius: 1px;
-    max-width: ${(Dimensions.get("window").width / 2) - 10}px;
     background-color: ${(props: styledProps) => props.theme.color.backgroundDark};
 `
 
@@ -31,7 +29,7 @@ export const FileNameView = styled.View`
     justify-content: center;
     width: 100%;
     height: 30px;
-    padding: 0px 3px;
+    padding: 0px 5px;
     border-bottom-left-radius: 1px;
     border-bottom-right-radius: 1px;
     background-color: ${(props: styledProps) => props.theme.color.backgroundDark};

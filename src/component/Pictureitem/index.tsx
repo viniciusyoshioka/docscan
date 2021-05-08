@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react"
+import { useWindowDimensions } from "react-native"
 import CheckBox from "@react-native-community/checkbox"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 
@@ -63,7 +64,13 @@ export function PictureItem(props: PictureItemProps) {
             minDurationMs={350} 
             onHandlerStateChange={({ nativeEvent }) => longPress(nativeEvent)}
         >
-            <PictureButton style={{aspectRatio: 2/3}} onPress={normalPress}>
+            <PictureButton
+                style={{
+                    aspectRatio: 2/3,
+                    maxWidth: (useWindowDimensions().width / 2) - 10
+                }}
+                onPress={normalPress}
+            >
                 <PictureImage 
                     source={{uri: `file://${props.picturePath}`}} 
                     style={{aspectRatio: 2/3}}
