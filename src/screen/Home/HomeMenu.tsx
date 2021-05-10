@@ -9,6 +9,9 @@ import { appInDevelopment } from "../../service/constant"
 
 
 export interface HomeMenuProps {
+    selectionMode: boolean,
+    importDocument: () => void,
+    exportDocument: () => void,
     openSettings: () => void,
     switchDebugHome: () => void,
 }
@@ -54,22 +57,44 @@ export function HomeMenu(props: HomeMenuProps) {
             </MenuTrigger>
 
             <MenuOptions>
-                <PopupMenuButton 
-                    text={"Configurações"} 
+                {!props.selectionMode && (
+                    <PopupMenuButton 
+                        text={"Importar Documento"} 
+                        onPress={() => {
+                            menuRef.current?.close()
+                            props.importDocument()
+                        }}
+                    />
+                )}
+
+                <PopupMenuButton
+                    text={"Exportar Documento"}
                     onPress={() => {
                         menuRef.current?.close()
-                        props.openSettings()
+                        props.exportDocument()
                     }}
                 />
 
-                {appInDevelopment && (
-                    <PopupMenuButton 
-                        text={"Debug Home"} 
-                        onPress={() => {
-                            menuRef.current?.close()
-                            props.switchDebugHome()
-                        }}
-                    />
+                {!props.selectionMode && (
+                    <>
+                        <PopupMenuButton
+                            text={"Configurações"}
+                            onPress={() => {
+                                menuRef.current?.close()
+                                props.openSettings()
+                            }}
+                        />
+
+                        {appInDevelopment && (
+                            <PopupMenuButton 
+                                text={"Debug Home"} 
+                                onPress={() => {
+                                    menuRef.current?.close()
+                                    props.switchDebugHome()
+                                }}
+                            />
+                        )}
+                    </>
                 )}
             </MenuOptions>
         </Menu>

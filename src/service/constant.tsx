@@ -35,6 +35,14 @@ export const fullPathPictureOriginal = `${fullPathRoot}/${relativePathPictureOri
 export const folderPictureCropped = "Cropped"
 export const relativePathPictureCropped = folderPictureCropped
 export const fullPathPictureCropped = `${fullPathRoot}/${relativePathPictureCropped}`
+// Export
+export const folderExported = "Exported"
+export const relativePathExported = folderExported
+export const fullPathExported = `${fullPathRootExternal}/${relativePathExported}`
+// Temporary
+export const folderTemporary = "Temporary"
+export const relativePathTemporary = folderTemporary
+export const fullPathTemporary = `${fullPathRoot}/${relativePathTemporary}`
 
 // File
 // Log

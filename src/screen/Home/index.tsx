@@ -12,7 +12,7 @@ import { HomeHeader } from "./Header"
 import { DebugButton } from "../../component/DebugButton"
 import { useSwitchTheme } from "../../service/theme"
 import { appIconOutline, appInDevelopment, fullPathLog, fullPathRoot } from "../../service/constant"
-import { deleteDocument } from "../../service/document-handler"
+import { deleteDocument, exportDocument } from "../../service/document-handler"
 import { createAllFolder } from "../../service/folder-handler"
 import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
 import { useBackHandler } from "../../service/hook"
@@ -174,6 +174,11 @@ export function Home() {
         )
     }, [selectedDocument])
 
+    const exportSelectedDocument = useCallback(() => {
+        exportDocument(selectedDocument, selectionMode)
+        exitSelectionMode()
+    }, [selectedDocument, selectionMode])
+
     const selectDocument = useCallback((documentId: number) => {
         if (!selectionMode) {
             setSelectionMode(true)
@@ -225,6 +230,8 @@ export function Home() {
                 exitSelectionMode={exitSelectionMode}
                 deleteSelectedDocument={deleteSelectedDocument}
                 scanNewDocument={() => navigation.navigate("Camera")}
+                importDocument={() => {}}
+                exportDocument={exportSelectedDocument}
                 openSettings={() => navigation.navigate("Settings")}
                 switchDebugHome={debugSwitchDebugHome}
             />

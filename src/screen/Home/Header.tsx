@@ -10,6 +10,8 @@ export interface HomeHeaderProps {
     exitSelectionMode: () => void,
     deleteSelectedDocument: () => void,
     scanNewDocument: () => void,
+    importDocument: () => void,
+    exportDocument: () => void,
     openSettings: () => void,
     switchDebugHome: () => void,
 }
@@ -53,29 +55,30 @@ export class HomeHeader extends Component<HomeHeaderProps> {
                     </BlockCenter>
                 )}
 
-                {this.props.selectionMode && (
-                    <BlockRight>
+                <BlockRight>
+                    {this.props.selectionMode && (
                         <HeaderButton
                             iconName={"md-trash-outline"}
                             onPress={this.props.deleteSelectedDocument}
                         />
-                    </BlockRight>
-                )}
+                    )}
 
-                {!this.props.selectionMode && (
-                    <BlockRight>
+                    {!this.props.selectionMode && (
                         <HeaderButton
                             iconName={"md-add"}
                             iconSize={30}
                             onPress={this.props.scanNewDocument}
                         />
+                    )}
 
-                        <HomeMenu
-                            openSettings={this.props.openSettings}
-                            switchDebugHome={this.props.switchDebugHome}
-                        />
-                    </BlockRight>
-                )}
+                    <HomeMenu
+                        selectionMode={this.props.selectionMode}
+                        importDocument={this.props.importDocument}
+                        exportDocument={this.props.exportDocument}
+                        openSettings={this.props.openSettings}
+                        switchDebugHome={this.props.switchDebugHome}
+                    />
+                </BlockRight>
             </Header>
         )
     }
