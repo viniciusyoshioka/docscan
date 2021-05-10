@@ -5,7 +5,7 @@ import RNFS from "react-native-fs"
 
 import { getDateTime } from "./date"
 import { log } from "./log"
-import { Document } from "./object-types"
+import { Document, ExportedDocument } from "./object-types"
 import { readDocument, readDocumentId, writeDocument, writeDocumentId } from "./storage"
 import { fullPathExported, fullPathTemporary } from "./constant"
 import { createExportedFolder, createTemporaryFolder } from "./folder-handler"
@@ -144,13 +144,24 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
     }
 
     // Get document to export
-    let documentToExport: Array<Document> = []
+    let documentToExport: Array<ExportedDocument> = []
     if (selectionMode) {
-        documentToExport = document.filter((item) => {
+        const tempDocumentToExport = document.filter((item: Document) => {
             return ids.includes(item.id)
         })
+        documentToExport = tempDocumentToExport.map((item: Document) => {
+            return {
+                name: item.name,
+                pictureList: item.pictureList,
+            }
+        })
     } else {
-        documentToExport = document
+        documentToExport = document.map((item: Document) => {
+            return {
+                name: item.name,
+                pictureList: item.pictureList,
+            }
+        })
     }
 
     // Create required folders
@@ -172,8 +183,8 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
     }
 
     // Copy pictures
-    documentToExport.forEach((documentItem) => {
-        documentItem.pictureList.forEach(async (pictureItem) => {
+    documentToExport.forEach((documentItem: ExportedDocument) => {
+        documentItem.pictureList.forEach(async (pictureItem: string) => {
             const splitedPath = pictureItem.split("/")
             const fileName = splitedPath[splitedPath.length - 1]
             try {

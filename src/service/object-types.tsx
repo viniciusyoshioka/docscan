@@ -7,6 +7,11 @@ export type Document = {
     lastModificationDate: string,
 }
 
+export type ExportedDocument = {
+    name: string,
+    pictureList: Array<string>,
+}
+
 
 // Debug Home
 export type debugHome = "show" | "hide"
