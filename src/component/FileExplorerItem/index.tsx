@@ -30,11 +30,11 @@ export function FileExplorerItem(props: FileExplorerItemProps) {
             </ViewIcon>
 
             <ViewPath>
-                <ItemNameText>
+                <ItemNameText numberOfLines={1} ellipsizeMode={"tail"}>
                     {props.name}
                 </ItemNameText>
 
-                <FullPathText>
+                <FullPathText numberOfLines={1} ellipsizeMode={"tail"}>
                     {props.path}
                 </FullPathText>
             </ViewPath>
