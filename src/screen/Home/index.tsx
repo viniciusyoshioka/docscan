@@ -230,7 +230,7 @@ export function Home() {
                 exitSelectionMode={exitSelectionMode}
                 deleteSelectedDocument={deleteSelectedDocument}
                 scanNewDocument={() => navigation.navigate("Camera")}
-                importDocument={() => {}}
+                importDocument={() => navigation.navigate("FileExplorer")}
                 exportDocument={exportSelectedDocument}
                 openSettings={() => navigation.navigate("Settings")}
                 switchDebugHome={debugSwitchDebugHome}

@@ -9,6 +9,7 @@ import { Settings } from "../screen/Settings"
 import { EditDocument } from "../screen/EditDocument"
 import { VisualizePicture } from "../screen/VisualizePicture"
 import { ImportImageFromGalery } from "../screen/ImportImageFromGalery"
+import { FileExplorer } from "../screen/FileExplorer"
 
 
 enableScreens()
@@ -50,6 +51,10 @@ export function Router() {
                 <Stack.Screen
                     name={"ImportImageFromGalery"}
                     component={ImportImageFromGalery}
+                />
+                <Stack.Screen
+                    name={"FileExplorer"}
+                    component={FileExplorer}
                 />
             </Stack.Navigator>
         </NavigationContainer>
