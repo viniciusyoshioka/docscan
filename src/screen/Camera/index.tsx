@@ -7,7 +7,7 @@ import { SafeScreen } from "../../component/Screen"
 import { CameraHeader } from "./Header"
 import { CameraControl } from "./Control"
 import { CameraSettings } from "./CameraSettings"
-import { fullPathPictureOriginal } from "../../service/constant"
+import { fullPathPicture } from "../../service/constant"
 import { readSettings } from "../../service/storage"
 import { createAllFolder } from "../../service/folder-handler"
 import { getDateTime } from "../../service/date"
@@ -114,7 +114,7 @@ export function Camera() {
         createAllFolder()
 
         const date = getDateTime("-", "-", true)
-        const picturePath = `${fullPathPictureOriginal}/${date}.jpg`
+        const picturePath = `${fullPathPicture}/${date}.jpg`
         const options = {
             quality: 0.2,
             path: picturePath

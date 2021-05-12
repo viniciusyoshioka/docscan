@@ -8,7 +8,7 @@ import { SafeScreen } from "../../component/Screen"
 import { ImportImageFromGaleryHeader } from "./Header"
 import { ImageItem } from "../../component/ImageItem"
 import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
-import { fullPathPictureOriginal } from "../../service/constant"
+import { fullPathPicture } from "../../service/constant"
 import { useTheme } from "../../service/theme"
 import { useBackHandler } from "../../service/hook"
 import { getCameraRollPermission } from "../../service/permission"
@@ -124,9 +124,9 @@ export function ImportImageFromGalery() {
         const fileExtension = splittedFileImage[splittedFileImage.length - 1]
 
         let counter = 0
-        let newFileName = `${fullPathPictureOriginal}/${fileName}.${fileExtension}`
+        let newFileName = `${fullPathPicture}/${fileName}.${fileExtension}`
         while (await RNFS.exists(newFileName)) {
-            newFileName = `${fullPathPictureOriginal}/${fileName} - ${counter}.${fileExtension}`
+            newFileName = `${fullPathPicture}/${fileName} - ${counter}.${fileExtension}`
             counter += 1
         }
         return newFileName

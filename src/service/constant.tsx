@@ -27,14 +27,10 @@ export const fullPathRootExternal = `${RNFS.ExternalStorageDirectoryPath}/${fold
 export const folderPdf = "PDF"
 export const relativePathPdf = folderPdf
 export const fullPathPdf = `${fullPathRootExternal}/${relativePathPdf}`
-// Original
-export const folderPictureOriginal = "Original"
-export const relativePathPictureOriginal = folderPictureOriginal
-export const fullPathPictureOriginal = `${fullPathRoot}/${relativePathPictureOriginal}`
-// Cropped
-export const folderPictureCropped = "Cropped"
-export const relativePathPictureCropped = folderPictureCropped
-export const fullPathPictureCropped = `${fullPathRoot}/${relativePathPictureCropped}`
+// Picture
+export const folderPicture = "Picture"
+export const relativePathPicture = folderPicture
+export const fullPathPicture = `${fullPathRoot}/${relativePathPicture}`
 // Export
 export const folderExported = "Exported"
 export const relativePathExported = folderExported

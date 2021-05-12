@@ -7,7 +7,6 @@ import { ImageCrop, imageSavedResponse } from "../../service/image-crop"
 import { VisualizePictureHeader } from "./Header"
 import { SafeScreen } from "../../component/Screen"
 import { useBackHandler } from "../../service/hook"
-import { fullPathPictureCropped } from "../../service/constant"
 import { log } from "../../service/log"
 import { ScreenParams } from "../../service/screen-params"
 
@@ -43,24 +42,9 @@ export function VisualizePicture() {
     }, [isCropping])
 
     const onImageSaved = useCallback(async (response: imageSavedResponse) => {
-        // Split file path
-        const splitedPath = params.picturePath.split("/")
-        const fileName = splitedPath[splitedPath.length - 1]
-        // Get file name
-        const splitedFileName = fileName.split(".")
-        let name = ""
-        splitedFileName.forEach((item, index) => {
-            if (index !== splitedFileName.length - 1) {
-                name += item
-            }
-        })
-        // Get file extension
-        const extension = splitedFileName[splitedFileName.length - 1]
-        // Get new path to cropped image
-        const filePath = `${fullPathPictureCropped}/${name}.${extension}`
-
         try {
-            await RNFS.moveFile(response.uri, filePath)
+            await RNFS.unlink(params.picturePath)
+            await RNFS.moveFile(response.uri, params.picturePath)
         } catch (error) {
             await RNFS.unlink(response.uri)
 
@@ -76,14 +60,6 @@ export function VisualizePicture() {
             })
             return
         }
-
-        try {
-            await RNFS.unlink(params.picturePath)
-        } catch (error) {
-            log("ERROR", `VisualizePicture onImageSaved - Error deleting original image file. Message: "${error}"`)
-        }
-
-        params.pictureList[params.pictureIndex] = filePath
 
         navigation.navigate("EditDocument", {
             document: params.document,

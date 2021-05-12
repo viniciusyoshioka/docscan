@@ -1,6 +1,6 @@
 import RNFS from "react-native-fs"
 
-import { fullPathRoot, fullPathPdf, fullPathPictureOriginal, fullPathPictureCropped, fullPathRootExternal, fullPathExported, fullPathTemporary } from "./constant"
+import { fullPathRoot, fullPathPdf, fullPathPicture, fullPathRootExternal, fullPathExported, fullPathTemporary } from "./constant"
 import { log } from "./log"
 
 
@@ -34,23 +34,13 @@ async function createPdfFolderExternal() {
     }
 }
 
-async function createPictureOriginalFolder() {
+async function createPictureFolder() {
     try {
-        if (!await RNFS.exists(fullPathPictureOriginal)) {
-            await RNFS.mkdir(fullPathPictureOriginal)
+        if (!await RNFS.exists(fullPathPicture)) {
+            await RNFS.mkdir(fullPathPicture)
         }
     } catch (error) {
-        log("ERROR", `folder-handler createPictureOriginalFolder - Erro ao criar pasta. Mensagem: "${error}"`)
-    }
-}
-
-async function createPictureCroppedFolder() {
-    try {
-        if (!await RNFS.exists(fullPathPictureCropped)) {
-            await RNFS.mkdir(fullPathPictureCropped)
-        }
-    } catch (error) {
-        log("ERROR", `folder-handler createPictureCroppedFolder - Erro ao criar pasta. Mensagem: "${error}"`)
+        log("ERROR", `folder-handler createPictureFolder - Erro ao criar pasta. Mensagem: "${error}"`)
     }
 }
 
@@ -79,8 +69,7 @@ export function createAllFolder() {
     // createRootFolder()
     // createRootFolderExternal()
     createPdfFolderExternal()
-    createPictureOriginalFolder()
-    createPictureCroppedFolder()
+    createPictureFolder()
     createExportedFolder()
     createTemporaryFolder()
 }
