@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react"
-import { FlatList } from "react-native"
+import { Alert, FlatList } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import RNFS, { ReadDirItem } from "react-native-fs"
 
@@ -10,6 +10,7 @@ import { FileExplorerItem } from "../../component/FileExplorerItem"
 import { useBackHandler } from "../../service/hook"
 import { SubHeaderPath, SubHeaderText } from "../../component/SubHeaderPath"
 import { importDocument } from "../../service/document-handler"
+import { log } from "../../service/log"
 
 
 const defaultContent: Array<ReadDirItem> = [
@@ -100,14 +101,16 @@ export function FileExplorer() {
         setPath(previewsPath)
     }, [path])
 
-    const changePath = useCallback((newPath: string, isFile: boolean) => {
+    const changePath = useCallback(async (newPath: string, isFile: boolean) => {
         if (newPath === "..") {
             upDirectory()
         } else if (isFile) {
-            importDocument(newPath)
-                .then(() => {
-                    navigation.reset({routes: [{name: "Home"}]})
-                })
+            Alert.alert(
+                "Aguarde",
+                "Importar documentos pode demorar alguns instantes"
+            )
+            await importDocument(newPath)
+            navigation.reset({routes: [{name: "Home"}]})
         } else {
             setPath(newPath)
         }
@@ -137,6 +140,13 @@ export function FileExplorer() {
                         setPathContent([returnDirectoryItem, ...dirContent])
                     }
                 })
+                .catch((error) => {
+                    log("ERROR", `Erro lendo pasta ao mudar de diretório. Mensagem: "${error}"`)
+                    Alert.alert(
+                        "Erro",
+                        "Não foi possível abrir pasta"
+                    )
+                })
         }
     }, [path])
 
@@ -162,7 +172,7 @@ export function FileExplorer() {
                         name={item.name}
                         path={item.path}
                         isFile={item.isFile()}
-                        onPress={() => changePath(item.path, item.isFile())}
+                        onPress={async () => await changePath(item.path, item.isFile())}
                     />
                 )}
                 keyExtractor={(_item, index) => index.toString()}
