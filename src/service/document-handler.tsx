@@ -1,13 +1,13 @@
 import { Alert, ToastAndroid } from "react-native"
 import base64 from "react-native-base64"
-import { zip } from "react-native-zip-archive"
+import { zip, unzip } from "react-native-zip-archive"
 import RNFS from "react-native-fs"
 
 import { getDateTime } from "./date"
 import { log } from "./log"
 import { Document, ExportedDocument } from "./object-types"
 import { readDocument, readDocumentId, writeDocument, writeDocumentId } from "./storage"
-import { fullPathExported, fullPathTemporary } from "./constant"
+import { fullPathExported, fullPathPicture, fullPathTemporary } from "./constant"
 import { createExportedFolder, createTemporaryFolder } from "./folder-handler"
 
 
@@ -225,11 +225,104 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
 
     // Clear temporary files
     try {
-        await RNFS.unlink(`${fullPathTemporary}`)
+        await RNFS.unlink(fullPathTemporary)
     } catch (error) {
         log("ERROR", `Erro apagando arquivos temporários depois de exportar documentos. Mensagem: "${error}"`)
     }
 
     // Alert export has finished
     ToastAndroid.show(`Documentos exportados para "Exportado/${zipDocumentName}"`, 10)
+}
+
+export async function importDocument(path: string) {
+    // Check if file to import exists
+    if (!await RNFS.exists(path)) {
+        Alert.alert(
+            "Erro",
+            "Arquivo selecionado não existe"
+        )
+        return
+    }
+
+    // Create temporary folder
+    await createTemporaryFolder()
+
+    // Unzip file
+    try {
+        await unzip(path, fullPathTemporary)
+    } catch (error) {
+        log("ERROR", `Erro ao descompactar documento a ser importado. Mensagem: "${error}"`)
+        Alert.alert(
+            "Erro",
+            "Erro ao importar documentos. Processo interrompido"
+        )
+        return
+    }
+
+    // Read document file
+    let fileContent: string
+    try {
+        fileContent = await RNFS.readFile(`${fullPathTemporary}/index.txt`, "base64")
+    } catch (error) {
+        log("ERROR", `Erro lendo arquivo de documentos para importar. Mensagem: "${error}"`)
+        Alert.alert(
+            "Erro",
+            "Erro ao importar documentos. Processo interrompido"
+        )
+        return
+    }
+    const exportedDocumentData: Array<ExportedDocument> = JSON.parse(base64.decode(fileContent))
+    const importedDocument: Array<Document> = []
+    for (let x = 0; x < exportedDocumentData.length; x++) {
+        // Create and add document
+        const doc = await createDocument(
+            exportedDocumentData[x].name, exportedDocumentData[x].pictureList
+        )
+        importedDocument.push(doc)
+
+        // Write new document id
+        const documentId = await readDocumentId()
+        documentId.push(doc.id)
+        await writeDocumentId(documentId)
+    }
+
+    // Move picture file from temporary folder to picture folder
+    importedDocument.forEach((documentItem: Document) => {
+        documentItem.pictureList.forEach(async (pictureItem: string) => {
+            const splitedPath = pictureItem.split("/")
+            const pictureFile = splitedPath[splitedPath.length - 1]
+            try {
+                await RNFS.moveFile(`${fullPathTemporary}/${pictureFile}`, `${fullPathPicture}/${pictureFile}`)
+            } catch (error) {
+                // Remove ids from imported document when an error is thrown
+                importedDocument.forEach(async (item: Document) => {
+                    const documentId = await readDocumentId()
+                    documentId.splice(documentId.indexOf(item.id), 1)
+                    await writeDocumentId(documentId)
+                })
+
+                log("ERROR", `Erro movendo imagens da pasta temporária para pasta de imagens durante importação. Mensagem: "${error}"`)
+                Alert.alert(
+                    "Erro",
+                    "Erro ao importar documentos. Processo interrompido"
+                )
+                return
+            }
+        })
+    })
+
+    // Write imported document
+    const document = await readDocument()
+    const newDocument = [...importedDocument, ...document]
+    await writeDocument(newDocument)
+
+    // Clear temporary folder
+    try {
+        await RNFS.unlink(fullPathTemporary)
+    } catch (error) {
+        log("ERROR", `Erro apagando arquivos temporários depois de importart documentos. Mensagem: "${error}"`)        
+    }
+
+    // Alert import has finished
+    ToastAndroid.show("Documentos importados", 10)
 }
