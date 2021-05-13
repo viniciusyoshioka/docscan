@@ -37,5 +37,5 @@ export const ItemNameText = styled.Text`
 
 export const FullPathText = styled.Text`
     font-size: 12px;
-    color: ${(props: styledProps) => props.theme.color.colorLight};
+    color: ${(props: styledProps) => props.theme.color.colorDark};
 `
