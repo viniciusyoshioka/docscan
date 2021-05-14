@@ -244,6 +244,17 @@ export async function importDocument(path: string) {
         return
     }
 
+    // Check file extension
+    const splitedPath = path.split("/")
+    const fileName = splitedPath[splitedPath.length - 1]
+    if (!fileName.endsWith(".zip")) {
+        Alert.alert(
+            "Erro",
+            "Arquivo selecionado não é um documento exportado"
+        )
+        return
+    }
+
     // Create temporary folder
     await createTemporaryFolder()
 
@@ -257,6 +268,20 @@ export async function importDocument(path: string) {
             "Erro ao importar documentos. Processo interrompido"
         )
         return
+    }
+
+    // Check if unziped items are document
+    if (!await RNFS.exists(`${fullPathTemporary}/index.txt`)) {
+        try {
+            await RNFS.unlink(fullPathTemporary)
+        } catch (error) {
+            log("ERROR", `Erro verificando arquivo zip, ele não é um documento exportado. Mensagem: "${error}"`)
+            Alert.alert(
+                "Erro",
+                "Arquivo selecionado não é um documento exportado. Processo interrompido"
+            )
+            return
+        }
     }
 
     // Read document file
