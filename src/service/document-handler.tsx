@@ -130,7 +130,7 @@ export async function deleteDocument(ids: Array<number>, deleteFiles = false) {
 }
 
 
-export async function exportDocument(ids: Array<number>, selectionMode: boolean) {
+export async function exportDocument(ids: Array<number>, selectionMode: boolean): Promise<boolean> {
     // Filter only selected documents
     const document = await readDocument()
 
@@ -140,7 +140,7 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
             "Aviso",
             "Não há documentos para exportar"
         )
-        return
+        return false
     }
 
     // Get document to export
@@ -179,7 +179,7 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
             "Erro",
             "Erro ao exportar documentos. Processo interrompido"
         )
-        return
+        return false
     }
 
     // Copy pictures
@@ -195,7 +195,7 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
                     "Erro",
                     "Erro ao exportar documentos. Processo interrompido"
                 )
-                return
+                return false
             }
         })
     })
@@ -220,7 +220,7 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
             "Erro",
             "Erro ao exportar documentos. Processo interrompido"
         )
-        return
+        return false
     }
 
     // Clear temporary files
@@ -232,16 +232,17 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
 
     // Alert export has finished
     ToastAndroid.show(`Documentos exportados para "Exportado/${zipDocumentName}"`, 10)
+    return true
 }
 
-export async function importDocument(path: string) {
+export async function importDocument(path: string): Promise<boolean> {
     // Check if file to import exists
     if (!await RNFS.exists(path)) {
         Alert.alert(
             "Erro",
             "Arquivo selecionado não existe"
         )
-        return
+        return false
     }
 
     // Check file extension
@@ -252,7 +253,7 @@ export async function importDocument(path: string) {
             "Erro",
             "Arquivo selecionado não é um documento exportado"
         )
-        return
+        return false
     }
 
     // Create temporary folder
@@ -267,7 +268,7 @@ export async function importDocument(path: string) {
             "Erro",
             "Erro ao importar documentos. Processo interrompido"
         )
-        return
+        return false
     }
 
     // Check if unziped items are document
@@ -275,12 +276,12 @@ export async function importDocument(path: string) {
         try {
             await RNFS.unlink(fullPathTemporary)
         } catch (error) {
-            log("ERROR", `Erro verificando arquivo zip, ele não é um documento exportado. Mensagem: "${error}"`)
+            log("ERROR", `Erro verificando arquivo zip, seu conteúdo não é compatível com document. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro",
                 "Arquivo selecionado não é um documento exportado. Processo interrompido"
             )
-            return
+            return false
         }
     }
 
@@ -294,7 +295,7 @@ export async function importDocument(path: string) {
             "Erro",
             "Erro ao importar documentos. Processo interrompido"
         )
-        return
+        return false
     }
     const exportedDocumentData: Array<ExportedDocument> = JSON.parse(base64.decode(fileContent))
     const importedDocument: Array<Document> = []
@@ -331,7 +332,7 @@ export async function importDocument(path: string) {
                     "Erro",
                     "Erro ao importar documentos. Processo interrompido"
                 )
-                return
+                return false
             }
         })
     })
@@ -348,6 +349,7 @@ export async function importDocument(path: string) {
         log("ERROR", `Erro apagando arquivos temporários depois de importart documentos. Mensagem: "${error}"`)        
     }
 
-    // Alert import has finished
+    // Warn import has finished
     ToastAndroid.show("Documentos importados", 10)
+    return true
 }

@@ -101,16 +101,37 @@ export function FileExplorer() {
         setPath(previewsPath)
     }, [path])
 
-    const changePath = useCallback(async (newPath: string, isFile: boolean) => {
-        if (newPath === "..") {
-            upDirectory()
-        } else if (isFile) {
+    const importDocumentAlert = useCallback((newPath: string) => {
+        function importDocumentFunction(newPath: string) {
+            importDocument(newPath)
+                .then((isDocumentImported: boolean) => {
+                    if (isDocumentImported) {
+                        navigation.reset({routes: [{name: "Home"}]})
+                        return
+                    }
+                })
+
             Alert.alert(
                 "Aguarde",
                 "Importar documentos pode demorar alguns instantes"
             )
-            await importDocument(newPath)
-            navigation.reset({routes: [{name: "Home"}]})
+        }
+
+        Alert.alert(
+            "Importar documento",
+            "Deseja importar este documento?",
+            [
+                {text: "Cancelar", onPress: () => {}},
+                {text: "Importar", onPress: () => importDocumentFunction(newPath)}
+            ]
+        )
+    }, [])
+
+    const changePath = useCallback(async (newPath: string, isFile: boolean) => {
+        if (newPath === "..") {
+            upDirectory()
+        } else if (isFile) {
+            importDocumentAlert(newPath)
         } else {
             setPath(newPath)
         }
@@ -141,6 +162,7 @@ export function FileExplorer() {
                     }
                 })
                 .catch((error) => {
+                    setPathContent([returnDirectoryItem])
                     log("ERROR", `Erro lendo pasta ao mudar de diretório. Mensagem: "${error}"`)
                     Alert.alert(
                         "Erro",
