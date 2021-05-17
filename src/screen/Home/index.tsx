@@ -175,8 +175,19 @@ export function Home() {
     }, [selectedDocument])
 
     const exportSelectedDocument = useCallback(() => {
-        exportDocument(selectedDocument, selectionMode)
-        exitSelectionMode()
+        function alertExport() {
+            exportDocument(selectedDocument, selectionMode)
+            exitSelectionMode()
+        }
+
+        Alert.alert(
+            "Alerta",
+            `Os documentos ${selectionMode ? "selecionados " : ""}serão exportados`,
+            [
+                {text: "Cancelar", onPress: () => {}},
+                {text: "Exportar", onPress: () => alertExport()}
+            ]
+        )
     }, [selectedDocument, selectionMode])
 
     const selectDocument = useCallback((documentId: number) => {

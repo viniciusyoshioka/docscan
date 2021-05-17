@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import React, { forwardRef, memo, Ref } from "react"
+import { View } from "react-native"
 import { useIsFocused } from "@react-navigation/core"
 import { RNCamera } from "react-native-camera"
 
 import { flashType, whiteBalanceType } from "../../service/settings"
-import { View } from "react-native"
 
 
 export interface CameraViewProps {

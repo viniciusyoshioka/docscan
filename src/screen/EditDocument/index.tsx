@@ -147,10 +147,6 @@ export function EditDocument() {
                         await RNFS.unlink(item)
                     } catch (error) {
                         log("ERROR", `EditDocument discardDocument - Erro ao apagar fotos do documento durante seu descarte. Mensagem: "${error}"`)
-                        Alert.alert(
-                            "Erro ao descartar documento",
-                            "Erro ao apagar fotos do documento durante seu descarte"
-                        )
                     }
                 })
 
