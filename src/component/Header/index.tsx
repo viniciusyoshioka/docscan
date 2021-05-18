@@ -11,11 +11,10 @@ export const Header = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: 0px 5px;
     width: 100%;
-    height: 50px;
+    height: 56px;
     background-color: ${(props: styledProps) => props.theme.color.header_background};
-    elevation: 4;
+    elevation: 3;
 `
 
 

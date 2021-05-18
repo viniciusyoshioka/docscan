@@ -7,7 +7,7 @@ import { styledProps } from "../../service/theme"
 
 export const HeaderTitleBase = styled.Text`
     width: 100%;
-    font-size: 19px;
+    font-size: 20px;
     color: ${(props: styledProps) => props.theme.color.header_color};
 `
 

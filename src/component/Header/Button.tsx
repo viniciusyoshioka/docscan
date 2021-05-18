@@ -13,7 +13,7 @@ export const HeaderButtonBase = styled(RectButton)`
 `
 
 
-export interface HeaderButtonProps extends RectButtonProps, HeaderIconProps {}
+export interface HeaderButtonProps extends RectButtonProps, HeaderIconProps { }
 
 
 export function HeaderButton(props: HeaderButtonProps) {

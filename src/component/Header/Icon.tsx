@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/Ionicons"
 import { useTheme } from "../../service/theme"
 
 
-export const headerIconSize = 25
+export const headerIconSize = 24
 
 
 export interface HeaderIconProps {
@@ -20,9 +20,9 @@ export function HeaderIcon(props: HeaderIconProps) {
 
 
     return (
-        <Icon 
-            name={props.iconName} 
-            size={props.iconSize || headerIconSize} 
+        <Icon
+            name={props.iconName}
+            size={props.iconSize || headerIconSize}
             color={color.header_color}
         />
     )
