@@ -14,7 +14,8 @@ export const Header = styled.View`
     padding: 0px 5px;
     width: 100%;
     height: 50px;
-    background-color: ${(props: styledProps) => props.theme.color.backgroundDark};
+    background-color: ${(props: styledProps) => props.theme.color.header_background};
+    elevation: 4;
 `
 
 

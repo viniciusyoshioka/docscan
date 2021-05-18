@@ -13,7 +13,7 @@ export const Button = styled(RectButton)`
     padding: 3px 5px;
     height: 55px;
     border-radius: 1px;
-    background-color: ${(props: styledProps) =>  props.theme.color.backgroundDark};
+    background-color: ${(props: styledProps) =>  props.theme.color.documentItem_background};
 `
 
 
@@ -34,11 +34,11 @@ export const Line = styled.View`
 
 export const Title = styled.Text`
     font-size: 16px;
-    color: ${(props: styledProps) => props.theme.color.color};
+    color: ${(props: styledProps) => props.theme.color.documentItem_colorFirst};
 `
 
 
 export const Date = styled.Text`
     font-size: 12px;
-    color: ${(props: styledProps) => props.theme.color.colorDark};
+    color: ${(props: styledProps) => props.theme.color.documentItem_colorSecond};
 `

@@ -19,11 +19,11 @@ export const EmptyListView = styled.View`
 export const EmptyListImage = styled.Image`
     width: 100px;
     height: 100px;
-    tint-color: ${(props: styledProps) => props.theme.color.colorDark};
+    tint-color: ${(props: styledProps) => props.theme.color.screen_colorFirst};
 `
 
 
 export const EmptyListText = styled.Text`
     font-size: 16px;
-    color: ${(props: styledProps) => props.theme.color.colorDark};
+    color: ${(props: styledProps) => props.theme.color.screen_colorFirst};
 `

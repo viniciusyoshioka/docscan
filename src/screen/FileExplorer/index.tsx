@@ -8,7 +8,7 @@ import { FileExplorerHeader } from "./Header"
 import { fullPathExported } from "../../service/constant"
 import { FileExplorerItem } from "../../component/FileExplorerItem"
 import { useBackHandler } from "../../service/hook"
-import { SubHeaderPath, SubHeaderText } from "../../component/SubHeaderPath"
+import { SubHeaderView, SubHeaderText } from "../../component/SubHeaderPath"
 import { importDocument } from "../../service/document-handler"
 import { log } from "../../service/log"
 
@@ -180,11 +180,11 @@ export function FileExplorer() {
             />
 
             {path && (
-                <SubHeaderPath>
+                <SubHeaderView>
                     <SubHeaderText>
                         {path}
                     </SubHeaderText>
-                </SubHeaderPath>
+                </SubHeaderView>
             )}
 
             <FlatList

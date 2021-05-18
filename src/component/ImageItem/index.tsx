@@ -77,8 +77,8 @@ export function ImageItem(props: ImageItemProps) {
                             value={selected}
                             onValueChange={normalPress}
                             tintColors={{
-                                true: color.color,
-                                false: color.color
+                                true: color.checkBox_checked_color,
+                                false: color.checkBox_unchecked_color
                             }}
                         />
                     </ViewCheckBox>

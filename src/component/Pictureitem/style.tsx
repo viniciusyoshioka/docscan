@@ -11,7 +11,7 @@ export const PictureButton = styled(RectButton)`
     justify-content: center;
     margin: 5px;
     border-radius: 1px;
-    background-color: ${(props: styledProps) => props.theme.color.backgroundDark};
+    background-color: ${(props: styledProps) => props.theme.color.pictureItem_background};
 `
 
 
@@ -32,14 +32,13 @@ export const FileNameView = styled.View`
     padding: 0px 5px;
     border-bottom-left-radius: 1px;
     border-bottom-right-radius: 1px;
-    background-color: ${(props: styledProps) => props.theme.color.backgroundDark};
 `
 
 
 export const FileNameText = styled.Text`
     width: 100%;
     font-size: 15px;
-    color: ${(props: styledProps) => props.theme.color.colorLight};
+    color: ${(props: styledProps) => props.theme.color.pictureItem_color};
 `
 
 
@@ -61,5 +60,5 @@ export const CheckboxBackground = styled.View`
     height: 30px;
     opacity: 0.7;
     border-bottom-right-radius: 1px;
-    background-color: ${(props: styledProps) => props.theme.color.backgroundDark};
+    background-color: ${(props: styledProps) => props.theme.color.pictureItem_background};
 `

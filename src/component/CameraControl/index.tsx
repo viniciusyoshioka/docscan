@@ -3,7 +3,6 @@ import styled from "styled-components/native"
 import { CameraControlButton, CameraControlButtonBase, CameraControlViewButtonIndex, CameraControlButtonProps } from "./ButtonControl"
 import { cameraControlIconColor, CameraControlIconProps, cameraControlIconSize } from "./Icon"
 import { IndexControl, IndexControlBase, IndexControlProps } from "./IndexControl"
-import { styledProps } from "../../service/theme"
 
 
 export const CameraControlView = styled.View`
@@ -12,7 +11,6 @@ export const CameraControlView = styled.View`
     align-items: center;
     justify-content: space-around;
     padding: 5px;
-    background-color: ${(props: styledProps) => props.theme.color.background};
 `
 
 

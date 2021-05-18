@@ -12,18 +12,19 @@ const SettingsButtonBase = styled(RectButton)`
     padding-horizontal: 10px;
     width: 100%;
     height: 60px;
+    background-color ${(props: styledProps) => props.theme.color.settingsButton_background};
 `
 
 
 const ButtonTitle = styled.Text`
     font-size: 16px;
-    color: ${(props: styledProps) => props.theme.color.color};
+    color: ${(props: styledProps) => props.theme.color.settingsButton_colorFirst};
 `
 
 
 const ButtonDescription = styled.Text`
     font-size: 13px;
-    color: ${(props: styledProps) => props.theme.color.colorDark};
+    color: ${(props: styledProps) => props.theme.color.settingsButton_colorSecond};
 `
 
 

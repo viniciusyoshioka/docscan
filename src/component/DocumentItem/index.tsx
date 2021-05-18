@@ -66,8 +66,8 @@ export function DocumentItem(props: DocumentItemProps) {
                             value={selected}
                             onChange={normalPress}
                             tintColors={{
-                                true: color.color,
-                                false: color.color
+                                true: color.checkBox_checked_color,
+                                false: color.checkBox_unchecked_color
                             }}
                         />
                     </Block>

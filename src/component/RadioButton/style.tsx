@@ -20,7 +20,7 @@ export const Radio = styled.View`
     width: 24px;
     height: 24px;
     border-radius: 24px;
-    border-color: ${(props: styledProps) => props.theme.color.color};
+    border-color: ${(props: styledProps) => props.theme.color.radioButton_color};
 `
 
 
@@ -28,11 +28,11 @@ export const Check = styled.View`
     width: 12px;
     height: 12px;
     border-radius: 12px;
-    background-color: ${(props: styledProps) => props.theme.color.color};
+    background-color: ${(props: styledProps) => props.theme.color.radioButton_color};
 `
 
 
 export const Text = styled.Text`
     font-size: 15px;
-    color: ${(props: styledProps) => props.theme.color.color};
+    color: ${(props: styledProps) => props.theme.color.radioButton_color};
 `

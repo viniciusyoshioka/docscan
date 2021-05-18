@@ -10,6 +10,7 @@ export const Button = styled(RectButton)`
     align-items: center;
     justify-content: flex-start;
     height: 55px;
+    background-color: ${(props: styledProps) => props.theme.color.fileExplorerItem_background};
 `
 
 
@@ -31,11 +32,11 @@ export const ViewPath = styled.View`
 
 export const ItemNameText = styled.Text`
     font-size: 17px;
-    color: ${(props: styledProps) => props.theme.color.colorLight};
+    color: ${(props: styledProps) => props.theme.color.fileExplorerItem_colorFirst};
 `
 
 
 export const FullPathText = styled.Text`
     font-size: 12px;
-    color: ${(props: styledProps) => props.theme.color.colorDark};
+    color: ${(props: styledProps) => props.theme.color.fileExplorerItem_colorSecond};
 `

@@ -236,7 +236,7 @@ export function ImportImageFromGalery() {
 
             {imageGalery === null && (
                 <EmptyListView>
-                    <ActivityIndicator color={color.color} size={"large"} />
+                    <ActivityIndicator color={color.screen_colorFirst} size={"large"} />
                 </EmptyListView>
             )}
 

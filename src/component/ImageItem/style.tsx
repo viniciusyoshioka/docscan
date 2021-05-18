@@ -27,5 +27,5 @@ export const CheckboxBackground = styled.View`
     height: 33px;
     opacity: 0.7;
     border-bottom-right-radius: 1px;
-    background-color: ${(props: styledProps) => props.theme.color.backgroundDark};
+    background-color: ${(props: styledProps) => props.theme.color.screen_background};
 `

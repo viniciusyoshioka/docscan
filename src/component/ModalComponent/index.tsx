@@ -12,7 +12,7 @@ export const ModalView = styled.View`
 
 export const ModalTitle = styled.Text`
     font-size: 17px;
-    color: ${(props: styledProps) => props.theme.color.color};
+    color: ${(props: styledProps) => props.theme.color.modal_color};
 `
 
 

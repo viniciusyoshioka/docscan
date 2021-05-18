@@ -11,12 +11,71 @@ export type ColorTheme = {
     name: themeType,
     appTheme: themeType,
     color: {
-        background: string,
-        backgroundDark: string,
-        backgroundLight: string,
-        color: string,
-        colorDark: string,
-        colorLight: string,
+        header_background: string,
+        header_color: string,
+
+        subHeader_background: string,
+        subHeader_color: string,
+
+        screen_background: string,
+        screen_colorFirst: string,
+
+        popupMenuButton_background: string,
+        popupMenuButton_color: string,
+
+        documentItem_background: string,
+        documentItem_colorFirst: string,
+        documentItem_colorSecond: string,
+
+        // checkBox_background: string,
+        // checkBox_color: string,
+
+        checkBox_unchecked_background: string,
+        checkBox_unchecked_color: string,
+
+        checkBox_checked_background: string,
+        checkBox_checked_color: string,
+
+        settingsButton_background: string,
+        settingsButton_colorFirst: string,
+        settingsButton_colorSecond: string,
+
+        fileExplorerItem_background: string,
+        fileExplorerItem_colorFirst: string,
+        fileExplorerItem_colorSecond: string,
+
+        pictureItem_background: string,
+        pictureItem_color: string,
+
+        modal_background: string,
+        modal_color: string,
+
+        modalButton_background: string,
+        modalButton_color: string,
+
+        input_background: string,
+        input_color: string,
+        input_placeholder: string,
+        input_border: string,
+
+        // input_inactive_background: string,
+        // input_inactive_color: string,
+        // input_inactive_placeholder: string,
+        // input_inactive_border: string,
+
+        // input_active_background: string,
+        // input_active_color: string,
+        // input_active_placeholder: string,
+        // input_active_border: string,
+
+        radioButton_background: string,
+        radioButton_color: string,
+
+        // radioButton_unchecked_background: string,
+        // radioButton_unchecked_color: string,
+
+        // radioButton_checked_background: string,
+        // radioButton_checked_color: string,
     }
 }
 
@@ -25,12 +84,71 @@ export const LightTheme: ColorTheme = {
     name: "light",
     appTheme: "auto",
     color: {
-        background: "rgb(250, 250, 250)",
-        backgroundDark: "rgb(190, 190, 190)",
-        backgroundLight: "rgb(255, 255, 255)",
-        color: "rgb(20, 20, 20)",
-        colorDark: "rgb(0, 0, 0)",
-        colorLight: "rgb(30, 30, 30)",
+        header_background: "rgb(255, 255, 255)",
+        header_color: "rgb(0, 0, 0)",
+
+        subHeader_background: "rgb(255, 255, 255)",
+        subHeader_color: "rgb(0, 0, 0)",
+
+        screen_background: "rgb(255, 255, 255)",
+        screen_colorFirst: "rgb(64, 64, 64)",
+
+        popupMenuButton_background: "rgb(255, 255, 255)",
+        popupMenuButton_color: "rgb(0, 0, 0)",
+
+        documentItem_background: "rgb(255, 255, 255)",
+        documentItem_colorFirst: "rgb(0, 0, 0)",
+        documentItem_colorSecond: "rgb(30, 30, 30)",
+
+        // checkBox_background: "rgb(0, 0, 0)",
+        // checkBox_color: "rgb(0, 0, 0)",
+
+        checkBox_unchecked_background: "rgb(0, 0, 0)",
+        checkBox_unchecked_color: "rgb(0, 0, 0)",
+
+        checkBox_checked_background: "rgb(0, 0, 0)",
+        checkBox_checked_color: "rgb(0, 0, 0)",
+
+        settingsButton_background: "transparent",
+        settingsButton_colorFirst: "rgb(0, 0, 0)",
+        settingsButton_colorSecond: "rgb(30, 30, 30)",
+
+        fileExplorerItem_background: "transparent",
+        fileExplorerItem_colorFirst: "rgb(0, 0, 0)",
+        fileExplorerItem_colorSecond: "rgb(64, 64, 64)",
+
+        pictureItem_background: "rgb(240, 240, 240)",
+        pictureItem_color: "rgb(0, 0, 0)",
+
+        modal_background: "rgb(255, 255, 255)",
+        modal_color: "rgb(0, 0, 0)",
+
+        modalButton_background: "transparent",
+        modalButton_color: "rgb(0, 0, 0)",
+
+        input_background: "rgb(255, 255, 255)",
+        input_color: "rgb(0, 0, 0)",
+        input_placeholder: "rgb(100, 100, 100)",
+        input_border: "rgb(0, 0, 0)",
+
+        // input_inactive_background: "rgb(0, 0, 0)",
+        // input_inactive_color: "rgb(0, 0, 0)",
+        // input_inactive_placeholder: "rgb(0, 0, 0)",
+        // input_inactive_border: "rgb(0, 0, 0)",
+
+        // input_active_background: "rgb(0, 0, 0)",
+        // input_active_color: "rgb(0, 0, 0)",
+        // input_active_placeholder: "rgb(0, 0, 0)",
+        // input_active_border: "rgb(0, 0, 0)",
+
+        radioButton_background: "rgb(0, 0, 0)",
+        radioButton_color: "rgb(0, 0, 0)",
+
+        // radioButton_unchecked_background: "rgb(0, 0, 0)",
+        // radioButton_unchecked_color: "rgb(0, 0, 0)",
+
+        // radioButton_checked_background: "rgb(0, 0, 0)",
+        // radioButton_checked_color: "rgb(0, 0, 0)",
     }
 }
 
@@ -38,12 +156,68 @@ export const DarkTheme: ColorTheme = {
     name: "dark",
     appTheme: "auto",
     color: {
-        background: "rgb(35, 35, 35)",
-        backgroundDark: "rgb(15, 15, 15)",
-        backgroundLight: "rgb(50, 50, 50)",
-        color: "rgb(200, 200, 200)",
-        colorDark: "rgb(128, 128, 128)",
-        colorLight: "rgb(230, 230, 230)",
+        header_background: "rgb(30, 30, 30)",
+        header_color: "rgb(200, 200, 200)",
+
+        subHeader_background: "rgb(30, 30, 30)",
+        subHeader_color: "rgb(150, 150, 150)",
+
+        screen_background: "rgb(15, 15, 15)",
+        screen_colorFirst: "rgb(120, 120, 120)",
+
+        popupMenuButton_background: "rgb(40, 40, 40)",
+        popupMenuButton_color: "rgb(180, 180, 180)",
+
+        documentItem_background: "rgb(15, 15, 15)",
+        documentItem_colorFirst: "rgb(190, 190, 190)",
+        documentItem_colorSecond: "rgb(140, 140, 140)",
+
+        checkBox_unchecked_background: "transparent",
+        checkBox_unchecked_color: "rgb(190, 190, 190)",
+
+        checkBox_checked_background: "transparent",
+        checkBox_checked_color: "rgb(190, 190, 190)",
+
+        settingsButton_background: "transparent",
+        settingsButton_colorFirst: "rgb(190, 190, 190)",
+        settingsButton_colorSecond: "rgb(140, 140, 140)",
+
+        fileExplorerItem_background: "transparent",
+        fileExplorerItem_colorFirst: "rgb(190, 190, 190)",
+        fileExplorerItem_colorSecond: "rgb(140, 140, 140)",
+
+        pictureItem_background: "rgb(30, 30, 30)",
+        pictureItem_color: "rgb(200, 200, 200)",
+
+        modal_background: "rgb(40, 40, 40)",
+        modal_color: "rgb(190, 190, 190)",
+
+        modalButton_background: "transparent",
+        modalButton_color: "rgb(190, 190, 190)",
+
+        input_background: "rgb(0, 0, 0)",
+        input_color: "rgb(200, 200, 200)",
+        input_placeholder: "rgb(140, 140, 140)",
+        input_border: "rgb(190, 190, 190)",
+
+        // input_inactive_background: "rgb(0, 0, 0)",
+        // input_inactive_color: "rgb(0, 0, 0)",
+        // input_inactive_placeholder: "rgb(0, 0, 0)",
+        // input_inactive_border: "rgb(0, 0, 0)",
+
+        // input_active_background: "rgb(0, 0, 0)",
+        // input_active_color: "rgb(0, 0, 0)",
+        // input_active_placeholder: "rgb(0, 0, 0)",
+        // input_active_border: "rgb(0, 0, 0)",
+
+        radioButton_background: "rgb(190, 190, 190)",
+        radioButton_color: "rgb(190, 190, 190)",
+
+        // radioButton_unchecked_background: "rgb(0, 0, 0)",
+        // radioButton_unchecked_color: "rgb(0, 0, 0)",
+
+        // radioButton_checked_background: "rgb(0, 0, 0)",
+        // radioButton_checked_color: "rgb(0, 0, 0)",
     }
 }
 

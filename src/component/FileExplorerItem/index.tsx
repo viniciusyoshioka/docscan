@@ -25,7 +25,7 @@ export function FileExplorerItem(props: FileExplorerItemProps) {
                 <Icon
                     name={props.isFile ? "md-document-sharp" : "md-folder-sharp"}
                     size={25}
-                    color={color.colorLight}
+                    color={color.fileExplorerItem_colorFirst}
                 />
             </ViewIcon>
 

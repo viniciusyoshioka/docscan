@@ -14,12 +14,13 @@ export const ModalButtonBase = styled.TouchableOpacity`
     max-height: 30px;
     margin: 0px 3px;
     padding: 3px 5px;
+    background-color: ${(props: styledProps) => props.theme.color.modalButton_background};
 `
 
 
 export const ModalButtonTextBase = styled.Text`
     font-size: 15px;
-    color: ${(props: styledProps) => props.theme.color.color};
+    color: ${(props: styledProps) => props.theme.color.modalButton_color};
 `
 
 

@@ -25,5 +25,5 @@ export const ModalBackground = styled.View`
 export const ModalContent = styled.TouchableOpacity`
     width: 75%;
     border-radius: 1px;
-    background-color: ${(props: styledProps) => props.theme.color.background};
+    background-color: ${(props: styledProps) => props.theme.color.modal_background};
 `

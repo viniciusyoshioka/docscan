@@ -11,11 +11,11 @@ export const PopupMenuButtonBase = styled(RectButton)`
     padding-left: 10px;
     padding-vertical: 5px;
     height: 45px;
-    background-color: ${(props: styledProps) => props.theme.color.backgroundLight};
+    background-color: ${(props: styledProps) => props.theme.color.popupMenuButton_background};
 `
 
 
 export const PopupMenuButtonText = styled.Text`
     font-size: 15px;
-    color: ${(props: styledProps) => props.theme.color.color};
+    color: ${(props: styledProps) => props.theme.color.popupMenuButton_color};
 `
