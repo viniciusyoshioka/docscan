@@ -157,48 +157,48 @@ export const DarkTheme: ColorTheme = {
     appTheme: "auto",
     color: {
         header_background: "rgb(30, 30, 30)",
-        header_color: "rgb(200, 200, 200)",
+        header_color: "rgb(220, 220, 220)",
 
         subHeader_background: "rgb(30, 30, 30)",
         subHeader_color: "rgb(150, 150, 150)",
 
-        screen_background: "rgb(15, 15, 15)",
-        screen_colorFirst: "rgb(120, 120, 120)",
+        screen_background: "rgb(18, 18, 18)",
+        screen_colorFirst: "rgb(150, 150, 150)",
 
-        popupMenuButton_background: "rgb(40, 40, 40)",
-        popupMenuButton_color: "rgb(180, 180, 180)",
+        popupMenuButton_background: "rgb(45, 45, 45)",
+        popupMenuButton_color: "rgb(220, 220, 220)",
 
-        documentItem_background: "rgb(15, 15, 15)",
-        documentItem_colorFirst: "rgb(190, 190, 190)",
-        documentItem_colorSecond: "rgb(140, 140, 140)",
+        documentItem_background: "rgb(30, 30, 30)",
+        documentItem_colorFirst: "rgb(220, 220, 220)",
+        documentItem_colorSecond: "rgb(150, 150, 150)",
 
         checkBox_unchecked_background: "transparent",
-        checkBox_unchecked_color: "rgb(190, 190, 190)",
+        checkBox_unchecked_color: "rgb(220, 220, 220)",
 
         checkBox_checked_background: "transparent",
-        checkBox_checked_color: "rgb(190, 190, 190)",
+        checkBox_checked_color: "rgb(220, 220, 220)",
 
         settingsButton_background: "transparent",
-        settingsButton_colorFirst: "rgb(190, 190, 190)",
-        settingsButton_colorSecond: "rgb(140, 140, 140)",
+        settingsButton_colorFirst: "rgb(220, 220, 220)",
+        settingsButton_colorSecond: "rgb(150, 150, 150)",
 
         fileExplorerItem_background: "transparent",
-        fileExplorerItem_colorFirst: "rgb(190, 190, 190)",
-        fileExplorerItem_colorSecond: "rgb(140, 140, 140)",
+        fileExplorerItem_colorFirst: "rgb(220, 220, 220)",
+        fileExplorerItem_colorSecond: "rgb(150, 150, 150)",
 
         pictureItem_background: "rgb(30, 30, 30)",
-        pictureItem_color: "rgb(200, 200, 200)",
+        pictureItem_color: "rgb(220, 220, 220)",
 
-        modal_background: "rgb(40, 40, 40)",
-        modal_color: "rgb(190, 190, 190)",
+        modal_background: "rgb(30, 30, 30)",
+        modal_color: "rgb(220, 220, 220)",
 
         modalButton_background: "transparent",
-        modalButton_color: "rgb(190, 190, 190)",
+        modalButton_color: "rgb(220, 220, 220)",
 
         input_background: "rgb(0, 0, 0)",
-        input_color: "rgb(200, 200, 200)",
-        input_placeholder: "rgb(140, 140, 140)",
-        input_border: "rgb(190, 190, 190)",
+        input_color: "rgb(220, 220, 220)",
+        input_placeholder: "rgb(150, 150, 150)",
+        input_border: "rgb(220, 220, 220)",
 
         // input_inactive_background: "rgb(0, 0, 0)",
         // input_inactive_color: "rgb(0, 0, 0)",
@@ -210,8 +210,8 @@ export const DarkTheme: ColorTheme = {
         // input_active_placeholder: "rgb(0, 0, 0)",
         // input_active_border: "rgb(0, 0, 0)",
 
-        radioButton_background: "rgb(190, 190, 190)",
-        radioButton_color: "rgb(190, 190, 190)",
+        radioButton_background: "rgb(220, 220, 220)",
+        radioButton_color: "rgb(220, 220, 220)",
 
         // radioButton_unchecked_background: "rgb(0, 0, 0)",
         // radioButton_unchecked_color: "rgb(0, 0, 0)",
