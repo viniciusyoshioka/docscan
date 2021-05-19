@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { Image, useWindowDimensions } from "react-native"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
-import CheckBox from "@react-native-community/checkbox"
+import Icon from "react-native-vector-icons/Ionicons"
 
 import { useTheme } from "../../service/theme"
-import { Button, CheckboxBackground, ViewCheckBox } from "./style"
+import { Button, SelectionSurface } from "./style"
 
 
 export interface ImageItemProps {
@@ -56,32 +56,27 @@ export function ImageItem(props: ImageItemProps) {
 
 
     return (
-        <LongPressGestureHandler 
-            maxDist={30} 
-            minDurationMs={350} 
+        <LongPressGestureHandler
+            maxDist={30}
+            minDurationMs={400}
             onHandlerStateChange={({ nativeEvent }) => longPress(nativeEvent)}
         >
             <Button onPress={normalPress}>
                 <Image
-                    source={{uri: `file://${props.imagePath}`}}
+                    source={{ uri: `file://${props.imagePath}` }}
                     style={{
                         width: imageSize, height: imageSize,
                     }}
                 />
 
-                {props.selectionMode && (
-                    <ViewCheckBox>
-                        <CheckboxBackground />
-
-                        <CheckBox
-                            value={selected}
-                            onValueChange={normalPress}
-                            tintColors={{
-                                true: color.checkBox_checked_color,
-                                false: color.checkBox_unchecked_color
-                            }}
+                {props.selectionMode && selected && (
+                    <SelectionSurface>
+                        <Icon
+                            name={"md-checkmark"}
+                            size={30}
+                            color={color.imageItem_color}
                         />
-                    </ViewCheckBox>
+                    </SelectionSurface>
                 )}
             </Button>
         </LongPressGestureHandler>

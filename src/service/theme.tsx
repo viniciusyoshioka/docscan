@@ -36,6 +36,9 @@ export type ColorTheme = {
         checkBox_checked_background: string,
         checkBox_checked_color: string,
 
+        imageItem_background: string,
+        imageItem_color: string,
+
         settingsButton_background: string,
         settingsButton_colorFirst: string,
         settingsButton_colorSecond: string,
@@ -109,6 +112,9 @@ export const LightTheme: ColorTheme = {
         checkBox_checked_background: "rgb(0, 0, 0)",
         checkBox_checked_color: "rgb(0, 0, 0)",
 
+        imageItem_background: "rgb(255, 255, 255)",
+        imageItem_color: "rgb(0, 0, 0)",
+
         settingsButton_background: "transparent",
         settingsButton_colorFirst: "rgb(0, 0, 0)",
         settingsButton_colorSecond: "rgb(30, 30, 30)",
@@ -177,6 +183,9 @@ export const DarkTheme: ColorTheme = {
 
         checkBox_checked_background: "transparent",
         checkBox_checked_color: "rgb(220, 220, 220)",
+
+        imageItem_background: "rgb(30, 30, 30)",
+        imageItem_color: "rgb(220, 220, 220)",
 
         settingsButton_background: "transparent",
         settingsButton_colorFirst: "rgb(220, 220, 220)",
