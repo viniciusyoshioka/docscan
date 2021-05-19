@@ -48,18 +48,18 @@ export function HomeMenu(props: HomeMenuProps) {
 
     return (
         <Menu ref={menuRef} onClose={removeBackhandler} onOpen={setBackhandler}>
-            <MenuTrigger customStyles={{TriggerTouchableComponent: RectButton}}>
-                <HeaderButton 
+            <MenuTrigger customStyles={{ TriggerTouchableComponent: RectButton }}>
+                <HeaderButton
                     iconName={"md-ellipsis-vertical"}
-                    iconSize={22} 
+                    iconSize={22}
                     onPress={() => menuRef.current?.open()}
                 />
             </MenuTrigger>
 
             <MenuOptions>
                 {!props.selectionMode && (
-                    <PopupMenuButton 
-                        text={"Importar Documento"} 
+                    <PopupMenuButton
+                        text={"Importar Documento"}
                         onPress={() => {
                             menuRef.current?.close()
                             props.importDocument()
@@ -86,8 +86,8 @@ export function HomeMenu(props: HomeMenuProps) {
                         />
 
                         {appInDevelopment && (
-                            <PopupMenuButton 
-                                text={"Debug Home"} 
+                            <PopupMenuButton
+                                text={"Debug Home"}
                                 onPress={() => {
                                     menuRef.current?.close()
                                     props.switchDebugHome()

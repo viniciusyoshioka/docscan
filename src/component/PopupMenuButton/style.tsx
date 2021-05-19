@@ -8,9 +8,8 @@ export const PopupMenuButtonBase = styled(RectButton)`
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    padding-left: 10px;
-    padding-vertical: 5px;
-    height: 45px;
+    padding-horizontal: 16px;
+    height: 48px;
     background-color: ${(props: styledProps) => props.theme.color.popupMenuButton_background};
 `
 
