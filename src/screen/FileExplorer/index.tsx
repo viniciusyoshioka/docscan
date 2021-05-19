@@ -8,7 +8,7 @@ import { FileExplorerHeader } from "./Header"
 import { fullPathExported } from "../../service/constant"
 import { FileExplorerItem } from "../../component/FileExplorerItem"
 import { useBackHandler } from "../../service/hook"
-import { SubHeaderView, SubHeaderText } from "../../component/SubHeaderPath"
+import { SubHeader, SubHeaderText } from "../../component/SubHeaderPath"
 import { importDocument } from "../../service/document-handler"
 import { log } from "../../service/log"
 
@@ -88,7 +88,7 @@ export function FileExplorer() {
         let previewsPath = ""
         for (let x = 0; x < splitedPath.length - 1; x++) {
             if (x === 0) {
-                previewsPath += `${splitedPath[x]}`    
+                previewsPath += `${splitedPath[x]}`
             } else {
                 previewsPath += `/${splitedPath[x]}`
             }
@@ -106,7 +106,7 @@ export function FileExplorer() {
             importDocument(newPath)
                 .then((isDocumentImported: boolean) => {
                     if (isDocumentImported) {
-                        navigation.reset({routes: [{name: "Home"}]})
+                        navigation.reset({ routes: [{ name: "Home" }] })
                         return
                     }
                 })
@@ -121,8 +121,8 @@ export function FileExplorer() {
             "Importar documento",
             "Deseja importar este documento?",
             [
-                {text: "Cancelar", onPress: () => {}},
-                {text: "Importar", onPress: () => importDocumentFunction(newPath)}
+                { text: "Cancelar", onPress: () => { } },
+                { text: "Importar", onPress: () => importDocumentFunction(newPath) }
             ]
         )
     }, [])
@@ -156,7 +156,7 @@ export function FileExplorer() {
             RNFS.readDir(path)
                 .then((dirContent: Array<ReadDirItem>) => {
                     if (path === "/") {
-                        setPathContent(dirContent)    
+                        setPathContent(dirContent)
                     } else {
                         setPathContent([returnDirectoryItem, ...dirContent])
                     }
@@ -180,11 +180,11 @@ export function FileExplorer() {
             />
 
             {path && (
-                <SubHeaderView>
+                <SubHeader>
                     <SubHeaderText>
                         {path}
                     </SubHeaderText>
-                </SubHeaderView>
+                </SubHeader>
             )}
 
             <FlatList
