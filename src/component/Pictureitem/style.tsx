@@ -9,29 +9,37 @@ export const PictureButton = styled(RectButton)`
     flex: 1;
     align-items: center;
     justify-content: center;
-    margin: 5px;
+    margin-bottom: 4px;
+    margin-right: 4px;
     border-radius: 1px;
-    background-color: ${(props: styledProps) => props.theme.color.pictureItem_background};
+    background: ${(props: styledProps) => props.theme.color.pictureItem_background};
+    elevation: 2;
 `
 
 
 export const PictureImage = styled.Image`
     display: flex;
     flex: 1;
-    margin: 2px;
-    resize-mode: contain;
+    border-radius: 1px;
+    resize-mode: cover;
 `
 
 
 export const FileNameView = styled.View`
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
     display: flex;
     align-items: flex-start;
     justify-content: center;
     width: 100%;
-    height: 30px;
-    padding: 0px 5px;
+    height: 32px;
+    padding-horizontal: 6px;
     border-bottom-left-radius: 1px;
     border-bottom-right-radius: 1px;
+    background-color: ${(props: styledProps) => props.theme.color.pictureItem_background};
+    opacity: 0.8;
 `
 
 
@@ -42,23 +50,16 @@ export const FileNameText = styled.Text`
 `
 
 
-export const CheckBoxView = styled.View`
+export const SelectedSurface = styled.View`
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-`
-
-
-export const CheckboxBackground = styled.View`
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 30px;
-    height: 30px;
     opacity: 0.7;
-    border-bottom-right-radius: 1px;
+    border-radius: 1px;
     background-color: ${(props: styledProps) => props.theme.color.pictureItem_background};
 `

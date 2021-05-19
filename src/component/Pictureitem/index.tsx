@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { useWindowDimensions } from "react-native"
-import CheckBox from "@react-native-community/checkbox"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
+import Icon from "react-native-vector-icons/Ionicons"
 
-import { CheckboxBackground, CheckBoxView, FileNameText, FileNameView, PictureButton, PictureImage } from "./style"
+import { SelectedSurface, FileNameText, FileNameView, PictureButton, PictureImage } from "./style"
 import { useTheme } from "../../service/theme"
 
 
@@ -60,20 +60,20 @@ export function PictureItem(props: PictureItemProps) {
 
     return (
         <LongPressGestureHandler
-            maxDist={30} 
-            minDurationMs={350} 
+            maxDist={30}
+            minDurationMs={400}
             onHandlerStateChange={({ nativeEvent }) => longPress(nativeEvent)}
         >
             <PictureButton
                 style={{
-                    aspectRatio: 2/3,
-                    maxWidth: (useWindowDimensions().width / 2) - 10
+                    aspectRatio: 2 / 3,
+                    maxWidth: (useWindowDimensions().width / 2)
                 }}
                 onPress={normalPress}
             >
-                <PictureImage 
-                    source={{uri: `file://${props.picturePath}`}} 
-                    style={{aspectRatio: 2/3}}
+                <PictureImage
+                    source={{ uri: `file://${props.picturePath}` }}
+                    style={{ aspectRatio: 2 / 3 }}
                 />
 
                 <FileNameView>
@@ -82,19 +82,14 @@ export function PictureItem(props: PictureItemProps) {
                     </FileNameText>
                 </FileNameView>
 
-                {props.selectionMode && (
-                    <CheckBoxView>
-                        <CheckboxBackground />
-
-                        <CheckBox 
-                            value={selected}
-                            onChange={normalPress}
-                            tintColors={{
-                                true: color.checkBox_checked_color,
-                                false: color.checkBox_unchecked_color
-                            }}
+                {props.selectionMode && selected && (
+                    <SelectedSurface>
+                        <Icon
+                            name={"md-checkmark"}
+                            size={30}
+                            color={color.pictureItem_color}
                         />
-                    </CheckBoxView>
+                    </SelectedSurface>
                 )}
             </PictureButton>
         </LongPressGestureHandler>

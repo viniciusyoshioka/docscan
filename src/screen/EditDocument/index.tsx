@@ -312,6 +312,10 @@ export function EditDocument() {
                 keyExtractor={(_item, index) => index.toString()}
                 extraData={[selectPicture, deselectPicture]}
                 numColumns={2}
+                style={{
+                    marginLeft: 4,
+                    marginTop: 4,
+                }}
             />
         </SafeScreen>
     )
