@@ -31,9 +31,9 @@ export function Settings() {
 
     return (
         <SafeScreen>
-            <ChangeTheme 
-                visible={changeThemeVisible} 
-                setVisible={setChangeThemeVisible} 
+            <ChangeTheme
+                visible={changeThemeVisible}
+                setVisible={setChangeThemeVisible}
             />
 
             <SettingsHeader
@@ -41,6 +41,7 @@ export function Settings() {
             />
 
             <SettingsButton
+                iconName={"md-contrast"}
                 title={"Tema"}
                 description={"Mudar tema de cores do aplicativo"}
                 onPress={() => setChangeThemeVisible(true)}
