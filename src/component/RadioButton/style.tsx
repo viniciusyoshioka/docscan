@@ -8,6 +8,7 @@ export const Button = styled.TouchableOpacity`
     flex-direction: row;
     align-items: center;
     width: 100%;
+    margin: 4px;
 `
 
 
@@ -15,10 +16,10 @@ export const Radio = styled.View`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 5px 10px 5px 5px;
-    border-width: 2px;
     width: 24px;
     height: 24px;
+    margin-right: 16px;
+    border-width: 2px;
     border-radius: 24px;
     border-color: ${(props: styledProps) => props.theme.color.radioButton_color};
 `
