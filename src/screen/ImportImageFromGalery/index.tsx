@@ -95,7 +95,7 @@ export function ImportImageFromGalery() {
         }
     }, [selectedImage, selectionMode])
 
-    const renderImageItem = useCallback(({ item }: {item: PhotoIdentifier}) => {
+    const renderImageItem = useCallback(({ item }: { item: PhotoIdentifier }) => {
         return (
             <ImageItem
                 click={() => importSingleImage(item.node.image.uri)}
@@ -139,7 +139,7 @@ export function ImportImageFromGalery() {
         } catch (error) {
             log("ERROR", `ImportImageFromGalery importSingleImage - Erro ao importar uma imagem da galeria. Mensagem: "${error}"`)
             Alert.alert(
-                "Erro", 
+                "Erro",
                 "Não foi possível importar imagem da galeria"
             )
             navigation.navigate("Camera", {
@@ -171,7 +171,7 @@ export function ImportImageFromGalery() {
     const importMultipleImage = useCallback(() => {
         const imagesToImport: Array<string> = [...params.pictureList]
 
-        selectedImage.forEach(async (item: string) =>{ 
+        selectedImage.forEach(async (item: string) => {
             const newImagePath = await getNewImagePath(item)
             try {
                 await RNFS.copyFile(item, newImagePath)
@@ -236,7 +236,7 @@ export function ImportImageFromGalery() {
 
             {imageGalery === null && (
                 <EmptyListView>
-                    <ActivityIndicator color={color.screen_colorFirst} size={"large"} />
+                    <ActivityIndicator color={color.screen_color} size={"large"} />
                 </EmptyListView>
             )}
 

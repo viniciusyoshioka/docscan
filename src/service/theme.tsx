@@ -3,11 +3,10 @@ import { createContext, useContext } from "react"
 
 export type themeType = "auto" | "light" | "dark"
 
-
 export const themeDefault: themeType = "auto"
 
 
-export type MaterialColorTheme = {
+export interface MaterialColorTheme {
     primary: string,
     primaryVariant: string,
     onPrimary: string,
@@ -26,8 +25,13 @@ export type MaterialColorTheme = {
     onError: string,
 }
 
+export interface MaterialOpacityTheme {
+    highEmphasis: number,
+    mediumEmphasis: number,
+    disabled: number,
+}
 
-export const MaterialLightTheme: MaterialColorTheme = {
+export const MaterialLightTheme: MaterialColorTheme & MaterialOpacityTheme = {
     primary: "rgb(0, 128, 128)",
     primaryVariant: "transparent",
     onPrimary: "rgb(255, 255, 255)",
@@ -44,9 +48,13 @@ export const MaterialLightTheme: MaterialColorTheme = {
 
     error: "rgb(176, 0, 32)",
     onError: "rgb(255, 255, 255)",
+
+    highEmphasis: 0.87,
+    mediumEmphasis: 0.6,
+    disabled: 0.38,
 }
 
-export const MaterialDarkTheme: MaterialColorTheme = {
+export const MaterialDarkTheme: MaterialColorTheme & MaterialOpacityTheme = {
     primary: "rgb(0, 128, 128)",
     primaryVariant: "transparent",
     onPrimary: "rgb(0, 0, 0)",
@@ -63,10 +71,14 @@ export const MaterialDarkTheme: MaterialColorTheme = {
 
     error: "rgb(207, 102, 121)",
     onError: "rgb(0, 0, 0)",
+
+    highEmphasis: 0.87,
+    mediumEmphasis: 0.6,
+    disabled: 0.38,
 }
 
 
-export type ColorTheme = {
+export interface ColorTheme {
     name: themeType,
     appTheme: themeType,
     color: {
@@ -77,7 +89,7 @@ export type ColorTheme = {
         subHeader_color: string,
 
         screen_background: string,
-        screen_colorFirst: string,
+        screen_color: string,
 
         popupMenuButton_background: string,
         popupMenuButton_color: string,
@@ -85,9 +97,6 @@ export type ColorTheme = {
         documentItem_background: string,
         documentItem_colorFirst: string,
         documentItem_colorSecond: string,
-
-        // checkBox_background: string,
-        // checkBox_color: string,
 
         checkBox_unchecked_background: string,
         checkBox_unchecked_color: string,
@@ -138,9 +147,12 @@ export type ColorTheme = {
 
         // radioButton_checked_background: string,
         // radioButton_checked_color: string,
+
+        highEmphasis: number,
+        mediumEmphasis: number,
+        disabled: number,
     }
 }
-
 
 export const LightTheme: ColorTheme = {
     name: "light",
@@ -153,7 +165,7 @@ export const LightTheme: ColorTheme = {
         subHeader_color: "rgb(0, 0, 0)",
 
         screen_background: "rgb(255, 255, 255)",
-        screen_colorFirst: "rgb(64, 64, 64)",
+        screen_color: "rgb(64, 64, 64)",
 
         popupMenuButton_background: "rgb(255, 255, 255)",
         popupMenuButton_color: "rgb(0, 0, 0)",
@@ -161,9 +173,6 @@ export const LightTheme: ColorTheme = {
         documentItem_background: "rgb(255, 255, 255)",
         documentItem_colorFirst: "rgb(0, 0, 0)",
         documentItem_colorSecond: "rgb(30, 30, 30)",
-
-        // checkBox_background: "rgb(0, 0, 0)",
-        // checkBox_color: "rgb(0, 0, 0)",
 
         checkBox_unchecked_background: "rgb(0, 0, 0)",
         checkBox_unchecked_color: "rgb(0, 0, 0)",
@@ -214,6 +223,10 @@ export const LightTheme: ColorTheme = {
 
         // radioButton_checked_background: "rgb(0, 0, 0)",
         // radioButton_checked_color: "rgb(0, 0, 0)",
+
+        highEmphasis: 0.87,
+        mediumEmphasis: 0.6,
+        disabled: 0.38,
     }
 }
 
@@ -228,7 +241,7 @@ export const DarkTheme: ColorTheme = {
         subHeader_color: "rgb(150, 150, 150)",
 
         screen_background: "rgb(15, 15, 15)",
-        screen_colorFirst: "rgb(150, 150, 150)",
+        screen_color: "rgb(150, 150, 150)",
 
         popupMenuButton_background: "rgb(45, 45, 45)",
         popupMenuButton_color: "rgb(220, 220, 220)",
@@ -286,6 +299,10 @@ export const DarkTheme: ColorTheme = {
 
         // radioButton_checked_background: "rgb(0, 0, 0)",
         // radioButton_checked_color: "rgb(0, 0, 0)",
+
+        highEmphasis: 0.87,
+        mediumEmphasis: 0.6,
+        disabled: 0.38,
     }
 }
 

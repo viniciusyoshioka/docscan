@@ -13,5 +13,5 @@ export const ViewVersion = styled.View`
 
 export const TextVersion = styled.Text`
     font-size: 15px;
-    color: ${(props: styledProps) => props.theme.color.screen_colorFirst};
+    color: ${(props: styledProps) => props.theme.color.screen_color};
 `
