@@ -4,11 +4,10 @@ import { styledProps } from "../../service/theme"
 
 
 export const ViewVersion = styled.View`
-    display: flex;
     flex: 1;
     align-items: center;
     justify-content: flex-end;
-    margin: 5px;
+    margin: 6px;
 `
 
 

@@ -100,11 +100,11 @@ export function VisualizePicture() {
 
             {!isCropping && (
                 <Image
-                    source={{uri: `file://${params.picturePath}`}}
+                    source={{ uri: `file://${params.picturePath}` }}
                     style={{
                         flex: 1,
                         resizeMode: "contain",
-                        margin: 15,
+                        margin: 16,
                     }}
                 />
             )}
@@ -114,7 +114,7 @@ export function VisualizePicture() {
                     ref={cropViewRef}
                     style={{
                         flex: 1,
-                        margin: 15,
+                        margin: 16,
                     }}
                     sourceUrl={`file://${params.picturePath}`}
                     onImageSaved={onImageSaved}
