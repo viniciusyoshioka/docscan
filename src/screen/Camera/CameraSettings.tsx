@@ -88,7 +88,7 @@ export function CameraSettings(props: CameraSettingsProps) {
     return (
         <Modal
             {...props}
-            modalStyle={{ marginHorizontal: 5, justifyContent: "flex-end", bottom: 60 }}
+            modalStyle={{ marginHorizontal: 6, justifyContent: "flex-end", bottom: 62 }}
             backgroundStyle={{ paddingTop: 4, paddingLeft: 4 }}
         >
             <ScrollView horizontal={true}>
