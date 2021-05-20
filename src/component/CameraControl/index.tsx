@@ -6,11 +6,11 @@ import { IndexControl, IndexControlBase, IndexControlProps } from "./IndexContro
 
 
 export const CameraControlView = styled.View`
-    display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
-    padding: 5px;
+    width: 100%;
+    height: 56px;
 `
 
 

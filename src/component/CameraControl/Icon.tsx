@@ -6,7 +6,7 @@ export interface CameraControlIconProps {
 }
 
 
-export const cameraControlIconSize = 25
+export const cameraControlIconSize = 24
 
 
 export const cameraControlIconColor = "rgb(255, 255, 255)"

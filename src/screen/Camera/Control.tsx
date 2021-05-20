@@ -15,16 +15,16 @@ export interface CameraControlProps {
 
 export function CameraControl(props: CameraControlProps) {
     return (
-        <CameraControlView style={{position: "absolute", bottom: 0, left: 0, right: 0}}>
+        <CameraControlView style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
             <CameraControlButton
                 iconName={"md-image-outline"}
                 onPress={props.addPictureFromGalery}
             />
 
 
-            <CameraControlButtonBase 
-                onPress={props.takePicture} 
-                style={{backgroundColor: "rgb(255, 255, 255)"}}
+            <CameraControlButtonBase
+                onPress={props.takePicture}
+                style={{ backgroundColor: "rgb(255, 255, 255)", borderRadius: 56 }}
             />
 
 
