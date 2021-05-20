@@ -4,30 +4,28 @@ import { ModalButton, ModalButtonBase, ModalButtonProps, ModalButtonTextBase } f
 import { styledProps } from "../../service/theme"
 
 
-export const ModalView = styled.View`
-    display: flex;
-    padding: 5px 7px 5px 7px;
-`
+export const ModalView = styled.View``
 
 
 export const ModalTitle = styled.Text`
-    font-size: 17px;
+    margin-horizontal: 16px;
+    margin-vertical: 12px;
+    font-size: 18px;
     color: ${(props: styledProps) => props.theme.color.modal_color};
 `
 
 
 export const ModalViewContent = styled.View`
-    display: flex;
     align-items: center;
-    margin: 5px 0px 5px 0px;
+    margin-horizontal: 16px;
 `
 
 
 export const ModalViewButton = styled.View`
-    display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
+    margin: 8px;
 `
 
 

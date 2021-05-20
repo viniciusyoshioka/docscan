@@ -6,14 +6,11 @@ import { styledProps } from "../../service/theme"
 
 
 export const ModalButtonBase = styled.TouchableOpacity`
-    display: flex;
     align-items: center;
     justify-content: center;
+    min-width: 64px;
+    min-height: 32px;
     border-radius: 1px;
-    min-width: 50px;
-    max-height: 30px;
-    margin: 0px 3px;
-    padding: 3px 5px;
     background-color: ${(props: styledProps) => props.theme.color.modalButton_background};
 `
 
