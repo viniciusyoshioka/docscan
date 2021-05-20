@@ -53,11 +53,11 @@ export function Home() {
 
     const debugWriteDocument = useCallback(async () => {
         const tempDocumentList: Array<Document> = [
-            {id: 0, name: "Titulo 1", lastModificationDate: "09:19 08/03/2021", pictureList: []},
-            {id: 1, name: "Titulo 2", lastModificationDate: "09:19 08/03/2021", pictureList: []},
-            {id: 2, name: "Titulo 3", lastModificationDate: "09:19 08/03/2021", pictureList: []},
-            {id: 3, name: "Titulo 4", lastModificationDate: "09:19 08/03/2021", pictureList: []},
-            {id: 4, name: "Titulo 5", lastModificationDate: "09:19 08/03/2021", pictureList: []},
+            { id: 0, name: "Titulo 1", lastModificationDate: "09:19 08/03/2021", pictureList: [] },
+            { id: 1, name: "Titulo 2", lastModificationDate: "09:19 08/03/2021", pictureList: [] },
+            { id: 2, name: "Titulo 3", lastModificationDate: "09:19 08/03/2021", pictureList: [] },
+            { id: 3, name: "Titulo 4", lastModificationDate: "09:19 08/03/2021", pictureList: [] },
+            { id: 4, name: "Titulo 5", lastModificationDate: "09:19 08/03/2021", pictureList: [] },
         ]
         const tempDocumentId: Array<number> = [0, 1, 2, 3, 4]
 
@@ -72,7 +72,7 @@ export function Home() {
     const debugClearDocument = useCallback(async () => {
         await writeDocument([])
         await writeDocumentId([])
-        
+
         setDocument([])
 
         console.log("document, documentId - CLEAR")
@@ -163,12 +163,12 @@ export function Home() {
             "Esta ação não poderá ser desfeita. Deseja apagar?",
             [
                 {
-                    text: "Apagar", 
+                    text: "Apagar",
                     onPress: async () => await alertDelete()
                 },
                 {
                     text: "Cancelar",
-                    onPress: () => {}
+                    onPress: () => { }
                 }
             ]
         )
@@ -184,8 +184,8 @@ export function Home() {
             "Alerta",
             `Os documentos ${selectionMode ? "selecionados " : ""}serão exportados`,
             [
-                {text: "Cancelar", onPress: () => {}},
-                {text: "Exportar", onPress: () => alertExport()}
+                { text: "Cancelar", onPress: () => { } },
+                { text: "Exportar", onPress: () => alertExport() }
             ]
         )
     }, [selectedDocument, selectionMode])
@@ -209,10 +209,10 @@ export function Home() {
         }
     }, [selectedDocument, selectionMode])
 
-    const renderDocumentItem = useCallback(({ item }: {item: Document}) => {
+    const renderDocumentItem = useCallback(({ item }: { item: Document }) => {
         return (
             <DocumentItem
-                click={() => navigation.navigate("EditDocument", {document: item})}
+                click={() => navigation.navigate("EditDocument", { document: item })}
                 select={() => selectDocument(item.id)}
                 deselect={() => deselectDocument(item.id)}
                 selectionMode={selectionMode}
@@ -252,6 +252,10 @@ export function Home() {
                 renderItem={renderDocumentItem}
                 keyExtractor={(item) => item.id.toString()}
                 extraData={[selectDocument, deselectDocument]}
+                style={{
+                    marginLeft: 6,
+                    marginTop: 6,
+                }}
             />
 
             {document.length === 0 && (
@@ -269,37 +273,37 @@ export function Home() {
                     <DebugButton
                         text={"Ler"}
                         onPress={debugReadDocument}
-                        style={{bottom: 115}} />
+                        style={{ bottom: 115 }} />
                     <DebugButton
                         text={"Escre"}
                         onPress={debugWriteDocument}
-                        style={{bottom: 60}} />
+                        style={{ bottom: 60 }} />
                     <DebugButton
                         text={"Limpar"}
                         onPress={debugClearDocument}
-                        style={{bottom: 5}} />
+                        style={{ bottom: 5 }} />
 
                     <DebugButton
                         text={"Auto"}
                         onPress={async () => await switchTheme("auto")}
-                        style={{bottom: 115, left: 60}} />
+                        style={{ bottom: 115, left: 60 }} />
                     <DebugButton
                         text={"Claro"}
                         onPress={async () => await switchTheme("light")}
-                        style={{bottom: 60, left: 60}} />
+                        style={{ bottom: 60, left: 60 }} />
                     <DebugButton
                         text={"Escuro"}
                         onPress={async () => await switchTheme("dark")}
-                        style={{bottom: 5, left: 60}} />
+                        style={{ bottom: 5, left: 60 }} />
 
                     <DebugButton
                         text={"Ler"}
                         onPress={debugReadLog}
-                        style={{bottom: 60, left: 115}} />
+                        style={{ bottom: 60, left: 115 }} />
                     <DebugButton
                         text={"Compar"}
                         onPress={debugShareLog}
-                        style={{bottom: 5, left: 115}} />
+                        style={{ bottom: 5, left: 115 }} />
                 </View>
             )}
         </SafeScreen>

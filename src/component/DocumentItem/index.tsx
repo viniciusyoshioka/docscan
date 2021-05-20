@@ -54,26 +54,13 @@ export function DocumentItem(props: DocumentItemProps) {
 
 
     return (
-        <LongPressGestureHandler 
-            maxDist={30} 
-            minDurationMs={350} 
+        <LongPressGestureHandler
+            maxDist={30}
+            minDurationMs={400}
             onHandlerStateChange={({ nativeEvent }) => longPress(nativeEvent)}
         >
             <Button onPress={normalPress}>
-                {props.selectionMode && (
-                    <Block style={{marginRight: 5}}>
-                        <CheckBox 
-                            value={selected}
-                            onChange={normalPress}
-                            tintColors={{
-                                true: color.checkBox_checked_color,
-                                false: color.checkBox_unchecked_color
-                            }}
-                        />
-                    </Block>
-                )}
-
-                <Block style={{alignItems: "flex-start", flex: 1}}>
+                <Block style={{ flex: 1 }}>
                     <Line>
                         <Title numberOfLines={1}>
                             {props.document.name}
@@ -86,6 +73,19 @@ export function DocumentItem(props: DocumentItemProps) {
                         </Date>
                     </Line>
                 </Block>
+
+                {props.selectionMode && (
+                    <Block style={{ paddingLeft: 10 }}>
+                        <CheckBox
+                            value={selected}
+                            onChange={normalPress}
+                            tintColors={{
+                                true: color.checkBox_checked_color,
+                                false: color.checkBox_unchecked_color
+                            }}
+                        />
+                    </Block>
+                )}
             </Button>
         </LongPressGestureHandler>
     )
