@@ -7,6 +7,65 @@ export type themeType = "auto" | "light" | "dark"
 export const themeDefault: themeType = "auto"
 
 
+export type MaterialColorTheme = {
+    primary: string,
+    primaryVariant: string,
+    onPrimary: string,
+
+    secondary: string,
+    secondaryVariant: string,
+    onSecondary: string,
+
+    background: string,
+    onBackground: string,
+
+    surface: string,
+    onSurface: string,
+
+    error: string,
+    onError: string,
+}
+
+
+export const MaterialLightTheme: MaterialColorTheme = {
+    primary: "rgb(0, 128, 128)",
+    primaryVariant: "transparent",
+    onPrimary: "rgb(255, 255, 255)",
+
+    secondary: "transparent",
+    secondaryVariant: "transparent",
+    onSecondary: "rgb(0, 0, 0)",
+
+    background: "rgb(255, 255, 255)",
+    onBackground: "rgb(0, 0, 0)",
+
+    surface: "rgb(255, 255, 255)",
+    onSurface: "rgb(0, 0, 0)",
+
+    error: "rgb(176, 0, 32)",
+    onError: "rgb(255, 255, 255)",
+}
+
+export const MaterialDarkTheme: MaterialColorTheme = {
+    primary: "rgb(0, 128, 128)",
+    primaryVariant: "transparent",
+    onPrimary: "rgb(0, 0, 0)",
+
+    secondary: "transparent",
+    secondaryVariant: "transparent",
+    onSecondary: "rgb(0, 0, 0)",
+
+    background: "rgb(18, 18, 18)",
+    onBackground: "rgb(255, 255, 255)",
+
+    surface: "rgb(18, 18, 18)",
+    onSurface: "rgb(255, 255, 255)",
+
+    error: "rgb(207, 102, 121)",
+    onError: "rgb(0, 0, 0)",
+}
+
+
 export type ColorTheme = {
     name: themeType,
     appTheme: themeType,
@@ -132,7 +191,7 @@ export const LightTheme: ColorTheme = {
         modalButton_background: "transparent",
         modalButton_color: "rgb(0, 0, 0)",
 
-        input_background: "rgb(255, 255, 255)",
+        input_background: "transparent",
         input_color: "rgb(0, 0, 0)",
         input_placeholder: "rgb(100, 100, 100)",
         input_border: "rgb(0, 0, 0)",
@@ -168,7 +227,7 @@ export const DarkTheme: ColorTheme = {
         subHeader_background: "rgb(30, 30, 30)",
         subHeader_color: "rgb(150, 150, 150)",
 
-        screen_background: "rgb(18, 18, 18)",
+        screen_background: "rgb(15, 15, 15)",
         screen_colorFirst: "rgb(150, 150, 150)",
 
         popupMenuButton_background: "rgb(45, 45, 45)",
@@ -204,7 +263,7 @@ export const DarkTheme: ColorTheme = {
         modalButton_background: "transparent",
         modalButton_color: "rgb(220, 220, 220)",
 
-        input_background: "rgb(0, 0, 0)",
+        input_background: "transparent",
         input_color: "rgb(220, 220, 220)",
         input_placeholder: "rgb(150, 150, 150)",
         input_border: "rgb(220, 220, 220)",
