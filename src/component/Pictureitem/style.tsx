@@ -8,8 +8,8 @@ export const PictureButton = styled(RectButton)`
     flex: 1;
     align-items: center;
     justify-content: center;
-    margin-bottom: 4px;
-    margin-right: 4px;
+    margin-bottom: 6px;
+    margin-right: 6px;
     border-radius: 1px;
     background-color: ${(props: styledProps) => props.theme.color.pictureItem_background};
     elevation: 2;

@@ -313,8 +313,8 @@ export function EditDocument() {
                 extraData={[selectPicture, deselectPicture]}
                 numColumns={2}
                 style={{
-                    marginLeft: 4,
-                    marginTop: 4,
+                    marginLeft: 6,
+                    marginTop: 6,
                 }}
             />
         </SafeScreen>
