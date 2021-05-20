@@ -9,8 +9,7 @@ export const EmptyListView = styled.View`
     bottom: 0px;
     left: 0px;
     right: 0px;
-    display: flex;
-    flex: 1;    
+    flex: 1;
     align-items: center;
     justify-content: center;
 `
