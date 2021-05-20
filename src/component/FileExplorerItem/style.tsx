@@ -5,25 +5,23 @@ import { styledProps } from "../../service/theme"
 
 
 export const Button = styled(RectButton)`
-    display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    height: 55px;
+    height: 56px;
+    padding-horizontal: 16px;
     background-color: ${(props: styledProps) => props.theme.color.fileExplorerItem_background};
 `
 
 
 export const ViewIcon = styled.View`
-    display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0px 10px;
+    margin-right: 24px;
 `
 
 
 export const ViewPath = styled.View`
-    display: flex;
     flex: 1;
     align-items: flex-start;
     justify-content: center;
@@ -31,12 +29,14 @@ export const ViewPath = styled.View`
 
 
 export const ItemNameText = styled.Text`
+    width: 100%;
     font-size: 17px;
     color: ${(props: styledProps) => props.theme.color.fileExplorerItem_colorFirst};
 `
 
 
 export const FullPathText = styled.Text`
-    font-size: 12px;
+    width: 100%;
+    font-size: 13px;
     color: ${(props: styledProps) => props.theme.color.fileExplorerItem_colorSecond};
 `

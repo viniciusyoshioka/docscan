@@ -4,7 +4,6 @@ import { styledProps } from "../../service/theme"
 
 
 export const Button = styled.TouchableOpacity`
-    display: flex;
     flex-direction: row;
     align-items: center;
     width: 100%;
@@ -13,7 +12,6 @@ export const Button = styled.TouchableOpacity`
 
 
 export const Radio = styled.View`
-    display: flex;
     align-items: center;
     justify-content: center;
     width: 24px;

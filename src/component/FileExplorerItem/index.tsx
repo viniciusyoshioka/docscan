@@ -24,17 +24,17 @@ export function FileExplorerItem(props: FileExplorerItemProps) {
             <ViewIcon>
                 <Icon
                     name={props.isFile ? "md-document-sharp" : "md-folder-sharp"}
-                    size={25}
+                    size={24}
                     color={color.fileExplorerItem_colorFirst}
                 />
             </ViewIcon>
 
             <ViewPath>
-                <ItemNameText numberOfLines={1} ellipsizeMode={"tail"}>
+                <ItemNameText numberOfLines={1}>
                     {props.name}
                 </ItemNameText>
 
-                <FullPathText numberOfLines={1} ellipsizeMode={"tail"}>
+                <FullPathText numberOfLines={1}>
                     {props.path}
                 </FullPathText>
             </ViewPath>

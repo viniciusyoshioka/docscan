@@ -6,7 +6,6 @@ import { styledProps } from "../../service/theme"
 
 
 export const SubHeader = styled.View`
-    display: flex;
     align-items: flex-start;
     justify-content: center;
     width: 100%;
@@ -18,6 +17,7 @@ export const SubHeader = styled.View`
 
 
 export const SubHeaderTextBase = styled.Text`
+    width: 100%;
     font-size: 13px;
     color: ${(props: styledProps) => props.theme.color.subHeader_color};
 `

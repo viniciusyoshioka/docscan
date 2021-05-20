@@ -7,7 +7,6 @@ import { styledProps, useTheme } from "../../service/theme"
 
 
 const SettingsButtonBase = styled(RectButton)`
-    display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-direction: row;
@@ -20,7 +19,6 @@ const SettingsButtonBase = styled(RectButton)`
 
 
 const IconView = styled.View`
-    display: flex;
     align-items: center;
     justify-content: center;
     width: 32px;
@@ -31,7 +29,6 @@ const IconView = styled.View`
 
 
 const TextView = styled.View`
-    display: flex;
     flex: 1;
     align-items: flex-start;
     justify-content: center;
@@ -42,12 +39,14 @@ const TextView = styled.View`
 
 
 const ButtonTitle = styled.Text`
+    width: 100%;
     font-size: 16px;
     color: ${(props: styledProps) => props.theme.color.settingsButton_colorFirst};
 `
 
 
 const ButtonDescription = styled.Text`
+    width: 100%;
     font-size: 13px;
     color: ${(props: styledProps) => props.theme.color.settingsButton_colorSecond};
 `

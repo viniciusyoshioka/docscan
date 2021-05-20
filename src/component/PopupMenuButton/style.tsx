@@ -5,7 +5,6 @@ import { styledProps } from "../../service/theme"
 
 
 export const PopupMenuButtonBase = styled(RectButton)`
-    display: flex;
     align-items: flex-start;
     justify-content: center;
     padding-horizontal: 16px;
@@ -15,6 +14,7 @@ export const PopupMenuButtonBase = styled(RectButton)`
 
 
 export const PopupMenuButtonText = styled.Text`
+    width: 100%;
     font-size: 15px;
     color: ${(props: styledProps) => props.theme.color.popupMenuButton_color};
 `

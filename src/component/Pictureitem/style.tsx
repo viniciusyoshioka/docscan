@@ -5,20 +5,18 @@ import { styledProps } from "../../service/theme"
 
 
 export const PictureButton = styled(RectButton)`
-    display: flex;
     flex: 1;
     align-items: center;
     justify-content: center;
     margin-bottom: 4px;
     margin-right: 4px;
     border-radius: 1px;
-    background: ${(props: styledProps) => props.theme.color.pictureItem_background};
+    background-color: ${(props: styledProps) => props.theme.color.pictureItem_background};
     elevation: 2;
 `
 
 
 export const PictureImage = styled.Image`
-    display: flex;
     flex: 1;
     border-radius: 1px;
     resize-mode: cover;
@@ -30,7 +28,6 @@ export const FileNameView = styled.View`
     bottom: 0px;
     left: 0px;
     right: 0px;
-    display: flex;
     align-items: flex-start;
     justify-content: center;
     width: 100%;
@@ -56,7 +53,6 @@ export const SelectedSurface = styled.View`
     bottom: 0px;
     left: 0px;
     right: 0px;
-    display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0.7;

@@ -16,7 +16,6 @@ export const SelectionSurface = styled.View`
     bottom: 0px;
     left: 0px;
     right: 0px;
-    display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0.7;

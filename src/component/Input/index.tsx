@@ -6,12 +6,16 @@ import { styledProps, useTheme } from "../../service/theme"
 
 
 export const InputBase = styled.TextInput`
-    font-size: 15px;
-    padding: 0px 5px;
     width: 100%;
+    height: 48px;
+    padding-vertical: 0px;
+    padding-left: 16px;
+    padding-right: 12px;
+    font-size: 15px;
+    background-color: ${(props: styledProps) => props.theme.color.input_background};
     color: ${(props: styledProps) => props.theme.color.input_color};
-    border-bottom-width: 2px;
     border-color: ${(props: styledProps) => props.theme.color.input_border};
+    border-bottom-width: 2px;
 `
 
 
