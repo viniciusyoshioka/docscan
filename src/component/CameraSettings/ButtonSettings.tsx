@@ -7,17 +7,16 @@ import { cameraSettingsIconColor, CameraSettingsIconProps, cameraSettingsIconSiz
 
 
 export const ButtonSettingsBase = styled.TouchableOpacity`
-    display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0px 3px;
-    width: 50px;
-    height: 50px;
-    border-radius: 1px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 4px;
+    margin-right: 4px;
 `
 
 
-export interface ButtonSettingsProps extends TouchableOpacityProps, CameraSettingsIconProps {}
+export interface ButtonSettingsProps extends TouchableOpacityProps, CameraSettingsIconProps { }
 
 
 export function ButtonSettings(props: ButtonSettingsProps) {

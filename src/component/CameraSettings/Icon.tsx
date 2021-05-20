@@ -6,7 +6,7 @@ export interface CameraSettingsIconProps {
 }
 
 
-export const cameraSettingsIconSize = 25
+export const cameraSettingsIconSize = 24
 
 
 export const cameraSettingsIconColor = "rgb(255, 255, 255)"

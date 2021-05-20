@@ -41,7 +41,7 @@ export function CameraSettings(props: CameraSettingsProps) {
                 break
         }
         // Set camera attribute
-        props.setCameraAttributes({type: "flash", payload: newFlash})
+        props.setCameraAttributes({ type: "flash", payload: newFlash })
         // Write settings
         const currentSettings = await readSettings()
         currentSettings.camera.flash = newFlash
@@ -69,7 +69,7 @@ export function CameraSettings(props: CameraSettingsProps) {
                 break
         }
         // Set camera attribute
-        props.setCameraAttributes({type: "white-balance", payload: newWhiteBalance})
+        props.setCameraAttributes({ type: "white-balance", payload: newWhiteBalance })
         // Write settings
         const currentSettings = await readSettings()
         currentSettings.camera.whiteBalance = newWhiteBalance
@@ -77,7 +77,7 @@ export function CameraSettings(props: CameraSettingsProps) {
     }, [props.cameraAttributes.whiteBalance])
 
     const resetCameraSettings = useCallback(async () => {
-        props.setCameraAttributes({type: "reset"})
+        props.setCameraAttributes({ type: "reset" })
 
         const currentSettings = await readSettings()
         currentSettings.camera = settingsDefaultCamera
@@ -86,25 +86,26 @@ export function CameraSettings(props: CameraSettingsProps) {
 
 
     return (
-        <Modal 
-            {...props} 
-            modalStyle={{marginHorizontal: 5, justifyContent: "flex-end", bottom: 60}}
+        <Modal
+            {...props}
+            modalStyle={{ marginHorizontal: 5, justifyContent: "flex-end", bottom: 60 }}
+            backgroundStyle={{ paddingTop: 4, paddingLeft: 4 }}
         >
             <ScrollView horizontal={true}>
                 <ButtonSettingsBase onPress={changeFlash} activeOpacity={0.5}>
                     {(props.cameraAttributes.flash === "auto")
-                        ? <FlashAuto 
-                            width={cameraSettingsIconSize - 3} 
-                            height={cameraSettingsIconSize - 3} 
+                        ? <FlashAuto
+                            width={cameraSettingsIconSize - 3}
+                            height={cameraSettingsIconSize - 3}
                             fill={"rgb(255, 255, 255)"} />
                         : (props.cameraAttributes.flash === "on")
-                            ? <FlashOn 
-                                width={cameraSettingsIconSize - 5} 
-                                height={cameraSettingsIconSize - 5} 
+                            ? <FlashOn
+                                width={cameraSettingsIconSize - 5}
+                                height={cameraSettingsIconSize - 5}
                                 fill={"rgb(255, 255, 255)"} />
-                            : <FlashOff 
-                                width={cameraSettingsIconSize - 4} 
-                                height={cameraSettingsIconSize - 4} 
+                            : <FlashOff
+                                width={cameraSettingsIconSize - 4}
+                                height={cameraSettingsIconSize - 4}
                                 fill={"rgb(255, 255, 255)"} />}
                 </ButtonSettingsBase>
 
@@ -135,8 +136,8 @@ export function CameraSettings(props: CameraSettingsProps) {
                                         fill={"rgb(255, 255, 255)"} />}
                 </ButtonSettingsBase>
 
-                <ButtonSettings 
-                    iconName={"md-refresh-outline"} 
+                <ButtonSettings
+                    iconName={"md-refresh-outline"}
                     onPress={resetCameraSettings}
                 />
             </ScrollView>
