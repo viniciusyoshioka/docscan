@@ -14,7 +14,7 @@ export const Button = styled(RectButton)`
     padding-horizontal: 10px;
     border-radius: 1px;
     background-color: ${(props: styledProps) => props.theme.color.documentItem_background};
-    elevation: 1;
+    elevation: 2;
 `
 
 

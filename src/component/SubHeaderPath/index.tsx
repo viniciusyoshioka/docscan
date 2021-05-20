@@ -12,7 +12,7 @@ export const SubHeader = styled.View`
     height: 28px;
     padding: 4px 16px;
     background-color: ${(props: styledProps) => props.theme.color.subHeader_background};
-    elevation: 3;
+    elevation: 4;
 `
 
 
