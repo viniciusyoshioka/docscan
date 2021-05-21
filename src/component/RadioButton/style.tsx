@@ -6,8 +6,9 @@ import { styledProps } from "../../service/theme"
 export const Button = styled.TouchableOpacity`
     flex-direction: row;
     align-items: center;
+    justify-content: flex-start;
     width: 100%;
-    margin: 4px;
+    margin-vertical: 4px;
 `
 
 
@@ -16,10 +17,13 @@ export const Radio = styled.View`
     justify-content: center;
     width: 24px;
     height: 24px;
-    margin-right: 16px;
     border-width: 2px;
     border-radius: 24px;
-    border-color: ${(props: styledProps) => props.theme.color.radioButton_color};
+    opacity: ${(props: styledProps) => props.theme.opacity.highEmphasis};
+    border-color: ${(props: styledProps & {checked: boolean}) => 
+        props.checked
+            ? props.theme.color.radioButton_checked_color
+            : props.theme.color.radioButton_unchecked_color};
 `
 
 
@@ -27,11 +31,17 @@ export const Check = styled.View`
     width: 12px;
     height: 12px;
     border-radius: 12px;
-    background-color: ${(props: styledProps) => props.theme.color.radioButton_color};
+    opacity: ${(props: styledProps) => props.theme.opacity.highEmphasis};
+    background-color: ${(props: styledProps & {checked: boolean}) => 
+        props.checked
+            ? props.theme.color.radioButton_checked_color
+            : props.theme.color.radioButton_unchecked_color};
 `
 
 
 export const Text = styled.Text`
+    margin-left: 16px;
     font-size: 15px;
-    color: ${(props: styledProps) => props.theme.color.radioButton_color};
+    opacity: ${(props: styledProps) => props.theme.opacity.highEmphasis};
+    color: ${(props: styledProps) => props.theme.color.radioButton_unchecked_color};
 `

@@ -13,13 +13,15 @@ export interface RadioButtonProps extends TouchableOpacityProps {
 export function RadioButton(props: RadioButtonProps) {
     return (
         <Button {...props}>
-            <Radio>
-                {props.value && <Check />}
+            <Radio checked={props.value ? true : false}>
+                {props.value && <Check checked={props.value ? true : false} />}
             </Radio>
 
-            <Text numberOfLines={1}>
-                {props.text}
-            </Text>
+            {props.text && (
+                <Text>
+                    {props.text}
+                </Text>
+            )}
         </Button>
     )
 }
