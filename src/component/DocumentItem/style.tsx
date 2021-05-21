@@ -35,12 +35,14 @@ export const Line = styled.View`
 export const Title = styled.Text`
     width: 100%;
     font-size: 16px;
-    color: ${(props: styledProps) => props.theme.color.documentItem_colorFirst};
+    opacity: ${(props: styledProps) => props.theme.opacity.highEmphasis};
+    color: ${(props: styledProps) => props.theme.color.documentItem_color};
 `
 
 
 export const Date = styled.Text`
     width: 100%;
     font-size: 12px;
-    color: ${(props: styledProps) => props.theme.color.documentItem_colorSecond};
+    opacity: ${(props: styledProps) => props.theme.opacity.mediumEmphasis};
+    color: ${(props: styledProps) => props.theme.color.documentItem_color};
 `

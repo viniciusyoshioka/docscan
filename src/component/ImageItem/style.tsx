@@ -18,7 +18,7 @@ export const SelectionSurface = styled.View`
     right: 0px;
     align-items: center;
     justify-content: center;
-    opacity: 0.7;
     border-radius: 1px;
-    background-color: ${(props: styledProps) => props.theme.color.imageItem_background};
+    opacity: ${(props: styledProps) => props.theme.opacity.mediumEmphasis};
+    background-color: ${(props: styledProps) => props.theme.color.imageItem_selected_background};
 `

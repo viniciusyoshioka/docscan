@@ -41,14 +41,16 @@ const TextView = styled.View`
 const ButtonTitle = styled.Text`
     width: 100%;
     font-size: 16px;
-    color: ${(props: styledProps) => props.theme.color.settingsButton_colorFirst};
+    opacity: ${(props: styledProps) => props.theme.opacity.highEmphasis};
+    color: ${(props: styledProps) => props.theme.color.settingsButton_color};
 `
 
 
 const ButtonDescription = styled.Text`
     width: 100%;
     font-size: 13px;
-    color: ${(props: styledProps) => props.theme.color.settingsButton_colorSecond};
+    opacity: ${(props: styledProps) => props.theme.opacity.mediumEmphasis};
+    color: ${(props: styledProps) => props.theme.color.settingsButton_color};
 `
 
 
@@ -62,7 +64,7 @@ export interface SettingsButtonProps extends RectButtonProps {
 export function SettingsButton(props: SettingsButtonProps) {
 
 
-    const { color } = useTheme()
+    const { color, opacity } = useTheme()
 
 
     return (
@@ -72,7 +74,10 @@ export function SettingsButton(props: SettingsButtonProps) {
                     <Icon
                         name={props.iconName}
                         size={24}
-                        color={color.settingsButton_colorFirst}
+                        color={color.settingsButton_color}
+                        style={{
+                            opacity: opacity.highEmphasis
+                        }}
                     />
                 </IconView>
             )}

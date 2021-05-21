@@ -6,78 +6,6 @@ export type themeType = "auto" | "light" | "dark"
 export const themeDefault: themeType = "auto"
 
 
-export interface MaterialColorTheme {
-    primary: string,
-    primaryVariant: string,
-    onPrimary: string,
-
-    secondary: string,
-    secondaryVariant: string,
-    onSecondary: string,
-
-    background: string,
-    onBackground: string,
-
-    surface: string,
-    onSurface: string,
-
-    error: string,
-    onError: string,
-}
-
-export interface MaterialOpacityTheme {
-    highEmphasis: number,
-    mediumEmphasis: number,
-    disabled: number,
-}
-
-export const MaterialLightTheme: MaterialColorTheme & MaterialOpacityTheme = {
-    primary: "rgb(0, 128, 128)",
-    primaryVariant: "transparent",
-    onPrimary: "rgb(255, 255, 255)",
-
-    secondary: "transparent",
-    secondaryVariant: "transparent",
-    onSecondary: "rgb(0, 0, 0)",
-
-    background: "rgb(255, 255, 255)",
-    onBackground: "rgb(0, 0, 0)",
-
-    surface: "rgb(255, 255, 255)",
-    onSurface: "rgb(0, 0, 0)",
-
-    error: "rgb(176, 0, 32)",
-    onError: "rgb(255, 255, 255)",
-
-    highEmphasis: 0.87,
-    mediumEmphasis: 0.6,
-    disabled: 0.38,
-}
-
-export const MaterialDarkTheme: MaterialColorTheme & MaterialOpacityTheme = {
-    primary: "rgb(0, 128, 128)",
-    primaryVariant: "transparent",
-    onPrimary: "rgb(0, 0, 0)",
-
-    secondary: "transparent",
-    secondaryVariant: "transparent",
-    onSecondary: "rgb(0, 0, 0)",
-
-    background: "rgb(18, 18, 18)",
-    onBackground: "rgb(255, 255, 255)",
-
-    surface: "rgb(18, 18, 18)",
-    onSurface: "rgb(255, 255, 255)",
-
-    error: "rgb(207, 102, 121)",
-    onError: "rgb(0, 0, 0)",
-
-    highEmphasis: 0.87,
-    mediumEmphasis: 0.6,
-    disabled: 0.38,
-}
-
-
 export interface ColorTheme {
     name: themeType,
     appTheme: themeType,
@@ -95,28 +23,25 @@ export interface ColorTheme {
         popupMenuButton_color: string,
 
         documentItem_background: string,
-        documentItem_colorFirst: string,
-        documentItem_colorSecond: string,
-
-        checkBox_unchecked_background: string,
-        checkBox_unchecked_color: string,
-
-        checkBox_checked_background: string,
-        checkBox_checked_color: string,
+        documentItem_color: string,
+        documentItem_selected_background: string,
+        documentItem_selected_color: string,
 
         imageItem_background: string,
         imageItem_color: string,
+        imageItem_selected_background: string,
+        imageItem_selected_color: string,
 
         settingsButton_background: string,
-        settingsButton_colorFirst: string,
-        settingsButton_colorSecond: string,
+        settingsButton_color: string,
 
         fileExplorerItem_background: string,
-        fileExplorerItem_colorFirst: string,
-        fileExplorerItem_colorSecond: string,
+        fileExplorerItem_color: string,
 
         pictureItem_background: string,
         pictureItem_color: string,
+        pictureItem_selected_background: string,
+        pictureItem_selected_color: string,
 
         modal_background: string,
         modal_color: string,
@@ -129,70 +54,52 @@ export interface ColorTheme {
         input_placeholder: string,
         input_border: string,
 
-        // input_inactive_background: string,
-        // input_inactive_color: string,
-        // input_inactive_placeholder: string,
-        // input_inactive_border: string,
-
-        // input_active_background: string,
-        // input_active_color: string,
-        // input_active_placeholder: string,
-        // input_active_border: string,
-
-        radioButton_background: string,
-        radioButton_color: string,
-
-        // radioButton_unchecked_background: string,
-        // radioButton_unchecked_color: string,
-
-        // radioButton_checked_background: string,
-        // radioButton_checked_color: string,
-
+        radioButton_unchecked_color: string,
+        radioButton_checked_color: string,
+    },
+    opacity: {
         highEmphasis: number,
         mediumEmphasis: number,
         disabled: number,
-    }
+    },
 }
 
 export const LightTheme: ColorTheme = {
     name: "light",
     appTheme: "auto",
     color: {
-        header_background: "rgb(255, 255, 255)",
-        header_color: "rgb(0, 0, 0)",
+        header_background: "rgb(0, 128, 128)",
+        header_color: "rgb(255, 255, 255)",
 
-        subHeader_background: "rgb(255, 255, 255)",
-        subHeader_color: "rgb(0, 0, 0)",
+        subHeader_background: "rgb(0, 128, 128)",
+        subHeader_color: "rgb(255, 255, 255)",
 
         screen_background: "rgb(255, 255, 255)",
-        screen_color: "rgb(64, 64, 64)",
+        screen_color: "rgb(0, 0, 0)",
 
         popupMenuButton_background: "rgb(255, 255, 255)",
         popupMenuButton_color: "rgb(0, 0, 0)",
 
         documentItem_background: "rgb(255, 255, 255)",
-        documentItem_colorFirst: "rgb(0, 0, 0)",
-        documentItem_colorSecond: "rgb(30, 30, 30)",
-
-        checkBox_unchecked_background: "rgb(0, 0, 0)",
-        checkBox_unchecked_color: "rgb(0, 0, 0)",
-
-        checkBox_checked_background: "rgb(0, 0, 0)",
-        checkBox_checked_color: "rgb(0, 0, 0)",
+        documentItem_color: "rgb(0, 0, 0)",
+        documentItem_selected_background: "rgb(0, 128, 128)",
+        documentItem_selected_color: "rgb(0, 0, 0)",
 
         imageItem_background: "rgb(255, 255, 255)",
         imageItem_color: "rgb(0, 0, 0)",
+        imageItem_selected_background: "rgb(0, 128, 128)",
+        imageItem_selected_color: "rgb(255, 255, 255)",
 
         settingsButton_background: "transparent",
-        settingsButton_colorFirst: "rgb(0, 0, 0)",
-        settingsButton_colorSecond: "rgb(30, 30, 30)",
+        settingsButton_color: "rgb(0, 0, 0)",
 
         fileExplorerItem_background: "transparent",
-        fileExplorerItem_colorFirst: "rgb(0, 0, 0)",
-        fileExplorerItem_colorSecond: "rgb(64, 64, 64)",
+        fileExplorerItem_color: "rgb(0, 0, 0)",
 
-        pictureItem_background: "rgb(240, 240, 240)",
+        pictureItem_background: "rgb(255, 255, 255)",
         pictureItem_color: "rgb(0, 0, 0)",
+        pictureItem_selected_background: "rgb(0, 128, 128)",
+        pictureItem_selected_color: "rgb(255, 255, 255)",
 
         modal_background: "rgb(255, 255, 255)",
         modal_color: "rgb(0, 0, 0)",
@@ -202,32 +109,17 @@ export const LightTheme: ColorTheme = {
 
         input_background: "transparent",
         input_color: "rgb(0, 0, 0)",
-        input_placeholder: "rgb(100, 100, 100)",
+        input_placeholder: "rgb(30, 30, 30)",
         input_border: "rgb(0, 0, 0)",
 
-        // input_inactive_background: "rgb(0, 0, 0)",
-        // input_inactive_color: "rgb(0, 0, 0)",
-        // input_inactive_placeholder: "rgb(0, 0, 0)",
-        // input_inactive_border: "rgb(0, 0, 0)",
-
-        // input_active_background: "rgb(0, 0, 0)",
-        // input_active_color: "rgb(0, 0, 0)",
-        // input_active_placeholder: "rgb(0, 0, 0)",
-        // input_active_border: "rgb(0, 0, 0)",
-
-        radioButton_background: "rgb(0, 0, 0)",
-        radioButton_color: "rgb(0, 0, 0)",
-
-        // radioButton_unchecked_background: "rgb(0, 0, 0)",
-        // radioButton_unchecked_color: "rgb(0, 0, 0)",
-
-        // radioButton_checked_background: "rgb(0, 0, 0)",
-        // radioButton_checked_color: "rgb(0, 0, 0)",
-
+        radioButton_checked_color: "rgb(0, 128, 128)",
+        radioButton_unchecked_color: "rgb(0, 0, 0)",
+    },
+    opacity: {
         highEmphasis: 0.87,
         mediumEmphasis: 0.6,
         disabled: 0.38,
-    }
+    },
 }
 
 export const DarkTheme: ColorTheme = {
@@ -235,75 +127,57 @@ export const DarkTheme: ColorTheme = {
     appTheme: "auto",
     color: {
         header_background: "rgb(30, 30, 30)",
-        header_color: "rgb(220, 220, 220)",
+        header_color: "rgb(255, 255, 255)",
 
         subHeader_background: "rgb(30, 30, 30)",
-        subHeader_color: "rgb(150, 150, 150)",
+        subHeader_color: "rgb(255, 255, 255)",
 
-        screen_background: "rgb(15, 15, 15)",
-        screen_color: "rgb(150, 150, 150)",
+        screen_background: "rgb(18, 18, 18)",
+        screen_color: "rgb(255, 255, 255)",
 
         popupMenuButton_background: "rgb(45, 45, 45)",
-        popupMenuButton_color: "rgb(220, 220, 220)",
+        popupMenuButton_color: "rgb(255, 255, 255)",
 
         documentItem_background: "rgb(30, 30, 30)",
-        documentItem_colorFirst: "rgb(220, 220, 220)",
-        documentItem_colorSecond: "rgb(150, 150, 150)",
-
-        checkBox_unchecked_background: "transparent",
-        checkBox_unchecked_color: "rgb(220, 220, 220)",
-
-        checkBox_checked_background: "transparent",
-        checkBox_checked_color: "rgb(220, 220, 220)",
+        documentItem_color: "rgb(255, 255, 255)",
+        documentItem_selected_background: "rgb(0, 150, 150)",
+        documentItem_selected_color: "rgb(255, 255, 255)",
 
         imageItem_background: "rgb(30, 30, 30)",
-        imageItem_color: "rgb(220, 220, 220)",
+        imageItem_color: "rgb(255, 255, 255)",
+        imageItem_selected_background: "rgb(0, 128, 128)",
+        imageItem_selected_color: "rgb(255, 255, 255)",
 
         settingsButton_background: "transparent",
-        settingsButton_colorFirst: "rgb(220, 220, 220)",
-        settingsButton_colorSecond: "rgb(150, 150, 150)",
+        settingsButton_color: "rgb(255, 255, 255)",
 
         fileExplorerItem_background: "transparent",
-        fileExplorerItem_colorFirst: "rgb(220, 220, 220)",
-        fileExplorerItem_colorSecond: "rgb(150, 150, 150)",
+        fileExplorerItem_color: "rgb(255, 255, 255)",
 
         pictureItem_background: "rgb(30, 30, 30)",
-        pictureItem_color: "rgb(220, 220, 220)",
+        pictureItem_color: "rgb(255, 255, 255)",
+        pictureItem_selected_background: "rgb(0, 128, 128)",
+        pictureItem_selected_color: "rgb(255, 255, 255)",
 
-        modal_background: "rgb(30, 30, 30)",
-        modal_color: "rgb(220, 220, 220)",
+        modal_background: "rgb(35, 35, 35)",
+        modal_color: "rgb(255, 255, 255)",
 
         modalButton_background: "transparent",
-        modalButton_color: "rgb(220, 220, 220)",
+        modalButton_color: "rgb(255, 255, 255)",
 
         input_background: "transparent",
-        input_color: "rgb(220, 220, 220)",
+        input_color: "rgb(255, 255, 255)",
         input_placeholder: "rgb(150, 150, 150)",
-        input_border: "rgb(220, 220, 220)",
+        input_border: "rgb(255, 255, 255)",
 
-        // input_inactive_background: "rgb(0, 0, 0)",
-        // input_inactive_color: "rgb(0, 0, 0)",
-        // input_inactive_placeholder: "rgb(0, 0, 0)",
-        // input_inactive_border: "rgb(0, 0, 0)",
-
-        // input_active_background: "rgb(0, 0, 0)",
-        // input_active_color: "rgb(0, 0, 0)",
-        // input_active_placeholder: "rgb(0, 0, 0)",
-        // input_active_border: "rgb(0, 0, 0)",
-
-        radioButton_background: "rgb(220, 220, 220)",
-        radioButton_color: "rgb(220, 220, 220)",
-
-        // radioButton_unchecked_background: "rgb(0, 0, 0)",
-        // radioButton_unchecked_color: "rgb(0, 0, 0)",
-
-        // radioButton_checked_background: "rgb(0, 0, 0)",
-        // radioButton_checked_color: "rgb(0, 0, 0)",
-
+        radioButton_checked_color: "rgb(0, 0, 0)",
+        radioButton_unchecked_color: "rgb(255, 255, 255)",
+    },
+    opacity: {
         highEmphasis: 0.87,
         mediumEmphasis: 0.6,
         disabled: 0.38,
-    }
+    },
 }
 
 

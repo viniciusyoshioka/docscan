@@ -18,11 +18,13 @@ export const EmptyListView = styled.View`
 export const EmptyListImage = styled.Image`
     width: 100px;
     height: 100px;
+    opacity: ${(props: styledProps) => props.theme.opacity.highEmphasis};
     tint-color: ${(props: styledProps) => props.theme.color.screen_color};
 `
 
 
 export const EmptyListText = styled.Text`
     font-size: 16px;
+    opacity: ${(props: styledProps) => props.theme.opacity.highEmphasis};
     color: ${(props: styledProps) => props.theme.color.screen_color};
 `

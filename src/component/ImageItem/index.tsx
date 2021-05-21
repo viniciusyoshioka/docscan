@@ -74,7 +74,7 @@ export function ImageItem(props: ImageItemProps) {
                         <Icon
                             name={"md-checkmark"}
                             size={30}
-                            color={color.imageItem_color}
+                            color={color.imageItem_selected_color}
                         />
                     </SelectionSurface>
                 )}

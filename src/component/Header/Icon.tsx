@@ -16,7 +16,7 @@ export interface HeaderIconProps {
 export function HeaderIcon(props: HeaderIconProps) {
 
 
-    const { color } = useTheme()
+    const { color, opacity } = useTheme()
 
 
     return (
@@ -24,6 +24,9 @@ export function HeaderIcon(props: HeaderIconProps) {
             name={props.iconName}
             size={props.iconSize || headerIconSize}
             color={color.header_color}
+            style={{
+                opacity: opacity.highEmphasis
+            }}
         />
     )
 }

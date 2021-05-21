@@ -11,12 +11,14 @@ export const ModalTitle = styled.Text`
     margin-horizontal: 16px;
     margin-vertical: 12px;
     font-size: 18px;
+    opacity: ${(props: styledProps) => props.theme.opacity.highEmphasis};
     color: ${(props: styledProps) => props.theme.color.modal_color};
 `
 
 
 export const ModalViewContent = styled.View`
-    align-items: center;
+    align-items: flex-start;
+    justify-content: center;
     margin-horizontal: 16px;
 `
 

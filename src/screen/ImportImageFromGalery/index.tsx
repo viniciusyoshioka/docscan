@@ -22,7 +22,7 @@ export function ImportImageFromGalery() {
     const navigation = useNavigation()
     const { params } = useRoute<RouteProp<ScreenParams, "ImportImageFromGalery">>()
 
-    const { color } = useTheme()
+    const { color, opacity } = useTheme()
 
     const [imageGalery, setImageGalery] = useState<Array<PhotoIdentifier> | null>(null)
     const [selectionMode, setSelectionMode] = useState(false)
@@ -236,7 +236,13 @@ export function ImportImageFromGalery() {
 
             {imageGalery === null && (
                 <EmptyListView>
-                    <ActivityIndicator color={color.screen_color} size={"large"} />
+                    <ActivityIndicator
+                        color={color.screen_color}
+                        size={"large"}
+                        style={{
+                            opacity: opacity.highEmphasis
+                        }}
+                    />
                 </EmptyListView>
             )}
 

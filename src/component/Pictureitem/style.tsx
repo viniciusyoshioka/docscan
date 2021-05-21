@@ -35,8 +35,8 @@ export const FileNameView = styled.View`
     padding-horizontal: 6px;
     border-bottom-left-radius: 1px;
     border-bottom-right-radius: 1px;
+    opacity: ${(props: styledProps) => props.theme.opacity.highEmphasis};
     background-color: ${(props: styledProps) => props.theme.color.pictureItem_background};
-    opacity: 0.8;
 `
 
 
@@ -55,7 +55,7 @@ export const SelectedSurface = styled.View`
     right: 0px;
     align-items: center;
     justify-content: center;
-    opacity: 0.7;
     border-radius: 1px;
-    background-color: ${(props: styledProps) => props.theme.color.pictureItem_background};
+    opacity: ${(props: styledProps) => props.theme.opacity.mediumEmphasis};
+    background-color: ${(props: styledProps) => props.theme.color.pictureItem_selected_background};
 `

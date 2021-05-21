@@ -31,12 +31,14 @@ export const ViewPath = styled.View`
 export const ItemNameText = styled.Text`
     width: 100%;
     font-size: 17px;
-    color: ${(props: styledProps) => props.theme.color.fileExplorerItem_colorFirst};
+    opacity: ${(props: styledProps) => props.theme.opacity.highEmphasis};
+    color: ${(props: styledProps) => props.theme.color.fileExplorerItem_color};
 `
 
 
 export const FullPathText = styled.Text`
     width: 100%;
     font-size: 13px;
-    color: ${(props: styledProps) => props.theme.color.fileExplorerItem_colorSecond};
+    opacity: ${(props: styledProps) => props.theme.opacity.mediumEmphasis};
+    color: ${(props: styledProps) => props.theme.color.fileExplorerItem_color};
 `

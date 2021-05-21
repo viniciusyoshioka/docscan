@@ -19,7 +19,7 @@ export interface DocumentItemProps {
 export function DocumentItem(props: DocumentItemProps) {
 
 
-    const { color } = useTheme()
+    const { color, opacity } = useTheme()
 
     const [selected, setSelected] = useState(false)
 
@@ -80,8 +80,11 @@ export function DocumentItem(props: DocumentItemProps) {
                             value={selected}
                             onChange={normalPress}
                             tintColors={{
-                                true: color.checkBox_checked_color,
-                                false: color.checkBox_unchecked_color
+                                true: color.documentItem_selected_background,
+                                false: color.documentItem_selected_color
+                            }}
+                            style={{
+                                opacity: opacity.highEmphasis
                             }}
                         />
                     </Block>

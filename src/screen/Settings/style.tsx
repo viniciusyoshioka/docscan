@@ -13,5 +13,6 @@ export const ViewVersion = styled.View`
 
 export const TextVersion = styled.Text`
     font-size: 15px;
+    opacity: ${(props: styledProps) => props.theme.opacity.mediumEmphasis};
     color: ${(props: styledProps) => props.theme.color.screen_color};
 `

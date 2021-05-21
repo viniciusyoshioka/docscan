@@ -16,7 +16,7 @@ export interface FileExplorerItemProps extends RectButtonProps {
 export function FileExplorerItem(props: FileExplorerItemProps) {
 
 
-    const { color } = useTheme()
+    const { color, opacity } = useTheme()
 
 
     return (
@@ -25,7 +25,10 @@ export function FileExplorerItem(props: FileExplorerItemProps) {
                 <Icon
                     name={props.isFile ? "md-document-sharp" : "md-folder-sharp"}
                     size={24}
-                    color={color.fileExplorerItem_colorFirst}
+                    color={color.fileExplorerItem_color}
+                    style={{
+                        opacity: opacity.highEmphasis
+                    }}
                 />
             </ViewIcon>
 
