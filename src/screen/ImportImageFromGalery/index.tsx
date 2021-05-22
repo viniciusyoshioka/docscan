@@ -240,7 +240,7 @@ export function ImportImageFromGalery() {
                         color={color.screen_color}
                         size={"large"}
                         style={{
-                            opacity: opacity.highEmphasis
+                            opacity: opacity.mediumEmphasis
                         }}
                     />
                 </EmptyListView>

@@ -25,7 +25,7 @@ export function HeaderIcon(props: HeaderIconProps) {
             size={props.iconSize || headerIconSize}
             color={color.header_color}
             style={{
-                opacity: opacity.highEmphasis
+                opacity: opacity.headerEmphasis
             }}
         />
     )
