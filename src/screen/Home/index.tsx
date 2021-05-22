@@ -11,7 +11,7 @@ import { readDebugHome, readDocument, readDocumentId, writeDebugHome, writeDocum
 import { HomeHeader } from "./Header"
 import { DebugButton } from "../../component/DebugButton"
 import { useSwitchTheme } from "../../service/theme"
-import { appIconOutline, appInDevelopment, fullPathLog, fullPathRoot } from "../../service/constant"
+import { appIconOutline, appInDevelopment, fullPathLog, fullPathPicture, fullPathRoot, fullPathTemporary } from "../../service/constant"
 import { deleteDocument, exportDocument } from "../../service/document-handler"
 import { createAllFolder } from "../../service/folder-handler"
 import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
@@ -143,6 +143,50 @@ export function Home() {
                 `Erro ao ler arquivo de log. Mensagem: "${error}"`
             )
         }
+    }, [])
+
+    const readAppFolder = useCallback(async () => {
+        console.log("readAppFolder")
+
+        console.log("========== fullPathRoot ==========")
+        if (await RNFS.exists(fullPathRoot)) {
+            const pathRootContent = await RNFS.readDir(fullPathRoot)
+            pathRootContent.forEach((item) => {
+                console.log(item.path)
+            })
+            if (pathRootContent.length === 0) {
+                console.log("[]")
+            }
+        } else {
+            console.log("Não existe")
+        }
+
+        console.log("========== fullPathPicture ==========")
+        if (await RNFS.exists(fullPathPicture)) {
+            const pathPictureContent = await RNFS.readDir(fullPathPicture)
+            pathPictureContent.forEach((item) => {
+                console.log(item.name)
+            })
+            if (pathPictureContent.length === 0) {
+                console.log("[]")
+            }
+        } else {
+            console.log("Não existe")
+        }
+
+        console.log("========== fullPathTemporary ==========")
+        if (await RNFS.exists(fullPathTemporary)) {
+            const pathTemporaryContent = await RNFS.readDir(fullPathTemporary)
+            pathTemporaryContent.forEach((item) => {
+                console.log(item.name)
+            })
+            if (pathTemporaryContent.length === 0) {
+                console.log("[]")
+            }
+        } else {
+            console.log("Não existe")
+        }
+        console.log("====================")
     }, [])
 
 
@@ -304,6 +348,11 @@ export function Home() {
                         text={"Compar"}
                         onPress={debugShareLog}
                         style={{ bottom: 5, left: 115 }} />
+
+                    <DebugButton
+                        text={"Pasta"}
+                        onPress={readAppFolder}
+                        style={{ bottom: 5, left: 170 }} />
                 </View>
             )}
         </SafeScreen>
