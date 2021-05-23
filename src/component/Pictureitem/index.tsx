@@ -83,13 +83,16 @@ export function PictureItem(props: PictureItemProps) {
                 </FileNameView>
 
                 {props.selectionMode && selected && (
-                    <SelectedSurface>
+                    <>
+                        <SelectedSurface />
+
                         <Icon
                             name={"md-checkmark"}
                             size={30}
                             color={color.pictureItem_selected_color}
+                            style={{position: "absolute"}}
                         />
-                    </SelectedSurface>
+                    </>
                 )}
             </PictureButton>
         </LongPressGestureHandler>

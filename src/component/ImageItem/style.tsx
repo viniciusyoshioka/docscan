@@ -5,6 +5,9 @@ import { styledProps } from "../../service/theme"
 
 
 export const Button = styled(RectButton)`
+    flex: 1;
+    align-items: center;
+    justify-content: center;
     aspect-ratio: 1;
     background-color: ${(props: styledProps) => props.theme.color.imageItem_background};
 `

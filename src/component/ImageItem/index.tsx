@@ -70,13 +70,16 @@ export function ImageItem(props: ImageItemProps) {
                 />
 
                 {props.selectionMode && selected && (
-                    <SelectionSurface>
+                    <>
+                        <SelectionSurface />
+
                         <Icon
                             name={"md-checkmark"}
                             size={30}
                             color={color.imageItem_selected_color}
+                            style={{position: "absolute"}}
                         />
-                    </SelectionSurface>
+                    </>
                 )}
             </Button>
         </LongPressGestureHandler>
