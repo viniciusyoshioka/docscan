@@ -276,13 +276,15 @@ export async function importDocument(path: string): Promise<boolean> {
         try {
             await RNFS.unlink(fullPathTemporary)
         } catch (error) {
-            log("ERROR", `Erro verificando arquivo zip, seu conteúdo não é compatível com document. Mensagem: "${error}"`)
-            Alert.alert(
-                "Erro",
-                "Arquivo selecionado não é um documento exportado. Processo interrompido"
-            )
-            return false
+            log("ERROR", `Erro apagando pasta temporária depois de verificar que arquivo não é compatível com documento. Mensagem: "${error}"`)
         }
+
+        log("ERROR", "Arquivo zip verificado. Ele não é compatível com documento")
+        Alert.alert(
+            "Erro",
+            "Arquivo selecionado não é um documento exportado. Processo interrompido"
+        )
+        return false
     }
 
     // Read document file
