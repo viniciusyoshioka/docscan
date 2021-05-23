@@ -183,8 +183,14 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
     }
 
     // Copy pictures
-    documentToExport.forEach((documentItem: ExportedDocument) => {
-        documentItem.pictureList.forEach(async (pictureItem: string) => {
+    // Iteration for each document in the documentToExport
+    for (let x = 0; x < documentToExport.length; x++) {
+        const documentItem = documentToExport[x]
+
+        // Iteration for each picture path in the documentItem
+        for (let y = 0; y < documentItem.pictureList.length; y++) {
+            const pictureItem = documentItem.pictureList[y]
+
             const splitedPath = pictureItem.split("/")
             const fileName = splitedPath[splitedPath.length - 1]
             try {
@@ -197,8 +203,8 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
                 )
                 return false
             }
-        })
-    })
+        }
+    }
 
     // Create document name
     const zipDocumentName = getDateTime("-", "-", true)
