@@ -67,7 +67,7 @@ export function PictureItem(props: PictureItemProps) {
             <PictureButton
                 style={{
                     aspectRatio: 2 / 3,
-                    maxWidth: (useWindowDimensions().width / 2)
+                    maxWidth: (useWindowDimensions().width / 2) - 8
                 }}
                 onPress={normalPress}
             >
