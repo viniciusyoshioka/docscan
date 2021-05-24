@@ -1,29 +1,24 @@
 import React, { useCallback, useEffect, useState } from "react"
-import { Alert, BackHandler, FlatList, View } from "react-native"
+import { Alert, BackHandler, FlatList } from "react-native"
 import { useNavigation } from "@react-navigation/core"
-import RNFS from "react-native-fs"
-import Share from "react-native-share"
 
 import { DocumentItem } from "../../component/DocumentItem"
 import { SafeScreen } from "../../component/Screen"
 import { debugHome, Document } from "../../service/object-types"
 import { readDebugHome, readDocument, readDocumentId, writeDebugHome, writeDocument, writeDocumentId } from "../../service/storage"
 import { HomeHeader } from "./Header"
-import { DebugButton } from "../../component/DebugButton"
-import { useSwitchTheme } from "../../service/theme"
-import { appIconOutline, appInDevelopment, fullPathLog, fullPathPicture, fullPathRoot, fullPathTemporary } from "../../service/constant"
+import { appIconOutline, appInDevelopment } from "../../service/constant"
 import { deleteDocument, exportDocument } from "../../service/document-handler"
 import { createAllFolder } from "../../service/folder-handler"
 import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
 import { useBackHandler } from "../../service/hook"
+import { DebugHome } from "./DebugHome"
 
 
 export function Home() {
 
 
     const navigation = useNavigation()
-
-    const switchTheme = useSwitchTheme()
 
     const [debugHome, setDebugHome] = useState<debugHome>("show")
     const [document, setDocument] = useState<Array<Document>>([])
@@ -40,6 +35,25 @@ export function Home() {
         return true
     })
 
+
+    const debugGetDebugHome = useCallback(async () => {
+        if (appInDevelopment) {
+            const getDebugHome = await readDebugHome()
+            setDebugHome(getDebugHome)
+        } else {
+            setDebugHome("hide")
+        }
+    }, [])
+
+    const debugSwitchDebugHome = useCallback(async () => {
+        if (debugHome === "show") {
+            setDebugHome("hide")
+            await writeDebugHome("hide")
+        } else if (debugHome === "hide") {
+            setDebugHome("show")
+            await writeDebugHome("show")
+        }
+    }, [debugHome])
 
     const debugReadDocument = useCallback(async () => {
         const documentList = await readDocument()
@@ -76,117 +90,6 @@ export function Home() {
         setDocument([])
 
         console.log("document, documentId - CLEAR")
-    }, [])
-
-    const debugGetDebugHome = useCallback(async () => {
-        if (appInDevelopment) {
-            const getDebugHome = await readDebugHome()
-            setDebugHome(getDebugHome)
-        } else {
-            setDebugHome("hide")
-        }
-    }, [])
-
-    const debugSwitchDebugHome = useCallback(async () => {
-        if (debugHome === "show") {
-            setDebugHome("hide")
-            await writeDebugHome("hide")
-        } else if (debugHome === "hide") {
-            setDebugHome("show")
-            await writeDebugHome("show")
-        }
-    }, [debugHome])
-
-    const debugShareLog = useCallback(async () => {
-        try {
-            if (await RNFS.exists(fullPathLog)) {
-                await Share.open({
-                    title: "Compartilhar log",
-                    type: "text/plain",
-                    url: `file://${fullPathRoot}/docscanlog.log`,
-                    failOnCancel: false
-                })
-                return
-            }
-
-            Alert.alert(
-                "INFO",
-                "Não há arquivo de log para compartilhar"
-            )
-        } catch (error) {
-            console.log(`FALHA MODERADA - Erro ao compartilhar arquivo de log. Mensagem: "${error}"`)
-            Alert.alert(
-                "FALHA MODERADA",
-                `Erro ao compartilhar arquivo de log. Mensagem: "${error}"`
-            )
-        }
-    }, [])
-
-    const debugReadLog = useCallback(async () => {
-        try {
-            if (await RNFS.exists(fullPathLog)) {
-                RNFS.readFile(`${fullPathRoot}/docscanlog.log`)
-                    .then((logContent) => {
-                        console.log(`Arquivo de Log: "${logContent}"`)
-                    })
-                return
-            }
-
-            Alert.alert(
-                "INFO",
-                "Não há arquivo de log para ler"
-            )
-        } catch (error) {
-            console.log(`FALHA MODERADA - Erro ao ler arquivo de log. Mensagem: "${error}"`)
-            Alert.alert(
-                "FALHA MODERADA",
-                `Erro ao ler arquivo de log. Mensagem: "${error}"`
-            )
-        }
-    }, [])
-
-    const readAppFolder = useCallback(async () => {
-        console.log("readAppFolder")
-
-        console.log("========== fullPathRoot ==========")
-        if (await RNFS.exists(fullPathRoot)) {
-            const pathRootContent = await RNFS.readDir(fullPathRoot)
-            pathRootContent.forEach((item) => {
-                console.log(item.path)
-            })
-            if (pathRootContent.length === 0) {
-                console.log("[]")
-            }
-        } else {
-            console.log("Não existe")
-        }
-
-        console.log("========== fullPathPicture ==========")
-        if (await RNFS.exists(fullPathPicture)) {
-            const pathPictureContent = await RNFS.readDir(fullPathPicture)
-            pathPictureContent.forEach((item) => {
-                console.log(item.name)
-            })
-            if (pathPictureContent.length === 0) {
-                console.log("[]")
-            }
-        } else {
-            console.log("Não existe")
-        }
-
-        console.log("========== fullPathTemporary ==========")
-        if (await RNFS.exists(fullPathTemporary)) {
-            const pathTemporaryContent = await RNFS.readDir(fullPathTemporary)
-            pathTemporaryContent.forEach((item) => {
-                console.log(item.name)
-            })
-            if (pathTemporaryContent.length === 0) {
-                console.log("[]")
-            }
-        } else {
-            console.log("Não existe")
-        }
-        console.log("====================")
     }, [])
 
 
@@ -296,10 +199,7 @@ export function Home() {
                 renderItem={renderDocumentItem}
                 keyExtractor={(item) => item.id.toString()}
                 extraData={[selectDocument, deselectDocument]}
-                style={{
-                    marginLeft: 6,
-                    marginTop: 6,
-                }}
+                style={{marginLeft: 6, marginTop: 6}}
             />
 
             {document.length === 0 && (
@@ -313,47 +213,11 @@ export function Home() {
             )}
 
             {(debugHome === "show") && (
-                <View>
-                    <DebugButton
-                        text={"Ler"}
-                        onPress={debugReadDocument}
-                        style={{ bottom: 115 }} />
-                    <DebugButton
-                        text={"Escre"}
-                        onPress={debugWriteDocument}
-                        style={{ bottom: 60 }} />
-                    <DebugButton
-                        text={"Limpar"}
-                        onPress={debugClearDocument}
-                        style={{ bottom: 5 }} />
-
-                    <DebugButton
-                        text={"Auto"}
-                        onPress={async () => await switchTheme("auto")}
-                        style={{ bottom: 115, left: 60 }} />
-                    <DebugButton
-                        text={"Claro"}
-                        onPress={async () => await switchTheme("light")}
-                        style={{ bottom: 60, left: 60 }} />
-                    <DebugButton
-                        text={"Escuro"}
-                        onPress={async () => await switchTheme("dark")}
-                        style={{ bottom: 5, left: 60 }} />
-
-                    <DebugButton
-                        text={"Ler"}
-                        onPress={debugReadLog}
-                        style={{ bottom: 60, left: 115 }} />
-                    <DebugButton
-                        text={"Compar"}
-                        onPress={debugShareLog}
-                        style={{ bottom: 5, left: 115 }} />
-
-                    <DebugButton
-                        text={"Pasta"}
-                        onPress={readAppFolder}
-                        style={{ bottom: 5, left: 170 }} />
-                </View>
+                <DebugHome
+                    debugReadDocument={debugReadDocument}
+                    debugWriteDocument={debugWriteDocument}
+                    debugClearDocument={debugClearDocument}
+                />
             )}
         </SafeScreen>
     )
