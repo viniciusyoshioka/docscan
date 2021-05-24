@@ -1,4 +1,4 @@
-import React, { useCallback } from "react"
+import React, { memo, useCallback } from "react"
 import { Alert, View } from "react-native"
 import RNFS from "react-native-fs"
 import Share from "react-native-share"
@@ -15,7 +15,7 @@ export interface DebugHomeProps {
 }
 
 
-export function DebugHome(props: DebugHomeProps) {
+export const DebugHome = memo((props: DebugHomeProps) => {
 
 
     const switchTheme = useSwitchTheme()
@@ -263,4 +263,4 @@ export function DebugHome(props: DebugHomeProps) {
                 style={{ bottom: 5, left: 170 }} />
         </View>
     )
-}
+})
