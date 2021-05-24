@@ -1,15 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { Alert, BackHandler, FlatList } from "react-native"
 import { useNavigation } from "@react-navigation/core"
+import RNFS from "react-native-fs"
 
 import { DocumentItem } from "../../component/DocumentItem"
 import { SafeScreen } from "../../component/Screen"
 import { debugHome, Document } from "../../service/object-types"
 import { readDebugHome, readDocument, readDocumentId, writeDebugHome, writeDocument, writeDocumentId } from "../../service/storage"
 import { HomeHeader } from "./Header"
-import { appIconOutline, appInDevelopment } from "../../service/constant"
+import { appIconOutline, appInDevelopment, fullPathPicture } from "../../service/constant"
 import { deleteDocument, exportDocument } from "../../service/document-handler"
-import { createAllFolder } from "../../service/folder-handler"
+import { createAllFolder, createPictureFolder } from "../../service/folder-handler"
 import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
 import { useBackHandler } from "../../service/hook"
 import { DebugHome } from "./DebugHome"
@@ -87,9 +88,12 @@ export function Home() {
         await writeDocument([])
         await writeDocumentId([])
 
+        await RNFS.unlink(fullPathPicture)
+        await createPictureFolder()
+
         setDocument([])
 
-        console.log("document, documentId - CLEAR")
+        console.log("document, documentId, Picture - CLEAR")
     }, [])
 
 

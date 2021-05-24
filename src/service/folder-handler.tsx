@@ -34,7 +34,7 @@ async function createPdfFolderExternal() {
     }
 }
 
-async function createPictureFolder() {
+export async function createPictureFolder() {
     try {
         if (!await RNFS.exists(fullPathPicture)) {
             await RNFS.mkdir(fullPathPicture)
