@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react"
 import { Alert, BackHandler, FlatList } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import RNFS from "react-native-fs"
+import KeepAwake from "react-native-keep-awake"
 
 import { DocumentItem } from "../../component/DocumentItem"
 import { SafeScreen } from "../../component/Screen"
@@ -182,6 +183,16 @@ export function Home() {
         createAllFolder()
         debugGetDebugHome()
         getDocument()
+    }, [])
+
+    useEffect(() => {
+        if (appInDevelopment) {
+            KeepAwake.activate()
+    
+            return () => {
+                KeepAwake.deactivate()
+            }
+        }
     }, [])
 
 
