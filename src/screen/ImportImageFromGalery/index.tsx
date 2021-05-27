@@ -69,11 +69,7 @@ export function ImportImageFromGalery() {
             return
         }
 
-        navigation.navigate("Camera", {
-            document: params.document,
-            documentName: params.documentName,
-            pictureList: params.pictureList,
-        })
+        navigation.goBack()
     }, [selectionMode])
 
     const selectImage = useCallback((imagePath: string) => {
@@ -106,7 +102,7 @@ export function ImportImageFromGalery() {
                 screenAction={params.screenAction}
             />
         )
-    }, [selectionMode, selectImage, deselectImage])
+    }, [params, selectionMode, selectImage, deselectImage])
 
     const getNewImagePath = useCallback(async (imagePath: string) => {
         // Get file in path
@@ -142,31 +138,35 @@ export function ImportImageFromGalery() {
                 "Erro",
                 "Não foi possível importar imagem da galeria"
             )
-            navigation.navigate("Camera", {
-                document: params.document,
-                pictureList: params.pictureList,
-                documentName: params.documentName,
-            })
+            navigation.goBack()
             return
         }
 
-        if (!params?.screenAction && !params?.screenAction) {
-            navigation.navigate("Camera", {
-                document: params.document,
-                pictureList: [...params.pictureList, newImagePath],
-                documentName: params.documentName,
+        if (!params?.screenAction) {
+            navigation.navigate({
+                name: "Camera",
+                params: {
+                    document: params.document,
+                    pictureList: [...params.pictureList, newImagePath],
+                    documentName: params.documentName,
+                }
             })
-        } else if (params !== undefined && params.screenAction === "replace-picture" && params.replaceIndex !== undefined) {
+        } else if (params?.screenAction === "replace-picture" && params?.replaceIndex !== undefined) {
             params.pictureList[params.replaceIndex] = newImagePath
-            navigation.navigate("VisualizePicture", {
-                picturePath: newImagePath,
-                pictureIndex: params.replaceIndex,
-                document: params.document,
-                documentName: params.documentName,
-                pictureList: params.pictureList,
+
+            navigation.navigate({
+                name: "VisualizePicture",
+                params: {
+                    picturePath: newImagePath,
+                    pictureIndex: params.replaceIndex,
+                    document: params.document,
+                    documentName: params.documentName,
+                    pictureList: params.pictureList,
+                    isChanged: true,
+                }
             })
         }
-    }, [])
+    }, [params])
 
     const importMultipleImage = useCallback(() => {
         const imagesToImport: Array<string> = [...params.pictureList]
@@ -182,21 +182,20 @@ export function ImportImageFromGalery() {
                     "Erro",
                     "Não foi possível importar multiplas imagens da galeria"
                 )
-                navigation.navigate("Camera", {
-                    document: params.document,
-                    pictureList: params.pictureList,
-                    documentName: params.documentName,
-                })
+                navigation.goBack()
                 return
             }
         })
 
-        navigation.navigate("Camera", {
-            document: params.document,
-            documentName: params.documentName,
-            pictureList: imagesToImport,
+        navigation.navigate({
+            name: "Camera",
+            params: {
+                document: params.document,
+                documentName: params.documentName,
+                pictureList: imagesToImport,
+            }
         })
-    }, [selectedImage])
+    }, [params, selectedImage])
 
     const exitSelectionMode = useCallback(() => {
         setSelectedImage([])

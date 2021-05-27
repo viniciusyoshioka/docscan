@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { Alert, BackHandler, FlatList } from "react-native"
-import { useNavigation } from "@react-navigation/core"
+import { EventArg, NavigationState, useNavigation } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 import KeepAwake from "react-native-keep-awake"
 
@@ -186,10 +186,24 @@ export function Home() {
     }, [])
 
     useEffect(() => {
+        type stateType = EventArg<
+            "state", boolean | undefined, {state: NavigationState}
+        >
+
+        function printNavigationHistory(event: stateType) {
+            let routes = ""
+            event.data.state.routes.forEach((item) => {
+                routes += `${item.name} `
+            })
+            console.log(routes)
+        }
+
         if (appInDevelopment) {
+            navigation.addListener("state", printNavigationHistory)
             KeepAwake.activate()
-    
+
             return () => {
+                navigation.removeListener("state", printNavigationHistory)
                 KeepAwake.deactivate()
             }
         }

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useReducer, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { RNCamera } from "react-native-camera"
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 
 import { SafeScreen } from "../../component/Screen"
 import { CameraHeader } from "./Header"
@@ -74,31 +74,39 @@ export function Camera() {
 
 
     const goBack = useCallback(() => {
-        if (params && params.screenAction === "replace-picture" && params.replaceIndex) {
+        console.log(JSON.stringify(params))
+        if (!params && pictureList.length === 0) {
             navigation.goBack()
             return
         }
 
-        if (params?.document === undefined && pictureList.length === 0) {
-            navigation.navigate("Home")
+        if (!params && pictureList.length > 0) {
+            Alert.alert(
+                "Aviso", 
+                "Você tem fotos que não foram salvas, deseja voltar?",
+                [
+                    {text: "Cancelar", onPress: () => {}},
+                    {text: "Voltar", onPress: () => navigation.navigate("Home")}
+                ]
+            )
             return
         }
 
-        Alert.alert(
-            "Este documento foi alterado", 
-            "Sair agora descartará as alterações feitas neste documento, esta ação é irreversível",
-            [
-                {
-                    text: "Voltar", 
-                    onPress: () => navigation.navigate("Home")
-                }, 
-                {
-                    text: "Cancelar", 
-                    onPress: () => {}
-                }
-            ]
-        )
-    }, [pictureList])
+        if (params?.screenAction === "replace-picture") {
+            navigation.goBack()
+            return
+        }
+
+        if (params?.documentName) {
+            navigation.navigate("EditDocument", {
+                document: params.document,
+                documentName: params.documentName,
+                pictureList: pictureList,
+                isChanged: false,
+            })
+            return
+        }
+    }, [params, pictureList])
 
     const addPictureFromGalery = useCallback(() => {
         navigation.navigate("ImportImageFromGalery", {
@@ -108,7 +116,7 @@ export function Camera() {
             screenAction: params?.screenAction,
             replaceIndex: params?.replaceIndex,
         })
-    }, [pictureList])
+    }, [params, pictureList])
 
     const takePicture = useCallback(async () => {
         createAllFolder()
@@ -137,13 +145,16 @@ export function Camera() {
             } else if (params !== undefined && params.screenAction === "replace-picture" && params.replaceIndex !== undefined) {
                 params.pictureList[params.replaceIndex] = picturePath
 
-                navigation.navigate("VisualizePicture", {
-                    picturePath: picturePath,
-                    pictureIndex: params.replaceIndex,
-                    document: params.document,
-                    documentName: params.documentName,
-                    pictureList: params.pictureList,
-                    isChanged: true,
+                navigation.navigate({
+                    name: "VisualizePicture",
+                    params: {
+                        picturePath: picturePath,
+                        pictureIndex: params.replaceIndex,
+                        document: params.document,
+                        documentName: params.documentName,
+                        pictureList: params.pictureList,
+                        isChanged: true,
+                    }
                 })
             }
         } catch (error) {
@@ -153,16 +164,19 @@ export function Camera() {
                 "Erro desconhecido ao tirar foto, tente novamente"
             )
         }
-    }, [cameraRef])
+    }, [params, cameraRef])
 
     const editDocument = useCallback(() => {
-        navigation.navigate("EditDocument", {
-            document: params?.document,
-            documentName: params?.documentName !== undefined ? params?.documentName : getDocumentName(),
-            pictureList: pictureList,
-            isChanged: true,
-        })
-    }, [pictureList])
+        navigation.reset({routes: [{
+            name: "EditDocument",
+            params: {
+                document: params?.document,
+                documentName: params?.documentName !== undefined ? params?.documentName : getDocumentName(),
+                pictureList: pictureList,
+                isChanged: true,
+            }
+        }]})
+    }, [params, pictureList])
 
 
     useEffect(() => {

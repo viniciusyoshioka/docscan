@@ -35,8 +35,7 @@ export function EditDocument() {
             ? params.document.pictureList
             : (params.pictureList)
                 ? params.pictureList
-                : []
-    )
+                : [])
 
     const [selectionMode, setSelectionMode] = useState(false)
     const [selectedPicturesIndex, setSelectedPicturesIndex] = useState<Array<number>>([])
@@ -158,14 +157,8 @@ export function EditDocument() {
             "Apagar documento?",
             "Esta ação é irreversível e apagará todo o conteúdo. Deseja apagar?",
             [
-                {
-                    text: "Apagar",
-                    onPress: async () => await alertDiscard()
-                },
-                {
-                    text: "Cancelar",
-                    onPress: () => { }
-                }
+                {text: "Cancelar", onPress: () => {}},
+                {text: "Apagar", onPress: async () => await alertDiscard()}
             ]
         )
     }, [document, pictureList])
@@ -201,14 +194,8 @@ export function EditDocument() {
             "Apagar foto",
             "Esta foto será apagada e a ação não poderá ser desfeita",
             [
-                {
-                    text: "Apagar",
-                    onPress: () => alertDelete()
-                },
-                {
-                    text: "Cancelar",
-                    onPress: () => { }
-                }
+                {text: "Cancelar", onPress: () => {}},
+                {text: "Apagar", onPress: () => alertDelete()}
             ]
         )
     }, [pictureList, selectedPicturesIndex, saveDocument])

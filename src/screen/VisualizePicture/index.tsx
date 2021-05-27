@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from "react"
 import { Alert, Image } from "react-native"
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 
 import { ImageCrop, imageSavedResponse } from "../../service/image-crop"
@@ -33,41 +33,45 @@ export function VisualizePicture() {
             return
         }
 
-        navigation.navigate("EditDocument", {
-            document: params.document,
-            documentName: params.documentName,
-            pictureList: params.pictureList,
-            isChanged: params.isChanged,
+        navigation.navigate({
+            name: "EditDocument",
+            params: {
+                document: params.document,
+                documentName: params.documentName,
+                pictureList: params.pictureList,
+                isChanged: params.isChanged,
+            }
         })
-    }, [isCropping])
+    }, [params, isCropping])
 
     const onImageSaved = useCallback(async (response: imageSavedResponse) => {
         try {
             await RNFS.unlink(params.picturePath)
             await RNFS.moveFile(response.uri, params.picturePath)
         } catch (error) {
-            await RNFS.unlink(response.uri)
+            if (await RNFS.exists(response.uri)) {
+                await RNFS.unlink(response.uri)
+            }
 
             log("ERROR", `VisualizePicture onImageSaved - Error moving file. Message: "${error}"`)
             Alert.alert(
                 "Erro",
                 "Não foi possível salvar imagem cortada"
             )
-            navigation.navigate("EditDocument", {
-                document: params.document,
-                documentName: params.documentName,
-                pictureList: params.pictureList,
-            })
+            setIsCropping(false)
             return
         }
 
-        navigation.navigate("EditDocument", {
-            document: params.document,
-            documentName: params.documentName,
-            pictureList: params.pictureList,
-            isChanged: true,
+        navigation.navigate({
+            name: "EditDocument",
+            params: {
+                document: params.document,
+                documentName: params.documentName,
+                pictureList: params.pictureList,
+                isChanged: true,
+            }
         })
-    }, [])
+    }, [params])
 
     const onSaveImageError = useCallback((response: string) => {
         log("ERROR", `VisualizePicture onSaveImageError - Erro ao cortar imagem. Mensagem: "${response}"`)
@@ -75,6 +79,7 @@ export function VisualizePicture() {
             "Falha",
             "Não foi possível cortar imagem"
         )
+        setIsCropping(false)
     }, [])
 
     const openCamera = useCallback(() => {
