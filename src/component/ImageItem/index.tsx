@@ -61,7 +61,12 @@ export function ImageItem(props: ImageItemProps) {
             minDurationMs={400}
             onHandlerStateChange={({ nativeEvent }) => longPress(nativeEvent)}
         >
-            <Button onPress={normalPress}>
+            <Button
+                onPress={normalPress}
+                style={{
+                    width: imageSize, height: imageSize,
+                }}
+            >
                 <Image
                     source={{ uri: `file://${props.imagePath}` }}
                     style={{
