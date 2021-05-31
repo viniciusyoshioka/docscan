@@ -58,7 +58,7 @@ export class HomeHeader extends Component<HomeHeaderProps> {
                 <BlockRight>
                     {this.props.selectionMode && (
                         <HeaderButton
-                            iconName={"md-trash-outline"}
+                            iconName={"md-trash"}
                             onPress={this.props.deleteSelectedDocument}
                         />
                     )}

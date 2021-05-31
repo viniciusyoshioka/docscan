@@ -64,7 +64,7 @@ export class VisualizePictureHeader extends Component<VisualizePictureHeaderProp
                 <BlockRight>
                     {!this.props.isCropping && (
                         <HeaderButton
-                            iconName={"md-camera-outline"}
+                            iconName={"md-camera"}
                             onPress={this.props.openCamera}
                         />
                     )}
@@ -77,7 +77,7 @@ export class VisualizePictureHeader extends Component<VisualizePictureHeaderProp
 
                     {this.props.isCropping && (
                         <HeaderButton
-                            iconName={"md-checkmark-sharp"}
+                            iconName={"md-checkmark"}
                             onPress={this.props.saveCroppedPicture}
                         />
                     )}

@@ -137,7 +137,7 @@ export function CameraSettings(props: CameraSettingsProps) {
                 </ButtonSettingsBase>
 
                 <ButtonSettings
-                    iconName={"md-refresh-outline"}
+                    iconName={"md-refresh"}
                     onPress={resetCameraSettings}
                 />
             </ScrollView>

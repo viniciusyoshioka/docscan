@@ -17,7 +17,7 @@ export function CameraControl(props: CameraControlProps) {
     return (
         <CameraControlView style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
             <CameraControlButton
-                iconName={"md-image-outline"}
+                iconName={"md-image-sharp"}
                 onPress={props.addPictureFromGalery}
             />
 
@@ -32,7 +32,7 @@ export function CameraControl(props: CameraControlProps) {
                 <CameraControlButtonBase onPress={props.editDocument}>
                     <CameraControlViewButtonIndex>
                         <Icon
-                            name={"md-document-outline"}
+                            name={"md-document-sharp"}
                             size={cameraControlIconSize}
                             color={"rgb(255, 255, 255)"}
                         />

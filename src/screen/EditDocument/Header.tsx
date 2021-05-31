@@ -48,7 +48,7 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
             {props.selectionMode && (
                 <BlockRight>
                     <HeaderButton
-                        iconName={"md-trash-outline"}
+                        iconName={"md-trash"}
                         onPress={props.deletePicture} 
                     />
                 </BlockRight>
@@ -57,7 +57,7 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
             {!props.selectionMode && (
                 <BlockRight>
                     <HeaderButton
-                        iconName={"md-camera-outline"}
+                        iconName={"md-camera"}
                         onPress={props.openCamera}
                     />
 
