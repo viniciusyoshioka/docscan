@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from "react"
 import { Alert, BackHandler, FlatList } from "react-native"
 import { EventArg, NavigationState, useNavigation } from "@react-navigation/core"
 import RNFS from "react-native-fs"
-import KeepAwake from "react-native-keep-awake"
 
 import { DocumentItem } from "../../component/DocumentItem"
 import { SafeScreen } from "../../component/Screen"
@@ -198,15 +197,9 @@ export function Home() {
             console.log(routes)
         }
 
-        if (appInDevelopment) {
-            navigation.addListener("state", printNavigationHistory)
-            KeepAwake.activate()
+        navigation.addListener("state", printNavigationHistory)
 
-            return () => {
-                navigation.removeListener("state", printNavigationHistory)
-                KeepAwake.deactivate()
-            }
-        }
+        return () => navigation.removeListener("state", printNavigationHistory)
     }, [])
 
 

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react"
 import { useColorScheme } from "react-native"
 import { MenuProvider } from "react-native-popup-menu"
 import { ThemeProvider } from "styled-components/native"
+import KeepAwake from "react-native-keep-awake"
 
 import { Router } from "./router"
 import { readTheme, writeTheme } from "./service/storage"
@@ -41,6 +42,14 @@ export function App() {
     useEffect(() => {
         getTheme()
     }, [deviceTheme])
+
+    useEffect(() => {
+        if (__DEV__) {
+            KeepAwake.activate()
+
+            return () => KeepAwake.deactivate()
+        }
+    }, [])
 
 
     if (theme === undefined) {
