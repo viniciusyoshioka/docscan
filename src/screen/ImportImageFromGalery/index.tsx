@@ -69,8 +69,55 @@ export function ImportImageFromGalery() {
             return
         }
 
-        navigation.goBack()
-    }, [selectionMode])
+        if (params.screenAction === "replace-picture") {
+            navigation.reset({routes: [
+                {name: "Home"},
+                {
+                    name: "EditDocument",
+                    params: {
+                        document: params.document,
+                        documentName: params.documentName,
+                        pictureList: params.pictureList,
+                    }
+                },
+                {
+                    name: "VisualizePicture",
+                    params: {
+                        picturePath: params.picturePath,
+                        pictureIndex: params.replaceIndex,
+                        document: params.document,
+                        documentName: params.documentName,
+                        pictureList: params.pictureList,
+                        isChanged: false,
+                    }
+                },
+                {
+                    name: "Camera",
+                    params: {
+                        document: params?.document,
+                        documentName: params?.documentName,
+                        pictureList: params.pictureList,
+                        screenAction: params?.screenAction,
+                        replaceIndex: params?.replaceIndex,
+                        picturePath: params.picturePath,
+                    }
+                }
+            ]})
+            return
+        }
+
+        navigation.reset({routes: [
+            {name: "Home"},
+            {
+                name: "Camera",
+                params: {
+                    document: params.document,
+                    documentName: params.documentName,
+                    pictureList: params.pictureList,
+                }
+            }
+        ]})
+    }, [params, selectionMode])
 
     const selectImage = useCallback((imagePath: string) => {
         if (!selectionMode) {
@@ -138,32 +185,42 @@ export function ImportImageFromGalery() {
                 "Erro",
                 "Não foi possível importar imagem da galeria"
             )
-            navigation.goBack()
+            navigation.reset({routes: [
+                {name: "Home"},
+                {
+                    name: "Camera",
+                    params: {
+                        document: params.document,
+                        documentName: params.documentName,
+                        pictureList: params.pictureList,
+                    }
+                }
+            ]})
             return
         }
 
         if (!params?.screenAction) {
-            navigation.navigate({
-                name: "Camera",
-                params: {
-                    document: params.document,
-                    pictureList: [...params.pictureList, newImagePath],
-                    documentName: params.documentName,
+            navigation.reset({routes: [
+                {name: "Home"},
+                {
+                    name: "Camera",
+                    params: {
+                        document: params.document,
+                        pictureList: [...params.pictureList, newImagePath],
+                        documentName: params.documentName,
+                    }
                 }
-            })
+            ]})
         } else if (params?.screenAction === "replace-picture" && params?.replaceIndex !== undefined) {
             params.pictureList[params.replaceIndex] = newImagePath
 
-            navigation.navigate({
-                name: "VisualizePicture",
-                params: {
-                    picturePath: newImagePath,
-                    pictureIndex: params.replaceIndex,
-                    document: params.document,
-                    documentName: params.documentName,
-                    pictureList: params.pictureList,
-                    isChanged: true,
-                }
+            navigation.navigate("VisualizePicture", {
+                picturePath: newImagePath,
+                pictureIndex: params.replaceIndex,
+                document: params.document,
+                documentName: params.documentName,
+                pictureList: params.pictureList,
+                isChanged: true,
             })
         }
     }, [params])
@@ -182,19 +239,32 @@ export function ImportImageFromGalery() {
                     "Erro",
                     "Não foi possível importar multiplas imagens da galeria"
                 )
-                navigation.goBack()
+                navigation.reset({routes: [
+                    {name: "Home"},
+                    {
+                        name: "Camera",
+                        params: {
+                            document: params.document,
+                            documentName: params.documentName,
+                            pictureList: params.pictureList,
+                        }
+                    }
+                ]})
                 return
             }
         })
 
-        navigation.navigate({
-            name: "Camera",
-            params: {
-                document: params.document,
-                documentName: params.documentName,
-                pictureList: imagesToImport,
+        navigation.reset({routes: [
+            {name: "Home"},
+            {
+                name: "Camera",
+                params: {
+                    document: params.document,
+                    documentName: params.documentName,
+                    pictureList: imagesToImport,
+                }
             }
-        })
+        ]})
     }, [params, selectedImage])
 
     const exitSelectionMode = useCallback(() => {

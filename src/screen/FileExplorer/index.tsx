@@ -139,7 +139,7 @@ export function FileExplorer() {
 
     const goBack = useCallback(() => {
         if (path === null) {
-            navigation.goBack()
+            navigation.navigate("Home")
             return
         } else if (path === "/") {
             setPath(null)
@@ -176,7 +176,7 @@ export function FileExplorer() {
     return (
         <SafeScreen>
             <FileExplorerHeader
-                goBack={() => navigation.goBack()}
+                goBack={() => navigation.navigate("Home")}
             />
 
             {path && (

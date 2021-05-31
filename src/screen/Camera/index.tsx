@@ -74,9 +74,8 @@ export function Camera() {
 
 
     const goBack = useCallback(() => {
-        console.log(JSON.stringify(params))
         if (!params && pictureList.length === 0) {
-            navigation.goBack()
+            navigation.navigate("Home")
             return
         }
 
@@ -92,30 +91,100 @@ export function Camera() {
             return
         }
 
+        if (!params?.document && !params?.documentName && params?.pictureList.length === 0) {
+            navigation.navigate("Home")
+            return
+        }
+
+        if (!params?.document && !params?.documentName && params?.pictureList && params.pictureList.length > 0) {
+            Alert.alert(
+                "Aviso", 
+                "Você tem fotos que não foram salvas, deseja voltar?",
+                [
+                    {text: "Cancelar", onPress: () => {}},
+                    {text: "Voltar", onPress: () => navigation.navigate("Home")}
+                ]
+            )
+            return
+        }
+
         if (params?.screenAction === "replace-picture") {
-            navigation.goBack()
+            navigation.navigate("VisualizePicture", {
+                picturePath: params.picturePath,
+                pictureIndex: params.replaceIndex,
+                document: params.document,
+                documentName: params.documentName,
+                pictureList: params.pictureList,
+                isChanged: false,
+            })
             return
         }
 
         if (params?.documentName) {
-            navigation.navigate("EditDocument", {
-                document: params.document,
-                documentName: params.documentName,
-                pictureList: pictureList,
-                isChanged: false,
-            })
+            navigation.reset({routes: [{
+                name: "EditDocument",
+                params: {
+                    document: params.document,
+                    documentName: params.documentName,
+                    pictureList: params.pictureList,
+                    isChanged: false,
+                }
+            }]})
             return
         }
     }, [params, pictureList])
 
     const addPictureFromGalery = useCallback(() => {
-        navigation.navigate("ImportImageFromGalery", {
-            document: params?.document,
-            documentName: params?.documentName,
-            pictureList: pictureList,
-            screenAction: params?.screenAction,
-            replaceIndex: params?.replaceIndex,
-        })
+        if (params?.screenAction === "replace-picture") {
+            navigation.reset({routes: [
+                {name: "Home"},
+                {
+                    name: "EditDocument",
+                    params: {
+                        document: params.document,
+                        documentName: params.documentName,
+                        pictureList: params.pictureList,
+                    }
+                },
+                {
+                    name: "VisualizePicture",
+                    params: {
+                        picturePath: params.picturePath,
+                        pictureIndex: params.replaceIndex,
+                        document: params.document,
+                        documentName: params.documentName,
+                        pictureList: pictureList,
+                        isChanged: false,
+                    }
+                },
+                {
+                    name: "ImportImageFromGalery",
+                    params: {
+                        document: params?.document,
+                        documentName: params?.documentName,
+                        pictureList: pictureList,
+                        screenAction: params?.screenAction,
+                        replaceIndex: params?.replaceIndex,
+                        picturePath: params.picturePath,
+                    }
+                }
+            ]})
+            return
+        }
+
+        navigation.reset({routes: [
+            {name: "Home"},
+            {
+                name: "ImportImageFromGalery",
+                params: {
+                    document: params?.document,
+                    documentName: params?.documentName,
+                    pictureList: pictureList,
+                    screenAction: params?.screenAction,
+                    replaceIndex: params?.replaceIndex,
+                }
+            }
+        ]})
     }, [params, pictureList])
 
     const takePicture = useCallback(async () => {
@@ -145,16 +214,13 @@ export function Camera() {
             } else if (params !== undefined && params.screenAction === "replace-picture" && params.replaceIndex !== undefined) {
                 params.pictureList[params.replaceIndex] = picturePath
 
-                navigation.navigate({
-                    name: "VisualizePicture",
-                    params: {
-                        picturePath: picturePath,
-                        pictureIndex: params.replaceIndex,
-                        document: params.document,
-                        documentName: params.documentName,
-                        pictureList: params.pictureList,
-                        isChanged: true,
-                    }
+                navigation.navigate("VisualizePicture", {
+                    picturePath: picturePath,
+                    pictureIndex: params.replaceIndex,
+                    document: params.document,
+                    documentName: params.documentName,
+                    pictureList: params.pictureList,
+                    isChanged: true,
                 })
             }
         } catch (error) {
@@ -171,7 +237,7 @@ export function Camera() {
             name: "EditDocument",
             params: {
                 document: params?.document,
-                documentName: params?.documentName !== undefined ? params?.documentName : getDocumentName(),
+                documentName: params?.documentName ? params?.documentName : getDocumentName(),
                 pictureList: pictureList,
                 isChanged: true,
             }

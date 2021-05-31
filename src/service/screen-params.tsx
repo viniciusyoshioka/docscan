@@ -8,6 +8,7 @@ export type ScreenParams = {
         pictureList: Array<string>,
         screenAction?: "replace-picture",
         replaceIndex?: number,
+        picturePath?: string,
     } | undefined,
     EditDocument: {
         document: Document | undefined,
@@ -21,6 +22,7 @@ export type ScreenParams = {
         pictureList: Array<string>,
         screenAction?: "replace-picture",
         replaceIndex?: number,
+        picturePath?: string,
     },
     VisualizePicture: {
         picturePath: string,

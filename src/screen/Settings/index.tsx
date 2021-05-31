@@ -25,7 +25,7 @@ export function Settings() {
 
 
     const goBack = useCallback(() => {
-        navigation.goBack()
+        navigation.navigate("Home")
     }, [])
 
 

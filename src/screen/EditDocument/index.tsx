@@ -141,6 +141,8 @@ export function EditDocument() {
                 await deleteDocument([document.id], true)
                 navigation.reset({ routes: [{ name: "Home" }] })
             } else {
+                // This code may not been used
+                // Delete document when not saved
                 pictureList.forEach(async (item) => {
                     try {
                         await RNFS.unlink(item)

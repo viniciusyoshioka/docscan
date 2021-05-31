@@ -33,14 +33,11 @@ export function VisualizePicture() {
             return
         }
 
-        navigation.navigate({
-            name: "EditDocument",
-            params: {
-                document: params.document,
-                documentName: params.documentName,
-                pictureList: params.pictureList,
-                isChanged: params.isChanged,
-            }
+        navigation.navigate("EditDocument", {
+            document: params.document,
+            documentName: params.documentName,
+            pictureList: params.pictureList,
+            isChanged: params.isChanged,
         })
     }, [params, isCropping])
 
@@ -62,14 +59,11 @@ export function VisualizePicture() {
             return
         }
 
-        navigation.navigate({
-            name: "EditDocument",
-            params: {
-                document: params.document,
-                documentName: params.documentName,
-                pictureList: params.pictureList,
-                isChanged: true,
-            }
+        navigation.navigate("EditDocument", {
+            document: params.document,
+            documentName: params.documentName,
+            pictureList: params.pictureList,
+            isChanged: true,
         })
     }, [params])
 
@@ -88,7 +82,8 @@ export function VisualizePicture() {
             documentName: params.documentName,
             pictureList: params.pictureList,
             screenAction: "replace-picture",
-            replaceIndex: params.pictureIndex
+            replaceIndex: params.pictureIndex,
+            picturePath: params.picturePath,
         })
     }, [params])
 

@@ -191,7 +191,7 @@ export function Home() {
         >
 
         function printNavigationHistory(event: stateType) {
-            let routes = ""
+            let routes = "ROTAS: "
             event.data.state.routes.forEach((item) => {
                 routes += `${item.name} `
             })
