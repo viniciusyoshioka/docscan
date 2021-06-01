@@ -43,6 +43,11 @@ export function EditDocument() {
 
 
     useBackHandler(() => {
+        if (renameDocumentVisible) {
+            setRenameDocumentVisible(false)
+            return true
+        }
+
         goBack()
         return true
     })
@@ -275,13 +280,6 @@ export function EditDocument() {
 
     return (
         <SafeScreen>
-            <RenameDocument
-                visible={renameDocumentVisible}
-                setVisible={setRenameDocumentVisible}
-                documentName={documentName}
-                setDocumentName={renameDocument}
-            />
-
             <EditDocumentHeader
                 goBack={goBack}
                 exitSelectionMode={exitSelectionMode}
@@ -302,6 +300,13 @@ export function EditDocument() {
                 extraData={[selectPicture, deselectPicture]}
                 numColumns={2}
                 style={{marginLeft: 6, marginTop: 6}}
+            />
+
+            <RenameDocument
+                visible={renameDocumentVisible}
+                setVisible={setRenameDocumentVisible}
+                documentName={documentName}
+                setDocumentName={renameDocument}
             />
         </SafeScreen>
     )
