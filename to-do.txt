@@ -1,13 +1,13 @@
 
+move readSettings from Camera to a Provider
+
 remove useBackHandler hook
 
-add support to multiple cameras
-create light/dark mode compatible with Material UI
-change Camera UI orientation when device orientation changes
-
 # Camera
+add support to multiple cameras
 fix taken picture area
 focus clicking on screen
+change Camera UI orientation when device orientation changes
 
 # VisualizePicture
 add zoom on image
