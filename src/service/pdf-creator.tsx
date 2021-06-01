@@ -21,7 +21,7 @@ export interface ExportResponse {
 export async function exportDocumentToPdf(documentName: string, pictureList: Array<string>) {
     if (documentName === "") {
         Alert.alert(
-            "Nome do documento vazio",
+            "Documento sem nome",
             "Não é possível exportar documento sem nome"
         )
         return
@@ -57,7 +57,7 @@ export async function exportDocumentToPdf(documentName: string, pictureList: Arr
             log("ERROR", `EditDocument exportDocumentToPdf - Erro ao export documento para PDF. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro ao exportar documento",
-                "Não foi possível exportar documento para PDF"
+                "Erro desconhecido ao exportar documento para PDF"
             )
         })
 

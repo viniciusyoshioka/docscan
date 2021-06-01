@@ -65,7 +65,7 @@ export function EditDocument() {
         if (document) {
             if (thisDocumentName === "") {
                 Alert.alert(
-                    "Nome do documento vazio",
+                    "Documento sem nome",
                     "Não é possível salvar um documento sem nome"
                 )
                 return
@@ -83,7 +83,7 @@ export function EditDocument() {
                 return
             } else if (thisDocumentName === "") {
                 Alert.alert(
-                    "Nome do documento vazio",
+                    "Documento sem nome",
                     "Não é possível salvar um documento sem nome"
                 )
                 return
@@ -112,8 +112,8 @@ export function EditDocument() {
         const documentPath = `file://${fullPathPdf}/${documentName}.pdf`
         if (!(await RNFS.exists(documentPath))) {
             Alert.alert(
-                "Não foi possível compartilhar",
-                "Exporte o documento para PDF antes de compartilhá-lo"
+                "Aviso",
+                "Converta o documento para PDF antes de compartilhá-lo"
             )
             return
         }
@@ -129,7 +129,7 @@ export function EditDocument() {
             log("ERROR", `EditDocument shareDocument - Erro ao compartilhar documento. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro",
-                "Não foi possível compartilhar documento, erro desconhecido"
+                "Erro desconhecido ao compartilhar o documento"
             )
         }
     }, [documentName])
@@ -161,8 +161,8 @@ export function EditDocument() {
         }
 
         Alert.alert(
-            "Apagar documento?",
-            "Esta ação é irreversível e apagará todo o conteúdo. Deseja apagar?",
+            "Apagar documento",
+            "Este documento será apagado e todo seu conteúdo será perdido",
             [
                 {text: "Cancelar", onPress: () => {}},
                 {text: "Apagar", onPress: async () => await alertDiscard()}
@@ -199,7 +199,7 @@ export function EditDocument() {
 
         Alert.alert(
             "Apagar foto",
-            "Esta foto será apagada e a ação não poderá ser desfeita",
+            "Esta foto será apagada permanentemente",
             [
                 {text: "Cancelar", onPress: () => {}},
                 {text: "Apagar", onPress: () => alertDelete()}

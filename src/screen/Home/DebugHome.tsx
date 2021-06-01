@@ -33,13 +33,17 @@ export const DebugHome = memo((props: DebugHomeProps) => {
 
             Alert.alert(
                 "INFO",
-                "Não há arquivo de log para ler"
+                "Não há arquivo de log para ler",
+                [{text: "Ok", onPress: () => {}}],
+                {cancelable: false}
             )
         } catch (error) {
             console.log(`FALHA MODERADA - Erro ao ler arquivo de log. Mensagem: "${error}"`)
             Alert.alert(
                 "FALHA MODERADA",
-                `Erro ao ler arquivo de log. Mensagem: "${error}"`
+                `Erro ao ler arquivo de log. Mensagem: "${error}"`,
+                [{text: "Ok", onPress: () => {}}],
+                {cancelable: false}
             )
         }
     }, [])
@@ -58,13 +62,17 @@ export const DebugHome = memo((props: DebugHomeProps) => {
 
             Alert.alert(
                 "INFO",
-                "Não há arquivo de log para compartilhar"
+                "Não há arquivo de log para compartilhar",
+                [{text: "Ok", onPress: () => {}}],
+                {cancelable: false}
             )
         } catch (error) {
             console.log(`FALHA MODERADA - Erro ao compartilhar arquivo de log. Mensagem: "${error}"`)
             Alert.alert(
                 "FALHA MODERADA",
-                `Erro ao compartilhar arquivo de log. Mensagem: "${error}"`
+                `Erro ao compartilhar arquivo de log. Mensagem: "${error}"`,
+                [{text: "Ok", onPress: () => {}}],
+                {cancelable: false}
             )
         }
     }, [])
@@ -74,14 +82,14 @@ export const DebugHome = memo((props: DebugHomeProps) => {
             try {
                 await RNFS.unlink(fullPathLog)
                 Alert.alert(
-                    "Aviso",
+                    "INFO",
                     "Arquivo de log apagado com sucesso",
                     [{text: "Ok", onPress: () => {}}],
                     {cancelable: false}
                 )
             } catch (error) {
                 Alert.alert(
-                    "Erro",
+                    "FALHA MODERADA",
                     "Erro ao apagar arquivo de log",
                     [{text: "Ok", onPress: () => {}}],
                     {cancelable: false}
@@ -94,7 +102,7 @@ export const DebugHome = memo((props: DebugHomeProps) => {
             "Apagar arquivo de log?",
             [
                 {text: "Cancelar", onPress: () => {}},
-                {text: "Apagar", onPress: async () => await alertDeleteLogComplete()}
+                {text: "Ok", onPress: async () => await alertDeleteLogComplete()}
             ],
             {cancelable: false}
         )
@@ -149,14 +157,14 @@ export const DebugHome = memo((props: DebugHomeProps) => {
             try {
                 await RNFS.unlink(fullPathPicture)
                 Alert.alert(
-                    "Aviso",
+                    "INFO",
                     "Pasta de imagens apagada com sucesso",
                     [{text: "Ok", onPress: () => {}}],
                     {cancelable: false}
                 )
             } catch (error) {
                 Alert.alert(
-                    "Erro",
+                    "FALHA MODERADA",
                     "Erro ao apagar pasta de imagens",
                     [{text: "Ok", onPress: () => {}}],
                     {cancelable: false}
@@ -180,14 +188,14 @@ export const DebugHome = memo((props: DebugHomeProps) => {
             try {
                 await RNFS.unlink(fullPathTemporary)
                 Alert.alert(
-                    "Aviso",
+                    "INFO",
                     "Pasta temporária apagada com sucesso",
                     [{text: "Ok", onPress: () => {}}],
                     {cancelable: false}
                 )
             } catch (error) {
                 Alert.alert(
-                    "Erro",
+                    "FALHA MODERADA",
                     "Erro ao apagar pasta temporária",
                     [{text: "Ok", onPress: () => {}}],
                     {cancelable: false}

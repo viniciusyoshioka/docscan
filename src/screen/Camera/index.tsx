@@ -82,7 +82,7 @@ export function Camera() {
         if (!params && pictureList.length > 0) {
             Alert.alert(
                 "Aviso", 
-                "Você tem fotos que não foram salvas, deseja voltar?",
+                "Você tem fotos que não foram salvas, ao voltar elas serão perdidas",
                 [
                     {text: "Cancelar", onPress: () => {}},
                     {text: "Voltar", onPress: () => navigation.navigate("Home")}
@@ -98,8 +98,8 @@ export function Camera() {
 
         if (!params?.document && !params?.documentName && params?.pictureList && params.pictureList.length > 0) {
             Alert.alert(
-                "Aviso", 
-                "Você tem fotos que não foram salvas, deseja voltar?",
+                "Aviso",
+                "Você tem fotos que não foram salvas, ao voltar elas serão perdidas",
                 [
                     {text: "Cancelar", onPress: () => {}},
                     {text: "Voltar", onPress: () => navigation.navigate("Home")}

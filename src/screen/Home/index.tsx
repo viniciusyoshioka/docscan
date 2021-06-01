@@ -111,16 +111,10 @@ export function Home() {
 
         Alert.alert(
             "Apagar",
-            "Esta ação não poderá ser desfeita. Deseja apagar?",
+            "Estes documentos serão apagados permanentemente",
             [
-                {
-                    text: "Apagar",
-                    onPress: async () => await alertDelete()
-                },
-                {
-                    text: "Cancelar",
-                    onPress: () => { }
-                }
+                {text: "Cancelar", onPress: () => {}},
+                {text: "Apagar", onPress: async () => await alertDelete()}
             ]
         )
     }, [selectedDocument])
@@ -132,11 +126,11 @@ export function Home() {
         }
 
         Alert.alert(
-            "Alerta",
+            "Exportar",
             `Os documentos ${selectionMode ? "selecionados " : ""}serão exportados`,
             [
-                { text: "Cancelar", onPress: () => { } },
-                { text: "Exportar", onPress: () => alertExport() }
+                {text: "Cancelar", onPress: () => {}},
+                {text: "Exportar", onPress: () => alertExport()}
             ]
         )
     }, [selectedDocument, selectionMode])

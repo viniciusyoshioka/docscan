@@ -118,11 +118,11 @@ export function FileExplorer() {
         }
 
         Alert.alert(
-            "Importar documento",
+            "Importar",
             "Deseja importar este documento?",
             [
-                { text: "Cancelar", onPress: () => { } },
-                { text: "Importar", onPress: () => importDocumentFunction(newPath) }
+                {text: "Cancelar", onPress: () => {}},
+                {text: "Importar", onPress: () => importDocumentFunction(newPath)}
             ]
         )
     }, [])

@@ -58,7 +58,7 @@ export function ImportImageFromGalery() {
             log("ERROR", `ImportImageFromGalery getImage - Erro ao pegar imagens da CameraRoll. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro",
-                "Não foi possível carregar galeria"
+                "Erro desconhecido ao abrir galeria"
             )
         }
     }, [imageGalery])
@@ -183,7 +183,7 @@ export function ImportImageFromGalery() {
             log("ERROR", `ImportImageFromGalery importSingleImage - Erro ao importar uma imagem da galeria. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro",
-                "Não foi possível importar imagem da galeria"
+                "Erro desconhecido ao importar imagem da galeria"
             )
             navigation.reset({routes: [
                 {name: "Home"},
@@ -237,7 +237,7 @@ export function ImportImageFromGalery() {
                 log("ERROR", `ImportImageFromGalery importMultipleImage - Erro ao importar multiplas imagens da galeria. Mensagem: "${error}"`)
                 Alert.alert(
                     "Erro",
-                    "Não foi possível importar multiplas imagens da galeria"
+                    "Erro deconhecido ao importar múltiplas imagens da galeria"
                 )
                 navigation.reset({routes: [
                     {name: "Home"},

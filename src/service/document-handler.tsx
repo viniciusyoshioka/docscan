@@ -177,7 +177,7 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
         log("ERROR", `Erro criando arquivo de documentos para exportar. Mensagem: "${error}"`)
         Alert.alert(
             "Erro",
-            "Erro ao exportar documentos. Processo interrompido"
+            "Erro desconhecido ao exportar documentos. Processo interrompido"
         )
         return false
     }
@@ -199,7 +199,7 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
                 log("ERROR", `Erro copiando imagens de sua origem para pasta temporária para exportar documentos. Mensagem: "${error}"`)
                 Alert.alert(
                     "Erro",
-                    "Erro ao exportar documentos. Processo interrompido"
+                    "Erro desconhecido ao exportar documentos. Processo interrompido"
                 )
                 return false
             }
@@ -224,7 +224,7 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
         log("ERROR", `Erro compactando documentos para exportar. Mensagem: "${error}"`)
         Alert.alert(
             "Erro",
-            "Erro ao exportar documentos. Processo interrompido"
+            "Erro desconhecido ao exportar documentos. Processo interrompido"
         )
         return false
     }
@@ -272,7 +272,7 @@ export async function importDocument(path: string): Promise<boolean> {
         log("ERROR", `Erro ao descompactar documento a ser importado. Mensagem: "${error}"`)
         Alert.alert(
             "Erro",
-            "Erro ao importar documentos. Processo interrompido"
+            "Erro desconhecido ao importar documentos. Processo interrompido"
         )
         return false
     }
@@ -301,7 +301,7 @@ export async function importDocument(path: string): Promise<boolean> {
         log("ERROR", `Erro lendo arquivo de documentos para importar. Mensagem: "${error}"`)
         Alert.alert(
             "Erro",
-            "Erro ao importar documentos. Processo interrompido"
+            "Erro desconhecido ao importar documentos. Processo interrompido"
         )
         return false
     }
@@ -338,7 +338,7 @@ export async function importDocument(path: string): Promise<boolean> {
                 log("ERROR", `Erro movendo imagens da pasta temporária para pasta de imagens durante importação. Mensagem: "${error}"`)
                 Alert.alert(
                     "Erro",
-                    "Erro ao importar documentos. Processo interrompido"
+                    "Erro desconhecido ao importar documentos. Processo interrompido"
                 )
                 return false
             }

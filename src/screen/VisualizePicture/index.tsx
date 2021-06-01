@@ -70,7 +70,7 @@ export function VisualizePicture() {
     const onSaveImageError = useCallback((response: string) => {
         log("ERROR", `VisualizePicture onSaveImageError - Erro ao cortar imagem. Mensagem: "${response}"`)
         Alert.alert(
-            "Falha",
+            "Erro",
             "Não foi possível cortar imagem"
         )
         setIsCropping(false)
