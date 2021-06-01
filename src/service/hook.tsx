@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { BackHandler } from "react-native"
+import { BackHandler, Keyboard, KeyboardEventName } from "react-native"
 
 
 export function useBackHandler(backhandlerFunction: () => boolean) {
@@ -7,6 +7,16 @@ export function useBackHandler(backhandlerFunction: () => boolean) {
         BackHandler.addEventListener("hardwareBackPress", backhandlerFunction)
         return () => {
             BackHandler.removeEventListener("hardwareBackPress", backhandlerFunction)
+        }
+    })
+}
+
+
+export function useKeyboard(eventName: KeyboardEventName, keyboardFunction: () => void) {
+    useEffect(() => {
+        Keyboard.addListener(eventName, keyboardFunction)
+        return () => {
+            Keyboard.removeListener(eventName, keyboardFunction)
         }
     })
 }
