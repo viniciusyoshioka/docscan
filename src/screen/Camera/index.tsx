@@ -64,7 +64,7 @@ export function Camera() {
     const [stateCameraSettings, dispatchCameraSettings] = useReducer(reducerCameraSettings, initialCameraSettings)
     const [cameraSettingsVisible, setCameraSettingsVisible] = useState(false)
 
-    const [pictureList, setPictureList] = useState<Array<string>>(params ? params.pictureList : [])
+    const [pictureList, setPictureList] = useState<Array<string>>([])
 
 
     useBackHandler(() => {
@@ -153,7 +153,7 @@ export function Camera() {
                         pictureIndex: params.replaceIndex,
                         document: params.document,
                         documentName: params.documentName,
-                        pictureList: pictureList,
+                        pictureList: [...params.pictureList, ...pictureList],
                         isChanged: false,
                     }
                 },
@@ -162,7 +162,7 @@ export function Camera() {
                     params: {
                         document: params?.document,
                         documentName: params?.documentName,
-                        pictureList: pictureList,
+                        pictureList: [...params.pictureList, ...pictureList],
                         screenAction: params?.screenAction,
                         replaceIndex: params?.replaceIndex,
                         picturePath: params.picturePath,
@@ -179,7 +179,7 @@ export function Camera() {
                 params: {
                     document: params?.document,
                     documentName: params?.documentName,
-                    pictureList: pictureList,
+                    pictureList: params ? [...params?.pictureList, ...pictureList] : pictureList,
                     screenAction: params?.screenAction,
                     replaceIndex: params?.replaceIndex,
                 }
@@ -238,7 +238,7 @@ export function Camera() {
             params: {
                 document: params?.document,
                 documentName: params?.documentName ? params?.documentName : getDocumentName(),
-                pictureList: pictureList,
+                pictureList: params ? [...params?.pictureList, ...pictureList] : pictureList,
                 isChanged: true,
             }
         }]})
@@ -259,12 +259,6 @@ export function Camera() {
 
         getCameraSettings()
     }, [])
-
-    useEffect(() => {
-        if (params) {
-            setPictureList(params.pictureList)
-        }
-    }, [params])
 
 
     return (
@@ -291,7 +285,7 @@ export function Camera() {
             />
 
             <CameraControl
-                pictureListLength={pictureList.length}
+                pictureListLength={(params ? params.pictureList.length : 0) + pictureList.length}
                 screenAction={params?.screenAction}
                 addPictureFromGalery={addPictureFromGalery}
                 takePicture={takePicture}
