@@ -225,14 +225,13 @@ export function ImportImageFromGalery() {
         }
     }, [params])
 
-    const importMultipleImage = useCallback(() => {
-        const imagesToImport: Array<string> = [...params.pictureList]
-
-        selectedImage.forEach(async (item: string) => {
-            const newImagePath = await getNewImagePath(item)
+    const importMultipleImage = useCallback(async () => {
+        const newImages = []
+        for (let x = 0; x < selectedImage.length; x++) {
+            const newImagePath = await getNewImagePath(selectedImage[x])
             try {
-                await RNFS.copyFile(item, newImagePath)
-                imagesToImport.push(newImagePath)
+                await RNFS.copyFile(selectedImage[x], newImagePath)
+                newImages.push(newImagePath)
             } catch (error) {
                 log("ERROR", `ImportImageFromGalery importMultipleImage - Erro ao importar multiplas imagens da galeria. Mensagem: "${error}"`)
                 Alert.alert(
@@ -252,7 +251,7 @@ export function ImportImageFromGalery() {
                 ]})
                 return
             }
-        })
+        }
 
         navigation.reset({routes: [
             {name: "Home"},
@@ -261,7 +260,7 @@ export function ImportImageFromGalery() {
                 params: {
                     document: params.document,
                     documentName: params.documentName,
-                    pictureList: imagesToImport,
+                    pictureList: [...params.pictureList, ...newImages],
                 }
             }
         ]})
