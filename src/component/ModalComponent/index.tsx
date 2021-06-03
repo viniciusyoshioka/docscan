@@ -4,9 +4,6 @@ import { ModalButton, ModalButtonBase, ModalButtonProps, ModalButtonTextBase } f
 import { styledProps } from "../../service/theme"
 
 
-export const ModalView = styled.View``
-
-
 export const ModalTitle = styled.Text`
     margin-horizontal: 16px;
     margin-vertical: 12px;

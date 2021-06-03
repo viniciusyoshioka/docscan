@@ -11,6 +11,7 @@ export const ModalScreen = styled.TouchableOpacity`
     right: 0px;
     align-items: center;
     justify-content: center;
+    elevation: 5;
 `
 
 

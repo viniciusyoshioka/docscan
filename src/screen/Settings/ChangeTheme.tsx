@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 
-import { ModalButton, ModalTitle, ModalView, ModalViewButton, ModalViewContent } from "../../component/ModalComponent"
+import { ModalButton, ModalTitle, ModalViewButton, ModalViewContent } from "../../component/ModalComponent"
 import { ModalFullscreen, ModalFullscreenProps } from "../../component/ModalFullscreen"
 import { RadioButton } from "../../component/RadioButton"
 import { useSwitchTheme, useTheme } from "../../service/theme"
@@ -25,7 +25,7 @@ export function ChangeTheme(props: ChangeThemeProps) {
 
     return (
         <ModalFullscreen {...props}>
-            <ModalView>
+            <>
                 <ModalTitle>
                     Mudar tema
                 </ModalTitle>
@@ -59,7 +59,7 @@ export function ChangeTheme(props: ChangeThemeProps) {
                         }}
                     />
                 </ModalViewButton>
-            </ModalView>
+            </>
         </ModalFullscreen>
     )
 }
