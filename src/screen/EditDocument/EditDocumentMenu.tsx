@@ -10,6 +10,7 @@ import { PopupMenuButton } from "../../component/PopupMenuButton"
 export interface EditDocumentMenuProps {
     convertToPdf: () => void,
     shareDocument: () => void,
+    visualizePdf: () => void,
     renameDocument: () => void,
     discardDocument: () => void,
 }
@@ -64,10 +65,18 @@ export function EditDocumentMenu(props: EditDocumentMenuProps) {
                 />
 
                 <PopupMenuButton 
-                    text={"Compartilhar"} 
+                    text={"Compartilhar PDF"} 
                     onPress={() => {
                         menuRef.current?.close()
                         props.shareDocument()
+                    }}
+                />
+
+                <PopupMenuButton 
+                    text={"Visualizar PDF"} 
+                    onPress={() => {
+                        menuRef.current?.close()
+                        props.visualizePdf()
                     }}
                 />
 

@@ -15,6 +15,7 @@ export interface EditDocumentHeaderProps {
     convertToPdf: () => void,
     discardDocument: () => void,
     shareDocument: () => void,
+    visualizePdf: () => void,
 }
 
 
@@ -66,6 +67,7 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
                         convertToPdf={props.convertToPdf}
                         discardDocument={props.discardDocument}
                         shareDocument={props.shareDocument}
+                        visualizePdf={props.visualizePdf}
                     />
                 </BlockRight>
             )}

@@ -134,6 +134,10 @@ export function EditDocument() {
         }
     }, [documentName])
 
+    const visualizePdf = useCallback(() => {
+        console.log("visualize PDF")
+    }, [])
+
     const renameDocument = useCallback(async (newDocumentName: string) => {
         setDocumentName(newDocumentName)
 
@@ -291,6 +295,7 @@ export function EditDocument() {
                 convertToPdf={() => convertDocumentToPdf(documentName, pictureList)}
                 discardDocument={discardDocument}
                 shareDocument={shareDocument}
+                visualizePdf={visualizePdf}
             />
 
             <FlatList
