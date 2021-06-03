@@ -38,11 +38,14 @@ export async function convertDocumentToPdf(documentName: string, pictureList: Ar
     const documentPath = `${fullPathPdf}/${documentName}.pdf`
 
     if (await RNFS.exists(documentPath)) {
-        Alert.alert(
-            "Conversão interrompida",
-            "Arquivo com mesmo nome já existe"
-        )
-        return
+        try {
+            await RNFS.unlink(documentPath)
+        } catch (error) {
+            log(
+                "ERROR",
+                `service/pdf-creator convertDocumentToPdf - Erro ao apagar arquivo PDF já existente com mesmo nome do documento a ser convertido. Mensagem: "${error}"`
+            )
+        }
     }
 
     PdfCreator.convertPicturesToPdf(pictureList, documentPath)
