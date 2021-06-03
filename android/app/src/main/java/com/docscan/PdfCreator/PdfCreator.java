@@ -30,8 +30,8 @@ public class PdfCreator {
     private final ReactContext mReactContext;
     private final ReadableArray mPictureList;
     private final @Nullable String mDocumentPath;
-    private OnExportComplete mOnExportComplete;
-    private OnExportFailure mOnExportFailure;
+    private OnConvertComplete mOnConvertComplete;
+    private OnConvertFailure mOnConvertFailure;
 
 
     public PdfCreator(ReactContext reactContext, ReadableArray pictureList, @Nullable String documentPath) {
@@ -85,7 +85,7 @@ public class PdfCreator {
     }
 
 
-    public void exportPicturesToPdf() {
+    public void convertPicturesToPdf() {
         String destinyPath;
         if (mDocumentPath == null) {
             destinyPath = new File(mReactContext.getCacheDir().toURI().toString(), UUID.randomUUID() + ".pdf")
@@ -155,37 +155,37 @@ public class PdfCreator {
             document.close();
 
             // Return result
-            OnExportComplete listener = mOnExportComplete;
+            OnConvertComplete listener = mOnConvertComplete;
             if (listener != null) {
                 WritableMap response = Arguments.createMap();
                 response.putString("uri", mDocumentPath);
 
-                listener.onExportComplete(response);
+                listener.onConvertComplete(response);
             }
         } catch (Exception e) {
-            OnExportFailure listener = mOnExportFailure;
+            OnConvertFailure listener = mOnConvertFailure;
             if (listener != null) {
-                listener.onExportFailure(e.getMessage());
+                listener.onConvertFailure(e.getMessage());
             }
         }
     }
 
 
-    public void setOnExportComplete(OnExportComplete listener) {
-        mOnExportComplete = listener;
+    public void setOnConvertComplete(OnConvertComplete listener) {
+        mOnConvertComplete = listener;
     }
 
-    public void setOnExportFailure(OnExportFailure listener) {
-        mOnExportFailure = listener;
+    public void setOnConvertFailure(OnConvertFailure listener) {
+        mOnConvertFailure = listener;
     }
 
 
-    public interface OnExportComplete {
-        void onExportComplete(WritableMap response);
+    public interface OnConvertComplete {
+        void onConvertComplete(WritableMap response);
     }
 
-    public interface OnExportFailure {
-        void onExportFailure(String message);
+    public interface OnConvertFailure {
+        void onConvertFailure(String message);
     }
 
 

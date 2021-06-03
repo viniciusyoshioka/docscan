@@ -16,7 +16,7 @@ public class PdfCreatorTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        mPdfCreator.exportPicturesToPdf();
+        mPdfCreator.convertPicturesToPdf();
         return null;
     }
 }

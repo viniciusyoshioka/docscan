@@ -38,18 +38,18 @@ public class PdfCreatorModule extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    public void exportPicturesToPdf(ReadableArray pictureList, @Nullable String documentPath, Promise promise) {
+    public void convertPicturesToPdf(ReadableArray pictureList, @Nullable String documentPath, Promise promise) {
         PdfCreator pdfCreator = new PdfCreator(mReactContext, pictureList, documentPath);
-        pdfCreator.setOnExportComplete(new PdfCreator.OnExportComplete() {
+        pdfCreator.setOnConvertComplete(new PdfCreator.OnConvertComplete() {
             @Override
-            public void onExportComplete(WritableMap response) {
+            public void onConvertComplete(WritableMap response) {
                 promise.resolve(response);
             }
         });
-        pdfCreator.setOnExportFailure(new PdfCreator.OnExportFailure() {
+        pdfCreator.setOnConvertFailure(new PdfCreator.OnConvertFailure() {
             @Override
-            public void onExportFailure(String message) {
-                promise.reject("ExportError", message);
+            public void onConvertFailure(String message) {
+                promise.reject("ConvertError", message);
             }
         });
 
