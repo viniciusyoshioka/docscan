@@ -34,7 +34,7 @@ export function RenameDocument(props: RenameDocumentProps) {
 
     return (
         <MyModal
-            modalStyle={{elevation: 6, paddingHorizontal: 10}}
+            modalStyle={{paddingHorizontal: 10}}
             {...props}
         >
             <>
