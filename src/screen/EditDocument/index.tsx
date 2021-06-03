@@ -9,7 +9,7 @@ import { EditDocumentHeader } from "./Header"
 import { PictureItem } from "../../component/Pictureitem"
 import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../service/document-handler"
 import { RenameDocument } from "./RenameDocument"
-import { exportDocumentToPdf } from "../../service/pdf-creator"
+import { convertDocumentToPdf } from "../../service/pdf-creator"
 import { fullPathPdf } from "../../service/constant"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
@@ -288,7 +288,7 @@ export function EditDocument() {
                 deletePicture={deletePicture}
                 openCamera={openCamera}
                 renameDocument={() => setRenameDocumentVisible(true)}
-                exportToPdf={() => exportDocumentToPdf(documentName, pictureList)}
+                convertToPdf={() => convertDocumentToPdf(documentName, pictureList)}
                 discardDocument={discardDocument}
                 shareDocument={shareDocument}
             />

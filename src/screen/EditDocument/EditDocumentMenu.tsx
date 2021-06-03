@@ -8,7 +8,7 @@ import { PopupMenuButton } from "../../component/PopupMenuButton"
 
 
 export interface EditDocumentMenuProps {
-    exportToPdf: () => void,
+    convertToPdf: () => void,
     shareDocument: () => void,
     renameDocument: () => void,
     discardDocument: () => void,
@@ -56,10 +56,10 @@ export function EditDocumentMenu(props: EditDocumentMenuProps) {
 
             <MenuOptions>
                 <PopupMenuButton 
-                    text={"Exportar PDF"} 
+                    text={"Converter para PDF"} 
                     onPress={() => {
                         menuRef.current?.close()
-                        props.exportToPdf()
+                        props.convertToPdf()
                     }}
                 />
 

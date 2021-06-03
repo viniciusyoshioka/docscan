@@ -12,7 +12,7 @@ export interface EditDocumentHeaderProps {
     deletePicture: () => void,
     openCamera: () => void,
     renameDocument: () => void,
-    exportToPdf: () => void,
+    convertToPdf: () => void,
     discardDocument: () => void,
     shareDocument: () => void,
 }
@@ -63,7 +63,7 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
 
                     <EditDocumentMenu 
                         renameDocument={props.renameDocument}
-                        exportToPdf={props.exportToPdf}
+                        convertToPdf={props.convertToPdf}
                         discardDocument={props.discardDocument}
                         shareDocument={props.shareDocument}
                     />
