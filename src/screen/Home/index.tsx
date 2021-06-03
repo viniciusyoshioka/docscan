@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { Alert, BackHandler, FlatList } from "react-native"
-import { EventArg, NavigationState, useNavigation } from "@react-navigation/core"
+import { useNavigation } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 
 import { DocumentItem } from "../../component/DocumentItem"
@@ -176,24 +176,6 @@ export function Home() {
         createAllFolder()
         debugGetDebugHome()
         getDocument()
-    }, [])
-
-    useEffect(() => {
-        type stateType = EventArg<
-            "state", boolean | undefined, {state: NavigationState}
-        >
-
-        function printNavigationHistory(event: stateType) {
-            let routes = "ROTAS: "
-            event.data.state.routes.forEach((item) => {
-                routes += `${item.name} `
-            })
-            console.log(routes)
-        }
-
-        navigation.addListener("state", printNavigationHistory)
-
-        return () => navigation.removeListener("state", printNavigationHistory)
     }, [])
 
 

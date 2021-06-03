@@ -1,5 +1,4 @@
 
-replace PDF file when already exists a file with the same name
 add button to visualize PDF file
 
 # Camera
