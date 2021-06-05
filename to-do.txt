@@ -1,6 +1,4 @@
 
-add button to visualize PDF file
-
 # Camera
 add support to multiple cameras
 fix taken picture area
