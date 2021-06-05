@@ -156,7 +156,7 @@ export function EditDocument() {
         await saveDocument(newDocumentName, undefined)
     }, [saveDocument])
 
-    const discardDocument = useCallback(() => {
+    const deleteCurrentDocument = useCallback(() => {
         async function alertDiscard() {
             if (document) {
                 await deleteDocument([document.id], true)
@@ -305,7 +305,7 @@ export function EditDocument() {
                 openCamera={openCamera}
                 renameDocument={() => setRenameDocumentVisible(true)}
                 convertToPdf={() => convertDocumentToPdf(documentName, pictureList)}
-                discardDocument={discardDocument}
+                deleteDocument={deleteCurrentDocument}
                 shareDocument={shareDocument}
                 visualizePdf={visualizePdf}
             />

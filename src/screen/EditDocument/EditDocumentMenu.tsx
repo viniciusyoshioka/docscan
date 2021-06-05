@@ -12,7 +12,7 @@ export interface EditDocumentMenuProps {
     shareDocument: () => void,
     visualizePdf: () => void,
     renameDocument: () => void,
-    discardDocument: () => void,
+    deleteDocument: () => void,
 }
 
 
@@ -89,10 +89,10 @@ export function EditDocumentMenu(props: EditDocumentMenuProps) {
                 />
 
                 <PopupMenuButton 
-                    text={"Descartar"} 
+                    text={"Apagar"} 
                     onPress={() => {
                         menuRef.current?.close()
-                        props.discardDocument()
+                        props.deleteDocument()
                     }}
                 />
             </MenuOptions>
