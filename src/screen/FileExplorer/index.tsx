@@ -62,6 +62,7 @@ export function FileExplorer() {
 
     const [path, setPath] = useState<string | null>(null)
     const [pathContent, setPathContent] = useState<Array<ReadDirItem>>(defaultContent)
+    const [backToDefault, setBackToDefault] = useState(false)
 
 
     useBackHandler(() => {
@@ -71,17 +72,24 @@ export function FileExplorer() {
 
 
     const upDirectory = useCallback(() => {
-        if (path === null) {
-            return
-        } else if (path === RNFS.ExternalStorageDirectoryPath) {
-            setPath(null)
-            return
-        } else if (path === "/storage/extSdCard") {
-            setPath(null)
-            return
-        } else if (path === fullPathExported) {
-            setPath(null)
-            return
+        switch (path) {
+            case null:
+                return
+            case RNFS.ExternalStorageDirectoryPath:
+                setPath(null)
+                return
+            case "/storage/extSdCard":
+                setPath(null)
+                return
+            case fullPathExported:
+                if (backToDefault) {
+                    setPath(null)
+                    setBackToDefault(false)
+                    return
+                }
+                break
+            default:
+                break
         }
 
         const splitedPath = path.split("/")
@@ -99,7 +107,7 @@ export function FileExplorer() {
             return
         }
         setPath(previewsPath)
-    }, [path])
+    }, [path, backToDefault])
 
     const importDocumentAlert = useCallback((newPath: string) => {
         function importDocumentFunction(newPath: string) {
@@ -133,9 +141,12 @@ export function FileExplorer() {
         } else if (isFile) {
             importDocumentAlert(newPath)
         } else {
+            if (path === null && newPath === fullPathExported) {
+                setBackToDefault(true)
+            }
             setPath(newPath)
         }
-    }, [upDirectory])
+    }, [upDirectory, path])
 
     const goBack = useCallback(() => {
         if (path === null) {
@@ -147,6 +158,17 @@ export function FileExplorer() {
         }
         changePath("..", false)
     }, [path, changePath])
+
+    const renderItem = useCallback(({item}: {item: RNFS.ReadDirItem}) => {
+        return (
+            <FileExplorerItem
+                name={item.name}
+                path={item.path}
+                isFile={item.isFile()}
+                onPress={async () => await changePath(item.path, item.isFile())}
+            />
+        )
+    }, [changePath])
 
 
     useEffect(() => {
@@ -189,14 +211,7 @@ export function FileExplorer() {
 
             <FlatList
                 data={pathContent}
-                renderItem={({ item }) => (
-                    <FileExplorerItem
-                        name={item.name}
-                        path={item.path}
-                        isFile={item.isFile()}
-                        onPress={async () => await changePath(item.path, item.isFile())}
-                    />
-                )}
+                renderItem={renderItem}
                 keyExtractor={(_item, index) => index.toString()}
                 extraData={[changePath]}
                 initialNumToRender={10}
