@@ -10,6 +10,7 @@ import { PictureItem } from "../../component/Pictureitem"
 import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../service/document-handler"
 import { RenameDocument } from "./RenameDocument"
 import { convertDocumentToPdf } from "../../service/pdf-creator"
+import { openPdf } from "../../service/pdf-viewer"
 import { fullPathPdf } from "../../service/constant"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
@@ -134,9 +135,20 @@ export function EditDocument() {
         }
     }, [documentName])
 
-    const visualizePdf = useCallback(() => {
-        console.log("visualize PDF")
-    }, [])
+    const visualizePdf = useCallback(async () => {
+        const pdfFilePath = `${fullPathPdf}/${documentName}.pdf`
+
+        if (!await RNFS.exists(pdfFilePath)) {
+            log("WARN", "EditDocument visualizePdf - Arquivo PDF não existe para ser visualizado")
+            Alert.alert(
+                "Aviso",
+                "Documento não existe em PDF. Converta o documento primeiro para visualizar"
+            )
+            return
+        }
+
+        openPdf(pdfFilePath)
+    }, [documentName])
 
     const renameDocument = useCallback(async (newDocumentName: string) => {
         setDocumentName(newDocumentName)
