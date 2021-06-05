@@ -2,8 +2,11 @@ package com.docscan;
 
 import com.docscan.ImageCrop.ImageCropPackage;
 import com.docscan.PdfCreator.PdfCreatorPackage;
-import androidx.multidex.MultiDexApplication;
+import com.docscan.PdfViewer.PdfViewerPackage;
+
 import android.content.Context;
+import androidx.multidex.MultiDexApplication;
+
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -30,6 +33,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           // packages.add(new MyReactNativePackage());
           packages.add(new PdfCreatorPackage());
           packages.add(new ImageCropPackage());
+          packages.add(new PdfViewerPackage());
           return packages;
         }
 
