@@ -5,7 +5,8 @@ import { ButtonSettings, ButtonSettingsBase, cameraSettingsIconSize } from "../.
 import { Modal, ModalProps } from "../../component/Modal"
 import { readSettings, writeSettings } from "../../service/storage"
 import { cameraReducerAction } from "../../service/reducer"
-import { flashType, SettingsCameraProps, settingsDefaultCamera, whiteBalanceType } from "../../service/settings"
+import { cameraType, flashType, SettingsCameraProps, settingsDefaultCamera, whiteBalanceType } from "../../service/settings"
+import { cameraIdType } from "../../service/object-types"
 
 import FlashAuto from "../../image/icon/flash-auto.svg"
 import FlashOn from "../../image/icon/flash-on.svg"
@@ -20,6 +21,10 @@ import WBSun from "../../image/icon/wb-sun.svg"
 export interface CameraSettingsProps extends ModalProps {
     cameraAttributes: SettingsCameraProps,
     setCameraAttributes: Dispatch<cameraReducerAction>,
+    isMultipleCameraAvailable: boolean,
+    currentCameraIndex: number,
+    setCurrentCameraIndex: (newCurrentCameraIndex: number) => void
+    cameraList: Array<cameraIdType>,
 }
 
 
@@ -75,6 +80,40 @@ export function CameraSettings(props: CameraSettingsProps) {
         currentSettings.camera.whiteBalance = newWhiteBalance
         await writeSettings(currentSettings)
     }, [props.cameraAttributes.whiteBalance])
+
+    const switchCameraType = useCallback(async () => {
+        // Change attribute
+        let newCameraType: cameraType = "back"
+        switch (props.cameraAttributes.cameraType) {
+            case "back":
+                newCameraType = "front"
+                break
+            case "front":
+                newCameraType = "back"
+                break
+        }
+        // Set camera attribute
+        props.setCameraAttributes({ type: "camera-type", payload: newCameraType })
+        // Write settings
+        const currentSettings = await readSettings()
+        currentSettings.camera.cameraType = newCameraType
+        await writeSettings(currentSettings)
+    }, [props.cameraAttributes.cameraType])
+
+    const switchCameraId = useCallback(async () => {
+        // Change attribute
+        let newIndex = 0
+        if ((props.currentCameraIndex + 1) < props.cameraList.length) {
+            newIndex = props.currentCameraIndex + 1
+        }
+        // Set camera attribute
+        props.setCameraAttributes({type: "camera-id", payload: props.cameraList[newIndex].id})
+        props.setCurrentCameraIndex(newIndex)
+        // Write settings
+        const currentSettings = await readSettings()
+        currentSettings.camera.cameraId = props.cameraList[newIndex].id
+        await writeSettings(currentSettings)
+    }, [props.cameraAttributes.cameraId])
 
     const resetCameraSettings = useCallback(async () => {
         props.setCameraAttributes({ type: "reset" })
@@ -135,6 +174,18 @@ export function CameraSettings(props: CameraSettingsProps) {
                                         height={cameraSettingsIconSize}
                                         fill={"rgb(255, 255, 255)"} />}
                 </ButtonSettingsBase>
+
+                <ButtonSettings
+                    iconName={"md-swap-vertical"}
+                    onPress={switchCameraType}
+                />
+
+                {props.isMultipleCameraAvailable && (
+                    <ButtonSettings
+                        iconName={"md-camera-reverse"}
+                        onPress={switchCameraId}
+                    />
+                )}
 
                 <ButtonSettings
                     iconName={"md-refresh"}

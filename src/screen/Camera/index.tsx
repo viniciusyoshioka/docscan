@@ -18,12 +18,14 @@ import { log } from "../../service/log"
 import { cameraReducerAction, cameraReducerState } from "../../service/reducer"
 import { ScreenParams } from "../../service/screen-params"
 import { settingsDefaultCamera } from "../../service/settings"
-import { CameraView } from "./CameraView"
+import { cameraIdType } from "../../service/object-types"
 
 
 const initialCameraSettings: cameraReducerState = {
     flash: settingsDefaultCamera.flash,
-    whiteBalance: settingsDefaultCamera.whiteBalance
+    whiteBalance: settingsDefaultCamera.whiteBalance,
+    cameraType: settingsDefaultCamera.cameraType,
+    cameraId: settingsDefaultCamera.cameraId,
 }
 
 function reducerCameraSettings(state: cameraReducerState, action: cameraReducerAction): cameraReducerState {
@@ -32,21 +34,43 @@ function reducerCameraSettings(state: cameraReducerState, action: cameraReducerA
             return {
                 flash: action.payload,
                 whiteBalance: state.whiteBalance,
+                cameraType: state.cameraType,
+                cameraId: state.cameraId,
             }
         case "white-balance":
             return {
                 flash: state.flash,
                 whiteBalance: action.payload,
+                cameraType: state.cameraType,
+                cameraId: state.cameraId,
+            }
+        case "camera-type":
+            return {
+                flash: state.flash,
+                whiteBalance: state.whiteBalance,
+                cameraType: action.payload,
+                cameraId: state.cameraId,
+            }
+        case "camera-id":
+            return {
+                flash: state.flash,
+                whiteBalance: state.whiteBalance,
+                cameraType: state.cameraType,
+                cameraId: action.payload,
             }
         case "set":
             return {
                 flash: action.payload.flash,
                 whiteBalance: action.payload.whiteBalance,
+                cameraType: action.payload.cameraType,
+                cameraId: action.payload.cameraId,
             }
         case "reset":
             return {
                 flash: settingsDefaultCamera.flash,
                 whiteBalance: settingsDefaultCamera.whiteBalance,
+                cameraType: settingsDefaultCamera.cameraType,
+                cameraId: settingsDefaultCamera.cameraId,
             }
         default:
             throw new Error("Unknown action type")
@@ -63,6 +87,10 @@ export function Camera() {
     const cameraRef = useRef<RNCamera>(null)
     const [stateCameraSettings, dispatchCameraSettings] = useReducer(reducerCameraSettings, initialCameraSettings)
     const [cameraSettingsVisible, setCameraSettingsVisible] = useState(false)
+
+    const [isMultipleCameraAvailable, setIsMultipleCameraAvailable] = useState(false)
+    const [currentCameraIndex, setCurrentCameraIndex] = useState<number | null>(null)
+    const [cameraList, setCameraList] = useState<Array<cameraIdType> | null>(null)
 
     const [pictureList, setPictureList] = useState<Array<string>>([])
 
@@ -253,12 +281,48 @@ export function Camera() {
                 payload: {
                     flash: cameraSettings.camera.flash,
                     whiteBalance: cameraSettings.camera.whiteBalance,
+                    cameraType: cameraSettings.camera.cameraType,
+                    cameraId: cameraSettings.camera.cameraId,
                 }
             })
         }
 
         getCameraSettings()
     }, [])
+
+    useEffect(() => {
+        async function getCameraList() {
+            let readCameraList: Array<cameraIdType> = [{id: "0", type: 0}]
+
+            try {
+                readCameraList = await cameraRef.current?.getCameraIdsAsync()
+            } catch (error) {
+                log("ERROR", `Camera useEffect getCameraIds - Erro ao pegar câmeras do dispositivo para trocas entre os tipos diferentes de camera. Mensagem: "${error}"`)
+            }
+
+            const cameraIdList = readCameraList.filter((item) => {
+                if (item.type === 0) {
+                    return item
+                }
+            })
+
+            if (cameraIdList.length > 1) {
+                setIsMultipleCameraAvailable(true)
+            }
+            setCameraList(cameraIdList)
+
+            cameraIdList.forEach((item: cameraIdType, index: number) => {
+                if (item.id === stateCameraSettings.cameraId) {
+                    setCurrentCameraIndex(index)
+                    return
+                }
+            })
+        }
+
+        if (cameraList === null && cameraSettingsVisible) {
+            getCameraList()
+        }
+    }, [cameraSettingsVisible])
 
 
     return (
@@ -268,15 +332,28 @@ export function Camera() {
                 setVisible={setCameraSettingsVisible}
                 cameraAttributes={{
                     flash: stateCameraSettings.flash,
-                    whiteBalance: stateCameraSettings.whiteBalance
+                    whiteBalance: stateCameraSettings.whiteBalance,
+                    cameraType: stateCameraSettings.cameraType,
+                    cameraId: stateCameraSettings.cameraId,
                 }}
                 setCameraAttributes={dispatchCameraSettings}
+                cameraList={cameraList || []}
+                currentCameraIndex={currentCameraIndex || 0}
+                setCurrentCameraIndex={setCurrentCameraIndex}
+                isMultipleCameraAvailable={isMultipleCameraAvailable}
             />
 
-            <CameraView
+            <RNCamera
+                style={{flex: 1, overflow: "hidden"}}
                 ref={cameraRef}
-                flash={stateCameraSettings.flash}
+                captureAudio={false}
+                useNativeZoom={true}
+                useCamera2Api={true}
+                playSoundOnCapture={true}
+                flashMode={stateCameraSettings.flash}
                 whiteBalance={stateCameraSettings.whiteBalance}
+                type={stateCameraSettings.cameraType}
+                cameraId={stateCameraSettings.cameraId}
             />
 
             <CameraHeader 

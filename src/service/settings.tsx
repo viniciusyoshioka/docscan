@@ -5,14 +5,20 @@ export type flashType = "auto" | "on" | "off"
 
 export type whiteBalanceType = "auto" | "sunny" | "cloudy" | "shadow" | "incandescent" | "fluorescent"
 
+export type cameraType = "front" | "back"
+
+export type cameraId = string
+
 export type SettingsCameraProps = {
     flash: flashType,
     whiteBalance: whiteBalanceType,
+    cameraType: cameraType,
+    cameraId: cameraId,
 }
 
 // Object
 export type SettingsProps = {
-    camera: SettingsCameraProps
+    camera: SettingsCameraProps,
 }
 
 
@@ -20,10 +26,12 @@ export type SettingsProps = {
 // Camera
 export const settingsDefaultCamera: SettingsCameraProps = {
     flash: "off",
-    whiteBalance: "auto"
+    whiteBalance: "auto",
+    cameraType: "back",
+    cameraId: "0",
 }
 
 // Object
 export const settingsDefault: SettingsProps = {
-    camera: settingsDefaultCamera
+    camera: settingsDefaultCamera,
 }

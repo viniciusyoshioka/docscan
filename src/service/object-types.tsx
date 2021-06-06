@@ -16,3 +16,10 @@ export type ExportedDocument = {
 // Debug Home
 export type debugHome = "show" | "hide"
 export const debugHomeDefault: debugHome = "show"
+
+
+// cameraId
+export type cameraIdType = {
+    id: string,
+    type: number,
+}
