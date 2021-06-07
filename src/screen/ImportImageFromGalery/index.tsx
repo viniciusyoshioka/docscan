@@ -316,7 +316,7 @@ export function ImportImageFromGalery() {
 
             {imageGalery?.length === 0 && (
                 <EmptyListView>
-                    <EmptyListImage source={require("../../image/app/empty_gallery.png")} />
+                    <EmptyListImage source={require("../../image/empty_gallery.png")} />
 
                     <EmptyListText>
                         Galeria vazia

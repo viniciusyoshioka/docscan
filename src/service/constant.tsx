@@ -12,7 +12,7 @@ export const appVersion = "1.10.0"
 export const appType = appInDevelopment ? "beta" : "release"
 
 // Icon
-const appIconPath = "./../image/app/"
+const appIconPath = "./../image/"
 const appIconImage = appInDevelopment ? "docscanbeta.png" : "docscan.png"
 const appIconImageOutline = appInDevelopment ? "docscanbeta_outline.png" : "docscan_outline.png"
 export const appIcon = require(`${appIconPath}${appIconImage}`)
