@@ -1,21 +1,12 @@
 import React, { Dispatch, useCallback } from "react"
 import { ScrollView } from "react-native"
 
-import { ButtonSettings, ButtonSettingsBase, cameraSettingsIconSize } from "../../component/CameraSettings"
+import { ButtonSettings } from "../../component/CameraSettings"
 import { Modal, ModalProps } from "../../component/Modal"
 import { readSettings, writeSettings } from "../../service/storage"
 import { cameraReducerAction } from "../../service/reducer"
 import { cameraType, flashType, SettingsCameraProps, settingsDefaultCamera, whiteBalanceType } from "../../service/settings"
 import { cameraIdType } from "../../service/object-types"
-
-import FlashAuto from "../../image/icon/flash-auto.svg"
-import FlashOn from "../../image/icon/flash-on.svg"
-import FlashOff from "../../image/icon/flash-off.svg"
-import WBAuto from "../../image/icon/wb-auto.svg"
-import WBCloud from "../../image/icon/wb-cloud.svg"
-import WBFluorescent from "../../image/icon/wb-fluorescent.svg"
-import WBIncandescent from "../../image/icon/wb-incandescent.svg"
-import WBSun from "../../image/icon/wb-sun.svg"
 
 
 export interface CameraSettingsProps extends ModalProps {
@@ -131,64 +122,46 @@ export function CameraSettings(props: CameraSettingsProps) {
             backgroundStyle={{ paddingTop: 4, paddingLeft: 4 }}
         >
             <ScrollView horizontal={true}>
-                <ButtonSettingsBase onPress={changeFlash} activeOpacity={0.5}>
-                    {(props.cameraAttributes.flash === "auto")
-                        ? <FlashAuto
-                            width={cameraSettingsIconSize - 3}
-                            height={cameraSettingsIconSize - 3}
-                            fill={"rgb(255, 255, 255)"} />
-                        : (props.cameraAttributes.flash === "on")
-                            ? <FlashOn
-                                width={cameraSettingsIconSize - 5}
-                                height={cameraSettingsIconSize - 5}
-                                fill={"rgb(255, 255, 255)"} />
-                            : <FlashOff
-                                width={cameraSettingsIconSize - 4}
-                                height={cameraSettingsIconSize - 4}
-                                fill={"rgb(255, 255, 255)"} />}
-                </ButtonSettingsBase>
-
-                <ButtonSettingsBase onPress={changeWhiteBalance} activeOpacity={0.5}>
-                    {(props.cameraAttributes.whiteBalance === "auto")
-                        ? <WBAuto
-                            width={cameraSettingsIconSize}
-                            height={cameraSettingsIconSize}
-                            fill={"rgb(255, 255, 255)"} />
-                        : (props.cameraAttributes.whiteBalance === "sunny")
-                            ? <WBSun
-                                width={cameraSettingsIconSize}
-                                height={cameraSettingsIconSize}
-                                fill={"rgb(255, 255, 255)"} />
-                            : (props.cameraAttributes.whiteBalance === "cloudy")
-                                ? <WBCloud
-                                    width={cameraSettingsIconSize}
-                                    height={cameraSettingsIconSize}
-                                    fill={"rgb(255, 255, 255)"} />
-                                : (props.cameraAttributes.whiteBalance === "fluorescent")
-                                    ? <WBFluorescent
-                                        width={cameraSettingsIconSize}
-                                        height={cameraSettingsIconSize}
-                                        fill={"rgb(255, 255, 255)"} />
-                                    : <WBIncandescent
-                                        width={cameraSettingsIconSize}
-                                        height={cameraSettingsIconSize}
-                                        fill={"rgb(255, 255, 255)"} />}
-                </ButtonSettingsBase>
+                <ButtonSettings
+                    iconName={
+                        props.cameraAttributes.flash === "auto"
+                            ? "flash-auto"
+                            : props.cameraAttributes.flash === "on"
+                                ? "flash-on"
+                                : "flash-off"
+                    }
+                    onPress={changeFlash}
+                />
 
                 <ButtonSettings
-                    iconName={"md-swap-vertical"}
+                    iconName={
+                        props.cameraAttributes.whiteBalance === "auto"
+                            ? "wb-auto"
+                            : props.cameraAttributes.whiteBalance === "sunny"
+                                ? "wb-sunny"
+                                : props.cameraAttributes.whiteBalance === "cloudy"
+                                    ? "wb-cloudy"
+                                    : props.cameraAttributes.whiteBalance === "fluorescent"
+                                        ? "wb-iridescent"
+                                        : "wb-incandescent"
+                    }
+                    onPress={changeWhiteBalance}
+                />
+
+                <ButtonSettings
+                    iconName={"flip-camera-android"}
                     onPress={switchCameraType}
                 />
 
                 {props.isMultipleCameraAvailable && (
                     <ButtonSettings
-                        iconName={"md-camera-reverse"}
+                        iconName={"switch-camera"}
                         onPress={switchCameraId}
                     />
                 )}
 
                 <ButtonSettings
-                    iconName={"md-refresh"}
+                    iconName={"restore"}
                     onPress={resetCameraSettings}
                 />
             </ScrollView>

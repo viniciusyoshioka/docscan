@@ -1,6 +1,6 @@
 import React from "react"
 import { TouchableOpacityProps } from "react-native"
-import Icon from "react-native-vector-icons/Ionicons"
+import MaterialIcon from "react-native-vector-icons/MaterialIcons"
 import styled from "styled-components/native"
 
 import { cameraSettingsIconColor, CameraSettingsIconProps, cameraSettingsIconSize } from "./Icon"
@@ -22,7 +22,7 @@ export interface ButtonSettingsProps extends TouchableOpacityProps, CameraSettin
 export function ButtonSettings(props: ButtonSettingsProps) {
     return (
         <ButtonSettingsBase {...props} activeOpacity={0.5}>
-            <Icon
+            <MaterialIcon
                 name={props.iconName}
                 size={props.iconSize || cameraSettingsIconSize}
                 color={props.iconColor || cameraSettingsIconColor}
