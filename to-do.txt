@@ -1,6 +1,5 @@
 
 # Camera
-add support to multiple cameras
 fix taken picture area
 focus clicking on screen
 change Camera UI orientation when device orientation changes
