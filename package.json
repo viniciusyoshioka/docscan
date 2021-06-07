@@ -16,7 +16,7 @@
     "react": "17.0.1",
     "react-native": "0.64.0",
     "react-native-base64": "^0.2.1",
-    "react-native-camera": "^3.43.0",
+    "react-native-camera": "^3.44.1",
     "react-native-fs": "^2.16.6",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-popup-menu": "^0.15.10",
