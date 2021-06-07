@@ -353,7 +353,7 @@ export function Camera() {
                 flashMode={stateCameraSettings.flash}
                 whiteBalance={stateCameraSettings.whiteBalance}
                 type={stateCameraSettings.cameraType}
-                cameraId={stateCameraSettings.cameraId}
+                cameraId={stateCameraSettings.cameraType === "back" ? stateCameraSettings.cameraId : null}
             />
 
             <CameraHeader 
