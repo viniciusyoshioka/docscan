@@ -1,4 +1,4 @@
-import React from "react"
+import React, { ReactNode } from "react"
 import { ImageSourcePropType, ViewProps } from "react-native"
 
 import { EmptyListImage, EmptyListText, EmptyListView } from "./style"
@@ -7,6 +7,7 @@ import { EmptyListImage, EmptyListText, EmptyListView } from "./style"
 export interface EmptyListProps extends ViewProps {
     source?: ImageSourcePropType,
     message?: string,
+    children?: ReactNode,
 }
 
 
@@ -22,6 +23,8 @@ export function EmptyList(props: EmptyListProps) {
                     {props.message}
                 </EmptyListText>
             )}
+
+            {props.children}
         </EmptyListView>
     )
 }
