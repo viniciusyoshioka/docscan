@@ -3,22 +3,22 @@ import { Alert } from "react-native"
 import { RNCamera } from "react-native-camera"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 
-import { SafeScreen } from "../../component/Screen"
 import { CameraHeader } from "./Header"
 import { CameraControl } from "./Control"
 import { CameraSettings } from "./CameraSettings"
+import { SafeScreen } from "../../component"
 import { fullPathPicture } from "../../service/constant"
-import { readSettings } from "../../service/storage"
-import { createAllFolder } from "../../service/folder-handler"
 import { getDateTime } from "../../service/date"
 import { getDocumentName } from "../../service/document-handler"
+import { createAllFolder } from "../../service/folder-handler"
 import { useBackHandler } from "../../service/hook"
-import { getCameraPermission } from "../../service/permission"
 import { log } from "../../service/log"
+import { cameraIdType } from "../../service/object-types"
+import { getCameraPermission } from "../../service/permission"
 import { cameraReducerAction, cameraReducerState } from "../../service/reducer"
 import { ScreenParams } from "../../service/screen-params"
 import { settingsDefaultCamera } from "../../service/settings"
-import { cameraIdType } from "../../service/object-types"
+import { readSettings } from "../../service/storage"
 
 
 const initialCameraSettings: cameraReducerState = {
@@ -109,11 +109,11 @@ export function Camera() {
 
         if (!params && pictureList.length > 0) {
             Alert.alert(
-                "Aviso", 
+                "Aviso",
                 "Você tem fotos que não foram salvas, ao voltar elas serão perdidas",
                 [
-                    {text: "Cancelar", onPress: () => {}},
-                    {text: "Voltar", onPress: () => navigation.navigate("Home")}
+                    { text: "Cancelar", onPress: () => { } },
+                    { text: "Voltar", onPress: () => navigation.navigate("Home") }
                 ]
             )
             return
@@ -129,8 +129,8 @@ export function Camera() {
                 "Aviso",
                 "Você tem fotos que não foram salvas, ao voltar elas serão perdidas",
                 [
-                    {text: "Cancelar", onPress: () => {}},
-                    {text: "Voltar", onPress: () => navigation.navigate("Home")}
+                    { text: "Cancelar", onPress: () => { } },
+                    { text: "Voltar", onPress: () => navigation.navigate("Home") }
                 ]
             )
             return
@@ -149,70 +149,76 @@ export function Camera() {
         }
 
         if (params?.documentName) {
-            navigation.reset({routes: [{
-                name: "EditDocument",
-                params: {
-                    document: params.document,
-                    documentName: params.documentName,
-                    pictureList: params.pictureList,
-                    isChanged: false,
-                }
-            }]})
+            navigation.reset({
+                routes: [{
+                    name: "EditDocument",
+                    params: {
+                        document: params.document,
+                        documentName: params.documentName,
+                        pictureList: params.pictureList,
+                        isChanged: false,
+                    }
+                }]
+            })
             return
         }
     }, [params, pictureList])
 
     const addPictureFromGalery = useCallback(() => {
         if (params?.screenAction === "replace-picture") {
-            navigation.reset({routes: [
-                {name: "Home"},
-                {
-                    name: "EditDocument",
-                    params: {
-                        document: params.document,
-                        documentName: params.documentName,
-                        pictureList: params.pictureList,
+            navigation.reset({
+                routes: [
+                    { name: "Home" },
+                    {
+                        name: "EditDocument",
+                        params: {
+                            document: params.document,
+                            documentName: params.documentName,
+                            pictureList: params.pictureList,
+                        }
+                    },
+                    {
+                        name: "VisualizePicture",
+                        params: {
+                            picturePath: params.picturePath,
+                            pictureIndex: params.replaceIndex,
+                            document: params.document,
+                            documentName: params.documentName,
+                            pictureList: [...params.pictureList, ...pictureList],
+                            isChanged: false,
+                        }
+                    },
+                    {
+                        name: "ImportImageFromGalery",
+                        params: {
+                            document: params?.document,
+                            documentName: params?.documentName,
+                            pictureList: [...params.pictureList, ...pictureList],
+                            screenAction: params?.screenAction,
+                            replaceIndex: params?.replaceIndex,
+                            picturePath: params.picturePath,
+                        }
                     }
-                },
-                {
-                    name: "VisualizePicture",
-                    params: {
-                        picturePath: params.picturePath,
-                        pictureIndex: params.replaceIndex,
-                        document: params.document,
-                        documentName: params.documentName,
-                        pictureList: [...params.pictureList, ...pictureList],
-                        isChanged: false,
-                    }
-                },
+                ]
+            })
+            return
+        }
+
+        navigation.reset({
+            routes: [
+                { name: "Home" },
                 {
                     name: "ImportImageFromGalery",
                     params: {
                         document: params?.document,
                         documentName: params?.documentName,
-                        pictureList: [...params.pictureList, ...pictureList],
+                        pictureList: params ? [...params?.pictureList, ...pictureList] : pictureList,
                         screenAction: params?.screenAction,
                         replaceIndex: params?.replaceIndex,
-                        picturePath: params.picturePath,
                     }
                 }
-            ]})
-            return
-        }
-
-        navigation.reset({routes: [
-            {name: "Home"},
-            {
-                name: "ImportImageFromGalery",
-                params: {
-                    document: params?.document,
-                    documentName: params?.documentName,
-                    pictureList: params ? [...params?.pictureList, ...pictureList] : pictureList,
-                    screenAction: params?.screenAction,
-                    replaceIndex: params?.replaceIndex,
-                }
-            }
-        ]})
+            ]
+        })
     }, [params, pictureList])
 
     const takePicture = useCallback(async () => {
@@ -261,15 +267,17 @@ export function Camera() {
     }, [params, cameraRef])
 
     const editDocument = useCallback(() => {
-        navigation.reset({routes: [{
-            name: "EditDocument",
-            params: {
-                document: params?.document,
-                documentName: params?.documentName ? params?.documentName : getDocumentName(),
-                pictureList: params ? [...params?.pictureList, ...pictureList] : pictureList,
-                isChanged: true,
-            }
-        }]})
+        navigation.reset({
+            routes: [{
+                name: "EditDocument",
+                params: {
+                    document: params?.document,
+                    documentName: params?.documentName ? params?.documentName : getDocumentName(),
+                    pictureList: params ? [...params?.pictureList, ...pictureList] : pictureList,
+                    isChanged: true,
+                }
+            }]
+        })
     }, [params, pictureList])
 
 
@@ -277,7 +285,7 @@ export function Camera() {
         async function getCameraSettings() {
             const cameraSettings = await readSettings()
             dispatchCameraSettings({
-                type: "set", 
+                type: "set",
                 payload: {
                     flash: cameraSettings.camera.flash,
                     whiteBalance: cameraSettings.camera.whiteBalance,
@@ -292,12 +300,17 @@ export function Camera() {
 
     useEffect(() => {
         async function getCameraList() {
-            let readCameraList: Array<cameraIdType> = [{id: "0", type: 0}]
+            let readCameraList: Array<cameraIdType> = [{ id: "0", type: 0 }]
 
             try {
                 readCameraList = await cameraRef.current?.getCameraIdsAsync()
             } catch (error) {
                 log("ERROR", `Camera useEffect getCameraIds - Erro ao pegar câmeras do dispositivo para trocas entre os tipos diferentes de camera. Mensagem: "${error}"`)
+            }
+
+            if (readCameraList === undefined) {
+                setCameraList([])
+                return
             }
 
             const cameraIdList = readCameraList.filter((item) => {
@@ -344,7 +357,7 @@ export function Camera() {
             />
 
             <RNCamera
-                style={{flex: 1, overflow: "hidden"}}
+                style={{ flex: 1, overflow: "hidden" }}
                 ref={cameraRef}
                 captureAudio={false}
                 useNativeZoom={true}
@@ -356,8 +369,8 @@ export function Camera() {
                 cameraId={stateCameraSettings.cameraType === "back" ? stateCameraSettings.cameraId : null}
             />
 
-            <CameraHeader 
-                goBack={goBack} 
+            <CameraHeader
+                goBack={goBack}
                 openSettings={() => setCameraSettingsVisible(true)}
             />
 

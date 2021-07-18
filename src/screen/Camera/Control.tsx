@@ -1,7 +1,6 @@
 import React from "react"
-import Icon from "react-native-vector-icons/Ionicons"
 
-import { CameraControlButton, CameraControlButtonBase, cameraControlIconSize, CameraControlView, CameraControlViewButtonIndex, IndexControl } from "../../component/CameraControl"
+import { CameraControlAction, CameraControlButton, CameraControlView } from "../../component"
 
 
 export interface CameraControlProps {
@@ -15,37 +14,26 @@ export interface CameraControlProps {
 
 export function CameraControl(props: CameraControlProps) {
     return (
-        <CameraControlView style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
+        <CameraControlView>
             <CameraControlButton
-                iconName={"md-image-sharp"}
+                icon={"collections"}
                 onPress={props.addPictureFromGalery}
             />
 
 
-            <CameraControlButtonBase
-                onPress={props.takePicture}
-                style={{ backgroundColor: "rgb(255, 255, 255)", borderRadius: 56 }}
-            />
+            <CameraControlAction onPress={props.takePicture} />
 
 
             {props?.screenAction !== "replace-picture" && (
-                <CameraControlButtonBase onPress={props.editDocument}>
-                    <CameraControlViewButtonIndex>
-                        <Icon
-                            name={"md-document-sharp"}
-                            size={cameraControlIconSize}
-                            color={"rgb(255, 255, 255)"}
-                        />
-
-                        <IndexControl>
-                            {props.pictureListLength.toString()}
-                        </IndexControl>
-                    </CameraControlViewButtonIndex>
-                </CameraControlButtonBase>
+                <CameraControlButton
+                    icon={"description"}
+                    indexCount={props.pictureListLength.toString()}
+                    onPress={props.editDocument}
+                />
             )}
 
             {props?.screenAction === "replace-picture" && (
-                <CameraControlButtonBase />
+                <CameraControlButton />
             )}
         </CameraControlView>
     )

@@ -1,15 +1,14 @@
 import React, { Dispatch, useCallback } from "react"
 import { ScrollView } from "react-native"
 
-import { ButtonSettings } from "../../component/CameraSettings"
-import { Modal, ModalProps } from "../../component/Modal"
-import { readSettings, writeSettings } from "../../service/storage"
+import { CameraSettingsButton, ModalCameraSettings, ModalCameraSettingsProps } from "../../component"
+import { cameraIdType } from "../../service/object-types"
 import { cameraReducerAction } from "../../service/reducer"
 import { cameraType, flashType, SettingsCameraProps, settingsDefaultCamera, whiteBalanceType } from "../../service/settings"
-import { cameraIdType } from "../../service/object-types"
+import { readSettings, writeSettings } from "../../service/storage"
 
 
-export interface CameraSettingsProps extends ModalProps {
+export interface CameraSettingsProps extends ModalCameraSettingsProps {
     cameraAttributes: SettingsCameraProps,
     setCameraAttributes: Dispatch<cameraReducerAction>,
     isMultipleCameraAvailable: boolean,
@@ -98,7 +97,7 @@ export function CameraSettings(props: CameraSettingsProps) {
             newIndex = props.currentCameraIndex + 1
         }
         // Set camera attribute
-        props.setCameraAttributes({type: "camera-id", payload: props.cameraList[newIndex].id})
+        props.setCameraAttributes({ type: "camera-id", payload: props.cameraList[newIndex].id })
         props.setCurrentCameraIndex(newIndex)
         // Write settings
         const currentSettings = await readSettings()
@@ -116,14 +115,10 @@ export function CameraSettings(props: CameraSettingsProps) {
 
 
     return (
-        <Modal
-            {...props}
-            modalStyle={{ marginHorizontal: 6, justifyContent: "flex-end", bottom: 62 }}
-            backgroundStyle={{ paddingTop: 4, paddingLeft: 4 }}
-        >
+        <ModalCameraSettings {...props}>
             <ScrollView horizontal={true}>
-                <ButtonSettings
-                    iconName={
+                <CameraSettingsButton
+                    icon={
                         props.cameraAttributes.flash === "auto"
                             ? "flash-auto"
                             : props.cameraAttributes.flash === "on"
@@ -133,8 +128,8 @@ export function CameraSettings(props: CameraSettingsProps) {
                     onPress={changeFlash}
                 />
 
-                <ButtonSettings
-                    iconName={
+                <CameraSettingsButton
+                    icon={
                         props.cameraAttributes.whiteBalance === "auto"
                             ? "wb-auto"
                             : props.cameraAttributes.whiteBalance === "sunny"
@@ -148,23 +143,23 @@ export function CameraSettings(props: CameraSettingsProps) {
                     onPress={changeWhiteBalance}
                 />
 
-                <ButtonSettings
-                    iconName={"flip-camera-android"}
+                <CameraSettingsButton
+                    icon={"flip-camera-android"}
                     onPress={switchCameraType}
                 />
 
                 {props.isMultipleCameraAvailable && (
-                    <ButtonSettings
-                        iconName={"switch-camera"}
+                    <CameraSettingsButton
+                        icon={"switch-camera"}
                         onPress={switchCameraId}
                     />
                 )}
 
-                <ButtonSettings
-                    iconName={"restore"}
+                <CameraSettingsButton
+                    icon={"restore"}
                     onPress={resetCameraSettings}
                 />
             </ScrollView>
-        </Modal>
+        </ModalCameraSettings>
     )
 }
