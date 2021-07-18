@@ -1,5 +1,5 @@
 import React, { ReactChild, useCallback } from "react"
-import { Modal as RNModal, ModalProps as RNModalProps, StyleProp, ViewStyle, TouchableOpacity } from "react-native"
+import { Modal as RNModal, TouchableWithoutFeedback, ModalProps as RNModalProps, StyleProp, ViewStyle } from "react-native"
 
 import { ModalBackground, ModalContent, ModalView } from "./style"
 
@@ -27,15 +27,15 @@ export function Modal(props: ModalProps) {
 
     return (
         <RNModal transparent={true} visible={props.visible} onRequestClose={closeModal}>
-            <TouchableOpacity style={{flex: 1}} activeOpacity={1} onPress={closeModal}>
+            <TouchableWithoutFeedback onPress={closeModal}>
                 <ModalView style={props.modalStyle}>
-                    <ModalBackground activeOpacity={1} style={props.backgroundStyle}>
-                        <ModalContent>
-                            {props?.children}
-                        </ModalContent>
-                    </ModalBackground>
+                    <ModalBackground style={props.backgroundStyle} />
+
+                    <ModalContent activeOpacity={1}>
+                        {props?.children}
+                    </ModalContent>
                 </ModalView>
-            </TouchableOpacity>
+            </TouchableWithoutFeedback>
         </RNModal>
     )
 }
