@@ -1,8 +1,8 @@
 import React, { Component } from "react"
 
-import { BlockCenter, BlockLeft, BlockRight, Header, HeaderButton, HeaderTitle } from "../../component/Header"
-import { appFName } from "../../service/constant"
 import { HomeMenu } from "./HomeMenu"
+import { Header, HeaderButton, HeaderTitle } from "../../component"
+import { appFName } from "../../service/constant"
 
 
 export interface HomeHeaderProps {
@@ -39,46 +39,41 @@ export class HomeHeader extends Component<HomeHeaderProps> {
         return (
             <Header>
                 {this.props.selectionMode && (
-                    <BlockLeft>
-                        <HeaderButton
-                            iconName={"md-close"}
-                            onPress={this.props.exitSelectionMode}
-                        />
-                    </BlockLeft>
+                    <HeaderButton
+                        icon={"close"}
+                        onPress={this.props.exitSelectionMode}
+                    />
                 )}
 
                 {!this.props.selectionMode && (
-                    <BlockCenter>
-                        <HeaderTitle>
-                            {appFName}
-                        </HeaderTitle>
-                    </BlockCenter>
+                    <HeaderTitle title={appFName} />
                 )}
 
-                <BlockRight>
-                    {this.props.selectionMode && (
-                        <HeaderButton
-                            iconName={"md-trash"}
-                            onPress={this.props.deleteSelectedDocument}
-                        />
-                    )}
+                {this.props.selectionMode && (
+                    <HeaderTitle />
+                )}
 
-                    {!this.props.selectionMode && (
-                        <HeaderButton
-                            iconName={"md-add"}
-                            iconSize={30}
-                            onPress={this.props.scanNewDocument}
-                        />
-                    )}
-
-                    <HomeMenu
-                        selectionMode={this.props.selectionMode}
-                        importDocument={this.props.importDocument}
-                        exportDocument={this.props.exportDocument}
-                        openSettings={this.props.openSettings}
-                        switchDebugHome={this.props.switchDebugHome}
+                {this.props.selectionMode && (
+                    <HeaderButton
+                        icon={"delete"}
+                        onPress={this.props.deleteSelectedDocument}
                     />
-                </BlockRight>
+                )}
+
+                {!this.props.selectionMode && (
+                    <HeaderButton
+                        icon={"add"}
+                        onPress={this.props.scanNewDocument}
+                    />
+                )}
+
+                <HomeMenu
+                    selectionMode={this.props.selectionMode}
+                    importDocument={this.props.importDocument}
+                    exportDocument={this.props.exportDocument}
+                    openSettings={this.props.openSettings}
+                    switchDebugHome={this.props.switchDebugHome}
+                />
             </Header>
         )
     }

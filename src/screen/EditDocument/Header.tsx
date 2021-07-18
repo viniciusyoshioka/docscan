@@ -1,7 +1,7 @@
 import React from "react"
 
-import { Header, BlockLeft, HeaderButton, BlockCenter, HeaderTitle, BlockRight } from "../../component/Header"
 import { EditDocumentMenu } from "./EditDocumentMenu"
+import { Header, HeaderButton, HeaderTitle } from "../../component"
 
 
 export interface EditDocumentHeaderProps {
@@ -22,54 +22,50 @@ export interface EditDocumentHeaderProps {
 export function EditDocumentHeader(props: EditDocumentHeaderProps) {
     return (
         <Header>
-            <BlockLeft>
-                {props.selectionMode && (
-                    <HeaderButton
-                        iconName={"md-close"}
-                        onPress={props.exitSelectionMode}
-                    />
-                )}
-
-                {!props.selectionMode && (
-                    <HeaderButton 
-                        iconName={"md-arrow-back"}
-                        onPress={props.goBack} 
-                    />
-                )}
-            </BlockLeft>
+            {props.selectionMode && (
+                <HeaderButton
+                    icon={"close"}
+                    onPress={props.exitSelectionMode}
+                />
+            )}
 
             {!props.selectionMode && (
-                <BlockCenter>
-                    <HeaderTitle>
-                        {props.documentName}
-                    </HeaderTitle>
-                </BlockCenter>
+                <HeaderButton
+                    icon={"arrow-back"}
+                    onPress={props.goBack}
+                />
+            )}
+
+            {!props.selectionMode && (
+                <HeaderTitle title={props.documentName} />
             )}
 
             {props.selectionMode && (
-                <BlockRight>
-                    <HeaderButton
-                        iconName={"md-trash"}
-                        onPress={props.deletePicture} 
-                    />
-                </BlockRight>
+                <HeaderTitle />
+            )}
+
+            {props.selectionMode && (
+                <HeaderButton
+                    icon={"delete"}
+                    onPress={props.deletePicture}
+                />
             )}
 
             {!props.selectionMode && (
-                <BlockRight>
+                <>
                     <HeaderButton
-                        iconName={"md-camera"}
+                        icon={"add-a-photo"}
                         onPress={props.openCamera}
                     />
 
-                    <EditDocumentMenu 
+                    <EditDocumentMenu
                         renameDocument={props.renameDocument}
                         convertToPdf={props.convertToPdf}
                         deleteDocument={props.deleteDocument}
                         shareDocument={props.shareDocument}
                         visualizePdf={props.visualizePdf}
                     />
-                </BlockRight>
+                </>
             )}
         </Header>
     )

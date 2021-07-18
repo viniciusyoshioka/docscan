@@ -3,7 +3,7 @@ import { Alert, View } from "react-native"
 import RNFS from "react-native-fs"
 import Share from "react-native-share"
 
-import { DebugButton } from "../../component/DebugButton"
+import { DebugButton } from "../../component"
 import { fullPathLog, fullPathPicture, fullPathRoot, fullPathTemporary } from "../../service/constant"
 import { useSwitchTheme } from "../../service/theme"
 
@@ -34,16 +34,16 @@ export const DebugHome = memo((props: DebugHomeProps) => {
             Alert.alert(
                 "INFO",
                 "Não há arquivo de log para ler",
-                [{text: "Ok", onPress: () => {}}],
-                {cancelable: false}
+                [{ text: "Ok", onPress: () => { } }],
+                { cancelable: false }
             )
         } catch (error) {
             console.log(`FALHA MODERADA - Erro ao ler arquivo de log. Mensagem: "${error}"`)
             Alert.alert(
                 "FALHA MODERADA",
                 `Erro ao ler arquivo de log. Mensagem: "${error}"`,
-                [{text: "Ok", onPress: () => {}}],
-                {cancelable: false}
+                [{ text: "Ok", onPress: () => { } }],
+                { cancelable: false }
             )
         }
     }, [])
@@ -63,16 +63,16 @@ export const DebugHome = memo((props: DebugHomeProps) => {
             Alert.alert(
                 "INFO",
                 "Não há arquivo de log para compartilhar",
-                [{text: "Ok", onPress: () => {}}],
-                {cancelable: false}
+                [{ text: "Ok", onPress: () => { } }],
+                { cancelable: false }
             )
         } catch (error) {
             console.log(`FALHA MODERADA - Erro ao compartilhar arquivo de log. Mensagem: "${error}"`)
             Alert.alert(
                 "FALHA MODERADA",
                 `Erro ao compartilhar arquivo de log. Mensagem: "${error}"`,
-                [{text: "Ok", onPress: () => {}}],
-                {cancelable: false}
+                [{ text: "Ok", onPress: () => { } }],
+                { cancelable: false }
             )
         }
     }, [])
@@ -84,15 +84,15 @@ export const DebugHome = memo((props: DebugHomeProps) => {
                 Alert.alert(
                     "INFO",
                     "Arquivo de log apagado com sucesso",
-                    [{text: "Ok", onPress: () => {}}],
-                    {cancelable: false}
+                    [{ text: "Ok", onPress: () => { } }],
+                    { cancelable: false }
                 )
             } catch (error) {
                 Alert.alert(
                     "FALHA MODERADA",
                     "Erro ao apagar arquivo de log",
-                    [{text: "Ok", onPress: () => {}}],
-                    {cancelable: false}
+                    [{ text: "Ok", onPress: () => { } }],
+                    { cancelable: false }
                 )
             }
         }
@@ -101,10 +101,10 @@ export const DebugHome = memo((props: DebugHomeProps) => {
             "AVISO",
             "Apagar arquivo de log?",
             [
-                {text: "Cancelar", onPress: () => {}},
-                {text: "Ok", onPress: async () => await alertDeleteLogComplete()}
+                { text: "Cancelar", onPress: () => { } },
+                { text: "Ok", onPress: async () => await alertDeleteLogComplete() }
             ],
-            {cancelable: false}
+            { cancelable: false }
         )
     }, [])
 
@@ -159,15 +159,15 @@ export const DebugHome = memo((props: DebugHomeProps) => {
                 Alert.alert(
                     "INFO",
                     "Pasta de imagens apagada com sucesso",
-                    [{text: "Ok", onPress: () => {}}],
-                    {cancelable: false}
+                    [{ text: "Ok", onPress: () => { } }],
+                    { cancelable: false }
                 )
             } catch (error) {
                 Alert.alert(
                     "FALHA MODERADA",
                     "Erro ao apagar pasta de imagens",
-                    [{text: "Ok", onPress: () => {}}],
-                    {cancelable: false}
+                    [{ text: "Ok", onPress: () => { } }],
+                    { cancelable: false }
                 )
             }
         }
@@ -176,10 +176,10 @@ export const DebugHome = memo((props: DebugHomeProps) => {
             "AVISO",
             "Apagar pasta de imagens?",
             [
-                {text: "Cancelar", onPress: () => {}},
-                {text: "Ok", onPress: async () => await alertDeletePictureFolder()}
+                { text: "Cancelar", onPress: () => { } },
+                { text: "Ok", onPress: async () => await alertDeletePictureFolder() }
             ],
-            {cancelable: false}
+            { cancelable: false }
         )
     }, [])
 
@@ -190,15 +190,15 @@ export const DebugHome = memo((props: DebugHomeProps) => {
                 Alert.alert(
                     "INFO",
                     "Pasta temporária apagada com sucesso",
-                    [{text: "Ok", onPress: () => {}}],
-                    {cancelable: false}
+                    [{ text: "Ok", onPress: () => { } }],
+                    { cancelable: false }
                 )
             } catch (error) {
                 Alert.alert(
                     "FALHA MODERADA",
                     "Erro ao apagar pasta temporária",
-                    [{text: "Ok", onPress: () => {}}],
-                    {cancelable: false}
+                    [{ text: "Ok", onPress: () => { } }],
+                    { cancelable: false }
                 )
             }
         }
@@ -207,10 +207,10 @@ export const DebugHome = memo((props: DebugHomeProps) => {
             "AVISO",
             "Apagar pasta temporária?",
             [
-                {text: "Cancelar", onPress: () => {}},
-                {text: "Ok", onPress: async () => await alertDeleteTemporaryFolder()}
+                { text: "Cancelar", onPress: () => { } },
+                { text: "Ok", onPress: async () => await alertDeleteTemporaryFolder() }
             ],
-            {cancelable: false}
+            { cancelable: false }
         )
     }, [])
 

@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 
-import { BlockCenter, BlockLeft, BlockRight, Header, HeaderButton, HeaderTitle } from "../../component/Header"
+import { Header, HeaderButton, HeaderTitle } from "../../component"
 
 
 export interface ImportImageFromGaleryHeaderProps {
@@ -30,37 +30,33 @@ export class ImportImageFromGaleryHeader extends Component<ImportImageFromGalery
     render() {
         return (
             <Header>
-                <BlockLeft>
-                    {this.props.selectionMode && (
-                        <HeaderButton
-                            iconName={"md-close"}
-                            onPress={this.props.exitSelectionMode}
-                        />
-                    )}
-
-                    {!this.props.selectionMode && (
-                        <HeaderButton
-                            iconName={"md-arrow-back"}
-                            onPress={this.props.goBack}
-                        />
-                    )}
-                </BlockLeft>
+                {this.props.selectionMode && (
+                    <HeaderButton
+                        icon={"close"}
+                        onPress={this.props.exitSelectionMode}
+                    />
+                )}
 
                 {!this.props.selectionMode && (
-                    <BlockCenter>
-                        <HeaderTitle>
-                            Importar imagem
-                        </HeaderTitle>
-                    </BlockCenter>
+                    <HeaderButton
+                        icon={"arrow-back"}
+                        onPress={this.props.goBack}
+                    />
+                )}
+
+                {!this.props.selectionMode && (
+                    <HeaderTitle title={"Importar imagem"} />
                 )}
 
                 {this.props.selectionMode && (
-                    <BlockRight>
-                        <HeaderButton
-                            iconName={"md-checkmark"}
-                            onPress={this.props.importImage}
-                        />
-                    </BlockRight>
+                    <HeaderTitle />
+                )}
+
+                {this.props.selectionMode && (
+                    <HeaderButton
+                        icon={"done"}
+                        onPress={this.props.importImage}
+                    />
                 )}
             </Header>
         )

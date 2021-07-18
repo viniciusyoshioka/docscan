@@ -1,10 +1,9 @@
 import React, { useCallback, useRef } from "react"
 import { BackHandler } from "react-native"
-import { Menu, MenuOptions, MenuTrigger } from "react-native-popup-menu"
 import { RectButton } from "react-native-gesture-handler"
+import { Menu, MenuOptions, MenuTrigger } from "react-native-popup-menu"
 
-import { HeaderButton } from "../../component/Header"
-import { PopupMenuButton } from "../../component/PopupMenuButton"
+import { HeaderButton, MenuItem } from "../../component"
 import { appInDevelopment } from "../../service/constant"
 
 
@@ -50,15 +49,14 @@ export function HomeMenu(props: HomeMenuProps) {
         <Menu ref={menuRef} onClose={removeBackhandler} onOpen={setBackhandler}>
             <MenuTrigger customStyles={{ TriggerTouchableComponent: RectButton }}>
                 <HeaderButton
-                    iconName={"md-ellipsis-vertical"}
-                    iconSize={22}
+                    icon={"more-vert"}
                     onPress={() => menuRef.current?.open()}
                 />
             </MenuTrigger>
 
             <MenuOptions>
                 {!props.selectionMode && (
-                    <PopupMenuButton
+                    <MenuItem
                         text={"Importar Documento"}
                         onPress={() => {
                             menuRef.current?.close()
@@ -67,7 +65,7 @@ export function HomeMenu(props: HomeMenuProps) {
                     />
                 )}
 
-                <PopupMenuButton
+                <MenuItem
                     text={"Exportar Documento"}
                     onPress={() => {
                         menuRef.current?.close()
@@ -77,7 +75,7 @@ export function HomeMenu(props: HomeMenuProps) {
 
                 {!props.selectionMode && (
                     <>
-                        <PopupMenuButton
+                        <MenuItem
                             text={"Configurações"}
                             onPress={() => {
                                 menuRef.current?.close()
@@ -86,7 +84,7 @@ export function HomeMenu(props: HomeMenuProps) {
                         />
 
                         {appInDevelopment && (
-                            <PopupMenuButton
+                            <MenuItem
                                 text={"Debug Home"}
                                 onPress={() => {
                                     menuRef.current?.close()

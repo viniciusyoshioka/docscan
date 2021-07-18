@@ -4,18 +4,17 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 import Share from "react-native-share"
 
-import { SafeScreen } from "../../component/Screen"
 import { EditDocumentHeader } from "./Header"
-import { PictureItem } from "../../component/Pictureitem"
-import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../service/document-handler"
 import { RenameDocument } from "./RenameDocument"
-import { convertDocumentToPdf } from "../../service/pdf-creator"
-import { openPdf } from "../../service/pdf-viewer"
+import { PictureItem, SafeScreen } from "../../component"
 import { fullPathPdf } from "../../service/constant"
+import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../service/document-handler"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
-import { ScreenParams } from "../../service/screen-params"
 import { Document } from "../../service/object-types"
+import { convertDocumentToPdf } from "../../service/pdf-creator"
+import { openPdf } from "../../service/pdf-viewer"
+import { ScreenParams } from "../../service/screen-params"
 
 
 export function EditDocument() {
@@ -180,8 +179,8 @@ export function EditDocument() {
             "Apagar documento",
             "Este documento será apagado e todo seu conteúdo será perdido",
             [
-                {text: "Cancelar", onPress: () => {}},
-                {text: "Apagar", onPress: async () => await alertDiscard()}
+                { text: "Cancelar", onPress: () => { } },
+                { text: "Apagar", onPress: async () => await alertDiscard() }
             ]
         )
     }, [document, pictureList])
@@ -217,8 +216,8 @@ export function EditDocument() {
             "Apagar foto",
             "Esta foto será apagada permanentemente",
             [
-                {text: "Cancelar", onPress: () => {}},
-                {text: "Apagar", onPress: () => alertDelete()}
+                { text: "Cancelar", onPress: () => { } },
+                { text: "Apagar", onPress: () => alertDelete() }
             ]
         )
     }, [pictureList, selectedPicturesIndex, saveDocument])
@@ -316,7 +315,7 @@ export function EditDocument() {
                 keyExtractor={(_item, index) => index.toString()}
                 extraData={[selectPicture, deselectPicture]}
                 numColumns={2}
-                style={{marginLeft: 6, marginTop: 6}}
+                style={{ marginLeft: 6, marginTop: 6 }}
             />
 
             <RenameDocument

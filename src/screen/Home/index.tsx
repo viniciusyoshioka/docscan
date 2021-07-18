@@ -3,17 +3,15 @@ import { Alert, BackHandler, FlatList } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 
-import { DocumentItem } from "../../component/DocumentItem"
-import { SafeScreen } from "../../component/Screen"
-import { debugHome, Document } from "../../service/object-types"
-import { readDebugHome, readDocument, readDocumentId, writeDebugHome, writeDocument, writeDocumentId } from "../../service/storage"
 import { HomeHeader } from "./Header"
+import { DebugHome } from "./DebugHome"
+import { DocumentItem, EmptyList, SafeScreen } from "../../component"
 import { appIconOutline, appInDevelopment, fullPathPicture } from "../../service/constant"
 import { deleteDocument, exportDocument } from "../../service/document-handler"
 import { createAllFolder, createPictureFolder } from "../../service/folder-handler"
-import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
 import { useBackHandler } from "../../service/hook"
-import { DebugHome } from "./DebugHome"
+import { debugHome, Document } from "../../service/object-types"
+import { readDebugHome, readDocument, readDocumentId, writeDebugHome, writeDocument, writeDocumentId } from "../../service/storage"
 
 
 export function Home() {
@@ -113,8 +111,8 @@ export function Home() {
             "Apagar",
             "Estes documentos serão apagados permanentemente",
             [
-                {text: "Cancelar", onPress: () => {}},
-                {text: "Apagar", onPress: async () => await alertDelete()}
+                { text: "Cancelar", onPress: () => { } },
+                { text: "Apagar", onPress: async () => await alertDelete() }
             ]
         )
     }, [selectedDocument])
@@ -129,8 +127,8 @@ export function Home() {
             "Exportar",
             `Os documentos ${selectionMode ? "selecionados " : ""}serão exportados`,
             [
-                {text: "Cancelar", onPress: () => {}},
-                {text: "Exportar", onPress: () => alertExport()}
+                { text: "Cancelar", onPress: () => { } },
+                { text: "Exportar", onPress: () => alertExport() }
             ]
         )
     }, [selectedDocument, selectionMode])
@@ -197,17 +195,14 @@ export function Home() {
                 renderItem={renderDocumentItem}
                 keyExtractor={(item) => item.id.toString()}
                 extraData={[selectDocument, deselectDocument]}
-                style={{marginLeft: 6, marginTop: 6}}
+                style={{ marginLeft: 6, marginTop: 6 }}
             />
 
             {document.length === 0 && (
-                <EmptyListView>
-                    <EmptyListImage source={appIconOutline} />
-
-                    <EmptyListText>
-                        Nenhum documento
-                    </EmptyListText>
-                </EmptyListView>
+                <EmptyList
+                    source={appIconOutline}
+                    message={"Nenhum documento"}
+                />
             )}
 
             {(debugHome === "show") && (

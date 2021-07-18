@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 
-import { Header, BlockLeft, HeaderButton, BlockCenter, HeaderTitle } from "../../component/Header"
+import { Header, HeaderButton, HeaderTitle } from "../../component"
 
 
 export interface SettingsHeaderProps {
@@ -24,19 +24,13 @@ export class SettingsHeader extends Component<SettingsHeaderProps> {
     render() {
         return (
             <Header>
-                <BlockLeft>
-                    <HeaderButton 
-                        onPress={this.props.goBack} 
-                        iconName={"md-arrow-back"}
-                    />
-                </BlockLeft>
+                <HeaderButton
+                    icon={"arrow-back"}
+                    onPress={this.props.goBack}
+                />
 
-                <BlockCenter>
-                    <HeaderTitle>
-                        Configurações
-                    </HeaderTitle>
-                </BlockCenter>
-            </Header>  
+                <HeaderTitle title={"Configurações"} />
+            </Header>
         )
     }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 
-import { Header, BlockLeft, HeaderButton, BlockCenter, HeaderTitle, BlockRight } from "../../component/Header"
+import { Header, HeaderButton, HeaderTitle } from "../../component"
 
 
 export interface VisualizePictureHeaderProps {
@@ -31,57 +31,48 @@ export class VisualizePictureHeader extends Component<VisualizePictureHeaderProp
     render() {
         return (
             <Header>
-                <BlockLeft>
-                    {!this.props.isCropping && (
-                        <HeaderButton
-                            iconName={"md-arrow-back"}
-                            onPress={this.props.goBack}
-                        />
-                    )}
+                {!this.props.isCropping && (
+                    <HeaderButton
+                        icon={"arrow-back"}
+                        onPress={this.props.goBack}
+                    />
+                )}
 
-                    {this.props.isCropping && (
-                        <HeaderButton
-                            iconName={"md-close"}
-                            onPress={() => this.props.setIsCropping(false)}
-                        />
-                    )}
-                </BlockLeft>
+                {this.props.isCropping && (
+                    <HeaderButton
+                        icon={"close"}
+                        onPress={() => this.props.setIsCropping(false)}
+                    />
+                )}
 
-                <BlockCenter>
-                    {!this.props.isCropping && (
-                        <HeaderTitle>
-                            Visualizar foto
-                        </HeaderTitle>
-                    )}
+                {!this.props.isCropping && (
+                    <HeaderTitle title={"Visualizar foto"} />
+                )}
 
-                    {this.props.isCropping && (
-                        <HeaderTitle>
-                            Cortar foto
-                        </HeaderTitle>
-                    )}
-                </BlockCenter>
+                {this.props.isCropping && (
+                    <HeaderTitle title={"Cortar foto"} />
+                )}
 
-                <BlockRight>
-                    {!this.props.isCropping && (
-                        <HeaderButton
-                            iconName={"md-camera"}
-                            onPress={this.props.openCamera}
-                        />
-                    )}
-                    {!this.props.isCropping && (
-                        <HeaderButton
-                            iconName={"md-crop"}
-                            onPress={() => this.props.setIsCropping(true)}
-                        />
-                    )}
+                {!this.props.isCropping && (
+                    <HeaderButton
+                        icon={"add-a-photo"}
+                        onPress={this.props.openCamera}
+                    />
+                )}
 
-                    {this.props.isCropping && (
-                        <HeaderButton
-                            iconName={"md-checkmark"}
-                            onPress={this.props.saveCroppedPicture}
-                        />
-                    )}
-                </BlockRight>
+                {!this.props.isCropping && (
+                    <HeaderButton
+                        icon={"crop"}
+                        onPress={() => this.props.setIsCropping(true)}
+                    />
+                )}
+
+                {this.props.isCropping && (
+                    <HeaderButton
+                        icon={"done"}
+                        onPress={this.props.saveCroppedPicture}
+                    />
+                )}
             </Header>
         )
     }

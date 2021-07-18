@@ -1,10 +1,9 @@
 import React, { useCallback, useRef } from "react"
 import { BackHandler } from "react-native"
-import { Menu, MenuOptions, MenuTrigger } from "react-native-popup-menu"
 import { RectButton } from "react-native-gesture-handler"
+import { Menu, MenuOptions, MenuTrigger } from "react-native-popup-menu"
 
-import { HeaderButton } from "../../component/Header"
-import { PopupMenuButton } from "../../component/PopupMenuButton"
+import { HeaderButton, MenuItem } from "../../component"
 
 
 export interface EditDocumentMenuProps {
@@ -47,49 +46,48 @@ export function EditDocumentMenu(props: EditDocumentMenuProps) {
 
     return (
         <Menu ref={menuRef} onClose={removeBackhandler} onOpen={setBackhandler}>
-            <MenuTrigger customStyles={{TriggerTouchableComponent: RectButton}}>
-                <HeaderButton 
-                    iconName={"md-ellipsis-vertical"}
-                    iconSize={22} 
+            <MenuTrigger customStyles={{ TriggerTouchableComponent: RectButton }}>
+                <HeaderButton
+                    icon={"more-vert"}
                     onPress={() => menuRef.current?.open()}
                 />
             </MenuTrigger>
 
             <MenuOptions>
-                <PopupMenuButton 
-                    text={"Converter para PDF"} 
+                <MenuItem
+                    text={"Converter para PDF"}
                     onPress={() => {
                         menuRef.current?.close()
                         props.convertToPdf()
                     }}
                 />
 
-                <PopupMenuButton 
-                    text={"Compartilhar PDF"} 
+                <MenuItem
+                    text={"Compartilhar PDF"}
                     onPress={() => {
                         menuRef.current?.close()
                         props.shareDocument()
                     }}
                 />
 
-                <PopupMenuButton 
-                    text={"Visualizar PDF"} 
+                <MenuItem
+                    text={"Visualizar PDF"}
                     onPress={() => {
                         menuRef.current?.close()
                         props.visualizePdf()
                     }}
                 />
 
-                <PopupMenuButton 
-                    text={"Renomear"} 
+                <MenuItem
+                    text={"Renomear"}
                     onPress={() => {
                         menuRef.current?.close()
                         props.renameDocument()
                     }}
                 />
 
-                <PopupMenuButton 
-                    text={"Apagar"} 
+                <MenuItem
+                    text={"Apagar"}
                     onPress={() => {
                         menuRef.current?.close()
                         props.deleteDocument()

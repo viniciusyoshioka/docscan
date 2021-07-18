@@ -1,12 +1,11 @@
 import React, { useCallback, useState } from "react"
 import { useNavigation } from "@react-navigation/core"
 
-import { SafeScreen } from "../../component/Screen"
 import { SettingsHeader } from "./Header"
-import { TextVersion, ViewVersion } from "./style"
-import { appFName, appType, appVersion } from "../../service/constant"
-import { SettingsButton } from "../../component/SettingsButton"
 import { ChangeTheme } from "./ChangeTheme"
+import { TextVersion, ViewVersion } from "./style"
+import { ListItem, SafeScreen } from "../../component"
+import { appFName, appType, appVersion } from "../../service/constant"
 import { useBackHandler } from "../../service/hook"
 
 
@@ -40,8 +39,8 @@ export function Settings() {
                 goBack={goBack}
             />
 
-            <SettingsButton
-                iconName={"md-contrast"}
+            <ListItem
+                icon={"brightness-medium"}
                 title={"Tema"}
                 description={"Mudar tema de cores do aplicativo"}
                 onPress={() => setChangeThemeVisible(true)}

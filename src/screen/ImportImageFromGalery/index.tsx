@@ -4,16 +4,14 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import CameraRoll, { PhotoIdentifier } from "@react-native-community/cameraroll"
 import RNFS from "react-native-fs"
 
-import { SafeScreen } from "../../component/Screen"
 import { ImportImageFromGaleryHeader } from "./Header"
-import { ImageItem } from "../../component/ImageItem"
-import { EmptyListImage, EmptyListText, EmptyListView } from "../../component/EmptyList"
+import { EmptyList, ImageItem, SafeScreen } from "../../component"
 import { fullPathPicture } from "../../service/constant"
-import { useTheme } from "../../service/theme"
 import { useBackHandler } from "../../service/hook"
-import { getCameraRollPermission } from "../../service/permission"
 import { log } from "../../service/log"
+import { getCameraRollPermission } from "../../service/permission"
 import { ScreenParams } from "../../service/screen-params"
+import { useTheme } from "../../service/theme"
 
 
 export function ImportImageFromGalery() {
@@ -70,53 +68,57 @@ export function ImportImageFromGalery() {
         }
 
         if (params.screenAction === "replace-picture") {
-            navigation.reset({routes: [
-                {name: "Home"},
-                {
-                    name: "EditDocument",
-                    params: {
-                        document: params.document,
-                        documentName: params.documentName,
-                        pictureList: params.pictureList,
+            navigation.reset({
+                routes: [
+                    { name: "Home" },
+                    {
+                        name: "EditDocument",
+                        params: {
+                            document: params.document,
+                            documentName: params.documentName,
+                            pictureList: params.pictureList,
+                        }
+                    },
+                    {
+                        name: "VisualizePicture",
+                        params: {
+                            picturePath: params.picturePath,
+                            pictureIndex: params.replaceIndex,
+                            document: params.document,
+                            documentName: params.documentName,
+                            pictureList: params.pictureList,
+                            isChanged: false,
+                        }
+                    },
+                    {
+                        name: "Camera",
+                        params: {
+                            document: params?.document,
+                            documentName: params?.documentName,
+                            pictureList: params.pictureList,
+                            screenAction: params?.screenAction,
+                            replaceIndex: params?.replaceIndex,
+                            picturePath: params.picturePath,
+                        }
                     }
-                },
-                {
-                    name: "VisualizePicture",
-                    params: {
-                        picturePath: params.picturePath,
-                        pictureIndex: params.replaceIndex,
-                        document: params.document,
-                        documentName: params.documentName,
-                        pictureList: params.pictureList,
-                        isChanged: false,
-                    }
-                },
-                {
-                    name: "Camera",
-                    params: {
-                        document: params?.document,
-                        documentName: params?.documentName,
-                        pictureList: params.pictureList,
-                        screenAction: params?.screenAction,
-                        replaceIndex: params?.replaceIndex,
-                        picturePath: params.picturePath,
-                    }
-                }
-            ]})
+                ]
+            })
             return
         }
 
-        navigation.reset({routes: [
-            {name: "Home"},
-            {
-                name: "Camera",
-                params: {
-                    document: params.document,
-                    documentName: params.documentName,
-                    pictureList: params.pictureList,
+        navigation.reset({
+            routes: [
+                { name: "Home" },
+                {
+                    name: "Camera",
+                    params: {
+                        document: params.document,
+                        documentName: params.documentName,
+                        pictureList: params.pictureList,
+                    }
                 }
-            }
-        ]})
+            ]
+        })
     }, [params, selectionMode])
 
     const selectImage = useCallback((imagePath: string) => {
@@ -185,32 +187,36 @@ export function ImportImageFromGalery() {
                 "Erro",
                 "Erro desconhecido ao importar imagem da galeria"
             )
-            navigation.reset({routes: [
-                {name: "Home"},
-                {
-                    name: "Camera",
-                    params: {
-                        document: params.document,
-                        documentName: params.documentName,
-                        pictureList: params.pictureList,
+            navigation.reset({
+                routes: [
+                    { name: "Home" },
+                    {
+                        name: "Camera",
+                        params: {
+                            document: params.document,
+                            documentName: params.documentName,
+                            pictureList: params.pictureList,
+                        }
                     }
-                }
-            ]})
+                ]
+            })
             return
         }
 
         if (!params?.screenAction) {
-            navigation.reset({routes: [
-                {name: "Home"},
-                {
-                    name: "Camera",
-                    params: {
-                        document: params.document,
-                        pictureList: [...params.pictureList, newImagePath],
-                        documentName: params.documentName,
+            navigation.reset({
+                routes: [
+                    { name: "Home" },
+                    {
+                        name: "Camera",
+                        params: {
+                            document: params.document,
+                            pictureList: [...params.pictureList, newImagePath],
+                            documentName: params.documentName,
+                        }
                     }
-                }
-            ]})
+                ]
+            })
         } else if (params?.screenAction === "replace-picture" && params?.replaceIndex !== undefined) {
             params.pictureList[params.replaceIndex] = newImagePath
 
@@ -238,32 +244,36 @@ export function ImportImageFromGalery() {
                     "Erro",
                     "Erro deconhecido ao importar múltiplas imagens da galeria"
                 )
-                navigation.reset({routes: [
-                    {name: "Home"},
-                    {
-                        name: "Camera",
-                        params: {
-                            document: params.document,
-                            documentName: params.documentName,
-                            pictureList: params.pictureList,
+                navigation.reset({
+                    routes: [
+                        { name: "Home" },
+                        {
+                            name: "Camera",
+                            params: {
+                                document: params.document,
+                                documentName: params.documentName,
+                                pictureList: params.pictureList,
+                            }
                         }
-                    }
-                ]})
+                    ]
+                })
                 return
             }
         }
 
-        navigation.reset({routes: [
-            {name: "Home"},
-            {
-                name: "Camera",
-                params: {
-                    document: params.document,
-                    documentName: params.documentName,
-                    pictureList: [...params.pictureList, ...newImages],
+        navigation.reset({
+            routes: [
+                { name: "Home" },
+                {
+                    name: "Camera",
+                    params: {
+                        document: params.document,
+                        documentName: params.documentName,
+                        pictureList: [...params.pictureList, ...newImages],
+                    }
                 }
-            }
-        ]})
+            ]
+        })
     }, [params, selectedImage])
 
     const exitSelectionMode = useCallback(() => {
@@ -303,7 +313,7 @@ export function ImportImageFromGalery() {
             />
 
             {imageGalery === null && (
-                <EmptyListView>
+                <EmptyList>
                     <ActivityIndicator
                         color={color.screen_color}
                         size={"large"}
@@ -311,17 +321,14 @@ export function ImportImageFromGalery() {
                             opacity: opacity.mediumEmphasis
                         }}
                     />
-                </EmptyListView>
+                </EmptyList>
             )}
 
             {imageGalery?.length === 0 && (
-                <EmptyListView>
-                    <EmptyListImage source={require("../../image/empty_gallery.png")} />
-
-                    <EmptyListText>
-                        Galeria vazia
-                    </EmptyListText>
-                </EmptyListView>
+                <EmptyList
+                    source={require("../../image/empty_gallery.png")}
+                    message={"Galeria vazia"}
+                />
             )}
         </SafeScreen>
     )

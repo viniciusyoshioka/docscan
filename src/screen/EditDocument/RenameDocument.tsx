@@ -1,14 +1,11 @@
 import React, { createRef, useEffect, useState } from "react"
 import { TextInput } from "react-native"
 
-import { ModalFullscreenProps } from "../../component/ModalFullscreen"
-import { Input } from "../../component/Input"
-import { ModalButton, ModalTitle, ModalViewButton } from "../../component/ModalComponent"
-import { MyModal } from "../../component/MyModal"
+import { Input, ModalButton, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, MyModal } from "../../component"
 import { useKeyboard } from "../../service/hook"
 
 
-export interface RenameDocumentProps extends ModalFullscreenProps {
+export interface RenameDocumentProps extends ModalProps {
     documentName: string,
     setDocumentName: (newDocumentName: string) => void
 }
@@ -33,32 +30,31 @@ export function RenameDocument(props: RenameDocumentProps) {
 
 
     return (
-        <MyModal
-            modalStyle={{paddingHorizontal: 10}}
-            {...props}
-        >
+        <MyModal {...props}>
             <>
                 <ModalTitle>
                     Renomear documento
                 </ModalTitle>
 
-                <Input 
-                    ref={inputRef}
-                    placeholder={"Nome do documento"}
-                    value={documentName}
-                    onChangeText={(text) => setDocumentName(text)}
-                    autoFocus={true}
-                    selectTextOnFocus={true}
-                />
+                <ModalViewContent>
+                    <Input
+                        ref={inputRef}
+                        placeholder={"Nome do documento"}
+                        value={documentName}
+                        onChangeText={(text) => setDocumentName(text)}
+                        autoFocus={true}
+                        selectTextOnFocus={true}
+                    />
+                </ModalViewContent>
 
                 <ModalViewButton>
-                    <ModalButton 
-                        text={"Cancelar"} 
+                    <ModalButton
+                        text={"Cancelar"}
                         onPress={() => props.setVisible(false)}
                     />
 
-                    <ModalButton 
-                        text={"Ok"} 
+                    <ModalButton
+                        text={"Ok"}
                         onPress={() => {
                             props.setDocumentName(documentName)
                             props.setVisible(false)

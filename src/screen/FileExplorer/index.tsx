@@ -3,13 +3,11 @@ import { Alert, FlatList } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import RNFS, { ReadDirItem } from "react-native-fs"
 
-import { SafeScreen } from "../../component/Screen"
 import { FileExplorerHeader } from "./Header"
+import { ListItem, SafeScreen, SubHeader, SubHeaderText } from "../../component"
 import { fullPathExported } from "../../service/constant"
-import { FileExplorerItem } from "../../component/FileExplorerItem"
-import { useBackHandler } from "../../service/hook"
-import { SubHeader, SubHeaderText } from "../../component/SubHeaderPath"
 import { importDocument } from "../../service/document-handler"
+import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
 
 
@@ -129,8 +127,8 @@ export function FileExplorer() {
             "Importar",
             "Deseja importar este documento?",
             [
-                {text: "Cancelar", onPress: () => {}},
-                {text: "Importar", onPress: () => importDocumentFunction(newPath)}
+                { text: "Cancelar", onPress: () => { } },
+                { text: "Importar", onPress: () => importDocumentFunction(newPath) }
             ]
         )
     }, [])
@@ -159,13 +157,14 @@ export function FileExplorer() {
         changePath("..", false)
     }, [path, changePath])
 
-    const renderItem = useCallback(({item}: {item: RNFS.ReadDirItem}) => {
+    const renderItem = useCallback(({ item }: { item: RNFS.ReadDirItem }) => {
         return (
-            <FileExplorerItem
-                name={item.name}
-                path={item.path}
-                isFile={item.isFile()}
+            <ListItem
+                title={item.name}
+                description={item.path}
+                icon={item.isFile() ? "description" : "folder"}
                 onPress={async () => await changePath(item.path, item.isFile())}
+                style={{ height: 56 }}
             />
         )
     }, [changePath])
