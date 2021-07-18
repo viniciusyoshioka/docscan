@@ -84,7 +84,7 @@ export const LightTheme: ColorTheme = {
     color: {
         header_background: "rgb(60, 100, 220)",
         header_color: "rgb(255, 255, 255)",
-        header_ripple: "rgb(60, 100, 220)",
+        header_ripple: "rgb(120, 155, 235)",
 
         subHeader_background: "rgb(60, 100, 220)",
         subHeader_color: "rgb(255, 255, 255)",
@@ -130,11 +130,11 @@ export const LightTheme: ColorTheme = {
         input_placeholder: "rgb(100, 100, 100)",
         input_unfocus_border: "rgb(170, 170, 170)",
         input_focus_border: "rgb(60, 100, 220)",
-        input_selection: "rgb(60, 100, 220)",
+        input_selection: "rgb(120, 155, 235)",
 
         button_background: "rgb(60, 100, 220)",
         button_color: "rgb(255, 255, 255)",
-        button_ripple: "rgb(60, 100, 220)",
+        button_ripple: "rgb(120, 155, 235)",
 
         radioButton_checked_color: "rgb(60, 100, 220)",
         radioButton_unchecked_color: "rgb(0, 0, 0)",
@@ -202,7 +202,7 @@ export const DarkTheme: ColorTheme = {
         input_placeholder: "rgb(150, 150, 150)",
         input_unfocus_border: "rgb(80, 80, 80)",
         input_focus_border: "rgb(180, 200, 255)",
-        input_selection: "rgb(0, 128, 128)",
+        input_selection: "rgb(100, 100, 230)",
 
         button_background: "rgb(30, 30, 30)",
         button_color: "rgb(255, 255, 255)",
