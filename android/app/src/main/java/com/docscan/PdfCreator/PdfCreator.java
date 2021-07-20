@@ -1,5 +1,6 @@
 package com.docscan.PdfCreator;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -8,16 +9,14 @@ import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
 import android.media.ExifInterface;
 
-import androidx.annotation.Nullable;
-
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.ReactContext;
-import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.WritableMap;
-
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class PdfCreator {
@@ -25,19 +24,20 @@ public class PdfCreator {
 
     private final int A4_WIDTH = 595; // 596
     private final int A4_HEIGHT = 840; // 841
-    private final int BORDER_SIZE = 25;
+    private final int BORDER_SIZE = 35;
 
-    private final ReactContext mReactContext;
-    private final ReadableArray mPictureList;
-    private final @Nullable String mDocumentPath;
-    private OnConvertComplete mOnConvertComplete;
-    private OnConvertFailure mOnConvertFailure;
+    private final AtomicBoolean stopCreation = new AtomicBoolean(false);
+    private final Context mContext;
+    private final ArrayList<String> mPictureList;
+    private final String mDocumentPath;
+    private final String mTemporaryOutputPath;
 
 
-    public PdfCreator(ReactContext reactContext, ReadableArray pictureList, @Nullable String documentPath) {
-        mReactContext = reactContext;
+    public PdfCreator(Context context, ArrayList<String> pictureList, String documentPath) {
+        mContext = context;
         mPictureList = pictureList;
         mDocumentPath = documentPath;
+        mTemporaryOutputPath = new File(context.getCacheDir(), UUID.randomUUID().toString() + ".pdf").toString();
     }
 
 
@@ -58,134 +58,126 @@ public class PdfCreator {
         int originalImageHeight = originalImage.getHeight();
         float imageAspectRatio = (float) originalImageWidth / originalImageHeight;
 
-        // int newImageWidth = pageInfo.getPageWidth() - (borderSize * 2);
-        // int newImageHeight = pageInfo.getPageHeight() - (borderSize * 2);
         int newImageWidth = 0;
         int newImageHeight = 0;
 
-        /*
-        if (originalImageWidth > pageInfo.getPageWidth() - (borderSize * 2)) {
-            newImageWidth = pageInfo.getPageWidth() - (borderSize * 2);
-            newImageHeight = (newImageWidth * originalImageHeight) / originalImageWidth;
-        }
-        if (newImageHeight > pageInfo.getPageHeight() - (borderSize * 2)) {
-            newImageHeight = pageInfo.getPageHeight() - (borderSize * 2);
-            newImageWidth = (newImageHeight * originalImageWidth) / originalImageHeight;
-        }
-        */
-        if (originalImageWidth > pageInfo.getPageWidth() - (BORDER_SIZE * 2)) {
-            newImageWidth = pageInfo.getPageWidth() - (BORDER_SIZE * 2);
+        //if (originalImageWidth > pageInfo.getPageWidth() - (BORDER_SIZE * 2)) {
+        //    newImageWidth = pageInfo.getPageWidth() - (BORDER_SIZE * 2);
+        //    newImageHeight = (int) (newImageWidth / imageAspectRatio);
+        //} else if (originalImageHeight > pageInfo.getPageHeight() - (BORDER_SIZE * 2)) {
+        //    newImageHeight = pageInfo.getPageHeight() - (BORDER_SIZE * 2);
+        //    newImageWidth = (int) (newImageHeight * imageAspectRatio);
+        //}
+
+        if (originalImageWidth > pageInfo.getPageWidth() * 0.9) {
+            newImageWidth = (int) (pageInfo.getPageWidth() * 0.9);
             newImageHeight = (int) (newImageWidth / imageAspectRatio);
-        } else if (originalImageHeight > pageInfo.getPageHeight() - (BORDER_SIZE * 2)) {
-            newImageHeight = pageInfo.getPageHeight() - (BORDER_SIZE * 2);
+        } else if (originalImageHeight > pageInfo.getPageHeight() * 0.9) {
+            newImageHeight = (int) (pageInfo.getPageHeight() * 0.9);
             newImageWidth = (int) (newImageHeight * imageAspectRatio);
         }
 
         return new Size(newImageWidth, newImageHeight);
     }
 
+    private void moveFile(String source, String destiny) throws IOException {
+        File fileSource = new File(source);
+        FileChannel channelInput = new FileInputStream(fileSource).getChannel();
+        FileChannel channelOutput = new FileOutputStream(destiny).getChannel();
+        channelInput.transferTo(0, fileSource.length(), channelOutput);
+        channelInput.close();
+        channelOutput.close();
+        fileSource.delete();
+    }
 
-    public void convertPicturesToPdf() {
-        String destinyPath;
-        if (mDocumentPath == null) {
-            destinyPath = new File(mReactContext.getCacheDir().toURI().toString(), UUID.randomUUID() + ".pdf")
-                    .toURI()
-                    .toString();
-        } else {
-            destinyPath = mDocumentPath;
-        }
 
+    public boolean createPdf() throws Exception {
         try {
             PdfDocument document = new PdfDocument();
             Paint paint = new Paint();
 
-            for (int x = 0; x < mPictureList.size(); x++) {
+            for (String pictureItem : mPictureList) {
+                if (stopCreation.get()) {
+                    document.close();
+                    return false;
+                }
+
                 // Create and start page
                 PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(A4_WIDTH, A4_HEIGHT, 1).create();
                 PdfDocument.Page page = document.startPage(pageInfo);
 
                 // Create page content
                 Canvas pageCanvas = page.getCanvas();
-                Bitmap originalPicture = BitmapFactory.decodeFile(mPictureList.getString(x));
+                Bitmap originalPicture = BitmapFactory.decodeFile(pictureItem);
 
                 // Get exif orientation
-                ExifInterface pictureExif = new ExifInterface(mPictureList.getString(x));
+                ExifInterface pictureExif = new ExifInterface(pictureItem);
                 int pictureOrientation = pictureExif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-                int pictureRotation = convertRotationToDegree(pictureOrientation);
-                Matrix matrix = new Matrix();
                 if (pictureOrientation != 0) {
+                    Matrix matrix = new Matrix();
+                    int pictureRotation = convertRotationToDegree(pictureOrientation);
                     matrix.preRotate(pictureRotation);
+                    originalPicture = Bitmap.createBitmap(
+                            originalPicture,
+                            0,
+                            0,
+                            originalPicture.getWidth(),
+                            originalPicture.getHeight(),
+                            matrix,
+                            false);
                 }
-                originalPicture = Bitmap.createBitmap(
-                        originalPicture,
-                        0,
-                        0,
-                        originalPicture.getWidth(),
-                        originalPicture.getHeight(),
-                        matrix,
-                        false);
 
                 // Resize image
-                Size newImageSize;
-                if ((originalPicture.getWidth() > (pageCanvas.getWidth() - (BORDER_SIZE * 2))) || (originalPicture.getHeight() > (pageCanvas.getHeight() - (BORDER_SIZE * 2)))) {
-                    newImageSize = resizeImage(originalPicture, pageInfo);
+                if ((originalPicture.getWidth() >= (pageCanvas.getWidth() * 0.9)) || (originalPicture.getHeight() >= (pageCanvas.getHeight() * 0.9))) {
+                    // Scale image
+                    Size newImageSize = resizeImage(originalPicture, pageInfo);
+                    Bitmap scaledPicture = Bitmap.createScaledBitmap(
+                            originalPicture,
+                            newImageSize.width,
+                            newImageSize.height,
+                            false);
+                    // Get image position
+                    int posX = (pageInfo.getPageWidth() - newImageSize.width) / 2;
+                    int posY = (pageInfo.getPageHeight() - newImageSize.height) / 2;
+                    // Draw image
+                    pageCanvas.drawBitmap(scaledPicture, posX, posY, paint);
                 } else {
-                    newImageSize = new Size(originalPicture.getWidth(), originalPicture.getHeight());
+                    // Get image position
+                    int posX = (pageInfo.getPageWidth() - originalPicture.getWidth()) / 2;
+                    int posY = (pageInfo.getPageHeight() - originalPicture.getHeight()) / 2;
+                    // Draw image
+                    pageCanvas.drawBitmap(originalPicture, posX, posY, paint);
                 }
-                Bitmap scaledPicture = Bitmap.createScaledBitmap(
-                        originalPicture,
-                        newImageSize.width,
-                        newImageSize.height,
-                        false);
-                // Get image position
-                int posX = (pageInfo.getPageWidth() - newImageSize.width) / 2;
-                int posY = (pageInfo.getPageHeight() - newImageSize.height) / 2;
-                // Draw image
-                pageCanvas.drawBitmap(scaledPicture, posX, posY, paint);
 
                 // Finish page
                 document.finishPage(page);
             }
 
             // Write file
-            File file = new File(destinyPath);
-            document.writeTo(new FileOutputStream(file));
+            document.writeTo(new FileOutputStream(mTemporaryOutputPath));
 
             // Close file
             document.close();
 
-            // Return result
-            OnConvertComplete listener = mOnConvertComplete;
-            if (listener != null) {
-                WritableMap response = Arguments.createMap();
-                response.putString("uri", mDocumentPath);
+            if (stopCreation.get()) {
+                return false;
+            }
 
-                listener.onConvertComplete(response);
-            }
+            // Move file
+            moveFile(mTemporaryOutputPath, mDocumentPath);
+
+            return true;
         } catch (Exception e) {
-            OnConvertFailure listener = mOnConvertFailure;
-            if (listener != null) {
-                listener.onConvertFailure(e.getMessage());
+            File temporaryFile = new File(mTemporaryOutputPath);
+            if (temporaryFile.exists()) {
+                temporaryFile.delete();
             }
+            throw e;
         }
     }
 
-
-    public void setOnConvertComplete(OnConvertComplete listener) {
-        mOnConvertComplete = listener;
-    }
-
-    public void setOnConvertFailure(OnConvertFailure listener) {
-        mOnConvertFailure = listener;
-    }
-
-
-    public interface OnConvertComplete {
-        void onConvertComplete(WritableMap response);
-    }
-
-    public interface OnConvertFailure {
-        void onConvertFailure(String message);
+    public void stop() {
+        stopCreation.set(true);
     }
 
 

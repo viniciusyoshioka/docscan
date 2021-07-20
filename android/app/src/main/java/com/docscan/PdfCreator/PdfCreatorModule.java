@@ -1,27 +1,22 @@
 package com.docscan.PdfCreator;
 
-import android.os.AsyncTask;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.WritableMap;
-
-import java.lang.ref.WeakReference;
 
 
 public class PdfCreatorModule extends ReactContextBaseJavaModule {
 
 
-    String REACT_CLASS = "PdfCreator";
+    private static final String MODULE_NAME = "PdfCreator";
 
-    ReactContext mReactContext;
+    private final ReactContext mReactContext;
 
 
     PdfCreatorModule(ReactApplicationContext reactApplicationContext) {
@@ -33,27 +28,17 @@ public class PdfCreatorModule extends ReactContextBaseJavaModule {
     @NonNull
     @Override
     public String getName() {
-        return REACT_CLASS;
+        return MODULE_NAME;
     }
 
 
     @ReactMethod
-    public void convertPicturesToPdf(ReadableArray pictureList, @Nullable String documentPath, Promise promise) {
-        PdfCreator pdfCreator = new PdfCreator(mReactContext, pictureList, documentPath);
-        pdfCreator.setOnConvertComplete(new PdfCreator.OnConvertComplete() {
-            @Override
-            public void onConvertComplete(WritableMap response) {
-                promise.resolve(response);
-            }
-        });
-        pdfCreator.setOnConvertFailure(new PdfCreator.OnConvertFailure() {
-            @Override
-            public void onConvertFailure(String message) {
-                promise.reject("ConvertError", message);
-            }
-        });
+    public void createPdf(ReadableArray pictureList, String documentPath) {
+        Intent intent = new Intent(mReactContext, PdfCreatorService.class);
+        intent.setAction(PdfCreatorService.ACTION_CREATE);
+        intent.putExtra("pictureList", pictureList.toArrayList());
+        intent.putExtra("documentPath", documentPath);
 
-        WeakReference<PdfCreatorTask> pdfCreatorTask = new WeakReference<>(new PdfCreatorTask(pdfCreator));
-        pdfCreatorTask.get().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        mReactContext.startService(intent);
     }
 }
