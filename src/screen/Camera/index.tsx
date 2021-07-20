@@ -227,7 +227,7 @@ export function Camera() {
         const date = getDateTime("-", "-", true)
         const picturePath = `${fullPathPicture}/${date}.jpg`
         const options = {
-            quality: 0.2,
+            quality: 1,
             path: picturePath
         }
 
