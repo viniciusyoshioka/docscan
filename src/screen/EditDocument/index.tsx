@@ -12,7 +12,7 @@ import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../servi
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
 import { Document } from "../../service/object-types"
-import { convertDocumentToPdf } from "../../service/pdf-creator"
+import { createPdf } from "../../service/pdf-creator"
 import { openPdf } from "../../service/pdf-viewer"
 import { ScreenParams } from "../../service/screen-params"
 
@@ -303,7 +303,7 @@ export function EditDocument() {
                 deletePicture={deletePicture}
                 openCamera={openCamera}
                 renameDocument={() => setRenameDocumentVisible(true)}
-                convertToPdf={() => convertDocumentToPdf(documentName, pictureList)}
+                convertToPdf={() => createPdf(documentName, pictureList)}
                 deleteDocument={deleteCurrentDocument}
                 shareDocument={shareDocument}
                 visualizePdf={visualizePdf}
