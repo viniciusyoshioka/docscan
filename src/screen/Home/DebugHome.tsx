@@ -111,6 +111,19 @@ export const DebugHome = memo((props: DebugHomeProps) => {
     const debugReadAppFolder = useCallback(async () => {
         console.log("readAppFolder")
 
+        console.log("========== cache ==========")
+        if (await RNFS.exists(RNFS.CachesDirectoryPath)) {
+            const pathCacheContent = await RNFS.readDir(RNFS.CachesDirectoryPath)
+            pathCacheContent.forEach((item) => {
+                console.log(item.path)
+            })
+            if (pathCacheContent.length === 0) {
+                console.log("[]")
+            }
+        } else {
+            console.log("Não existe")
+        }
+
         console.log("========== fullPathRoot ==========")
         if (await RNFS.exists(fullPathRoot)) {
             const pathRootContent = await RNFS.readDir(fullPathRoot)
