@@ -12,6 +12,7 @@ import { createAllFolder, createPictureFolder } from "../../service/folder-handl
 import { useBackHandler } from "../../service/hook"
 import { debugHome, Document } from "../../service/object-types"
 import { readDebugHome, readDocument, readDocumentId, writeDebugHome, writeDocument, writeDocumentId } from "../../service/storage"
+import { getReadWritePermission } from "../../service/permission"
 
 
 export function Home() {
@@ -118,8 +119,16 @@ export function Home() {
     }, [selectedDocument])
 
     const exportSelectedDocument = useCallback(() => {
-        function alertExport() {
-            exportDocument(selectedDocument, selectionMode)
+        async function alertExport() {
+            const readWritePermission = await getReadWritePermission()
+            if (readWritePermission.READ_EXTERNAL_STORAGE && readWritePermission.WRITE_EXTERNAL_STORAGE) {
+                exportDocument(selectedDocument, selectionMode)
+            } else {
+                Alert.alert(
+                    "Permissão negada",
+                    "Sem permissão para exportar documentos"
+                )
+            }
             exitSelectionMode()
         }
 
@@ -128,7 +137,7 @@ export function Home() {
             `Os documentos ${selectionMode ? "selecionados " : ""}serão exportados`,
             [
                 { text: "Cancelar", onPress: () => { } },
-                { text: "Exportar", onPress: () => alertExport() }
+                { text: "Exportar", onPress: async () => await alertExport() }
             ]
         )
     }, [selectedDocument, selectionMode])
