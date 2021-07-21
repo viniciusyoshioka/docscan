@@ -1,6 +1,12 @@
 import { PermissionsAndroid } from "react-native"
 
 
+export type ReadWritePermissionResul = {
+    WRITE_EXTERNAL_STORAGE: boolean,
+    READ_EXTERNAL_STORAGE: boolean,
+}
+
+
 export async function getCameraPermission(): Promise<boolean> {
     if (await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA)) {
         return true
@@ -27,12 +33,7 @@ export async function getCameraRollPermission(): Promise<boolean> {
 }
 
 
-export type LogPermissionResult = {
-    WRITE_EXTERNAL_STORAGE: boolean;
-    READ_EXTERNAL_STORAGE: boolean;
-}
-
-export async function getLogPermission(): Promise<LogPermissionResult> {
+export async function getReadWritePermission(): Promise<ReadWritePermissionResul> {
     const hasWritePermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE)
     const hasReadPermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE)
     if (hasWritePermission && hasReadPermission) {
@@ -43,7 +44,7 @@ export async function getLogPermission(): Promise<LogPermissionResult> {
     }
 
     const status = await PermissionsAndroid.requestMultiple([
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE, 
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
     ])
 
