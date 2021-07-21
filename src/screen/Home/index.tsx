@@ -13,6 +13,7 @@ import { useBackHandler } from "../../service/hook"
 import { debugHome, Document } from "../../service/object-types"
 import { readDebugHome, readDocument, readDocumentId, writeDebugHome, writeDocument, writeDocumentId } from "../../service/storage"
 import { getReadWritePermission } from "../../service/permission"
+import { log } from "../../service/log"
 
 
 export function Home() {
@@ -124,6 +125,7 @@ export function Home() {
             if (readWritePermission.READ_EXTERNAL_STORAGE && readWritePermission.WRITE_EXTERNAL_STORAGE) {
                 exportDocument(selectedDocument, selectionMode)
             } else {
+                log("WARN", "Home exportSelectedDocument - Sem permissão para exportar documento")
                 Alert.alert(
                     "Permissão negada",
                     "Sem permissão para exportar documentos"
