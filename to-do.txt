@@ -4,8 +4,20 @@ fix taken picture area
 focus clicking on screen
 change Camera UI orientation when device orientation changes
 
+# EditDocument
+check permission for visualize PDF
+check permission for share PDF
+
+# FileExplorer
+check permission for read folder
+check permission for importDocument
+
+# ImportImageFromGalery
+check permission for importSingle and importMultiple
+
 # VisualizePicture
 add zoom on image
 
+Use service for import and export document
 move readSettings from Camera to a Provider
 remove useBackHandler hook
