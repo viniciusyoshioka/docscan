@@ -91,6 +91,9 @@ public class PdfCreatorService extends Service {
                     stopSelf();
                 } catch (Exception e) {
                     sendResponseNotification(false);
+
+                    stopForeground(true);
+                    stopSelf();
                 }
             }
         }).start();
