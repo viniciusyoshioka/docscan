@@ -2,27 +2,10 @@ import { Alert, ToastAndroid } from "react-native"
 import RNFS from "react-native-fs"
 
 import { appInDevelopment, fullPathLog } from "./constant"
-import { getLogPermission, LogPermissionResult } from "./permission"
+import { getReadWritePermission, ReadWritePermissionResul } from "./permission"
 
 
 export type logCode = "INFO" | "WARN" | "ERROR"
-
-
-async function createLogFile(): Promise<void> {
-    const fileExists = await RNFS.exists(fullPathLog)
-
-    if (!fileExists) {
-        try {
-            await RNFS.writeFile(fullPathLog, "")
-        } catch (error) {
-            console.log(`FALHA CRÍTICA - Erro criando arquivo de log. Mensagem: "${error}"`)
-            Alert.alert(
-                "FALHA CRÍTICA",
-                `Erro criando arquivo de log. Mensagem: "${error}"`
-            )
-        }
-    }
-}
 
 
 export function log(code: logCode, data: string) {
@@ -30,8 +13,8 @@ export function log(code: logCode, data: string) {
         return
     }
 
-    getLogPermission()
-        .then((logPermission: LogPermissionResult) => {
+    getReadWritePermission()
+        .then((logPermission: ReadWritePermissionResul) => {
             if (!logPermission.READ_EXTERNAL_STORAGE || !logPermission.WRITE_EXTERNAL_STORAGE) {
                 ToastAndroid.show("Permissão negada para registrar logs", 10)
                 return false
@@ -42,8 +25,20 @@ export function log(code: logCode, data: string) {
             if (!hasPermission) {
                 return false
             }
-            await createLogFile()
-            return true
+            try {
+                const fileExists = await RNFS.exists(fullPathLog)
+                if (!fileExists) {
+                    await RNFS.writeFile(fullPathLog, "")
+                }
+                return true
+            } catch (error) {
+                console.log(`FALHA CRÍTICA - Erro criando arquivo de log. Mensagem: "${error}"`)
+                Alert.alert(
+                    "FALHA CRÍTICA",
+                    `Erro criando arquivo de log. Mensagem: "${error}"`
+                )
+                return false
+            }
         })
         .then(async (hasPermission: boolean) => {
             if (!hasPermission) {
@@ -52,14 +47,12 @@ export function log(code: logCode, data: string) {
             console.log(`${code} - ${data}`)
             try {
                 await RNFS.appendFile(fullPathLog, `${code} - ${data}\n`)
-                return true
             } catch (error) {
                 console.log(`FALHA CRÍTICA - Erro registrando log. Mensagem: "${error}"`)
                 Alert.alert(
                     "FALHA CRÍTICA",
                     `Erro registrando log. Mensagem: "${error}"`
                 )
-                return false
             }
         })
 }
