@@ -9,6 +9,8 @@ import { useBackHandler } from "../../service/hook"
 import { ImageCrop, imageSavedResponse } from "../../service/image-crop"
 import { log } from "../../service/log"
 import { ScreenParams } from "../../service/screen-params"
+import { fullPathPicture } from "../../service/constant"
+import { getDateTime } from "../../service/date"
 
 
 export function VisualizePicture() {
@@ -43,9 +45,12 @@ export function VisualizePicture() {
 
     const onImageSaved = useCallback(async (response: imageSavedResponse) => {
         try {
+            const newCroppedPictureUri = `${fullPathPicture}/${getDateTime("", "", true).replace(" ", "_")}.jpg`
+            params.pictureList[params.pictureIndex] = newCroppedPictureUri
             await RNFS.unlink(params.picturePath)
-            await RNFS.moveFile(response.uri, params.picturePath)
+            await RNFS.moveFile(response.uri, newCroppedPictureUri)
         } catch (error) {
+            params.pictureList[params.pictureIndex] = params.picturePath
             if (await RNFS.exists(response.uri)) {
                 await RNFS.unlink(response.uri)
             }
