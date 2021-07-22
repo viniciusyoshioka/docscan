@@ -11,6 +11,7 @@ export interface EditDocumentMenuProps {
     shareDocument: () => void,
     visualizePdf: () => void,
     renameDocument: () => void,
+    deletePdf: () => void,
     deleteDocument: () => void,
 }
 
@@ -87,7 +88,15 @@ export function EditDocumentMenu(props: EditDocumentMenuProps) {
                 />
 
                 <MenuItem
-                    text={"Apagar"}
+                    text={"Apagar PDF"}
+                    onPress={() => {
+                        menuRef.current?.close()
+                        props.deletePdf()
+                    }}
+                />
+
+                <MenuItem
+                    text={"Apagar documento"}
                     onPress={() => {
                         menuRef.current?.close()
                         props.deleteDocument()

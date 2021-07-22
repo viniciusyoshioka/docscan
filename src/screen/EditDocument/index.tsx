@@ -155,6 +155,42 @@ export function EditDocument() {
         await saveDocument(newDocumentName, undefined)
     }, [saveDocument])
 
+    const deletePdf = useCallback(() => {
+        async function deletePdfAlert() {
+            const pdfFilePath = `${fullPathPdf}/${documentName}.pdf`
+            if (await RNFS.exists(pdfFilePath)) {
+                try {
+                    await RNFS.unlink(pdfFilePath)
+                    Alert.alert(
+                        "PDF apagado",
+                        "Arquivo PDF do documento apagado com sucesso"
+                    )
+                } catch (error) {
+                    log("WARN", `EditDocument deletePdf - Erro ao apagar arquivo PDF do documento. Mensagem: "${error}"`)
+                    Alert.alert(
+                        "Erro",
+                        "Erro desconhecido apagando PDF"
+                    )
+                }
+                return
+            }
+
+            Alert.alert(
+                "Alerta",
+                "Arquivo PDF do documento não existe"
+            )
+        }
+
+        Alert.alert(
+            "Apagar PDF",
+            "O PDF deste documento será apagado permanentemente",
+            [
+                { text: "Cancelar", onPress: () => { } },
+                { text: "Apagar", onPress: async () => await deletePdfAlert() }
+            ]
+        )
+    }, [])
+
     const deleteCurrentDocument = useCallback(() => {
         async function alertDiscard() {
             if (document) {
@@ -302,11 +338,12 @@ export function EditDocument() {
                 selectionMode={selectionMode}
                 deletePicture={deletePicture}
                 openCamera={openCamera}
-                renameDocument={() => setRenameDocumentVisible(true)}
                 convertToPdf={() => createPdf(documentName, pictureList)}
-                deleteDocument={deleteCurrentDocument}
                 shareDocument={shareDocument}
                 visualizePdf={visualizePdf}
+                renameDocument={() => setRenameDocumentVisible(true)}
+                deletePdf={deletePdf}
+                deleteDocument={deleteCurrentDocument}
             />
 
             <FlatList
