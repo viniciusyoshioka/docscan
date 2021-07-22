@@ -80,7 +80,7 @@ public class ImageCropViewManager extends SimpleViewManager<CropImageView> {
             @Override
             public void onCropImageComplete(CropImageView view, CropImageView.CropResult result) {
                 WritableMap response = Arguments.createMap();
-                response.putString("uri", result.getUri().toString());
+                response.putString("uri", result.getUri().getPath());
                 response.putInt("width", result.getCropRect().width());
                 response.putInt("height", result.getCropRect().height());
 
