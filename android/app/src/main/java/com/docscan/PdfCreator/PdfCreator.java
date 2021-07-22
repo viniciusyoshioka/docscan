@@ -24,7 +24,7 @@ public class PdfCreator {
 
     private final int A4_WIDTH = 595; // 596
     private final int A4_HEIGHT = 840; // 841
-    private final int BORDER_SIZE = 35;
+    private final float BORDER_K = 0.85f;
 
     private final AtomicBoolean stopCreation = new AtomicBoolean(false);
     private final Context mContext;
@@ -61,19 +61,12 @@ public class PdfCreator {
         int newImageWidth = 0;
         int newImageHeight = 0;
 
-        //if (originalImageWidth > pageInfo.getPageWidth() - (BORDER_SIZE * 2)) {
-        //    newImageWidth = pageInfo.getPageWidth() - (BORDER_SIZE * 2);
-        //    newImageHeight = (int) (newImageWidth / imageAspectRatio);
-        //} else if (originalImageHeight > pageInfo.getPageHeight() - (BORDER_SIZE * 2)) {
-        //    newImageHeight = pageInfo.getPageHeight() - (BORDER_SIZE * 2);
-        //    newImageWidth = (int) (newImageHeight * imageAspectRatio);
-        //}
-
-        if (originalImageWidth > pageInfo.getPageWidth() * 0.9) {
-            newImageWidth = (int) (pageInfo.getPageWidth() * 0.9);
+        if (originalImageWidth > pageInfo.getPageWidth() * BORDER_K) {
+            newImageWidth = (int) (pageInfo.getPageWidth() * BORDER_K);
             newImageHeight = (int) (newImageWidth / imageAspectRatio);
-        } else if (originalImageHeight > pageInfo.getPageHeight() * 0.9) {
-            newImageHeight = (int) (pageInfo.getPageHeight() * 0.9);
+        }
+        if (newImageHeight > pageInfo.getPageHeight() * BORDER_K) {
+            newImageHeight = (int) (pageInfo.getPageHeight() * BORDER_K);
             newImageWidth = (int) (newImageHeight * imageAspectRatio);
         }
 
@@ -108,7 +101,9 @@ public class PdfCreator {
 
                 // Create page content
                 Canvas pageCanvas = page.getCanvas();
-                Bitmap originalPicture = BitmapFactory.decodeFile(pictureItem);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.RGB_565;
+                Bitmap originalPicture = BitmapFactory.decodeFile(pictureItem, options);
 
                 // Get exif orientation
                 ExifInterface pictureExif = new ExifInterface(pictureItem);
@@ -128,14 +123,14 @@ public class PdfCreator {
                 }
 
                 // Resize image
-                if ((originalPicture.getWidth() >= (pageCanvas.getWidth() * 0.9)) || (originalPicture.getHeight() >= (pageCanvas.getHeight() * 0.9))) {
+                if ((originalPicture.getWidth() >= (pageCanvas.getWidth() * BORDER_K)) || (originalPicture.getHeight() >= (pageCanvas.getHeight() * BORDER_K))) {
                     // Scale image
                     Size newImageSize = resizeImage(originalPicture, pageInfo);
                     Bitmap scaledPicture = Bitmap.createScaledBitmap(
                             originalPicture,
                             newImageSize.width,
                             newImageSize.height,
-                            false);
+                            true);
                     // Get image position
                     int posX = (pageInfo.getPageWidth() - newImageSize.width) / 2;
                     int posY = (pageInfo.getPageHeight() - newImageSize.height) / 2;
