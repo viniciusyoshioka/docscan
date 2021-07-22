@@ -18,6 +18,7 @@ check permission for importSingle and importMultiple
 # VisualizePicture
 add zoom on image
 
+Check usages of extensions for picture files
 Use service for import and export document
 move readSettings from Camera to a Provider
 remove useBackHandler hook
