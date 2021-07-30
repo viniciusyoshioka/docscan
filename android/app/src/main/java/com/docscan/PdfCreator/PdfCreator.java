@@ -22,8 +22,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class PdfCreator {
 
 
-    private final int A4_WIDTH = 595; // 596
-    private final int A4_HEIGHT = 840; // 841
+    private final int A4_WIDTH = 595;
+    private final int A4_HEIGHT = 842;
+    private final int PAGE_COUNT = 1;
     private final float BORDER_K = 0.85f;
 
     private final AtomicBoolean stopCreation = new AtomicBoolean(false);
@@ -95,8 +96,11 @@ public class PdfCreator {
                     return false;
                 }
 
-                // Create and start page
-                PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(A4_WIDTH, A4_HEIGHT, 1).create();
+                // Create page
+                PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(
+                        A4_WIDTH,
+                        A4_HEIGHT,
+                        PAGE_COUNT).create();
                 PdfDocument.Page page = document.startPage(pageInfo);
 
                 // Create page content
@@ -105,7 +109,7 @@ public class PdfCreator {
                 options.inPreferredConfig = Bitmap.Config.RGB_565;
                 Bitmap originalPicture = BitmapFactory.decodeFile(pictureItem, options);
 
-                // Get exif orientation
+                // Fix image rotation
                 ExifInterface pictureExif = new ExifInterface(pictureItem);
                 int pictureOrientation = pictureExif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
                 if (pictureOrientation != 0) {
@@ -124,7 +128,6 @@ public class PdfCreator {
 
                 // Resize image
                 if ((originalPicture.getWidth() >= (pageCanvas.getWidth() * BORDER_K)) || (originalPicture.getHeight() >= (pageCanvas.getHeight() * BORDER_K))) {
-                    // Scale image
                     Size newImageSize = resizeImage(originalPicture, pageInfo);
                     Bitmap scaledPicture = Bitmap.createScaledBitmap(
                             originalPicture,
