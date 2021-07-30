@@ -170,6 +170,7 @@ public class PdfCreator {
             if (temporaryFile.exists()) {
                 temporaryFile.delete();
             }
+            e.printStackTrace();
             throw e;
         }
     }
