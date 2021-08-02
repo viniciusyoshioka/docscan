@@ -3,11 +3,16 @@ package com.docscan.PdfCreator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.pdf.PdfDocument;
 import android.media.ExifInterface;
+
+import com.facebook.react.bridge.ReadableMap;
+import com.tom_roush.pdfbox.pdmodel.PDDocument;
+import com.tom_roush.pdfbox.pdmodel.PDPage;
+import com.tom_roush.pdfbox.pdmodel.PDPageContentStream;
+import com.tom_roush.pdfbox.pdmodel.common.PDRectangle;
+import com.tom_roush.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import com.tom_roush.pdfbox.util.Matrix;
+import com.tom_roush.pdfbox.util.PDFBoxResourceLoader;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,23 +27,24 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class PdfCreator {
 
 
-    private final int A4_WIDTH = 595;
-    private final int A4_HEIGHT = 842;
-    private final int PAGE_COUNT = 1;
     private final float BORDER_K = 0.85f;
 
     private final AtomicBoolean stopCreation = new AtomicBoolean(false);
     private final Context mContext;
     private final ArrayList<String> mPictureList;
     private final String mDocumentPath;
-    private final String mTemporaryOutputPath;
+    private final int mOptionsImageCompressQuality;
+    private final String mOptionsTemporaryPath;
+    private final String mPdfTemporaryOutputPath;
 
 
-    public PdfCreator(Context context, ArrayList<String> pictureList, String documentPath) {
+    public PdfCreator(Context context, ArrayList<String> pictureList, String documentPath, ReadableMap options) {
         mContext = context;
         mPictureList = pictureList;
         mDocumentPath = documentPath;
-        mTemporaryOutputPath = new File(context.getCacheDir(), UUID.randomUUID().toString() + ".pdf").toString();
+        mOptionsImageCompressQuality = options.getInt("optionsImageCompressQuality");
+        mOptionsTemporaryPath = options.getString("optionsTemporaryPath");
+        mPdfTemporaryOutputPath = new File(context.getCacheDir(), UUID.randomUUID().toString() + ".pdf").toString();
     }
 
 
@@ -54,21 +60,43 @@ public class PdfCreator {
         }
     }
 
-    private Size resizeImage(Bitmap originalImage, PdfDocument.PageInfo pageInfo) {
-        int originalImageWidth = originalImage.getWidth();
-        int originalImageHeight = originalImage.getHeight();
-        float imageAspectRatio = (float) originalImageWidth / originalImageHeight;
+    private Pos getImagePosition(Size imageSize, PDPage page) {
+        PDRectangle pageRectangle = page.getBBox();
+        int posX = (int) ((pageRectangle.getWidth() - imageSize.width) / 2);
+        int posY = (int) ((pageRectangle.getHeight() - imageSize.height) / 2);
+        return new Pos(posX, posY);
+    }
 
-        int newImageWidth = 0;
-        int newImageHeight = 0;
+    private Size getImageNewSize(PDImageXObject image, PDPage page, int rotation) {
+        PDRectangle pageRectangle = page.getBBox();
 
-        if (originalImageWidth > pageInfo.getPageWidth() * BORDER_K) {
-            newImageWidth = (int) (pageInfo.getPageWidth() * BORDER_K);
+        int pageWidth = (int) pageRectangle.getWidth();
+        int pageHeight = (int) pageRectangle.getHeight();
+        int imageWidth = image.getWidth();
+        int imageHeight = image.getHeight();
+
+        if (rotation == 90 || rotation == 270) {
+            imageWidth = image.getHeight();
+            imageHeight = image.getWidth();
+        }
+
+        double imageAspectRatio = ((double) imageWidth / (double) imageHeight);
+        int newImageWidth = imageWidth;
+        int newImageHeight = imageHeight;
+
+        if (imageWidth > (int) (pageWidth * BORDER_K)) {
+            newImageWidth = (int) (pageWidth * BORDER_K);
             newImageHeight = (int) (newImageWidth / imageAspectRatio);
         }
-        if (newImageHeight > pageInfo.getPageHeight() * BORDER_K) {
-            newImageHeight = (int) (pageInfo.getPageHeight() * BORDER_K);
+        if (newImageHeight > (int) (pageHeight * BORDER_K)) {
+            newImageHeight = (int) (pageHeight * BORDER_K);
             newImageWidth = (int) (newImageHeight * imageAspectRatio);
+        }
+
+        if (rotation == 90 || rotation == 270) {
+            int switchSize = newImageWidth;
+            newImageWidth = newImageHeight;
+            newImageHeight = switchSize;
         }
 
         return new Size(newImageWidth, newImageHeight);
@@ -76,100 +104,94 @@ public class PdfCreator {
 
     private void moveFile(String source, String destiny) throws IOException {
         File fileSource = new File(source);
-        FileChannel channelInput = new FileInputStream(fileSource).getChannel();
-        FileChannel channelOutput = new FileOutputStream(destiny).getChannel();
-        channelInput.transferTo(0, fileSource.length(), channelOutput);
-        channelInput.close();
-        channelOutput.close();
+        try (FileChannel channelInput = new FileInputStream(fileSource).getChannel()) {
+            try (FileChannel channelOutput = new FileOutputStream(destiny).getChannel()) {
+                channelInput.transferTo(0, fileSource.length(), channelOutput);
+            }
+        }
         fileSource.delete();
+    }
+
+    private void deleteTemporaryFile() {
+        File temporaryFile = new File(mPdfTemporaryOutputPath);
+        if (temporaryFile.exists()) {
+            temporaryFile.delete();
+        }
     }
 
 
     public boolean createPdf() throws Exception {
-        try {
-            PdfDocument document = new PdfDocument();
-            Paint paint = new Paint();
+        PDFBoxResourceLoader.init(mContext);
 
+        try (PDDocument file = new PDDocument()) {
             for (String pictureItem : mPictureList) {
                 if (stopCreation.get()) {
-                    document.close();
+                    file.close();
                     return false;
                 }
 
-                // Create page
-                PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(
-                        A4_WIDTH,
-                        A4_HEIGHT,
-                        PAGE_COUNT).create();
-                PdfDocument.Page page = document.startPage(pageInfo);
+                PDPage page = new PDPage(PDRectangle.A4);
+                file.addPage(page);
+                PDPageContentStream content = new PDPageContentStream(file, page);
 
-                // Create page content
-                Canvas pageCanvas = page.getCanvas();
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.RGB_565;
-                Bitmap originalPicture = BitmapFactory.decodeFile(pictureItem, options);
+                File fileImage = new File(pictureItem);
+                if (mOptionsImageCompressQuality != 100) {
+                    // Compress image
+                    fileImage = new File(mOptionsTemporaryPath, UUID.randomUUID().toString() + ".jpg");
+                    FileOutputStream fileOutputStreamImageCompressed = new FileOutputStream(fileImage);
+                    Bitmap imageBitmap = BitmapFactory.decodeFile(pictureItem);
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, mOptionsImageCompressQuality, fileOutputStreamImageCompressed);
+                    imageBitmap.recycle();
+                    fileOutputStreamImageCompressed.close();
 
-                // Fix image rotation
-                ExifInterface pictureExif = new ExifInterface(pictureItem);
-                int pictureOrientation = pictureExif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-                if (pictureOrientation != 0) {
-                    Matrix matrix = new Matrix();
-                    int pictureRotation = convertRotationToDegree(pictureOrientation);
-                    matrix.preRotate(pictureRotation);
-                    originalPicture = Bitmap.createBitmap(
-                            originalPicture,
-                            0,
-                            0,
-                            originalPicture.getWidth(),
-                            originalPicture.getHeight(),
-                            matrix,
-                            false);
+                    // Copy orientation metadata to compressed image
+                    ExifInterface exifOriginal = new ExifInterface(pictureItem);
+                    ExifInterface exifCompressed = new ExifInterface(fileImage.getPath());
+                    exifCompressed.setAttribute(
+                            ExifInterface.TAG_ORIENTATION,
+                            exifOriginal.getAttribute(ExifInterface.TAG_ORIENTATION));
                 }
 
-                // Resize image
-                if ((originalPicture.getWidth() >= (pageCanvas.getWidth() * BORDER_K)) || (originalPicture.getHeight() >= (pageCanvas.getHeight() * BORDER_K))) {
-                    Size newImageSize = resizeImage(originalPicture, pageInfo);
-                    Bitmap scaledPicture = Bitmap.createScaledBitmap(
-                            originalPicture,
-                            newImageSize.width,
-                            newImageSize.height,
-                            true);
-                    // Get image position
-                    int posX = (pageInfo.getPageWidth() - newImageSize.width) / 2;
-                    int posY = (pageInfo.getPageHeight() - newImageSize.height) / 2;
-                    // Draw image
-                    pageCanvas.drawBitmap(scaledPicture, posX, posY, paint);
-                } else {
-                    // Get image position
-                    int posX = (pageInfo.getPageWidth() - originalPicture.getWidth()) / 2;
-                    int posY = (pageInfo.getPageHeight() - originalPicture.getHeight()) / 2;
-                    // Draw image
-                    pageCanvas.drawBitmap(originalPicture, posX, posY, paint);
+                PDImageXObject image = PDImageXObject.createFromFileByExtension(fileImage, file);
+                Size imageSize = getImageNewSize(image, page, 0);
+                Pos imagePosition = getImagePosition(imageSize, page);
+
+                ExifInterface pictureExif = new ExifInterface(fileImage.getPath());
+                int orientation = pictureExif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+                int rotationDegree = convertRotationToDegree(orientation);
+                if (rotationDegree != 0) {
+                    imageSize = getImageNewSize(image, page, 360 - rotationDegree);
+                    imagePosition = getImagePosition(imageSize, page);
+
+                    // Rotate image
+                    PDRectangle cropBox = page.getCropBox();
+                    float tx = (cropBox.getLowerLeftX() + cropBox.getUpperRightX()) / 2;
+                    float ty = (cropBox.getLowerLeftY() + cropBox.getUpperRightY()) / 2;
+                    content.transform(Matrix.getTranslateInstance(tx, ty));
+                    content.transform(Matrix.getRotateInstance(Math.toRadians(360 - rotationDegree), 0, 0));
+                    content.transform(Matrix.getTranslateInstance(-tx, -ty));
                 }
 
-                // Finish page
-                document.finishPage(page);
+                content.drawImage(image, imagePosition.x, imagePosition.y, imageSize.width, imageSize.height);
+                content.close();
+
+                if (mOptionsImageCompressQuality != 100) {
+                    fileImage.delete();
+                }
             }
 
-            // Write file
-            document.writeTo(new FileOutputStream(mTemporaryOutputPath));
-
-            // Close file
-            document.close();
+            file.save(mPdfTemporaryOutputPath);
+            file.close();
 
             if (stopCreation.get()) {
+                deleteTemporaryFile();
                 return false;
             }
 
-            // Move file
-            moveFile(mTemporaryOutputPath, mDocumentPath);
-
+            moveFile(mPdfTemporaryOutputPath, mDocumentPath);
             return true;
         } catch (Exception e) {
-            File temporaryFile = new File(mTemporaryOutputPath);
-            if (temporaryFile.exists()) {
-                temporaryFile.delete();
-            }
+            deleteTemporaryFile();
             e.printStackTrace();
             throw e;
         }
@@ -181,12 +203,20 @@ public class PdfCreator {
 
 
     private static class Size {
-        int width;
-        int height;
+        int width, height;
 
         Size(int width, int height) {
             this.width = width;
             this.height = height;
+        }
+    }
+
+    private static class Pos {
+        int x, y;
+
+        public Pos(int x, int y) {
+            this.x = x;
+            this.y = y;
         }
     }
 }

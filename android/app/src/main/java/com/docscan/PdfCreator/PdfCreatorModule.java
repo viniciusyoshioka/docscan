@@ -9,6 +9,7 @@ import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 
 
 public class PdfCreatorModule extends ReactContextBaseJavaModule {
@@ -33,11 +34,13 @@ public class PdfCreatorModule extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    public void createPdf(ReadableArray pictureList, String documentPath) {
+    public void createPdf(ReadableArray pictureList, String documentPath, ReadableMap options) {
         Intent intent = new Intent(mReactContext, PdfCreatorService.class);
         intent.setAction(PdfCreatorService.ACTION_CREATE);
         intent.putExtra("pictureList", pictureList.toArrayList());
         intent.putExtra("documentPath", documentPath);
+        intent.putExtra("optionsImageCompressQuality", options.getInt("imageCompressQuality"));
+        intent.putExtra("optionsTemporaryPath", options.getString("temporaryPath"));
 
         mReactContext.startService(intent);
     }

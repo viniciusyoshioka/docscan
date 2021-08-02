@@ -11,6 +11,9 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.docscan.R;
 
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableMap;
+
 import java.util.ArrayList;
 
 
@@ -76,13 +79,20 @@ public class PdfCreatorService extends Service {
 
         ArrayList<String> pictureList = intent.getStringArrayListExtra("pictureList");
         String documentPath = intent.getStringExtra("documentPath");
+        int optionsImageCompressQuality = intent.getIntExtra("optionsImageCompressQuality", 100);
+        String optionsTemporaryPath = intent.getStringExtra("optionsTemporaryPath");
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    pdfCreator = new PdfCreator(getApplicationContext(), pictureList, documentPath);
+                    WritableMap options = Arguments.createMap();
+                    options.putInt("optionsImageCompressQuality", optionsImageCompressQuality);
+                    options.putString("optionsTemporaryPath", optionsTemporaryPath);
+
+                    pdfCreator = new PdfCreator(getApplicationContext(), pictureList, documentPath, options);
                     boolean done = pdfCreator.createPdf();
+
                     if (done) {
                         sendResponseNotification(true);
                     }
