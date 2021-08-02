@@ -20,7 +20,7 @@ import { ListItem, ListItemProps } from "./ListItem"
 import { MenuItem, MenuItemProps } from "./MenuItem"
 import { Modal, ModalProps } from "./Modal"
 import { ModalCameraSettings, ModalCameraSettingsProps } from "./ModalCameraSettings"
-import { ModalButton, ModalButtonProps, ModalTitle, ModalViewButton, ModalViewContent } from "./ModalComponent"
+import { ModalButton, ModalButtonProps, ModalDescription, ModalTitle, ModalViewButton, ModalViewContent } from "./ModalComponent"
 import { MyModal, MyModalProps } from "./MyModal"
 import { NoteItem, NoteItemProps } from "./NoteItem"
 import { PictureItem, PictureItemProps } from "./Pictureitem"
@@ -70,7 +70,7 @@ export { Modal }
 export type { ModalProps }
 export { ModalCameraSettings }
 export type { ModalCameraSettingsProps }
-export { ModalButton, ModalTitle, ModalViewButton, ModalViewContent }
+export { ModalButton, ModalDescription, ModalTitle, ModalViewButton, ModalViewContent }
 export type { ModalButtonProps }
 export { MyModal }
 export type { MyModalProps }
