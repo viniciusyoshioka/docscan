@@ -8,7 +8,7 @@ import { log } from "./log"
 import { Document, ExportedDocument } from "./object-types"
 import { readDocument, readDocumentId, writeDocument, writeDocumentId } from "./storage"
 import { fullPathExported, fullPathPicture, fullPathTemporary } from "./constant"
-import { createExportedFolder, createTemporaryFolder } from "./folder-handler"
+import { createExportedFolder } from "./folder-handler"
 
 
 export async function getId(): Promise<number> {
@@ -166,7 +166,6 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
 
     // Create required folders
     await createExportedFolder()
-    await createTemporaryFolder()
 
     // Create file with document data
     const filepath = `${fullPathTemporary}/index.txt`
@@ -229,11 +228,23 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
         return false
     }
 
-    // Clear temporary files
-    try {
-        await RNFS.unlink(fullPathTemporary)
-    } catch (error) {
-        log("ERROR", `Erro apagando arquivos temporários depois de exportar documentos. Mensagem: "${error}"`)
+    // Clear temporary files used on this export
+    for (let x = 0; x < documentToExport.length; x++) {
+        const documentItem = documentToExport[x]
+
+        // Iteration for each picture path in the documentItem
+        for (let y = 0; y < documentItem.pictureList.length; y++) {
+            const pictureItem = documentItem.pictureList[y]
+
+            const splitedPath = pictureItem.split("/")
+            const fileName = splitedPath[splitedPath.length - 1]
+            const imageInTemporaryPath = `${fullPathTemporary}/${fileName}`
+            try {
+                await RNFS.unlink(imageInTemporaryPath)
+            } catch (error) {
+                log("ERROR", `Erro apagando imagem da pasta temporária depois de exportar documentos. Mensagem: "${error}"`)
+            }
+        }
     }
 
     // Alert export has finished
@@ -263,7 +274,7 @@ export async function importDocument(path: string): Promise<boolean> {
     }
 
     // Create temporary folder
-    await createTemporaryFolder()
+    // await ctempf()
 
     // Unzip file
     try {
@@ -350,11 +361,23 @@ export async function importDocument(path: string): Promise<boolean> {
     const newDocument = [...importedDocument, ...document]
     await writeDocument(newDocument)
 
-    // Clear temporary folder
-    try {
-        await RNFS.unlink(fullPathTemporary)
-    } catch (error) {
-        log("ERROR", `Erro apagando arquivos temporários depois de importart documentos. Mensagem: "${error}"`)        
+    // Clear temporary files used on this import
+    for (let x = 0; x < importedDocument.length; x++) {
+        const documentItem = importedDocument[x]
+
+        // Iteration for each picture path in the documentItem
+        for (let y = 0; y < documentItem.pictureList.length; y++) {
+            const pictureItem = documentItem.pictureList[y]
+
+            const splitedPath = pictureItem.split("/")
+            const fileName = splitedPath[splitedPath.length - 1]
+            const imageInTemporaryPath = `${fullPathTemporary}/${fileName}`
+            try {
+                await RNFS.unlink(imageInTemporaryPath)
+            } catch (error) {
+                log("ERROR", `Erro apagando imagem da pasta temporária depois de importar documentos. Mensagem: "${error}"`)
+            }
+        }
     }
 
     // Warn import has finished
