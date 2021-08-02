@@ -1,7 +1,7 @@
 import { Alert, NativeModules } from "react-native"
 import RNFS from "react-native-fs"
 
-import { fullPathPdf } from "./constant"
+import { fullPathPdf, fullPathTemporary } from "./constant"
 import { log } from "./log"
 
 
@@ -9,12 +9,14 @@ const PdfCreatorNativeModule = NativeModules.PdfCreator
 
 
 export type PdfOptions = {
-    quality: number,
+    imageCompressQuality: number,
+    temporaryPath: string,
 }
 
 
 export const defaultPdfOptions: PdfOptions = {
-    quality: 100,
+    imageCompressQuality: 100,
+    temporaryPath: fullPathTemporary
 }
 
 
