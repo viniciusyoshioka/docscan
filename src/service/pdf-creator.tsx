@@ -8,7 +8,17 @@ import { log } from "./log"
 const PdfCreatorNativeModule = NativeModules.PdfCreator
 
 
-export async function createPdf(documentName: string, pictureList: Array<string>) {
+export type PdfOptions = {
+    quality: number,
+}
+
+
+export const defaultPdfOptions: PdfOptions = {
+    quality: 100,
+}
+
+
+export async function createPdf(documentName: string, pictureList: Array<string>, options: PdfOptions = defaultPdfOptions) {
     if (documentName === "") {
         Alert.alert(
             "Documento sem nome",
@@ -38,5 +48,5 @@ export async function createPdf(documentName: string, pictureList: Array<string>
         }
     }
 
-    PdfCreatorNativeModule.createPdf(pictureList, documentPath)
+    PdfCreatorNativeModule.createPdf(pictureList, documentPath, options)
 }
