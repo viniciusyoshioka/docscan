@@ -150,6 +150,7 @@ public class PdfCreator {
                     exifCompressed.setAttribute(
                             ExifInterface.TAG_ORIENTATION,
                             exifOriginal.getAttribute(ExifInterface.TAG_ORIENTATION));
+                    exifCompressed.saveAttributes();
                 }
 
                 PDImageXObject image = PDImageXObject.createFromFileByExtension(fileImage, file);
