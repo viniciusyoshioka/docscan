@@ -5,6 +5,7 @@ focus clicking on screen
 change Camera UI orientation when device orientation changes
 
 # EditDocument
+add drag and drop functionality to sort DocumentItem
 check permission for visualize PDF
 check permission for share PDF
 
