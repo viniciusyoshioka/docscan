@@ -23,6 +23,10 @@ export const appIconOutline = require(`${appIconPath}${appIconImageOutline}`)
 export const folderRoot = appFName
 export const fullPathRoot = `${RNFS.CachesDirectoryPath}/${folderRoot}`
 export const fullPathRootExternal = `${RNFS.ExternalStorageDirectoryPath}/${folderRoot}`
+// Export
+export const folderExported = "Exported"
+export const relativePathExported = folderExported
+export const fullPathExported = `${fullPathRootExternal}/${relativePathExported}`
 // PDF
 export const folderPdf = "PDF"
 export const relativePathPdf = folderPdf
@@ -31,10 +35,6 @@ export const fullPathPdf = `${fullPathRootExternal}/${relativePathPdf}`
 export const folderPicture = "Picture"
 export const relativePathPicture = folderPicture
 export const fullPathPicture = `${fullPathRoot}/${relativePathPicture}`
-// Export
-export const folderExported = "Exported"
-export const relativePathExported = folderExported
-export const fullPathExported = `${fullPathRootExternal}/${relativePathExported}`
 // Temporary
 export const folderTemporary = "Temporary"
 export const relativePathTemporary = folderTemporary
