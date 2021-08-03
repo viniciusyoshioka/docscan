@@ -7,7 +7,7 @@ import Share from "react-native-share"
 import { EditDocumentHeader } from "./Header"
 import { RenameDocument } from "./RenameDocument"
 import { PictureItem, SafeScreen } from "../../component"
-import { fullPathPdf, fullPathTemporary } from "../../service/constant"
+import { fullPathPdf, fullPathTemporaryCompressedPicture } from "../../service/constant"
 import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../service/document-handler"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
@@ -113,7 +113,7 @@ export function EditDocument() {
     const convertDocumentToPdf = useCallback((quality: number) => {
         const pdfOptions: PdfOptions = {
             imageCompressQuality: quality,
-            temporaryPath: fullPathTemporary,
+            temporaryPath: fullPathTemporaryCompressedPicture,
         }
 
         createPdf(documentName, pictureList, pdfOptions)

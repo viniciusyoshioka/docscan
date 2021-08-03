@@ -1,7 +1,7 @@
 import { Alert, NativeModules } from "react-native"
 import RNFS from "react-native-fs"
 
-import { fullPathPdf, fullPathTemporary } from "./constant"
+import { fullPathPdf, fullPathTemporaryCompressedPicture } from "./constant"
 import { log } from "./log"
 
 
@@ -16,11 +16,15 @@ export type PdfOptions = {
 
 export const defaultPdfOptions: PdfOptions = {
     imageCompressQuality: 100,
-    temporaryPath: fullPathTemporary
+    temporaryPath: fullPathTemporaryCompressedPicture
 }
 
 
-export async function createPdf(documentName: string, pictureList: Array<string>, options: PdfOptions = defaultPdfOptions) {
+export async function createPdf(
+    documentName: string,
+    pictureList: Array<string>,
+    options: PdfOptions = defaultPdfOptions
+) {
     if (documentName === "") {
         Alert.alert(
             "Documento sem nome",
