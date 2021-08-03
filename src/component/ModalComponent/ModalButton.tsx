@@ -17,7 +17,7 @@ const ModalButtonBase = styled.TouchableOpacity`
 
 
 const ModalButtonTextBase = styled.Text`
-    font-size: 15px;
+    font-size: 16px;
     opacity: ${(props: styledProps) => props.theme.opacity.highEmphasis};
     color: ${(props: styledProps) => props.theme.color.modal_color};
 `
