@@ -39,6 +39,14 @@ export const fullPathPicture = `${fullPathRoot}/${relativePathPicture}`
 export const folderTemporary = "Temporary"
 export const relativePathTemporary = folderTemporary
 export const fullPathTemporary = `${fullPathRoot}/${relativePathTemporary}`
+// Temporary/Exported
+export const folderTemporaryExported = "Exported"
+export const relativePathTemporaryExported = `${relativePathTemporary}/${folderTemporaryExported}`
+export const fullPathTemporaryExported = `${fullPathRoot}/${relativePathTemporaryExported}`
+// Temporary/CompressedPicture
+export const folderTemporaryCompressedPicture = "CompressedPicture"
+export const relativePathTemporaryCompressedPicture = `${relativePathTemporary}/${folderTemporaryCompressedPicture}`
+export const fullPathTemporaryCompressedPicture = `${fullPathRoot}/${relativePathTemporaryCompressedPicture}`
 
 // File
 // Log

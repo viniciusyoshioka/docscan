@@ -4,7 +4,7 @@ import RNFS from "react-native-fs"
 import Share from "react-native-share"
 
 import { DebugButton } from "../../component"
-import { fullPathLog, fullPathPicture, fullPathRoot, fullPathTemporary } from "../../service/constant"
+import { fullPathLog, fullPathPicture, fullPathRoot, fullPathTemporary, fullPathTemporaryCompressedPicture, fullPathTemporaryExported } from "../../service/constant"
 import { useSwitchTheme } from "../../service/theme"
 
 
@@ -80,14 +80,25 @@ export const DebugHome = memo((props: DebugHomeProps) => {
     const debugDeleteLog = useCallback(async () => {
         async function alertDeleteLogComplete() {
             try {
-                await RNFS.unlink(fullPathLog)
+                if (await RNFS.exists(fullPathLog)) {
+                    await RNFS.unlink(fullPathLog)
+
+                    Alert.alert(
+                        "INFO",
+                        "Arquivo de log apagado com sucesso",
+                        [{ text: "Ok", onPress: () => { } }],
+                        { cancelable: false }
+                    )
+                }
+
                 Alert.alert(
                     "INFO",
-                    "Arquivo de log apagado com sucesso",
+                    "Não há arquivo de log para ser apagado",
                     [{ text: "Ok", onPress: () => { } }],
                     { cancelable: false }
                 )
             } catch (error) {
+                console.log(`FALHA MODERADA - Erro ao apagar arquivo de log. Mensagem: "${error}"`)
                 Alert.alert(
                     "FALHA MODERADA",
                     "Erro ao apagar arquivo de log",
@@ -162,23 +173,68 @@ export const DebugHome = memo((props: DebugHomeProps) => {
         } else {
             console.log("Não existe")
         }
+
+        console.log("========== fullPathTemporaryCompressedPicture ==========")
+        if (await RNFS.exists(fullPathTemporaryCompressedPicture)) {
+            const pathTemporaryCompressedPictureContent = await RNFS.readDir(fullPathTemporaryCompressedPicture)
+            pathTemporaryCompressedPictureContent.forEach((item) => {
+                console.log(item.name)
+            })
+            if (pathTemporaryCompressedPictureContent.length === 0) {
+                console.log("[]")
+            }
+        } else {
+            console.log("Não existe")
+        }
+
+        console.log("========== fullPathTemporaryExported ==========")
+        if (await RNFS.exists(fullPathTemporaryExported)) {
+            const pathTemporaryExportedContent = await RNFS.readDir(fullPathTemporaryExported)
+            pathTemporaryExportedContent.forEach((item) => {
+                console.log(item.name)
+            })
+            if (pathTemporaryExportedContent.length === 0) {
+                console.log("[]")
+            }
+        } else {
+            console.log("Não existe")
+        }
+
         console.log("====================")
     }, [])
 
     const debugDeleteAppPictureFolder = useCallback(() => {
         async function alertDeletePictureFolder() {
             try {
-                await RNFS.unlink(fullPathPicture)
+                if (await RNFS.exists(fullPathPicture)) {
+                    const pictureFolderContent = await RNFS.readDir(fullPathPicture)
+                    pictureFolderContent.forEach(async (item) => {
+                        try {
+                            await RNFS.unlink(item.path)
+                        } catch (error) {
+                            console.log(`FALHA MODERADA - Erro ao apagar item da pasta de imagens. Mensagem: "${error}"`)
+                        }
+                    })
+
+                    Alert.alert(
+                        "INFO",
+                        "Conteúdo da pasta de imagens apagada com sucesso",
+                        [{ text: "Ok", onPress: () => { } }],
+                        { cancelable: false }
+                    )
+                }
+
                 Alert.alert(
-                    "INFO",
-                    "Pasta de imagens apagada com sucesso",
+                    "FALHA GRAVE",
+                    "Pasta de imagens não existe",
                     [{ text: "Ok", onPress: () => { } }],
                     { cancelable: false }
                 )
             } catch (error) {
+                console.log(`FALHA MODERADA - Erro ao apagar conteúdo da pasta de imagens. Mensagem: "${error}"`)
                 Alert.alert(
                     "FALHA MODERADA",
-                    "Erro ao apagar pasta de imagens",
+                    "Erro ao apagar conteúdo da pasta de imagens",
                     [{ text: "Ok", onPress: () => { } }],
                     { cancelable: false }
                 )
@@ -187,7 +243,7 @@ export const DebugHome = memo((props: DebugHomeProps) => {
 
         Alert.alert(
             "AVISO",
-            "Apagar pasta de imagens?",
+            "Apagar conteúdo da pasta de imagens?",
             [
                 { text: "Cancelar", onPress: () => { } },
                 { text: "Ok", onPress: async () => await alertDeletePictureFolder() }
@@ -196,20 +252,38 @@ export const DebugHome = memo((props: DebugHomeProps) => {
         )
     }, [])
 
-    const debugDeleteAppTemporaryFolder = useCallback(() => {
-        async function alertDeleteTemporaryFolder() {
+    const debugDeleteAppTemporaryExportedFolder = useCallback(() => {
+        async function alertDeleteTemporaryExportedFolder() {
             try {
-                await RNFS.unlink(fullPathTemporary)
+                if (await RNFS.exists(fullPathTemporaryExported)) {
+                    const temporaryExportedFolderContent = await RNFS.readDir(fullPathTemporaryExported)
+                    temporaryExportedFolderContent.forEach(async (item) => {
+                        try {
+                            await RNFS.unlink(item.path)
+                        } catch (error) {
+                            console.log(`FALHA MODERADA - Erro ao apagar item da pasta temporária de documentos exportados. Mensagem: "${error}"`)
+                        }
+                    })
+
+                    Alert.alert(
+                        "INFO",
+                        "Conteúdo da pasta temporária de documentos exportados apagada com sucesso",
+                        [{ text: "Ok", onPress: () => { } }],
+                        { cancelable: false }
+                    )
+                }
+
                 Alert.alert(
-                    "INFO",
-                    "Pasta temporária apagada com sucesso",
+                    "FALHA GRAVE",
+                    "Pasta temporária de documentos exportados não existe",
                     [{ text: "Ok", onPress: () => { } }],
                     { cancelable: false }
                 )
             } catch (error) {
+                console.log(`FALHA MODERADA - Erro ao apagar conteúdo da pasta temporária de documentos exportados. Mensagem: "${error}"`)
                 Alert.alert(
                     "FALHA MODERADA",
-                    "Erro ao apagar pasta temporária",
+                    "Erro ao apagar conteúdo da pasta temporária de documentos exportados",
                     [{ text: "Ok", onPress: () => { } }],
                     { cancelable: false }
                 )
@@ -218,10 +292,61 @@ export const DebugHome = memo((props: DebugHomeProps) => {
 
         Alert.alert(
             "AVISO",
-            "Apagar pasta temporária?",
+            "Apagar conteúdo da pasta temporária de documentos exportados?",
             [
                 { text: "Cancelar", onPress: () => { } },
-                { text: "Ok", onPress: async () => await alertDeleteTemporaryFolder() }
+                { text: "Ok", onPress: async () => await alertDeleteTemporaryExportedFolder() }
+            ],
+            { cancelable: false }
+        )
+    }, [])
+
+    const debugDeleteAppTemporaryCompressedPictureFolder = useCallback(() => {
+        async function alertDeleteTemporaryCompressedPictureFolder() {
+            try {
+                if (await RNFS.exists(fullPathTemporaryCompressedPicture)) {
+                    const temporaryCompressedPictureFolderContent = await RNFS.readDir(
+                        fullPathTemporaryCompressedPicture
+                    )
+                    temporaryCompressedPictureFolderContent.forEach(async (item) => {
+                        try {
+                            await RNFS.unlink(item.path)
+                        } catch (error) {
+                            console.log(`FALHA MODERADA - Erro ao apagar item da pasta temporária de imagens comprimidas. Mensagem: "${error}"`)
+                        }
+                    })
+
+                    Alert.alert(
+                        "INFO",
+                        "Conteúdo da pasta temporária de imagens comprimidas apagada com sucesso",
+                        [{ text: "Ok", onPress: () => { } }],
+                        { cancelable: false }
+                    )
+                }
+
+                Alert.alert(
+                    "FALHA GRAVE",
+                    "Pasta temporária de imagens comprimidas não existe",
+                    [{ text: "Ok", onPress: () => { } }],
+                    { cancelable: false }
+                )
+            } catch (error) {
+                console.log(`FALHA MODERADA - Erro ao apagar conteúdo da pasta temporária de imagens comprimidas. Mensagem: "${error}"`)
+                Alert.alert(
+                    "FALHA MODERADA",
+                    "Erro ao apagar conteúdo da pasta temporária de imagens comprimidas",
+                    [{ text: "Ok", onPress: () => { } }],
+                    { cancelable: false }
+                )
+            }
+        }
+
+        Alert.alert(
+            "AVISO",
+            "Apagar conteúdo da pasta temporária de imagens comprimidas?",
+            [
+                { text: "Cancelar", onPress: () => { } },
+                { text: "Ok", onPress: async () => await alertDeleteTemporaryCompressedPictureFolder() }
             ],
             { cancelable: false }
         )
@@ -273,14 +398,18 @@ export const DebugHome = memo((props: DebugHomeProps) => {
             <DebugButton
                 text={"Ler"}
                 onPress={debugReadAppFolder}
-                style={{ bottom: 115, left: 170 }} />
+                style={{ bottom: 170, left: 170 }} />
             <DebugButton
                 text={"Imag"}
                 onPress={debugDeleteAppPictureFolder}
+                style={{ bottom: 115, left: 170 }} />
+            <DebugButton
+                text={"Temp Export"}
+                onPress={debugDeleteAppTemporaryExportedFolder}
                 style={{ bottom: 60, left: 170 }} />
             <DebugButton
-                text={"Temp"}
-                onPress={debugDeleteAppTemporaryFolder}
+                text={"Temp Compri"}
+                onPress={debugDeleteAppTemporaryCompressedPictureFolder}
                 style={{ bottom: 5, left: 170 }} />
         </View>
     )

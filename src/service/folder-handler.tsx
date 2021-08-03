@@ -1,6 +1,6 @@
 import RNFS from "react-native-fs"
 
-import { fullPathRoot, fullPathPdf, fullPathPicture, fullPathRootExternal, fullPathExported, fullPathTemporary } from "./constant"
+import { fullPathRoot, fullPathPdf, fullPathPicture, fullPathRootExternal, fullPathExported, fullPathTemporary, fullPathTemporaryExported, fullPathTemporaryCompressedPicture } from "./constant"
 import { log } from "./log"
 
 
@@ -24,23 +24,13 @@ async function createRootFolderExternal() {
     }
 }
 
-async function createPdfFolderExternal() {
+async function createPdfFolder() {
     try {
         if (!await RNFS.exists(fullPathPdf)) {
             await RNFS.mkdir(fullPathPdf)
         }
     } catch (error) {
         log("ERROR", `folder-handler createPdfFolder - Erro ao criar pasta. Mensagem: "${error}"`)
-    }
-}
-
-export async function createPictureFolder() {
-    try {
-        if (!await RNFS.exists(fullPathPicture)) {
-            await RNFS.mkdir(fullPathPicture)
-        }
-    } catch (error) {
-        log("ERROR", `folder-handler createPictureFolder - Erro ao criar pasta. Mensagem: "${error}"`)
     }
 }
 
@@ -54,6 +44,16 @@ export async function createExportedFolder() {
     }
 }
 
+export async function createPictureFolder() {
+    try {
+        if (!await RNFS.exists(fullPathPicture)) {
+            await RNFS.mkdir(fullPathPicture)
+        }
+    } catch (error) {
+        log("ERROR", `folder-handler createPictureFolder - Erro ao criar pasta. Mensagem: "${error}"`)
+    }
+}
+
 export async function createTemporaryFolder() {
     try {
         if (!await RNFS.exists(fullPathTemporary)) {
@@ -64,12 +64,34 @@ export async function createTemporaryFolder() {
     }
 }
 
+export async function createTemporaryExportedFolder() {
+    try {
+        if (!await RNFS.exists(fullPathTemporaryExported)) {
+            await RNFS.mkdir(fullPathTemporaryExported)
+        }
+    } catch (error) {
+        log("ERROR", `folder-handler createTemporaryExportedFolder - Erro ao criar pasta. Mensagem: "${error}"`)
+    }
+}
+
+export async function createTemporaryCompressedPictureFolder() {
+    try {
+        if (!await RNFS.exists(fullPathTemporaryCompressedPicture)) {
+            await RNFS.mkdir(fullPathTemporaryCompressedPicture)
+        }
+    } catch (error) {
+        log("ERROR", `folder-handler createTemporaryCompressedPictureFolder - Erro ao criar pasta. Mensagem: "${error}"`)
+    }
+}
+
 
 export function createAllFolder() {
     // createRootFolder()
     // createRootFolderExternal()
-    createPdfFolderExternal()
-    createPictureFolder()
+    createPdfFolder()
     createExportedFolder()
-    createTemporaryFolder()
+    createPictureFolder()
+    // createTemporaryFolder()
+    createTemporaryExportedFolder()
+    createTemporaryCompressedPictureFolder()
 }
