@@ -7,14 +7,15 @@ import Share from "react-native-share"
 import { EditDocumentHeader } from "./Header"
 import { RenameDocument } from "./RenameDocument"
 import { PictureItem, SafeScreen } from "../../component"
-import { fullPathPdf } from "../../service/constant"
+import { fullPathPdf, fullPathTemporary } from "../../service/constant"
 import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../service/document-handler"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
 import { Document } from "../../service/object-types"
-import { createPdf } from "../../service/pdf-creator"
+import { createPdf, PdfOptions } from "../../service/pdf-creator"
 import { openPdf } from "../../service/pdf-viewer"
 import { ScreenParams } from "../../service/screen-params"
+import { ConvertPdfOption } from "./ConvertPdfOption"
 
 
 export function EditDocument() {
@@ -40,6 +41,7 @@ export function EditDocument() {
     const [selectionMode, setSelectionMode] = useState(false)
     const [selectedPicturesIndex, setSelectedPicturesIndex] = useState<Array<number>>([])
     const [renameDocumentVisible, setRenameDocumentVisible] = useState(false)
+    const [convertPdfOptionVisible, setConvertPdfOptionVisible] = useState(false)
 
 
     useBackHandler(() => {
@@ -107,6 +109,15 @@ export function EditDocument() {
 
         navigation.reset({ routes: [{ name: "Home" }] })
     }, [selectionMode])
+
+    const convertDocumentToPdf = useCallback((quality: number) => {
+        const pdfOptions: PdfOptions = {
+            imageCompressQuality: quality,
+            temporaryPath: fullPathTemporary,
+        }
+
+        createPdf(documentName, pictureList, pdfOptions)
+    }, [documentName, pictureList])
 
     const shareDocument = useCallback(async () => {
         const documentPath = `file://${fullPathPdf}/${documentName}.pdf`
@@ -338,7 +349,7 @@ export function EditDocument() {
                 selectionMode={selectionMode}
                 deletePicture={deletePicture}
                 openCamera={openCamera}
-                convertToPdf={() => createPdf(documentName, pictureList)}
+                convertToPdf={() => setConvertPdfOptionVisible(true)}
                 shareDocument={shareDocument}
                 visualizePdf={visualizePdf}
                 renameDocument={() => setRenameDocumentVisible(true)}
@@ -360,6 +371,12 @@ export function EditDocument() {
                 setVisible={setRenameDocumentVisible}
                 documentName={documentName}
                 setDocumentName={renameDocument}
+            />
+
+            <ConvertPdfOption
+                visible={convertPdfOptionVisible}
+                setVisible={setConvertPdfOptionVisible}
+                convertToPdf={convertDocumentToPdf}
             />
         </SafeScreen>
     )
