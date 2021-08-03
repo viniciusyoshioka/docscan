@@ -1,13 +1,13 @@
 import { Alert, ToastAndroid } from "react-native"
 import base64 from "react-native-base64"
 import { zip, unzip } from "react-native-zip-archive"
-import RNFS from "react-native-fs"
+import RNFS, { ReadDirItem } from "react-native-fs"
 
 import { getDateTime } from "./date"
 import { log } from "./log"
 import { Document, ExportedDocument } from "./object-types"
 import { readDocument, readDocumentId, writeDocument, writeDocumentId } from "./storage"
-import { fullPathExported, fullPathPicture, fullPathTemporary } from "./constant"
+import { fullPathExported, fullPathPicture, fullPathTemporary, fullPathTemporaryExported } from "./constant"
 import { createExportedFolder } from "./folder-handler"
 
 
@@ -168,7 +168,7 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
     await createExportedFolder()
 
     // Create file with document data
-    const filepath = `${fullPathTemporary}/index.txt`
+    const filepath = `${fullPathTemporaryExported}/index.txt`
     const content = base64.encode(JSON.stringify(documentToExport))
     try {
         await RNFS.writeFile(filepath, content, "base64")
@@ -193,7 +193,7 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
             const splitedPath = pictureItem.split("/")
             const fileName = splitedPath[splitedPath.length - 1]
             try {
-                await RNFS.copyFile(pictureItem, `${fullPathTemporary}/${fileName}`)
+                await RNFS.copyFile(pictureItem, `${fullPathTemporaryExported}/${fileName}`)
             } catch (error) {
                 log("ERROR", `Erro copiando imagens de sua origem para pasta temporária para exportar documentos. Mensagem: "${error}"`)
                 Alert.alert(
@@ -218,7 +218,7 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
 
     // Zip documents
     try {
-        await zip(fullPathTemporary, zipDocumentPath)
+        await zip(fullPathTemporaryExported, zipDocumentPath)
     } catch (error) {
         log("ERROR", `Erro compactando documentos para exportar. Mensagem: "${error}"`)
         Alert.alert(
@@ -229,6 +229,11 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
     }
 
     // Clear temporary files used on this export
+    try {
+        await RNFS.unlink(filepath)
+    } catch (error) {
+        log("ERROR", `Erro apagando índice depois de exportar documentos. Mensagem: "${error}"`)
+    }
     for (let x = 0; x < documentToExport.length; x++) {
         const documentItem = documentToExport[x]
 
@@ -238,7 +243,7 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
 
             const splitedPath = pictureItem.split("/")
             const fileName = splitedPath[splitedPath.length - 1]
-            const imageInTemporaryPath = `${fullPathTemporary}/${fileName}`
+            const imageInTemporaryPath = `${fullPathTemporaryExported}/${fileName}`
             try {
                 await RNFS.unlink(imageInTemporaryPath)
             } catch (error) {
@@ -278,7 +283,7 @@ export async function importDocument(path: string): Promise<boolean> {
 
     // Unzip file
     try {
-        await unzip(path, fullPathTemporary)
+        await unzip(path, fullPathTemporaryExported)
     } catch (error) {
         log("ERROR", `Erro ao descompactar documento a ser importado. Mensagem: "${error}"`)
         Alert.alert(
@@ -289,14 +294,18 @@ export async function importDocument(path: string): Promise<boolean> {
     }
 
     // Check if unziped items are document
-    if (!await RNFS.exists(`${fullPathTemporary}/index.txt`)) {
+    if (!await RNFS.exists(`${fullPathTemporaryExported}/index.txt`)) {
+        log("ERROR", "Arquivo zip verificado. Ele não é compatível com documento")
+
         try {
-            await RNFS.unlink(fullPathTemporary)
+            const temporaryExportedContent = await RNFS.readDir(`${fullPathTemporaryExported}`)
+            temporaryExportedContent.forEach(async (item: ReadDirItem) => {
+                await RNFS.unlink(item.path)
+            })
         } catch (error) {
             log("ERROR", `Erro apagando pasta temporária depois de verificar que arquivo não é compatível com documento. Mensagem: "${error}"`)
         }
 
-        log("ERROR", "Arquivo zip verificado. Ele não é compatível com documento")
         Alert.alert(
             "Erro",
             "Arquivo selecionado não é um documento exportado. Processo interrompido"
@@ -307,7 +316,7 @@ export async function importDocument(path: string): Promise<boolean> {
     // Read document file
     let fileContent: string
     try {
-        fileContent = await RNFS.readFile(`${fullPathTemporary}/index.txt`, "base64")
+        fileContent = await RNFS.readFile(`${fullPathTemporaryExported}/index.txt`, "base64")
     } catch (error) {
         log("ERROR", `Erro lendo arquivo de documentos para importar. Mensagem: "${error}"`)
         Alert.alert(
@@ -337,7 +346,7 @@ export async function importDocument(path: string): Promise<boolean> {
             const splitedPath = pictureItem.split("/")
             const pictureFile = splitedPath[splitedPath.length - 1]
             try {
-                await RNFS.moveFile(`${fullPathTemporary}/${pictureFile}`, `${fullPathPicture}/${pictureFile}`)
+                await RNFS.moveFile(`${fullPathTemporaryExported}/${pictureFile}`, `${fullPathPicture}/${pictureFile}`)
             } catch (error) {
                 // Remove ids from imported document when an error is thrown
                 importedDocument.forEach(async (item: Document) => {
@@ -362,22 +371,10 @@ export async function importDocument(path: string): Promise<boolean> {
     await writeDocument(newDocument)
 
     // Clear temporary files used on this import
-    for (let x = 0; x < importedDocument.length; x++) {
-        const documentItem = importedDocument[x]
-
-        // Iteration for each picture path in the documentItem
-        for (let y = 0; y < documentItem.pictureList.length; y++) {
-            const pictureItem = documentItem.pictureList[y]
-
-            const splitedPath = pictureItem.split("/")
-            const fileName = splitedPath[splitedPath.length - 1]
-            const imageInTemporaryPath = `${fullPathTemporary}/${fileName}`
-            try {
-                await RNFS.unlink(imageInTemporaryPath)
-            } catch (error) {
-                log("ERROR", `Erro apagando imagem da pasta temporária depois de importar documentos. Mensagem: "${error}"`)
-            }
-        }
+    try {
+        await RNFS.unlink(`${fullPathTemporaryExported}/index.txt`)
+    } catch (error) {
+        log("ERROR", `Erro apagando índice depois de importar documentos. Mensagem: "${error}"`)
     }
 
     // Warn import has finished
