@@ -6,12 +6,13 @@ change Camera UI orientation when device orientation changes
 
 # EditDocument
 add drag and drop functionality to sort DocumentItem
-check permission for visualize PDF
-check permission for share PDF
+check permission to create PDF
+check permission to visualize PDF
+check permission to share PDF
 
 # FileExplorer
-check permission for read folder
-check permission for importDocument
+check permission to read folder
+check permission to importDocument
 
 # ImportImageFromGalery
 check permission for importSingle and importMultiple
