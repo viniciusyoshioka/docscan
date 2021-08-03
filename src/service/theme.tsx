@@ -1,13 +1,15 @@
 import { createContext, useContext } from "react"
 
 
+export type themeName = "light" | "dark"
+
 export type themeType = "auto" | "light" | "dark"
 
 export const themeDefault: themeType = "auto"
 
 
 export interface ColorTheme {
-    name: themeType,
+    name: themeName,
     appTheme: themeType,
     color: {
         header_background: string,
