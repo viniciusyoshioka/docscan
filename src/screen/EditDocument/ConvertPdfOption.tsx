@@ -42,14 +42,14 @@ export function ConvertPdfOption(props: ConvertPdfOptionProps) {
 
     const { color, opacity } = useTheme()
 
-    const [compressionVisualValue, setCompressionVisualValue] = useState(100)
-    const [compressionValue, setCompressionValue] = useState(100)
+    const [compressionVisualValue, setCompressionVisualValue] = useState(40)
+    const [compressionValue, setCompressionValue] = useState(40)
     const [compressionLevel, setCompressionLevel] = useState<compressionLevelType>("high")
 
 
     useEffect(() => {
-        setCompressionVisualValue(100)
-        setCompressionValue(100)
+        setCompressionVisualValue(40)
+        setCompressionValue(40)
         setCompressionLevel("high")
     }, [props.visible])
 
@@ -71,6 +71,7 @@ export function ConvertPdfOption(props: ConvertPdfOptionProps) {
                         value={compressionLevel === "high"}
                         onPress={() => {
                             setCompressionLevel("high")
+                            setCompressionVisualValue(40)
                             setCompressionValue(40)
                         }}
                     />
@@ -80,6 +81,7 @@ export function ConvertPdfOption(props: ConvertPdfOptionProps) {
                         value={compressionLevel === "low"}
                         onPress={() => {
                             setCompressionLevel("low")
+                            setCompressionVisualValue(80)
                             setCompressionValue(80)
                         }}
                     />
