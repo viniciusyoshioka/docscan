@@ -25,3 +25,4 @@ use service for import and export document
 move readSettings from Camera to a Provider
 remove useBackHandler hook
 check log, error and alert messages
+check picture names when importing document and rename
