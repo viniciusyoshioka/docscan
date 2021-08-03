@@ -3,6 +3,7 @@ import RNFS from "react-native-fs"
 
 import { fullPathPdf, fullPathTemporaryCompressedPicture } from "./constant"
 import { log } from "./log"
+import { getWritePermission } from "./permission"
 
 
 const PdfCreatorNativeModule = NativeModules.PdfCreator
@@ -25,6 +26,15 @@ export async function createPdf(
     pictureList: Array<string>,
     options: PdfOptions = defaultPdfOptions
 ) {
+    const hasPermission = await getWritePermission()
+    if (!hasPermission) {
+        Alert.alert(
+            "Permissão negada",
+            "Sem permissão para converter documento para PDF"
+        )
+        return
+    }
+
     if (documentName === "") {
         Alert.alert(
             "Documento sem nome",

@@ -9,6 +9,7 @@ import { fullPathExported } from "../../service/constant"
 import { importDocument } from "../../service/document-handler"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
+import { getReadPermission, getWritePermission } from "../../service/permission"
 
 
 const defaultContent: Array<ReadDirItem> = [
@@ -108,7 +109,16 @@ export function FileExplorer() {
     }, [path, backToDefault])
 
     const importDocumentAlert = useCallback((newPath: string) => {
-        function importDocumentFunction(newPath: string) {
+        async function importDocumentFunction(newPath: string) {
+            const hasWritePermission = await getWritePermission()
+            if (!hasWritePermission) {
+                Alert.alert(
+                    "Permissão negada",
+                    "Sem permissão para importar documento"
+                )
+                return
+            }
+
             importDocument(newPath)
                 .then((isDocumentImported: boolean) => {
                     if (isDocumentImported) {
@@ -128,7 +138,7 @@ export function FileExplorer() {
             "Deseja importar este documento?",
             [
                 { text: "Cancelar", onPress: () => { } },
-                { text: "Importar", onPress: () => importDocumentFunction(newPath) }
+                { text: "Importar", onPress: async () => await importDocumentFunction(newPath) }
             ]
         )
     }, [])
@@ -169,27 +179,39 @@ export function FileExplorer() {
         )
     }, [changePath])
 
+    const readPath = useCallback(async (pathToRead: string) => {
+        const hasReadPermission = await getReadPermission()
+        if (!hasReadPermission) {
+            Alert.alert(
+                "Permissão negada",
+                "Sem permissão para ler caminho"
+            )
+            return
+        }
+
+        try {
+            const pathContent = await RNFS.readDir(pathToRead)
+            if (pathToRead === "/") {
+                setPathContent(pathContent)
+            } else {
+                setPathContent([returnDirectoryItem, ...pathContent])
+            }
+        } catch (error) {
+            setPathContent([returnDirectoryItem])
+            log("ERROR", `Erro lendo pasta ao mudar de diretório. Mensagem: "${error}"`)
+            Alert.alert(
+                "Erro",
+                "Não foi possível abrir pasta"
+            )
+        }
+    }, [])
+
 
     useEffect(() => {
         if (path === null) {
             setPathContent(defaultContent)
         } else {
-            RNFS.readDir(path)
-                .then((dirContent: Array<ReadDirItem>) => {
-                    if (path === "/") {
-                        setPathContent(dirContent)
-                    } else {
-                        setPathContent([returnDirectoryItem, ...dirContent])
-                    }
-                })
-                .catch((error) => {
-                    setPathContent([returnDirectoryItem])
-                    log("ERROR", `Erro lendo pasta ao mudar de diretório. Mensagem: "${error}"`)
-                    Alert.alert(
-                        "Erro",
-                        "Não foi possível abrir pasta"
-                    )
-                })
+            readPath(path)
         }
     }, [path])
 

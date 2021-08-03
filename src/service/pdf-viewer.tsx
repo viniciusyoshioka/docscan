@@ -1,11 +1,25 @@
-import { NativeModules } from "react-native"
+import { Alert, NativeModules } from "react-native"
+
+import { getReadPermission } from "./permission"
 
 
-export interface PdfViewerProps {
+interface PdfViewerProps {
     openPdf: (path: string) => void
 }
 
 
 const PdfViewer: PdfViewerProps = NativeModules.PdfViewer
 
-export const openPdf = PdfViewer.openPdf
+
+export async function openPdf(path: string) {
+    const hasPermission = await getReadPermission()
+    if (!hasPermission) {
+        Alert.alert(
+            "Permissão negada",
+            "Sem permissão para visualizar PDF"
+        )
+        return
+    }
+
+    PdfViewer.openPdf(path)
+}

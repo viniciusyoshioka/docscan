@@ -9,7 +9,7 @@ import { EmptyList, ImageItem, SafeScreen } from "../../component"
 import { fullPathPicture } from "../../service/constant"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
-import { getCameraRollPermission } from "../../service/permission"
+import { getWritePermission } from "../../service/permission"
 import { ScreenParams } from "../../service/screen-params"
 import { useTheme } from "../../service/theme"
 
@@ -35,8 +35,8 @@ export function ImportImageFromGalery() {
 
 
     const getImage = useCallback(async () => {
-        const hasCameraRollPermission = await getCameraRollPermission()
-        if (!hasCameraRollPermission) {
+        const hasWritePermission = await getWritePermission()
+        if (!hasWritePermission) {
             setImageGalery([])
             log("INFO", "ImportImageFromGalery getImage - Não tem permissão pra usar a CameraRoll")
             Alert.alert(
@@ -178,6 +178,15 @@ export function ImportImageFromGalery() {
     }, [])
 
     const importSingleImage = useCallback(async (imagePath: string) => {
+        const hasWritePermission = await getWritePermission()
+        if (!hasWritePermission) {
+            Alert.alert(
+                "Permissão negada",
+                "Sem permissão para importar imagem"
+            )
+            return
+        }
+
         const newImagePath = await getNewImagePath(imagePath)
         try {
             await RNFS.copyFile(imagePath, newImagePath)
@@ -232,6 +241,15 @@ export function ImportImageFromGalery() {
     }, [params])
 
     const importMultipleImage = useCallback(async () => {
+        const hasWritePermission = await getWritePermission()
+        if (!hasWritePermission) {
+            Alert.alert(
+                "Permissão negada",
+                "Sem permissão para importar múltiplas imagens"
+            )
+            return
+        }
+
         const newImages = []
         for (let x = 0; x < selectedImage.length; x++) {
             const newImagePath = await getNewImagePath(selectedImage[x])
