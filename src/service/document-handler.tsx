@@ -7,7 +7,7 @@ import { getDateTime } from "./date"
 import { log } from "./log"
 import { Document, ExportedDocument } from "./object-types"
 import { readDocument, readDocumentId, writeDocument, writeDocumentId } from "./storage"
-import { fullPathExported, fullPathPicture, fullPathTemporary, fullPathTemporaryExported } from "./constant"
+import { fullPathExported, fullPathPicture, fullPathTemporaryExported } from "./constant"
 import { createExportedFolder } from "./folder-handler"
 
 
@@ -341,12 +341,28 @@ export async function importDocument(path: string): Promise<boolean> {
     }
 
     // Move picture file from temporary folder to picture folder
-    importedDocument.forEach((documentItem: Document) => {
-        documentItem.pictureList.forEach(async (pictureItem: string) => {
+    for (let documentItemIndex = 0; documentItemIndex < importedDocument.length; documentItemIndex++) {
+        const documentItem = importedDocument[documentItemIndex]
+
+        for (let pictureItemIndex = 0; pictureItemIndex < documentItem.pictureList.length; pictureItemIndex++) {
+            const pictureItem = documentItem.pictureList[pictureItemIndex]
+
             const splitedPath = pictureItem.split("/")
-            const pictureFile = splitedPath[splitedPath.length - 1]
+            const pictureFileName = splitedPath[splitedPath.length - 1]
+            const splitedFileName = pictureFileName.split(".")
+            const pictureExtension = splitedFileName[splitedFileName.length - 1]
+
+            // Check if filename is already been used and rename
+            let destinyFilePath = `${fullPathPicture}/${pictureFileName}`
+            if (await RNFS.exists(destinyFilePath)) {
+                do {
+                    destinyFilePath = `${fullPathPicture}/${getDateTime("-", "-", true)}.${pictureExtension}`
+                } while (await RNFS.exists(destinyFilePath))
+                importedDocument[documentItemIndex].pictureList[pictureItemIndex] = destinyFilePath
+            }
+
             try {
-                await RNFS.moveFile(`${fullPathTemporaryExported}/${pictureFile}`, `${fullPathPicture}/${pictureFile}`)
+                await RNFS.moveFile(`${fullPathTemporaryExported}/${pictureFileName}`, destinyFilePath)
             } catch (error) {
                 // Remove ids from imported document when an error is thrown
                 importedDocument.forEach(async (item: Document) => {
@@ -362,8 +378,8 @@ export async function importDocument(path: string): Promise<boolean> {
                 )
                 return false
             }
-        })
-    })
+        }
+    }
 
     // Write imported document
     const document = await readDocument()
