@@ -3,7 +3,8 @@ package com.docscan.PdfCreator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.ExifInterface;
+
+import androidx.exifinterface.media.ExifInterface;
 
 import com.facebook.react.bridge.ReadableMap;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
@@ -120,6 +121,24 @@ public class PdfCreator {
     }
 
 
+    private String getFileExtension(String filePath) {
+        String[] splitedFilePath = filePath.split("/");
+        String fileName = splitedFilePath[splitedFilePath.length - 1];
+        String[] splitedFileName = fileName.split("\\.");
+        return splitedFileName[splitedFileName.length - 1];
+    }
+
+    private Bitmap.CompressFormat getBitmapFormatFromExtension(String extension) throws Exception {
+        String lowercaseExtension = extension.toLowerCase();
+        if (lowercaseExtension.equals("jpg") || lowercaseExtension.equals("jpeg")) {
+            return Bitmap.CompressFormat.JPEG;
+        } else if (lowercaseExtension.equals("png")) {
+            return Bitmap.CompressFormat.PNG;
+        }
+        throw new Exception("Unsupported extension");
+    }
+
+
     public boolean createPdf() throws Exception {
         PDFBoxResourceLoader.init(mContext);
 
@@ -137,10 +156,12 @@ public class PdfCreator {
                 File fileImage = new File(pictureItem);
                 if (mOptionsImageCompressQuality != 100) {
                     // Compress image
-                    fileImage = new File(mOptionsTemporaryPath, UUID.randomUUID().toString() + ".jpg");
+                    String pictureExtension = getFileExtension(pictureItem);
+                    fileImage = new File(mOptionsTemporaryPath, UUID.randomUUID().toString() + "." + pictureExtension);
                     FileOutputStream fileOutputStreamImageCompressed = new FileOutputStream(fileImage);
                     Bitmap imageBitmap = BitmapFactory.decodeFile(pictureItem);
-                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, mOptionsImageCompressQuality, fileOutputStreamImageCompressed);
+                    Bitmap.CompressFormat compressFormat = getBitmapFormatFromExtension(pictureExtension);
+                    imageBitmap.compress(compressFormat, mOptionsImageCompressQuality, fileOutputStreamImageCompressed);
                     imageBitmap.recycle();
                     fileOutputStreamImageCompressed.close();
 
