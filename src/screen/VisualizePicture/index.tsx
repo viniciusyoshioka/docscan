@@ -55,7 +55,7 @@ export function VisualizePicture() {
                 await RNFS.unlink(response.uri)
             }
 
-            log("ERROR", `VisualizePicture onImageSaved - Error moving file. Message: "${error}"`)
+            log("ERROR", `VisualizePicture onImageSaved - Erro movendo arquivo. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro",
                 "Não foi possível salvar imagem cortada"

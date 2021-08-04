@@ -181,7 +181,7 @@ export function ImportImageFromGalery() {
         const hasWritePermission = await getWritePermission()
         if (!hasWritePermission) {
             Alert.alert(
-                "Permissão negada",
+                "Erro",
                 "Sem permissão para importar imagem"
             )
             return
@@ -244,7 +244,7 @@ export function ImportImageFromGalery() {
         const hasWritePermission = await getWritePermission()
         if (!hasWritePermission) {
             Alert.alert(
-                "Permissão negada",
+                "Erro",
                 "Sem permissão para importar múltiplas imagens"
             )
             return

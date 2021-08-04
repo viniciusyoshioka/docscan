@@ -29,7 +29,7 @@ export async function createPdf(
     const hasPermission = await getWritePermission()
     if (!hasPermission) {
         Alert.alert(
-            "Permissão negada",
+            "Erro",
             "Sem permissão para converter documento para PDF"
         )
         return

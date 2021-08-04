@@ -113,7 +113,7 @@ export function FileExplorer() {
             const hasWritePermission = await getWritePermission()
             if (!hasWritePermission) {
                 Alert.alert(
-                    "Permissão negada",
+                    "Erro",
                     "Sem permissão para importar documento"
                 )
                 return
@@ -183,7 +183,7 @@ export function FileExplorer() {
         const hasReadPermission = await getReadPermission()
         if (!hasReadPermission) {
             Alert.alert(
-                "Permissão negada",
+                "Erro",
                 "Sem permissão para ler caminho"
             )
             return

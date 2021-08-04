@@ -173,7 +173,7 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
     try {
         await RNFS.writeFile(filepath, content, "base64")
     } catch (error) {
-        log("ERROR", `Erro criando arquivo de documentos para exportar. Mensagem: "${error}"`)
+        log("ERROR", `Erro criando índice de documentos para exportar. Mensagem: "${error}"`)
         Alert.alert(
             "Erro",
             "Erro desconhecido ao exportar documentos. Processo interrompido"
@@ -247,7 +247,7 @@ export async function exportDocument(ids: Array<number>, selectionMode: boolean)
             try {
                 await RNFS.unlink(imageInTemporaryPath)
             } catch (error) {
-                log("ERROR", `Erro apagando imagem da pasta temporária depois de exportar documentos. Mensagem: "${error}"`)
+                log("ERROR", `Erro apagando imagem da pasta temporária de exportação depois de exportar documentos. Mensagem: "${error}"`)
             }
         }
     }
@@ -295,7 +295,7 @@ export async function importDocument(path: string): Promise<boolean> {
 
     // Check if unziped items are document
     if (!await RNFS.exists(`${fullPathTemporaryExported}/index.txt`)) {
-        log("ERROR", "Arquivo zip verificado. Ele não é compatível com documento")
+        log("ERROR", "Arquivo zip verificado não é compatível com documento")
 
         try {
             const temporaryExportedContent = await RNFS.readDir(`${fullPathTemporaryExported}`)
@@ -303,7 +303,7 @@ export async function importDocument(path: string): Promise<boolean> {
                 await RNFS.unlink(item.path)
             })
         } catch (error) {
-            log("ERROR", `Erro apagando pasta temporária depois de verificar que arquivo não é compatível com documento. Mensagem: "${error}"`)
+            log("ERROR", `Erro apagando item da pasta temporária de documentos exportados depois de verificar que arquivo não é compatível com documento. Mensagem: "${error}"`)
         }
 
         Alert.alert(
@@ -371,7 +371,7 @@ export async function importDocument(path: string): Promise<boolean> {
                     await writeDocumentId(documentId)
                 })
 
-                log("ERROR", `Erro movendo imagens da pasta temporária para pasta de imagens durante importação. Mensagem: "${error}"`)
+                log("ERROR", `Erro movendo imagens da pasta temporária de exportação para pasta de imagens durante importação. Mensagem: "${error}"`)
                 Alert.alert(
                     "Erro",
                     "Erro desconhecido ao importar documentos. Processo interrompido"

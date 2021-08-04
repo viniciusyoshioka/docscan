@@ -15,7 +15,7 @@ export async function openPdf(path: string) {
     const hasPermission = await getReadPermission()
     if (!hasPermission) {
         Alert.alert(
-            "Permissão negada",
+            "Erro",
             "Sem permissão para visualizar PDF"
         )
         return
