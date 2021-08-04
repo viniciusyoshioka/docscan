@@ -89,6 +89,7 @@ export const DebugHome = memo((props: DebugHomeProps) => {
                         [{ text: "Ok", onPress: () => { } }],
                         { cancelable: false }
                     )
+                    return
                 }
 
                 Alert.alert(
@@ -222,6 +223,7 @@ export const DebugHome = memo((props: DebugHomeProps) => {
                         [{ text: "Ok", onPress: () => { } }],
                         { cancelable: false }
                     )
+                    return
                 }
 
                 Alert.alert(
@@ -271,6 +273,7 @@ export const DebugHome = memo((props: DebugHomeProps) => {
                         [{ text: "Ok", onPress: () => { } }],
                         { cancelable: false }
                     )
+                    return
                 }
 
                 Alert.alert(
@@ -322,6 +325,7 @@ export const DebugHome = memo((props: DebugHomeProps) => {
                         [{ text: "Ok", onPress: () => { } }],
                         { cancelable: false }
                     )
+                    return
                 }
 
                 Alert.alert(
