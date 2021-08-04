@@ -10,9 +10,6 @@ add drag and drop functionality to sort DocumentItem
 # VisualizePicture
 add zoom on image
 
-check picture names when importing document and rename
-check usages of extensions for picture files
-check log, error and alert messages
 use service for import and export document
 move readSettings from Camera to a Provider
 remove useBackHandler hook
