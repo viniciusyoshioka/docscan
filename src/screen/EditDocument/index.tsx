@@ -3,6 +3,7 @@ import { Alert, FlatList } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 import Share from "react-native-share"
+import { createPdf, PdfCreatorOptions, viewPdf } from "react-native-pdf-creator"
 
 import { EditDocumentHeader } from "./Header"
 import { RenameDocument } from "./RenameDocument"
@@ -12,10 +13,9 @@ import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../servi
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
 import { Document } from "../../service/object-types"
-import { createPdf, PdfOptions } from "../../service/pdf-creator"
-import { openPdf } from "../../service/pdf-viewer"
 import { ScreenParams } from "../../service/screen-params"
 import { ConvertPdfOption } from "./ConvertPdfOption"
+import { getReadPermission, getWritePermission } from "../../service/permission"
 
 
 export function EditDocument() {
@@ -110,13 +110,51 @@ export function EditDocument() {
         navigation.reset({ routes: [{ name: "Home" }] })
     }, [selectionMode])
 
-    const convertDocumentToPdf = useCallback((quality: number) => {
-        const pdfOptions: PdfOptions = {
+    const convertDocumentToPdf = useCallback(async (quality: number) => {
+        const hasPermission = await getWritePermission()
+        if (!hasPermission) {
+            Alert.alert(
+                "Erro",
+                "Sem permissão para converter documento para PDF"
+            )
+            return
+        }
+
+        if (documentName === "") {
+            Alert.alert(
+                "Documento sem nome",
+                "Não é possível converter um documento sem nome para PDF"
+            )
+            return
+        }
+
+        if (pictureList.length === 0) {
+            Alert.alert(
+                "Documento sem fotos",
+                "Não é possível converter um documento sem fotos para PDF"
+            )
+            return
+        }
+
+        const documentPath = `${fullPathPdf}/${documentName}.pdf`
+
+        if (await RNFS.exists(documentPath)) {
+            try {
+                await RNFS.unlink(documentPath)
+            } catch (error) {
+                log(
+                    "ERROR",
+                    `service/pdf-creator convertDocumentToPdf - Erro ao apagar arquivo PDF já existente com mesmo nome do documento a ser convertido. Mensagem: "${error}"`
+                )
+            }
+        }
+
+        const pdfOptions: PdfCreatorOptions = {
             imageCompressQuality: quality,
             temporaryPath: fullPathTemporaryCompressedPicture,
         }
 
-        createPdf(documentName, pictureList, pdfOptions)
+        createPdf(pictureList, documentName, pdfOptions)
     }, [documentName, pictureList])
 
     const shareDocument = useCallback(async () => {
@@ -146,6 +184,15 @@ export function EditDocument() {
     }, [documentName])
 
     const visualizePdf = useCallback(async () => {
+        const hasPermission = await getReadPermission()
+        if (!hasPermission) {
+            Alert.alert(
+                "Erro",
+                "Sem permissão para visualizar PDF"
+            )
+            return
+        }
+
         const pdfFilePath = `${fullPathPdf}/${documentName}.pdf`
 
         if (!await RNFS.exists(pdfFilePath)) {
@@ -157,7 +204,7 @@ export function EditDocument() {
             return
         }
 
-        openPdf(pdfFilePath)
+        viewPdf(pdfFilePath)
     }, [documentName])
 
     const renameDocument = useCallback(async (newDocumentName: string) => {

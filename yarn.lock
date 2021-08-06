@@ -4674,6 +4674,10 @@ react-native-keep-awake@^4.0.0:
   resolved "https://registry.yarnpkg.com/react-native-keep-awake/-/react-native-keep-awake-4.0.0.tgz#d89fdc3fb60b3cffa979ef37dc5816196df998a2"
   integrity sha512-0Fotox+eLXQooeibVs3P60yASYUWjtRw9MZNmbuHt5UZQrgUrAKsE4jm7gTr4tPU1m1RkwGzcgUFpcOkh/ec7g==
 
+"react-native-pdf-creator@https://github.com/viniciusyoshioka/react-native-pdf-creator":
+  version "0.1.0"
+  resolved "https://github.com/viniciusyoshioka/react-native-pdf-creator#d2c14940649d9be0aad4e6f7701080df4e6fa228"
+
 react-native-popup-menu@^0.15.11:
   version "0.15.11"
   resolved "https://registry.yarnpkg.com/react-native-popup-menu/-/react-native-popup-menu-0.15.11.tgz#df96b1a909ecbba84487821061ce6e29e7c7bb20"
