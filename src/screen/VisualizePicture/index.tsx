@@ -2,11 +2,11 @@ import React, { useCallback, useRef, useState } from "react"
 import { Alert, Image } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
+import { ImageCrop, OnImageSavedResponse } from "react-native-image-crop"
 
 import { VisualizePictureHeader } from "./Header"
 import { SafeScreen } from "../../component"
 import { useBackHandler } from "../../service/hook"
-import { ImageCrop, imageSavedResponse } from "../../service/image-crop"
 import { log } from "../../service/log"
 import { ScreenParams } from "../../service/screen-params"
 import { fullPathPicture } from "../../service/constant"
@@ -43,7 +43,7 @@ export function VisualizePicture() {
         })
     }, [params, isCropping])
 
-    const onImageSaved = useCallback(async (response: imageSavedResponse) => {
+    const onImageSaved = useCallback(async (response: OnImageSavedResponse) => {
         try {
             const newCroppedPictureUri = `${fullPathPicture}/${getDateTime("", "", true).replace(" ", "_")}.jpg`
             params.pictureList[params.pictureIndex] = newCroppedPictureUri
@@ -122,8 +122,8 @@ export function VisualizePicture() {
                         margin: 16,
                     }}
                     sourceUrl={`file://${params.picturePath}`}
-                    onImageSaved={onImageSaved}
-                    onSaveImageError={onSaveImageError}
+                    onSaveImage={onImageSaved}
+                    onCropError={onSaveImageError}
                 />
             )}
         </SafeScreen>

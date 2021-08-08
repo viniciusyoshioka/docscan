@@ -1,7 +1,5 @@
 package com.docscan;
 
-import com.docscan.ImageCrop.ImageCropPackage;
-
 import android.content.Context;
 import androidx.multidex.MultiDexApplication;
 
@@ -29,7 +27,6 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-          packages.add(new ImageCropPackage());
           return packages;
         }
 

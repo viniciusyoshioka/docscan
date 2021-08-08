@@ -4664,6 +4664,10 @@ react-native-gesture-handler@^1.10.3:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+"react-native-image-crop@https://github.com/viniciusyoshioka/react-native-image-crop":
+  version "0.1.0"
+  resolved "https://github.com/viniciusyoshioka/react-native-image-crop#1e94c90a82c767b725dfcc6d7f30460b209d3d32"
+
 react-native-iphone-x-helper@^1.3.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
@@ -4675,8 +4679,8 @@ react-native-keep-awake@^4.0.0:
   integrity sha512-0Fotox+eLXQooeibVs3P60yASYUWjtRw9MZNmbuHt5UZQrgUrAKsE4jm7gTr4tPU1m1RkwGzcgUFpcOkh/ec7g==
 
 "react-native-pdf-creator@https://github.com/viniciusyoshioka/react-native-pdf-creator":
-  version "0.1.0"
-  resolved "https://github.com/viniciusyoshioka/react-native-pdf-creator#d2c14940649d9be0aad4e6f7701080df4e6fa228"
+  version "1.0.0"
+  resolved "https://github.com/viniciusyoshioka/react-native-pdf-creator#e3f39089d481d82ba381df31a75597e83f223893"
 
 react-native-popup-menu@^0.15.11:
   version "0.15.11"

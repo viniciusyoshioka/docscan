@@ -20,6 +20,7 @@
     "react-native-camera": "^4.0.0",
     "react-native-fs": "^2.18.0",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-image-crop": "https://github.com/viniciusyoshioka/react-native-image-crop",
     "react-native-pdf-creator": "https://github.com/viniciusyoshioka/react-native-pdf-creator",
     "react-native-popup-menu": "^0.15.11",
     "react-native-reanimated": "^2.2.0",
