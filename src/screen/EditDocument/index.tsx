@@ -154,7 +154,9 @@ export function EditDocument() {
             temporaryPath: fullPathTemporaryCompressedPicture,
         }
 
-        createPdf(pictureList, documentName, pdfOptions)
+        const documentOutputPath = `${fullPathPdf}/${documentName}.pdf`
+
+        createPdf(pictureList, documentOutputPath, pdfOptions)
     }, [documentName, pictureList])
 
     const shareDocument = useCallback(async () => {
