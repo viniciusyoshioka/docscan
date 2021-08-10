@@ -2,7 +2,6 @@ package com.docscan;
 
 import android.content.Context;
 import androidx.multidex.MultiDexApplication;
-
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
