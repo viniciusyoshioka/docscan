@@ -3,12 +3,14 @@
 fix taken picture area
 focus clicking on screen
 change Camera UI orientation when device orientation changes
+add cooldown between each press in take picture button
 
 # EditDocument
 add drag and drop functionality to sort DocumentItem
 
 # VisualizePicture
 add zoom on image
+add rotate image
 
 use service for import and export document
 move readSettings from Camera to a Provider
