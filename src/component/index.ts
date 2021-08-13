@@ -12,6 +12,7 @@ import { DocumentItem, DocumentItemProps } from "./DocumentItem"
 import { EmptyList, EmptyListProps } from "./EmptyList"
 import { Header, HeaderButton, HeaderButtonProps, HeaderTitle, HeaderTitleProps } from "./Header"
 import { ImageItem, ImageItemProps } from "./ImageItem"
+import { ImageVisualizationItem, ImageVisualizationItemProps } from "./ImageVisualizationItem"
 import { Input, InputProps } from "./Input"
 import { InputPassword } from "./InputPassword"
 import { InputText } from "./InputText"
@@ -57,6 +58,8 @@ export { Header, HeaderButton, HeaderTitle }
 export type { HeaderButtonProps, HeaderTitleProps }
 export { ImageItem }
 export type { ImageItemProps }
+export { ImageVisualizationItem }
+export type { ImageVisualizationItemProps }
 export { Input }
 export type { InputProps }
 export { InputPassword }
