@@ -90,9 +90,9 @@ export function VisualizePicture() {
             documentName: params.documentName,
             pictureList: params.pictureList,
             screenAction: "replace-picture",
-            replaceIndex: params.pictureIndex,
+            replaceIndex: currentIndex,
         })
-    }, [params])
+    }, [params, currentIndex])
 
     const renderImageVisualizationItem = useCallback(({ item }: { item: string }) => (
         <ImageVisualizationItem
