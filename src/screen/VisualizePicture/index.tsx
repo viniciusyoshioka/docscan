@@ -1,11 +1,11 @@
 import React, { useCallback, useRef, useState } from "react"
-import { Alert, Image } from "react-native"
+import { Alert, FlatList, useWindowDimensions } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 import { ImageCrop, OnImageSavedResponse } from "react-native-image-crop"
 
 import { VisualizePictureHeader } from "./Header"
-import { SafeScreen } from "../../component"
+import { ImageVisualizationItem, SafeScreen } from "../../component"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
 import { ScreenParams } from "../../service/screen-params"
@@ -18,9 +18,11 @@ export function VisualizePicture() {
 
     const navigation = useNavigation()
     const { params } = useRoute<RouteProp<ScreenParams, "VisualizePicture">>()
+    const screenWidth = useWindowDimensions().width
 
     const cropViewRef = useRef<ImageCrop>(null)
     const [isCropping, setIsCropping] = useState(false)
+    const [currentIndex, setCurrentIndex] = useState(params.pictureIndex)
 
 
     useBackHandler(() => {
@@ -44,13 +46,14 @@ export function VisualizePicture() {
     }, [params, isCropping])
 
     const onImageSaved = useCallback(async (response: OnImageSavedResponse) => {
+        const currentPicturePath = params.pictureList[currentIndex]
         try {
             const newCroppedPictureUri = `${fullPathPicture}/${getDateTime("", "", true).replace(" ", "_")}.jpg`
-            params.pictureList[params.pictureIndex] = newCroppedPictureUri
-            await RNFS.unlink(params.picturePath)
+            params.pictureList[currentIndex] = newCroppedPictureUri
+            await RNFS.unlink(currentPicturePath)
             await RNFS.moveFile(response.uri, newCroppedPictureUri)
         } catch (error) {
-            params.pictureList[params.pictureIndex] = params.picturePath
+            params.pictureList[currentIndex] = currentPicturePath
             if (await RNFS.exists(response.uri)) {
                 await RNFS.unlink(response.uri)
             }
@@ -70,7 +73,7 @@ export function VisualizePicture() {
             pictureList: params.pictureList,
             isChanged: true,
         })
-    }, [params])
+    }, [params, currentIndex])
 
     const onSaveImageError = useCallback((response: string) => {
         log("ERROR", `VisualizePicture onSaveImageError - Erro ao cortar imagem. Mensagem: "${response}"`)
@@ -88,9 +91,14 @@ export function VisualizePicture() {
             pictureList: params.pictureList,
             screenAction: "replace-picture",
             replaceIndex: params.pictureIndex,
-            picturePath: params.picturePath,
         })
     }, [params])
+
+    const renderImageVisualizationItem = useCallback(({ item }: { item: string }) => (
+        <ImageVisualizationItem
+            source={{ uri: `file://${item}` }}
+        />
+    ), [])
 
 
     return (
@@ -104,12 +112,16 @@ export function VisualizePicture() {
             />
 
             {!isCropping && (
-                <Image
-                    source={{ uri: `file://${params.picturePath}` }}
-                    style={{
-                        flex: 1,
-                        resizeMode: "contain",
-                        margin: 16,
+                <FlatList
+                    data={params.pictureList}
+                    renderItem={renderImageVisualizationItem}
+                    keyExtractor={(_, index) => index.toString()}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    pagingEnabled={true}
+                    initialScrollIndex={currentIndex}
+                    onMomentumScrollEnd={({ nativeEvent }) => {
+                        setCurrentIndex(nativeEvent.contentOffset.x / screenWidth)
                     }}
                 />
             )}
@@ -117,11 +129,8 @@ export function VisualizePicture() {
             {isCropping && (
                 <ImageCrop
                     ref={cropViewRef}
-                    style={{
-                        flex: 1,
-                        margin: 16,
-                    }}
-                    sourceUrl={`file://${params.picturePath}`}
+                    style={{ flex: 1 }}
+                    sourceUrl={`file://${params.pictureList[currentIndex]}`}
                     onSaveImage={onImageSaved}
                     onCropError={onSaveImageError}
                 />

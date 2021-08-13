@@ -337,9 +337,8 @@ export function EditDocument() {
         }
     }, [selectedPicturesIndex, selectionMode])
 
-    const openPicture = useCallback((item: string, index: number) => {
+    const openPicture = useCallback((index: number) => {
         navigation.navigate("VisualizePicture", {
-            picturePath: item,
             pictureIndex: index,
             documentName: documentName,
             pictureList: pictureList,
@@ -351,7 +350,7 @@ export function EditDocument() {
         return (
             <PictureItem
                 picturePath={item}
-                click={() => openPicture(item, index)}
+                click={() => openPicture(index)}
                 select={() => selectPicture(index)}
                 deselect={() => deselectPicture(index)}
                 selectionMode={selectionMode}

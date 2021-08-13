@@ -138,7 +138,6 @@ export function Camera() {
 
         if (params?.screenAction === "replace-picture") {
             navigation.navigate("VisualizePicture", {
-                picturePath: params.picturePath,
                 pictureIndex: params.replaceIndex,
                 document: params.document,
                 documentName: params.documentName,
@@ -180,7 +179,6 @@ export function Camera() {
                     {
                         name: "VisualizePicture",
                         params: {
-                            picturePath: params.picturePath,
                             pictureIndex: params.replaceIndex,
                             document: params.document,
                             documentName: params.documentName,
@@ -196,7 +194,6 @@ export function Camera() {
                             pictureList: [...params.pictureList, ...pictureList],
                             screenAction: params?.screenAction,
                             replaceIndex: params?.replaceIndex,
-                            picturePath: params.picturePath,
                         }
                     }
                 ]
@@ -249,7 +246,6 @@ export function Camera() {
                 params.pictureList[params.replaceIndex] = picturePath
 
                 navigation.navigate("VisualizePicture", {
-                    picturePath: picturePath,
                     pictureIndex: params.replaceIndex,
                     document: params.document,
                     documentName: params.documentName,

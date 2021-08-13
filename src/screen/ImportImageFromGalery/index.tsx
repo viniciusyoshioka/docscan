@@ -82,7 +82,6 @@ export function ImportImageFromGalery() {
                     {
                         name: "VisualizePicture",
                         params: {
-                            picturePath: params.picturePath,
                             pictureIndex: params.replaceIndex,
                             document: params.document,
                             documentName: params.documentName,
@@ -98,7 +97,6 @@ export function ImportImageFromGalery() {
                             pictureList: params.pictureList,
                             screenAction: params?.screenAction,
                             replaceIndex: params?.replaceIndex,
-                            picturePath: params.picturePath,
                         }
                     }
                 ]
@@ -230,7 +228,6 @@ export function ImportImageFromGalery() {
             params.pictureList[params.replaceIndex] = newImagePath
 
             navigation.navigate("VisualizePicture", {
-                picturePath: newImagePath,
                 pictureIndex: params.replaceIndex,
                 document: params.document,
                 documentName: params.documentName,
