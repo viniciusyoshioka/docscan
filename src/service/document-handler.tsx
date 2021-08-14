@@ -397,3 +397,111 @@ export async function importDocument(path: string): Promise<boolean> {
     ToastAndroid.show("Documentos importados", 10)
     return true
 }
+
+
+export async function mergeDocument(ids: Array<number>) {
+    const document = await readDocument()
+
+    if (ids.length === 1) {
+        Alert.alert(
+            "Aviso",
+            "Selecione outro documento para combiná-los"
+        )
+        return
+    }
+
+    const mainDocument = document.find((item) => {
+        return item.id === ids[0]
+    })
+
+    if (!mainDocument) {
+        log("ERROR", `document-handler mergeDocument - Erro combinando documentos, "mainDocument = ${mainDocument}"`)
+        Alert.alert(
+            "Erro",
+            "Erro desconhecido ao unir documentos"
+        )
+        return
+    }
+
+    const idsToDelete = []
+
+    for (let x = 0; x < document.length; x++) {
+        const documentItem = document[x]
+        if (ids.includes(documentItem.id)) {
+            if (documentItem.id === ids[0]) {
+                continue
+            }
+
+            idsToDelete.push(documentItem.id)
+            for (let y = 0; y < documentItem.pictureList.length; y++) {
+                const pictureItem = documentItem.pictureList[y]
+                mainDocument.pictureList.push(pictureItem)
+            }
+        }
+    }
+
+    await deleteDocument(idsToDelete, false)
+
+    await saveEditedDocument(mainDocument, mainDocument.name, mainDocument.pictureList)
+}
+
+export async function duplicateDocument(ids: Array<number>) {
+    const document = await readDocument()
+
+    const documentToDuplicate = document.filter((item: Document) => {
+        if (ids.includes(item.id)) {
+            return true
+        }
+        return false
+    })
+
+    for (let x = 0; x < documentToDuplicate.length; x++) {
+        const documentItem = documentToDuplicate[x]
+        const duplicatedPictureList: Array<string> = []
+        for (let y = 0; y < documentItem.pictureList.length; y++) {
+            const pictureItem = documentItem.pictureList[y]
+            const newPicturePath = await getNewPicturePath(pictureItem)
+            duplicatedPictureList.push(newPicturePath)
+            try {
+                await RNFS.copyFile(pictureItem, newPicturePath)
+            } catch (error) {
+                log("ERROR", `document-handler duplicateDocument - Erro copiando imagens ao duplicar documento. Mensagem: "${error}"`)
+                Alert.alert(
+                    "Erro",
+                    "Erro duplicando documento"
+                )
+                throw error
+            }
+        }
+
+        const newDocument = await createDocument(documentItem.name, duplicatedPictureList)
+        document.unshift(newDocument)
+    }
+
+    await writeDocument(document)
+}
+
+
+function getFileExtension(path: string): string {
+    let splittedFilePath: Array<string> = [path]
+    if (path.includes("/")) {
+        splittedFilePath = path.split("/")
+    }
+
+    const splittedFileName = splittedFilePath[splittedFilePath.length - 1].split(".")
+    return splittedFileName[splittedFileName.length - 1]
+}
+
+async function getNewPicturePath(path: string): Promise<string> {
+    const date = getDateTime("", "", true)
+    const fileExtension = getFileExtension(path)
+
+    let newPath = `${fullPathPicture}/${date}.${fileExtension}`
+    let counter = 0
+    while (await RNFS.exists(newPath)) {
+        newPath = `${fullPathPicture}/${date} - ${counter}.${fileExtension}`
+        counter += 1
+    }
+
+    return newPath
+}

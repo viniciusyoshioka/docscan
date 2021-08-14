@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react"
-import { Alert, BackHandler, FlatList } from "react-native"
+import { Alert, BackHandler, FlatList, ToastAndroid } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 
@@ -7,7 +7,7 @@ import { HomeHeader } from "./Header"
 import { DebugHome } from "./DebugHome"
 import { DocumentItem, EmptyList, SafeScreen } from "../../component"
 import { appIconOutline, appInDevelopment, fullPathPicture } from "../../service/constant"
-import { deleteDocument, exportDocument } from "../../service/document-handler"
+import { deleteDocument, duplicateDocument, exportDocument, mergeDocument } from "../../service/document-handler"
 import { createAllFolder, createPictureFolder } from "../../service/folder-handler"
 import { useBackHandler } from "../../service/hook"
 import { debugHome, Document } from "../../service/object-types"
@@ -144,6 +144,26 @@ export function Home() {
         )
     }, [selectedDocument, selectionMode])
 
+    const mergeSelectedDocument = useCallback(() => {
+        mergeDocument(selectedDocument)
+            .then(async () => {
+                await getDocument()
+                ToastAndroid.show("Documentos combinados", ToastAndroid.LONG)
+            })
+            .catch(() => { })
+        exitSelectionMode()
+    }, [selectedDocument])
+
+    const duplicateSelectedDocument = useCallback(() => {
+        duplicateDocument(selectedDocument)
+            .then(async () => {
+                await getDocument()
+                ToastAndroid.show("Documentos duplicados", ToastAndroid.LONG)
+            })
+            .catch(() => { })
+        exitSelectionMode()
+    }, [selectedDocument])
+
     const selectDocument = useCallback((documentId: number) => {
         if (!selectionMode) {
             setSelectionMode(true)
@@ -199,6 +219,8 @@ export function Home() {
                 exportDocument={exportSelectedDocument}
                 openSettings={() => navigation.navigate("Settings")}
                 switchDebugHome={debugSwitchDebugHome}
+                mergeDocument={mergeSelectedDocument}
+                duplicateDocument={duplicateSelectedDocument}
             />
 
             <FlatList

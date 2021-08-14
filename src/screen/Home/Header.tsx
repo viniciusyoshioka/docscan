@@ -14,6 +14,8 @@ export interface HomeHeaderProps {
     exportDocument: () => void,
     openSettings: () => void,
     switchDebugHome: () => void,
+    mergeDocument: () => void,
+    duplicateDocument: () => void,
 }
 
 
@@ -73,6 +75,8 @@ export class HomeHeader extends Component<HomeHeaderProps> {
                     exportDocument={this.props.exportDocument}
                     openSettings={this.props.openSettings}
                     switchDebugHome={this.props.switchDebugHome}
+                    mergeDocument={this.props.mergeDocument}
+                    duplicateDocument={this.props.duplicateDocument}
                 />
             </Header>
         )

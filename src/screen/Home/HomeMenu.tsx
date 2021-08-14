@@ -13,6 +13,8 @@ export interface HomeMenuProps {
     exportDocument: () => void,
     openSettings: () => void,
     switchDebugHome: () => void,
+    mergeDocument: () => void,
+    duplicateDocument: () => void,
 }
 
 
@@ -56,25 +58,23 @@ export function HomeMenu(props: HomeMenuProps) {
 
             <MenuOptions>
                 {!props.selectionMode && (
-                    <MenuItem
-                        text={"Importar Documento"}
-                        onPress={() => {
-                            menuRef.current?.close()
-                            props.importDocument()
-                        }}
-                    />
-                )}
-
-                <MenuItem
-                    text={"Exportar Documento"}
-                    onPress={() => {
-                        menuRef.current?.close()
-                        props.exportDocument()
-                    }}
-                />
-
-                {!props.selectionMode && (
                     <>
+                        <MenuItem
+                            text={"Importar Documento"}
+                            onPress={() => {
+                                menuRef.current?.close()
+                                props.importDocument()
+                            }}
+                        />
+
+                        <MenuItem
+                            text={"Exportar Documento"}
+                            onPress={() => {
+                                menuRef.current?.close()
+                                props.exportDocument()
+                            }}
+                        />
+
                         <MenuItem
                             text={"Configurações"}
                             onPress={() => {
@@ -92,6 +92,34 @@ export function HomeMenu(props: HomeMenuProps) {
                                 }}
                             />
                         )}
+                    </>
+                )}
+
+                {props.selectionMode && (
+                    <>
+                        <MenuItem
+                            text={"Exportar Documento"}
+                            onPress={() => {
+                                menuRef.current?.close()
+                                props.exportDocument()
+                            }}
+                        />
+
+                        <MenuItem
+                            text={"Combinar Documento"}
+                            onPress={() => {
+                                menuRef.current?.close()
+                                props.mergeDocument()
+                            }}
+                        />
+
+                        <MenuItem
+                            text={"Duplicar Documento"}
+                            onPress={() => {
+                                menuRef.current?.close()
+                                props.duplicateDocument()
+                            }}
+                        />
                     </>
                 )}
             </MenuOptions>
