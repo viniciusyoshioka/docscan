@@ -18,9 +18,10 @@ export function VisualizePicture() {
 
     const navigation = useNavigation()
     const { params } = useRoute<RouteProp<ScreenParams, "VisualizePicture">>()
-    const screenWidth = useWindowDimensions().width
+    const { width } = useWindowDimensions()
 
     const cropViewRef = useRef<ImageCrop>(null)
+    const imageFlatListRef = useRef<FlatList>(null)
     const [isCropping, setIsCropping] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(params.pictureIndex)
 
@@ -113,6 +114,7 @@ export function VisualizePicture() {
 
             {!isCropping && (
                 <FlatList
+                    ref={imageFlatListRef}
                     data={params.pictureList}
                     renderItem={renderImageVisualizationItem}
                     keyExtractor={(_, index) => index.toString()}
@@ -121,7 +123,13 @@ export function VisualizePicture() {
                     pagingEnabled={true}
                     initialScrollIndex={currentIndex}
                     onMomentumScrollEnd={({ nativeEvent }) => {
-                        setCurrentIndex(nativeEvent.contentOffset.x / screenWidth)
+                        setCurrentIndex(nativeEvent.contentOffset.x / width)
+                    }}
+                    onLayout={() => {
+                        imageFlatListRef.current?.scrollToOffset({
+                            animated: false,
+                            offset: currentIndex * width,
+                        })
                     }}
                 />
             )}
