@@ -447,6 +447,7 @@ export async function mergeDocument(ids: Array<number>) {
 
 export async function duplicateDocument(ids: Array<number>) {
     const document = await readDocument()
+    const documentId = await readDocumentId()
 
     const documentToDuplicate = document.filter((item: Document) => {
         if (ids.includes(item.id)) {
@@ -475,10 +476,13 @@ export async function duplicateDocument(ids: Array<number>) {
         }
 
         const newDocument = await createDocument(documentItem.name, duplicatedPictureList)
-        document.unshift(newDocument)
-    }
 
-    await writeDocument(document)
+        document.unshift(newDocument)
+        documentId.unshift(newDocument.id)
+
+        await writeDocument(document)
+        await writeDocumentId(documentId)
+    }
 }
 
 
