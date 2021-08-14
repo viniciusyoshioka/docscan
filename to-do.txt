@@ -12,8 +12,6 @@ add drag and drop functionality to sort DocumentItem
 add zoom on image
 add rotate image
 
-add merge document functionality
-add clone document functionality
 add split document functionality
 use service for import and export document
 move readSettings from Camera to a Provider
