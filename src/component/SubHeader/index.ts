@@ -1,7 +1,3 @@
-import { SubHeader } from "./SubHeader"
-import { SubHeaderText, SubHeaderTextProps } from "./SubHeaderText"
-
-
-export { SubHeader }
-export { SubHeaderText }
-export type { SubHeaderTextProps }
+export { SubHeader } from "./SubHeader"
+export { SubHeaderText } from "./SubHeaderText"
+export type { SubHeaderTextProps } from "./SubHeaderText"

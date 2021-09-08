@@ -1,4 +1,1 @@
-import { InputPassword } from "./InputPassword"
-
-
-export { InputPassword }
+export { InputPassword } from "./InputPassword"

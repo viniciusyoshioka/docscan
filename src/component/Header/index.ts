@@ -1,10 +1,6 @@
-import { HeaderButton, HeaderButtonProps } from "./Button"
-import { Header } from "./Header"
-import { HeaderTitle, HeaderTitleProps } from "./Title"
-
-
-export { HeaderButton }
-export type { HeaderButtonProps }
-export { Header }
-export { HeaderTitle }
-export type { HeaderTitleProps }
+export { HeaderButton } from "./Button"
+export type { HeaderButtonProps } from "./Button"
+export { Header, HeaderHeight } from "./Header"
+export type { HeaderProps } from "./Header"
+export { HeaderTitle } from "./Title"
+export type { HeaderTitleProps } from "./Title"

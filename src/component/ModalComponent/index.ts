@@ -1,13 +1,6 @@
-import { ModalButton, ModalButtonProps } from "./ModalButton"
-import { ModalDescription } from "./ModalDescription"
-import { ModalTitle } from "./ModalTitle"
-import { ModalViewButton } from "./ModalViewButton"
-import { ModalViewContent } from "./ModalViewContent"
-
-
-export { ModalButton }
-export { ModalDescription }
-export type { ModalButtonProps }
-export { ModalTitle }
-export { ModalViewButton }
-export { ModalViewContent }
+export { ModalButton } from "./ModalButton"
+export type { ModalButtonProps } from "./ModalButton"
+export { ModalDescription } from "./ModalDescription"
+export { ModalTitle } from "./ModalTitle"
+export { ModalViewButton } from "./ModalViewButton"
+export { ModalViewContent } from "./ModalViewContent"
