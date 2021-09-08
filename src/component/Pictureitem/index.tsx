@@ -26,8 +26,8 @@ export function PictureItem(props: PictureItemProps) {
 
     const [selected, setSelected] = useState(false)
     const { width } = useWindowDimensions()
-    const pictureItemWidth = (width / 2) - 8
-
+    const pictureItemWidth = ((width - (2 * 4)) / 2)
+    const pictureItemHeight = (pictureItemWidth / PICTURE_ITEM_RATIO)
 
     const getPictureName = useCallback(() => {
         const splittedPath = props.picturePath.split("/")
@@ -73,7 +73,7 @@ export function PictureItem(props: PictureItemProps) {
                 style={{
                     aspectRatio: PICTURE_ITEM_RATIO,
                     maxWidth: pictureItemWidth,
-                    maxHeight: (pictureItemWidth / PICTURE_ITEM_RATIO),
+                    maxHeight: pictureItemHeight,
                 }}
                 onPress={normalPress}
             >
@@ -82,7 +82,7 @@ export function PictureItem(props: PictureItemProps) {
                     style={{
                         aspectRatio: PICTURE_ITEM_RATIO,
                         maxWidth: pictureItemWidth,
-                        maxHeight: (pictureItemWidth / PICTURE_ITEM_RATIO),
+                        maxHeight: pictureItemHeight,
                     }}
                 />
 
