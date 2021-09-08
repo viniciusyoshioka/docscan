@@ -23,37 +23,15 @@ export interface EditDocumentHeaderProps {
 export function EditDocumentHeader(props: EditDocumentHeaderProps) {
     return (
         <Header>
-            {props.selectionMode && (
-                <HeaderButton
-                    icon={"close"}
-                    onPress={props.exitSelectionMode}
-                />
-            )}
-
-            {!props.selectionMode && (
-                <HeaderButton
-                    icon={"arrow-back"}
-                    onPress={props.goBack}
-                />
-            )}
-
-            {!props.selectionMode && (
-                <HeaderTitle title={props.documentName} />
-            )}
-
-            {props.selectionMode && (
-                <HeaderTitle />
-            )}
-
-            {props.selectionMode && (
-                <HeaderButton
-                    icon={"delete"}
-                    onPress={props.deletePicture}
-                />
-            )}
-
             {!props.selectionMode && (
                 <>
+                    <HeaderButton
+                        icon={"arrow-back"}
+                        onPress={props.goBack}
+                    />
+
+                    <HeaderTitle title={props.documentName} />
+
                     <HeaderButton
                         icon={"add-a-photo"}
                         onPress={props.openCamera}
@@ -66,6 +44,22 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
                         renameDocument={props.renameDocument}
                         deletePdf={props.deletePdf}
                         deleteDocument={props.deleteDocument}
+                    />
+                </>
+            )}
+
+            {props.selectionMode && (
+                <>
+                    <HeaderButton
+                        icon={"close"}
+                        onPress={props.exitSelectionMode}
+                    />
+
+                    <HeaderTitle />
+
+                    <HeaderButton
+                        icon={"delete"}
+                        onPress={props.deletePicture}
                     />
                 </>
             )}
