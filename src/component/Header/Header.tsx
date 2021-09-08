@@ -7,10 +7,13 @@ import { HeaderButton } from "./Button"
 import { HeaderTitle } from "./Title"
 
 
+export const HeaderHeight = 56
+
+
 const HeaderBase = styled.View`
     flex-direction: row;
     align-items: center;
-    height: 56px;
+    height: ${HeaderHeight}px;
     padding-left: 8px;
     background-color: ${(props: styledProps) => props.theme.color.header_background};
     elevation: 4;
