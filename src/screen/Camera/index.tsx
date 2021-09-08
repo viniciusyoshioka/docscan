@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useReducer, useRef, useState } from "react"
 import { Alert } from "react-native"
-import { RNCamera } from "react-native-camera"
+import { HardwareCamera, RNCamera } from "react-native-camera"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 
 import { CameraHeader } from "./Header"
@@ -13,7 +13,6 @@ import { getDocumentName } from "../../service/document-handler"
 import { createAllFolder } from "../../service/folder-handler"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
-import { cameraIdType } from "../../service/object-types"
 import { getCameraPermission } from "../../service/permission"
 import { cameraReducerAction, cameraReducerState } from "../../service/reducer"
 import { ScreenParams } from "../../service/screen-params"
@@ -90,7 +89,7 @@ export function Camera() {
 
     const [isMultipleCameraAvailable, setIsMultipleCameraAvailable] = useState(false)
     const [currentCameraIndex, setCurrentCameraIndex] = useState<number | null>(null)
-    const [cameraList, setCameraList] = useState<Array<cameraIdType> | null>(null)
+    const [cameraList, setCameraList] = useState<Array<HardwareCamera> | null>(null)
 
     const [pictureList, setPictureList] = useState<Array<string>>([])
 
@@ -296,7 +295,7 @@ export function Camera() {
 
     useEffect(() => {
         async function getCameraList() {
-            let readCameraList: Array<cameraIdType> = [{ id: "0", type: 0 }]
+            let readCameraList: Array<HardwareCamera> | undefined = [{ id: "0", type: 0 }]
 
             try {
                 readCameraList = await cameraRef.current?.getCameraIdsAsync()
@@ -320,7 +319,7 @@ export function Camera() {
             }
             setCameraList(cameraIdList)
 
-            cameraIdList.forEach((item: cameraIdType, index: number) => {
+            cameraIdList.forEach((item: HardwareCamera, index: number) => {
                 if (item.id === stateCameraSettings.cameraId) {
                     setCurrentCameraIndex(index)
                     return
@@ -362,7 +361,7 @@ export function Camera() {
                 flashMode={stateCameraSettings.flash}
                 whiteBalance={stateCameraSettings.whiteBalance}
                 type={stateCameraSettings.cameraType}
-                cameraId={stateCameraSettings.cameraType === "back" ? stateCameraSettings.cameraId : null}
+                cameraId={stateCameraSettings.cameraType === "back" ? stateCameraSettings.cameraId : undefined}
             />
 
             <CameraHeader
