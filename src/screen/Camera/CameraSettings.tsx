@@ -1,8 +1,8 @@
 import React, { Dispatch, useCallback } from "react"
 import { ScrollView } from "react-native"
+import { HardwareCamera } from "react-native-camera"
 
 import { CameraSettingsButton, ModalCameraSettings, ModalCameraSettingsProps } from "../../component"
-import { cameraIdType } from "../../service/object-types"
 import { cameraReducerAction } from "../../service/reducer"
 import { cameraType, flashType, SettingsCameraProps, settingsDefaultCamera, whiteBalanceType } from "../../service/settings"
 import { readSettings, writeSettings } from "../../service/storage"
@@ -14,7 +14,7 @@ export interface CameraSettingsProps extends ModalCameraSettingsProps {
     isMultipleCameraAvailable: boolean,
     currentCameraIndex: number,
     setCurrentCameraIndex: (newCurrentCameraIndex: number) => void
-    cameraList: Array<cameraIdType>,
+    cameraList: Array<HardwareCamera>,
 }
 
 
