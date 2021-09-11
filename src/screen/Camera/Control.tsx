@@ -1,4 +1,4 @@
-import React from "react"
+import React, { ForwardRefRenderFunction, forwardRef, useImperativeHandle, useState, ForwardedRef } from "react"
 import { OrientationType, useDeviceOrientationChange } from "react-native-orientation-locker"
 import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
 
@@ -14,10 +14,27 @@ export interface CameraControlProps {
 }
 
 
-export function CameraControl(props: CameraControlProps) {
+export interface CameraControlHandle {
+    setTakePictureButtonEnable: (enable: boolean) => void;
+}
+
+
+const CameraControlBase: ForwardRefRenderFunction<CameraControlHandle, CameraControlProps> = (
+    props: CameraControlProps,
+    ref: ForwardedRef<CameraControlHandle>
+) => {
 
 
     const rotationDegree = useSharedValue(0)
+
+    const [isTakePictureButtonDisable, setIsTakePictureButtonDisable] = useState(false)
+
+
+    useImperativeHandle(ref, () => ({
+        setTakePictureButtonEnable: (enable: boolean) => {
+            setIsTakePictureButtonDisable(!enable)
+        },
+    }))
 
 
     useDeviceOrientationChange((newOrientation: OrientationType) => {
@@ -94,7 +111,10 @@ export function CameraControl(props: CameraControlProps) {
             </Reanimated.View>
 
 
-            <CameraControlAction onPress={props.takePicture} />
+            <CameraControlAction
+                disabled={isTakePictureButtonDisable}
+                onPress={props.takePicture}
+            />
 
 
             {props?.screenAction !== "replace-picture" && (
@@ -113,3 +133,6 @@ export function CameraControl(props: CameraControlProps) {
         </CameraControlView>
     )
 }
+
+
+export const CameraControl = forwardRef(CameraControlBase)

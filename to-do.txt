@@ -2,7 +2,6 @@
 # Camera
 fix taken picture area
 focus clicking on screen
-add cooldown between each press in take picture button
 
 # EditDocument
 add drag and drop functionality to sort DocumentItem
