@@ -2,7 +2,6 @@
 # Camera
 fix taken picture area
 focus clicking on screen
-change Camera UI orientation when device orientation changes
 add cooldown between each press in take picture button
 
 # EditDocument
@@ -15,4 +14,3 @@ add rotate image
 add split document functionality
 use service for import and export document
 move readSettings from Camera to a Provider
-remove useBackHandler hook
