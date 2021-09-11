@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useReducer, useRef, useState } from "react"
-import { Alert } from "react-native"
+import { Alert, StatusBar } from "react-native"
 import { HardwareCamera, RNCamera } from "react-native-camera"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 
@@ -335,6 +335,8 @@ export function Camera() {
 
     return (
         <SafeScreen>
+            <StatusBar hidden={true} />
+
             <CameraSettings
                 visible={cameraSettingsVisible}
                 setVisible={setCameraSettingsVisible}
