@@ -13,3 +13,4 @@ add rotate image
 add split document functionality
 use service for import and export document
 move readSettings from Camera to a Provider
+change getDocument to dont blink screen on open app
