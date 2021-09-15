@@ -12,6 +12,7 @@ export const PictureButton = styled(RectButton)`
     border-radius: 1px;
     background-color: ${(props: styledProps) => props.theme.color.pictureItem_background};
     elevation: 2;
+    aspect-ratio: 1;
 `
 
 
@@ -19,6 +20,7 @@ export const PictureImage = styled.Image`
     flex: 1;
     border-radius: 1px;
     resize-mode: cover;
+    aspect-ratio: 1;
 `
 
 

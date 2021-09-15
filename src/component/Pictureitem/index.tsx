@@ -7,9 +7,6 @@ import { SelectedSurface, FileNameText, FileNameView, PictureButton, PictureImag
 import { useTheme } from "../../service/theme"
 
 
-const PICTURE_ITEM_RATIO = 2 / 3
-
-
 export interface PictureItemProps {
     click: () => void,
     select: () => void,
@@ -26,8 +23,8 @@ export function PictureItem(props: PictureItemProps) {
 
     const [selected, setSelected] = useState(false)
     const { width } = useWindowDimensions()
-    const pictureItemWidth = ((width - (2 * 4)) / 2)
-    const pictureItemHeight = (pictureItemWidth / PICTURE_ITEM_RATIO)
+    const pictureItemSize = ((width - (2 * 4)) / 2)
+
 
     const getPictureName = useCallback(() => {
         const splittedPath = props.picturePath.split("/")
@@ -69,20 +66,12 @@ export function PictureItem(props: PictureItemProps) {
             minDurationMs={400}
             onHandlerStateChange={({ nativeEvent }) => longPress(nativeEvent)}
         >
-            <PictureButton
-                style={{
-                    aspectRatio: PICTURE_ITEM_RATIO,
-                    maxWidth: pictureItemWidth,
-                    maxHeight: pictureItemHeight,
-                }}
-                onPress={normalPress}
-            >
+            <PictureButton onPress={normalPress}>
                 <PictureImage
                     source={{ uri: `file://${props.picturePath}` }}
                     style={{
-                        aspectRatio: PICTURE_ITEM_RATIO,
-                        maxWidth: pictureItemWidth,
-                        maxHeight: pictureItemHeight,
+                        maxWidth: pictureItemSize,
+                        maxHeight: pictureItemSize,
                     }}
                 />
 
