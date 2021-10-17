@@ -23,7 +23,7 @@ export function PictureItem(props: PictureItemProps) {
 
     const [selected, setSelected] = useState(false)
     const { width } = useWindowDimensions()
-    const pictureItemSize = ((width - (2 * 4)) / 2)
+    const pictureItemSize = ((width - (2 * 4)) / 2) - (2 * 4)
 
 
     const getPictureName = useCallback(() => {
@@ -66,14 +66,14 @@ export function PictureItem(props: PictureItemProps) {
             minDurationMs={400}
             onHandlerStateChange={({ nativeEvent }) => longPress(nativeEvent)}
         >
-            <PictureButton onPress={normalPress}>
-                <PictureImage
-                    source={{ uri: `file://${props.picturePath}` }}
-                    style={{
-                        maxWidth: pictureItemSize,
-                        maxHeight: pictureItemSize,
-                    }}
-                />
+            <PictureButton
+                style={{
+                    maxWidth: pictureItemSize,
+                    maxHeight: pictureItemSize,
+                }}
+                onPress={normalPress}
+            >
+                <PictureImage source={{ uri: `file://${props.picturePath}` }} />
 
                 <FileNameView>
                     <FileNameText numberOfLines={1}>
