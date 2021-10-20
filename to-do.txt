@@ -7,7 +7,7 @@ focus clicking on screen
 add drag and drop functionality to sort DocumentItem
 
 # VisualizePicture
-add zoom on image
+fix zoom reseting when pinch after double tap
 add rotate image
 
 add split document functionality
