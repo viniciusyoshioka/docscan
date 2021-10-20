@@ -24,6 +24,7 @@ export function VisualizePicture() {
     const imageFlatListRef = useRef<FlatList>(null)
     const [isCropping, setIsCropping] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(params.pictureIndex)
+    const [isFlatListScrollEnable, setIsFlatListScrollEnable] = useState(true)
 
 
     useBackHandler(() => {
@@ -95,11 +96,19 @@ export function VisualizePicture() {
         })
     }, [params, currentIndex])
 
-    const renderImageVisualizationItem = useCallback(({ item }: { item: string }) => (
-        <ImageVisualizationItem
-            source={{ uri: `file://${item}` }}
-        />
-    ), [])
+    function renderImageVisualizationItem({ item }: { item: string }) {
+        return (
+            <ImageVisualizationItem
+                source={{ uri: `file://${item}` }}
+                onZoomActivated={() => {
+                    setIsFlatListScrollEnable(false)
+                }}
+                onZoomDeactivated={() => {
+                    setIsFlatListScrollEnable(true)
+                }}
+            />
+        )
+    }
 
 
     return (
@@ -118,6 +127,7 @@ export function VisualizePicture() {
                     data={params.pictureList}
                     renderItem={renderImageVisualizationItem}
                     keyExtractor={(_, index) => index.toString()}
+                    scrollEnabled={isFlatListScrollEnable}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
                     pagingEnabled={true}
