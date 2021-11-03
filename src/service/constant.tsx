@@ -2,13 +2,10 @@
 import RNFS from "react-native-fs"
 
 
-// Development
-export const appInDevelopment = true
-
 // App
 export const appName = "DocScan"
 export const appVersion = "1.14.0"
-export const appType = appInDevelopment ? "beta" : "release"
+export const appType = __DEV__ ? "beta" : "release"
 
 // Icon
 const appIconPath = "./../image/"

@@ -1,7 +1,7 @@
 import { Alert, ToastAndroid } from "react-native"
 import RNFS from "react-native-fs"
 
-import { appInDevelopment, fullPathLog } from "./constant"
+import { fullPathLog } from "./constant"
 import { getReadWritePermission, ReadWritePermissionResul } from "./permission"
 
 
@@ -9,7 +9,7 @@ export type logCode = "INFO" | "WARN" | "ERROR"
 
 
 export function log(code: logCode, data: string) {
-    if (!appInDevelopment) {
+    if (!__DEV__) {
         return
     }
 

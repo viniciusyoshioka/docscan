@@ -6,7 +6,7 @@ import RNFS from "react-native-fs"
 import { HomeHeader } from "./Header"
 import { DebugHome } from "./DebugHome"
 import { DocumentItem, EmptyList, SafeScreen } from "../../component"
-import { appIconOutline, appInDevelopment, fullPathPicture } from "../../service/constant"
+import { appIconOutline, fullPathPicture } from "../../service/constant"
 import { deleteDocument, duplicateDocument, exportDocument, mergeDocument } from "../../service/document-handler"
 import { createAllFolder, createPictureFolder } from "../../service/folder-handler"
 import { useBackHandler } from "../../service/hook"
@@ -38,7 +38,7 @@ export function Home() {
 
 
     const debugGetDebugHome = useCallback(async () => {
-        if (appInDevelopment) {
+        if (__DEV__) {
             const getDebugHome = await readDebugHome()
             setDebugHome(getDebugHome)
         } else {

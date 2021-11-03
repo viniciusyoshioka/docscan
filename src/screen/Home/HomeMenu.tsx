@@ -4,7 +4,6 @@ import { RectButton } from "react-native-gesture-handler"
 import { Menu, MenuOptions, MenuTrigger } from "react-native-popup-menu"
 
 import { HeaderButton, MenuItem } from "../../component"
-import { appInDevelopment } from "../../service/constant"
 
 
 export interface HomeMenuProps {
@@ -83,7 +82,7 @@ export function HomeMenu(props: HomeMenuProps) {
                             }}
                         />
 
-                        {appInDevelopment && (
+                        {__DEV__ && (
                             <MenuItem
                                 text={"Debug Home"}
                                 onPress={() => {
