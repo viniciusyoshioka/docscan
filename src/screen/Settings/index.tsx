@@ -5,7 +5,7 @@ import { SettingsHeader } from "./Header"
 import { ChangeTheme } from "./ChangeTheme"
 import { TextVersion, ViewVersion } from "./style"
 import { ListItem, SafeScreen } from "../../component"
-import { appFName, appType, appVersion } from "../../service/constant"
+import { appName, appType, appVersion } from "../../service/constant"
 import { useBackHandler } from "../../service/hook"
 
 
@@ -48,7 +48,7 @@ export function Settings() {
 
             <ViewVersion>
                 <TextVersion>
-                    {appFName} - {appVersion} - {appType}
+                    {appName} - {appVersion} - {appType}
                 </TextVersion>
             </ViewVersion>
         </SafeScreen>

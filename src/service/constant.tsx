@@ -6,21 +6,20 @@ import RNFS from "react-native-fs"
 export const appInDevelopment = true
 
 // App
-export const appName = appInDevelopment ? "DocScanBeta" : "DocScan"
-export const appFName = appInDevelopment ? "DocScan Beta" : "DocScan"
+export const appName = "DocScan"
 export const appVersion = "1.14.0"
 export const appType = appInDevelopment ? "beta" : "release"
 
 // Icon
 const appIconPath = "./../image/"
-const appIconImage = appInDevelopment ? "docscanbeta.png" : "docscan.png"
-const appIconImageOutline = appInDevelopment ? "docscanbeta_outline.png" : "docscan_outline.png"
-export const appIcon = require(`${appIconPath}${appIconImage}`)
+//const appIconImage = "docscan.png"
+const appIconImageOutline = "docscan_outline.png"
+//export const appIcon = require(`${appIconPath}${appIconImage}`)
 export const appIconOutline = require(`${appIconPath}${appIconImageOutline}`)
 
 // Folder
 // Root
-export const folderRoot = appFName
+export const folderRoot = appName
 export const fullPathRoot = `${RNFS.CachesDirectoryPath}/${folderRoot}`
 export const fullPathRootExternal = `${RNFS.ExternalStorageDirectoryPath}/${folderRoot}`
 // Export

@@ -2,7 +2,7 @@ import React, { Component } from "react"
 
 import { HomeMenu } from "./HomeMenu"
 import { Header, HeaderButton, HeaderTitle } from "../../component"
-import { appFName } from "../../service/constant"
+import { appName } from "../../service/constant"
 
 
 export interface HomeHeaderProps {
@@ -48,7 +48,7 @@ export class HomeHeader extends Component<HomeHeaderProps> {
                 )}
 
                 {!this.props.selectionMode && (
-                    <HeaderTitle title={appFName} />
+                    <HeaderTitle title={appName} />
                 )}
 
                 {this.props.selectionMode && (
