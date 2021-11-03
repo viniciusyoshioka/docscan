@@ -8,6 +8,7 @@ add drag and drop functionality to sort DocumentItem
 
 # VisualizePicture
 fix zoom reseting when pinch after double tap
+move zoom area to where double tab was pressed
 add rotate image
 
 add split document functionality
