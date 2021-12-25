@@ -1,4 +1,4 @@
-import { Document } from "./object-types"
+import { Document } from "../types"
 
 
 export type ScreenParams = {
