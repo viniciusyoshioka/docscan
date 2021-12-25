@@ -1,13 +1,13 @@
-import { cameraId, cameraType, flashType, whiteBalanceType } from "./settings"
+import { cameraType, flashType, whiteBalanceType } from "."
 
 
-// Camera
 export type cameraReducerState = {
     flash: flashType,
     whiteBalance: whiteBalanceType,
     cameraType: cameraType,
-    cameraId: cameraId,
+    cameraId: string,
 }
+
 
 type cameraReducerActionFlash = {
     type: "flash",
@@ -26,7 +26,7 @@ type cameraReducerActionCameraType = {
 
 type cameraReducerActionCameraId = {
     type: "camera-id",
-    payload: cameraId,
+    payload: string,
 }
 
 type cameraReducerActionSet = {
@@ -35,13 +35,14 @@ type cameraReducerActionSet = {
         flash: flashType,
         whiteBalance: whiteBalanceType,
         cameraType: cameraType,
-        cameraId: cameraId,
+        cameraId: string,
     },
 }
 
 type cameraReducerActionReset = {
     type: "reset",
 }
+
 
 export type cameraReducerAction = cameraReducerActionFlash
     | cameraReducerActionWhiteBalance
