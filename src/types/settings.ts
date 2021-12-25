@@ -1,5 +1,4 @@
-import { cameraType, flashType, whiteBalanceType } from "."
-import { themeType } from "../service/theme"
+import { cameraType, flashType, themeType, whiteBalanceType } from "."
 
 
 export type settingsObject = {
