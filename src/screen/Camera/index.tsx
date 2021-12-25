@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useReducer, useRef, useState } from "react"
+import React, { useEffect, useReducer, useRef, useState } from "react"
 import { Alert, StatusBar } from "react-native"
 import { HardwareCamera, RNCamera } from "react-native-camera"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
@@ -15,17 +15,17 @@ import { createAllFolder } from "../../service/folder-handler"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
 import { getCameraPermission } from "../../service/permission"
-import { cameraReducerAction, cameraReducerState } from "../../service/reducer"
 import { ScreenParams } from "../../service/screen-params"
-import { settingsDefaultCamera } from "../../service/settings"
-import { readSettings } from "../../service/storage"
+import { cameraReducerAction, cameraReducerState } from "../../types/camera-reducer"
+import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "../../service/settings"
+import { SettingsDatabase } from "../../database"
 
 
 const initialCameraSettings: cameraReducerState = {
-    flash: settingsDefaultCamera.flash,
-    whiteBalance: settingsDefaultCamera.whiteBalance,
-    cameraType: settingsDefaultCamera.cameraType,
-    cameraId: settingsDefaultCamera.cameraId,
+    flash: cameraFlashDefault,
+    whiteBalance: cameraWhiteBalanceDefault,
+    cameraType: cameraTypeDefault,
+    cameraId: cameraIdDefault,
 }
 
 function reducerCameraSettings(state: cameraReducerState, action: cameraReducerAction): cameraReducerState {
@@ -67,10 +67,10 @@ function reducerCameraSettings(state: cameraReducerState, action: cameraReducerA
             }
         case "reset":
             return {
-                flash: settingsDefaultCamera.flash,
-                whiteBalance: settingsDefaultCamera.whiteBalance,
-                cameraType: settingsDefaultCamera.cameraType,
-                cameraId: settingsDefaultCamera.cameraId,
+                flash: cameraFlashDefault,
+                whiteBalance: cameraWhiteBalanceDefault,
+                cameraType: cameraTypeDefault,
+                cameraId: cameraIdDefault,
             }
         default:
             throw new Error("Unknown action type")
@@ -102,7 +102,7 @@ export function Camera() {
     })
 
 
-    const goBack = useCallback(() => {
+    function goBack() {
         if (!params && pictureList.length === 0) {
             navigation.navigate("Home")
             return
@@ -162,9 +162,9 @@ export function Camera() {
             })
             return
         }
-    }, [params, pictureList])
+    }
 
-    const addPictureFromGalery = useCallback(() => {
+    function addPictureFromGalery() {
         if (params?.screenAction === "replace-picture") {
             navigation.reset({
                 routes: [
@@ -217,9 +217,9 @@ export function Camera() {
                 }
             ]
         })
-    }, [params, pictureList])
+    }
 
-    const takePicture = useCallback(async () => {
+    async function takePicture() {
         createAllFolder()
 
         const date = getDateTime("-", "-", true)
@@ -231,7 +231,7 @@ export function Camera() {
 
         const hasCameraPermission = await getCameraPermission()
         if (!hasCameraPermission) {
-            log("INFO", "Camera takePicture - Não tem permissão para tirar foto")
+            log.warn("Camera takePicture - Não tem permissão para tirar foto")
             Alert.alert(
                 "Erro",
                 "Sem permissão para usar a câmera"
@@ -265,15 +265,15 @@ export function Camera() {
                 })
             }
         } catch (error) {
-            log("ERROR", `Camera takePicture - Erro ao tirar foto. Mensagem: "${error}"`)
+            log.error(`Camera takePicture - Erro ao tirar foto. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro",
                 "Erro desconhecido ao tirar foto, tente novamente"
             )
         }
-    }, [params, cameraRef])
+    }
 
-    const editDocument = useCallback(() => {
+    function editDocument() {
         navigation.reset({
             routes: [{
                 name: "EditDocument",
@@ -285,24 +285,22 @@ export function Camera() {
                 }
             }]
         })
-    }, [params, pictureList])
+    }
 
 
     useEffect(() => {
-        async function getCameraSettings() {
-            const cameraSettings = await readSettings()
-            dispatchCameraSettings({
-                type: "set",
-                payload: {
-                    flash: cameraSettings.camera.flash,
-                    whiteBalance: cameraSettings.camera.whiteBalance,
-                    cameraType: cameraSettings.camera.cameraType,
-                    cameraId: cameraSettings.camera.cameraId,
-                }
+        SettingsDatabase.getSettings()
+            .then((cameraSettings) => {
+                dispatchCameraSettings({
+                    type: "set",
+                    payload: {
+                        flash: cameraSettings.cameraFlash,
+                        whiteBalance: cameraSettings.cameraWhiteBalance,
+                        cameraType: cameraSettings.cameraType,
+                        cameraId: cameraSettings.cameraId,
+                    }
+                })
             })
-        }
-
-        getCameraSettings()
     }, [])
 
     useEffect(() => {
@@ -312,7 +310,7 @@ export function Camera() {
             try {
                 readCameraList = await cameraRef.current?.getCameraIdsAsync()
             } catch (error) {
-                log("ERROR", `Camera useEffect getCameraIds - Erro ao pegar câmeras do dispositivo para trocas entre os tipos diferentes de camera. Mensagem: "${error}"`)
+                log.warn(`Camera useEffect getCameraIds - Erro ao pegar câmeras do dispositivo para trocas entre os tipos diferentes de camera. Mensagem: "${error}"`)
             }
 
             if (readCameraList === undefined) {
