@@ -13,7 +13,6 @@ export interface HomeHeaderProps {
     importDocument: () => void,
     exportDocument: () => void,
     openSettings: () => void,
-    switchDebugHome: () => void,
     mergeDocument: () => void,
     duplicateDocument: () => void,
 }
@@ -29,8 +28,6 @@ export class HomeHeader extends Component<HomeHeaderProps> {
 
     shouldComponentUpdate(nextProps: HomeHeaderProps) {
         if (this.props.selectionMode !== nextProps.selectionMode) {
-            return true
-        } else if (this.props.switchDebugHome !== nextProps.switchDebugHome) {
             return true
         }
         return false
@@ -74,7 +71,6 @@ export class HomeHeader extends Component<HomeHeaderProps> {
                     importDocument={this.props.importDocument}
                     exportDocument={this.props.exportDocument}
                     openSettings={this.props.openSettings}
-                    switchDebugHome={this.props.switchDebugHome}
                     mergeDocument={this.props.mergeDocument}
                     duplicateDocument={this.props.duplicateDocument}
                 />
