@@ -27,6 +27,7 @@
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.1",
     "react-native-share": "^7.3.2",
+    "react-native-sqlite-storage": "^6.0.1",
     "react-native-vector-icons": "https://github.com/viniciusyoshioka/react-native-vector-icons",
     "react-native-zip-archive": "^6.0.5",
     "styled-components": "^5.3.3"
@@ -40,6 +41,7 @@
     "@types/react-native-base64": "^0.2.0",
     "@types/react-native-keep-awake": "^2.0.3",
     "@types/react-native-share": "^3.3.3",
+    "@types/react-native-sqlite-storage": "^5.0.1",
     "@types/react-native-vector-icons": "^6.4.10",
     "@types/styled-components": "^5.1.17",
     "@types/styled-components-react-native": "^5.1.3",
