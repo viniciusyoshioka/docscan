@@ -16,30 +16,30 @@ export const appIconOutline = require("./../image/docscan_outline.png")
 export const folderRoot = appName
 export const fullPathRoot = `${RNFS.CachesDirectoryPath}/${folderRoot}`
 export const fullPathRootExternal = `${RNFS.ExternalStorageDirectoryPath}/${folderRoot}`
-// Export
+// External/Export
 export const folderExported = "Exported"
-export const relativePathExported = folderExported
-export const fullPathExported = `${fullPathRootExternal}/${relativePathExported}`
-// PDF
+export const relativePathExported = `${folderRoot}/${folderExported}`
+export const fullPathExported = `${fullPathRootExternal}/${folderExported}`
+// External/PDF
 export const folderPdf = "PDF"
-export const relativePathPdf = folderPdf
-export const fullPathPdf = `${fullPathRootExternal}/${relativePathPdf}`
-// Picture
+export const relativePathPdf = `${folderRoot}/${folderPdf}`
+export const fullPathPdf = `${fullPathRootExternal}/${folderPdf}`
+// Internal/Picture
 export const folderPicture = "Picture"
-export const relativePathPicture = folderPicture
-export const fullPathPicture = `${fullPathRoot}/${relativePathPicture}`
-// Temporary
+export const relativePathPicture = `${folderRoot}/${folderPicture}`
+export const fullPathPicture = `${fullPathRoot}/${folderPicture}`
+// Internal/Temporary
 export const folderTemporary = "Temporary"
-export const relativePathTemporary = folderTemporary
-export const fullPathTemporary = `${fullPathRoot}/${relativePathTemporary}`
-// Temporary/Exported
+export const relativePathTemporary = `${folderRoot}/${folderTemporary}`
+export const fullPathTemporary = `${fullPathRoot}/${folderTemporary}`
+// Internal/Temporary/Exported
 export const folderTemporaryExported = "Exported"
 export const relativePathTemporaryExported = `${relativePathTemporary}/${folderTemporaryExported}`
-export const fullPathTemporaryExported = `${fullPathRoot}/${relativePathTemporaryExported}`
-// Temporary/CompressedPicture
+export const fullPathTemporaryExported = `${fullPathTemporary}/${folderTemporaryExported}`
+// Internal/Temporary/CompressedPicture
 export const folderTemporaryCompressedPicture = "CompressedPicture"
 export const relativePathTemporaryCompressedPicture = `${relativePathTemporary}/${folderTemporaryCompressedPicture}`
-export const fullPathTemporaryCompressedPicture = `${fullPathRoot}/${relativePathTemporaryCompressedPicture}`
+export const fullPathTemporaryCompressedPicture = `${fullPathTemporary}/${folderTemporaryCompressedPicture}`
 
 // File
 // Log
