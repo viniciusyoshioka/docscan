@@ -41,12 +41,6 @@ export const folderTemporaryCompressedPicture = "CompressedPicture"
 export const relativePathTemporaryCompressedPicture = `${relativePathTemporary}/${folderTemporaryCompressedPicture}`
 export const fullPathTemporaryCompressedPicture = `${fullPathTemporary}/${folderTemporaryCompressedPicture}`
 
-// File
-// Log
-export const fileLog = "docscanlog.log"
-export const relativePathLog = fileLog
-export const fullPathLog = `${fullPathRoot}/${relativePathLog}`
-
 // AsyncStorage
 export const storageTheme = "@docscan:theme"
 export const storageDocumentId = "@docscan:document-id"
