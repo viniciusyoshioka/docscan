@@ -41,6 +41,18 @@ export const folderTemporaryCompressedPicture = "CompressedPicture"
 export const relativePathTemporaryCompressedPicture = `${relativePathTemporary}/${folderTemporaryCompressedPicture}`
 export const fullPathTemporaryCompressedPicture = `${fullPathTemporary}/${folderTemporaryCompressedPicture}`
 
+// Database
+// Version
+export const latestDbVersion = "1.0.0"
+// Database folder
+export const databaseFolder = `${RNFS.CachesDirectoryPath}/../databases`
+// App database
+export const appDatabaseFileName = "docscan_database.sqlite"
+export const appDatabaseFullPath = `${databaseFolder}/${appDatabaseFileName}`
+// Log database
+export const logDatabaseFileName = "docscan_log.sqlite"
+export const logDatabaseFullPath = `${databaseFolder}/${logDatabaseFileName}`
+
 // AsyncStorage
 export const storageTheme = "@docscan:theme"
 export const storageDocumentId = "@docscan:document-id"
