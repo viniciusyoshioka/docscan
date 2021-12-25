@@ -1,2 +1,5 @@
+export * from "./document"
+export * from "./log"
 export * from "./settings-camera"
 export * from "./settings"
+export * from "./theme"
