@@ -4,7 +4,8 @@ import { HardwareCamera, RNCamera } from "react-native-camera"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 
 import { CameraHeader } from "./Header"
-import { CameraControl, CameraControlHandle } from "./Control"
+// import { CameraControl, CameraControlHandle } from "./Control"
+import { CameraControl } from "./Control"
 import { CameraSettings } from "./CameraSettings"
 import { SafeScreen } from "../../component"
 import { fullPathPicture } from "../../service/constant"
@@ -84,7 +85,7 @@ export function Camera() {
     const { params } = useRoute<RouteProp<ScreenParams, "Camera">>()
 
     const cameraRef = useRef<RNCamera>(null)
-    const cameraControlRef = useRef<CameraControlHandle>(null)
+    // const cameraControlRef = useRef<CameraControlHandle>(null)
     const [stateCameraSettings, dispatchCameraSettings] = useReducer(reducerCameraSettings, initialCameraSettings)
     const [cameraSettingsVisible, setCameraSettingsVisible] = useState(false)
 
@@ -239,16 +240,16 @@ export function Camera() {
         }
 
         try {
-            cameraControlRef.current?.setTakePictureButtonEnable(false)
+            // cameraControlRef.current?.setTakePictureButtonEnable(false)
 
             await cameraRef.current?.takePictureAsync(options)
 
-            new Promise(() => {
-                const unlockTakePictureButton = setInterval(() => {
-                    cameraControlRef.current?.setTakePictureButtonEnable(true)
-                    clearInterval(unlockTakePictureButton)
-                }, 100)
-            })
+            // new Promise(() => {
+            //     const unlockTakePictureButton = setInterval(() => {
+            //         cameraControlRef.current?.setTakePictureButtonEnable(true)
+            //         clearInterval(unlockTakePictureButton)
+            //     }, 100)
+            // })
 
             if (!params?.screenAction && !params?.screenAction) {
                 setPictureList(oldValue => [...oldValue, picturePath])
@@ -383,7 +384,7 @@ export function Camera() {
             />
 
             <CameraControl
-                ref={cameraControlRef}
+                // ref={cameraControlRef}
                 pictureListLength={(params ? params.pictureList.length : 0) + pictureList.length}
                 screenAction={params?.screenAction}
                 addPictureFromGalery={addPictureFromGalery}
