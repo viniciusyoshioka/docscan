@@ -1,7 +1,7 @@
 import React from "react"
 import { NavigationContainer } from "@react-navigation/native"
 import { enableScreens } from "react-native-screens"
-import { createNativeStackNavigator } from "react-native-screens/native-stack"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
 
 import { Home } from "../screen/Home"
 import { Camera } from "../screen/Camera"
@@ -17,14 +17,14 @@ const Stack = createNativeStackNavigator()
 
 
 export function Router() {
-    return(
+    return (
         <NavigationContainer>
             <Stack.Navigator
                 initialRouteName={"HomeScreen"}
                 screenOptions={{
                     headerShown: false,
-                    replaceAnimation: "push",
-                    stackAnimation: "fade",
+                    animationTypeForReplace: "push",
+                    animation: "fade",
                 }}
             >
                 <Stack.Screen
@@ -34,7 +34,7 @@ export function Router() {
                 <Stack.Screen
                     name={"Camera"}
                     component={Camera}
-                    options={{screenOrientation: "portrait"}}
+                    options={{ orientation: "portrait" }}
                 />
                 <Stack.Screen
                     name={"Settings"}
