@@ -11,7 +11,6 @@ export interface HomeMenuProps {
     importDocument: () => void,
     exportDocument: () => void,
     openSettings: () => void,
-    switchDebugHome: () => void,
     mergeDocument: () => void,
     duplicateDocument: () => void,
 }
@@ -81,16 +80,6 @@ export function HomeMenu(props: HomeMenuProps) {
                                 props.openSettings()
                             }}
                         />
-
-                        {__DEV__ && (
-                            <MenuItem
-                                text={"Debug Home"}
-                                onPress={() => {
-                                    menuRef.current?.close()
-                                    props.switchDebugHome()
-                                }}
-                            />
-                        )}
                     </>
                 )}
 
