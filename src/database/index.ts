@@ -7,6 +7,10 @@ import * as LogDatabase from "./Log"
 export { LogDatabase }
 
 
+import * as SettingsDatabase from "./Settings"
+export { SettingsDatabase }
+
+
 export let globalAppDatabase: SQLite.SQLiteDatabase
 export let globalLogDatabase: SQLite.SQLiteDatabase
 
