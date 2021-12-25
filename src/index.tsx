@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useColorScheme } from "react-native"
 import { MenuProvider } from "react-native-popup-menu"
 import { ThemeProvider } from "styled-components/native"
@@ -24,7 +24,7 @@ export function App() {
     const [theme, setTheme] = useState<themeType | undefined>(undefined)
 
 
-    const getTheme = useCallback(async () => {
+    async function getTheme() {
         const readAppTheme = await readTheme()
 
         LightTheme.appTheme = readAppTheme
@@ -42,12 +42,12 @@ export function App() {
             return
         }
         setTheme(readAppTheme)
-    }, [deviceTheme])
+    }
 
-    const switchTheme = useCallback(async (newTheme: themeType) => {
+    async function switchTheme(newTheme: themeType) {
         await writeTheme(newTheme)
         await getTheme()
-    }, [])
+    }
 
 
     useEffect(() => {
