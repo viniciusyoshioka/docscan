@@ -1377,6 +1377,11 @@
     "@types/react" "*"
     "@types/react-native" "*"
 
+"@types/react-native-sqlite-storage@^5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@types/react-native-sqlite-storage/-/react-native-sqlite-storage-5.0.1.tgz#20a0862eaa52de83c9698bdd597f2114349b563a"
+  integrity sha512-M4KDSFeHVVh0qiV9WvNr5e5VonRDzYpDqBQCFPtmDAVHRoUBNWxeSQETZ+BNF8jGavxN0u/FMbOQWGo+7UwRaA==
+
 "@types/react-native-vector-icons@^6.4.10":
   version "6.4.10"
   resolved "https://registry.yarnpkg.com/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.10.tgz#9bfd6e64dd37b8119425496b5e53ff91d034efa9"
@@ -4879,6 +4884,11 @@ react-native-keep-awake@^4.0.0:
   resolved "https://registry.yarnpkg.com/react-native-keep-awake/-/react-native-keep-awake-4.0.0.tgz#d89fdc3fb60b3cffa979ef37dc5816196df998a2"
   integrity sha512-0Fotox+eLXQooeibVs3P60yASYUWjtRw9MZNmbuHt5UZQrgUrAKsE4jm7gTr4tPU1m1RkwGzcgUFpcOkh/ec7g==
 
+react-native-logs@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-logs/-/react-native-logs-3.0.4.tgz#a22c26815ff26d45c4aad96c1b674768f043d79b"
+  integrity sha512-gIRuhwllXFWMg3Cq4iQv2K6t9v/gHOmQ2N5gSfsNqsJfx361Y36IkKVVzeK48LBKwa+vf9DmE70MRcJXnikAYw==
+
 react-native-orientation-locker@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/react-native-orientation-locker/-/react-native-orientation-locker-1.4.0.tgz#ac27a0cd13d5eaaf06b0a2eed2f98f52fbac2f66"
@@ -4910,6 +4920,11 @@ react-native-share@^7.3.2:
   version "7.3.2"
   resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-7.3.2.tgz#3b61c42b28b034d1662f3aa7514846c609251502"
   integrity sha512-1E2xxTzHYrV74WMuBz6VLx6Y9slBBNI9s0NxXDEYb0VsFT6DcHnbiaY4ExW5E6vw37s3gfZxm4zsv9/TwFEukA==
+
+react-native-sqlite-storage@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-sqlite-storage/-/react-native-sqlite-storage-6.0.1.tgz#ce6a6b852f07abbea68658d5363818c8bef45dfb"
+  integrity sha512-1tDFjrint6X6qSYKf3gDyz+XB+X79jfiL6xTugKHPRtF0WvqMtVgdLuNqZunIXjNEvNtNVEbXaeZ6MsguFu00A==
 
 "react-native-vector-icons@https://github.com/viniciusyoshioka/react-native-vector-icons":
   version "8.1.0"

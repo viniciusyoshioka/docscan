@@ -21,6 +21,7 @@
     "react-native-fs": "^2.18.0",
     "react-native-gesture-handler": "^2.1.0",
     "react-native-image-crop": "https://github.com/viniciusyoshioka/react-native-image-crop",
+    "react-native-logs": "^3.0.4",
     "react-native-orientation-locker": "^1.4.0",
     "react-native-pdf-creator": "https://github.com/viniciusyoshioka/react-native-pdf-creator",
     "react-native-popup-menu": "^0.15.12",
