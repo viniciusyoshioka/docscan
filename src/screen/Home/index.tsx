@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Alert, BackHandler, FlatList, ToastAndroid } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 
@@ -8,10 +8,10 @@ import { appIconOutline } from "../../service/constant"
 import { deleteDocument, duplicateDocument, exportDocument, mergeDocument } from "../../service/document-handler"
 import { createAllFolder } from "../../service/folder-handler"
 import { useBackHandler } from "../../service/hook"
-import { Document } from "../../service/object-types"
 import { readDocument } from "../../service/storage"
 import { getWritePermission } from "../../service/permission"
 import { log } from "../../service/log"
+import { Document } from "../../types"
 
 
 export function Home() {
@@ -34,12 +34,12 @@ export function Home() {
     })
 
 
-    const getDocument = useCallback(async () => {
+    async function getDocument() {
         const documents = await readDocument()
         setDocument(documents)
-    }, [])
+    }
 
-    const deleteSelectedDocument = useCallback(() => {
+    function deleteSelectedDocument() {
         async function alertDelete() {
             await deleteDocument(selectedDocument, true)
             await getDocument()
@@ -54,9 +54,9 @@ export function Home() {
                 { text: "Apagar", onPress: async () => await alertDelete() }
             ]
         )
-    }, [selectedDocument])
+    }
 
-    const exportSelectedDocument = useCallback(() => {
+    function exportSelectedDocument() {
         async function alertExport() {
             const hasPermission = await getWritePermission()
             if (hasPermission) {
@@ -79,9 +79,9 @@ export function Home() {
                 { text: "Exportar", onPress: async () => await alertExport() }
             ]
         )
-    }, [selectedDocument, selectionMode])
+    }
 
-    const mergeSelectedDocument = useCallback(() => {
+    function mergeSelectedDocument() {
         mergeDocument(selectedDocument)
             .then(async () => {
                 await getDocument()
@@ -89,9 +89,9 @@ export function Home() {
             })
             .catch(() => { })
         exitSelectionMode()
-    }, [selectedDocument])
+    }
 
-    const duplicateSelectedDocument = useCallback(() => {
+    function duplicateSelectedDocument() {
         duplicateDocument(selectedDocument)
             .then(async () => {
                 await getDocument()
@@ -99,18 +99,18 @@ export function Home() {
             })
             .catch(() => { })
         exitSelectionMode()
-    }, [selectedDocument])
+    }
 
-    const selectDocument = useCallback((documentId: number) => {
+    function selectDocument(documentId: number) {
         if (!selectionMode) {
             setSelectionMode(true)
         }
         if (selectedDocument.indexOf(documentId) === -1) {
             selectedDocument.push(documentId)
         }
-    }, [selectionMode, selectedDocument])
+    }
 
-    const deselectDocument = useCallback((documentId: number) => {
+    function deselectDocument(documentId: number) {
         const index = selectedDocument.indexOf(documentId)
         if (index !== -1) {
             selectedDocument.splice(index, 1)
@@ -118,9 +118,9 @@ export function Home() {
         if (selectionMode && selectedDocument.length === 0) {
             setSelectionMode(false)
         }
-    }, [selectedDocument, selectionMode])
+    }
 
-    const renderDocumentItem = useCallback(({ item }: { item: Document }) => {
+    function renderDocumentItem({ item }: { item: Document }) {
         return (
             <DocumentItem
                 click={() => navigation.navigate("EditDocument", { document: item })}
@@ -130,12 +130,12 @@ export function Home() {
                 document={item}
             />
         )
-    }, [selectionMode, selectDocument, deselectDocument])
+    }
 
-    const exitSelectionMode = useCallback(() => {
+    function exitSelectionMode() {
         setSelectedDocument([])
         setSelectionMode(false)
-    }, [])
+    }
 
 
     useEffect(() => {
