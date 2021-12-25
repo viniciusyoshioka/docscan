@@ -7,7 +7,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler"
 import SQLite from "react-native-sqlite-storage"
 
 import { Router } from "./router"
-import { readTheme, writeTheme } from "./service/storage"
 import { DarkTheme, LightTheme, ThemeContextProvider } from "./service/theme"
 import { themeType } from "./types"
 import { LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase, SettingsDatabase } from "./database"
@@ -25,7 +24,7 @@ export function App() {
 
 
     async function getTheme() {
-        const readAppTheme = await readTheme()
+        const readAppTheme = await SettingsDatabase.getSettingKey("theme")
 
         LightTheme.appTheme = readAppTheme
         LightTheme.switchTheme = switchTheme
@@ -45,7 +44,7 @@ export function App() {
     }
 
     async function switchTheme(newTheme: themeType) {
-        await writeTheme(newTheme)
+        await SettingsDatabase.updateSettings("theme", newTheme)
         await getTheme()
     }
 
