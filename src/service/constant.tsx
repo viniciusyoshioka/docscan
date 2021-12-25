@@ -8,11 +8,8 @@ export const appVersion = "1.14.0"
 export const appType = __DEV__ ? "beta" : "release"
 
 // Icon
-const appIconPath = "./../image/"
-//const appIconImage = "docscan.png"
-const appIconImageOutline = "docscan_outline.png"
-//export const appIcon = require(`${appIconPath}${appIconImage}`)
-export const appIconOutline = require(`${appIconPath}${appIconImageOutline}`)
+export const appIcon = require("./../image/docscan.png")
+export const appIconOutline = require("./../image/docscan_outline.png")
 
 // Folder
 // Root
