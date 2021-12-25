@@ -1,22 +1,18 @@
 import { useEffect } from "react"
-import { BackHandler, Keyboard, KeyboardEventName } from "react-native"
+import { BackHandler, Keyboard, KeyboardEventListener, KeyboardEventName } from "react-native"
 
 
 export function useBackHandler(backhandlerFunction: () => boolean) {
     useEffect(() => {
-        BackHandler.addEventListener("hardwareBackPress", backhandlerFunction)
-        return () => {
-            BackHandler.removeEventListener("hardwareBackPress", backhandlerFunction)
-        }
+        const subscription = BackHandler.addEventListener("hardwareBackPress", backhandlerFunction)
+        return () => subscription.remove()
     })
 }
 
 
-export function useKeyboard(eventName: KeyboardEventName, keyboardFunction: () => void) {
+export function useKeyboard(eventName: KeyboardEventName, keyboardFunction: KeyboardEventListener) {
     useEffect(() => {
-        Keyboard.addListener(eventName, keyboardFunction)
-        return () => {
-            Keyboard.removeListener(eventName, keyboardFunction)
-        }
+        const subscription = Keyboard.addListener(eventName, keyboardFunction)
+        return () => subscription.remove()
     })
 }
