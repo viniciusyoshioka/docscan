@@ -5,7 +5,7 @@ import Share from "react-native-share"
 
 import { DebugButton } from "../../component"
 import { fullPathLog, fullPathPicture, fullPathRoot, fullPathTemporary, fullPathTemporaryCompressedPicture, fullPathTemporaryExported } from "../../service/constant"
-import { useSwitchTheme } from "../../service/theme"
+import { useTheme } from "../../service/theme"
 
 
 export interface DebugHomeProps {
@@ -18,7 +18,7 @@ export interface DebugHomeProps {
 export const DebugHome = memo((props: DebugHomeProps) => {
 
 
-    const switchTheme = useSwitchTheme()
+    const { switchTheme } = useTheme()
 
 
     const debugReadLog = useCallback(async () => {

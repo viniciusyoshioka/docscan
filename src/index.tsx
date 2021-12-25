@@ -7,30 +7,34 @@ import { GestureHandlerRootView } from "react-native-gesture-handler"
 
 import { Router } from "./router"
 import { readTheme, writeTheme } from "./service/storage"
-import { DarkTheme, join, LightTheme, SwitchThemeContextProvider, ThemeContextProvider, themeType } from "./service/theme"
+import { DarkTheme, LightTheme, ThemeContextProvider, themeType } from "./service/theme"
 
 
 export function App() {
 
 
     const deviceTheme = useColorScheme()
-    const [appTheme, setAppTheme] = useState<themeType>("auto")
-    const [theme, setTheme] = useState<themeType>()
+
+    const [theme, setTheme] = useState<themeType | undefined>()
 
 
     const getTheme = useCallback(async () => {
         const readAppTheme = await readTheme()
+
+        LightTheme.appTheme = readAppTheme
+        LightTheme.switchTheme = switchTheme
+
+        DarkTheme.appTheme = readAppTheme
+        DarkTheme.switchTheme = switchTheme
+
         if (readAppTheme === "auto") {
             if (deviceTheme) {
-                setAppTheme(readAppTheme)
                 setTheme(deviceTheme)
                 return
             }
-            setAppTheme(readAppTheme)
             setTheme("light")
             return
         }
-        setAppTheme(readAppTheme)
         setTheme(readAppTheme)
     }, [deviceTheme])
 
@@ -53,21 +57,19 @@ export function App() {
     }, [])
 
 
-    if (theme === undefined) {
+    if (!theme) {
         return null
     }
 
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <ThemeContextProvider value={(theme === "light") ? join(LightTheme, appTheme) : join(DarkTheme, appTheme)}>
-                <SwitchThemeContextProvider value={switchTheme}>
-                    <ThemeProvider theme={(theme === "light") ? join(LightTheme, appTheme) : join(DarkTheme, appTheme)}>
-                        <MenuProvider>
-                            <Router />
-                        </MenuProvider>
-                    </ThemeProvider>
-                </SwitchThemeContextProvider>
+            <ThemeContextProvider value={(theme === "light") ? LightTheme : DarkTheme}>
+                <ThemeProvider theme={(theme === "light") ? LightTheme : DarkTheme}>
+                    <MenuProvider>
+                        <Router />
+                    </MenuProvider>
+                </ThemeProvider>
             </ThemeContextProvider>
         </GestureHandlerRootView>
     )
