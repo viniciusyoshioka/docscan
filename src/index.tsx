@@ -7,7 +7,8 @@ import { GestureHandlerRootView } from "react-native-gesture-handler"
 
 import { Router } from "./router"
 import { readTheme, writeTheme } from "./service/storage"
-import { DarkTheme, LightTheme, ThemeContextProvider, themeType } from "./service/theme"
+import { DarkTheme, LightTheme, ThemeContextProvider } from "./service/theme"
+import { themeType } from "./types"
 
 
 export function App() {
