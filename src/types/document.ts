@@ -1,5 +1,4 @@
 
-// Document
 export type DocumentForList = {
     id: number,
     name: string,
