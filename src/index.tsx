@@ -3,6 +3,7 @@ import { useColorScheme } from "react-native"
 import { MenuProvider } from "react-native-popup-menu"
 import { ThemeProvider } from "styled-components/native"
 import KeepAwake from "react-native-keep-awake"
+import { GestureHandlerRootView } from "react-native-gesture-handler"
 
 import { Router } from "./router"
 import { readTheme, writeTheme } from "./service/storage"
@@ -58,14 +59,16 @@ export function App() {
 
 
     return (
-        <ThemeContextProvider value={(theme === "light") ? join(LightTheme, appTheme) : join(DarkTheme, appTheme)}>
-            <SwitchThemeContextProvider value={switchTheme}>
-                <ThemeProvider theme={(theme === "light") ? join(LightTheme, appTheme) : join(DarkTheme, appTheme)}>
-                    <MenuProvider>
-                        <Router />
-                    </MenuProvider>
-                </ThemeProvider>
-            </SwitchThemeContextProvider>
-        </ThemeContextProvider>
+        <GestureHandlerRootView>
+            <ThemeContextProvider value={(theme === "light") ? join(LightTheme, appTheme) : join(DarkTheme, appTheme)}>
+                <SwitchThemeContextProvider value={switchTheme}>
+                    <ThemeProvider theme={(theme === "light") ? join(LightTheme, appTheme) : join(DarkTheme, appTheme)}>
+                        <MenuProvider>
+                            <Router />
+                        </MenuProvider>
+                    </ThemeProvider>
+                </SwitchThemeContextProvider>
+            </ThemeContextProvider>
+        </GestureHandlerRootView>
     )
 }
