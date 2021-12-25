@@ -59,7 +59,7 @@ export function App() {
 
 
     return (
-        <GestureHandlerRootView>
+        <GestureHandlerRootView style={{ flex: 1 }}>
             <ThemeContextProvider value={(theme === "light") ? join(LightTheme, appTheme) : join(DarkTheme, appTheme)}>
                 <SwitchThemeContextProvider value={switchTheme}>
                     <ThemeProvider theme={(theme === "light") ? join(LightTheme, appTheme) : join(DarkTheme, appTheme)}>
