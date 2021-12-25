@@ -5,10 +5,12 @@ export type DocumentForList = {
     lastModificationTimestamp: string,
 }
 
+
 export type SimpleDocument = {
     name: string,
     pictureList: Array<string>,
 }
+
 
 export type Document = {
     id: number,
