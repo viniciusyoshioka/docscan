@@ -38,7 +38,7 @@ export function ImportImageFromGalery() {
         const hasWritePermission = await getWritePermission()
         if (!hasWritePermission) {
             setImageGalery([])
-            log("INFO", "ImportImageFromGalery getImage - Não tem permissão pra usar a CameraRoll")
+            log.warn("ImportImageFromGalery getImage - Não tem permissão pra usar a CameraRoll")
             Alert.alert(
                 "Erro",
                 "Sem permissão para abrir galeria"
@@ -53,7 +53,7 @@ export function ImportImageFromGalery() {
             })
             setImageGalery(cameraRollPhotos.edges)
         } catch (error) {
-            log("ERROR", `ImportImageFromGalery getImage - Erro ao pegar imagens da CameraRoll. Mensagem: "${error}"`)
+            log.error(`ImportImageFromGalery getImage - Erro ao pegar imagens da CameraRoll. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro",
                 "Erro desconhecido ao abrir galeria"
@@ -189,7 +189,7 @@ export function ImportImageFromGalery() {
         try {
             await RNFS.copyFile(imagePath, newImagePath)
         } catch (error) {
-            log("ERROR", `ImportImageFromGalery importSingleImage - Erro ao importar uma imagem da galeria. Mensagem: "${error}"`)
+            log.error(`ImportImageFromGalery importSingleImage - Erro ao importar uma imagem da galeria. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro",
                 "Erro desconhecido ao importar imagem da galeria"
@@ -254,7 +254,7 @@ export function ImportImageFromGalery() {
                 await RNFS.copyFile(selectedImage[x], newImagePath)
                 newImages.push(newImagePath)
             } catch (error) {
-                log("ERROR", `ImportImageFromGalery importMultipleImage - Erro ao importar multiplas imagens da galeria. Mensagem: "${error}"`)
+                log.error(`ImportImageFromGalery importMultipleImage - Erro ao importar multiplas imagens da galeria. Mensagem: "${error}"`)
                 Alert.alert(
                     "Erro",
                     "Erro deconhecido ao importar múltiplas imagens da galeria"
