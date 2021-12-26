@@ -8,7 +8,13 @@ export type DocumentForList = {
 
 export type SimpleDocument = {
     name: string,
-    pictureList: Array<string>,
+}
+
+
+export type DocumentPicture = {
+    id: number,
+    filepath: string,
+    position: number
 }
 
 
