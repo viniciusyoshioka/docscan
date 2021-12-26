@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react"
+import React, { useState } from "react"
 import { Alert } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import Share from "react-native-share"
@@ -26,9 +26,9 @@ export function Settings() {
     })
 
 
-    const goBack = useCallback(() => {
+    function goBack() {
         navigation.navigate("Home")
-    }, [])
+    }
 
     async function shareLogFile() {
         try {
