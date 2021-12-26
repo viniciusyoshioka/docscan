@@ -19,8 +19,9 @@ export function createDocumentTable(): Promise<SQLite.ResultSet[]> {
                     CREATE TABLE IF NOT EXISTS document_picture (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         filepath TEXT NOT NULL,
-                        FOREIGN KEY (belongsToDocument) REFERENCES document (id),
-                        position INTEGER NOT NULL
+                        belongsToDocument INTEGER NOT NULL,
+                        position INTEGER NOT NULL,
+                        FOREIGN KEY(belongsToDocument) REFERENCES document(id)
                     );
                 `)
                 resolve([documentTableResultSet, documentPictureTableResultSet])
