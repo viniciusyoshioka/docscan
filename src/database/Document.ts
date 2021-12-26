@@ -16,7 +16,7 @@ export function createDocumentTable(): Promise<SQLite.ResultSet[]> {
         `)
             .then(async ([documentTableResultSet]) => {
                 const [documentPictureTableResultSet] = await globalAppDatabase.executeSql(`
-                    CREATE TABLE IF NOT EXIST document_picture (
+                    CREATE TABLE IF NOT EXISTS document_picture (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         filepath TEXT NOT NULL,
                         FOREIGN KEY (belongsToDocument) REFERENCES document (id),
