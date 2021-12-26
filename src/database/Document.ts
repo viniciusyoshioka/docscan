@@ -196,3 +196,13 @@ export function exportDocument(id: number[] = []): Promise<null> {
 export function importDocument(path: string): Promise<null> {
     return new Promise((resolve, reject) => {})
 }
+
+
+export function duplicateDocument(id: number[]): Promise<void> {
+    return new Promise((resolve, reject) => {})
+}
+
+
+export function mergeDocument(id: number[]): Promise<void> {
+    return new Promise((resolve, reject) => {})
+}
