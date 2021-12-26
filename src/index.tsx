@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useReducer, useState } from "react"
 import { useColorScheme } from "react-native"
 import { MenuProvider } from "react-native-popup-menu"
 import { ThemeProvider } from "styled-components/native"
@@ -8,9 +8,10 @@ import SQLite from "react-native-sqlite-storage"
 
 import { Router } from "./router"
 import { DarkTheme, LightTheme, ThemeContextProvider } from "./service/theme"
-import { themeType } from "./types"
+import { Document, themeType } from "./types"
 import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase, SettingsDatabase } from "./database"
 import { logCriticalError } from "./service/log"
+import { DocumentDataProvider, reducerDocumentData } from "./service/document"
 
 
 export function App() {
@@ -21,6 +22,7 @@ export function App() {
     const [appDb, setAppDb] = useState<SQLite.SQLiteDatabase | undefined>(undefined)
     const [logDb, setLogDb] = useState<SQLite.SQLiteDatabase | undefined>(undefined)
     const [theme, setTheme] = useState<themeType | undefined>(undefined)
+    const [documentDataState, dispatchDocumentData] = useReducer(reducerDocumentData, {} as Document)
 
 
     async function getTheme() {
@@ -99,7 +101,9 @@ export function App() {
             <ThemeContextProvider value={(theme === "light") ? LightTheme : DarkTheme}>
                 <ThemeProvider theme={(theme === "light") ? LightTheme : DarkTheme}>
                     <MenuProvider>
-                        <Router />
+                        <DocumentDataProvider value={[documentDataState, dispatchDocumentData]}>
+                            <Router />
+                        </DocumentDataProvider>
                     </MenuProvider>
                 </ThemeProvider>
             </ThemeContextProvider>
