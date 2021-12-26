@@ -52,10 +52,3 @@ export const appDatabaseFullPath = `${databaseFolder}/${appDatabaseFileName}`
 // Log database
 export const logDatabaseFileName = "docscan_log.sqlite"
 export const logDatabaseFullPath = `${databaseFolder}/${logDatabaseFileName}`
-
-// AsyncStorage
-export const storageTheme = "@docscan:theme"
-export const storageDocumentId = "@docscan:document-id"
-export const storageDocument = "@docscan:document"
-export const storageDebugHome = "@docscan:debug-home"
-export const storageSettings = "@docscan:settings"
