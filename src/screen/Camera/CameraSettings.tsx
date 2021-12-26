@@ -3,13 +3,13 @@ import { ScrollView } from "react-native"
 import { HardwareCamera } from "react-native-camera"
 
 import { CameraSettingsButton, ModalCameraSettings, ModalCameraSettingsProps } from "../../component"
-import { cameraReducerAction } from "../../service/reducer"
-import { cameraType, flashType, SettingsCameraProps, settingsDefaultCamera, whiteBalanceType } from "../../service/settings"
-import { readSettings, writeSettings } from "../../service/storage"
+import { SettingsDatabase } from "../../database"
+import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "../../service/settings"
+import { CameraAttributes, cameraReducerAction, cameraType, flashType, whiteBalanceType } from "../../types"
 
 
 export interface CameraSettingsProps extends ModalCameraSettingsProps {
-    cameraAttributes: SettingsCameraProps,
+    cameraAttributes: CameraAttributes,
     setCameraAttributes: Dispatch<cameraReducerAction>,
     isMultipleCameraAvailable: boolean,
     currentCameraIndex: number,
@@ -38,9 +38,7 @@ export function CameraSettings(props: CameraSettingsProps) {
         // Set camera attribute
         props.setCameraAttributes({ type: "flash", payload: newFlash })
         // Write settings
-        const currentSettings = await readSettings()
-        currentSettings.camera.flash = newFlash
-        await writeSettings(currentSettings)
+        await SettingsDatabase.updateSettings("cameraFlash", newFlash)
     }, [props.cameraAttributes.flash])
 
     const changeWhiteBalance = useCallback(async () => {
@@ -66,9 +64,7 @@ export function CameraSettings(props: CameraSettingsProps) {
         // Set camera attribute
         props.setCameraAttributes({ type: "white-balance", payload: newWhiteBalance })
         // Write settings
-        const currentSettings = await readSettings()
-        currentSettings.camera.whiteBalance = newWhiteBalance
-        await writeSettings(currentSettings)
+        await SettingsDatabase.updateSettings("cameraWhiteBalance", newWhiteBalance)
     }, [props.cameraAttributes.whiteBalance])
 
     const switchCameraType = useCallback(async () => {
@@ -85,9 +81,7 @@ export function CameraSettings(props: CameraSettingsProps) {
         // Set camera attribute
         props.setCameraAttributes({ type: "camera-type", payload: newCameraType })
         // Write settings
-        const currentSettings = await readSettings()
-        currentSettings.camera.cameraType = newCameraType
-        await writeSettings(currentSettings)
+        await SettingsDatabase.updateSettings("cameraType", newCameraType)
     }, [props.cameraAttributes.cameraType])
 
     const switchCameraId = useCallback(async () => {
@@ -100,17 +94,16 @@ export function CameraSettings(props: CameraSettingsProps) {
         props.setCameraAttributes({ type: "camera-id", payload: props.cameraList[newIndex].id })
         props.setCurrentCameraIndex(newIndex)
         // Write settings
-        const currentSettings = await readSettings()
-        currentSettings.camera.cameraId = props.cameraList[newIndex].id
-        await writeSettings(currentSettings)
+        await SettingsDatabase.updateSettings("cameraId", props.cameraList[newIndex].id)
     }, [props.cameraAttributes.cameraId])
 
     const resetCameraSettings = useCallback(async () => {
         props.setCameraAttributes({ type: "reset" })
 
-        const currentSettings = await readSettings()
-        currentSettings.camera = settingsDefaultCamera
-        await writeSettings(currentSettings)
+        await SettingsDatabase.updateSettings("cameraFlash", cameraFlashDefault)
+        await SettingsDatabase.updateSettings("cameraWhiteBalance", cameraWhiteBalanceDefault)
+        await SettingsDatabase.updateSettings("cameraType", cameraTypeDefault)
+        await SettingsDatabase.updateSettings("cameraId", cameraIdDefault)
     }, [])
 
 
