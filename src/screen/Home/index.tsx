@@ -5,13 +5,12 @@ import { useNavigation } from "@react-navigation/core"
 import { HomeHeader } from "./Header"
 import { DocumentItem, EmptyList, SafeScreen } from "../../component"
 import { appIconOutline } from "../../service/constant"
-import { deleteDocument, duplicateDocument, exportDocument, mergeDocument } from "../../service/document-handler"
 import { createAllFolder } from "../../service/folder-handler"
 import { useBackHandler } from "../../service/hook"
-import { readDocument } from "../../service/storage"
 import { getWritePermission } from "../../service/permission"
 import { log } from "../../service/log"
-import { Document } from "../../types"
+import { DocumentForList } from "../../types"
+import { DocumentDatabase } from "../../database"
 
 
 export function Home() {
@@ -19,9 +18,9 @@ export function Home() {
 
     const navigation = useNavigation()
 
-    const [document, setDocument] = useState<Array<Document>>([])
+    const [document, setDocument] = useState<DocumentForList[]>([])
     const [selectionMode, setSelectionMode] = useState(false)
-    const [selectedDocument, setSelectedDocument] = useState<Array<number>>([])
+    const [selectedDocument, setSelectedDocument] = useState<number[]>([])
 
 
     useBackHandler(() => {
@@ -35,13 +34,14 @@ export function Home() {
 
 
     async function getDocument() {
-        const documents = await readDocument()
+        const documents = await DocumentDatabase.getDocumentList()
         setDocument(documents)
     }
 
     function deleteSelectedDocument() {
         async function alertDelete() {
-            await deleteDocument(selectedDocument, true)
+            await DocumentDatabase.deleteDocument(selectedDocument)
+            await DocumentDatabase.deleteDocumentPicture(selectedDocument)
             await getDocument()
             exitSelectionMode()
         }
@@ -59,15 +59,21 @@ export function Home() {
     function exportSelectedDocument() {
         async function alertExport() {
             const hasPermission = await getWritePermission()
-            if (hasPermission) {
-                exportDocument(selectedDocument, selectionMode)
-            } else {
-                log("WARN", "Home exportSelectedDocument - Sem permissão para exportar documento")
+            if (!hasPermission) {
+                log.warn("Home exportSelectedDocument - Sem permissão para exportar documento")
                 Alert.alert(
                     "Permissão negada",
                     "Sem permissão para exportar documentos"
                 )
             }
+
+            DocumentDatabase.exportDocument(selectedDocument)
+                .then(() => {
+                    ToastAndroid.show("Documentos exportados", ToastAndroid.LONG)
+                })
+                .catch((error) => {
+                    log.error(`Erro ao exportar documentos: "${error}"`)
+                })
             exitSelectionMode()
         }
 
@@ -82,22 +88,26 @@ export function Home() {
     }
 
     function mergeSelectedDocument() {
-        mergeDocument(selectedDocument)
+        DocumentDatabase.mergeDocument(selectedDocument)
             .then(async () => {
                 await getDocument()
                 ToastAndroid.show("Documentos combinados", ToastAndroid.LONG)
             })
-            .catch(() => { })
+            .catch((error) => {
+                log.error(`Erro unindo documentos: "${error}"`)
+            })
         exitSelectionMode()
     }
 
     function duplicateSelectedDocument() {
-        duplicateDocument(selectedDocument)
+        DocumentDatabase.duplicateDocument(selectedDocument)
             .then(async () => {
                 await getDocument()
                 ToastAndroid.show("Documentos duplicados", ToastAndroid.LONG)
             })
-            .catch(() => { })
+            .catch((error) => {
+                log.error(`Erro duplicando documentos: "${error}"`)
+            })
         exitSelectionMode()
     }
 
@@ -120,14 +130,13 @@ export function Home() {
         }
     }
 
-    function renderDocumentItem({ item }: { item: Document }) {
+    function renderDocumentItem({ item }: { item: DocumentForList }) {
         return (
             <DocumentItem
-                click={() => navigation.navigate("EditDocument", { document: item })}
+                click={() => navigation.navigate("EditDocument", { id: item.id })}
                 select={() => selectDocument(item.id)}
                 deselect={() => deselectDocument(item.id)}
                 selectionMode={selectionMode}
-                document={item}
             />
         )
     }
