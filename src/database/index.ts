@@ -3,6 +3,10 @@ import SQLite from "react-native-sqlite-storage"
 import { appDatabaseFileName, logDatabaseFileName } from "../service/constant"
 
 
+import * as DocumentDatabase from "./Document"
+export { DocumentDatabase }
+
+
 import * as LogDatabase from "./Log"
 export { LogDatabase }
 
