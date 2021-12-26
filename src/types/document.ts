@@ -12,15 +12,15 @@ export type SimpleDocument = {
 
 
 export type DocumentPicture = {
-    id: number,
+    id: number | undefined,
     filepath: string,
     position: number
 }
 
 
 export type Document = {
-    id: number,
+    id: number | undefined,
     name: string,
-    pictureList: Array<string>,
+    pictureList: DocumentPicture[],
     lastModificationTimestamp: string,
 }
