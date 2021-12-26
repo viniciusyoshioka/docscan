@@ -8,10 +8,10 @@ import { getDateTime } from "./date"
 
 
 export function logCriticalError(message: string) {
-    console.log(`FALHA CRÍTICA - Erro registrando log. Mensagem: "${JSON.stringify(message)}"`)
+    console.log(`FALHA CRÍTICA - Erro registrando log. Mensagem: "${message}"`)
     Alert.alert(
         "FALHA CRÍTICA",
-        `Erro registrando log. Mensagem: "${JSON.stringify(message)}"`
+        `Erro registrando log. Mensagem: "${message}"`
     )
 }
 
