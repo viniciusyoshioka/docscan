@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { ActivityIndicator, Alert, FlatList } from "react-native"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
 import CameraRoll, { PhotoIdentifier } from "@react-native-community/cameraroll"
@@ -34,7 +34,7 @@ export function ImportImageFromGalery() {
     })
 
 
-    const getImage = useCallback(async () => {
+    async function getImage() {
         const hasWritePermission = await getWritePermission()
         if (!hasWritePermission) {
             setImageGalery([])
@@ -59,9 +59,9 @@ export function ImportImageFromGalery() {
                 "Erro desconhecido ao abrir galeria"
             )
         }
-    }, [imageGalery])
+    }
 
-    const goBack = useCallback(() => {
+    function goBack() {
         if (selectionMode) {
             exitSelectionMode()
             return
@@ -117,18 +117,18 @@ export function ImportImageFromGalery() {
                 }
             ]
         })
-    }, [params, selectionMode])
+    }
 
-    const selectImage = useCallback((imagePath: string) => {
+    function selectImage(imagePath: string) {
         if (!selectionMode) {
             setSelectionMode(true)
         }
         if (selectedImage.indexOf(imagePath) === -1) {
             selectedImage.push(imagePath)
         }
-    }, [selectionMode, selectedImage])
+    }
 
-    const deselectImage = useCallback((imagePath: string) => {
+    function deselectImage(imagePath: string) {
         const index = selectedImage.indexOf(imagePath)
         if (index !== -1) {
             selectedImage.splice(index, 1)
@@ -136,9 +136,9 @@ export function ImportImageFromGalery() {
         if (selectionMode && selectedImage.length === 0) {
             setSelectionMode(false)
         }
-    }, [selectedImage, selectionMode])
+    }
 
-    const renderImageItem = useCallback(({ item }: { item: PhotoIdentifier }) => {
+    function renderImageItem({ item }: { item: PhotoIdentifier }) {
         return (
             <ImageItem
                 click={() => importSingleImage(item.node.image.uri)}
@@ -149,9 +149,9 @@ export function ImportImageFromGalery() {
                 screenAction={params.screenAction}
             />
         )
-    }, [params, selectionMode, selectImage, deselectImage])
+    }
 
-    const getNewImagePath = useCallback(async (imagePath: string) => {
+    async function getNewImagePath(imagePath: string) {
         // Get file in path
         const splitedImagePath = imagePath.split("/")
         const fileImage = splitedImagePath[splitedImagePath.length - 1]
@@ -173,9 +173,9 @@ export function ImportImageFromGalery() {
             counter += 1
         }
         return newFileName
-    }, [])
+    }
 
-    const importSingleImage = useCallback(async (imagePath: string) => {
+    async function importSingleImage(imagePath: string) {
         const hasWritePermission = await getWritePermission()
         if (!hasWritePermission) {
             Alert.alert(
@@ -235,9 +235,9 @@ export function ImportImageFromGalery() {
                 isChanged: true,
             })
         }
-    }, [params])
+    }
 
-    const importMultipleImage = useCallback(async () => {
+    async function importMultipleImage() {
         const hasWritePermission = await getWritePermission()
         if (!hasWritePermission) {
             Alert.alert(
@@ -289,12 +289,12 @@ export function ImportImageFromGalery() {
                 }
             ]
         })
-    }, [params, selectedImage])
+    }
 
-    const exitSelectionMode = useCallback(() => {
+    function exitSelectionMode() {
         setSelectedImage([])
         setSelectionMode(false)
-    }, [])
+    }
 
 
     useEffect(() => {
