@@ -6,10 +6,10 @@ import RNFS, { ReadDirItem } from "react-native-fs"
 import { FileExplorerHeader } from "./Header"
 import { ListItem, SafeScreen, SubHeader, SubHeaderText } from "../../component"
 import { fullPathExported } from "../../service/constant"
-import { importDocument } from "../../service/document-handler"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
 import { getReadPermission, getWritePermission } from "../../service/permission"
+import { DocumentDatabase } from "../../database"
 
 
 const defaultContent: Array<ReadDirItem> = [
@@ -119,12 +119,9 @@ export function FileExplorer() {
                 return
             }
 
-            importDocument(newPath)
-                .then((isDocumentImported: boolean) => {
-                    if (isDocumentImported) {
-                        navigation.reset({ routes: [{ name: "Home" }] })
-                        return
-                    }
+            DocumentDatabase.importDocument(newPath)
+                .then(() => {
+                    navigation.reset({ routes: [{ name: "Home" }] })
                 })
 
             Alert.alert(
