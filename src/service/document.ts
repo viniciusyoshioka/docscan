@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react"
 
 import { Document, documentDataReducerAction } from "../types"
-import { getDateTime } from "./date"
+import { getDateTime, getTimestamp } from "./date"
 
 
 export function getDocumentName(): string {
@@ -9,19 +9,44 @@ export function getDocumentName(): string {
 }
 
 
-export function reducerDocumentData(state: Document, action: documentDataReducerAction): Document {
+export function reducerDocumentData(
+    state: Document | undefined,
+    action: documentDataReducerAction
+): Document | undefined {
     switch (action.type) {
         case "rename-document":
+            if (!state) {
+                return {
+                    id: undefined,
+                    name: getDocumentName(),
+                    pictureList: [],
+                    lastModificationTimestamp: getTimestamp()
+                }
+            }
+
             return {
                 ...state,
                 name: action.payload,
             }
         case "add-picture":
+            if (!state) {
+                return {
+                    id: undefined,
+                    name: getDocumentName(),
+                    pictureList: [...action.payload],
+                    lastModificationTimestamp: getTimestamp()
+                }
+            }
+
             return {
                 ...state,
                 pictureList: [...state.pictureList, ...action.payload],
             }
         case "remove-picture":
+            if (!state) {
+                return undefined
+            }
+
             return {
                 ...state,
                 pictureList: state.pictureList.filter((_, index) => {
