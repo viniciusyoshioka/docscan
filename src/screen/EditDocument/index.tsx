@@ -9,13 +9,12 @@ import { EditDocumentHeader } from "./Header"
 import { RenameDocument } from "./RenameDocument"
 import { PictureItem, SafeScreen } from "../../component"
 import { fullPathPdf, fullPathTemporaryCompressedPicture } from "../../service/constant"
-import { deleteDocument, saveEditedDocument, saveNewDocument } from "../../service/document-handler"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
-import { Document } from "../../service/object-types"
 import { ScreenParams } from "../../service/screen-params"
 import { ConvertPdfOption } from "./ConvertPdfOption"
 import { getReadPermission, getWritePermission } from "../../service/permission"
+import { DocumentDatabase } from "../../database"
 
 
 export function EditDocument() {
@@ -73,7 +72,7 @@ export function EditDocument() {
                 return
             }
 
-            const savedDocument = await saveEditedDocument(document, thisDocumentName, thisPictureList)
+            const savedDocument = await DocumentDatabase.updateDocument(0, "", [])
             navigation.setParams({
                 document: savedDocument,
                 documentName: thisDocumentName,
@@ -91,7 +90,7 @@ export function EditDocument() {
                 return
             }
 
-            const savedDocument = await saveNewDocument(thisDocumentName, thisPictureList)
+            const savedDocument = await DocumentDatabase.updateDocument(0, "", [])
             navigation.setParams({
                 document: savedDocument,
                 documentName: thisDocumentName,
@@ -254,7 +253,7 @@ export function EditDocument() {
     const deleteCurrentDocument = useCallback(() => {
         async function alertDiscard() {
             if (document) {
-                await deleteDocument([document.id], true)
+                await DocumentDatabase.deleteDocument([document.id])
                 navigation.reset({ routes: [{ name: "Home" }] })
             } else {
                 // This code may not been used

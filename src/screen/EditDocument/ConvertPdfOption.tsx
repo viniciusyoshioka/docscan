@@ -3,7 +3,8 @@ import Slider from "@react-native-community/slider"
 import styled from "styled-components/native"
 
 import { ModalButton, ModalDescription, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, MyModal, RadioButton } from "../../component"
-import { styledProps, useTheme } from "../../service/theme"
+import { useTheme } from "../../service/theme"
+import { styledProps } from "../../types"
 
 
 type compressionLevelType = "low" | "high" | "custom"
