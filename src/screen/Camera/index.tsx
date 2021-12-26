@@ -10,7 +10,6 @@ import { CameraSettings } from "./CameraSettings"
 import { SafeScreen } from "../../component"
 import { fullPathPicture } from "../../service/constant"
 import { getDateTime } from "../../service/date"
-import { getDocumentName } from "../../service/document-handler"
 import { createAllFolder } from "../../service/folder-handler"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
@@ -19,6 +18,7 @@ import { ScreenParams } from "../../service/screen-params"
 import { cameraReducerAction, cameraReducerState } from "../../types/camera-reducer"
 import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "../../service/settings"
 import { SettingsDatabase } from "../../database"
+import { getDocumentName } from "../../service/document"
 
 
 const initialCameraSettings: cameraReducerState = {
