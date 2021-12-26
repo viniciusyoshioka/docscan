@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Alert, FlatList } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import RNFS, { ReadDirItem } from "react-native-fs"
@@ -70,7 +70,7 @@ export function FileExplorer() {
     })
 
 
-    const upDirectory = useCallback(() => {
+    function upDirectory() {
         switch (path) {
             case null:
                 return
@@ -106,9 +106,9 @@ export function FileExplorer() {
             return
         }
         setPath(previewsPath)
-    }, [path, backToDefault])
+    }
 
-    const importDocumentAlert = useCallback((newPath: string) => {
+    function importDocumentAlert(newPath: string) {
         async function importDocumentFunction(newPath: string) {
             const hasWritePermission = await getWritePermission()
             if (!hasWritePermission) {
@@ -141,9 +141,9 @@ export function FileExplorer() {
                 { text: "Importar", onPress: async () => await importDocumentFunction(newPath) }
             ]
         )
-    }, [])
+    }
 
-    const changePath = useCallback(async (newPath: string, isFile: boolean) => {
+    function changePath(newPath: string, isFile: boolean) {
         if (newPath === "..") {
             upDirectory()
         } else if (isFile) {
@@ -154,9 +154,9 @@ export function FileExplorer() {
             }
             setPath(newPath)
         }
-    }, [upDirectory, path])
+    }
 
-    const goBack = useCallback(() => {
+    function goBack() {
         if (path === null) {
             navigation.navigate("Home")
             return
@@ -165,9 +165,9 @@ export function FileExplorer() {
             return
         }
         changePath("..", false)
-    }, [path, changePath])
+    }
 
-    const renderItem = useCallback(({ item }: { item: RNFS.ReadDirItem }) => {
+    function renderItem({ item }: { item: RNFS.ReadDirItem }) {
         return (
             <ListItem
                 title={item.name}
@@ -177,9 +177,9 @@ export function FileExplorer() {
                 style={{ height: 56 }}
             />
         )
-    }, [changePath])
+    }
 
-    const readPath = useCallback(async (pathToRead: string) => {
+    async function readPath(pathToRead: string) {
         const hasReadPermission = await getReadPermission()
         if (!hasReadPermission) {
             Alert.alert(
@@ -204,7 +204,7 @@ export function FileExplorer() {
                 "Não foi possível abrir pasta"
             )
         }
-    }, [])
+    }
 
 
     useEffect(() => {
