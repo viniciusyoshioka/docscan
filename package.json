@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "react-native start",
-    "android": "react-native run-android"
+    "android": "react-native run-android",
+    "lint": "eslint . --ext .js --ext .jsx --ext .ts --ext .tsx"
   },
   "dependencies": {
     "@react-native-community/cameraroll": "^4.1.2",
