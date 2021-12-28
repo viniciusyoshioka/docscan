@@ -36,6 +36,7 @@ export function Camera() {
     const [cameraList, setCameraList] = useState<Array<HardwareCamera> | null>(null)
 
     const [documentDataState, dispatchDocumentData] = useDocumentData()
+    const [hasChanges, setHasChanges] = useState(false)
 
 
     useBackHandler(() => {
@@ -222,6 +223,7 @@ export function Camera() {
                     position: documentDataState?.pictureList.length || 0,
                 }]
             })
+            setHasChanges(true)
         } catch (error) {
             log.error(`Camera takePicture - Erro ao tirar foto. Mensagem: "${error}"`)
             Alert.alert(
