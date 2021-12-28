@@ -8,7 +8,7 @@ import SQLite from "react-native-sqlite-storage"
 
 import { Router } from "./router"
 import { DarkTheme, LightTheme, ThemeContextProvider } from "./service/theme"
-import { Document, themeType } from "./types"
+import { themeType } from "./types"
 import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase, SettingsDatabase } from "./database"
 import { logCriticalError } from "./service/log"
 import { DocumentDataProvider, reducerDocumentData } from "./service/document"
@@ -22,7 +22,7 @@ export function App() {
     const [appDb, setAppDb] = useState<SQLite.SQLiteDatabase | undefined>(undefined)
     const [logDb, setLogDb] = useState<SQLite.SQLiteDatabase | undefined>(undefined)
     const [theme, setTheme] = useState<themeType | undefined>(undefined)
-    const [documentDataState, dispatchDocumentData] = useReducer(reducerDocumentData, {} as Document)
+    const [documentDataState, dispatchDocumentData] = useReducer(reducerDocumentData, undefined)
 
 
     async function getTheme() {
