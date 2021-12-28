@@ -53,6 +53,16 @@ export function reducerDocumentData(
                     return !action.payload.includes(index)
                 })
             }
+        case "replace-picture":
+            if (!state) {
+                return undefined
+            }
+
+            state.pictureList[action.payload.indexToReplace].filepath = action.payload.newPicture
+            return {
+                ...state,
+                pictureList: state?.pictureList
+            }
         default:
             throw new Error("Unknown action type")
     }

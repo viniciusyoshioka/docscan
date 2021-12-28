@@ -16,7 +16,16 @@ type documentRemovePicture = {
     payload: number[],
 }
 
+type documentReplacePicture = {
+    type: "replace-picture",
+    payload: {
+        indexToReplace: number,
+        newPicture: string,
+    },
+}
+
 
 export type documentDataReducerAction = documentRename
     | documentAddPicture
     | documentRemovePicture
+    | documentReplacePicture
