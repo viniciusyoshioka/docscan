@@ -1,4 +1,5 @@
 export * from "./camera-reducer"
+export * from "./document-reducer"
 export * from "./document"
 export * from "./log"
 export * from "./settings-camera"
