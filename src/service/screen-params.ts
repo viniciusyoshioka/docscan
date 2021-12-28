@@ -1,3 +1,6 @@
+import { RouteProp } from "@react-navigation/native"
+import { NativeStackNavigationProp } from "@react-navigation/native-stack"
+
 import { Document } from "../types"
 
 
@@ -33,3 +36,9 @@ export type ScreenParams = {
         isChanged?: boolean,
     },
 }
+
+
+export type NavigationParamProps<T extends keyof ScreenParams> = NativeStackNavigationProp<ScreenParams, T>
+
+
+export type RouteParamProps<T extends keyof ScreenParams> = RouteProp<ScreenParams, T>
