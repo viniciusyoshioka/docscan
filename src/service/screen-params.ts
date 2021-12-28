@@ -2,6 +2,7 @@ import { Document } from "../types"
 
 
 export type ScreenParams = {
+    Home: undefined,
     Camera: {
         document: Document | undefined,
         documentName: string,
@@ -15,6 +16,8 @@ export type ScreenParams = {
         pictureList?: Array<string>,
         isChanged?: boolean,
     },
+    Settings: undefined,
+    FileExplorer: undefined,
     ImportImageFromGalery: {
         document: Document | undefined,
         documentName: string | undefined,
