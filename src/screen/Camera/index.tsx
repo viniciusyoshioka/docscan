@@ -166,10 +166,7 @@ export function Camera() {
 
         const date = getDateTime("-", "-", true)
         const picturePath = `${fullPathPicture}/${date}.jpg`
-        const options = {
-            quality: 1,
-            path: picturePath
-        }
+        const options = { quality: 1, path: picturePath }
 
         const hasCameraPermission = await getCameraPermission()
         if (!hasCameraPermission) {
