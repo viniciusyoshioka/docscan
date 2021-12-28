@@ -7,11 +7,8 @@ import { Document } from "../types"
 export type ScreenParams = {
     Home: undefined,
     Camera: {
-        document: Document | undefined,
-        documentName: string,
-        pictureList: Array<string>,
-        screenAction?: "replace-picture",
-        replaceIndex?: number,
+        screenAction: "replace-picture",
+        replaceIndex: number,
     } | undefined,
     EditDocument: {
         document: Document | undefined,
