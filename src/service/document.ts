@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react"
 
-import { Document, documentDataReducerAction } from "../types"
+import { Document, documentDataContextType, documentDataReducerAction } from "../types"
 import { getDateTime, getTimestamp } from "./date"
 
 
@@ -59,7 +59,10 @@ export function reducerDocumentData(
 }
 
 
-const documentDataContext = createContext([{} as Document, (value: documentDataReducerAction) => {}])
+const documentDataContext = createContext([
+    undefined,
+    (value: documentDataReducerAction) => {}
+] as documentDataContextType)
 
 export const DocumentDataProvider = documentDataContext.Provider
 
