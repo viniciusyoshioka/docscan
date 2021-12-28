@@ -15,7 +15,7 @@ import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
 import { getCameraPermission } from "../../service/permission"
 import { SettingsDatabase } from "../../database"
-import { getDocumentName } from "../../service/document"
+import { getDocumentName, useDocumentData } from "../../service/document"
 import { NavigationParamProps, RouteParamProps } from "../../types/screen-params"
 import { initialCameraSettings, reducerCameraSettings } from "../../service/camera"
 
@@ -35,7 +35,7 @@ export function Camera() {
     const [currentCameraIndex, setCurrentCameraIndex] = useState<number | null>(null)
     const [cameraList, setCameraList] = useState<Array<HardwareCamera> | null>(null)
 
-    const [pictureList, setPictureList] = useState<Array<string>>([])
+    const [documentDataState, dispatchDocumentData] = useDocumentData()
 
 
     useBackHandler(() => {
@@ -190,11 +190,20 @@ export function Camera() {
             //     }, 100)
             // })
 
-            if (!params?.screenAction && !params?.screenAction) {
-                setPictureList(oldValue => [...oldValue, picturePath])
-            } else if (params !== undefined && params.screenAction === "replace-picture" && params.replaceIndex !== undefined) {
-                params.pictureList[params.replaceIndex] = picturePath
+            if (params?.screenAction === "replace-picture") {
+                if (!params.replaceIndex) {
+                    throw new Error("replaceIndex can't be undefined when screen action is replace-picure")
+                }
 
+                dispatchDocumentData({
+                    type: "replace-picture",
+                    payload: {
+                        indexToReplace: params.replaceIndex,
+                        newPicture: picturePath
+                    }
+                })
+
+                // TODO
                 navigation.navigate("VisualizePicture", {
                     pictureIndex: params.replaceIndex,
                     document: params.document,
@@ -202,7 +211,17 @@ export function Camera() {
                     pictureList: params.pictureList,
                     isChanged: true,
                 })
+                return
             }
+
+            dispatchDocumentData({
+                type: "add-picture",
+                payload: [{
+                    id: undefined,
+                    filepath: picturePath,
+                    position: documentDataState?.pictureList.length || 0,
+                }]
+            })
         } catch (error) {
             log.error(`Camera takePicture - Erro ao tirar foto. Mensagem: "${error}"`)
             Alert.alert(
