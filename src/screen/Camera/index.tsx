@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useRef, useState } from "react"
 import { Alert, StatusBar } from "react-native"
 import { HardwareCamera, RNCamera } from "react-native-camera"
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
+import { useNavigation, useRoute } from "@react-navigation/core"
 
 import { CameraHeader } from "./Header"
 // import { CameraControl, CameraControlHandle } from "./Control"
@@ -14,11 +14,11 @@ import { createAllFolder } from "../../service/folder-handler"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
 import { getCameraPermission } from "../../service/permission"
-import { ScreenParams } from "../../service/screen-params"
 import { cameraReducerAction, cameraReducerState } from "../../types/camera-reducer"
 import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "../../service/settings"
 import { SettingsDatabase } from "../../database"
 import { getDocumentName } from "../../service/document"
+import { NavigationParamProps, RouteParamProps } from "../../types/screen-params"
 
 
 const initialCameraSettings: cameraReducerState = {
@@ -81,8 +81,8 @@ function reducerCameraSettings(state: cameraReducerState, action: cameraReducerA
 export function Camera() {
 
 
-    const navigation = useNavigation()
-    const { params } = useRoute<RouteProp<ScreenParams, "Camera">>()
+    const navigation = useNavigation<NavigationParamProps<"Camera">>()
+    const { params } = useRoute<RouteParamProps<"Camera">>()
 
     const cameraRef = useRef<RNCamera>(null)
     // const cameraControlRef = useRef<CameraControlHandle>(null)

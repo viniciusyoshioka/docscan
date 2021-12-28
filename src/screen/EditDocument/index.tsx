@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { Alert, FlatList } from "react-native"
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
+import { useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 import Share from "react-native-share"
 import { createPdf, PdfCreatorOptions, viewPdf } from "react-native-pdf-creator"
@@ -11,17 +11,17 @@ import { PictureItem, SafeScreen } from "../../component"
 import { fullPathPdf, fullPathTemporaryCompressedPicture } from "../../service/constant"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
-import { ScreenParams } from "../../service/screen-params"
 import { ConvertPdfOption } from "./ConvertPdfOption"
 import { getReadPermission, getWritePermission } from "../../service/permission"
 import { DocumentDatabase } from "../../database"
+import { NavigationParamProps, RouteParamProps } from "../../types/screen-params"
 
 
 export function EditDocument() {
 
 
-    const navigation = useNavigation()
-    const { params } = useRoute<RouteProp<ScreenParams, "EditDocument">>()
+    const navigation = useNavigation<NavigationParamProps<"EditDocument">>()
+    const { params } = useRoute<RouteParamProps<"EditDocument">>()
 
     const [document, setDocument] = useState<Document | undefined>(params.document)
     const [documentName, setDocumentName] = useState<string>(

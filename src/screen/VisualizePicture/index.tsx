@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from "react"
 import { Alert, FlatList, useWindowDimensions } from "react-native"
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
+import { useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 import { ImageCrop, OnImageSavedResponse } from "react-native-image-crop"
 
@@ -8,16 +8,16 @@ import { VisualizePictureHeader } from "./Header"
 import { ImageVisualizationItem, SafeScreen } from "../../component"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
-import { ScreenParams } from "../../service/screen-params"
 import { fullPathPicture } from "../../service/constant"
 import { getDateTime } from "../../service/date"
+import { NavigationParamProps, RouteParamProps } from "../../types/screen-params"
 
 
 export function VisualizePicture() {
 
 
-    const navigation = useNavigation()
-    const { params } = useRoute<RouteProp<ScreenParams, "VisualizePicture">>()
+    const navigation = useNavigation<NavigationParamProps<"VisualizePicture">>()
+    const { params } = useRoute<RouteParamProps<"VisualizePicture">>()
     const { width } = useWindowDimensions()
 
     const cropViewRef = useRef<ImageCrop>(null)

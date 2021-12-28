@@ -10,12 +10,13 @@ import { ListItem, SafeScreen } from "../../component"
 import { appName, appType, appVersion, logDatabaseFullPath } from "../../service/constant"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
+import { NavigationParamProps } from "../../types/screen-params"
 
 
 export function Settings() {
 
 
-    const navigation = useNavigation()
+    const navigation = useNavigation<NavigationParamProps<"Settings">>()
 
     const [changeThemeVisible, setChangeThemeVisible] = useState(false)
 

@@ -10,6 +10,7 @@ import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
 import { getReadPermission, getWritePermission } from "../../service/permission"
 import { DocumentDatabase } from "../../database"
+import { NavigationParamProps } from "../../types/screen-params"
 
 
 const defaultContent: Array<ReadDirItem> = [
@@ -57,7 +58,7 @@ const returnDirectoryItem: ReadDirItem = {
 export function FileExplorer() {
 
 
-    const navigation = useNavigation()
+    const navigation = useNavigation<NavigationParamProps<"FileExplorer">>()
 
     const [path, setPath] = useState<string | null>(null)
     const [pathContent, setPathContent] = useState<Array<ReadDirItem>>(defaultContent)

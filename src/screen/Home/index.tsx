@@ -11,12 +11,13 @@ import { getWritePermission } from "../../service/permission"
 import { log } from "../../service/log"
 import { DocumentForList } from "../../types"
 import { DocumentDatabase } from "../../database"
+import { NavigationParamProps } from "../../types/screen-params"
 
 
 export function Home() {
 
 
-    const navigation = useNavigation()
+    const navigation = useNavigation<NavigationParamProps<"Home">>()
 
     const [document, setDocument] = useState<DocumentForList[]>([])
     const [selectionMode, setSelectionMode] = useState(false)

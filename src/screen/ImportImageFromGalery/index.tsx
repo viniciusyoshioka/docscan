@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { ActivityIndicator, Alert, FlatList } from "react-native"
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/core"
+import { useNavigation, useRoute } from "@react-navigation/core"
 import CameraRoll, { PhotoIdentifier } from "@react-native-community/cameraroll"
 import RNFS from "react-native-fs"
 
@@ -10,15 +10,15 @@ import { fullPathPicture } from "../../service/constant"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
 import { getWritePermission } from "../../service/permission"
-import { ScreenParams } from "../../service/screen-params"
 import { useTheme } from "../../service/theme"
+import { NavigationParamProps, RouteParamProps } from "../../types/screen-params"
 
 
 export function ImportImageFromGalery() {
 
 
-    const navigation = useNavigation()
-    const { params } = useRoute<RouteProp<ScreenParams, "ImportImageFromGalery">>()
+    const navigation = useNavigation<NavigationParamProps<"ImportImageFromGalery">>()
+    const { params } = useRoute<RouteParamProps<"ImportImageFromGalery">>()
 
     const { color, opacity } = useTheme()
 
