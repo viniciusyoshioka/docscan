@@ -11,16 +11,18 @@ import { VisualizePicture } from "../screen/VisualizePicture"
 import { ImportImageFromGalery } from "../screen/ImportImageFromGalery"
 import { FileExplorer } from "../screen/FileExplorer"
 
+import { ScreenParams } from "../types/screen-params"
+
 
 enableScreens()
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator<ScreenParams>()
 
 
 export function Router() {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName={"HomeScreen"}
+                initialRouteName={"Home"}
                 screenOptions={{
                     headerShown: false,
                     animationTypeForReplace: "push",
