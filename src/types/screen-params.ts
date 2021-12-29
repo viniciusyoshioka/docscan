@@ -19,12 +19,9 @@ export type ScreenParams = {
     Settings: undefined,
     FileExplorer: undefined,
     ImportImageFromGalery: {
-        document: Document | undefined,
-        documentName: string | undefined,
-        pictureList: Array<string>,
-        screenAction?: "replace-picture",
-        replaceIndex?: number,
-    },
+        screenAction: "replace-picture",
+        replaceIndex: number,
+    } | undefined,
     VisualizePicture: {
         pictureIndex: number,
         document: Document | undefined,
