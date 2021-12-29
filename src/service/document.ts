@@ -20,7 +20,7 @@ export function reducerDocumentData(
                     id: undefined,
                     name: getDocumentName(),
                     pictureList: [],
-                    lastModificationTimestamp: getTimestamp()
+                    lastModificationTimestamp: getTimestamp(),
                 }
             }
 
@@ -31,13 +31,14 @@ export function reducerDocumentData(
                     id: undefined,
                     name: getDocumentName(),
                     pictureList: [],
-                    lastModificationTimestamp: getTimestamp()
+                    lastModificationTimestamp: getTimestamp(),
                 }
             }
 
             return {
                 ...state,
                 name: action.payload,
+                lastModificationTimestamp: getTimestamp(),
             }
         case "add-picture":
             if (!state) {
@@ -45,13 +46,14 @@ export function reducerDocumentData(
                     id: undefined,
                     name: getDocumentName(),
                     pictureList: [...action.payload],
-                    lastModificationTimestamp: getTimestamp()
+                    lastModificationTimestamp: getTimestamp(),
                 }
             }
 
             return {
                 ...state,
                 pictureList: [...state.pictureList, ...action.payload],
+                lastModificationTimestamp: getTimestamp(),
             }
         case "remove-picture":
             if (!state) {
@@ -62,7 +64,8 @@ export function reducerDocumentData(
                 ...state,
                 pictureList: state.pictureList.filter((_, index) => {
                     return !action.payload.includes(index)
-                })
+                }),
+                lastModificationTimestamp: getTimestamp(),
             }
         case "replace-picture":
             if (!state) {
@@ -72,7 +75,8 @@ export function reducerDocumentData(
             state.pictureList[action.payload.indexToReplace].filepath = action.payload.newPicture
             return {
                 ...state,
-                pictureList: state?.pictureList
+                pictureList: state?.pictureList,
+                lastModificationTimestamp: getTimestamp(),
             }
         default:
             throw new Error("Unknown action type")
