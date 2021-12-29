@@ -1,6 +1,10 @@
 import { DocumentPicture } from "."
 
 
+type documentCreateNewIfEmpty = {
+    type: "create-new-if-empty",
+}
+
 type documentRename = {
     type: "rename-document",
     payload: string,
@@ -25,7 +29,8 @@ type documentReplacePicture = {
 }
 
 
-export type documentDataReducerAction = documentRename
+export type documentDataReducerAction = documentCreateNewIfEmpty
+    | documentRename
     | documentAddPicture
     | documentRemovePicture
     | documentReplacePicture

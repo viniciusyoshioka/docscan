@@ -14,6 +14,17 @@ export function reducerDocumentData(
     action: documentDataReducerAction
 ): Document | undefined {
     switch (action.type) {
+        case "create-new-if-empty":
+            if (!state) {
+                return {
+                    id: undefined,
+                    name: getDocumentName(),
+                    pictureList: [],
+                    lastModificationTimestamp: getTimestamp()
+                }
+            }
+
+            return state
         case "rename-document":
             if (!state) {
                 return {
