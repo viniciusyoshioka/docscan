@@ -337,7 +337,7 @@ export function Camera() {
 
             <CameraControl
                 // ref={cameraControlRef}
-                pictureListLength={(params ? params.pictureList.length : 0) + pictureList.length}
+                pictureListLength={documentDataState?.pictureList.length || 0}
                 screenAction={params?.screenAction}
                 addPictureFromGalery={addPictureFromGalery}
                 takePicture={takePicture}
