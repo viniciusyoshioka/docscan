@@ -29,7 +29,7 @@ export function reducerDocumentData(
             if (!state) {
                 return {
                     id: undefined,
-                    name: getDocumentName(),
+                    name: action.payload,
                     pictureList: [],
                     lastModificationTimestamp: getTimestamp(),
                 }
