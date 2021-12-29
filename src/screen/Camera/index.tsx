@@ -234,16 +234,10 @@ export function Camera() {
     }
 
     function editDocument() {
+        dispatchDocumentData({ type: "create-new-if-empty" })
+
         navigation.reset({
-            routes: [{
-                name: "EditDocument",
-                params: {
-                    document: params?.document,
-                    documentName: params?.documentName ? params?.documentName : getDocumentName(),
-                    pictureList: params ? [...params?.pictureList, ...pictureList] : pictureList,
-                    isChanged: true,
-                }
-            }]
+            routes: [{ name: "EditDocument" }]
         })
     }
 
