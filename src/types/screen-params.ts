@@ -24,10 +24,6 @@ export type ScreenParams = {
     } | undefined,
     VisualizePicture: {
         pictureIndex: number,
-        document: Document | undefined,
-        documentName: string,
-        pictureList: Array<string>,
-        isChanged?: boolean,
     },
 }
 
