@@ -1,8 +1,6 @@
 import { RouteProp } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 
-import { Document } from "../types"
-
 
 export type ScreenParams = {
     Home: undefined,
@@ -10,12 +8,7 @@ export type ScreenParams = {
         screenAction: "replace-picture",
         replaceIndex: number,
     } | undefined,
-    EditDocument: {
-        document: Document | undefined,
-        documentName?: string,
-        pictureList?: Array<string>,
-        isChanged?: boolean,
-    },
+    EditDocument: undefined,
     Settings: undefined,
     FileExplorer: undefined,
     ImportImageFromGalery: {
