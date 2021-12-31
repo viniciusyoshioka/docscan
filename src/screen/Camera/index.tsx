@@ -57,6 +57,7 @@ export function Camera() {
                 await RNFS.unlink(documentDataState.pictureList[i].filepath)
             }
         }
+        dispatchDocumentData({ type: "close-document" })
         navigation.navigate("Home")
     }
 
