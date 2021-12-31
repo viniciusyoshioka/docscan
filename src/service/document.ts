@@ -2,11 +2,11 @@ import { createContext, useContext } from "react"
 
 import { DocumentDatabase } from "../database"
 import { Document, documentDataContextType, documentDataReducerAction } from "../types"
-import { getDateTime, getTimestamp } from "./date"
+import { getTimestamp } from "./date"
 
 
 export function getDocumentName(): string {
-    return `Documento ${getDateTime("-", "-", true)}`
+    return "Novo documento"
 }
 
 
