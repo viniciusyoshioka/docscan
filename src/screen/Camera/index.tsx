@@ -2,6 +2,7 @@ import React, { useEffect, useReducer, useRef, useState } from "react"
 import { Alert, StatusBar } from "react-native"
 import { HardwareCamera, RNCamera } from "react-native-camera"
 import { useNavigation, useRoute } from "@react-navigation/core"
+import RNFS from "react-native-fs"
 
 import { CameraHeader } from "./Header"
 // import { CameraControl, CameraControlHandle } from "./Control"
@@ -45,6 +46,20 @@ export function Camera() {
     })
 
 
+    async function deleteUnsavedPictures() {
+        if (!documentDataState) {
+            navigation.navigate("Home")
+            return
+        }
+
+        for (let i = 0; i < documentDataState.pictureList.length; i++) {
+            if (!documentDataState.id || !documentDataState.pictureList[i].id) {
+                await RNFS.unlink(documentDataState.pictureList[i].filepath)
+            }
+        }
+        navigation.navigate("Home")
+    }
+
     function goBack() {
         if (!documentDataState || !hasChanges) {
             navigation.navigate("Home")
@@ -57,7 +72,7 @@ export function Camera() {
                 "Você tem fotos que não foram salvas, ao voltar elas serão perdidas",
                 [
                     { text: "Cancelar", onPress: () => { } },
-                    { text: "Voltar", onPress: () => navigation.navigate("Home") }
+                    { text: "Voltar", onPress: async () => await deleteUnsavedPictures() }
                 ]
             )
             return
