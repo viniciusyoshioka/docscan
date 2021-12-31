@@ -54,7 +54,7 @@ export function getSettings(): Promise<settingsObject> {
                     settings[item.key] = item.value
                 })
                 // console.log("getSettings settings", settings)
-                resolve(settings as settingsObject)
+                resolve(settings)
             })
             .catch((error) => {
                 reject(error)
