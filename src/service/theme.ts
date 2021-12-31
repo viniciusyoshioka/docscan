@@ -158,6 +158,5 @@ const ThemeContext = createContext(LightTheme)
 export const ThemeContextProvider = ThemeContext.Provider
 
 export function useTheme(): ColorTheme {
-    const theme = useContext(ThemeContext)
-    return theme
+    return useContext(ThemeContext)
 }
