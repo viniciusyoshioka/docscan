@@ -181,7 +181,7 @@ export function deleteDocumentPicture(id: number[]) {
         }
 
         globalAppDatabase.executeSql(`
-            DELETE FROM document_picture WHERE id in (${idToDelete});
+            DELETE FROM document_picture WHERE id IN (${idToDelete});
         `, id)
             .then(([resultSet]) => {
                 resolve(resultSet)
