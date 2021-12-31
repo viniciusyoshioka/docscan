@@ -137,7 +137,7 @@ export function EditDocument() {
         if (params?.documentId) {
             DocumentDatabase.getDocument(params.documentId)
                 .then(async (document: SimpleDocument) => {
-                    const documentPicture = await DocumentDatabase.getDocumentPictures(params.documentId)
+                    const documentPicture = await DocumentDatabase.getDocumentPicture(params.documentId)
 
                     dispatchDocumentData({
                         type: "set-document",

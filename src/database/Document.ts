@@ -63,7 +63,7 @@ export function getDocument(id: number): Promise<SimpleDocument> {
 }
 
 
-export function getDocumentPictures(id: number): Promise<DocumentPicture[]> {
+export function getDocumentPicture(id: number): Promise<DocumentPicture[]> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
             SELECT id, filepath, position FROM document_picture WHERE belongsToDocument = ? ORDER BY position ASC;
