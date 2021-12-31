@@ -39,24 +39,24 @@ export function Home() {
         setDocument(documentList)
     }
 
-    function deleteSelectedDocument() {
-        async function alertDelete() {
-            await DocumentDatabase.deleteDocument(selectedDocument)
-            await DocumentDatabase.deleteDocumentPicture(selectedDocument)
-            await getDocument()
-            exitSelectionMode()
-        }
+    async function deleteSelectedDocument() {
+        await DocumentDatabase.deleteDocument(selectedDocument)
+        await getDocument()
+        exitSelectionMode()
+    }
 
+    function alertDeleteDocument() {
         Alert.alert(
             "Apagar",
             "Estes documentos serão apagados permanentemente",
             [
                 { text: "Cancelar", onPress: () => { } },
-                { text: "Apagar", onPress: async () => await alertDelete() }
+                { text: "Apagar", onPress: async () => await deleteSelectedDocument() }
             ]
         )
     }
 
+    // TODO
     function exportSelectedDocument() {
         async function alertExport() {
             const hasPermission = await getWritePermission()
@@ -88,6 +88,7 @@ export function Home() {
         )
     }
 
+    // TODO
     function mergeSelectedDocument() {
         DocumentDatabase.mergeDocument(selectedDocument)
             .then(async () => {
@@ -100,6 +101,7 @@ export function Home() {
         exitSelectionMode()
     }
 
+    // TODO
     function duplicateSelectedDocument() {
         DocumentDatabase.duplicateDocument(selectedDocument)
             .then(async () => {
@@ -160,7 +162,7 @@ export function Home() {
             <HomeHeader
                 selectionMode={selectionMode}
                 exitSelectionMode={exitSelectionMode}
-                deleteSelectedDocument={deleteSelectedDocument}
+                deleteSelectedDocument={alertDeleteDocument}
                 scanNewDocument={() => navigation.navigate("Camera")}
                 importDocument={() => navigation.navigate("FileExplorer")}
                 exportDocument={exportSelectedDocument}
