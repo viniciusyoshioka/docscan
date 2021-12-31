@@ -2,7 +2,7 @@ import React, { Children, cloneElement, ReactNode } from "react"
 import { StyleProp, ViewProps, ViewStyle } from "react-native"
 import styled from "styled-components/native"
 
-import { styledProps } from "../../service/theme"
+import { styledProps } from "../../types"
 import { HeaderButton } from "./Button"
 import { HeaderTitle } from "./Title"
 

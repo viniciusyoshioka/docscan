@@ -1,7 +1,7 @@
 import { RectButton } from "react-native-gesture-handler"
 import styled from "styled-components/native"
 
-import { styledProps } from "../../service/theme"
+import { styledProps } from "../../types"
 
 
 export const MenuItemBase = styled(RectButton)`

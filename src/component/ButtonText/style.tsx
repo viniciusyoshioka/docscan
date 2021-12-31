@@ -1,6 +1,6 @@
 import styled from "styled-components/native"
 
-import { styledProps } from "../../service/theme"
+import { styledProps } from "../../types"
 
 
 export const ButtonBase = styled.TouchableOpacity`

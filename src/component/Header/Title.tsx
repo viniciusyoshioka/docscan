@@ -2,7 +2,7 @@ import React from "react"
 import { TextProps } from "react-native"
 import styled from "styled-components/native"
 
-import { styledProps } from "../../service/theme"
+import { styledProps } from "../../types"
 
 
 const HeaderTitleBase = styled.Text`
