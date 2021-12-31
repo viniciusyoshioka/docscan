@@ -11,7 +11,7 @@ import { VisualizePicture } from "../screen/VisualizePicture"
 import { ImportImageFromGalery } from "../screen/ImportImageFromGalery"
 import { FileExplorer } from "../screen/FileExplorer"
 
-import { ScreenParams } from "../types/screen-params"
+import { ScreenParams } from "../types"
 
 
 enableScreens()

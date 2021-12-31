@@ -2,9 +2,10 @@ import React, { useCallback, useEffect, useState } from "react"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 import CheckBox from "@react-native-community/checkbox"
 
-import { Document } from "../../service/object-types"
 import { useTheme } from "../../service/theme"
 import { Block, Button, Date, Line, Title } from "./style"
+import { DocumentForList } from "../../types"
+import { toDateTime } from "../../service/date"
 
 
 export interface DocumentItemProps {
@@ -12,7 +13,7 @@ export interface DocumentItemProps {
     select: () => void,
     deselect: () => void,
     selectionMode: boolean,
-    document: Document,
+    document: DocumentForList,
 }
 
 
@@ -69,7 +70,7 @@ export function DocumentItem(props: DocumentItemProps) {
 
                     <Line>
                         <Date numberOfLines={1}>
-                            {props.document.lastModificationDate}
+                            {toDateTime(props.document.lastModificationTimestamp)}
                         </Date>
                     </Line>
                 </Block>

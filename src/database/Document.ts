@@ -51,7 +51,7 @@ export function getDocumentList(): Promise<DocumentForList[]> {
 export function getDocument(id: number): Promise<SimpleDocument> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
-            SELECT name FROM document WHERE id = ?;
+            SELECT name, lastModificationTimestamp FROM document WHERE id = ?;
         `, [id])
             .then(([resultSet]) => {
                 resolve(resultSet.rows.raw()[0])
@@ -63,14 +63,14 @@ export function getDocument(id: number): Promise<SimpleDocument> {
 }
 
 
-export function getDocumentPictures(id: number): Promise<DocumentPicture> {
+export function getDocumentPictures(id: number): Promise<DocumentPicture[]> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
             SELECT id, filepath, position FROM document_picture WHERE belongsToDocument = ? ORDER BY position ASC;
         `, [id])
             .then(([resultSet]) => {
                 console.log("getDocumentPictures", resultSet.rows.raw())
-                resolve(resultSet.rows.raw() as unknown as DocumentPicture)
+                resolve(resultSet.rows.raw() as unknown as DocumentPicture[])
             })
             .catch((error) => {
                 reject(error)
@@ -79,7 +79,7 @@ export function getDocumentPictures(id: number): Promise<DocumentPicture> {
 }
 
 
-export function insertDocument(documentName: string, pictureList: string[]): Promise<SQLite.ResultSet[]> {
+export function insertDocument(documentName: string, pictureList: DocumentPicture[]): Promise<SQLite.ResultSet[]> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
             INSERT INTO document (name) VALUES (?);
@@ -90,15 +90,15 @@ export function insertDocument(documentName: string, pictureList: string[]): Pro
 
                 if (pictureList.length >= 1) {
                     picturesToInsert += "?, ?, ?"
-                    picturesData.push(pictureList[0])
+                    picturesData.push(pictureList[0].filepath)
                     picturesData.push(documentResultSet.insertId)
-                    picturesData.push(0)
+                    picturesData.push(pictureList[0].position)
                 }
                 for (let i = 1; i < pictureList.length; i++) {
                     picturesToInsert += "), (?, ?, ?"
-                    picturesData.push(pictureList[i])
+                    picturesData.push(pictureList[i].filepath)
                     picturesData.push(documentResultSet.insertId)
-                    picturesData.push(i)
+                    picturesData.push(pictureList[i].position)
                 }
 
                 const [documentPictureResultSet] = await globalAppDatabase.executeSql(`
@@ -120,7 +120,7 @@ export function updateDocument(
 ): Promise<SQLite.ResultSet> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
-            UPDATE document SET name = ?, timestamp = datetime(CURRENT_TIMESTAMP, 'localtime') WHERE id = ?;
+            UPDATE document SET name = ?, lastModificationTimestamp = datetime(CURRENT_TIMESTAMP, 'localtime') WHERE id = ?;
         `, [documentName, id])
             .then(async ([resultSet]) => {
                 for (let i = 0; i < pictureList.length; i++) {

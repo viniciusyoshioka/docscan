@@ -10,7 +10,7 @@ import { ListItem, SafeScreen } from "../../component"
 import { appName, appType, appVersion, logDatabaseFullPath } from "../../service/constant"
 import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
-import { NavigationParamProps } from "../../types/screen-params"
+import { NavigationParamProps } from "../../types"
 
 
 export function Settings() {

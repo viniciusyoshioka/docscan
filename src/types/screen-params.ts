@@ -8,7 +8,9 @@ export type ScreenParams = {
         screenAction: "replace-picture",
         replaceIndex: number,
     } | undefined,
-    EditDocument: undefined,
+    EditDocument: {
+        documentId: number,
+    } | undefined,
     Settings: undefined,
     FileExplorer: undefined,
     ImportImageFromGalery: {

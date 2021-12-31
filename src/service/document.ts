@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react"
 
+import { DocumentDatabase } from "../database"
 import { Document, documentDataContextType, documentDataReducerAction } from "../types"
 import { getDateTime, getTimestamp } from "./date"
 
@@ -14,6 +15,11 @@ export function reducerDocumentData(
     action: documentDataReducerAction
 ): Document | undefined {
     switch (action.type) {
+        case "set-document":
+            return {
+                ...action.payload.document,
+                pictureList: action.payload.pictureList
+            }
         case "create-new-if-empty":
             if (!state) {
                 return {
@@ -78,6 +84,29 @@ export function reducerDocumentData(
                 pictureList: state?.pictureList,
                 lastModificationTimestamp: getTimestamp(),
             }
+        case "save-document":
+            if (!state) {
+                return undefined
+            }
+
+            if (state.id) {
+                DocumentDatabase.updateDocument(
+                    state.id,
+                    state.name,
+                    state.pictureList
+                )
+                return state
+            }
+
+            if (state.pictureList.length > 0) {
+                DocumentDatabase.insertDocument(
+                    state.name,
+                    state.pictureList
+                )
+            }
+            return state
+        case "close-document":
+            return undefined
         default:
             throw new Error("Unknown action type")
     }

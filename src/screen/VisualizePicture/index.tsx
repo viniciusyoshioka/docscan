@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import { Alert, FlatList, useWindowDimensions } from "react-native"
 import { useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
@@ -10,7 +10,8 @@ import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
 import { fullPathPicture } from "../../service/constant"
 import { getDateTime } from "../../service/date"
-import { NavigationParamProps, RouteParamProps } from "../../types/screen-params"
+import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
+import { useDocumentData } from "../../service/document"
 
 
 export function VisualizePicture() {
@@ -22,6 +23,8 @@ export function VisualizePicture() {
 
     const cropViewRef = useRef<ImageCrop>(null)
     const imageFlatListRef = useRef<FlatList>(null)
+
+    const [documentDataState, dispatchDocumentData] = useDocumentData()
     const [isCropping, setIsCropping] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(params.pictureIndex)
     const [isFlatListScrollEnable, setIsFlatListScrollEnable] = useState(true)
@@ -33,34 +36,52 @@ export function VisualizePicture() {
     })
 
 
-    const goBack = useCallback(() => {
+    function goBack() {
         if (isCropping) {
             setIsCropping(false)
             return
         }
 
-        navigation.navigate("EditDocument", {
-            document: params.document,
-            documentName: params.documentName,
-            pictureList: params.pictureList,
-            isChanged: params.isChanged,
-        })
-    }, [params, isCropping])
+        navigation.navigate("EditDocument")
+    }
 
-    const onImageSaved = useCallback(async (response: OnImageSavedResponse) => {
-        const currentPicturePath = params.pictureList[currentIndex]
+    async function onImageSaved(response: OnImageSavedResponse) {
+        const currentPicturePath = documentDataState?.pictureList[currentIndex]
+        if (!currentPicturePath) {
+            Alert.alert(
+                "Erro",
+                "A imagem atual a ser substituída não existe"
+            )
+            return
+        }
+
         try {
             const newCroppedPictureUri = `${fullPathPicture}/${getDateTime("", "", true).replace(" ", "_")}.jpg`
-            params.pictureList[currentIndex] = newCroppedPictureUri
-            await RNFS.unlink(currentPicturePath)
+
+            dispatchDocumentData({
+                type: "replace-picture",
+                payload: {
+                    indexToReplace: currentIndex,
+                    newPicture: newCroppedPictureUri,
+                }
+            })
+
+            await RNFS.unlink(currentPicturePath.filepath)
             await RNFS.moveFile(response.uri, newCroppedPictureUri)
         } catch (error) {
-            params.pictureList[currentIndex] = currentPicturePath
+            dispatchDocumentData({
+                type: "replace-picture",
+                payload: {
+                    indexToReplace: currentIndex,
+                    newPicture: currentPicturePath.filepath
+                }
+            })
+
             if (await RNFS.exists(response.uri)) {
                 await RNFS.unlink(response.uri)
             }
 
-            log("ERROR", `VisualizePicture onImageSaved - Erro movendo arquivo. Mensagem: "${error}"`)
+            log.error(`VisualizePicture onImageSaved - Erro movendo arquivo. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro",
                 "Não foi possível salvar imagem cortada"
@@ -69,43 +90,35 @@ export function VisualizePicture() {
             return
         }
 
-        navigation.navigate("EditDocument", {
-            document: params.document,
-            documentName: params.documentName,
-            pictureList: params.pictureList,
-            isChanged: true,
-        })
-    }, [params, currentIndex])
+        navigation.navigate("EditDocument")
+    }
 
-    const onSaveImageError = useCallback((response: string) => {
-        log("ERROR", `VisualizePicture onSaveImageError - Erro ao cortar imagem. Mensagem: "${response}"`)
+    function onSaveImageError(response: string) {
+        log.error(`VisualizePicture onSaveImageError - Erro ao cortar imagem. Mensagem: "${response}"`)
         Alert.alert(
             "Erro",
             "Não foi possível cortar imagem"
         )
         setIsCropping(false)
-    }, [])
+    }
 
-    const openCamera = useCallback(() => {
+    function openCamera() {
         navigation.navigate("Camera", {
-            document: params.document,
-            documentName: params.documentName,
-            pictureList: params.pictureList,
             screenAction: "replace-picture",
             replaceIndex: currentIndex,
         })
-    }, [params, currentIndex])
+    }
 
-    function renderImageVisualizationItem({ item }: { item: string }) {
+    function renderImageVisualizationItem({ item }: { item: DocumentPicture }) {
         return (
             <ImageVisualizationItem
-                source={{ uri: `file://${item}` }}
-                onZoomActivated={() => {
-                    setIsFlatListScrollEnable(false)
-                }}
-                onZoomDeactivated={() => {
-                    setIsFlatListScrollEnable(true)
-                }}
+                source={{ uri: `file://${item.filepath}` }}
+            // onZoomActivated={() => {
+            //     setIsFlatListScrollEnable(false)
+            // }}
+            // onZoomDeactivated={() => {
+            //     setIsFlatListScrollEnable(true)
+            // }}
             />
         )
     }
@@ -124,9 +137,8 @@ export function VisualizePicture() {
             {!isCropping && (
                 <FlatList
                     ref={imageFlatListRef}
-                    data={params.pictureList}
+                    data={documentDataState?.pictureList}
                     renderItem={renderImageVisualizationItem}
-                    keyExtractor={(_, index) => index.toString()}
                     scrollEnabled={isFlatListScrollEnable}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
@@ -148,7 +160,7 @@ export function VisualizePicture() {
                 <ImageCrop
                     ref={cropViewRef}
                     style={{ flex: 1 }}
-                    sourceUrl={`file://${params.pictureList[currentIndex]}`}
+                    sourceUrl={`file://${documentDataState?.pictureList[currentIndex].filepath}`}
                     onSaveImage={onImageSaved}
                     onCropError={onSaveImageError}
                 />

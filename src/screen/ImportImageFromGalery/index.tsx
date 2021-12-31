@@ -11,7 +11,8 @@ import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
 import { getWritePermission } from "../../service/permission"
 import { useTheme } from "../../service/theme"
-import { NavigationParamProps, RouteParamProps } from "../../types/screen-params"
+import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
+import { useDocumentData } from "../../service/document"
 
 
 export function ImportImageFromGalery() {
@@ -22,6 +23,7 @@ export function ImportImageFromGalery() {
 
     const { color, opacity } = useTheme()
 
+    const [documentDataState, dispatchDocumentData] = useDocumentData()
     const [imageGalery, setImageGalery] = useState<Array<PhotoIdentifier> | null>(null)
     const [selectionMode, setSelectionMode] = useState(false)
     const [selectedImage, setSelectedImage] = useState<Array<string>>([])
@@ -67,36 +69,22 @@ export function ImportImageFromGalery() {
             return
         }
 
-        if (params.screenAction === "replace-picture") {
+        if (params?.screenAction === "replace-picture") {
             navigation.reset({
                 routes: [
                     { name: "Home" },
-                    {
-                        name: "EditDocument",
-                        params: {
-                            document: params.document,
-                            documentName: params.documentName,
-                            pictureList: params.pictureList,
-                        }
-                    },
+                    { name: "EditDocument" },
                     {
                         name: "VisualizePicture",
                         params: {
                             pictureIndex: params.replaceIndex,
-                            document: params.document,
-                            documentName: params.documentName,
-                            pictureList: params.pictureList,
-                            isChanged: false,
                         }
                     },
                     {
                         name: "Camera",
                         params: {
-                            document: params?.document,
-                            documentName: params?.documentName,
-                            pictureList: params.pictureList,
-                            screenAction: params?.screenAction,
-                            replaceIndex: params?.replaceIndex,
+                            screenAction: params.screenAction,
+                            replaceIndex: params.replaceIndex,
                         }
                     }
                 ]
@@ -107,14 +95,7 @@ export function ImportImageFromGalery() {
         navigation.reset({
             routes: [
                 { name: "Home" },
-                {
-                    name: "Camera",
-                    params: {
-                        document: params.document,
-                        documentName: params.documentName,
-                        pictureList: params.pictureList,
-                    }
-                }
+                { name: "Camera" }
             ]
         })
     }
@@ -146,7 +127,7 @@ export function ImportImageFromGalery() {
                 deselect={() => deselectImage(item.node.image.uri)}
                 selectionMode={selectionMode}
                 imagePath={item.node.image.uri}
-                screenAction={params.screenAction}
+                screenAction={params?.screenAction}
             />
         )
     }
@@ -194,47 +175,39 @@ export function ImportImageFromGalery() {
                 "Erro",
                 "Erro desconhecido ao importar imagem da galeria"
             )
-            navigation.reset({
-                routes: [
-                    { name: "Home" },
-                    {
-                        name: "Camera",
-                        params: {
-                            document: params.document,
-                            documentName: params.documentName,
-                            pictureList: params.pictureList,
-                        }
-                    }
-                ]
+            return
+        }
+
+        if (params?.screenAction === "replace-picture") {
+            dispatchDocumentData({
+                type: "replace-picture",
+                payload: {
+                    indexToReplace: params.replaceIndex,
+                    newPicture: newImagePath
+                }
+            })
+
+            navigation.navigate("VisualizePicture", {
+                pictureIndex: params.replaceIndex,
             })
             return
         }
 
-        if (!params?.screenAction) {
-            navigation.reset({
-                routes: [
-                    { name: "Home" },
-                    {
-                        name: "Camera",
-                        params: {
-                            document: params.document,
-                            pictureList: [...params.pictureList, newImagePath],
-                            documentName: params.documentName,
-                        }
-                    }
-                ]
-            })
-        } else if (params?.screenAction === "replace-picture" && params?.replaceIndex !== undefined) {
-            params.pictureList[params.replaceIndex] = newImagePath
+        dispatchDocumentData({
+            type: "add-picture",
+            payload: [{
+                id: undefined,
+                filepath: newImagePath,
+                position: documentDataState?.pictureList.length || 0
+            }]
+        })
 
-            navigation.navigate("VisualizePicture", {
-                pictureIndex: params.replaceIndex,
-                document: params.document,
-                documentName: params.documentName,
-                pictureList: params.pictureList,
-                isChanged: true,
-            })
-        }
+        navigation.reset({
+            routes: [
+                { name: "Home" },
+                { name: "Camera" }
+            ]
+        })
     }
 
     async function importMultipleImage() {
@@ -247,12 +220,18 @@ export function ImportImageFromGalery() {
             return
         }
 
-        const newImages = []
+        const newImages: DocumentPicture[] = []
+        let firstIndex = documentDataState?.pictureList.length || 0
         for (let x = 0; x < selectedImage.length; x++) {
             const newImagePath = await getNewImagePath(selectedImage[x])
             try {
                 await RNFS.copyFile(selectedImage[x], newImagePath)
-                newImages.push(newImagePath)
+                newImages.push({
+                    id: undefined,
+                    filepath: newImagePath,
+                    position: firstIndex
+                })
+                firstIndex += 1
             } catch (error) {
                 log.error(`ImportImageFromGalery importMultipleImage - Erro ao importar multiplas imagens da galeria. Mensagem: "${error}"`)
                 Alert.alert(
@@ -262,31 +241,22 @@ export function ImportImageFromGalery() {
                 navigation.reset({
                     routes: [
                         { name: "Home" },
-                        {
-                            name: "Camera",
-                            params: {
-                                document: params.document,
-                                documentName: params.documentName,
-                                pictureList: params.pictureList,
-                            }
-                        }
+                        { name: "Camera" }
                     ]
                 })
                 return
             }
         }
 
+        dispatchDocumentData({
+            type: "add-picture",
+            payload: newImages
+        })
+
         navigation.reset({
             routes: [
                 { name: "Home" },
-                {
-                    name: "Camera",
-                    params: {
-                        document: params.document,
-                        documentName: params.documentName,
-                        pictureList: [...params.pictureList, ...newImages],
-                    }
-                }
+                { name: "Camera" }
             ]
         })
     }

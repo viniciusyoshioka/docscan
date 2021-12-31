@@ -11,7 +11,7 @@ import { getWritePermission } from "../../service/permission"
 import { log } from "../../service/log"
 import { DocumentForList } from "../../types"
 import { DocumentDatabase } from "../../database"
-import { NavigationParamProps } from "../../types/screen-params"
+import { NavigationParamProps } from "../../types"
 
 
 export function Home() {
@@ -134,10 +134,11 @@ export function Home() {
     function renderDocumentItem({ item }: { item: DocumentForList }) {
         return (
             <DocumentItem
-                click={() => navigation.navigate("EditDocument", { id: item.id })}
+                click={() => navigation.navigate("EditDocument", { documentId: item.id })}
                 select={() => selectDocument(item.id)}
                 deselect={() => deselectDocument(item.id)}
                 selectionMode={selectionMode}
+                document={item}
             />
         )
     }

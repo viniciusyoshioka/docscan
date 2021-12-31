@@ -10,7 +10,7 @@ import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
 import { getReadPermission, getWritePermission } from "../../service/permission"
 import { DocumentDatabase } from "../../database"
-import { NavigationParamProps } from "../../types/screen-params"
+import { NavigationParamProps } from "../../types"
 
 
 const defaultContent: Array<ReadDirItem> = [

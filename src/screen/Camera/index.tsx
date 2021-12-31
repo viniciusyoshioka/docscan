@@ -15,8 +15,8 @@ import { useBackHandler } from "../../service/hook"
 import { log } from "../../service/log"
 import { getCameraPermission } from "../../service/permission"
 import { SettingsDatabase } from "../../database"
-import { getDocumentName, useDocumentData } from "../../service/document"
-import { NavigationParamProps, RouteParamProps } from "../../types/screen-params"
+import { useDocumentData } from "../../service/document"
+import { NavigationParamProps, RouteParamProps } from "../../types"
 import { initialCameraSettings, reducerCameraSettings } from "../../service/camera"
 
 
@@ -46,29 +46,12 @@ export function Camera() {
 
 
     function goBack() {
-        if (!params && pictureList.length === 0) {
+        if (!documentDataState || !hasChanges) {
             navigation.navigate("Home")
             return
         }
 
-        if (!params && pictureList.length > 0) {
-            Alert.alert(
-                "Aviso",
-                "Você tem fotos que não foram salvas, ao voltar elas serão perdidas",
-                [
-                    { text: "Cancelar", onPress: () => { } },
-                    { text: "Voltar", onPress: () => navigation.navigate("Home") }
-                ]
-            )
-            return
-        }
-
-        if (!params?.document && !params?.documentName && params?.pictureList.length === 0) {
-            navigation.navigate("Home")
-            return
-        }
-
-        if (!params?.document && !params?.documentName && params?.pictureList && params.pictureList.length > 0) {
+        if (!params && hasChanges) {
             Alert.alert(
                 "Aviso",
                 "Você tem fotos que não foram salvas, ao voltar elas serão perdidas",
@@ -83,61 +66,26 @@ export function Camera() {
         if (params?.screenAction === "replace-picture") {
             navigation.navigate("VisualizePicture", {
                 pictureIndex: params.replaceIndex,
-                document: params.document,
-                documentName: params.documentName,
-                pictureList: params.pictureList,
-                isChanged: false,
             })
-            return
-        }
-
-        if (params?.documentName) {
-            navigation.reset({
-                routes: [{
-                    name: "EditDocument",
-                    params: {
-                        document: params.document,
-                        documentName: params.documentName,
-                        pictureList: params.pictureList,
-                        isChanged: false,
-                    }
-                }]
-            })
-            return
         }
     }
 
     function addPictureFromGalery() {
         if (params?.screenAction === "replace-picture") {
+            // TODO
             navigation.reset({
                 routes: [
                     { name: "Home" },
-                    {
-                        name: "EditDocument",
-                        params: {
-                            document: params.document,
-                            documentName: params.documentName,
-                            pictureList: params.pictureList,
-                        }
-                    },
+                    { name: "EditDocument" },
                     {
                         name: "VisualizePicture",
-                        params: {
-                            pictureIndex: params.replaceIndex,
-                            document: params.document,
-                            documentName: params.documentName,
-                            pictureList: [...params.pictureList, ...pictureList],
-                            isChanged: false,
-                        }
+                        params: { pictureIndex: params.replaceIndex }
                     },
                     {
                         name: "ImportImageFromGalery",
                         params: {
-                            document: params?.document,
-                            documentName: params?.documentName,
-                            pictureList: [...params.pictureList, ...pictureList],
-                            screenAction: params?.screenAction,
-                            replaceIndex: params?.replaceIndex,
+                            screenAction: params.screenAction,
+                            replaceIndex: params.replaceIndex
                         }
                     }
                 ]
@@ -145,19 +93,11 @@ export function Camera() {
             return
         }
 
+        // TODO
         navigation.reset({
             routes: [
                 { name: "Home" },
-                {
-                    name: "ImportImageFromGalery",
-                    params: {
-                        document: params?.document,
-                        documentName: params?.documentName,
-                        pictureList: params ? [...params?.pictureList, ...pictureList] : pictureList,
-                        screenAction: params?.screenAction,
-                        replaceIndex: params?.replaceIndex,
-                    }
-                }
+                { name: "ImportImageFromGalery" }
             ]
         })
     }
@@ -192,10 +132,6 @@ export function Camera() {
             // })
 
             if (params?.screenAction === "replace-picture") {
-                if (!params.replaceIndex) {
-                    throw new Error("replaceIndex can't be undefined when screen action is replace-picure")
-                }
-
                 dispatchDocumentData({
                     type: "replace-picture",
                     payload: {
@@ -207,10 +143,6 @@ export function Camera() {
                 // TODO
                 navigation.navigate("VisualizePicture", {
                     pictureIndex: params.replaceIndex,
-                    document: params.document,
-                    documentName: params.documentName,
-                    pictureList: params.pictureList,
-                    isChanged: true,
                 })
                 return
             }

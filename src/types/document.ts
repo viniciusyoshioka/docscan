@@ -12,6 +12,7 @@ export type DocumentForList = {
 
 export type SimpleDocument = {
     name: string,
+    lastModificationTimestamp: string,
 }
 
 

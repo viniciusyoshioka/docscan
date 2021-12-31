@@ -1,5 +1,13 @@
-import { DocumentPicture } from "."
+import { DocumentForList, DocumentPicture } from "."
 
+
+type documentSetDocument = {
+    type: "set-document",
+    payload: {
+        document: DocumentForList,
+        pictureList: DocumentPicture[],
+    },
+}
 
 type documentCreateNewIfEmpty = {
     type: "create-new-if-empty",
@@ -28,9 +36,20 @@ type documentReplacePicture = {
     },
 }
 
+type documentSave = {
+    type: "save-document",
+}
 
-export type documentDataReducerAction = documentCreateNewIfEmpty
+type documentClose = {
+    type: "close-document",
+}
+
+
+export type documentDataReducerAction = documentSetDocument
+    | documentCreateNewIfEmpty
     | documentRename
     | documentAddPicture
     | documentRemovePicture
     | documentReplacePicture
+    | documentSave
+    | documentClose
