@@ -69,8 +69,7 @@ export function getDocumentPicture(id: number): Promise<DocumentPicture[]> {
             SELECT id, filepath, position FROM document_picture WHERE belongsToDocument = ? ORDER BY position ASC;
         `, [id])
             .then(([resultSet]) => {
-                console.log("getDocumentPictures", resultSet.rows.raw())
-                resolve(resultSet.rows.raw() as unknown as DocumentPicture[])
+                resolve(resultSet.rows.raw())
             })
             .catch((error) => {
                 reject(error)
