@@ -35,8 +35,8 @@ export function Home() {
 
 
     async function getDocument() {
-        const documents = await DocumentDatabase.getDocumentList()
-        setDocument(documents)
+        const documentList = await DocumentDatabase.getDocumentList()
+        setDocument(documentList)
     }
 
     function deleteSelectedDocument() {
