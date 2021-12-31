@@ -60,6 +60,12 @@ export function Camera() {
         navigation.navigate("Home")
     }
 
+    function saveChangesAndGoBack() {
+        dispatchDocumentData({ type: "save-document" })
+        dispatchDocumentData({ type: "close-document" })
+        navigation.reset({ routes: [{ name: "Home" }] })
+    }
+
     function goBack() {
         if (!documentDataState || !hasChanges) {
             navigation.navigate("Home")
@@ -72,7 +78,8 @@ export function Camera() {
                 "Você tem fotos que não foram salvas, ao voltar elas serão perdidas",
                 [
                     { text: "Cancelar", onPress: () => { } },
-                    { text: "Voltar", onPress: async () => await deleteUnsavedPictures() }
+                    { text: "Não salvar", onPress: async () => await deleteUnsavedPictures() },
+                    { text: "Salvar", onPress: () => saveChangesAndGoBack() }
                 ]
             )
             return
