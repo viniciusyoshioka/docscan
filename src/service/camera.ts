@@ -17,30 +17,22 @@ export function reducerCameraSettings(
     switch (action.type) {
         case "flash":
             return {
+                ...state,
                 flash: action.payload,
-                whiteBalance: state.whiteBalance,
-                cameraType: state.cameraType,
-                cameraId: state.cameraId,
             }
         case "white-balance":
             return {
-                flash: state.flash,
+                ...state,
                 whiteBalance: action.payload,
-                cameraType: state.cameraType,
-                cameraId: state.cameraId,
             }
         case "camera-type":
             return {
-                flash: state.flash,
-                whiteBalance: state.whiteBalance,
+                ...state,
                 cameraType: action.payload,
-                cameraId: state.cameraId,
             }
         case "camera-id":
             return {
-                flash: state.flash,
-                whiteBalance: state.whiteBalance,
-                cameraType: state.cameraType,
+                ...state,
                 cameraId: action.payload,
             }
         case "set":
