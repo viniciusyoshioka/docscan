@@ -121,13 +121,19 @@ export function updateDocument(
         globalAppDatabase.executeSql(`
             UPDATE document SET name = ?, lastModificationTimestamp = datetime(CURRENT_TIMESTAMP, 'localtime') WHERE id = ?;
         `, [documentName, id])
-            .then(async ([resultSet]) => {
+            .then(async ([documentResultSet]) => {
                 for (let i = 0; i < pictureList.length; i++) {
-                    await globalAppDatabase.executeSql(`
-                        UPDATE document_picture SET filepath = ?, position = ? WHERE id = ?;
-                    `, [pictureList[i].filepath, i, pictureList[i].id])
+                    if (pictureList[i].id) {
+                        await globalAppDatabase.executeSql(`
+                            UPDATE document_picture SET filepath = ?, position = ? WHERE id = ?;
+                        `, [pictureList[i].filepath, pictureList[i].position, pictureList[i].id])
+                    } else {
+                        await globalAppDatabase.executeSql(`
+                            INSERT INTO document_picture (filepath, belongsToDocument, position) VALUES (?, ?, ?);
+                        `, [pictureList[i].filepath, id, pictureList[i].position])
+                    }
                 }
-                resolve(resultSet)
+                resolve(documentResultSet)
             })
             .catch((error) => {
                 reject(error)
