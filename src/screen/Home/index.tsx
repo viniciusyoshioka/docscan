@@ -116,7 +116,7 @@ export function Home() {
         if (!selectionMode) {
             setSelectionMode(true)
         }
-        if (selectedDocument.indexOf(documentId) === -1) {
+        if (!selectedDocument.includes(documentId)) {
             selectedDocument.push(documentId)
         }
     }
