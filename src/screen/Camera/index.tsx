@@ -67,6 +67,7 @@ export function Camera() {
         navigation.reset({ routes: [{ name: "Home" }] })
     }
 
+    // TODO
     function goBack() {
         if (!documentDataState || !hasChanges) {
             navigation.navigate("Home")
@@ -93,9 +94,9 @@ export function Camera() {
         }
     }
 
+    // TODO
     function addPictureFromGalery() {
         if (params?.screenAction === "replace-picture") {
-            // TODO
             navigation.reset({
                 routes: [
                     { name: "Home" },
@@ -116,7 +117,6 @@ export function Camera() {
             return
         }
 
-        // TODO
         navigation.reset({
             routes: [
                 { name: "Home" },
@@ -125,6 +125,7 @@ export function Camera() {
         })
     }
 
+    // TODO
     async function takePicture() {
         createAllFolder()
 
@@ -163,7 +164,6 @@ export function Camera() {
                     }
                 })
 
-                // TODO
                 navigation.navigate("VisualizePicture", {
                     pictureIndex: params.replaceIndex,
                 })
@@ -199,14 +199,14 @@ export function Camera() {
 
     useEffect(() => {
         SettingsDatabase.getSettings()
-            .then((cameraSettings) => {
+            .then((settings) => {
                 dispatchCameraSettings({
                     type: "set",
                     payload: {
-                        flash: cameraSettings.cameraFlash,
-                        whiteBalance: cameraSettings.cameraWhiteBalance,
-                        cameraType: cameraSettings.cameraType,
-                        cameraId: cameraSettings.cameraId,
+                        flash: settings.cameraFlash,
+                        whiteBalance: settings.cameraWhiteBalance,
+                        cameraType: settings.cameraType,
+                        cameraId: settings.cameraId,
                     }
                 })
             })
