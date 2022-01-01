@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Alert, BackHandler, FlatList, ToastAndroid } from "react-native"
+import { Alert, BackHandler, FlatList } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 
 import { HomeHeader } from "./Header"
@@ -7,8 +7,6 @@ import { DocumentItem, EmptyList, SafeScreen } from "../../component"
 import { appIconOutline } from "../../service/constant"
 import { createAllFolder } from "../../service/folder-handler"
 import { useBackHandler } from "../../service/hook"
-import { getWritePermission } from "../../service/permission"
-import { log } from "../../service/log"
 import { DocumentForList } from "../../types"
 import { DocumentDatabase } from "../../database"
 import { NavigationParamProps } from "../../types"
@@ -39,6 +37,7 @@ export function Home() {
         setDocument(documentList)
     }
 
+    // TODO
     async function deleteSelectedDocument() {
         await DocumentDatabase.deleteDocument(selectedDocument)
         await getDocumentList()
@@ -57,61 +56,51 @@ export function Home() {
     }
 
     // TODO
-    function exportSelectedDocument() {
-        async function alertExport() {
-            const hasPermission = await getWritePermission()
-            if (!hasPermission) {
-                log.warn("Home exportSelectedDocument - Sem permissão para exportar documento")
-                Alert.alert(
-                    "Permissão negada",
-                    "Sem permissão para exportar documentos"
-                )
-            }
+    async function exportSelectedDocument() {
+        exitSelectionMode()
+    }
 
-            DocumentDatabase.exportDocument(selectedDocument)
-                .then(() => {
-                    ToastAndroid.show("Documentos exportados", ToastAndroid.LONG)
-                })
-                .catch((error) => {
-                    log.error(`Erro ao exportar documentos: "${error}"`)
-                })
-            exitSelectionMode()
-        }
-
+    function alertExportDocument() {
         Alert.alert(
             "Exportar",
             `Os documentos ${selectionMode ? "selecionados " : ""}serão exportados`,
             [
                 { text: "Cancelar", onPress: () => { } },
-                { text: "Exportar", onPress: async () => await alertExport() }
+                { text: "Exportar", onPress: async () => await exportSelectedDocument() }
             ]
         )
     }
 
     // TODO
-    function mergeSelectedDocument() {
-        DocumentDatabase.mergeDocument(selectedDocument)
-            .then(async () => {
-                await getDocumentList()
-                ToastAndroid.show("Documentos combinados", ToastAndroid.LONG)
-            })
-            .catch((error) => {
-                log.error(`Erro unindo documentos: "${error}"`)
-            })
+    async function mergeSelectedDocument() {
         exitSelectionMode()
     }
 
+    function alertMergeDocument() {
+        Alert.alert(
+            "Unir",
+            "Os documento selecionados serão unidos",
+            [
+                { text: "Cancelar", onPress: () => { } },
+                { text: "Unir", onPress: async () => await mergeSelectedDocument() }
+            ]
+        )
+    }
+
     // TODO
-    function duplicateSelectedDocument() {
-        DocumentDatabase.duplicateDocument(selectedDocument)
-            .then(async () => {
-                await getDocumentList()
-                ToastAndroid.show("Documentos duplicados", ToastAndroid.LONG)
-            })
-            .catch((error) => {
-                log.error(`Erro duplicando documentos: "${error}"`)
-            })
+    async function duplicateSelectedDocument() {
         exitSelectionMode()
+    }
+
+    function alertDuplicateDocument() {
+        Alert.alert(
+            "Duplicar",
+            "Os documento selecionados serão duplicados",
+            [
+                { text: "Cancelar", onPress: () => { } },
+                { text: "Duplicar", onPress: async () => await duplicateSelectedDocument() }
+            ]
+        )
     }
 
     function selectDocument(documentId: number) {
@@ -165,10 +154,10 @@ export function Home() {
                 deleteSelectedDocument={alertDeleteDocument}
                 scanNewDocument={() => navigation.navigate("Camera")}
                 importDocument={() => navigation.navigate("FileExplorer")}
-                exportDocument={exportSelectedDocument}
+                exportDocument={alertExportDocument}
                 openSettings={() => navigation.navigate("Settings")}
-                mergeDocument={mergeSelectedDocument}
-                duplicateDocument={duplicateSelectedDocument}
+                mergeDocument={alertMergeDocument}
+                duplicateDocument={alertDuplicateDocument}
             />
 
             <FlatList
