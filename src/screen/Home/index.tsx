@@ -34,14 +34,14 @@ export function Home() {
     })
 
 
-    async function getDocument() {
+    async function getDocumentList() {
         const documentList = await DocumentDatabase.getDocumentList()
         setDocument(documentList)
     }
 
     async function deleteSelectedDocument() {
         await DocumentDatabase.deleteDocument(selectedDocument)
-        await getDocument()
+        await getDocumentList()
         exitSelectionMode()
     }
 
@@ -92,7 +92,7 @@ export function Home() {
     function mergeSelectedDocument() {
         DocumentDatabase.mergeDocument(selectedDocument)
             .then(async () => {
-                await getDocument()
+                await getDocumentList()
                 ToastAndroid.show("Documentos combinados", ToastAndroid.LONG)
             })
             .catch((error) => {
@@ -105,7 +105,7 @@ export function Home() {
     function duplicateSelectedDocument() {
         DocumentDatabase.duplicateDocument(selectedDocument)
             .then(async () => {
-                await getDocument()
+                await getDocumentList()
                 ToastAndroid.show("Documentos duplicados", ToastAndroid.LONG)
             })
             .catch((error) => {
@@ -153,7 +153,7 @@ export function Home() {
 
     useEffect(() => {
         createAllFolder()
-        getDocument()
+        getDocumentList()
     }, [])
 
 
