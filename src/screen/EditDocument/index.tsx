@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Alert, FlatList } from "react-native"
 import { useNavigation, useRoute } from "@react-navigation/core"
+import RNFS from "react-native-fs"
 
 import { EditDocumentHeader } from "./Header"
 import { RenameDocument } from "./RenameDocument"
@@ -21,7 +22,7 @@ export function EditDocument() {
 
     const [documentDataState, dispatchDocumentData] = useDocumentData()
     const [selectionMode, setSelectionMode] = useState(false)
-    const [selectedPicturesIndex, setSelectedPicturesIndex] = useState<Array<number>>([])
+    const [selectedPictureIndex, setSelectedPictureIndex] = useState<Array<number>>([])
     const [renameDocumentVisible, setRenameDocumentVisible] = useState(false)
     const [convertPdfOptionVisible, setConvertPdfOptionVisible] = useState(false)
 
@@ -71,21 +72,28 @@ export function EditDocument() {
         navigation.navigate("Camera")
     }
 
-    function deletePicture() {
-        function alertDelete() {
-            selectedPicturesIndex.sort((a, b) => b - a)
-            selectedPicturesIndex.forEach((item: number) => {
-                documentDataState?.pictureList.splice(item, 1)
-            })
-            exitSelectionMode()
+    async function deleteSelectedPicture() {
+        // TODO reorder position property of pictureList
+        // TODO set new picture list in document data
+        if (!documentDataState) {
+            return
         }
 
+        for (let i = 0; i < selectedPictureIndex.length; i++) {
+            await RNFS.unlink(documentDataState.pictureList[i].filepath)
+        }
+        await DocumentDatabase.deleteDocumentPicture(selectedPictureIndex)
+        dispatchDocumentData({ type: "save-document" })
+        exitSelectionMode()
+    }
+
+    function alertDeletePicture() {
         Alert.alert(
             "Apagar foto",
             "Esta foto será apagada permanentemente",
             [
                 { text: "Cancelar", onPress: () => { } },
-                { text: "Apagar", onPress: () => alertDelete() }
+                { text: "Apagar", onPress: async () => await deleteSelectedPicture() }
             ]
         )
     }
@@ -94,17 +102,17 @@ export function EditDocument() {
         if (!selectionMode) {
             setSelectionMode(true)
         }
-        if (!selectedPicturesIndex.includes(pictureIndex)) {
-            selectedPicturesIndex.push(pictureIndex)
+        if (!selectedPictureIndex.includes(pictureIndex)) {
+            selectedPictureIndex.push(pictureIndex)
         }
     }
 
     function deselectPicture(pictureIndex: number) {
-        const index = selectedPicturesIndex.indexOf(pictureIndex)
+        const index = selectedPictureIndex.indexOf(pictureIndex)
         if (index !== -1) {
-            selectedPicturesIndex.splice(index, 1)
+            selectedPictureIndex.splice(index, 1)
         }
-        if (selectionMode && selectedPicturesIndex.length === 0) {
+        if (selectionMode && selectedPictureIndex.length === 0) {
             setSelectionMode(false)
         }
     }
@@ -128,7 +136,7 @@ export function EditDocument() {
     }
 
     function exitSelectionMode() {
-        setSelectedPicturesIndex([])
+        setSelectedPictureIndex([])
         setSelectionMode(false)
     }
 
@@ -162,7 +170,7 @@ export function EditDocument() {
                 exitSelectionMode={exitSelectionMode}
                 documentName={documentDataState?.name || ""}
                 selectionMode={selectionMode}
-                deletePicture={deletePicture}
+                deletePicture={alertDeletePicture}
                 openCamera={openCamera}
                 convertToPdf={() => setConvertPdfOptionVisible(true)}
                 shareDocument={shareDocument}
