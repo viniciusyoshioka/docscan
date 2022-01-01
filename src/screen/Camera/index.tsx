@@ -227,12 +227,7 @@ export function Camera() {
                 return
             }
 
-            const cameraIdList = readCameraList.filter((item) => {
-                if (item.type === 0) {
-                    return item
-                }
-            })
-
+            const cameraIdList = readCameraList.filter(item => item.type === 0)
             if (cameraIdList.length > 1) {
                 setIsMultipleCameraAvailable(true)
             }
