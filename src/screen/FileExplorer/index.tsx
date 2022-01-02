@@ -109,34 +109,37 @@ export function FileExplorer() {
         setPath(previewsPath)
     }
 
-    function importDocumentAlert(newPath: string) {
-        async function importDocumentFunction(newPath: string) {
-            const hasWritePermission = await getWritePermission()
-            if (!hasWritePermission) {
-                Alert.alert(
-                    "Erro",
-                    "Sem permissão para importar documento"
-                )
-                return
-            }
-
-            DocumentDatabase.importDocument(newPath)
-                .then(() => {
-                    navigation.reset({ routes: [{ name: "Home" }] })
-                })
-
+    async function importDocument(documentPathToImport: string) {
+        const hasWritePermission = await getWritePermission()
+        if (!hasWritePermission) {
             Alert.alert(
-                "Aguarde",
-                "Importar documentos pode demorar alguns instantes"
+                "Erro",
+                "Sem permissão para importar documento"
             )
+            return
         }
 
+        DocumentDatabase.importDocument(documentPathToImport)
+            .then(() => {
+                navigation.reset({ routes: [{ name: "Home" }] })
+            })
+            .catch((error) => {
+                log.error(`Erro importando documento "${error}"`)
+            })
+
+        Alert.alert(
+            "Aguarde",
+            "Importar documentos pode demorar alguns instantes"
+        )
+    }
+
+    function alertImportDocument(newPath: string) {
         Alert.alert(
             "Importar",
             "Deseja importar este documento?",
             [
                 { text: "Cancelar", onPress: () => { } },
-                { text: "Importar", onPress: async () => await importDocumentFunction(newPath) }
+                { text: "Importar", onPress: async () => await importDocument(newPath) }
             ]
         )
     }
@@ -145,7 +148,7 @@ export function FileExplorer() {
         if (newPath === "..") {
             upDirectory()
         } else if (isFile) {
-            importDocumentAlert(newPath)
+            alertImportDocument(newPath)
         } else {
             if (path === null && newPath === fullPathExported) {
                 setBackToDefault(true)
@@ -171,7 +174,7 @@ export function FileExplorer() {
                 title={item.name}
                 description={item.path}
                 icon={item.isFile() ? "description" : "folder"}
-                onPress={async () => await changePath(item.path, item.isFile())}
+                onPress={() => changePath(item.path, item.isFile())}
                 style={{ height: 56 }}
             />
         )
@@ -196,7 +199,7 @@ export function FileExplorer() {
             }
         } catch (error) {
             setPathContent([returnDirectoryItem])
-            log("ERROR", `Erro lendo pasta ao mudar de diretório. Mensagem: "${error}"`)
+            log.error(`Erro lendo pasta ao mudar de diretório. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro",
                 "Não foi possível abrir pasta"
@@ -231,8 +234,6 @@ export function FileExplorer() {
             <FlatList
                 data={pathContent}
                 renderItem={renderItem}
-                keyExtractor={(_item, index) => index.toString()}
-                extraData={[changePath]}
                 initialNumToRender={10}
             />
         </SafeScreen>
