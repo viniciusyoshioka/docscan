@@ -67,7 +67,6 @@ export function Camera() {
         navigation.reset({ routes: [{ name: "Home" }] })
     }
 
-    // TODO
     function goBack() {
         if (!documentDataState || !hasChanges) {
             navigation.navigate("Home")
@@ -94,7 +93,6 @@ export function Camera() {
         }
     }
 
-    // TODO
     function addPictureFromGalery() {
         if (params?.screenAction === "replace-picture") {
             navigation.reset({
@@ -125,7 +123,6 @@ export function Camera() {
         })
     }
 
-    // TODO
     async function takePicture() {
         createAllFolder()
 
