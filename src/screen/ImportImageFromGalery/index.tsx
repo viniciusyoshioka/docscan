@@ -100,38 +100,6 @@ export function ImportImageFromGalery() {
         })
     }
 
-    function selectImage(imagePath: string) {
-        if (!selectionMode) {
-            setSelectionMode(true)
-        }
-        if (selectedImage.indexOf(imagePath) === -1) {
-            selectedImage.push(imagePath)
-        }
-    }
-
-    function deselectImage(imagePath: string) {
-        const index = selectedImage.indexOf(imagePath)
-        if (index !== -1) {
-            selectedImage.splice(index, 1)
-        }
-        if (selectionMode && selectedImage.length === 0) {
-            setSelectionMode(false)
-        }
-    }
-
-    function renderImageItem({ item }: { item: PhotoIdentifier }) {
-        return (
-            <ImageItem
-                click={() => importSingleImage(item.node.image.uri)}
-                select={() => selectImage(item.node.image.uri)}
-                deselect={() => deselectImage(item.node.image.uri)}
-                selectionMode={selectionMode}
-                imagePath={item.node.image.uri}
-                screenAction={params?.screenAction}
-            />
-        )
-    }
-
     async function getNewImagePath(imagePath: string) {
         // Get file in path
         const splitedImagePath = imagePath.split("/")
@@ -268,6 +236,38 @@ export function ImportImageFromGalery() {
                 { name: "Camera" }
             ]
         })
+    }
+
+    function selectImage(imagePath: string) {
+        if (!selectionMode) {
+            setSelectionMode(true)
+        }
+        if (!selectedImage.includes(imagePath)) {
+            selectedImage.push(imagePath)
+        }
+    }
+
+    function deselectImage(imagePath: string) {
+        const index = selectedImage.indexOf(imagePath)
+        if (index !== -1) {
+            selectedImage.splice(index, 1)
+        }
+        if (selectionMode && selectedImage.length === 0) {
+            setSelectionMode(false)
+        }
+    }
+
+    function renderImageItem({ item }: { item: PhotoIdentifier }) {
+        return (
+            <ImageItem
+                click={() => importSingleImage(item.node.image.uri)}
+                select={() => selectImage(item.node.image.uri)}
+                deselect={() => deselectImage(item.node.image.uri)}
+                selectionMode={selectionMode}
+                imagePath={item.node.image.uri}
+                screenAction={params?.screenAction}
+            />
+        )
     }
 
     function exitSelectionMode() {
