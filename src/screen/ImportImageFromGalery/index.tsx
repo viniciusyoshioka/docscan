@@ -234,6 +234,15 @@ export function ImportImageFromGalery() {
                 firstIndex += 1
             } catch (error) {
                 log.error(`ImportImageFromGalery importMultipleImage - Erro ao importar multiplas imagens da galeria. Mensagem: "${error}"`)
+
+                for (let i = 0; i < newImages.length; i++) {
+                    try {
+                        await RNFS.unlink(newImages[i].filepath)
+                    } catch (error) {
+                        log.warn("ImportImageFromGalery importMultipleImage - Erro ao apagar imagens copiadas da galeria para o app após erro ao importar múltiplas imagens")
+                    }
+                }
+
                 Alert.alert(
                     "Erro",
                     "Erro deconhecido ao importar múltiplas imagens da galeria"
