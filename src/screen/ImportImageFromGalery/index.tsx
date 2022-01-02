@@ -13,6 +13,7 @@ import { getWritePermission } from "../../service/permission"
 import { useTheme } from "../../service/theme"
 import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { useDocumentData } from "../../service/document"
+import { LoadingIndicator } from "./LoadingIndicator"
 
 
 export function ImportImageFromGalery() {
@@ -27,7 +28,8 @@ export function ImportImageFromGalery() {
     const [imageGalery, setImageGalery] = useState<Array<PhotoIdentifier> | null>(null)
     const [selectionMode, setSelectionMode] = useState(false)
     const [selectedImage, setSelectedImage] = useState<Array<string>>([])
-    const [isRefreshingList, setIsRefreshingList] = useState(false)
+    const [isRefreshing, setIsRefreshing] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
 
     useBackHandler(() => {
@@ -37,9 +39,16 @@ export function ImportImageFromGalery() {
 
 
     async function getImage() {
+        if (isLoading) {
+            return
+        }
+
+        setIsLoading(true)
+
         const hasWritePermission = await getWritePermission()
         if (!hasWritePermission) {
             setImageGalery([])
+            setIsLoading(false)
             log.warn("ImportImageFromGalery getImage - Não tem permissão pra usar a CameraRoll")
             Alert.alert(
                 "Erro",
@@ -54,7 +63,9 @@ export function ImportImageFromGalery() {
                 assetType: "Photos",
             })
             setImageGalery(cameraRollPhotos.edges)
+            setIsLoading(false)
         } catch (error) {
+            setIsLoading(false)
             log.error(`ImportImageFromGalery getImage - Erro ao pegar imagens da CameraRoll. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro",
@@ -293,27 +304,25 @@ export function ImportImageFromGalery() {
             <FlatList
                 data={imageGalery}
                 renderItem={renderImageItem}
-                keyExtractor={(_item, index) => index.toString()}
-                extraData={[selectImage, deselectImage]}
                 numColumns={3}
-                onEndReachedThreshold={0.5}
+                onEndReachedThreshold={0.2}
                 onEndReached={getImage}
+                ListFooterComponent={() => (isLoading && imageGalery) ? <LoadingIndicator /> : null}
                 onRefresh={async () => {
+                    setIsRefreshing(true)
                     setImageGalery(null)
                     await getImage()
-                    setIsRefreshingList(false)
+                    setIsRefreshing(false)
                 }}
-                refreshing={isRefreshingList}
+                refreshing={isRefreshing}
             />
 
-            {imageGalery === null && (
+            {!imageGalery && (
                 <EmptyList>
                     <ActivityIndicator
                         color={color.screen_color}
                         size={"large"}
-                        style={{
-                            opacity: opacity.mediumEmphasis
-                        }}
+                        style={{ opacity: opacity.mediumEmphasis }}
                     />
                 </EmptyList>
             )}
