@@ -46,7 +46,7 @@ export function VisualizePicture() {
     }
 
     async function onImageSaved(response: OnImageSavedResponse) {
-        const currentPicturePath = documentDataState?.pictureList[currentIndex]
+        const currentPicturePath = documentDataState?.pictureList[currentIndex].filepath
         if (!currentPicturePath) {
             Alert.alert(
                 "Erro",
@@ -66,14 +66,14 @@ export function VisualizePicture() {
                 }
             })
 
-            await RNFS.unlink(currentPicturePath.filepath)
+            await RNFS.unlink(currentPicturePath)
             await RNFS.moveFile(response.uri, newCroppedPictureUri)
         } catch (error) {
             dispatchDocumentData({
                 type: "replace-picture",
                 payload: {
                     indexToReplace: currentIndex,
-                    newPicture: currentPicturePath.filepath
+                    newPicture: currentPicturePath
                 }
             })
 
