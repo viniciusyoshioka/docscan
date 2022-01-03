@@ -27,6 +27,7 @@ export function reducerDocumentData(
                     name: getDocumentName(),
                     pictureList: [],
                     lastModificationTimestamp: getTimestamp(),
+                    hasChanges: true,
                 }
             }
 
@@ -38,6 +39,7 @@ export function reducerDocumentData(
                     name: action.payload,
                     pictureList: [],
                     lastModificationTimestamp: getTimestamp(),
+                    hasChanges: true,
                 }
             }
 
@@ -45,6 +47,7 @@ export function reducerDocumentData(
                 ...state,
                 name: action.payload,
                 lastModificationTimestamp: getTimestamp(),
+                hasChanges: true,
             }
         case "add-picture":
             if (!state) {
@@ -53,6 +56,7 @@ export function reducerDocumentData(
                     name: getDocumentName(),
                     pictureList: [...action.payload],
                     lastModificationTimestamp: getTimestamp(),
+                    hasChanges: true,
                 }
             }
 
@@ -60,6 +64,7 @@ export function reducerDocumentData(
                 ...state,
                 pictureList: [...state.pictureList, ...action.payload],
                 lastModificationTimestamp: getTimestamp(),
+                hasChanges: true,
             }
         case "remove-picture":
             if (!state) {
@@ -68,10 +73,18 @@ export function reducerDocumentData(
 
             return {
                 ...state,
-                pictureList: state.pictureList.filter((_, index) => {
-                    return !action.payload.includes(index)
-                }),
+                pictureList: state.pictureList
+                    .filter((_, index) => {
+                        return !action.payload.includes(index)
+                    })
+                    .map((item, index) => {
+                        return {
+                            ...item,
+                            position: index,
+                        }
+                    }),
                 lastModificationTimestamp: getTimestamp(),
+                hasChanges: true,
             }
         case "replace-picture":
             if (!state) {
@@ -81,30 +94,32 @@ export function reducerDocumentData(
             state.pictureList[action.payload.indexToReplace].filepath = action.payload.newPicture
             return {
                 ...state,
-                pictureList: state?.pictureList,
+                pictureList: state.pictureList,
                 lastModificationTimestamp: getTimestamp(),
+                hasChanges: true,
             }
         case "save-document":
             if (!state) {
                 return undefined
             }
 
-            if (state.id) {
+            if (state.id && state.hasChanges) {
                 DocumentDatabase.updateDocument(
                     state.id,
                     state.name,
                     state.pictureList
                 )
-                return state
-            }
-
-            if (state.pictureList.length > 0) {
+            } else if (state.pictureList.length > 0 && state.hasChanges) {
                 DocumentDatabase.insertDocument(
                     state.name,
                     state.pictureList
                 )
             }
-            return state
+
+            return {
+                ...state,
+                hasChanges: false,
+            }
         case "close-document":
             return undefined
         default:

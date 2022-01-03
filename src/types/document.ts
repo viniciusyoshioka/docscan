@@ -28,6 +28,7 @@ export type Document = {
     name: string,
     pictureList: DocumentPicture[],
     lastModificationTimestamp: string,
+    hasChanges?: boolean,
 }
 
 

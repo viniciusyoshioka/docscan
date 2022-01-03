@@ -42,7 +42,6 @@ export function EditDocument() {
     })
 
 
-    // TODO
     function goBack() {
         if (selectionMode) {
             exitSelectionMode()
@@ -274,20 +273,29 @@ export function EditDocument() {
         )
     }
 
-    // TODO
     async function deleteSelectedPicture() {
         if (!documentDataState) {
             return
         }
 
+        const pictureIdToDelete: number[] = []
         for (let i = 0; i < selectedPictureIndex.length; i++) {
             try {
+                const pictureId = documentDataState.pictureList[i].id
+                if (pictureId) {
+                    pictureIdToDelete.push(pictureId)
+                }
                 await RNFS.unlink(documentDataState.pictureList[i].filepath)
             } catch (error) {
                 log.warn(`Erro apagando arquivo das imagens selecionadas do documento. "${error}"`)
             }
         }
-        await DocumentDatabase.deleteDocumentPicture(selectedPictureIndex)
+
+        await DocumentDatabase.deleteDocumentPicture(pictureIdToDelete)
+        dispatchDocumentData({
+            type: "remove-picture",
+            payload: selectedPictureIndex,
+        })
         dispatchDocumentData({ type: "save-document" })
         exitSelectionMode()
     }
