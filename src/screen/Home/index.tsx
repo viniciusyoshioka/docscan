@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Alert, BackHandler, FlatList } from "react-native"
 import { useNavigation } from "@react-navigation/core"
+import RNFS from "react-native-fs"
 
 import { HomeHeader } from "./Header"
 import { DocumentItem, EmptyList, SafeScreen } from "../../component"
@@ -10,6 +11,7 @@ import { useBackHandler } from "../../service/hook"
 import { DocumentForList } from "../../types"
 import { DocumentDatabase } from "../../database"
 import { NavigationParamProps } from "../../types"
+import { log } from "../../service/log"
 
 
 export function Home() {
@@ -37,8 +39,17 @@ export function Home() {
         setDocument(documentList)
     }
 
-    // TODO
     async function deleteSelectedDocument() {
+        for (let i = 0; i < selectedDocument.length; i++) {
+            const picturesToDelete = await DocumentDatabase.getDocumentPicture(selectedDocument[i])
+            for (let j = 0; j < picturesToDelete.length; j++) {
+                try {
+                    await RNFS.unlink(picturesToDelete[j].filepath)
+                } catch (error) {
+                    log.warn(`Erro apagando imagens do documento ao apagar documento selecionados na tela Home "${error}"`)
+                }
+            }
+        }
         await DocumentDatabase.deleteDocument(selectedDocument)
         await getDocumentList()
         exitSelectionMode()
