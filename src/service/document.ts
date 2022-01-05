@@ -31,7 +31,9 @@ export function reducerDocumentData(
                 }
             }
 
-            return state
+            return {
+                ...state
+            }
         case "rename-document":
             if (!state) {
                 return {
