@@ -106,22 +106,12 @@ export function reducerDocumentData(
             }
 
             if (state.id && state.hasChanges) {
-                DocumentDatabase.updateDocument(
-                    state.id,
-                    state.name,
-                    state.pictureList
-                )
+                DocumentDatabase.updateDocument(state.id, state.name, state.pictureList)
             } else if (state.pictureList.length > 0 && state.hasChanges) {
-                DocumentDatabase.insertDocument(
-                    state.name,
-                    state.pictureList
-                )
+                DocumentDatabase.insertDocument(state.name, state.pictureList)
             }
 
-            return {
-                ...state,
-                hasChanges: false,
-            }
+            return undefined
         case "close-document":
             return undefined
         default:

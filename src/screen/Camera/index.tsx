@@ -63,7 +63,6 @@ export function Camera() {
 
     function saveChangesAndGoBack() {
         dispatchDocumentData({ type: "save-document" })
-        dispatchDocumentData({ type: "close-document" })
         navigation.reset({ routes: [{ name: "Home" }] })
     }
 

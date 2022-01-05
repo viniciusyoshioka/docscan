@@ -49,7 +49,6 @@ export function EditDocument() {
         }
 
         dispatchDocumentData({ type: "save-document" })
-        dispatchDocumentData({ type: "close-document" })
         navigation.reset({ routes: [{ name: "Home" }] })
     }
 
@@ -186,8 +185,6 @@ export function EditDocument() {
             type: "rename-document",
             payload: newDocumentName
         })
-
-        dispatchDocumentData({ type: "save-document" })
     }
 
     async function deletePdf() {
@@ -296,7 +293,6 @@ export function EditDocument() {
             type: "remove-picture",
             payload: selectedPictureIndex,
         })
-        dispatchDocumentData({ type: "save-document" })
         exitSelectionMode()
     }
 
