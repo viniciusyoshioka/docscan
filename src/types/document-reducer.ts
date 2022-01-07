@@ -38,6 +38,11 @@ type documentReplacePicture = {
 
 type documentSave = {
     type: "save-document",
+    payload: (documentId: number) => void,
+}
+
+type documentSaveAndClose = {
+    type: "save-and-close-document",
 }
 
 type documentClose = {
@@ -52,4 +57,5 @@ export type documentDataReducerAction = documentSetDocument
     | documentRemovePicture
     | documentReplacePicture
     | documentSave
+    | documentSaveAndClose
     | documentClose

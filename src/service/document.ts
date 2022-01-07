@@ -107,6 +107,37 @@ export function reducerDocumentData(
 
             if (state.id && state.hasChanges) {
                 DocumentDatabase.updateDocument(state.id, state.name, state.pictureList)
+                    .then(() => {
+                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                        action.payload(state.id!)
+                    })
+
+                return {
+                    ...state,
+                    hasChanges: false,
+                }
+            } else if (state.pictureList.length > 0 && state.hasChanges) {
+                DocumentDatabase.insertDocument(state.name, state.pictureList)
+                    .then(([documentResultSet, _]) => {
+                        action.payload(documentResultSet.insertId)
+                    })
+
+                return {
+                    ...state,
+                    hasChanges: false,
+                }
+            }
+
+            return {
+                ...state,
+            }
+        case "save-and-close-document":
+            if (!state) {
+                return undefined
+            }
+
+            if (state.id && state.hasChanges) {
+                DocumentDatabase.updateDocument(state.id, state.name, state.pictureList)
             } else if (state.pictureList.length > 0 && state.hasChanges) {
                 DocumentDatabase.insertDocument(state.name, state.pictureList)
             }

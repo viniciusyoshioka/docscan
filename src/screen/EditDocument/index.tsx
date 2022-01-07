@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { Alert, FlatList } from "react-native"
-import { useNavigation, useRoute } from "@react-navigation/core"
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 import { createPdf, PdfCreatorOptions, viewPdf } from "react-native-pdf-creator"
 import Share from "react-native-share"
@@ -48,7 +48,7 @@ export function EditDocument() {
             return
         }
 
-        dispatchDocumentData({ type: "save-document" })
+        dispatchDocumentData({ type: "save-and-close-document" })
         navigation.reset({ routes: [{ name: "Home" }] })
     }
 
@@ -370,6 +370,29 @@ export function EditDocument() {
                 })
         }
     }, [])
+
+    useFocusEffect(useCallback(() => {
+        if (documentDataState?.hasChanges) {
+            dispatchDocumentData({
+                type: "save-document",
+                payload: async (documentId: number) => {
+                    const document = await DocumentDatabase.getDocument(documentId)
+                    const documentPicture = await DocumentDatabase.getDocumentPicture(documentId)
+
+                    dispatchDocumentData({
+                        type: "set-document",
+                        payload: {
+                            document: {
+                                id: documentId,
+                                ...document,
+                            },
+                            pictureList: documentPicture
+                        }
+                    })
+                }
+            })
+        }
+    }, []))
 
 
     return (
