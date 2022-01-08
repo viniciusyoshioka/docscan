@@ -1,7 +1,13 @@
 
+/**
+ * Themes available in the app
+ */
 export type themeType = "auto" | "light" | "dark"
 
 
+/**
+ * Type defining theme color object attributes
+ */
 export interface ColorTheme {
     name: themeType;
     appTheme: themeType;
@@ -76,6 +82,9 @@ export interface ColorTheme {
 }
 
 
+/**
+ * Type to add ColorTheme in styled-components props
+ */
 export interface styledProps {
     theme: ColorTheme;
 }

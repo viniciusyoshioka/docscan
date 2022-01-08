@@ -1,6 +1,9 @@
 import { cameraType, flashType, themeType, whiteBalanceType } from "."
 
 
+/**
+ * Type of app settings object
+ */
 export type settingsObject = {
     theme: themeType;
     cameraFlash: flashType;
@@ -10,6 +13,9 @@ export type settingsObject = {
 }
 
 
+/**
+ * Contains all keys of app settings object
+ */
 export type settingsKey = "theme"
     | "cameraFlash" 
     | "cameraWhiteBalance" 

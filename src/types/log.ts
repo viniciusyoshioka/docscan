@@ -1,5 +1,8 @@
 
 
+/**
+ * Defines the type for transport function's props
+ */
 export type transportFunctionProps = {
     msg: string;
     rawMsg: Array<string>;
@@ -11,19 +14,28 @@ export type transportFunctionProps = {
 }
 
 
+/**
+ * Type for the logger object
+ */
 export type Logger = {
     /**
      * Disable an extension
+     * 
+     * @param extension name of an extension to be disabled
      */
     disable: (extension: string) => boolean;
 
     /**
      * Enable an extension
+     * 
+     * @param extension name of an extension to be enabled
      */
     enable: (extension: string) => boolean;
 
     /**
      * Extend logger with a new extension
+     * 
+     * @param extension name of an extension to be added to logger
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     extend: (extension: string) => (...msgs: any[]) => boolean | any;

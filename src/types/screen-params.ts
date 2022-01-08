@@ -2,6 +2,9 @@ import { RouteProp } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 
 
+/**
+ * Contains all screens and screen's params
+ */
 export type ScreenParams = {
     Home: undefined;
     Camera: {
@@ -23,7 +26,13 @@ export type ScreenParams = {
 }
 
 
+/**
+ * Props to add type for navigation props
+ */
 export type NavigationParamProps<T extends keyof ScreenParams> = NativeStackNavigationProp<ScreenParams, T>
 
 
+/**
+ * Props to add type for route props
+ */
 export type RouteParamProps<T extends keyof ScreenParams> = RouteProp<ScreenParams, T>
