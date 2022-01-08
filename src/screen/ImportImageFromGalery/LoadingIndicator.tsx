@@ -2,7 +2,7 @@ import React from "react"
 import { ActivityIndicator } from "react-native"
 import styled from "styled-components/native"
 
-import { useTheme } from "../../services/theme"
+import { useColorTheme } from "../../services/theme"
 
 
 const LoadingIndicatorView = styled.View`
@@ -15,7 +15,7 @@ const LoadingIndicatorView = styled.View`
 export function LoadingIndicator() {
 
 
-    const { color, opacity } = useTheme()
+    const { color, opacity } = useColorTheme()
 
 
     return (

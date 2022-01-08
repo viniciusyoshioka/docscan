@@ -1,7 +1,7 @@
 import React, { forwardRef, Ref, useState } from "react"
 import { TextInput, TextInputProps } from "react-native"
 
-import { useTheme } from "../../services/theme"
+import { useColorTheme } from "../../services/theme"
 import { InputBase } from "./style"
 
 
@@ -13,7 +13,7 @@ export interface InputProps extends TextInputProps {
 export const Input = forwardRef((props: InputProps, ref?: Ref<TextInput>) => {
 
 
-    const { color } = useTheme()
+    const { color } = useColorTheme()
 
     const [isFocused, setIsFocused] = useState(false)
 

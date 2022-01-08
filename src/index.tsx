@@ -9,7 +9,7 @@ import { ThemeProvider } from "styled-components/native"
 import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase, SettingsDatabase } from "@database/"
 import { DocumentDataProvider, reducerDocumentData } from "@services/document"
 import { logCriticalError } from "@services/log"
-import { DarkTheme, LightTheme, ThemeContextProvider } from "@services/theme"
+import { ColorThemeDark, ColorThemeLight, ColorThemeProvider } from "@services/theme"
 import { ThemeType } from "@type/"
 import { Router } from "./router"
 
@@ -28,11 +28,11 @@ export function App() {
     async function getTheme() {
         const appTheme = await SettingsDatabase.getSettingKey("theme")
 
-        LightTheme.appTheme = appTheme
-        LightTheme.switchTheme = switchTheme
+        ColorThemeLight.appTheme = appTheme
+        ColorThemeLight.switchTheme = switchTheme
 
-        DarkTheme.appTheme = appTheme
-        DarkTheme.switchTheme = switchTheme
+        ColorThemeDark.appTheme = appTheme
+        ColorThemeDark.switchTheme = switchTheme
 
         if (appTheme === "auto") {
             if (deviceTheme) {
@@ -98,15 +98,15 @@ export function App() {
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <ThemeContextProvider value={(theme === "light") ? LightTheme : DarkTheme}>
-                <ThemeProvider theme={(theme === "light") ? LightTheme : DarkTheme}>
+            <ColorThemeProvider value={(theme === "light") ? ColorThemeLight : ColorThemeDark}>
+                <ThemeProvider theme={(theme === "light") ? ColorThemeLight : ColorThemeDark}>
                     <MenuProvider>
                         <DocumentDataProvider value={[documentDataState, dispatchDocumentData]}>
                             <Router />
                         </DocumentDataProvider>
                     </MenuProvider>
                 </ThemeProvider>
-            </ThemeContextProvider>
+            </ColorThemeProvider>
         </GestureHandlerRootView>
     )
 }

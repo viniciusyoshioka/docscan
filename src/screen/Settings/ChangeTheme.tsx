@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 
 import { Modal, ModalButton, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, RadioButton } from "../../components"
-import { useTheme } from "../../services/theme"
+import { useColorTheme } from "../../services/theme"
 
 
 export interface ChangeThemeProps extends ModalProps { }
@@ -10,7 +10,7 @@ export interface ChangeThemeProps extends ModalProps { }
 export function ChangeTheme(props: ChangeThemeProps) {
 
 
-    const { appTheme, switchTheme } = useTheme()
+    const { appTheme, switchTheme } = useColorTheme()
 
     const [selectedTheme, setSelectedTheme] = useState(appTheme)
 

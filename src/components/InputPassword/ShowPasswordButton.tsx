@@ -3,7 +3,7 @@ import { TouchableOpacityProps } from "react-native"
 import Icon from "react-native-vector-icons/MaterialIcons"
 import styled from "styled-components/native"
 
-import { styledProps, useTheme } from "../../services/theme"
+import { styledProps, useColorTheme } from "../../services/theme"
 
 
 const ShowPasswordButtonBase = styled.TouchableOpacity`
@@ -32,7 +32,7 @@ export interface ShowPasswordButtonProps extends TouchableOpacityProps {
 export function ShowPasswordButton(props: ShowPasswordButtonProps) {
 
 
-    const { color, opacity } = useTheme()
+    const { color, opacity } = useColorTheme()
 
 
     return (

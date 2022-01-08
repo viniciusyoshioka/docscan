@@ -6,7 +6,7 @@ import { ColorTheme, ThemeType } from "@type/"
 export const themeDefault: ThemeType = "auto"
 
 
-export const LightTheme: ColorTheme = {
+export const ColorThemeLight: ColorTheme = {
     name: "light",
     appTheme: "auto",
     switchTheme: () => { },
@@ -79,7 +79,7 @@ export const LightTheme: ColorTheme = {
     },
 }
 
-export const DarkTheme: ColorTheme = {
+export const ColorThemeDark: ColorTheme = {
     name: "dark",
     appTheme: "auto",
     switchTheme: () => { },
@@ -153,10 +153,10 @@ export const DarkTheme: ColorTheme = {
 }
 
 
-const ThemeContext = createContext(LightTheme)
+const ColorThemeContext = createContext(ColorThemeLight)
 
-export const ThemeContextProvider = ThemeContext.Provider
+export const ColorThemeProvider = ColorThemeContext.Provider
 
-export function useTheme(): ColorTheme {
-    return useContext(ThemeContext)
+export function useColorTheme(): ColorTheme {
+    return useContext(ColorThemeContext)
 }

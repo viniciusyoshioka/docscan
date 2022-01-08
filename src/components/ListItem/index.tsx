@@ -2,7 +2,7 @@ import React from "react"
 import { RectButtonProps } from "react-native-gesture-handler"
 import Icon from "react-native-vector-icons/MaterialIcons"
 
-import { useTheme } from "../../services/theme"
+import { useColorTheme } from "../../services/theme"
 import { ListItemBase, TextDescription, TextTitle, ViewIcon, ViewText } from "./style"
 
 
@@ -16,7 +16,7 @@ export interface ListItemProps extends RectButtonProps {
 export function ListItem(props: ListItemProps) {
 
 
-    const { color, opacity } = useTheme()
+    const { color, opacity } = useColorTheme()
 
 
     return (

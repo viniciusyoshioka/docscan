@@ -3,7 +3,7 @@ import styled from "styled-components/native"
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { RectButton } from "react-native-gesture-handler"
 
-import { styledProps, useTheme } from "../../services/theme"
+import { styledProps, useColorTheme } from "../../services/theme"
 
 
 export const ButtonBase = styled(RectButton)`
@@ -25,7 +25,7 @@ export interface ButtonIconProps {
 export function ButtonIcon(props: ButtonIconProps) {
 
 
-    const { color, opacity } = useTheme()
+    const { color, opacity } = useColorTheme()
 
 
     return (

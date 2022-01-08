@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/MaterialIcons"
 // import * as ExpoAuth from "expo-local-authentication"
 
 import { Button, Text } from "./style"
-import { useTheme } from "../../services/theme"
+import { useColorTheme } from "../../services/theme"
 import { CenterScreen, SpaceScreen } from "../Screen"
 
 
@@ -17,7 +17,7 @@ export interface AddBioProps extends ViewProps {
 export function AddBio(props: AddBioProps) {
 
 
-    const { color, opacity } = useTheme()
+    const { color, opacity } = useColorTheme()
 
 
     function authBiometry() {

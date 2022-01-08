@@ -10,7 +10,7 @@ import { fullPathPicture } from "../../services/constant"
 import { useBackHandler } from "../../services/hook"
 import { log } from "../../services/log"
 import { getWritePermission } from "../../services/permission"
-import { useTheme } from "../../services/theme"
+import { useColorTheme } from "../../services/theme"
 import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { useDocumentData } from "../../services/document"
 import { LoadingIndicator } from "./LoadingIndicator"
@@ -22,7 +22,7 @@ export function ImportImageFromGalery() {
     const navigation = useNavigation<NavigationParamProps<"ImportImageFromGalery">>()
     const { params } = useRoute<RouteParamProps<"ImportImageFromGalery">>()
 
-    const { color, opacity } = useTheme()
+    const { color, opacity } = useColorTheme()
 
     const [documentDataState, dispatchDocumentData] = useDocumentData()
     const [imageGalery, setImageGalery] = useState<Array<PhotoIdentifier> | null>(null)

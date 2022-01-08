@@ -2,7 +2,7 @@ import React from "react"
 import { TouchableOpacityProps } from "react-native"
 import Icon from "react-native-vector-icons/MaterialIcons"
 
-import { useTheme } from "../../services/theme"
+import { useColorTheme } from "../../services/theme"
 import { Button, Text } from "./style"
 
 
@@ -15,7 +15,7 @@ export interface RadioButtonProps extends TouchableOpacityProps {
 export function RadioButton(props: RadioButtonProps) {
 
 
-    const { color, opacity } = useTheme()
+    const { color, opacity } = useColorTheme()
 
 
     return (

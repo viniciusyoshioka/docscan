@@ -3,7 +3,7 @@ import { HandlerStateChangeEventPayload, LongPressGestureHandler, LongPressGestu
 import CheckBox from "@react-native-community/checkbox"
 
 import { Note } from "../../services/object-type"
-import { useTheme } from "../../services/theme"
+import { useColorTheme } from "../../services/theme"
 import { Block, Button, Date, Line, Title } from "./style"
 
 
@@ -24,7 +24,7 @@ export interface NoteItemProps {
 export function NoteItem(props: NoteItemProps) {
 
 
-    const { color, opacity } = useTheme()
+    const { color, opacity } = useColorTheme()
 
     const [selected, setSelected] = useState(false)
 

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 import CheckBox from "@react-native-community/checkbox"
 
-import { useTheme } from "../../services/theme"
+import { useColorTheme } from "../../services/theme"
 import { Block, Button, Date, Line, Title } from "./style"
 import { DocumentForList } from "../../types"
 import { toDateTime } from "../../services/date"
@@ -20,7 +20,7 @@ export interface DocumentItemProps {
 export function DocumentItem(props: DocumentItemProps) {
 
 
-    const { color, opacity } = useTheme()
+    const { color, opacity } = useColorTheme()
 
     const [selected, setSelected] = useState(false)
 

@@ -3,7 +3,7 @@ import { BorderlessButton, BorderlessButtonProps } from "react-native-gesture-ha
 import styled from "styled-components/native"
 import Icon from "react-native-vector-icons/MaterialIcons"
 
-import { useTheme } from "../../services/theme"
+import { useColorTheme } from "../../services/theme"
 
 
 export const HeaderButtonBase = styled(BorderlessButton)`
@@ -24,7 +24,7 @@ export interface HeaderButtonProps extends BorderlessButtonProps {
 export function HeaderButton(props: HeaderButtonProps) {
 
 
-    const { color, opacity } = useTheme()
+    const { color, opacity } = useColorTheme()
 
 
     return (
