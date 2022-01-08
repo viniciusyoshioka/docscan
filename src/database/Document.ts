@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import SQLite from "react-native-sqlite-storage"
 
+import { DocumentForList, DocumentPicture, SimpleDocument } from "@type/"
 import { globalAppDatabase } from "."
-import { DocumentForList, DocumentPicture, SimpleDocument } from "../types"
 
 
 export function createDocumentTable(): Promise<SQLite.ResultSet[]> {
@@ -85,6 +84,7 @@ export function insertDocument(documentName: string, pictureList: DocumentPictur
         `, [documentName])
             .then(async ([documentResultSet]) => {
                 let picturesToInsert = ""
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const picturesData: any[] = []
 
                 if (pictureList.length >= 1) {
