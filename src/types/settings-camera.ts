@@ -7,8 +7,8 @@ export type cameraType = "front" | "back"
 
 
 export type CameraAttributes = {
-    flash: flashType,
-    whiteBalance: whiteBalanceType,
-    cameraType: cameraType,
-    cameraId: string,
+    flash: flashType;
+    whiteBalance: whiteBalanceType;
+    cameraType: cameraType;
+    cameraId: string;
 }

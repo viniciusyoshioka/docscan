@@ -2,51 +2,51 @@ import { DocumentForList, DocumentPicture } from "."
 
 
 type documentSetDocument = {
-    type: "set-document",
+    type: "set-document";
     payload: {
-        document: DocumentForList,
-        pictureList: DocumentPicture[],
-    },
+        document: DocumentForList;
+        pictureList: DocumentPicture[];
+    };
 }
 
 type documentCreateNewIfEmpty = {
-    type: "create-new-if-empty",
+    type: "create-new-if-empty";
 }
 
 type documentRename = {
-    type: "rename-document",
-    payload: string,
+    type: "rename-document";
+    payload: string;
 }
 
 type documentAddPicture = {
-    type: "add-picture",
-    payload: DocumentPicture[],
+    type: "add-picture";
+    payload: DocumentPicture[];
 }
 
 type documentRemovePicture = {
-    type: "remove-picture",
-    payload: number[],
+    type: "remove-picture";
+    payload: number[];
 }
 
 type documentReplacePicture = {
-    type: "replace-picture",
+    type: "replace-picture";
     payload: {
-        indexToReplace: number,
-        newPicture: string,
-    },
+        indexToReplace: number;
+        newPicture: string;
+    };
 }
 
 type documentSave = {
-    type: "save-document",
-    payload: (documentId: number) => void,
+    type: "save-document";
+    payload: (documentId: number) => void;
 }
 
 type documentSaveAndClose = {
-    type: "save-and-close-document",
+    type: "save-and-close-document";
 }
 
 type documentClose = {
-    type: "close-document",
+    type: "close-document";
 }
 
 

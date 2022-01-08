@@ -3,23 +3,23 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 
 
 export type ScreenParams = {
-    Home: undefined,
+    Home: undefined;
     Camera: {
-        screenAction: "replace-picture",
-        replaceIndex: number,
-    } | undefined,
+        screenAction: "replace-picture";
+        replaceIndex: number;
+    } | undefined;
     EditDocument: {
-        documentId: number,
-    } | undefined,
-    Settings: undefined,
-    FileExplorer: undefined,
+        documentId: number;
+    } | undefined;
+    Settings: undefined;
+    FileExplorer: undefined;
     ImportImageFromGalery: {
-        screenAction: "replace-picture",
-        replaceIndex: number,
-    } | undefined,
+        screenAction: "replace-picture";
+        replaceIndex: number;
+    } | undefined;
     VisualizePicture: {
-        pictureIndex: number,
-    },
+        pictureIndex: number;
+    };
 }
 
 
