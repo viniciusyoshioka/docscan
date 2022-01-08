@@ -31,7 +31,17 @@ export function getDateTime(dateSeparator = "/", timeSeparator = ":", hasSecond 
 
 
 export function getTimestamp(): string {
-    return getDateTime("-", ":", true)
+    const currentDate = new Date()
+
+    const day = currentDate.getDate().toString().padStart(2).replace(" ", "0")
+    const month = (currentDate.getMonth() + 1).toString().padStart(2).replace(" ", "0")
+    const year = currentDate.getFullYear().toString().padStart(2).replace(" ", "0")
+
+    const hour = currentDate.getHours().toString().padStart(2).replace(" ", "0")
+    const minute = currentDate.getMinutes().toString().padStart(2).replace(" ", "0")
+    const second = currentDate.getSeconds().toString().padStart(2).replace(" ", "0")
+
+    return `${year}/${month}/${day} ${hour}:${minute}:${second}`
 }
 
 
