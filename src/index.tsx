@@ -80,7 +80,7 @@ export function App() {
                 setAppDb(database)
             })
             .catch((error) => {
-                logCriticalError(`Error opening app database: "${JSON.stringify(error)}"`)
+                logCriticalError(`Error opening app database: "${error}"`)
             })
 
         openLogDatabase()
@@ -90,7 +90,7 @@ export function App() {
                 setLogDb(database)
             })
             .catch((error) => {
-                logCriticalError(`Error opening log database: "${JSON.stringify(error)}"`)
+                logCriticalError(`Error opening log database: "${error}"`)
             })
     }, [])
 
