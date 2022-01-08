@@ -11,7 +11,28 @@
         "moduleResolution": "node",
         "noEmit": true,
         "strict": true,
-        "target": "esnext"
+        "target": "esnext",
+        "baseUrl": ".",
+        "paths": {
+            "@components/": [
+                "src/components/index"
+            ],
+            "@database/": [
+                "src/database/index"
+            ],
+            "@image/*": [
+                "src/image/*"
+            ],
+            "@screen/*": [
+                "src/screen/*"
+            ],
+            "@services/*": [
+                "src/services/*"
+            ],
+            "@type/": [
+                "src/types/index"
+            ],
+        },
     },
     "exclude": [
         "node_modules",
