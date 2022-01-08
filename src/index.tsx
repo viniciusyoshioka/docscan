@@ -26,15 +26,15 @@ export function App() {
 
 
     async function getTheme() {
-        const readAppTheme = await SettingsDatabase.getSettingKey("theme")
+        const appTheme = await SettingsDatabase.getSettingKey("theme")
 
-        LightTheme.appTheme = readAppTheme
+        LightTheme.appTheme = appTheme
         LightTheme.switchTheme = switchTheme
 
-        DarkTheme.appTheme = readAppTheme
+        DarkTheme.appTheme = appTheme
         DarkTheme.switchTheme = switchTheme
 
-        if (readAppTheme === "auto") {
+        if (appTheme === "auto") {
             if (deviceTheme) {
                 setTheme(deviceTheme)
                 return
@@ -42,7 +42,7 @@ export function App() {
             setTheme("light")
             return
         }
-        setTheme(readAppTheme)
+        setTheme(appTheme)
     }
 
     async function switchTheme(newTheme: themeType) {
