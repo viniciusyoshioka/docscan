@@ -3,15 +3,15 @@ import { NavigationContainer } from "@react-navigation/native"
 import { enableScreens } from "react-native-screens"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 
-import { Home } from "../screen/Home"
-import { Camera } from "../screen/Camera"
-import { Settings } from "../screen/Settings"
-import { EditDocument } from "../screen/EditDocument"
-import { VisualizePicture } from "../screen/VisualizePicture"
-import { ImportImageFromGalery } from "../screen/ImportImageFromGalery"
-import { FileExplorer } from "../screen/FileExplorer"
+import { Home } from "@screen/Home"
+import { Camera } from "@screen/Camera"
+import { Settings } from "@screen/Settings"
+import { EditDocument } from "@screen/EditDocument"
+import { VisualizePicture } from "@screen/VisualizePicture"
+import { ImportImageFromGalery } from "@screen/ImportImageFromGalery"
+import { FileExplorer } from "@screen/FileExplorer"
 
-import { ScreenParams } from "../types"
+import { ScreenParams } from "@type/"
 
 
 enableScreens()
