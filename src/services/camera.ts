@@ -1,4 +1,4 @@
-import { CameraSettingsReducerAction, CameraSettingsObject } from "../types"
+import { CameraSettingsReducerAction, CameraSettingsObject } from "@type/"
 import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "./settings"
 
 

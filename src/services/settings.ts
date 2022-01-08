@@ -1,4 +1,4 @@
-import { CameraType, FlashType, WhiteBalanceType } from "../types"
+import { CameraType, FlashType, WhiteBalanceType } from "@type/"
 
 
 // Camera

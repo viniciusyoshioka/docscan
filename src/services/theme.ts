@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react"
 
-import { ColorTheme, ThemeType } from "../types/theme"
+import { ColorTheme, ThemeType } from "@type/"
 
 
 export const themeDefault: ThemeType = "auto"

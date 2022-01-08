@@ -2,8 +2,8 @@
 import { Alert } from "react-native"
 import { logger } from "react-native-logs"
 
-import { LogDatabase } from "../database"
-import { Logger, TransportFunctionProps } from "../types/log"
+import { LogDatabase } from "@database/"
+import { Logger, TransportFunctionProps } from "@type/"
 import { getDateTime } from "./date"
 
 
