@@ -7,6 +7,7 @@ import SQLite from "react-native-sqlite-storage"
 import { ThemeProvider } from "styled-components/native"
 
 import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase, SettingsDatabase } from "@database/"
+import { cameraSettingsDefault, CameraSettingsProvider, reducerCameraSettings } from "@services/camera"
 import { DocumentDataProvider, reducerDocumentData } from "@services/document"
 import { logCriticalError } from "@services/log"
 import { ColorThemeDark, ColorThemeLight, ColorThemeProvider } from "@services/theme"
@@ -22,6 +23,7 @@ export function App() {
     const [appDb, setAppDb] = useState<SQLite.SQLiteDatabase | undefined>(undefined)
     const [logDb, setLogDb] = useState<SQLite.SQLiteDatabase | undefined>(undefined)
     const [theme, setTheme] = useState<ThemeType | undefined>(undefined)
+    const [cameraSettingsState, dispatchCameraSettings] = useReducer(reducerCameraSettings, cameraSettingsDefault)
     const [documentDataState, dispatchDocumentData] = useReducer(reducerDocumentData, undefined)
 
 
@@ -65,6 +67,16 @@ export function App() {
                 setGlobalAppDatabase(database)
                 await DocumentDatabase.createDocumentTable()
                 await SettingsDatabase.createSettingsTable()
+                const settings = await SettingsDatabase.getSettings()
+                dispatchCameraSettings({
+                    type: "set",
+                    payload: {
+                        flash: settings.cameraFlash,
+                        whiteBalance: settings.cameraWhiteBalance,
+                        cameraType: settings.cameraType,
+                        cameraId: settings.cameraId,
+                    }
+                })
                 setAppDb(database)
             })
             .catch((error) => {
@@ -102,7 +114,9 @@ export function App() {
                 <ThemeProvider theme={(theme === "light") ? ColorThemeLight : ColorThemeDark}>
                     <MenuProvider>
                         <DocumentDataProvider value={[documentDataState, dispatchDocumentData]}>
-                            <Router />
+                            <CameraSettingsProvider value={{ cameraSettingsState, dispatchCameraSettings }}>
+                                <Router />
+                            </CameraSettingsProvider>
                         </DocumentDataProvider>
                     </MenuProvider>
                 </ThemeProvider>
