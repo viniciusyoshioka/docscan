@@ -1,4 +1,4 @@
-import { CameraType, FlashType, WhiteBalanceType } from "."
+import { CameraSettingsObject, CameraType, FlashType, WhiteBalanceType } from "."
 
 
 /**
@@ -42,12 +42,7 @@ type CameraSettingsCameraId = {
  */
 type CameraSettingsSet = {
     type: "set";
-    payload: {
-        flash: FlashType;
-        whiteBalance: WhiteBalanceType;
-        cameraType: CameraType;
-        cameraId: string;
-    };
+    payload: CameraSettingsObject;
 }
 
 /**

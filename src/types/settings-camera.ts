@@ -1,3 +1,7 @@
+import { Dispatch } from "react"
+
+import { CameraSettingsReducerAction } from "."
+
 
 /**
  * All camera flash setting options
@@ -23,4 +27,14 @@ export type CameraSettingsObject = {
     whiteBalance: WhiteBalanceType;
     cameraType: CameraType;
     cameraId: string;
+}
+
+
+/**
+ * Type for the camera settings state and dispatch,
+ * returned by the reducer hook
+ */
+export type CameraSettingsContextType = {
+    cameraSettingsState: CameraSettingsObject;
+    dispatchCameraSettings: Dispatch<CameraSettingsReducerAction>;
 }

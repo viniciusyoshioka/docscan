@@ -1,8 +1,10 @@
-import { CameraSettingsReducerAction, CameraSettingsObject } from "@type/"
+import { createContext, useContext } from "react"
+
+import { CameraSettingsReducerAction, CameraSettingsObject, CameraSettingsContextType } from "@type/"
 import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "./settings"
 
 
-export const initialCameraSettings: CameraSettingsObject = {
+export const cameraSettingsDefault: CameraSettingsObject = {
     flash: cameraFlashDefault,
     whiteBalance: cameraWhiteBalanceDefault,
     cameraType: cameraTypeDefault,
@@ -37,19 +39,25 @@ export function reducerCameraSettings(
             }
         case "set":
             return {
-                flash: action.payload.flash,
-                whiteBalance: action.payload.whiteBalance,
-                cameraType: action.payload.cameraType,
-                cameraId: action.payload.cameraId,
+                ...action.payload,
             }
         case "reset":
             return {
-                flash: cameraFlashDefault,
-                whiteBalance: cameraWhiteBalanceDefault,
-                cameraType: cameraTypeDefault,
-                cameraId: cameraIdDefault,
+                ...cameraSettingsDefault,
             }
         default:
             throw new Error("Unknown action type")
     }
+}
+
+
+const CameraSettingsContext = createContext({
+    cameraSettingsState: cameraSettingsDefault,
+    dispatchCameraSettings: (value: CameraSettingsReducerAction) => {},
+}  as CameraSettingsContextType)
+
+export const CameraSettingsProvider = CameraSettingsContext.Provider
+
+export function useCameraSettings() {
+    return useContext(CameraSettingsContext)
 }

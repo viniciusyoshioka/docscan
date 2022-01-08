@@ -18,7 +18,7 @@ import { getCameraPermission } from "../../services/permission"
 import { SettingsDatabase } from "../../database"
 import { useDocumentData } from "../../services/document"
 import { NavigationParamProps, RouteParamProps } from "../../types"
-import { initialCameraSettings, reducerCameraSettings } from "../../services/camera"
+import { cameraSettingsDefault, reducerCameraSettings } from "../../services/camera"
 
 
 export function Camera() {
@@ -29,7 +29,7 @@ export function Camera() {
 
     const cameraRef = useRef<RNCamera>(null)
     // const cameraControlRef = useRef<CameraControlHandle>(null)
-    const [stateCameraSettings, dispatchCameraSettings] = useReducer(reducerCameraSettings, initialCameraSettings)
+    const [stateCameraSettings, dispatchCameraSettings] = useReducer(reducerCameraSettings, cameraSettingsDefault)
     const [cameraSettingsVisible, setCameraSettingsVisible] = useState(false)
 
     const [isMultipleCameraAvailable, setIsMultipleCameraAvailable] = useState(false)
