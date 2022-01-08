@@ -1,8 +1,8 @@
 import SQLite from "react-native-sqlite-storage"
 
 import { globalAppDatabase } from "."
-import { cameraIdDefault, cameraTypeDefault, cameraFlashDefault, cameraWhiteBalanceDefault } from "../service/settings"
-import { themeDefault } from "../service/theme"
+import { cameraIdDefault, cameraTypeDefault, cameraFlashDefault, cameraWhiteBalanceDefault } from "../services/settings"
+import { themeDefault } from "../services/theme"
 import { settingsKey, settingsObject } from "../types"
 
 

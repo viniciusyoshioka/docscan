@@ -1,7 +1,7 @@
 import React from "react"
 
 import { EditDocumentMenu } from "./EditDocumentMenu"
-import { Header, HeaderButton, HeaderTitle } from "../../component"
+import { Header, HeaderButton, HeaderTitle } from "../../components"
 
 
 export interface EditDocumentHeaderProps {

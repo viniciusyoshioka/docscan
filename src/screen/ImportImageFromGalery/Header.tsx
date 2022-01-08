@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 
-import { Header, HeaderButton, HeaderTitle } from "../../component"
+import { Header, HeaderButton, HeaderTitle } from "../../components"
 
 
 export interface ImportImageFromGaleryHeaderProps {

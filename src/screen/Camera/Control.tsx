@@ -1,6 +1,6 @@
 import React from "react"
 
-import { CameraControlAction, CameraControlButton, CameraControlView } from "../../component"
+import { CameraControlAction, CameraControlButton, CameraControlView } from "../../components"
 
 
 export interface CameraControlProps {

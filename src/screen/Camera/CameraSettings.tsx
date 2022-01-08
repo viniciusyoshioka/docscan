@@ -2,9 +2,9 @@ import React, { Dispatch } from "react"
 import { ScrollView } from "react-native"
 import { HardwareCamera } from "react-native-camera"
 
-import { CameraSettingsButton, ModalCameraSettings, ModalCameraSettingsProps } from "../../component"
+import { CameraSettingsButton, ModalCameraSettings, ModalCameraSettingsProps } from "../../components"
 import { SettingsDatabase } from "../../database"
-import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "../../service/settings"
+import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "../../services/settings"
 import { CameraAttributes, cameraReducerAction, cameraType, flashType, whiteBalanceType } from "../../types"
 
 

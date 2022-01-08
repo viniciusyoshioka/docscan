@@ -1,8 +1,8 @@
 import React, { createRef, useEffect, useState } from "react"
 import { TextInput } from "react-native"
 
-import { Input, ModalButton, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, MyModal } from "../../component"
-import { useKeyboard } from "../../service/hook"
+import { Input, ModalButton, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, MyModal } from "../../components"
+import { useKeyboard } from "../../services/hook"
 
 
 export interface RenameDocumentProps extends ModalProps {

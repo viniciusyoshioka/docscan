@@ -4,14 +4,14 @@ import { useNavigation } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 
 import { HomeHeader } from "./Header"
-import { DocumentItem, EmptyList, SafeScreen } from "../../component"
-import { appIconOutline } from "../../service/constant"
-import { createAllFolder } from "../../service/folder-handler"
-import { useBackHandler } from "../../service/hook"
+import { DocumentItem, EmptyList, SafeScreen } from "../../components"
+import { appIconOutline } from "../../services/constant"
+import { createAllFolder } from "../../services/folder-handler"
+import { useBackHandler } from "../../services/hook"
 import { DocumentForList } from "../../types"
 import { DocumentDatabase } from "../../database"
 import { NavigationParamProps } from "../../types"
-import { log } from "../../service/log"
+import { log } from "../../services/log"
 
 
 export function Home() {

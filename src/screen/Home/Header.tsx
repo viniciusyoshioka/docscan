@@ -1,8 +1,8 @@
 import React, { Component } from "react"
 
 import { HomeMenu } from "./HomeMenu"
-import { Header, HeaderButton, HeaderTitle } from "../../component"
-import { appName } from "../../service/constant"
+import { Header, HeaderButton, HeaderTitle } from "../../components"
+import { appName } from "../../services/constant"
 
 
 export interface HomeHeaderProps {

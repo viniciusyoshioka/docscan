@@ -5,13 +5,13 @@ import RNFS from "react-native-fs"
 import { ImageCrop, OnImageSavedResponse } from "react-native-image-crop"
 
 import { VisualizePictureHeader } from "./Header"
-import { ImageVisualizationItem, SafeScreen } from "../../component"
-import { useBackHandler } from "../../service/hook"
-import { log } from "../../service/log"
-import { fullPathPicture } from "../../service/constant"
-import { getDateTime } from "../../service/date"
+import { ImageVisualizationItem, SafeScreen } from "../../components"
+import { useBackHandler } from "../../services/hook"
+import { log } from "../../services/log"
+import { fullPathPicture } from "../../services/constant"
+import { getDateTime } from "../../services/date"
 import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
-import { useDocumentData } from "../../service/document"
+import { useDocumentData } from "../../services/document"
 
 
 export function VisualizePicture() {

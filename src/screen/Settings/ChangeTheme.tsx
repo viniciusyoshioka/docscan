@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 
-import { Modal, ModalButton, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, RadioButton } from "../../component"
-import { useTheme } from "../../service/theme"
+import { Modal, ModalButton, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, RadioButton } from "../../components"
+import { useTheme } from "../../services/theme"
 
 
 export interface ChangeThemeProps extends ModalProps { }

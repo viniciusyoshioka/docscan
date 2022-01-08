@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react"
 import Slider from "@react-native-community/slider"
 import styled from "styled-components/native"
 
-import { ModalButton, ModalDescription, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, MyModal, RadioButton } from "../../component"
-import { useTheme } from "../../service/theme"
+import { ModalButton, ModalDescription, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, MyModal, RadioButton } from "../../components"
+import { useTheme } from "../../services/theme"
 import { styledProps } from "../../types"
 
 
