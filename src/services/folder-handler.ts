@@ -135,3 +135,15 @@ export function createAllFolder() {
     createTemporaryExportedFolder()
     createTemporaryCompressedPictureFolder()
 }
+
+
+export async function createAllFolderAsync() {
+    // await createRootFolder()
+    // await createRootFolderExternal()
+    await createPdfFolder()
+    await createExportedFolder()
+    await createPictureFolder()
+    // await createTemporaryFolder()
+    await createTemporaryExportedFolder()
+    await createTemporaryCompressedPictureFolder()
+}
