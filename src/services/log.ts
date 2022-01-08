@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Alert } from "react-native"
 import { logger } from "react-native-logs"
 
