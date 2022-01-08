@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import RNFS from "react-native-fs"
 
 
@@ -8,7 +7,9 @@ export const appVersion = "1.14.0"
 export const appType = __DEV__ ? "beta" : "release"
 
 // Icon
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 export const appIcon = require("./../image/docscan.png")
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 export const appIconOutline = require("./../image/docscan_outline.png")
 
 // Folder
