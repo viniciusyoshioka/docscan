@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 
 export type transportFunctionProps = {
@@ -26,6 +25,7 @@ export type Logger = {
     /**
      * Extend logger with a new extension
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     extend: (extension: string) => (...msgs: any[]) => boolean | any;
 
     /**
