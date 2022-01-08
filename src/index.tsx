@@ -1,17 +1,17 @@
 import React, { useEffect, useReducer, useState } from "react"
 import { useColorScheme } from "react-native"
-import { MenuProvider } from "react-native-popup-menu"
-import { ThemeProvider } from "styled-components/native"
-import KeepAwake from "react-native-keep-awake"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
+import KeepAwake from "react-native-keep-awake"
+import { MenuProvider } from "react-native-popup-menu"
 import SQLite from "react-native-sqlite-storage"
+import { ThemeProvider } from "styled-components/native"
 
+import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase, SettingsDatabase } from "@database/"
+import { DocumentDataProvider, reducerDocumentData } from "@services/document"
+import { logCriticalError } from "@services/log"
+import { DarkTheme, LightTheme, ThemeContextProvider } from "@services/theme"
+import { themeType } from "@type/"
 import { Router } from "./router"
-import { DarkTheme, LightTheme, ThemeContextProvider } from "./service/theme"
-import { themeType } from "./types"
-import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase, SettingsDatabase } from "./database"
-import { logCriticalError } from "./service/log"
-import { DocumentDataProvider, reducerDocumentData } from "./service/document"
 
 
 export function App() {
