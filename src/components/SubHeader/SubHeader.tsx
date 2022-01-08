@@ -1,6 +1,6 @@
 import styled from "styled-components/native"
 
-import { styledProps } from "../../types"
+import { StyledProps } from "../../types"
 
 
 export const SubHeader = styled.View`
@@ -9,6 +9,6 @@ export const SubHeader = styled.View`
     width: 100%;
     height: 28px;
     padding: 4px 16px;
-    background-color: ${(props: styledProps) => props.theme.color.subHeader_background};
+    background-color: ${(props: StyledProps) => props.theme.color.subHeader_background};
     elevation: 4;
 `

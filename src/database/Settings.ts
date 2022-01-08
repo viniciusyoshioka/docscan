@@ -3,7 +3,7 @@ import SQLite from "react-native-sqlite-storage"
 import { globalAppDatabase } from "."
 import { cameraIdDefault, cameraTypeDefault, cameraFlashDefault, cameraWhiteBalanceDefault } from "../services/settings"
 import { themeDefault } from "../services/theme"
-import { settingsKey, settingsObject } from "../types"
+import { SettingsKey, SettingsObject } from "../types"
 
 
 export function createSettingsTable(): Promise<null> {
@@ -43,14 +43,14 @@ export function createSettingsTable(): Promise<null> {
 }
 
 
-export function getSettings(): Promise<settingsObject> {
+export function getSettings(): Promise<SettingsObject> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
             SELECT * FROM settings;
         `)
             .then(([resultSet]) => {
-                const settings = {} as settingsObject
-                resultSet.rows.raw().forEach((item: {key: settingsKey, value: never}) => {
+                const settings = {} as SettingsObject
+                resultSet.rows.raw().forEach((item: {key: SettingsKey, value: never}) => {
                     settings[item.key] = item.value
                 })
                 // console.log("getSettings settings", settings)
@@ -63,7 +63,7 @@ export function getSettings(): Promise<settingsObject> {
 }
 
 
-export function getSettingKey<K extends settingsKey>(key: K): Promise<settingsObject[K]> {
+export function getSettingKey<K extends SettingsKey>(key: K): Promise<SettingsObject[K]> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
             SELECT value FROM settings WHERE key = ?;
@@ -79,7 +79,7 @@ export function getSettingKey<K extends settingsKey>(key: K): Promise<settingsOb
 }
 
 
-export function insertSettings<K extends settingsKey>(key: K, value: settingsObject[K]): Promise<SQLite.ResultSet> {
+export function insertSettings<K extends SettingsKey>(key: K, value: SettingsObject[K]): Promise<SQLite.ResultSet> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
             INSERT INTO settings (key, value) VALUES (?, ?);
@@ -94,7 +94,7 @@ export function insertSettings<K extends settingsKey>(key: K, value: settingsObj
 }
 
 
-export function updateSettings<K extends settingsKey>(key: K, value: settingsObject[K]): Promise<SQLite.ResultSet> {
+export function updateSettings<K extends SettingsKey>(key: K, value: SettingsObject[K]): Promise<SQLite.ResultSet> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
             UPDATE settings SET value = ? WHERE key = ?;
@@ -109,7 +109,7 @@ export function updateSettings<K extends settingsKey>(key: K, value: settingsObj
 }
 
 
-export function deleteSettings(keys: settingsKey[]): Promise<SQLite.ResultSet> {
+export function deleteSettings(keys: SettingsKey[]): Promise<SQLite.ResultSet> {
     return new Promise((resolve, reject) => {
 
         let keysToDelete = ""

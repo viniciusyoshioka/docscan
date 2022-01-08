@@ -2,16 +2,16 @@
 /**
  * Themes available in the app
  */
-export type themeType = "auto" | "light" | "dark"
+export type ThemeType = "auto" | "light" | "dark"
 
 
 /**
  * Type defining theme color object attributes
  */
 export interface ColorTheme {
-    name: themeType;
-    appTheme: themeType;
-    switchTheme: (newTheme: themeType) => void;
+    name: ThemeType;
+    appTheme: ThemeType;
+    switchTheme: (newTheme: ThemeType) => void;
     color: {
         header_background: string;
         header_color: string;
@@ -85,6 +85,6 @@ export interface ColorTheme {
 /**
  * Type to add ColorTheme in styled-components props
  */
-export interface styledProps {
+export interface StyledProps {
     theme: ColorTheme;
 }

@@ -1,9 +1,9 @@
 import { createContext, useContext } from "react"
 
-import { ColorTheme, themeType } from "../types/theme"
+import { ColorTheme, ThemeType } from "../types/theme"
 
 
-export const themeDefault: themeType = "auto"
+export const themeDefault: ThemeType = "auto"
 
 
 export const LightTheme: ColorTheme = {

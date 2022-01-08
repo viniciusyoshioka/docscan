@@ -1,6 +1,6 @@
 import { Dispatch } from "react"
 
-import { documentDataReducerAction } from "."
+import { DocumentDataReducerAction } from "."
 
 
 /**
@@ -51,4 +51,4 @@ export type Document = {
  * Type for the document data state and dispatch,
  * returned by the reducer hook
  */
-export type documentDataContextType = [undefined | Document, Dispatch<documentDataReducerAction>]
+export type DocumentDataContextType = [undefined | Document, Dispatch<DocumentDataReducerAction>]

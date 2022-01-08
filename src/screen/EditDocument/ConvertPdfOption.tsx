@@ -4,7 +4,7 @@ import styled from "styled-components/native"
 
 import { ModalButton, ModalDescription, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, MyModal, RadioButton } from "../../components"
 import { useTheme } from "../../services/theme"
-import { styledProps } from "../../types"
+import { StyledProps } from "../../types"
 
 
 type compressionLevelType = "low" | "high" | "custom"
@@ -19,8 +19,8 @@ const ViewCompressionText = styled.View`
 
 const CompressionText = styled.Text`
     font-size: 15px;
-    color: ${(props: styledProps) => props.theme.color.screen_color};
-    opacity: ${(props: styledProps) => props.theme.opacity.highEmphasis};
+    color: ${(props: StyledProps) => props.theme.color.screen_color};
+    opacity: ${(props: StyledProps) => props.theme.opacity.highEmphasis};
 `
 
 

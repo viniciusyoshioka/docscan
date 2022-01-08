@@ -1,6 +1,6 @@
 import styled from "styled-components/native"
 
-import { styledProps } from "../../types"
+import { StyledProps } from "../../types"
 
 
 export const ModalView = styled.View`
@@ -24,5 +24,5 @@ export const ModalContent = styled.TouchableOpacity`
     width: 280px;
     elevation: 6;
     border-radius: 1px;
-    background-color: ${(props: styledProps) => props.theme.color.modal_background};
+    background-color: ${(props: StyledProps) => props.theme.color.modal_background};
 `

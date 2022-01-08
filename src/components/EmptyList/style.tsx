@@ -1,6 +1,6 @@
 import styled from "styled-components/native"
 
-import { styledProps } from "../../types"
+import { StyledProps } from "../../types"
 
 
 export const EmptyListView = styled.View`
@@ -18,13 +18,13 @@ export const EmptyListView = styled.View`
 export const EmptyListImage = styled.Image`
     width: 100px;
     height: 100px;
-    opacity: ${(props: styledProps) => props.theme.opacity.mediumEmphasis};
-    tint-color: ${(props: styledProps) => props.theme.color.screen_color};
+    opacity: ${(props: StyledProps) => props.theme.opacity.mediumEmphasis};
+    tint-color: ${(props: StyledProps) => props.theme.color.screen_color};
 `
 
 
 export const EmptyListText = styled.Text`
     font-size: 16px;
-    opacity: ${(props: styledProps) => props.theme.opacity.mediumEmphasis};
-    color: ${(props: styledProps) => props.theme.color.screen_color};
+    opacity: ${(props: StyledProps) => props.theme.opacity.mediumEmphasis};
+    color: ${(props: StyledProps) => props.theme.color.screen_color};
 `

@@ -1,11 +1,11 @@
 import styled from "styled-components/native"
 
-import { styledProps } from "../../types"
+import { StyledProps } from "../../types"
 
 
 export const SafeScreen = styled.SafeAreaView`
     flex: 1;
-    background-color: ${(props: styledProps) => props.theme.color.screen_background};
+    background-color: ${(props: StyledProps) => props.theme.color.screen_background};
 `
 
 

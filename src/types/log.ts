@@ -3,7 +3,7 @@
 /**
  * Defines the type for transport function's props
  */
-export type transportFunctionProps = {
+export type TransportFunctionProps = {
     msg: string;
     rawMsg: Array<string>;
     level: {

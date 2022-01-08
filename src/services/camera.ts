@@ -1,8 +1,8 @@
-import { cameraReducerAction, cameraReducerState } from "../types"
+import { CameraSettingsReducerAction, CameraSettingsObject } from "../types"
 import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "./settings"
 
 
-export const initialCameraSettings: cameraReducerState = {
+export const initialCameraSettings: CameraSettingsObject = {
     flash: cameraFlashDefault,
     whiteBalance: cameraWhiteBalanceDefault,
     cameraType: cameraTypeDefault,
@@ -11,9 +11,9 @@ export const initialCameraSettings: cameraReducerState = {
 
 
 export function reducerCameraSettings(
-    state: cameraReducerState,
-    action: cameraReducerAction
-): cameraReducerState {
+    state: CameraSettingsObject,
+    action: CameraSettingsReducerAction
+): CameraSettingsObject {
     switch (action.type) {
         case "flash":
             return {

@@ -1,6 +1,6 @@
 import styled from "styled-components/native"
 
-import { styledProps } from "../../types"
+import { StyledProps } from "../../types"
 
 
 export const Button = styled.TouchableOpacity`
@@ -12,6 +12,6 @@ export const Button = styled.TouchableOpacity`
 export const Text = styled.Text`
     margin-top: 10px;
     font-size: 15px;
-    opacity: ${(props: styledProps) => props.theme.opacity.highEmphasis};
-    color: ${(props: styledProps) => props.theme.color.screen_color};
+    opacity: ${(props: StyledProps) => props.theme.opacity.highEmphasis};
+    color: ${(props: StyledProps) => props.theme.color.screen_color};
 `

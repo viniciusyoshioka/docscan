@@ -6,7 +6,7 @@ import { DocumentForList, DocumentPicture } from "."
  * Usually called when an document is opened or
  * to set a new state after saving.
  */
-type documentSetDocument = {
+type DocumentSetDocument = {
     type: "set-document";
     payload: {
         document: DocumentForList;
@@ -19,14 +19,14 @@ type documentSetDocument = {
  * The new document contains a generic name and the last modification timestamp,
  * while the other data is empty.
  */
-type documentCreateNewIfEmpty = {
+type DocumentCreateNewIfEmpty = {
     type: "create-new-if-empty";
 }
 
 /**
  * Receives a string with the new document name and sets it to the state
  */
-type documentRename = {
+type DocumentRename = {
     type: "rename-document";
     payload: string;
 }
@@ -34,7 +34,7 @@ type documentRename = {
 /**
  * Receives an array of DocumentPicture to add to pictureList property
  */
-type documentAddPicture = {
+type DocumentAddPicture = {
     type: "add-picture";
     payload: DocumentPicture[];
 }
@@ -46,7 +46,7 @@ type documentAddPicture = {
  * and updates the position property.
  * File and database deletion still needs to be invoked.
  */
-type documentRemovePicture = {
+type DocumentRemovePicture = {
     type: "remove-picture";
     payload: number[];
 }
@@ -55,7 +55,7 @@ type documentRemovePicture = {
  * Replaces the picture path in the indexToReplace's
  * index for the path of newPicture
  */
-type documentReplacePicture = {
+type DocumentReplacePicture = {
     type: "replace-picture";
     payload: {
         indexToReplace: number;
@@ -74,7 +74,7 @@ type documentReplacePicture = {
  * If any data were removed, the file and database deletion still
  * has to be invoked.
  */
-type documentSave = {
+type DocumentSave = {
     type: "save-document";
     payload: (documentId: number) => void;
 }
@@ -87,7 +87,7 @@ type documentSave = {
  * If any data were removed, the file and database
  * deletion has to be invoked before.
  */
-type documentSaveAndClose = {
+type DocumentSaveAndClose = {
     type: "save-and-close-document";
 }
 
@@ -96,7 +96,7 @@ type documentSaveAndClose = {
  * It means that the state passes to be undefined.
  * THIS ACTION DON'T SAVE THE DATA.
  */
-type documentClose = {
+type DocumentClose = {
     type: "close-document";
 }
 
@@ -104,12 +104,12 @@ type documentClose = {
 /**
  * Actions for document data reducer to handler with the document state
  */
-export type documentDataReducerAction = documentSetDocument
-    | documentCreateNewIfEmpty
-    | documentRename
-    | documentAddPicture
-    | documentRemovePicture
-    | documentReplacePicture
-    | documentSave
-    | documentSaveAndClose
-    | documentClose
+export type DocumentDataReducerAction = DocumentSetDocument
+    | DocumentCreateNewIfEmpty
+    | DocumentRename
+    | DocumentAddPicture
+    | DocumentRemovePicture
+    | DocumentReplacePicture
+    | DocumentSave
+    | DocumentSaveAndClose
+    | DocumentClose

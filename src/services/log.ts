@@ -3,7 +3,7 @@ import { Alert } from "react-native"
 import { logger } from "react-native-logs"
 
 import { LogDatabase } from "../database"
-import { Logger, transportFunctionProps } from "../types/log"
+import { Logger, TransportFunctionProps } from "../types/log"
 import { getDateTime } from "./date"
 
 
@@ -16,7 +16,7 @@ export function logCriticalError(message: string) {
 }
 
 
-async function databaseTransport(props: transportFunctionProps) {
+async function databaseTransport(props: TransportFunctionProps) {
     try {
         let color
         switch (props.level.text) {

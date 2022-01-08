@@ -10,7 +10,7 @@ import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlo
 import { DocumentDataProvider, reducerDocumentData } from "@services/document"
 import { logCriticalError } from "@services/log"
 import { DarkTheme, LightTheme, ThemeContextProvider } from "@services/theme"
-import { themeType } from "@type/"
+import { ThemeType } from "@type/"
 import { Router } from "./router"
 
 
@@ -21,7 +21,7 @@ export function App() {
 
     const [appDb, setAppDb] = useState<SQLite.SQLiteDatabase | undefined>(undefined)
     const [logDb, setLogDb] = useState<SQLite.SQLiteDatabase | undefined>(undefined)
-    const [theme, setTheme] = useState<themeType | undefined>(undefined)
+    const [theme, setTheme] = useState<ThemeType | undefined>(undefined)
     const [documentDataState, dispatchDocumentData] = useReducer(reducerDocumentData, undefined)
 
 
@@ -45,7 +45,7 @@ export function App() {
         setTheme(appTheme)
     }
 
-    async function switchTheme(newTheme: themeType) {
+    async function switchTheme(newTheme: ThemeType) {
         await SettingsDatabase.updateSettings("theme", newTheme)
         await getTheme()
     }

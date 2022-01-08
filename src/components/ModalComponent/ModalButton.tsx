@@ -2,7 +2,7 @@ import React from "react"
 import { TouchableOpacityProps } from "react-native"
 import styled from "styled-components/native"
 
-import { styledProps } from "../../types"
+import { StyledProps } from "../../types"
 
 
 const ModalButtonBase = styled.TouchableOpacity`
@@ -18,8 +18,8 @@ const ModalButtonBase = styled.TouchableOpacity`
 
 const ModalButtonTextBase = styled.Text`
     font-size: 16px;
-    opacity: ${(props: styledProps) => props.theme.opacity.highEmphasis};
-    color: ${(props: styledProps) => props.theme.color.modal_color};
+    opacity: ${(props: StyledProps) => props.theme.opacity.highEmphasis};
+    color: ${(props: StyledProps) => props.theme.color.modal_color};
 `
 
 

@@ -2,7 +2,7 @@ import React, { Children, cloneElement, ReactNode } from "react"
 import { StyleProp, ViewProps, ViewStyle } from "react-native"
 import styled from "styled-components/native"
 
-import { styledProps } from "../../types"
+import { StyledProps } from "../../types"
 import { HeaderButton } from "./Button"
 import { HeaderTitle } from "./Title"
 
@@ -15,7 +15,7 @@ const HeaderBase = styled.View`
     align-items: center;
     height: ${HeaderHeight}px;
     padding-left: 8px;
-    background-color: ${(props: styledProps) => props.theme.color.header_background};
+    background-color: ${(props: StyledProps) => props.theme.color.header_background};
     elevation: 4;
 `
 

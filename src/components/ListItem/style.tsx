@@ -1,7 +1,7 @@
 import { RectButton } from "react-native-gesture-handler"
 import styled from "styled-components/native"
 
-import { styledProps } from "../../types"
+import { StyledProps } from "../../types"
 
 
 export const ListItemBase = styled(RectButton)`
@@ -12,7 +12,7 @@ export const ListItemBase = styled(RectButton)`
     padding: 16px;
     height: 72px;
     max-height: 72px;
-    background-color ${(props: styledProps) => props.theme.color.listItem_background};
+    background-color ${(props: StyledProps) => props.theme.color.listItem_background};
 `
 
 
@@ -39,14 +39,14 @@ export const ViewText = styled.View`
 export const TextTitle = styled.Text`
     width: 100%;
     font-size: 16px;
-    opacity: ${(props: styledProps) => props.theme.opacity.highEmphasis};
-    color: ${(props: styledProps) => props.theme.color.listItem_color};
+    opacity: ${(props: StyledProps) => props.theme.opacity.highEmphasis};
+    color: ${(props: StyledProps) => props.theme.color.listItem_color};
 `
 
 
 export const TextDescription = styled.Text`
     width: 100%;
     font-size: 13px;
-    opacity: ${(props: styledProps) => props.theme.opacity.mediumEmphasis};
-    color: ${(props: styledProps) => props.theme.color.listItem_color};
+    opacity: ${(props: StyledProps) => props.theme.opacity.mediumEmphasis};
+    color: ${(props: StyledProps) => props.theme.color.listItem_color};
 `

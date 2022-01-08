@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react"
 
 import { DocumentDatabase } from "../database"
-import { Document, documentDataContextType, documentDataReducerAction } from "../types"
+import { Document, DocumentDataContextType, DocumentDataReducerAction } from "../types"
 import { getTimestamp } from "./date"
 
 
@@ -12,7 +12,7 @@ export function getDocumentName(): string {
 
 export function reducerDocumentData(
     state: Document | undefined,
-    action: documentDataReducerAction
+    action: DocumentDataReducerAction
 ): Document | undefined {
     switch (action.type) {
         case "set-document":
@@ -153,8 +153,8 @@ export function reducerDocumentData(
 
 const documentDataContext = createContext([
     undefined,
-    (value: documentDataReducerAction) => {}
-] as documentDataContextType)
+    (value: DocumentDataReducerAction) => {}
+] as DocumentDataContextType)
 
 export const DocumentDataProvider = documentDataContext.Provider
 

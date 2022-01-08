@@ -2,15 +2,15 @@ import React from "react"
 import { TextProps } from "react-native"
 import styled from "styled-components/native"
 
-import { styledProps } from "../../types"
+import { StyledProps } from "../../types"
 
 
 const HeaderTitleBase = styled.Text`
     flex: 1;
     font-size: 20px;
     margin-right: 4px;
-    opacity: ${(props: styledProps) => props.theme.opacity.headerEmphasis};
-    color: ${(props: styledProps) => props.theme.color.header_color};
+    opacity: ${(props: StyledProps) => props.theme.opacity.headerEmphasis};
+    color: ${(props: StyledProps) => props.theme.color.header_color};
 `
 
 

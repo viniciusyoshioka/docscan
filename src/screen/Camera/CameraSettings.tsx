@@ -5,12 +5,12 @@ import { HardwareCamera } from "react-native-camera"
 import { CameraSettingsButton, ModalCameraSettings, ModalCameraSettingsProps } from "../../components"
 import { SettingsDatabase } from "../../database"
 import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "../../services/settings"
-import { CameraAttributes, cameraReducerAction, cameraType, flashType, whiteBalanceType } from "../../types"
+import { CameraSettingsObject, CameraSettingsReducerAction, CameraType, FlashType, WhiteBalanceType } from "../../types"
 
 
 export interface CameraSettingsProps extends ModalCameraSettingsProps {
-    cameraAttributes: CameraAttributes,
-    setCameraAttributes: Dispatch<cameraReducerAction>,
+    cameraAttributes: CameraSettingsObject,
+    setCameraAttributes: Dispatch<CameraSettingsReducerAction>,
     isMultipleCameraAvailable: boolean,
     currentCameraIndex: number,
     setCurrentCameraIndex: (newCurrentCameraIndex: number) => void
@@ -23,7 +23,7 @@ export function CameraSettings(props: CameraSettingsProps) {
 
     async function changeFlash() {
         // Change attribute
-        let newFlash: flashType = "auto"
+        let newFlash: FlashType = "auto"
         switch (props.cameraAttributes.flash) {
             case "auto":
                 newFlash = "on"
@@ -43,7 +43,7 @@ export function CameraSettings(props: CameraSettingsProps) {
 
     async function changeWhiteBalance() {
         // Change attribute
-        let newWhiteBalance: whiteBalanceType = "auto"
+        let newWhiteBalance: WhiteBalanceType = "auto"
         switch (props.cameraAttributes.whiteBalance) {
             case "auto":
                 newWhiteBalance = "sunny"
@@ -69,7 +69,7 @@ export function CameraSettings(props: CameraSettingsProps) {
 
     async function switchCameraType() {
         // Change attribute
-        let newCameraType: cameraType = "back"
+        let newCameraType: CameraType = "back"
         switch (props.cameraAttributes.cameraType) {
             case "back":
                 newCameraType = "front"

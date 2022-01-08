@@ -1,6 +1,6 @@
 import styled from "styled-components/native"
 
-import { styledProps } from "../../types"
+import { StyledProps } from "../../types"
 
 
 export const InputBase = styled.TextInput`
@@ -12,12 +12,12 @@ export const InputBase = styled.TextInput`
     border-radius: 2px;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
-    border-bottom-width: ${(props: styledProps & { isFocused?: boolean }) => {
+    border-bottom-width: ${(props: StyledProps & { isFocused?: boolean }) => {
         return props.isFocused ? 2 : 0
     }}px;
-    background-color: ${(props: styledProps) => props.theme.color.input_background};
-    color: ${(props: styledProps) => props.theme.color.input_color};
-    border-color: ${(props: styledProps & { isFocused?: boolean }) => {
+    background-color: ${(props: StyledProps) => props.theme.color.input_background};
+    color: ${(props: StyledProps) => props.theme.color.input_color};
+    border-color: ${(props: StyledProps & { isFocused?: boolean }) => {
         return props.isFocused ? props.theme.color.input_focus_border : props.theme.color.input_unfocus_border
     }};
 `
