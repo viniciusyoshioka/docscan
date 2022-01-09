@@ -4,10 +4,7 @@ import styled from "styled-components/native"
 
 import { ModalButton, ModalDescription, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, MyModal, RadioButton } from "../../components"
 import { useColorTheme } from "../../services/theme"
-import { StyledProps } from "../../types"
-
-
-type compressionLevelType = "low" | "high" | "custom"
+import { DocumentPdfCompressionLevel, StyledProps } from "../../types"
 
 
 const ViewCompressionText = styled.View`
@@ -45,7 +42,7 @@ export function ConvertPdfOption(props: ConvertPdfOptionProps) {
 
     const [compressionVisualValue, setCompressionVisualValue] = useState(40)
     const [compressionValue, setCompressionValue] = useState(40)
-    const [compressionLevel, setCompressionLevel] = useState<compressionLevelType>("high")
+    const [compressionLevel, setCompressionLevel] = useState<DocumentPdfCompressionLevel>("high")
 
 
     useEffect(() => {

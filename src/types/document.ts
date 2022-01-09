@@ -55,3 +55,9 @@ export type DocumentDataContextType = {
     documentDataState: undefined | Document;
     dispatchDocumentData: Dispatch<DocumentDataReducerAction>;
 }
+
+
+/**
+ * Compression level of document images during PDF conversion
+ */
+export type DocumentPdfCompressionLevel = "low" | "high" | "custom"
