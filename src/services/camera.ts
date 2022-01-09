@@ -4,6 +4,9 @@ import { CameraSettingsReducerAction, CameraSettingsObject, CameraSettingsContex
 import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "./settings"
 
 
+/**
+ * Object with the default values for camera settings
+ */
 export const cameraSettingsDefault: CameraSettingsObject = {
     flash: cameraFlashDefault,
     whiteBalance: cameraWhiteBalanceDefault,
@@ -12,6 +15,10 @@ export const cameraSettingsDefault: CameraSettingsObject = {
 }
 
 
+/**
+ * Reducer function to handle with camera setting action
+ * and update its state
+ */
 export function reducerCameraSettings(
     state: CameraSettingsObject,
     action: CameraSettingsReducerAction
@@ -56,8 +63,14 @@ const CameraSettingsContext = createContext({
     dispatchCameraSettings: (value: CameraSettingsReducerAction) => {},
 }  as CameraSettingsContextType)
 
+/**
+ * Provider to pass camera settings through the component tree
+ */
 export const CameraSettingsProvider = CameraSettingsContext.Provider
 
+/**
+ * Hook to get the camera settings state and dispatch
+ */
 export function useCameraSettings() {
     return useContext(CameraSettingsContext)
 }

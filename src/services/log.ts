@@ -6,6 +6,12 @@ import { Logger, TransportFunctionProps } from "../types"
 import { getDateTime } from "./date"
 
 
+/**
+ * Function to log critical errors only.
+ * Use this function when Logger or database is not available.
+ * 
+ * @param message a string with the error message to be logged
+ */
 export function logCriticalError(message: string) {
     console.log(`FALHA CRÍTICA - Erro registrando log. Mensagem: "${message}"`)
     Alert.alert(
@@ -45,6 +51,10 @@ async function databaseTransport(props: TransportFunctionProps) {
 }
 
 
+/**
+ * Logger object.
+ * Can register logs in database and print it in terminal
+ */
 export const log = logger.createLogger({
     severity: __DEV__ ? "debug" : "warn",
     transport: databaseTransport,

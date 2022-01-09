@@ -3,9 +3,15 @@ import { createContext, useContext } from "react"
 import { ColorTheme, ThemeType } from "../types"
 
 
+/**
+ * Default value of app's theme
+ */
 export const themeDefault: ThemeType = "auto"
 
 
+/**
+ * ColorTheme object for light mode
+ */
 export const ColorThemeLight: ColorTheme = {
     name: "light",
     appTheme: "auto",
@@ -79,6 +85,9 @@ export const ColorThemeLight: ColorTheme = {
     },
 }
 
+/**
+ * ColorTheme object for dark mode
+ */
 export const ColorThemeDark: ColorTheme = {
     name: "dark",
     appTheme: "auto",
@@ -155,8 +164,14 @@ export const ColorThemeDark: ColorTheme = {
 
 const ColorThemeContext = createContext(ColorThemeLight)
 
+/**
+ * ColorTheme provider to pass the theme object to component tree
+ */
 export const ColorThemeProvider = ColorThemeContext.Provider
 
+/**
+ * @returns ColorTheme object currently in use
+ */
 export function useColorTheme(): ColorTheme {
     return useContext(ColorThemeContext)
 }

@@ -7,11 +7,18 @@ import { getTimestamp } from "./date"
 import { log } from "./log"
 
 
+/**
+ * @returns a string with the default name of the new document
+ */
 export function getDocumentName(): string {
     return "Novo documento"
 }
 
 
+/**
+ * Reducer function to handle with document data actions
+ * and update its state
+ */
 export function reducerDocumentData(
     state: Document | undefined,
     action: DocumentDataReducerAction
@@ -186,8 +193,14 @@ const DocumentDataContext = createContext({
     dispatchDocumentData: (value: DocumentDataReducerAction) => {}
 } as DocumentDataContextType)
 
+/**
+ * Provider to pass the document data through the component tree
+ */
 export const DocumentDataProvider = DocumentDataContext.Provider
 
+/**
+ * Hook to get document data state and dispatch
+ */
 export function useDocumentData() {
     return useContext(DocumentDataContext)
 }

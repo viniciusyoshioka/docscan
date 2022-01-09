@@ -5,6 +5,10 @@ import { log } from "./log"
 import { getWritePermission } from "./permission"
 
 
+/**
+ * Creates the app root folder.
+ * The folder is created inside app's private directory.
+ */
 async function createRootFolder() {
     const hasWritePermission = await getWritePermission()
     if (!hasWritePermission) {
@@ -20,6 +24,10 @@ async function createRootFolder() {
 }
 
 
+/**
+ * Creates the app external root folder.
+ * The folder is created in external storage directory.
+ */
 async function createRootFolderExternal() {
     const hasWritePermission = await getWritePermission()
     if (!hasWritePermission) {
@@ -35,6 +43,9 @@ async function createRootFolderExternal() {
 }
 
 
+/**
+ * Creates the folder to store generated PDF files
+ */
 async function createPdfFolder() {
     const hasWritePermission = await getWritePermission()
     if (!hasWritePermission) {
@@ -50,6 +61,9 @@ async function createPdfFolder() {
 }
 
 
+/**
+ * Creates the folder to store the exported document
+ */
 export async function createExportedFolder() {
     const hasWritePermission = await getWritePermission()
     if (!hasWritePermission) {
@@ -65,6 +79,9 @@ export async function createExportedFolder() {
 }
 
 
+/**
+ * Creates the internal folder to store picture files
+ */
 export async function createPictureFolder() {
     const hasWritePermission = await getWritePermission()
     if (!hasWritePermission) {
@@ -80,6 +97,9 @@ export async function createPictureFolder() {
 }
 
 
+/**
+ * Creates the internal folder to store temporary files
+ */
 export async function createTemporaryFolder() {
     const hasWritePermission = await getWritePermission()
     if (!hasWritePermission) {
@@ -95,6 +115,10 @@ export async function createTemporaryFolder() {
 }
 
 
+/**
+ * Creates the internal folder to store, temporarialy,
+ * exported document files, before moving them to their directory
+ */
 export async function createTemporaryExportedFolder() {
     const hasWritePermission = await getWritePermission()
     if (!hasWritePermission) {
@@ -110,6 +134,10 @@ export async function createTemporaryExportedFolder() {
 }
 
 
+/**
+ * Creates the internal folder to store, temporarialy, the
+ * compressed pictures files, while the pdf is being created.
+ */
 export async function createTemporaryCompressedPictureFolder() {
     const hasWritePermission = await getWritePermission()
     if (!hasWritePermission) {
@@ -125,6 +153,11 @@ export async function createTemporaryCompressedPictureFolder() {
 }
 
 
+/**
+ * Creates all folder needed by the app
+ * 
+ * Executes each function as a promise
+ */
 export function createAllFolder() {
     // createRootFolder()
     // createRootFolderExternal()
@@ -137,6 +170,12 @@ export function createAllFolder() {
 }
 
 
+/**
+ * Creates all folder needed by the app
+ * 
+ * Execute each function with async/await waiting for
+ * one function ends to start another
+ */
 export async function createAllFolderAsync() {
     // await createRootFolder()
     // await createRootFolderExternal()

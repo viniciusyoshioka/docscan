@@ -1,6 +1,11 @@
 import { PermissionsAndroid } from "react-native"
 
 
+/**
+ * Request Android CAMERA permission for the user
+ * 
+ * @returns boolean indicating if the permission was granted or not
+ */
 export async function getCameraPermission(): Promise<boolean> {
     const hasPermission = await PermissionsAndroid.check("android.permission.CAMERA")
     if (!hasPermission) {
@@ -11,6 +16,11 @@ export async function getCameraPermission(): Promise<boolean> {
 }
 
 
+/**
+ * Request Android READ_EXTERNAL_STORAGE permission for the user
+ * 
+ * @returns boolean indicating if the permission was granted or not
+ */
 export async function getReadPermission(): Promise<boolean> {
     const hasPermission = await PermissionsAndroid.check("android.permission.READ_EXTERNAL_STORAGE")
     if (!hasPermission) {
@@ -21,6 +31,11 @@ export async function getReadPermission(): Promise<boolean> {
 }
 
 
+/**
+ * Request Android WRITE_EXTERNAL_STORAGE permission for the user
+ * 
+ * @returns boolean indicating if the permission was granted or not
+ */
 export async function getWritePermission(): Promise<boolean> {
     const hasPermission = await PermissionsAndroid.check("android.permission.WRITE_EXTERNAL_STORAGE")
     if (!hasPermission) {
