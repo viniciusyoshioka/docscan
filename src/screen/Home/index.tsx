@@ -35,13 +35,35 @@ export function Home() {
 
 
     async function getDocumentList() {
-        const documentList = await DocumentDatabase.getDocumentList()
-        setDocument(documentList)
+        try {
+            const documentList = await DocumentDatabase.getDocumentList()
+            setDocument(documentList)
+        } catch (error) {
+            log.error(`Error getting document list from database: "${error}"`)
+            Alert.alert(
+                "Aviso",
+                "Erro ao carregar documentos"
+            )
+        }
     }
 
     async function deleteSelectedDocument() {
         for (let i = 0; i < selectedDocument.length; i++) {
-            const picturesToDelete = await DocumentDatabase.getDocumentPicture(selectedDocument[i])
+            let picturesToDelete
+            try {
+                picturesToDelete = await DocumentDatabase.getDocumentPicture(selectedDocument[i])
+            } catch (error) {
+                await getDocumentList()
+                exitSelectionMode()
+
+                log.error(`Error getting document picture from database to delete selected documents: "${error}"`)
+                Alert.alert(
+                    "Aviso",
+                    "Erro ao apagar documentos selecionados"
+                )
+                return
+            }
+
             for (let j = 0; j < picturesToDelete.length; j++) {
                 try {
                     await RNFS.unlink(picturesToDelete[j].filepath)
@@ -50,7 +72,16 @@ export function Home() {
                 }
             }
         }
-        await DocumentDatabase.deleteDocument(selectedDocument)
+
+        try {
+            await DocumentDatabase.deleteDocument(selectedDocument)
+        } catch (error) {
+            log.error(`Error deleting selected documents from database: "${error}"`)
+            Alert.alert(
+                "Aviso",
+                "Erro ao apagar documentos selecionados"
+            )
+        }
         await getDocumentList()
         exitSelectionMode()
     }
