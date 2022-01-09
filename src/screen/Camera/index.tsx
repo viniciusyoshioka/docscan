@@ -11,7 +11,7 @@ import { CameraSettings } from "./CameraSettings"
 import { SafeScreen } from "../../components"
 import { fullPathPicture } from "../../services/constant"
 import { getDateTime } from "../../services/date"
-import { createAllFolder } from "../../services/folder-handler"
+import { createAllFolderAsync } from "../../services/folder-handler"
 import { useBackHandler } from "../../services/hook"
 import { log } from "../../services/log"
 import { getCameraPermission } from "../../services/permission"
@@ -52,7 +52,11 @@ export function Camera() {
 
         for (let i = 0; i < documentDataState.pictureList.length; i++) {
             if (!documentDataState.id || !documentDataState.pictureList[i].id) {
-                await RNFS.unlink(documentDataState.pictureList[i].filepath)
+                try {
+                    await RNFS.unlink(documentDataState.pictureList[i].filepath)
+                } catch (error) {
+                    log.warn(`Error deleting unsaved picture before leaving Camera screen: "${error}"`)
+                }
             }
         }
         dispatchDocumentData({ type: "close-document" })
@@ -65,6 +69,13 @@ export function Camera() {
     }
 
     function goBack() {
+        if (params?.screenAction === "replace-picture") {
+            navigation.navigate("VisualizePicture", {
+                pictureIndex: params.replaceIndex,
+            })
+            return
+        }
+
         if (!documentDataState || !hasChanges) {
             navigation.navigate("Home")
             return
@@ -80,13 +91,6 @@ export function Camera() {
                     { text: "Salvar", onPress: () => saveChangesAndGoBack() }
                 ]
             )
-            return
-        }
-
-        if (params?.screenAction === "replace-picture") {
-            navigation.navigate("VisualizePicture", {
-                pictureIndex: params.replaceIndex,
-            })
         }
     }
 
@@ -121,7 +125,7 @@ export function Camera() {
     }
 
     async function takePicture() {
-        createAllFolder()
+        await createAllFolderAsync()
 
         const date = getDateTime("-", "-", true)
         const picturePath = `${fullPathPicture}/${date}.jpg`
