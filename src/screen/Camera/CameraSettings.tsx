@@ -11,10 +11,10 @@ import { CameraType, FlashType, WhiteBalanceType } from "../../types"
 
 
 export interface CameraSettingsProps extends ModalCameraSettingsProps {
-    isMultipleCameraAvailable: boolean,
-    currentCameraIndex: number,
-    setCurrentCameraIndex: (newCurrentCameraIndex: number) => void
-    cameraList: Array<HardwareCamera>,
+    isMultipleCameraAvailable: boolean;
+    currentCameraIndex: number;
+    setCurrentCameraIndex: (newCurrentCameraIndex: number) => void;
+    cameraList: Array<HardwareCamera>;
 }
 
 

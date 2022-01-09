@@ -4,11 +4,11 @@ import { Header, HeaderButton, HeaderTitle } from "../../components"
 
 
 export interface VisualizePictureHeaderProps {
-    goBack: () => void,
-    isCropping: boolean,
-    openCamera: () => void,
-    setIsCropping: (newIsCropping: boolean) => void,
-    saveCroppedPicture: () => void,
+    goBack: () => void;
+    isCropping: boolean;
+    openCamera: () => void;
+    setIsCropping: (newIsCropping: boolean) => void;
+    saveCroppedPicture: () => void;
 }
 
 

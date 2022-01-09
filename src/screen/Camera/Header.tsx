@@ -4,8 +4,8 @@ import { Header, HeaderButton, HeaderTitle } from "../../components"
 
 
 export interface CameraHeaderProps {
-    goBack: () => void,
-    openSettings: () => void,
+    goBack: () => void;
+    openSettings: () => void;
 }
 
 

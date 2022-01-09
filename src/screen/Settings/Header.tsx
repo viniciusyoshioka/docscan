@@ -4,7 +4,7 @@ import { Header, HeaderButton, HeaderTitle } from "../../components"
 
 
 export interface SettingsHeaderProps {
-    goBack: () => void
+    goBack: () => void;
 }
 
 

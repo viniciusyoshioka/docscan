@@ -4,10 +4,10 @@ import { Header, HeaderButton, HeaderTitle } from "../../components"
 
 
 export interface ImportImageFromGaleryHeaderProps {
-    goBack: () => void,
-    exitSelectionMode: () => void,
-    importImage: () => void,
-    selectionMode: boolean,
+    goBack: () => void;
+    exitSelectionMode: () => void;
+    importImage: () => void;
+    selectionMode: boolean;
 }
 
 

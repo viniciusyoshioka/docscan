@@ -7,12 +7,12 @@ import { HeaderButton, MenuItem } from "../../components"
 
 
 export interface HomeMenuProps {
-    selectionMode: boolean,
-    importDocument: () => void,
-    exportDocument: () => void,
-    openSettings: () => void,
-    mergeDocument: () => void,
-    duplicateDocument: () => void,
+    selectionMode: boolean;
+    importDocument: () => void;
+    exportDocument: () => void;
+    openSettings: () => void;
+    mergeDocument: () => void;
+    duplicateDocument: () => void;
 }
 
 

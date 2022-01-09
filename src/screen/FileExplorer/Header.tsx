@@ -4,7 +4,7 @@ import { Header, HeaderButton, HeaderTitle } from "../../components/Header"
 
 
 export interface FileExplorerHeaderProps {
-    goBack: () => void,
+    goBack: () => void;
 }
 
 

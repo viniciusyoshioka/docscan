@@ -6,15 +6,15 @@ import { appName } from "../../services/constant"
 
 
 export interface HomeHeaderProps {
-    selectionMode: boolean,
-    exitSelectionMode: () => void,
-    deleteSelectedDocument: () => void,
-    scanNewDocument: () => void,
-    importDocument: () => void,
-    exportDocument: () => void,
-    openSettings: () => void,
-    mergeDocument: () => void,
-    duplicateDocument: () => void,
+    selectionMode: boolean;
+    exitSelectionMode: () => void;
+    deleteSelectedDocument: () => void;
+    scanNewDocument: () => void;
+    importDocument: () => void;
+    exportDocument: () => void;
+    openSettings: () => void;
+    mergeDocument: () => void;
+    duplicateDocument: () => void;
 }
 
 

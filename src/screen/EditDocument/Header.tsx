@@ -6,17 +6,17 @@ import { useDocumentData } from "../../services/document"
 
 
 export interface EditDocumentHeaderProps {
-    goBack: () => void,
-    exitSelectionMode: () => void,
-    selectionMode: boolean,
-    deletePicture: () => void,
-    openCamera: () => void,
-    renameDocument: () => void,
-    convertToPdf: () => void,
-    shareDocument: () => void,
-    visualizePdf: () => void,
-    deletePdf: () => void,
-    deleteDocument: () => void,
+    goBack: () => void;
+    exitSelectionMode: () => void;
+    selectionMode: boolean;
+    deletePicture: () => void;
+    openCamera: () => void;
+    renameDocument: () => void;
+    convertToPdf: () => void;
+    shareDocument: () => void;
+    visualizePdf: () => void;
+    deletePdf: () => void;
+    deleteDocument: () => void;
 }
 
 

@@ -4,11 +4,11 @@ import { CameraControlAction, CameraControlButton, CameraControlView } from "../
 
 
 export interface CameraControlProps {
-    screenAction?: "replace-picture",
-    pictureListLength: number,
-    addPictureFromGalery: () => void,
-    takePicture: () => void,
-    editDocument: () => void,
+    screenAction?: "replace-picture";
+    pictureListLength: number;
+    addPictureFromGalery: () => void;
+    takePicture: () => void;
+    editDocument: () => void;
 }
 
 

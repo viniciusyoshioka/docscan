@@ -7,12 +7,12 @@ import { HeaderButton, MenuItem } from "../../components"
 
 
 export interface EditDocumentMenuProps {
-    convertToPdf: () => void,
-    shareDocument: () => void,
-    visualizePdf: () => void,
-    renameDocument: () => void,
-    deletePdf: () => void,
-    deleteDocument: () => void,
+    convertToPdf: () => void;
+    shareDocument: () => void;
+    visualizePdf: () => void;
+    renameDocument: () => void;
+    deletePdf: () => void;
+    deleteDocument: () => void;
 }
 
 

@@ -31,7 +31,7 @@ const ViewSlider = styled.View`
 
 
 export interface ConvertPdfOptionProps extends ModalProps {
-    convertToPdf: (quality: number) => void,
+    convertToPdf: (quality: number) => void;
 }
 
 
