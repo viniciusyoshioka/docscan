@@ -28,15 +28,14 @@ export function Camera() {
 
     const cameraRef = useRef<RNCamera>(null)
     // const cameraControlRef = useRef<CameraControlHandle>(null)
-    const [cameraSettingsVisible, setCameraSettingsVisible] = useState(false)
-
-    const [isMultipleCameraAvailable, setIsMultipleCameraAvailable] = useState(false)
-    const [currentCameraIndex, setCurrentCameraIndex] = useState<number | null>(null)
-    const [cameraList, setCameraList] = useState<Array<HardwareCamera> | null>(null)
 
     const { cameraSettingsState } = useCameraSettings()
     const { documentDataState, dispatchDocumentData } = useDocumentData()
     const [hasChanges, setHasChanges] = useState(false)
+    const [cameraSettingsVisible, setCameraSettingsVisible] = useState(false)
+    const [isMultipleCameraAvailable, setIsMultipleCameraAvailable] = useState(false)
+    const [currentCameraIndex, setCurrentCameraIndex] = useState<number | null>(null)
+    const [cameraList, setCameraList] = useState<Array<HardwareCamera> | null>(null)
 
 
     useBackHandler(() => {
