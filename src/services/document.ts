@@ -1,8 +1,10 @@
 import { createContext, useContext } from "react"
+import { Alert } from "react-native"
 
 import { DocumentDatabase } from "../database"
 import { Document, DocumentDataContextType, DocumentDataReducerAction } from "../types"
 import { getTimestamp } from "./date"
+import { log } from "./log"
 
 
 export function getDocumentName(): string {
@@ -111,6 +113,13 @@ export function reducerDocumentData(
                         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                         action.payload(state.id!)
                     })
+                    .catch((error) => {
+                        log.error(`Error saving (update) document in action ${action.type}. "${error}"`)
+                        Alert.alert(
+                            "Aviso",
+                            "Erro salvando documento"
+                        )
+                    })
 
                 return {
                     ...state,
@@ -120,6 +129,13 @@ export function reducerDocumentData(
                 DocumentDatabase.insertDocument(state.name, state.pictureList)
                     .then(([documentResultSet, _]) => {
                         action.payload(documentResultSet.insertId)
+                    })
+                    .catch((error) => {
+                        log.error(`Error saving (insert) document in action ${action.type}. "${error}"`)
+                        Alert.alert(
+                            "Aviso",
+                            "Erro salvando documento"
+                        )
                     })
 
                 return {
@@ -138,8 +154,22 @@ export function reducerDocumentData(
 
             if (state.id && state.hasChanges) {
                 DocumentDatabase.updateDocument(state.id, state.name, state.pictureList)
+                    .catch((error) => {
+                        log.error(`Error saving (update) document in action ${action.type}. "${error}"`)
+                        Alert.alert(
+                            "Aviso",
+                            "Erro salvando documento"
+                        )
+                    })
             } else if (state.pictureList.length > 0 && state.hasChanges) {
                 DocumentDatabase.insertDocument(state.name, state.pictureList)
+                    .catch((error) => {
+                        log.error(`Error saving (insert) document in action ${action.type}. "${error}"`)
+                        Alert.alert(
+                            "Aviso",
+                            "Erro salvando documento"
+                        )
+                    })
             }
 
             return undefined
