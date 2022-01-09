@@ -24,7 +24,7 @@ export function EditDocument() {
     const navigation = useNavigation<NavigationParamProps<"EditDocument">>()
     const { params } = useRoute<RouteParamProps<"EditDocument">>()
 
-    const [documentDataState, dispatchDocumentData] = useDocumentData()
+    const { documentDataState, dispatchDocumentData } = useDocumentData()
     const [selectionMode, setSelectionMode] = useState(false)
     const [selectedPictureIndex, setSelectedPictureIndex] = useState<number[]>([])
     const [renameDocumentVisible, setRenameDocumentVisible] = useState(false)

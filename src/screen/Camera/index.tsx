@@ -36,7 +36,7 @@ export function Camera() {
     const [currentCameraIndex, setCurrentCameraIndex] = useState<number | null>(null)
     const [cameraList, setCameraList] = useState<Array<HardwareCamera> | null>(null)
 
-    const [documentDataState, dispatchDocumentData] = useDocumentData()
+    const { documentDataState, dispatchDocumentData } = useDocumentData()
     const [hasChanges, setHasChanges] = useState(false)
 
 

@@ -24,7 +24,7 @@ export function ImportImageFromGalery() {
 
     const { color, opacity } = useColorTheme()
 
-    const [documentDataState, dispatchDocumentData] = useDocumentData()
+    const { documentDataState, dispatchDocumentData } = useDocumentData()
     const [imageGalery, setImageGalery] = useState<Array<PhotoIdentifier> | null>(null)
     const [selectionMode, setSelectionMode] = useState(false)
     const [selectedImage, setSelectedImage] = useState<Array<string>>([])

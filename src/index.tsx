@@ -113,7 +113,7 @@ export function App() {
             <ColorThemeProvider value={(theme === "light") ? ColorThemeLight : ColorThemeDark}>
                 <ThemeProvider theme={(theme === "light") ? ColorThemeLight : ColorThemeDark}>
                     <MenuProvider>
-                        <DocumentDataProvider value={[documentDataState, dispatchDocumentData]}>
+                        <DocumentDataProvider value={{ documentDataState, dispatchDocumentData }}>
                             <CameraSettingsProvider value={{ cameraSettingsState, dispatchCameraSettings }}>
                                 <Router />
                             </CameraSettingsProvider>

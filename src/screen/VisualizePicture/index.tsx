@@ -24,7 +24,7 @@ export function VisualizePicture() {
     const cropViewRef = useRef<ImageCrop>(null)
     const imageFlatListRef = useRef<FlatList>(null)
 
-    const [documentDataState, dispatchDocumentData] = useDocumentData()
+    const { documentDataState, dispatchDocumentData } = useDocumentData()
     const [isCropping, setIsCropping] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(params.pictureIndex)
     const [isFlatListScrollEnable, setIsFlatListScrollEnable] = useState(true)

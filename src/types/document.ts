@@ -51,4 +51,7 @@ export type Document = {
  * Type for the document data state and dispatch,
  * returned by the reducer hook
  */
-export type DocumentDataContextType = [undefined | Document, Dispatch<DocumentDataReducerAction>]
+export type DocumentDataContextType = {
+    documentDataState: undefined | Document;
+    dispatchDocumentData: Dispatch<DocumentDataReducerAction>;
+}

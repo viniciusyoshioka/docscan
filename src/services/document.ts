@@ -151,10 +151,10 @@ export function reducerDocumentData(
 }
 
 
-const DocumentDataContext = createContext([
-    undefined,
-    (value: DocumentDataReducerAction) => {}
-] as DocumentDataContextType)
+const DocumentDataContext = createContext({
+    documentDataState: undefined,
+    dispatchDocumentData: (value: DocumentDataReducerAction) => {}
+} as DocumentDataContextType)
 
 export const DocumentDataProvider = DocumentDataContext.Provider
 
