@@ -124,6 +124,7 @@ export function EditDocument() {
 
         const documentPath = `file://${fullPathPdf}/${documentDataState.name}.pdf`
         if (!(await RNFS.exists(documentPath))) {
+            log.warn("Can't shared PDF file because it doesn't exists")
             Alert.alert(
                 "Aviso",
                 "Converta o documento para PDF antes de compartilhá-lo"
@@ -218,6 +219,7 @@ export function EditDocument() {
             return
         }
 
+        log.warn("Can't delete PDF file because it doesn't exists")
         Alert.alert(
             "Alerta",
             "Arquivo PDF do documento não existe"
@@ -245,7 +247,15 @@ export function EditDocument() {
                 }
             }
             if (documentDataState.id) {
-                await DocumentDatabase.deleteDocument([documentDataState.id])
+                try {
+                    await DocumentDatabase.deleteDocument([documentDataState.id])
+                } catch (error) {
+                    log.error(`Error deleting current document from database: "${error}"`)
+                    Alert.alert(
+                        "Aviso",
+                        "Erro apagando documento atual"
+                    )
+                }
             }
             dispatchDocumentData({ type: "close-document" })
         }
@@ -265,6 +275,11 @@ export function EditDocument() {
 
     async function deleteSelectedPicture() {
         if (!documentDataState) {
+            log.warn("Was not possible to delete selected picture because document state is undefined")
+            Alert.alert(
+                "Aviso",
+                "Não é possível apagar imagens selecionadas, o documento está vazio"
+            )
             return
         }
 
@@ -281,7 +296,15 @@ export function EditDocument() {
             }
         }
 
-        await DocumentDatabase.deleteDocumentPicture(pictureIdToDelete)
+        try {
+            await DocumentDatabase.deleteDocumentPicture(pictureIdToDelete)
+        } catch (error) {
+            log.error(`Error deleting selected picture from database: "${error}"`)
+            Alert.alert(
+                "Aviso",
+                "Erro apagando imagens selecionadas"
+            )
+        }
         dispatchDocumentData({
             type: "remove-picture",
             payload: selectedPictureIndex,
@@ -347,7 +370,17 @@ export function EditDocument() {
         if (params?.documentId) {
             DocumentDatabase.getDocument(params.documentId)
                 .then(async (document: SimpleDocument) => {
-                    const documentPicture = await DocumentDatabase.getDocumentPicture(params.documentId)
+                    let documentPicture
+                    try {
+                        documentPicture = await DocumentDatabase.getDocumentPicture(params.documentId)
+                    } catch (error) {
+                        log.error("Error getting document picture while openin document")
+                        Alert.alert(
+                            "Aviso",
+                            "Erro carregando imagens do documento"
+                        )
+                        return
+                    }
 
                     dispatchDocumentData({
                         type: "set-document",
@@ -361,6 +394,13 @@ export function EditDocument() {
                         }
                     })
                 })
+                .catch((error) => {
+                    log.error(`Error getting document from database while opening: "${error}"`)
+                    Alert.alert(
+                        "Aviso",
+                        "Erro ao carregar document"
+                    )
+                })
         }
     }, [])
 
@@ -369,19 +409,27 @@ export function EditDocument() {
             dispatchDocumentData({
                 type: "save-document",
                 payload: async (documentId: number) => {
-                    const document = await DocumentDatabase.getDocument(documentId)
-                    const documentPicture = await DocumentDatabase.getDocumentPicture(documentId)
+                    try {
+                        const document = await DocumentDatabase.getDocument(documentId)
+                        const documentPicture = await DocumentDatabase.getDocumentPicture(documentId)
 
-                    dispatchDocumentData({
-                        type: "set-document",
-                        payload: {
-                            document: {
-                                id: documentId,
-                                ...document,
-                            },
-                            pictureList: documentPicture
-                        }
-                    })
+                        dispatchDocumentData({
+                            type: "set-document",
+                            payload: {
+                                document: {
+                                    id: documentId,
+                                    ...document,
+                                },
+                                pictureList: documentPicture
+                            }
+                        })
+                    } catch (error) {
+                        log.error(`Error getting document and document picture from database while saving changes: "${error}"`)
+                        Alert.alert(
+                            "Aviso",
+                            "Erro ao salvar alterações do documento"
+                        )
+                    }
                 }
             })
         }
