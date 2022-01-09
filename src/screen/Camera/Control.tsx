@@ -6,7 +6,7 @@ import { CameraControlAction, CameraControlButton, CameraControlView } from "../
 export interface CameraControlProps {
     screenAction?: "replace-picture";
     pictureListLength: number;
-    addPictureFromGalery: () => void;
+    addPictureFromGallery: () => void;
     takePicture: () => void;
     editDocument: () => void;
 }
@@ -17,7 +17,7 @@ export function CameraControl(props: CameraControlProps) {
         <CameraControlView>
             <CameraControlButton
                 icon={"collections"}
-                onPress={props.addPictureFromGalery}
+                onPress={props.addPictureFromGallery}
             />
 
 

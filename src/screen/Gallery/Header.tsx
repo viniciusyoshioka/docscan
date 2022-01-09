@@ -3,7 +3,7 @@ import React, { Component } from "react"
 import { Header, HeaderButton, HeaderTitle } from "../../components"
 
 
-export interface ImportImageFromGaleryHeaderProps {
+export interface GalleryHeaderProps {
     goBack: () => void;
     exitSelectionMode: () => void;
     importImage: () => void;
@@ -11,15 +11,15 @@ export interface ImportImageFromGaleryHeaderProps {
 }
 
 
-export class ImportImageFromGaleryHeader extends Component<ImportImageFromGaleryHeaderProps> {
+export class GalleryHeader extends Component<GalleryHeaderProps> {
 
 
-    constructor(props: ImportImageFromGaleryHeaderProps) {
+    constructor(props: GalleryHeaderProps) {
         super(props)
     }
 
 
-    shouldComponentUpdate(nextProps: ImportImageFromGaleryHeaderProps) {
+    shouldComponentUpdate(nextProps: GalleryHeaderProps) {
         if (this.props.selectionMode !== nextProps.selectionMode) {
             return true
         }

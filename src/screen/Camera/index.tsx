@@ -94,7 +94,7 @@ export function Camera() {
         }
     }
 
-    function addPictureFromGalery() {
+    function addPictureFromGallery() {
         if (params?.screenAction === "replace-picture") {
             navigation.reset({
                 routes: [
@@ -105,7 +105,7 @@ export function Camera() {
                         params: { pictureIndex: params.replaceIndex }
                     },
                     {
-                        name: "ImportImageFromGalery",
+                        name: "Gallery",
                         params: {
                             screenAction: params.screenAction,
                             replaceIndex: params.replaceIndex
@@ -119,7 +119,7 @@ export function Camera() {
         navigation.reset({
             routes: [
                 { name: "Home" },
-                { name: "ImportImageFromGalery" }
+                { name: "Gallery" }
             ]
         })
     }
@@ -265,7 +265,7 @@ export function Camera() {
                 // ref={cameraControlRef}
                 pictureListLength={documentDataState?.pictureList.length || 0}
                 screenAction={params?.screenAction}
-                addPictureFromGalery={addPictureFromGalery}
+                addPictureFromGallery={addPictureFromGallery}
                 takePicture={takePicture}
                 editDocument={editDocument}
             />

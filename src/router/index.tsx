@@ -8,7 +8,7 @@ import { Camera } from "../screen/Camera"
 import { Settings } from "../screen/Settings"
 import { EditDocument } from "../screen/EditDocument"
 import { VisualizePicture } from "../screen/VisualizePicture"
-import { ImportImageFromGalery } from "../screen/ImportImageFromGalery"
+import { Gallery } from "../screen/Gallery"
 import { FileExplorer } from "../screen/FileExplorer"
 
 import { ScreenParams } from "../types"
@@ -56,8 +56,8 @@ export function Router() {
                 />
 
                 <Stack.Screen
-                    name={"ImportImageFromGalery"}
-                    component={ImportImageFromGalery}
+                    name={"Gallery"}
+                    component={Gallery}
                 />
 
                 <Stack.Screen

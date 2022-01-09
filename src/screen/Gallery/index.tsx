@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from "@react-navigation/core"
 import CameraRoll, { PhotoIdentifier } from "@react-native-community/cameraroll"
 import RNFS from "react-native-fs"
 
-import { ImportImageFromGaleryHeader } from "./Header"
+import { GalleryHeader } from "./Header"
 import { EmptyList, ImageItem, SafeScreen } from "../../components"
 import { fullPathPicture } from "../../services/constant"
 import { useBackHandler } from "../../services/hook"
@@ -16,16 +16,16 @@ import { useDocumentData } from "../../services/document"
 import { LoadingIndicator } from "./LoadingIndicator"
 
 
-export function ImportImageFromGalery() {
+export function Gallery() {
 
 
-    const navigation = useNavigation<NavigationParamProps<"ImportImageFromGalery">>()
-    const { params } = useRoute<RouteParamProps<"ImportImageFromGalery">>()
+    const navigation = useNavigation<NavigationParamProps<"Gallery">>()
+    const { params } = useRoute<RouteParamProps<"Gallery">>()
 
     const { color, opacity } = useColorTheme()
 
     const { documentDataState, dispatchDocumentData } = useDocumentData()
-    const [imageGalery, setImageGalery] = useState<Array<PhotoIdentifier> | null>(null)
+    const [imageGallery, setImageGallery] = useState<Array<PhotoIdentifier> | null>(null)
     const [selectionMode, setSelectionMode] = useState(false)
     const [selectedImage, setSelectedImage] = useState<Array<string>>([])
     const [isRefreshing, setIsRefreshing] = useState(false)
@@ -47,9 +47,9 @@ export function ImportImageFromGalery() {
 
         const hasWritePermission = await getWritePermission()
         if (!hasWritePermission) {
-            setImageGalery([])
+            setImageGallery([])
             setIsLoading(false)
-            log.warn("ImportImageFromGalery getImage - Não tem permissão pra usar a CameraRoll")
+            log.warn("Gallery getImage - Não tem permissão pra usar a CameraRoll")
             Alert.alert(
                 "Erro",
                 "Sem permissão para abrir galeria"
@@ -59,14 +59,14 @@ export function ImportImageFromGalery() {
 
         try {
             const cameraRollPhotos = await CameraRoll.getPhotos({
-                first: imageGalery ? imageGalery.length + 15 : 15,
+                first: imageGallery ? imageGallery.length + 15 : 15,
                 assetType: "Photos",
             })
-            setImageGalery(cameraRollPhotos.edges)
+            setImageGallery(cameraRollPhotos.edges)
             setIsLoading(false)
         } catch (error) {
             setIsLoading(false)
-            log.error(`ImportImageFromGalery getImage - Erro ao pegar imagens da CameraRoll. Mensagem: "${error}"`)
+            log.error(`Gallery getImage - Erro ao pegar imagens da CameraRoll. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro",
                 "Erro desconhecido ao abrir galeria"
@@ -150,7 +150,7 @@ export function ImportImageFromGalery() {
         try {
             await RNFS.copyFile(imagePath, newImagePath)
         } catch (error) {
-            log.error(`ImportImageFromGalery importSingleImage - Erro ao importar uma imagem da galeria. Mensagem: "${error}"`)
+            log.error(`Gallery importSingleImage - Erro ao importar uma imagem da galeria. Mensagem: "${error}"`)
             Alert.alert(
                 "Erro",
                 "Erro desconhecido ao importar imagem da galeria"
@@ -214,13 +214,13 @@ export function ImportImageFromGalery() {
                 })
                 firstIndex += 1
             } catch (error) {
-                log.error(`ImportImageFromGalery importMultipleImage - Erro ao importar multiplas imagens da galeria. Mensagem: "${error}"`)
+                log.error(`Gallery importMultipleImage - Erro ao importar multiplas imagens da galeria. Mensagem: "${error}"`)
 
                 for (let i = 0; i < newImages.length; i++) {
                     try {
                         await RNFS.unlink(newImages[i].filepath)
                     } catch (error) {
-                        log.warn("ImportImageFromGalery importMultipleImage - Erro ao apagar imagens copiadas da galeria para o app após erro ao importar múltiplas imagens")
+                        log.warn("Gallery importMultipleImage - Erro ao apagar imagens copiadas da galeria para o app após erro ao importar múltiplas imagens")
                     }
                 }
 
@@ -296,7 +296,7 @@ export function ImportImageFromGalery() {
 
     return (
         <SafeScreen>
-            <ImportImageFromGaleryHeader
+            <GalleryHeader
                 goBack={goBack}
                 exitSelectionMode={exitSelectionMode}
                 importImage={importMultipleImage}
@@ -304,22 +304,22 @@ export function ImportImageFromGalery() {
             />
 
             <FlatList
-                data={imageGalery}
+                data={imageGallery}
                 renderItem={renderImageItem}
                 numColumns={3}
                 onEndReachedThreshold={0.2}
                 onEndReached={getImage}
-                ListFooterComponent={() => (isLoading && imageGalery) ? <LoadingIndicator /> : null}
+                ListFooterComponent={() => (isLoading && imageGallery) ? <LoadingIndicator /> : null}
                 onRefresh={async () => {
                     setIsRefreshing(true)
-                    setImageGalery(null)
+                    setImageGallery(null)
                     await getImage()
                     setIsRefreshing(false)
                 }}
                 refreshing={isRefreshing}
             />
 
-            {!imageGalery && (
+            {!imageGallery && (
                 <EmptyList>
                     <ActivityIndicator
                         color={color.screen_color}
@@ -329,7 +329,7 @@ export function ImportImageFromGalery() {
                 </EmptyList>
             )}
 
-            {imageGalery?.length === 0 && (
+            {imageGallery?.length === 0 && (
                 <EmptyList
                     source={require("../../image/empty_gallery.png")}
                     message={"Galeria vazia"}
