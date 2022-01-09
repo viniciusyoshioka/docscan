@@ -2,13 +2,11 @@ import React, { createRef, useEffect, useState } from "react"
 import { TextInput } from "react-native"
 
 import { Input, ModalButton, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, MyModal } from "../../components"
+import { useDocumentData } from "../../services/document"
 import { useKeyboard } from "../../services/hook"
 
 
-export interface RenameDocumentProps extends ModalProps {
-    documentName: string,
-    setDocumentName: (newDocumentName: string) => void
-}
+export interface RenameDocumentProps extends ModalProps { }
 
 
 export function RenameDocument(props: RenameDocumentProps) {
@@ -16,7 +14,8 @@ export function RenameDocument(props: RenameDocumentProps) {
 
     const inputRef = createRef<TextInput>()
 
-    const [documentName, setDocumentName] = useState(props.documentName)
+    const { documentDataState, dispatchDocumentData } = useDocumentData()
+    const [documentName, setDocumentName] = useState(documentDataState?.name || "")
 
 
     useKeyboard("keyboardDidHide", () => {
@@ -24,8 +23,16 @@ export function RenameDocument(props: RenameDocumentProps) {
     })
 
 
+    function renameDocument() {
+        dispatchDocumentData({
+            type: "rename-document",
+            payload: documentName
+        })
+    }
+
+
     useEffect(() => {
-        setDocumentName(props.documentName)
+        setDocumentName(documentDataState?.name || "")
     }, [props.visible])
 
 
@@ -57,7 +64,7 @@ export function RenameDocument(props: RenameDocumentProps) {
                     <ModalButton
                         text={"Ok"}
                         onPress={() => {
-                            props.setDocumentName(documentName)
+                            renameDocument()
                             props.setVisible(false)
                         }}
                     />

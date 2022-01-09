@@ -180,13 +180,6 @@ export function EditDocument() {
         viewPdf(pdfFilePath)
     }
 
-    function renameDocument(newDocumentName: string) {
-        dispatchDocumentData({
-            type: "rename-document",
-            payload: newDocumentName
-        })
-    }
-
     async function deletePdf() {
         if (!documentDataState) {
             log.warn("documentDataState está vazio - verificação antes de apagar pdf")
@@ -400,7 +393,6 @@ export function EditDocument() {
             <EditDocumentHeader
                 goBack={goBack}
                 exitSelectionMode={exitSelectionMode}
-                documentName={documentDataState?.name || ""}
                 selectionMode={selectionMode}
                 deletePicture={alertDeletePicture}
                 openCamera={() => navigation.navigate("Camera")}
@@ -422,8 +414,6 @@ export function EditDocument() {
             <RenameDocument
                 visible={renameDocumentVisible}
                 setVisible={setRenameDocumentVisible}
-                documentName={documentDataState?.name || ""}
-                setDocumentName={renameDocument}
             />
 
             <ConvertPdfOption

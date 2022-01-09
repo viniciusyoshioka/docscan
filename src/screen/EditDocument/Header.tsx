@@ -2,12 +2,12 @@ import React from "react"
 
 import { EditDocumentMenu } from "./EditDocumentMenu"
 import { Header, HeaderButton, HeaderTitle } from "../../components"
+import { useDocumentData } from "../../services/document"
 
 
 export interface EditDocumentHeaderProps {
     goBack: () => void,
     exitSelectionMode: () => void,
-    documentName: string,
     selectionMode: boolean,
     deletePicture: () => void,
     openCamera: () => void,
@@ -21,6 +21,11 @@ export interface EditDocumentHeaderProps {
 
 
 export function EditDocumentHeader(props: EditDocumentHeaderProps) {
+
+
+    const { documentDataState } = useDocumentData()
+
+
     return (
         <Header>
             {!props.selectionMode && (
@@ -30,7 +35,7 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
                         onPress={props.goBack}
                     />
 
-                    <HeaderTitle title={props.documentName} />
+                    <HeaderTitle title={documentDataState?.name || ""} />
 
                     <HeaderButton
                         icon={"add-a-photo"}
