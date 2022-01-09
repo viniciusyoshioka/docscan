@@ -1,6 +1,6 @@
 import SQLite from "react-native-sqlite-storage"
 
-import { DocumentForList, DocumentPicture, SimpleDocument } from "@type/"
+import { DocumentForList, DocumentPicture, SimpleDocument } from "../types"
 import { globalAppDatabase } from "."
 
 

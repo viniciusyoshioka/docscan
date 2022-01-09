@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react"
 
-import { CameraSettingsReducerAction, CameraSettingsObject, CameraSettingsContextType } from "@type/"
+import { CameraSettingsReducerAction, CameraSettingsObject, CameraSettingsContextType } from "../types"
 import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "./settings"
 
 

@@ -1,6 +1,6 @@
 import SQLite from "react-native-sqlite-storage"
 
-import { appDatabaseFileName, logDatabaseFileName } from "@services/constant"
+import { appDatabaseFileName, logDatabaseFileName } from "../services/constant"
 
 
 import * as DocumentDatabase from "./Document"

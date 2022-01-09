@@ -6,12 +6,12 @@ import { MenuProvider } from "react-native-popup-menu"
 import SQLite from "react-native-sqlite-storage"
 import { ThemeProvider } from "styled-components/native"
 
-import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase, SettingsDatabase } from "@database/"
-import { cameraSettingsDefault, CameraSettingsProvider, reducerCameraSettings } from "@services/camera"
-import { DocumentDataProvider, reducerDocumentData } from "@services/document"
-import { logCriticalError } from "@services/log"
-import { ColorThemeDark, ColorThemeLight, ColorThemeProvider } from "@services/theme"
-import { ThemeType } from "@type/"
+import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase, SettingsDatabase } from "./database"
+import { cameraSettingsDefault, CameraSettingsProvider, reducerCameraSettings } from "./services/camera"
+import { DocumentDataProvider, reducerDocumentData } from "./services/document"
+import { logCriticalError } from "./services/log"
+import { ColorThemeDark, ColorThemeLight, ColorThemeProvider } from "./services/theme"
+import { ThemeType } from "./types"
 import { Router } from "./router"
 
 

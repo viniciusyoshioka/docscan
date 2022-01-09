@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react"
 
-import { DocumentDatabase } from "@database/"
-import { Document, DocumentDataContextType, DocumentDataReducerAction } from "@type/"
+import { DocumentDatabase } from "../database"
+import { Document, DocumentDataContextType, DocumentDataReducerAction } from "../types"
 import { getTimestamp } from "./date"
 
 
