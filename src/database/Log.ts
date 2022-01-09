@@ -3,7 +3,12 @@ import SQLite from "react-native-sqlite-storage"
 import { globalLogDatabase } from "."
 
 
-export function createLogTable(): Promise<SQLite.ResultSet> {
+/**
+ * Create the log table to store logs
+ * 
+ * @returns SQLite.ResultSet of the operation
+ */
+export function createLogTable(): Promise<void> {
     return new Promise((resolve, reject) => {
         globalLogDatabase.executeSql(`
             CREATE TABLE IF NOT EXISTS log (
@@ -13,8 +18,8 @@ export function createLogTable(): Promise<SQLite.ResultSet> {
                 timestamp TEXT DEFAULT (datetime(CURRENT_TIMESTAMP, 'localtime'))
             );
         `)
-            .then(([resultSet]) => {
-                resolve(resultSet)
+            .then(() => {
+                resolve()
             })
             .catch((error) => {
                 reject(error)
@@ -23,6 +28,14 @@ export function createLogTable(): Promise<SQLite.ResultSet> {
 }
 
 
+/**
+ * Insert the log into the database
+ * 
+ * @param code string with the severity of the log
+ * @param message string of the log message
+ * 
+ * @returns SQLite.ResultSet of the operation
+ */
 export function insertLog(code: string, message: string): Promise<SQLite.ResultSet> {
     return new Promise((resolve, reject) => {
         globalLogDatabase.executeSql(`

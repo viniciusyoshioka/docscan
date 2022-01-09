@@ -4,7 +4,10 @@ import { DocumentForList, DocumentPicture, SimpleDocument } from "../types"
 import { globalAppDatabase } from "."
 
 
-export function createDocumentTable(): Promise<SQLite.ResultSet[]> {
+/**
+ * Creates the document and document_picture table
+ */
+export function createDocumentTable(): Promise<void> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
             CREATE TABLE IF NOT EXISTS document (
@@ -13,8 +16,8 @@ export function createDocumentTable(): Promise<SQLite.ResultSet[]> {
                 lastModificationTimestamp TEXT DEFAULT (datetime(CURRENT_TIMESTAMP, 'localtime'))
             );
         `)
-            .then(async ([documentTableResultSet]) => {
-                const [documentPictureTableResultSet] = await globalAppDatabase.executeSql(`
+            .then(async () => {
+                await globalAppDatabase.executeSql(`
                     CREATE TABLE IF NOT EXISTS document_picture (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         filepath TEXT NOT NULL,
@@ -23,7 +26,7 @@ export function createDocumentTable(): Promise<SQLite.ResultSet[]> {
                         FOREIGN KEY(belongsToDocument) REFERENCES document(id)
                     );
                 `)
-                resolve([documentTableResultSet, documentPictureTableResultSet])
+                resolve()
             })
             .catch((error) => {
                 reject(error)
@@ -31,7 +34,11 @@ export function createDocumentTable(): Promise<SQLite.ResultSet[]> {
     })
 }
 
-
+/**
+ * Get the document to show in a list
+ * 
+ * @returns DocumentForList's array
+ */
 export function getDocumentList(): Promise<DocumentForList[]> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
@@ -46,7 +53,13 @@ export function getDocumentList(): Promise<DocumentForList[]> {
     })
 }
 
-
+/**
+ * Get an specific document
+ * 
+ * @param id of the document to be queried
+ * 
+ * @returns SimpleDocument's object with the document data
+ */
 export function getDocument(id: number): Promise<SimpleDocument> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
@@ -61,7 +74,13 @@ export function getDocument(id: number): Promise<SimpleDocument> {
     })
 }
 
-
+/**
+ * Get the pictures of the given document
+ * 
+ * @param documentId id of the document to get the pictures
+ * 
+ * @returns DocumentPicture's array of the document
+ */
 export function getDocumentPicture(documentId: number): Promise<DocumentPicture[]> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
@@ -76,7 +95,14 @@ export function getDocumentPicture(documentId: number): Promise<DocumentPicture[
     })
 }
 
-
+/**
+ * Insert a new document in the database
+ * 
+ * @param documentName document name string
+ * @param pictureList document's DocumentPicture's array
+ * 
+ * @returns operation result set
+ */
 export function insertDocument(documentName: string, pictureList: DocumentPicture[]): Promise<SQLite.ResultSet[]> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
@@ -111,7 +137,15 @@ export function insertDocument(documentName: string, pictureList: DocumentPictur
     })
 }
 
-
+/**
+ * Update an existing document
+ * 
+ * @param id id of the document to be updated
+ * @param documentName current or new document name string
+ * @param pictureList current or new document picture list
+ * 
+ * @returns operation result set
+ */
 export function updateDocument(
     id: number,
     documentName: string,
@@ -141,7 +175,16 @@ export function updateDocument(
     })
 }
 
-
+/**
+ * Deletes the document with the given id
+ * 
+ * This function only deletes the document from database.
+ * File deletion still has to be invoked.
+ * 
+ * @param id array of document id's to delete
+ * 
+ * @returns operation result set
+ */
 export function deleteDocument(id: number[]): Promise<SQLite.ResultSet[]> {
     return new Promise((resolve, reject) => {
 
@@ -168,8 +211,17 @@ export function deleteDocument(id: number[]): Promise<SQLite.ResultSet[]> {
     })
 }
 
-
-export function deleteDocumentPicture(id: number[]) {
+/**
+ * Deletes the document picture with the given id
+ * 
+ * This function only deletes the document from database.
+ * File deletion still has to be invoked.
+ * 
+ * @param id array of id document pictures's id to delete
+ * 
+ * @returns operation result set
+ */
+export function deleteDocumentPicture(id: number[]): Promise<SQLite.ResultSet> {
     return new Promise((resolve, reject) => {
 
         let idToDelete = ""
@@ -192,22 +244,30 @@ export function deleteDocumentPicture(id: number[]) {
     })
 }
 
-
+/**
+ * TODO
+ */
 export function exportDocument(id: number[] = []): Promise<null> {
     return new Promise((resolve, reject) => {})
 }
 
-
+/**
+ * TODO
+ */
 export function importDocument(path: string): Promise<null> {
     return new Promise((resolve, reject) => {})
 }
 
-
+/**
+ * TODO
+ */
 export function duplicateDocument(id: number[]): Promise<void> {
     return new Promise((resolve, reject) => {})
 }
 
-
+/**
+ * TODO
+ */
 export function mergeDocument(id: number[]): Promise<void> {
     return new Promise((resolve, reject) => {})
 }

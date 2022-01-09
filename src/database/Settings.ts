@@ -6,7 +6,11 @@ import { SettingsKey, SettingsObject } from "../types"
 import { globalAppDatabase } from "."
 
 
-export function createSettingsTable(): Promise<null> {
+/**
+ * Create settings table it not exists and inserts the
+ * default settings object
+ */
+export function createSettingsTable(): Promise<void> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
             SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'settings';
@@ -34,7 +38,7 @@ export function createSettingsTable(): Promise<null> {
                             ('camera-id', ?);
                     `, [themeDefault, cameraFlashDefault, cameraWhiteBalanceDefault, cameraTypeDefault, cameraIdDefault])
                 }
-                resolve(null)
+                resolve()
             })
             .catch((error) => {
                 reject(error)
@@ -43,6 +47,11 @@ export function createSettingsTable(): Promise<null> {
 }
 
 
+/**
+ * Get all settings
+ * 
+ * @returns SettingsObject
+ */
 export function getSettings(): Promise<SettingsObject> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
@@ -63,6 +72,13 @@ export function getSettings(): Promise<SettingsObject> {
 }
 
 
+/**
+ * Get the setting of the given key
+ * 
+ * @param key string of type SettingsKey to get its settings
+ * 
+ * @returns the setting of the given key
+ */
 export function getSettingKey<K extends SettingsKey>(key: K): Promise<SettingsObject[K]> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
@@ -79,6 +95,14 @@ export function getSettingKey<K extends SettingsKey>(key: K): Promise<SettingsOb
 }
 
 
+/**
+ * Adds a new setting into the database
+ * 
+ * @param key SettingsKey string to add
+ * @param value the value to add for the given SettingsKey
+ * 
+ * @returns the operation's result set
+ */
 export function insertSettings<K extends SettingsKey>(key: K, value: SettingsObject[K]): Promise<SQLite.ResultSet> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
@@ -94,6 +118,14 @@ export function insertSettings<K extends SettingsKey>(key: K, value: SettingsObj
 }
 
 
+/**
+ * Updates the value of an existin setting
+ * 
+ * @param key SettingsKey string to update
+ * @param value the new value for the given SettingsKey
+ * 
+ * @returns the operation's result set
+ */
 export function updateSettings<K extends SettingsKey>(key: K, value: SettingsObject[K]): Promise<SQLite.ResultSet> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
@@ -109,6 +141,13 @@ export function updateSettings<K extends SettingsKey>(key: K, value: SettingsObj
 }
 
 
+/**
+ * Deletes the settings with the given keys
+ * 
+ * @param keys SettingsKey's array to be deleted
+ * 
+ * @returns the operation's result set
+ */
 export function deleteSettings(keys: SettingsKey[]): Promise<SQLite.ResultSet> {
     return new Promise((resolve, reject) => {
 
