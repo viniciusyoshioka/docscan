@@ -138,6 +138,7 @@ export function ImportImageFromGalery() {
     async function importSingleImage(imagePath: string) {
         const hasWritePermission = await getWritePermission()
         if (!hasWritePermission) {
+            log.warn("Sem permissão para importar uma imagem")
             Alert.alert(
                 "Erro",
                 "Sem permissão para importar imagem"
@@ -192,6 +193,7 @@ export function ImportImageFromGalery() {
     async function importMultipleImage() {
         const hasWritePermission = await getWritePermission()
         if (!hasWritePermission) {
+            log.warn("Sem permissão para importar múltiplas imagens")
             Alert.alert(
                 "Erro",
                 "Sem permissão para importar múltiplas imagens"
