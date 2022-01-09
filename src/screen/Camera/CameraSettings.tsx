@@ -1,16 +1,15 @@
-import React, { Dispatch } from "react"
+import React from "react"
 import { ScrollView } from "react-native"
 import { HardwareCamera } from "react-native-camera"
 
 import { CameraSettingsButton, ModalCameraSettings, ModalCameraSettingsProps } from "../../components"
 import { SettingsDatabase } from "../../database"
+import { useCameraSettings } from "../../services/camera"
 import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "../../services/settings"
-import { CameraSettingsObject, CameraSettingsReducerAction, CameraType, FlashType, WhiteBalanceType } from "../../types"
+import { CameraType, FlashType, WhiteBalanceType } from "../../types"
 
 
 export interface CameraSettingsProps extends ModalCameraSettingsProps {
-    cameraAttributes: CameraSettingsObject,
-    setCameraAttributes: Dispatch<CameraSettingsReducerAction>,
     isMultipleCameraAvailable: boolean,
     currentCameraIndex: number,
     setCurrentCameraIndex: (newCurrentCameraIndex: number) => void
@@ -21,10 +20,12 @@ export interface CameraSettingsProps extends ModalCameraSettingsProps {
 export function CameraSettings(props: CameraSettingsProps) {
 
 
+    const { cameraSettingsState, dispatchCameraSettings } = useCameraSettings()
+
+
     async function changeFlash() {
-        // Change attribute
         let newFlash: FlashType = "auto"
-        switch (props.cameraAttributes.flash) {
+        switch (cameraSettingsState.flash) {
             case "auto":
                 newFlash = "on"
                 break
@@ -35,16 +36,14 @@ export function CameraSettings(props: CameraSettingsProps) {
                 newFlash = "auto"
                 break
         }
-        // Set camera attribute
-        props.setCameraAttributes({ type: "flash", payload: newFlash })
-        // Write settings
+
+        dispatchCameraSettings({ type: "flash", payload: newFlash })
         await SettingsDatabase.updateSettings("cameraFlash", newFlash)
     }
 
     async function changeWhiteBalance() {
-        // Change attribute
         let newWhiteBalance: WhiteBalanceType = "auto"
-        switch (props.cameraAttributes.whiteBalance) {
+        switch (cameraSettingsState.whiteBalance) {
             case "auto":
                 newWhiteBalance = "sunny"
                 break
@@ -61,16 +60,14 @@ export function CameraSettings(props: CameraSettingsProps) {
                 newWhiteBalance = "auto"
                 break
         }
-        // Set camera attribute
-        props.setCameraAttributes({ type: "white-balance", payload: newWhiteBalance })
-        // Write settings
+
+        dispatchCameraSettings({ type: "white-balance", payload: newWhiteBalance })
         await SettingsDatabase.updateSettings("cameraWhiteBalance", newWhiteBalance)
     }
 
     async function switchCameraType() {
-        // Change attribute
         let newCameraType: CameraType = "back"
-        switch (props.cameraAttributes.cameraType) {
+        switch (cameraSettingsState.cameraType) {
             case "back":
                 newCameraType = "front"
                 break
@@ -78,27 +75,24 @@ export function CameraSettings(props: CameraSettingsProps) {
                 newCameraType = "back"
                 break
         }
-        // Set camera attribute
-        props.setCameraAttributes({ type: "camera-type", payload: newCameraType })
-        // Write settings
+
+        dispatchCameraSettings({ type: "camera-type", payload: newCameraType })
         await SettingsDatabase.updateSettings("cameraType", newCameraType)
     }
 
     async function switchCameraId() {
-        // Change attribute
         let newIndex = 0
         if ((props.currentCameraIndex + 1) < props.cameraList.length) {
             newIndex = props.currentCameraIndex + 1
         }
-        // Set camera attribute
-        props.setCameraAttributes({ type: "camera-id", payload: props.cameraList[newIndex].id })
+
+        dispatchCameraSettings({ type: "camera-id", payload: props.cameraList[newIndex].id })
         props.setCurrentCameraIndex(newIndex)
-        // Write settings
         await SettingsDatabase.updateSettings("cameraId", props.cameraList[newIndex].id)
     }
 
     async function resetCameraSettings() {
-        props.setCameraAttributes({ type: "reset" })
+        dispatchCameraSettings({ type: "reset" })
 
         await SettingsDatabase.updateSettings("cameraFlash", cameraFlashDefault)
         await SettingsDatabase.updateSettings("cameraWhiteBalance", cameraWhiteBalanceDefault)
@@ -112,9 +106,9 @@ export function CameraSettings(props: CameraSettingsProps) {
             <ScrollView horizontal={true}>
                 <CameraSettingsButton
                     icon={
-                        props.cameraAttributes.flash === "auto"
+                        cameraSettingsState.flash === "auto"
                             ? "flash-auto"
-                            : props.cameraAttributes.flash === "on"
+                            : cameraSettingsState.flash === "on"
                                 ? "flash-on"
                                 : "flash-off"
                     }
@@ -123,13 +117,13 @@ export function CameraSettings(props: CameraSettingsProps) {
 
                 <CameraSettingsButton
                     icon={
-                        props.cameraAttributes.whiteBalance === "auto"
+                        cameraSettingsState.whiteBalance === "auto"
                             ? "wb-auto"
-                            : props.cameraAttributes.whiteBalance === "sunny"
+                            : cameraSettingsState.whiteBalance === "sunny"
                                 ? "wb-sunny"
-                                : props.cameraAttributes.whiteBalance === "cloudy"
+                                : cameraSettingsState.whiteBalance === "cloudy"
                                     ? "wb-cloudy"
-                                    : props.cameraAttributes.whiteBalance === "fluorescent"
+                                    : cameraSettingsState.whiteBalance === "fluorescent"
                                         ? "wb-iridescent"
                                         : "wb-incandescent"
                     }

@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Alert, StatusBar } from "react-native"
 import { HardwareCamera, RNCamera } from "react-native-camera"
 import { useNavigation, useRoute } from "@react-navigation/core"
@@ -15,10 +15,9 @@ import { createAllFolder } from "../../services/folder-handler"
 import { useBackHandler } from "../../services/hook"
 import { log } from "../../services/log"
 import { getCameraPermission } from "../../services/permission"
-import { SettingsDatabase } from "../../database"
 import { useDocumentData } from "../../services/document"
 import { NavigationParamProps, RouteParamProps } from "../../types"
-import { cameraSettingsDefault, reducerCameraSettings } from "../../services/camera"
+import { useCameraSettings } from "../../services/camera"
 
 
 export function Camera() {
@@ -29,13 +28,13 @@ export function Camera() {
 
     const cameraRef = useRef<RNCamera>(null)
     // const cameraControlRef = useRef<CameraControlHandle>(null)
-    const [stateCameraSettings, dispatchCameraSettings] = useReducer(reducerCameraSettings, cameraSettingsDefault)
     const [cameraSettingsVisible, setCameraSettingsVisible] = useState(false)
 
     const [isMultipleCameraAvailable, setIsMultipleCameraAvailable] = useState(false)
     const [currentCameraIndex, setCurrentCameraIndex] = useState<number | null>(null)
     const [cameraList, setCameraList] = useState<Array<HardwareCamera> | null>(null)
 
+    const { cameraSettingsState } = useCameraSettings()
     const { documentDataState, dispatchDocumentData } = useDocumentData()
     const [hasChanges, setHasChanges] = useState(false)
 
@@ -194,23 +193,8 @@ export function Camera() {
 
 
     useEffect(() => {
-        SettingsDatabase.getSettings()
-            .then((settings) => {
-                dispatchCameraSettings({
-                    type: "set",
-                    payload: {
-                        flash: settings.cameraFlash,
-                        whiteBalance: settings.cameraWhiteBalance,
-                        cameraType: settings.cameraType,
-                        cameraId: settings.cameraId,
-                    }
-                })
-            })
-    }, [])
-
-    useEffect(() => {
         async function getCameraList() {
-            let readCameraList: Array<HardwareCamera> | undefined = [{ id: "0", type: 0 }]
+            let readCameraList: HardwareCamera[] | undefined
 
             try {
                 readCameraList = await cameraRef.current?.getCameraIdsAsync()
@@ -230,7 +214,7 @@ export function Camera() {
             setCameraList(cameraIdList)
 
             cameraIdList.forEach((item: HardwareCamera, index: number) => {
-                if (item.id === stateCameraSettings.cameraId) {
+                if (item.id === cameraSettingsState.cameraId) {
                     setCurrentCameraIndex(index)
                     return
                 }
@@ -250,13 +234,6 @@ export function Camera() {
             <CameraSettings
                 visible={cameraSettingsVisible}
                 setVisible={setCameraSettingsVisible}
-                cameraAttributes={{
-                    flash: stateCameraSettings.flash,
-                    whiteBalance: stateCameraSettings.whiteBalance,
-                    cameraType: stateCameraSettings.cameraType,
-                    cameraId: stateCameraSettings.cameraId,
-                }}
-                setCameraAttributes={dispatchCameraSettings}
                 cameraList={cameraList || []}
                 currentCameraIndex={currentCameraIndex || 0}
                 setCurrentCameraIndex={setCurrentCameraIndex}
@@ -270,10 +247,10 @@ export function Camera() {
                 useNativeZoom={true}
                 useCamera2Api={true}
                 playSoundOnCapture={true}
-                flashMode={stateCameraSettings.flash}
-                whiteBalance={stateCameraSettings.whiteBalance}
-                type={stateCameraSettings.cameraType}
-                cameraId={stateCameraSettings.cameraType === "back" ? stateCameraSettings.cameraId : undefined}
+                flashMode={cameraSettingsState.flash}
+                whiteBalance={cameraSettingsState.whiteBalance}
+                type={cameraSettingsState.cameraType}
+                cameraId={cameraSettingsState.cameraType === "back" ? cameraSettingsState.cameraId : undefined}
             />
 
             <CameraHeader
