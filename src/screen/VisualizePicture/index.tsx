@@ -48,6 +48,7 @@ export function VisualizePicture() {
     async function onImageSaved(response: OnImageSavedResponse) {
         const currentPicturePath = documentDataState?.pictureList[currentIndex].filepath
         if (!currentPicturePath) {
+            log.warn("A imagem atual a ser substituída não existe")
             Alert.alert(
                 "Erro",
                 "A imagem atual a ser substituída não existe"
@@ -66,7 +67,9 @@ export function VisualizePicture() {
                 }
             })
 
-            await RNFS.unlink(currentPicturePath)
+            if (await RNFS.exists(currentPicturePath)) {
+                await RNFS.unlink(currentPicturePath)
+            }
             await RNFS.moveFile(response.uri, newCroppedPictureUri)
         } catch (error) {
             dispatchDocumentData({
