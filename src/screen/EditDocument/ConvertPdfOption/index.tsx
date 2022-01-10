@@ -1,33 +1,10 @@
 import React, { useEffect, useState } from "react"
 import Slider from "@react-native-community/slider"
-import styled from "styled-components/native"
 
-import { ModalButton, ModalDescription, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, MyModal, RadioButton } from "../../components"
-import { useColorTheme } from "../../services/theme"
-import { DocumentPdfCompressionLevel, StyledProps } from "../../types"
-
-
-const ViewCompressionText = styled.View`
-    align-items: flex-start;
-    justify-content: center;
-    width: 40px;
-`
-
-
-const CompressionText = styled.Text`
-    font-size: 15px;
-    color: ${(props: StyledProps) => props.theme.color.screen_color};
-    opacity: ${(props: StyledProps) => props.theme.opacity.highEmphasis};
-`
-
-
-const ViewSlider = styled.View`
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    width: 100%;
-    height: 56px;
-`
+import { ModalButton, ModalDescription, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, MyModal, RadioButton } from "../../../components"
+import { useColorTheme } from "../../../services/theme"
+import { DocumentPdfCompressionLevel } from "../../../types"
+import { CompressionText, ViewCompressionText, ViewSlider } from "./style"
 
 
 export interface ConvertPdfOptionProps extends ModalProps {
