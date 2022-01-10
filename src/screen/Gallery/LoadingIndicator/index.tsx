@@ -1,18 +1,15 @@
 import React from "react"
 import { ActivityIndicator } from "react-native"
-import styled from "styled-components/native"
 
-import { useColorTheme } from "../../services/theme"
-
-
-const LoadingIndicatorView = styled.View`
-    align-items: center;
-    justify-content: center;
-    padding-vertical: 16px;
-`
+import { useColorTheme } from "../../../services/theme"
+import { LoadingIndicatorView } from "./style"
 
 
-export function LoadingIndicator() {
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface LoadingIndicatorProps { }
+
+
+export function LoadingIndicator(props: LoadingIndicatorProps) {
 
 
     const { color, opacity } = useColorTheme()
