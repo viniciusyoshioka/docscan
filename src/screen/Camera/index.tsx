@@ -4,6 +4,7 @@ import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core"
 import { Camera as RNCamera, useCameraDevices } from "react-native-vision-camera"
 import RNFS from "react-native-fs"
 import Icon from "react-native-vector-icons/MaterialIcons"
+import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
 
 import { SafeScreen } from "../../components"
 import { useCameraSettings } from "../../services/camera"
@@ -208,6 +209,15 @@ export function Camera() {
         })
     }
 
+    function onTapStateChange(event: HandlerStateChangeEvent<TapGestureHandlerEventPayload>) {
+        if (event.nativeEvent.state === State.ACTIVE) {
+            cameraRef.current?.focus({
+                x: parseInt(event.nativeEvent.x.toFixed()),
+                y: parseInt(event.nativeEvent.y.toFixed())
+            })
+        }
+    }
+
 
     return (
         <SafeScreen>
@@ -235,15 +245,17 @@ export function Camera() {
 
             {cameraDevice && (
                 <CameraWrapper>
-                    <RNCamera
-                        ref={cameraRef}
-                        isActive={isFocused && isForeground}
-                        device={cameraDevice}
-                        photo={true}
-                        enableZoomGesture={true}
-                        audio={false}
-                        style={{ width: "100%", aspectRatio: 3 / 4 }}
-                    />
+                    <TapGestureHandler minPointers={1} onHandlerStateChange={onTapStateChange}>
+                        <RNCamera
+                            ref={cameraRef}
+                            isActive={isFocused && isForeground}
+                            device={cameraDevice}
+                            photo={true}
+                            enableZoomGesture={true}
+                            audio={false}
+                            style={{ width: "100%", aspectRatio: 3 / 4 }}
+                        />
+                    </TapGestureHandler>
                 </CameraWrapper>
             )}
 
