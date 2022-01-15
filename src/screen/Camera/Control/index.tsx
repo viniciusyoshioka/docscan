@@ -1,6 +1,7 @@
 import React from "react"
 
-import { CameraControlAction, CameraControlButton, CameraControlView } from "../../components"
+import { ControlButton } from "./ControlButton"
+import { ControlAction, ControlView } from "./style"
 
 
 export interface CameraControlProps {
@@ -14,18 +15,18 @@ export interface CameraControlProps {
 
 export function CameraControl(props: CameraControlProps) {
     return (
-        <CameraControlView>
-            <CameraControlButton
+        <ControlView>
+            <ControlButton
                 icon={"collections"}
                 onPress={props.addPictureFromGallery}
             />
 
 
-            <CameraControlAction onPress={props.takePicture} />
+            <ControlAction onPress={props.takePicture} />
 
 
             {props?.screenAction !== "replace-picture" && (
-                <CameraControlButton
+                <ControlButton
                     icon={"description"}
                     indexCount={props.pictureListLength.toString()}
                     onPress={props.editDocument}
@@ -33,8 +34,8 @@ export function CameraControl(props: CameraControlProps) {
             )}
 
             {props?.screenAction === "replace-picture" && (
-                <CameraControlButton />
+                <ControlButton />
             )}
-        </CameraControlView>
+        </ControlView>
     )
 }
