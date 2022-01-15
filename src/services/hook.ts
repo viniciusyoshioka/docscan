@@ -1,5 +1,5 @@
-import { useEffect } from "react"
-import { BackHandler, Keyboard, KeyboardEventListener, KeyboardEventName } from "react-native"
+import { useEffect, useState } from "react"
+import { AppState, AppStateStatus, BackHandler, Keyboard, KeyboardEventListener, KeyboardEventName } from "react-native"
 
 
 /**
@@ -30,4 +30,23 @@ export function useKeyboard(eventName: KeyboardEventName, keyboardFunction: Keyb
         const subscription = Keyboard.addListener(eventName, keyboardFunction)
         return () => subscription.remove()
     })
+}
+
+
+/**
+ * @returns boolean indicating if app is in foreground
+ */
+export function useIsForeground(): boolean {
+    const [isForeground, setIsForeground] = useState(true)
+
+    useEffect(() => {
+        function onChangeAppState(state: AppStateStatus) {
+            setIsForeground(state === "active")
+        }
+
+        const subscription = AppState.addEventListener("change", onChangeAppState)
+        return () => subscription.remove()
+    })
+
+    return isForeground
 }
