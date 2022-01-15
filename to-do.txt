@@ -1,19 +1,21 @@
 
 # Camera
-fix taken picture area
-focus clicking on screen
+re-add support for multiple cameras
+get cameras ratio to adapt interface to it
+use reanimated to add focus indicator
 
 # EditDocument
 add drag and drop functionality to sort DocumentItem
+add infinity scroll
 
 # VisualizePicture
-fix zoom reseting when pinch after double tap
-move zoom area to where double tab was pressed
+re-add pinch to zoom
+re-add a better pagination
+use better image component
 add rotate image
 
 add split document functionality
 use service for import and export document
-move readSettings from Camera to a Provider
 change getDocument to dont blink screen on open app
 
 # FIX
