@@ -16,7 +16,6 @@
     "fbjs": "^3.0.2",
     "react": "^17.0.2",
     "react-native": "^0.66.4",
-    "react-native-camera": "^4.2.1",
     "react-native-fs": "^2.18.0",
     "react-native-gesture-handler": "^2.1.0",
     "react-native-image-crop": "https://github.com/viniciusyoshioka/react-native-image-crop",
@@ -29,6 +28,7 @@
     "react-native-share": "^7.3.2",
     "react-native-sqlite-storage": "^6.0.1",
     "react-native-vector-icons": "https://github.com/viniciusyoshioka/react-native-vector-icons",
+    "react-native-vision-camera": "^2.11.2",
     "react-native-zip-archive": "^6.0.5",
     "styled-components": "^5.3.3"
   },
