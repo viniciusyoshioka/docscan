@@ -1,23 +1,26 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useMemo, useRef, useState } from "react"
 import { Alert, StatusBar } from "react-native"
-import { HardwareCamera, RNCamera } from "react-native-camera"
-import { useNavigation, useRoute } from "@react-navigation/core"
+import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core"
+import { Camera as RNCamera, useCameraDevices } from "react-native-vision-camera"
 import RNFS from "react-native-fs"
+import Icon from "react-native-vector-icons/MaterialIcons"
 
-import { CameraHeader } from "./Header"
-// import { CameraControl, CameraControlHandle } from "./Control"
-import { CameraControl } from "./Control"
-import { CameraSettings } from "./CameraSettings"
 import { SafeScreen } from "../../components"
+import { useCameraSettings } from "../../services/camera"
 import { fullPathPicture } from "../../services/constant"
 import { getDateTime } from "../../services/date"
+import { useDocumentData } from "../../services/document"
 import { createAllFolderAsync } from "../../services/folder-handler"
-import { useBackHandler } from "../../services/hook"
+import { useBackHandler, useIsForeground } from "../../services/hook"
 import { log } from "../../services/log"
 import { getCameraPermission } from "../../services/permission"
-import { useDocumentData } from "../../services/document"
 import { NavigationParamProps, RouteParamProps } from "../../types"
-import { useCameraSettings } from "../../services/camera"
+import { CameraSettings } from "./CameraSettings"
+// import { CameraControl, CameraControlHandle } from "./Control"
+import { CameraControl } from "./Control"
+import { CameraHeader } from "./Header"
+import { CameraWrapper, NoCameraAvailableText } from "./style"
+import { useColorTheme } from "../../services/theme"
 
 
 export function Camera() {
@@ -25,17 +28,24 @@ export function Camera() {
 
     const navigation = useNavigation<NavigationParamProps<"Camera">>()
     const { params } = useRoute<RouteParamProps<"Camera">>()
+    const isFocused = useIsFocused()
 
     const cameraRef = useRef<RNCamera>(null)
     // const cameraControlRef = useRef<CameraControlHandle>(null)
 
     const { cameraSettingsState } = useCameraSettings()
     const { documentDataState, dispatchDocumentData } = useDocumentData()
+    const isForeground = useIsForeground()
+    const { color, opacity } = useColorTheme()
+
+    const cameraDevices = useCameraDevices()
+    const cameraDevice = cameraDevices[cameraSettingsState.cameraType]
+    const isFlippable = useMemo(() => {
+        return cameraDevices.back !== undefined && cameraDevices.front !== undefined
+    }, [cameraDevices])
+    // const isCameraActive = isFocused && isForeground
     const [hasChanges, setHasChanges] = useState(false)
-    const [cameraSettingsVisible, setCameraSettingsVisible] = useState(false)
-    const [isMultipleCameraAvailable, setIsMultipleCameraAvailable] = useState(false)
-    const [currentCameraIndex, setCurrentCameraIndex] = useState<number | null>(null)
-    const [cameraList, setCameraList] = useState<Array<HardwareCamera> | null>(null)
+    const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
 
 
     useBackHandler(() => {
@@ -125,12 +135,6 @@ export function Camera() {
     }
 
     async function takePicture() {
-        await createAllFolderAsync()
-
-        const date = getDateTime("-", "-", true)
-        const picturePath = `${fullPathPicture}/${date}.jpg`
-        const options = { quality: 1, path: picturePath }
-
         const hasCameraPermission = await getCameraPermission()
         if (!hasCameraPermission) {
             log.warn("Camera takePicture - Não tem permissão para tirar foto")
@@ -142,9 +146,19 @@ export function Camera() {
         }
 
         try {
+            if (!cameraRef.current) {
+                throw new Error("Camera ref is undefined")
+            }
+
+            await createAllFolderAsync()
+
+            const date = getDateTime("-", "-", true)
+            const picturePath = `${fullPathPicture}/${date}.jpg`
+
             // cameraControlRef.current?.setTakePictureButtonEnable(false)
 
-            await cameraRef.current?.takePictureAsync(options)
+            const response = await cameraRef.current.takePhoto()
+            await RNFS.moveFile(response.path, picturePath)
 
             // new Promise(() => {
             //     const unlockTakePictureButton = setInterval(() => {
@@ -195,71 +209,43 @@ export function Camera() {
     }
 
 
-    useEffect(() => {
-        async function getCameraList() {
-            let readCameraList: HardwareCamera[] | undefined
-
-            try {
-                readCameraList = await cameraRef.current?.getCameraIdsAsync()
-            } catch (error) {
-                log.warn(`Camera useEffect getCameraIds - Erro ao pegar câmeras do dispositivo para trocas entre os tipos diferentes de camera. Mensagem: "${error}"`)
-            }
-
-            if (readCameraList === undefined) {
-                setCameraList([])
-                return
-            }
-
-            const cameraIdList = readCameraList.filter(item => item.type === 0)
-            if (cameraIdList.length > 1) {
-                setIsMultipleCameraAvailable(true)
-            }
-            setCameraList(cameraIdList)
-
-            cameraIdList.forEach((item: HardwareCamera, index: number) => {
-                if (item.id === cameraSettingsState.cameraId) {
-                    setCurrentCameraIndex(index)
-                    return
-                }
-            })
-        }
-
-        if (cameraList === null && cameraSettingsVisible) {
-            getCameraList()
-        }
-    }, [cameraSettingsVisible])
-
-
     return (
         <SafeScreen>
             <StatusBar hidden={true} />
 
-            <CameraSettings
-                visible={cameraSettingsVisible}
-                setVisible={setCameraSettingsVisible}
-                cameraList={cameraList || []}
-                currentCameraIndex={currentCameraIndex || 0}
-                setCurrentCameraIndex={setCurrentCameraIndex}
-                isMultipleCameraAvailable={isMultipleCameraAvailable}
-            />
-
-            <RNCamera
-                style={{ flex: 1, overflow: "hidden" }}
-                ref={cameraRef}
-                captureAudio={false}
-                useNativeZoom={true}
-                useCamera2Api={true}
-                playSoundOnCapture={true}
-                flashMode={cameraSettingsState.flash}
-                whiteBalance={cameraSettingsState.whiteBalance}
-                type={cameraSettingsState.cameraType}
-                cameraId={cameraSettingsState.cameraType === "back" ? cameraSettingsState.cameraId : undefined}
-            />
-
             <CameraHeader
                 goBack={goBack}
-                openSettings={() => setCameraSettingsVisible(true)}
+                openSettings={() => setIsCameraSettingsVisible(true)}
             />
+
+            {!cameraDevice && (
+                <CameraWrapper>
+                    <Icon
+                        name={"no-photography"}
+                        size={56}
+                        color={color.screen_color}
+                        style={{ opacity: opacity.mediumEmphasis }}
+                    />
+
+                    <NoCameraAvailableText>
+                        Câmera indisponível
+                    </NoCameraAvailableText>
+                </CameraWrapper>
+            )}
+
+            {cameraDevice && (
+                <CameraWrapper>
+                    <RNCamera
+                        ref={cameraRef}
+                        isActive={isFocused && isForeground}
+                        device={cameraDevice}
+                        photo={true}
+                        enableZoomGesture={true}
+                        audio={false}
+                        style={{ width: "100%", aspectRatio: 3 / 4 }}
+                    />
+                </CameraWrapper>
+            )}
 
             <CameraControl
                 // ref={cameraControlRef}
@@ -268,6 +254,12 @@ export function Camera() {
                 addPictureFromGallery={addPictureFromGallery}
                 takePicture={takePicture}
                 editDocument={editDocument}
+            />
+
+            <CameraSettings
+                visible={isCameraSettingsVisible}
+                setVisible={setIsCameraSettingsVisible}
+                isFlippable={isFlippable}
             />
         </SafeScreen>
     )

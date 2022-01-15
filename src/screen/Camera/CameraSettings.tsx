@@ -1,6 +1,5 @@
 import React from "react"
 import { Alert, ScrollView } from "react-native"
-import { HardwareCamera } from "react-native-camera"
 
 import { CameraSettingsButton, ModalCameraSettings, ModalCameraSettingsProps } from "../../components"
 import { SettingsDatabase } from "../../database"
@@ -11,10 +10,11 @@ import { CameraType, FlashType, WhiteBalanceType } from "../../types"
 
 
 export interface CameraSettingsProps extends ModalCameraSettingsProps {
-    isMultipleCameraAvailable: boolean;
-    currentCameraIndex: number;
-    setCurrentCameraIndex: (newCurrentCameraIndex: number) => void;
-    cameraList: Array<HardwareCamera>;
+    isFlippable: boolean;
+    // isMultipleCameraAvailable: boolean;
+    // currentCameraIndex: number;
+    // setCurrentCameraIndex: (newCurrentCameraIndex: number) => void;
+    // cameraList: Array<HardwareCamera>;
 }
 
 
@@ -106,22 +106,22 @@ export function CameraSettings(props: CameraSettingsProps) {
     }
 
     async function switchCameraId() {
-        let newIndex = 0
-        if ((props.currentCameraIndex + 1) < props.cameraList.length) {
-            newIndex = props.currentCameraIndex + 1
-        }
-
-        dispatchCameraSettings({ type: "camera-id", payload: props.cameraList[newIndex].id })
-        props.setCurrentCameraIndex(newIndex)
-        try {
-            await SettingsDatabase.updateSettings("cameraId", props.cameraList[newIndex].id)
-        } catch (error) {
-            log.error(`Error saving new camera id setting in database: "${error}"`)
-            Alert.alert(
-                "Aviso",
-                "Erro salvando nova configuração de id da câmera"
-            )
-        }
+        // let newIndex = 0
+        // if ((props.currentCameraIndex + 1) < props.cameraList.length) {
+        //     newIndex = props.currentCameraIndex + 1
+        // }
+        // 
+        // dispatchCameraSettings({ type: "camera-id", payload: props.cameraList[newIndex].id })
+        // props.setCurrentCameraIndex(newIndex)
+        // try {
+        //     await SettingsDatabase.updateSettings("cameraId", props.cameraList[newIndex].id)
+        // } catch (error) {
+        //     log.error(`Error saving new camera id setting in database: "${error}"`)
+        //     Alert.alert(
+        //         "Aviso",
+        //         "Erro salvando nova configuração de id da câmera"
+        //     )
+        // }
     }
 
     async function resetCameraSettings() {
@@ -198,17 +198,19 @@ export function CameraSettings(props: CameraSettingsProps) {
                     onPress={changeWhiteBalance}
                 />
 
-                <CameraSettingsButton
-                    icon={"flip-camera-android"}
-                    onPress={switchCameraType}
-                />
+                {props.isFlippable && (
+                    <CameraSettingsButton
+                        icon={"flip-camera-android"}
+                        onPress={switchCameraType}
+                    />
+                )}
 
-                {props.isMultipleCameraAvailable && (
+                {/* {props.isMultipleCameraAvailable && (
                     <CameraSettingsButton
                         icon={"switch-camera"}
                         onPress={switchCameraId}
                     />
-                )}
+                )} */}
 
                 <CameraSettingsButton
                     icon={"restore"}
