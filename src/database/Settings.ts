@@ -32,10 +32,10 @@ export function createSettingsTable(): Promise<void> {
                             (key, value) 
                         VALUES 
                             ('theme', ?),
-                            ('camera-flash', ?),
-                            ('camera-whiteBalance', ?),
-                            ('camera-type', ?),
-                            ('camera-id', ?);
+                            ('cameraFlash', ?),
+                            ('cameraWhiteBalance', ?),
+                            ('cameraType', ?),
+                            ('cameraId', ?);
                     `, [themeDefault, cameraFlashDefault, cameraWhiteBalanceDefault, cameraTypeDefault, cameraIdDefault])
                 }
                 resolve()
