@@ -47,6 +47,7 @@ export function Camera() {
     // const isCameraActive = isFocused && isForeground
     const [hasChanges, setHasChanges] = useState(false)
     const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
+    const [isFocusEnable, setIsFocusEnable] = useState(true)
 
 
     useBackHandler(() => {
@@ -209,11 +210,28 @@ export function Camera() {
         })
     }
 
-    function onTapStateChange(event: HandlerStateChangeEvent<TapGestureHandlerEventPayload>) {
+    async function onTapStateChange(event: HandlerStateChangeEvent<TapGestureHandlerEventPayload>) {
+        if (!cameraDevice?.supportsFocus || !isFocusEnable) {
+            return
+        }
+
         if (event.nativeEvent.state === State.ACTIVE) {
-            cameraRef.current?.focus({
-                x: parseInt(event.nativeEvent.x.toFixed()),
-                y: parseInt(event.nativeEvent.y.toFixed())
+            setIsFocusEnable(false)
+
+            try {
+                await cameraRef.current?.focus({
+                    x: parseInt(event.nativeEvent.x.toFixed()),
+                    y: parseInt(event.nativeEvent.y.toFixed())
+                })
+            } catch (error) {
+                log.warn(`Error focusing camera ${error}`)
+            }
+
+            new Promise(() => {
+                const interval = setInterval(() => {
+                    setIsFocusEnable(true)
+                    clearInterval(interval)
+                }, 1000)
             })
         }
     }
