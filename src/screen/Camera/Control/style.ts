@@ -2,9 +2,9 @@ import styled from "styled-components/native"
 
 
 export const ControlAction = styled.TouchableOpacity`
-    width: 48px;
-    height: 48px;
-    border-radius: 48px;
+    width: 56px;
+    height: 56px;
+    border-radius: 56px;
     background-color: ${props => props.disabled ? "rgb(200, 200, 200)" : "rgb(255, 255, 255)"};
     opacity: ${props => props.disabled ? 0.7 : 1};
 `
