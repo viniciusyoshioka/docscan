@@ -244,6 +244,7 @@ export function Camera() {
             <CameraHeader
                 goBack={goBack}
                 openSettings={() => setIsCameraSettingsVisible(true)}
+                isLayoutPositionAbsolute={false}
             />
 
             {!cameraDevice && (
@@ -284,6 +285,7 @@ export function Camera() {
                 addPictureFromGallery={addPictureFromGallery}
                 takePicture={takePicture}
                 editDocument={editDocument}
+                isLayoutPositionAbsolute={false}
             />
 
             <CameraSettings

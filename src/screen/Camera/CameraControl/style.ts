@@ -11,15 +11,16 @@ export const ControlAction = styled.TouchableOpacity`
 
 
 export const ControlView = styled.View`
-    position: absolute;
-    bottom: 0px;
+    position: ${(props: {isLayoutPositionAbsolute: boolean}) => props.isLayoutPositionAbsolute ? "absolute" : "relative"};
+    bottom: ${(props: {isLayoutPositionAbsolute: boolean}) => props.isLayoutPositionAbsolute ? 16 : 0}px;
     left: 0px;
     right: 0px;
+    padding-vertical: ${(props: {isLayoutPositionAbsolute: boolean}) => props.isLayoutPositionAbsolute ? 0 : 16}px;
     align-items: center;
     justify-content: space-around;
     flex-direction: row;
     width: 100%;
-    height: 56px;
+    min-height: 56px;
 `
 
 

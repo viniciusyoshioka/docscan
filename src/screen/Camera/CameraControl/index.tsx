@@ -10,12 +10,13 @@ export interface CameraControlProps {
     addPictureFromGallery: () => void;
     takePicture: () => void;
     editDocument: () => void;
+    isLayoutPositionAbsolute: boolean;
 }
 
 
 export function CameraControl(props: CameraControlProps) {
     return (
-        <ControlView>
+        <ControlView isLayoutPositionAbsolute={props.isLayoutPositionAbsolute}>
             <ControlButton
                 icon={"collections"}
                 onPress={props.addPictureFromGallery}
