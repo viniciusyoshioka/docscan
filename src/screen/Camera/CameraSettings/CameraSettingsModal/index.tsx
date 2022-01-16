@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react"
-import { Modal as RNModal, ModalProps as RNModalProps, TouchableOpacity } from "react-native"
+import { Modal as RNModal, ModalProps as RNModalProps } from "react-native"
 
 import { ModalBackground, ModalContent, ModalView } from "./style"
 
@@ -25,15 +25,22 @@ export function CameraSettingsModal(props: CameraSettingsModalProps) {
 
     return (
         <RNModal transparent={true} visible={props.visible} onRequestClose={closeModal}>
-            <TouchableOpacity style={{ flex: 1 }} activeOpacity={1} onPress={closeModal}>
-                <ModalView>
-                    <ModalBackground activeOpacity={1}>
-                        <ModalContent>
-                            {props?.children}
-                        </ModalContent>
-                    </ModalBackground>
-                </ModalView>
-            </TouchableOpacity>
+            <ModalView activeOpacity={1} onPress={closeModal}>
+                <ModalBackground activeOpacity={1}>
+                    <ModalContent
+                        fadingEdgeLength={16}
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={{
+                            flexWrap: "wrap",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
+                    >
+                        {props.children}
+                    </ModalContent>
+                </ModalBackground>
+            </ModalView>
         </RNModal>
     )
 }
