@@ -238,7 +238,7 @@ export function Camera() {
 
 
     return (
-        <SafeScreen>
+        <SafeScreen style={{ backgroundColor: "black" }}>
             <StatusBar hidden={true} />
 
             <CameraHeader
