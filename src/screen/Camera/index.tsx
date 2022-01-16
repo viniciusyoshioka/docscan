@@ -44,7 +44,6 @@ export function Camera() {
     const isFlippable = useMemo(() => {
         return cameraDevices.back !== undefined && cameraDevices.front !== undefined
     }, [cameraDevices])
-    // const isCameraActive = isFocused && isForeground
     const [hasChanges, setHasChanges] = useState(false)
     const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
     const [isFocusEnable, setIsFocusEnable] = useState(true)
@@ -270,8 +269,8 @@ export function Camera() {
                             isActive={isFocused && isForeground}
                             device={cameraDevice}
                             photo={true}
-                            enableZoomGesture={true}
                             audio={false}
+                            enableZoomGesture={true}
                             style={{ width: "100%", aspectRatio: 3 / 4 }}
                         />
                     </TapGestureHandler>
