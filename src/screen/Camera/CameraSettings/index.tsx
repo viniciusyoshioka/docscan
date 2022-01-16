@@ -1,12 +1,12 @@
 import React from "react"
 import { Alert, ScrollView } from "react-native"
 
-import { CameraSettingsButton } from "../../../components"
 import { SettingsDatabase } from "../../../database"
 import { useCameraSettings } from "../../../services/camera"
 import { log } from "../../../services/log"
 import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "../../../services/settings"
 import { CameraType, FlashType, WhiteBalanceType } from "../../../types"
+import { CameraSettingsButton } from "./CameraSettingsButton"
 import { CameraSettingsModal, CameraSettingsModalProps } from "./CameraSettingsModal"
 
 

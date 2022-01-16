@@ -6,8 +6,8 @@ import { CameraSettingsButtonBase } from "./style"
 
 
 export interface CameraSettingsButtonProps extends TouchableOpacityProps {
-    icon: string,
-    size?: number,
+    icon: string;
+    size?: number;
 }
 
 
