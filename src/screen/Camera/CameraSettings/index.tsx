@@ -83,6 +83,11 @@ export function CameraSettings(props: CameraSettingsProps) {
     }
 
     async function switchCameraType() {
+        if (!props.isFlippable) {
+            log.warn("Current camera device is not flippable")
+            return
+        }
+
         let newCameraType: CameraType = "back"
         switch (cameraSettingsState.cameraType) {
             case "back":
