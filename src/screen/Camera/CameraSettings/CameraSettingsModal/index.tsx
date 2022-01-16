@@ -5,10 +5,10 @@ import { ModalBackground, ModalContent, ModalView } from "./style"
 
 
 export interface ModalCameraSettingsProps extends RNModalProps {
-    visible: boolean,
-    setVisible: (visible: boolean) => void,
-    onClose?: () => void,
-    children?: ReactNode,
+    visible: boolean;
+    setVisible: (visible: boolean) => void;
+    onClose?: () => void;
+    children?: ReactNode;
 }
 
 
