@@ -1,12 +1,12 @@
 import React from "react"
 import { Alert, ScrollView } from "react-native"
 
-import { CameraSettingsButton, ModalCameraSettings, ModalCameraSettingsProps } from "../../components"
-import { SettingsDatabase } from "../../database"
-import { useCameraSettings } from "../../services/camera"
-import { log } from "../../services/log"
-import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "../../services/settings"
-import { CameraType, FlashType, WhiteBalanceType } from "../../types"
+import { CameraSettingsButton, ModalCameraSettings, ModalCameraSettingsProps } from "../../../components"
+import { SettingsDatabase } from "../../../database"
+import { useCameraSettings } from "../../../services/camera"
+import { log } from "../../../services/log"
+import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "../../../services/settings"
+import { CameraType, FlashType, WhiteBalanceType } from "../../../types"
 
 
 export interface CameraSettingsProps extends ModalCameraSettingsProps {
@@ -183,7 +183,7 @@ export function CameraSettings(props: CameraSettingsProps) {
                     onPress={changeFlash}
                 />
 
-                <CameraSettingsButton
+                {/* <CameraSettingsButton
                     icon={
                         cameraSettingsState.whiteBalance === "auto"
                             ? "wb-auto"
@@ -196,7 +196,7 @@ export function CameraSettings(props: CameraSettingsProps) {
                                         : "wb-incandescent"
                     }
                     onPress={changeWhiteBalance}
-                />
+                /> */}
 
                 {props.isFlippable && (
                     <CameraSettingsButton
