@@ -1,10 +1,10 @@
-import React, { ReactNode, useCallback } from "react"
+import React, { ReactNode } from "react"
 import { Modal as RNModal, ModalProps as RNModalProps, TouchableOpacity } from "react-native"
 
 import { ModalBackground, ModalContent, ModalView } from "./style"
 
 
-export interface ModalCameraSettingsProps extends RNModalProps {
+export interface CameraSettingsModalProps extends RNModalProps {
     visible: boolean;
     setVisible: (visible: boolean) => void;
     onClose?: () => void;
@@ -12,15 +12,15 @@ export interface ModalCameraSettingsProps extends RNModalProps {
 }
 
 
-export function ModalCameraSettings(props: ModalCameraSettingsProps) {
+export function CameraSettingsModal(props: CameraSettingsModalProps) {
 
 
-    const closeModal = useCallback(() => {
+    function closeModal() {
         if (props.onClose) {
             props.onClose()
         }
         props.setVisible(false)
-    }, [])
+    }
 
 
     return (

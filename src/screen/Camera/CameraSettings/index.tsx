@@ -7,10 +7,10 @@ import { useCameraSettings } from "../../../services/camera"
 import { log } from "../../../services/log"
 import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "../../../services/settings"
 import { CameraType, FlashType, WhiteBalanceType } from "../../../types"
-import { ModalCameraSettings, ModalCameraSettingsProps } from "./CameraSettingsModal"
+import { CameraSettingsModal, CameraSettingsModalProps } from "./CameraSettingsModal"
 
 
-export interface CameraSettingsProps extends ModalCameraSettingsProps {
+export interface CameraSettingsProps extends CameraSettingsModalProps {
     isFlippable: boolean;
     // isMultipleCameraAvailable: boolean;
     // currentCameraIndex: number;
@@ -176,7 +176,7 @@ export function CameraSettings(props: CameraSettingsProps) {
 
 
     return (
-        <ModalCameraSettings {...props}>
+        <CameraSettingsModal {...props}>
             <ScrollView horizontal={true}>
                 <CameraSettingsButton
                     icon={
@@ -223,6 +223,6 @@ export function CameraSettings(props: CameraSettingsProps) {
                     onPress={resetCameraSettings}
                 />
             </ScrollView>
-        </ModalCameraSettings>
+        </CameraSettingsModal>
     )
 }
