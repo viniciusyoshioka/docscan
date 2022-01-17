@@ -1,10 +1,11 @@
-import React, { useMemo, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Alert, StatusBar } from "react-native"
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core"
 import { Camera as RNCamera, useCameraDevices } from "react-native-vision-camera"
 import RNFS from "react-native-fs"
 import Icon from "react-native-vector-icons/MaterialIcons"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
+import { OrientationType } from "react-native-orientation-locker"
 
 import { SafeScreen } from "../../components"
 import { useCameraSettings } from "../../services/camera"
@@ -12,10 +13,10 @@ import { fullPathPicture } from "../../services/constant"
 import { getDateTime } from "../../services/date"
 import { useDocumentData } from "../../services/document"
 import { createAllFolderAsync } from "../../services/folder-handler"
-import { useBackHandler, useIsForeground } from "../../services/hook"
+import { useBackHandler, useDeviceOrientationChange, useIsForeground } from "../../services/hook"
 import { log } from "../../services/log"
 import { getCameraPermission } from "../../services/permission"
-import { NavigationParamProps, RouteParamProps } from "../../types"
+import { CameraOrientationType, NavigationParamProps, RouteParamProps } from "../../types"
 import { CameraSettings } from "./CameraSettings"
 // import { CameraControl, CameraControlHandle } from "./Control"
 import { CameraControl } from "./CameraControl"
@@ -38,7 +39,9 @@ export function Camera() {
     const { documentDataState, dispatchDocumentData } = useDocumentData()
     const isForeground = useIsForeground()
     const { color, opacity } = useColorTheme()
+    const deviceOrientation = useDeviceOrientationChange()
 
+    const [cameraOrientation, setCameraOrientation] = useState(getCameraOrientation)
     const cameraDevices = useCameraDevices()
     const cameraDevice = cameraDevices[cameraSettingsState.cameraType]
     const isFlippable = useMemo(() => {
@@ -54,6 +57,25 @@ export function Camera() {
         return true
     })
 
+
+    function getCameraOrientation(): CameraOrientationType {
+        switch (deviceOrientation) {
+            case OrientationType["PORTRAIT"]:
+                return "portrait"
+            case OrientationType["PORTRAIT-UPSIDEDOWN"]:
+                return "portraitUpsideDown"
+            case OrientationType["LANDSCAPE-LEFT"]:
+                // Thoose landscape are the oposite because
+                // the libraries uses diferent reference point
+                return "landscapeRight"
+            case OrientationType["LANDSCAPE-RIGHT"]:
+                // Thoose landscape are the oposite because
+                // the libraries uses diferent reference point
+                return "landscapeLeft"
+            default:
+                return cameraOrientation
+        }
+    }
 
     async function deleteUnsavedPictures() {
         if (!documentDataState) {
@@ -236,6 +258,14 @@ export function Camera() {
     }
 
 
+    useEffect(() => {
+        const newCameraOrientation = getCameraOrientation()
+        if (cameraOrientation !== newCameraOrientation) {
+            setCameraOrientation(newCameraOrientation)
+        }
+    }, [deviceOrientation])
+
+
     return (
         <SafeScreen style={{ backgroundColor: "black" }}>
             <StatusBar hidden={true} />
@@ -271,6 +301,7 @@ export function Camera() {
                             photo={true}
                             audio={false}
                             enableZoomGesture={true}
+                            orientation={cameraOrientation}
                             style={{ width: "100%", aspectRatio: 3 / 4 }}
                         />
                     </TapGestureHandler>
