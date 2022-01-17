@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { AppState, AppStateStatus, BackHandler, Keyboard, KeyboardEventListener, KeyboardEventName } from "react-native"
+import OrientationLocker, { OrientationType } from "react-native-orientation-locker"
 
 
 /**
@@ -49,4 +50,27 @@ export function useIsForeground(): boolean {
     })
 
     return isForeground
+}
+
+
+/**
+ * Hook to add and remove the device orientation listener
+ * 
+ * @returns New device orientation
+ */
+export function useDeviceOrientationChange(): OrientationType {
+    const [orientation, setOrientation] = useState(OrientationLocker.getInitialOrientation())
+
+    useEffect(() => {
+        function onDeviceOrientationChange(deviceOrientation: OrientationType) {
+            setOrientation(deviceOrientation)
+        }
+
+        OrientationLocker.addDeviceOrientationListener(onDeviceOrientationChange)
+        return () => {
+            OrientationLocker.removeDeviceOrientationListener(onDeviceOrientationChange)
+        }
+    })
+
+    return orientation
 }
