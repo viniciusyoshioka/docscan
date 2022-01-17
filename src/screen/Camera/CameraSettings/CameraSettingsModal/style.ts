@@ -14,7 +14,7 @@ export const ModalBackground = styled.TouchableOpacity`
     justify-content: center;
     flex-direction: row;
     border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.35);
+    background-color: rgba(0, 0, 0, 0.5);
 `
 
 
