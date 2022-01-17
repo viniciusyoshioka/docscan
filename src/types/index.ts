@@ -1,3 +1,4 @@
+export * from "./camera"
 export * from "./document"
 export * from "./log"
 export * from "./reducer-camera"
