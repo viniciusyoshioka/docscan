@@ -1,5 +1,5 @@
-import React from "react"
-import { Alert, ScrollView } from "react-native"
+import React, { useMemo } from "react"
+import { Alert } from "react-native"
 
 import { SettingsDatabase } from "../../../database"
 import { useCameraSettings } from "../../../services/camera"
@@ -23,6 +23,48 @@ export function CameraSettings(props: CameraSettingsProps) {
 
 
     const { cameraSettingsState, dispatchCameraSettings } = useCameraSettings()
+
+
+    const flashIcon = useMemo((): string => {
+        switch (cameraSettingsState.flash) {
+            case "auto":
+                return "flash-auto"
+            case "on":
+                return "flash-on"
+            case "off":
+                return "flash-off"
+            default:
+                return "flash-auto"
+        }
+    }, [cameraSettingsState.flash])
+
+    const whiteBalanceIcon = useMemo((): string => {
+        switch (cameraSettingsState.whiteBalance) {
+            case "auto":
+                return "wb-auto"
+            case "sunny":
+                return "wb-sunny"
+            case "cloudy":
+                return "wb-cloudy"
+            case "fluorescent":
+                return "wb-iridescent"
+            case "incandescent":
+                return "wb-incandescent"
+            default:
+                return "wb-auto"
+        }
+    }, [cameraSettingsState.whiteBalance])
+
+    const switchCameraButtonText = useMemo((): string => {
+        switch (cameraSettingsState.cameraType) {
+            case "back":
+                return "Câmera frontal"
+            case "front":
+                return "Câmera traseira"
+            default:
+                return "Virar"
+        }
+    }, [cameraSettingsState.cameraType])
 
 
     async function changeFlash() {
@@ -177,52 +219,39 @@ export function CameraSettings(props: CameraSettingsProps) {
 
     return (
         <CameraSettingsModal {...props}>
-            <ScrollView horizontal={true}>
+            <CameraSettingsButton
+                optionName={"Flash"}
+                iconName={flashIcon}
+                onPress={changeFlash}
+            />
+
+            {/* <CameraSettingsButton
+                optionName={"Balanço de branco"}
+                iconName={whiteBalanceIcon}
+                onPress={changeWhiteBalance}
+            /> */}
+
+            {props.isFlippable && (
                 <CameraSettingsButton
-                    icon={
-                        cameraSettingsState.flash === "auto"
-                            ? "flash-auto"
-                            : cameraSettingsState.flash === "on"
-                                ? "flash-on"
-                                : "flash-off"
-                    }
-                    onPress={changeFlash}
+                    optionName={switchCameraButtonText}
+                    iconName={"flip-camera-android"}
+                    onPress={switchCameraType}
                 />
+            )}
 
-                {/* <CameraSettingsButton
-                    icon={
-                        cameraSettingsState.whiteBalance === "auto"
-                            ? "wb-auto"
-                            : cameraSettingsState.whiteBalance === "sunny"
-                                ? "wb-sunny"
-                                : cameraSettingsState.whiteBalance === "cloudy"
-                                    ? "wb-cloudy"
-                                    : cameraSettingsState.whiteBalance === "fluorescent"
-                                        ? "wb-iridescent"
-                                        : "wb-incandescent"
-                    }
-                    onPress={changeWhiteBalance}
-                /> */}
-
-                {props.isFlippable && (
-                    <CameraSettingsButton
-                        icon={"flip-camera-android"}
-                        onPress={switchCameraType}
-                    />
-                )}
-
-                {/* {props.isMultipleCameraAvailable && (
-                    <CameraSettingsButton
-                        icon={"switch-camera"}
-                        onPress={switchCameraId}
-                    />
-                )} */}
-
+            {/* {props.isMultipleCameraAvailable && (
                 <CameraSettingsButton
-                    icon={"restore"}
-                    onPress={resetCameraSettings}
+                    optionName={"Mudar câmera"}
+                    iconName={"switch-camera"}
+                    onPress={switchCameraId}
                 />
-            </ScrollView>
+            )} */}
+
+            <CameraSettingsButton
+                optionName={"Redefinir"}
+                iconName={"restore"}
+                onPress={resetCameraSettings}
+            />
         </CameraSettingsModal>
     )
 }
