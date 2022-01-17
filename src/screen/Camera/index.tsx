@@ -180,7 +180,9 @@ export function Camera() {
 
             // cameraControlRef.current?.setTakePictureButtonEnable(false)
 
-            const response = await cameraRef.current.takePhoto()
+            const response = await cameraRef.current.takePhoto({
+                flash: cameraSettingsState.flash,
+            })
             await RNFS.moveFile(response.path, picturePath)
 
             // new Promise(() => {
