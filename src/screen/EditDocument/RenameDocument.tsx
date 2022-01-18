@@ -3,7 +3,7 @@ import { TextInput } from "react-native"
 
 import { Input, ModalButton, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, MyModal } from "../../components"
 import { useDocumentData } from "../../services/document"
-import { useKeyboard } from "../../services/hook"
+import { useKeyboard } from "../../hooks"
 
 
 export interface RenameDocumentProps extends ModalProps { }

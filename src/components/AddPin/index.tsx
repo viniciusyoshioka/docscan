@@ -3,7 +3,7 @@ import { Keyboard, TextInput, ViewProps } from "react-native"
 
 import { InputPassword } from "../InputPassword"
 import { CenterScreen, SpaceScreen } from "../Screen"
-import { useKeyboard } from "../../services/hook"
+import { useKeyboard } from "../../hooks"
 import { Button } from "../Button"
 
 

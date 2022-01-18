@@ -6,7 +6,7 @@ import { ImageCrop, OnImageSavedResponse } from "react-native-image-crop"
 
 import { VisualizePictureHeader } from "./Header"
 import { ImageVisualizationItem, SafeScreen } from "../../components"
-import { useBackHandler } from "../../services/hook"
+import { useBackHandler } from "../../hooks"
 import { log } from "../../services/log"
 import { fullPathPicture } from "../../services/constant"
 import { getDateTime } from "../../services/date"

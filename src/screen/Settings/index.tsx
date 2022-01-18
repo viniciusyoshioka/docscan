@@ -8,7 +8,7 @@ import { ChangeTheme } from "./ChangeTheme"
 import { TextVersion, ViewVersion } from "./style"
 import { ListItem, SafeScreen } from "../../components"
 import { appName, appType, appVersion, logDatabaseFullPath } from "../../services/constant"
-import { useBackHandler } from "../../services/hook"
+import { useBackHandler } from "../../hooks"
 import { log } from "../../services/log"
 import { NavigationParamProps } from "../../types"
 
