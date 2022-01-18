@@ -1,10 +1,43 @@
 
+GLOBAL
+
+# Error
+document data not restauring state if an error is thrown by database or in callback
+
+# Features
+add split document functionality
+use service for import and export document
+change getDocument to dont blink screen on open app
+
+
+
+BUGS
+
 # Camera
-re-add support for multiple cameras
-get cameras ratio to adapt interface to it
+statusbar appears when modal is opened
+
+# EditDocument/VisualizePicture
+cropping image may replace wrong picture
+
+
+
+TODO
+
+# Home
+improve DocumentItem design
+
+# Camera
+enable/disable action button when camera is not available
+add ref function to enable/disable action button
+add error handling to useCameraDevices hook
 use reanimated to add focus indicator
+re-add icons rotation according device orientation
+re-add support for multiple front/back cameras
+get cameras ratio to adapt interface to it
 
 # EditDocument
+add empty document list indicator
+increase PictureItem border-radius
 add drag and drop functionality to sort DocumentItem
 add infinity scroll
 
@@ -13,10 +46,7 @@ re-add pinch to zoom
 re-add a better pagination
 use better image component
 add rotate image
+lock crop button to avoid multiple crop services
 
-add split document functionality
-use service for import and export document
-change getDocument to dont blink screen on open app
-
-# FIX
-document data not restauring state if an error is thrown by database or in callback
+# Gallery
+change empty list icon to a better one
