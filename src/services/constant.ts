@@ -3,7 +3,7 @@ import RNFS from "react-native-fs"
 
 // App
 export const appName = "DocScan"
-export const appVersion = "1.15.0"
+export const appVersion = "1.16.0"
 export const appType = __DEV__ ? "beta" : "release"
 
 // Icon
