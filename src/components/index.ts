@@ -1,6 +1,3 @@
-export * from "./AddBio"
-export * from "./AddPin"
-export * from "./AddText"
 export * from "./Button"
 export * from "./ButtonOutline"
 export * from "./ButtonText"
