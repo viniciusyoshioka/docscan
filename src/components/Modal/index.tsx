@@ -10,7 +10,7 @@ export interface ModalProps extends RNModalProps {
 }
 
 
-export function Modal(props: ModalProps) {
+export const Modal = (props: ModalProps) => {
 
 
     function closeModal() {
