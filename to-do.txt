@@ -23,9 +23,6 @@ cropping image may replace wrong picture
 
 TODO
 
-# Home
-improve DocumentItem design
-
 # Camera
 enable/disable action button when camera is not available
 add ref function to enable/disable action button

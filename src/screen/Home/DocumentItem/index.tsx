@@ -2,18 +2,21 @@ import React, { useCallback, useEffect, useState } from "react"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 import CheckBox from "@react-native-community/checkbox"
 
-import { useColorTheme } from "../../services/theme"
-import { Block, Button, Date, Line, Title } from "./style"
-import { DocumentForList } from "../../types"
-import { toDateTime } from "../../services/date"
+import { toDateTime } from "../../../services/date"
+import { useColorTheme } from "../../../services/theme"
+import { DocumentForList } from "../../../types"
+import { Block, Button, Date, Title } from "./style"
+
+
+export { DOCUMENT_PICTURE_HEIGHT } from "./style"
 
 
 export interface DocumentItemProps {
-    click: () => void,
-    select: () => void,
-    deselect: () => void,
-    selectionMode: boolean,
-    document: DocumentForList,
+    click: () => void;
+    select: () => void;
+    deselect: () => void;
+    selectionMode: boolean;
+    document: DocumentForList;
 }
 
 
@@ -62,21 +65,17 @@ export function DocumentItem(props: DocumentItemProps) {
         >
             <Button rippleColor={color.documentItem_ripple} onPress={normalPress}>
                 <Block style={{ flex: 1 }}>
-                    <Line>
-                        <Title numberOfLines={1}>
-                            {props.document.name}
-                        </Title>
-                    </Line>
+                    <Title numberOfLines={1}>
+                        {props.document.name}
+                    </Title>
 
-                    <Line>
-                        <Date numberOfLines={1}>
-                            {toDateTime(props.document.lastModificationTimestamp)}
-                        </Date>
-                    </Line>
+                    <Date numberOfLines={1}>
+                        {toDateTime(props.document.lastModificationTimestamp)}
+                    </Date>
                 </Block>
 
                 {props.selectionMode && (
-                    <Block style={{ paddingLeft: 10 }}>
+                    <Block style={{ paddingLeft: 16 }}>
                         <CheckBox
                             value={selected}
                             onChange={normalPress}
@@ -84,9 +83,7 @@ export function DocumentItem(props: DocumentItemProps) {
                                 true: color.documentItem_selected_background,
                                 false: color.documentItem_selected_color
                             }}
-                            style={{
-                                opacity: opacity.highEmphasis
-                            }}
+                            style={{ opacity: opacity.highEmphasis }}
                         />
                     </Block>
                 )}

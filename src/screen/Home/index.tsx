@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { Alert, BackHandler, FlatList } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 
 import { HomeHeader } from "./Header"
-import { DocumentItem, EmptyList, SafeScreen } from "../../components"
+import { EmptyList, SafeScreen } from "../../components"
 import { appIconOutline } from "../../services/constant"
 import { createAllFolder } from "../../services/folder-handler"
 import { useBackHandler } from "../../hooks"
@@ -12,6 +12,7 @@ import { DocumentForList } from "../../types"
 import { DocumentDatabase } from "../../database"
 import { NavigationParamProps } from "../../types"
 import { log } from "../../services/log"
+import { DocumentItem } from "./DocumentItem"
 
 
 export function Home() {
@@ -164,7 +165,7 @@ export function Home() {
         }
     }
 
-    function renderDocumentItem({ item }: { item: DocumentForList }) {
+    function renderItem({ item }: { item: DocumentForList }) {
         return (
             <DocumentItem
                 click={() => navigation.navigate("EditDocument", { documentId: item.id })}
@@ -175,6 +176,16 @@ export function Home() {
             />
         )
     }
+
+    const keyExtractor = useCallback((item: DocumentForList, _) => {
+        return item.id.toString()
+    }, [])
+
+    const getItemLayout = useCallback((_, index: number) => ({
+        index: index,
+        length: 60,
+        offset: 60 * index,
+    }), [])
 
     function exitSelectionMode() {
         setSelectedDocument([])
@@ -204,10 +215,11 @@ export function Home() {
 
             <FlatList
                 data={document}
-                renderItem={renderDocumentItem}
-                keyExtractor={(item) => item.id.toString()}
+                renderItem={renderItem}
+                keyExtractor={keyExtractor}
                 extraData={[selectDocument, deselectDocument]}
-                style={{ marginLeft: 6, marginTop: 6 }}
+                getItemLayout={getItemLayout}
+                contentContainerStyle={{ paddingBottom: 8 }}
             />
 
             {document.length === 0 && (
