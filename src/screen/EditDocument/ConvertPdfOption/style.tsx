@@ -3,17 +3,15 @@ import styled from "styled-components/native"
 import { StyledProps } from "../../../types"
 
 
-export const ViewCompressionText = styled.View`
-    align-items: flex-start;
-    justify-content: center;
-    width: 40px;
-`
-
-
 export const CompressionText = styled.Text`
+    width: 40px;
+    text-align: left;
+    text-align-vertical: center;
     font-size: 15px;
-    color: ${(props: StyledProps) => props.theme.color.screen_color};
-    opacity: ${(props: StyledProps) => props.theme.opacity.highEmphasis};
+    color: ${(props: StyledProps & { disabled: boolean }) => props.theme.color.screen_color};
+    opacity: ${(props: StyledProps & { disabled: boolean }) => {
+        return props.disabled ? props.theme.opacity.disabled : props.theme.opacity.highEmphasis
+    }};
 `
 
 
