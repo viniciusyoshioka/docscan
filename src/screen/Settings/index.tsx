@@ -52,11 +52,6 @@ export function Settings() {
 
     return (
         <SafeScreen>
-            <ChangeTheme
-                visible={changeThemeVisible}
-                setVisible={setChangeThemeVisible}
-            />
-
             <SettingsHeader
                 goBack={goBack}
             />
@@ -80,6 +75,11 @@ export function Settings() {
                     {appName} - {appVersion} - {appType}
                 </TextVersion>
             </ViewVersion>
+
+            <ChangeTheme
+                visible={changeThemeVisible}
+                onRequestClose={() => setChangeThemeVisible(false)}
+            />
         </SafeScreen>
     )
 }
