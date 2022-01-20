@@ -9,7 +9,7 @@ import { useKeyboard } from "../../hooks"
 export interface RenameDocumentProps extends ModalProps { }
 
 
-export function RenameDocument(props: RenameDocumentProps) {
+export const RenameDocument = (props: RenameDocumentProps) => {
 
 
     const inputRef = createRef<TextInput>()

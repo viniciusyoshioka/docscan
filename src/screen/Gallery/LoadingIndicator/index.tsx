@@ -9,7 +9,7 @@ import { LoadingIndicatorView } from "./style"
 export interface LoadingIndicatorProps { }
 
 
-export function LoadingIndicator(props: LoadingIndicatorProps) {
+export const LoadingIndicator = (props: LoadingIndicatorProps) => {
 
 
     const { color, opacity } = useColorTheme()

@@ -12,7 +12,7 @@ export interface CameraSettingsButtonProps extends TouchableOpacityProps {
 }
 
 
-export function CameraSettingsButton(props: CameraSettingsButtonProps) {
+export const CameraSettingsButton = (props: CameraSettingsButtonProps) => {
     return (
         <ButtonBase activeOpacity={0.6} {...props}>
             <ButtonChildrenWrapper>

@@ -20,7 +20,7 @@ export interface EditDocumentHeaderProps {
 }
 
 
-export function EditDocumentHeader(props: EditDocumentHeaderProps) {
+export const EditDocumentHeader = (props: EditDocumentHeaderProps) => {
 
 
     const { documentDataState } = useDocumentData()

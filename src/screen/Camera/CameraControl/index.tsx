@@ -14,7 +14,7 @@ export interface CameraControlProps {
 }
 
 
-export function CameraControl(props: CameraControlProps) {
+export const CameraControl = (props: CameraControlProps) => {
     return (
         <ControlView isLayoutPositionAbsolute={props.isLayoutPositionAbsolute}>
             <ControlButton

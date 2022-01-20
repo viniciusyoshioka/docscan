@@ -12,7 +12,7 @@ export interface ConvertPdfOptionProps extends ModalProps {
 }
 
 
-export function ConvertPdfOption(props: ConvertPdfOptionProps) {
+export const ConvertPdfOption = (props: ConvertPdfOptionProps) => {
 
 
     const { color, opacity } = useColorTheme()

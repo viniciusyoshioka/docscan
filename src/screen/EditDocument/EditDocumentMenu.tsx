@@ -16,7 +16,7 @@ export interface EditDocumentMenuProps {
 }
 
 
-export function EditDocumentMenu(props: EditDocumentMenuProps) {
+export const EditDocumentMenu = (props: EditDocumentMenuProps) => {
 
 
     const menuRef = useRef<Menu>(null)

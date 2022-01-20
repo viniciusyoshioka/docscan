@@ -19,7 +19,7 @@ export interface CameraSettingsProps extends CameraSettingsModalProps {
 }
 
 
-export function CameraSettings(props: CameraSettingsProps) {
+export const CameraSettings = (props: CameraSettingsProps) => {
 
 
     const { cameraSettingsState, dispatchCameraSettings } = useCameraSettings()

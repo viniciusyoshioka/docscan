@@ -12,7 +12,7 @@ export interface ControlButtonProps extends TouchableOpacityProps {
 }
 
 
-export function ControlButton(props: ControlButtonProps) {
+export const ControlButton = (props: ControlButtonProps) => {
     return (
         <ButtonBase {...props}>
             <IndexView>
