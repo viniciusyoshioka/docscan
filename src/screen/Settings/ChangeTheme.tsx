@@ -7,7 +7,7 @@ import { useColorTheme } from "../../services/theme"
 export interface ChangeThemeProps extends ModalProps { }
 
 
-export function ChangeTheme(props: ChangeThemeProps) {
+export const ChangeTheme = (props: ChangeThemeProps) => {
 
 
     const { appTheme, switchTheme } = useColorTheme()
