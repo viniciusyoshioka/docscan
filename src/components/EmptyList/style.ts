@@ -4,6 +4,15 @@ import { StyledProps } from "../../types"
 
 
 export const EmptyListView = styled.View`
+    ${(props: {isRelative?: boolean}) => !props.isRelative
+        ? `
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+        `
+        : ""}
     flex: 1;
     align-items: center;
     justify-content: center;
