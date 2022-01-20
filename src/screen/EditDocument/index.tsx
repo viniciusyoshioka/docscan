@@ -461,12 +461,12 @@ export function EditDocument() {
 
             <RenameDocument
                 visible={renameDocumentVisible}
-                setVisible={setRenameDocumentVisible}
+                onRequestClose={() => setRenameDocumentVisible(false)}
             />
 
             <ConvertPdfOption
                 visible={convertPdfOptionVisible}
-                setVisible={setConvertPdfOptionVisible}
+                onRequestClose={() => setConvertPdfOptionVisible(false)}
                 convertToPdf={convertDocumentToPdf}
             />
         </SafeScreen>
