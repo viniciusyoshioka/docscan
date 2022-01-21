@@ -1,19 +1,18 @@
 import React from "react"
 import { RectButtonProps } from "react-native-gesture-handler"
-import Icon from "react-native-vector-icons/MaterialIcons"
 
+import { Icon, OptionalIconProps } from ".."
 import { useColorTheme } from "../../services/theme"
 import { ListItemBase, TextDescription, TextTitle, ViewIcon, ViewText } from "./style"
 
 
-export interface ListItemProps extends RectButtonProps {
-    title?: string,
-    description?: string,
-    icon?: string,
+export interface ListItemProps extends RectButtonProps, OptionalIconProps {
+    title?: string;
+    description?: string;
 }
 
 
-export function ListItem(props: ListItemProps) {
+export const ListItem = (props: ListItemProps) => {
 
 
     const { color, opacity } = useColorTheme()
@@ -21,15 +20,13 @@ export function ListItem(props: ListItemProps) {
 
     return (
         <ListItemBase rippleColor={color.listItem_ripple} {...props}>
-            {props.icon && (
+            {props.iconName && (
                 <ViewIcon>
                     <Icon
-                        name={props.icon}
-                        size={24}
-                        color={color.listItem_color}
-                        style={{
-                            opacity: opacity.highEmphasis
-                        }}
+                        iconName={props.iconName}
+                        iconSize={props.iconSize ?? 24}
+                        iconColor={color.listItem_color}
+                        iconStyle={{ opacity: opacity.highEmphasis }}
                     />
                 </ViewIcon>
             )}

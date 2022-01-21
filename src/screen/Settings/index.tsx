@@ -57,14 +57,14 @@ export function Settings() {
             />
 
             <ListItem
-                icon={"brightness-medium"}
+                iconName={"brightness-medium"}
                 title={"Tema"}
                 description={"Mudar tema de cores do aplicativo"}
                 onPress={() => setChangeThemeVisible(true)}
             />
 
             <ListItem
-                icon={"receipt-long"}
+                iconName={"receipt-long"}
                 title={"Compartilhar logs"}
                 description={"Enviar registro de erros"}
                 onPress={shareLogFile}
