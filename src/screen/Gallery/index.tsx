@@ -331,7 +331,7 @@ export function Gallery() {
 
             {imageGallery?.length === 0 && (
                 <EmptyList
-                    source={require("../../image/empty_gallery.png")}
+                    imageSource={require("../../image/empty_gallery.png")}
                     message={"Galeria vazia"}
                 />
             )}
