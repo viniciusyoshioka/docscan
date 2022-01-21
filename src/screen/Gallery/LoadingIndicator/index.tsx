@@ -5,11 +5,7 @@ import { useColorTheme } from "../../../services/theme"
 import { LoadingIndicatorView } from "./style"
 
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface LoadingIndicatorProps { }
-
-
-export const LoadingIndicator = (props: LoadingIndicatorProps) => {
+export const LoadingIndicator = () => {
 
 
     const { color, opacity } = useColorTheme()
