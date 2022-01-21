@@ -13,7 +13,7 @@ export interface EmptyListProps extends ViewProps, OptionalIconProps {
 }
 
 
-export function EmptyList(props: EmptyListProps) {
+export const EmptyList = (props: EmptyListProps) => {
     return (
         <EmptyListView {...props}>
             {props.iconName && (
