@@ -6,11 +6,11 @@ import { MenuItemBase, MenuItemText } from "./style"
 
 
 export interface MenuItemProps extends RectButtonProps {
-    text: string,
+    text: string;
 }
 
 
-export function MenuItem(props: MenuItemProps) {
+export const MenuItem = (props: MenuItemProps) => {
 
 
     const { color } = useColorTheme()
