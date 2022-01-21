@@ -165,6 +165,11 @@ export function Home() {
         }
     }
 
+    function exitSelectionMode() {
+        setSelectedDocument([])
+        setSelectionMode(false)
+    }
+
     function renderItem({ item }: { item: DocumentForList }) {
         return (
             <DocumentItem
@@ -186,11 +191,6 @@ export function Home() {
         length: 60,
         offset: 60 * index,
     }), [])
-
-    function exitSelectionMode() {
-        setSelectedDocument([])
-        setSelectionMode(false)
-    }
 
 
     useEffect(() => {
@@ -224,7 +224,7 @@ export function Home() {
 
             {document.length === 0 && (
                 <EmptyList
-                    source={appIconOutline}
+                    imageSource={appIconOutline}
                     message={"Nenhum documento"}
                 />
             )}
