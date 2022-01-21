@@ -4,7 +4,7 @@ import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 import Icon from "react-native-vector-icons/MaterialIcons"
 
 import { SelectedSurface, FileNameText, FileNameView, PictureButton, PictureImage } from "./style"
-import { useColorTheme } from "../../services/theme"
+import { useColorTheme } from "../../../services/theme"
 
 
 export interface PictureItemProps {

@@ -1,7 +1,7 @@
 import { RectButton } from "react-native-gesture-handler"
 import styled from "styled-components/native"
 
-import { StyledProps } from "../../types"
+import { StyledProps } from "../../../types"
 
 
 export const PictureButton = styled(RectButton)`

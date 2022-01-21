@@ -5,7 +5,7 @@ import RNFS from "react-native-fs"
 import { createPdf, PdfCreatorOptions, viewPdf } from "react-native-pdf-creator"
 import Share from "react-native-share"
 
-import { PictureItem, SafeScreen } from "../../components"
+import { SafeScreen } from "../../components"
 import { DocumentDatabase } from "../../database"
 import { fullPathPdf, fullPathTemporaryCompressedPicture } from "../../services/constant"
 import { useDocumentData } from "../../services/document"
@@ -16,6 +16,7 @@ import { DocumentPicture, NavigationParamProps, RouteParamProps, SimpleDocument 
 import { ConvertPdfOption } from "./ConvertPdfOption"
 import { EditDocumentHeader } from "./Header"
 import { RenameDocument } from "./RenameDocument"
+import { PictureItem } from "./Pictureitem"
 
 
 export function EditDocument() {
