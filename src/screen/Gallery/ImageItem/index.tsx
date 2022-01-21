@@ -1,19 +1,19 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { Image, useWindowDimensions } from "react-native"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
-import Icon from "react-native-vector-icons/MaterialIcons"
 
-import { useColorTheme } from "../../services/theme"
+import { Icon } from "../../../components"
+import { useColorTheme } from "../../../services/theme"
 import { Button, SelectionSurface } from "./style"
 
 
 export interface ImageItemProps {
-    click: () => void,
-    select: () => void,
-    deselect: () => void,
-    selectionMode: boolean,
-    imagePath: string,
-    screenAction: "replace-picture" | undefined,
+    click: () => void;
+    select: () => void;
+    deselect: () => void;
+    selectionMode: boolean;
+    imagePath: string;
+    screenAction: "replace-picture" | undefined;
 }
 
 
@@ -63,15 +63,11 @@ export function ImageItem(props: ImageItemProps) {
         >
             <Button
                 onPress={normalPress}
-                style={{
-                    width: imageSize, height: imageSize,
-                }}
+                style={{ width: imageSize }}
             >
                 <Image
                     source={{ uri: `file://${props.imagePath}` }}
-                    style={{
-                        width: imageSize, height: imageSize,
-                    }}
+                    style={{ width: imageSize, aspectRatio: 1 }}
                 />
 
                 {props.selectionMode && selected && (
@@ -79,10 +75,10 @@ export function ImageItem(props: ImageItemProps) {
                         <SelectionSurface />
 
                         <Icon
-                            name={"done"}
-                            size={30}
-                            color={color.imageItem_selected_color}
-                            style={{ position: "absolute" }}
+                            iconName={"done"}
+                            iconSize={30}
+                            iconColor={color.imageItem_selected_color}
+                            iconStyle={{ position: "absolute" }}
                         />
                     </>
                 )}
