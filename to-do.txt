@@ -33,8 +33,6 @@ re-add support for multiple front/back cameras
 get cameras ratio to adapt interface to it
 
 # EditDocument
-add empty document list indicator
-increase PictureItem border-radius
 add drag and drop functionality to sort DocumentItem
 add infinity scroll
 
