@@ -250,10 +250,11 @@ export function Camera() {
                 log.warn(`Error focusing camera ${error}`)
             }
 
-            new Promise(() => {
+            new Promise<void>((resolve, _) => {
                 const interval = setInterval(() => {
                     setIsFocusEnable(true)
                     clearInterval(interval)
+                    resolve()
                 }, 1000)
             })
         }
