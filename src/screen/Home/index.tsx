@@ -12,7 +12,7 @@ import { DocumentForList } from "../../types"
 import { DocumentDatabase } from "../../database"
 import { NavigationParamProps } from "../../types"
 import { log } from "../../services/log"
-import { DocumentItem } from "./DocumentItem"
+import { DocumentItem, DOCUMENT_PICTURE_HEIGHT } from "./DocumentItem"
 
 
 export function Home() {
@@ -48,6 +48,7 @@ export function Home() {
         }
     }
 
+    // TODO
     async function deleteSelectedDocument() {
         for (let i = 0; i < selectedDocument.length; i++) {
             let picturesToDelete
@@ -188,8 +189,8 @@ export function Home() {
 
     const getItemLayout = useCallback((_, index: number) => ({
         index: index,
-        length: 60,
-        offset: 60 * index,
+        length: DOCUMENT_PICTURE_HEIGHT,
+        offset: DOCUMENT_PICTURE_HEIGHT * index,
     }), [])
 
 
