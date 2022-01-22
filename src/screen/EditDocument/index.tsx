@@ -289,11 +289,12 @@ export function EditDocument() {
         const pictureIdToDelete: number[] = []
         for (let i = 0; i < selectedPictureIndex.length; i++) {
             try {
-                const pictureId = documentDataState.pictureList[i].id
+                const pictureIndex = selectedPictureIndex[i]
+                const pictureId = documentDataState.pictureList[pictureIndex].id
                 if (pictureId) {
                     pictureIdToDelete.push(pictureId)
                 }
-                await RNFS.unlink(documentDataState.pictureList[i].filepath)
+                await RNFS.unlink(documentDataState.pictureList[pictureIndex].filepath)
             } catch (error) {
                 log.warn(`Erro apagando arquivo das imagens selecionadas do documento. "${error}"`)
             }
