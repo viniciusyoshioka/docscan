@@ -325,7 +325,7 @@ export function Gallery() {
                 keyExtractor={keyExtractor}
                 getItemLayout={getItemLayout}
                 numColumns={3}
-                onEndReachedThreshold={0.2}
+                onEndReachedThreshold={0.05}
                 onEndReached={getImage}
                 ListFooterComponent={() => (isLoading && imageGallery) ? <LoadingIndicator /> : null}
                 onRefresh={async () => {
