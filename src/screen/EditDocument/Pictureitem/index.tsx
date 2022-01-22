@@ -7,6 +7,11 @@ import { useColorTheme } from "../../../services/theme"
 import { Icon } from "../../../components"
 
 
+export function getPictureItemHeight(width: number) {
+    return ((width - (2 * 4)) / 2) - (2 * 4)
+}
+
+
 export interface PictureItemProps {
     click: () => void;
     select: () => void;
@@ -23,7 +28,7 @@ export const PictureItem = (props: PictureItemProps) => {
 
     const [selected, setSelected] = useState(false)
     const { width } = useWindowDimensions()
-    const pictureItemSize = ((width - (2 * 4)) / 2) - (2 * 4)
+    const pictureItemSize = getPictureItemHeight(width)
 
 
     const getPictureName = useCallback(() => {
