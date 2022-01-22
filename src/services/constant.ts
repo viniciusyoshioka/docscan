@@ -15,7 +15,7 @@ export const appIconOutline = require("./../image/docscan_outline.png")
 // Folder
 // Root
 export const folderRoot = appName
-export const fullPathRoot = `${RNFS.CachesDirectoryPath}/${folderRoot}`
+export const fullPathRoot = `${RNFS.DocumentDirectoryPath}/${folderRoot}`
 export const fullPathRootExternal = `${RNFS.ExternalStorageDirectoryPath}/${folderRoot}`
 // External/Export
 export const folderExported = "Exported"
@@ -46,7 +46,7 @@ export const fullPathTemporaryCompressedPicture = `${fullPathTemporary}/${folder
 // Version
 export const latestDbVersion = "1.0.0"
 // Database folder
-export const databaseFolder = `${RNFS.CachesDirectoryPath}/../databases`
+export const databaseFolder = `${RNFS.DocumentDirectoryPath}/databases`
 // App database
 export const appDatabaseFileName = "docscan_database.sqlite"
 export const appDatabaseFullPath = `${databaseFolder}/${appDatabaseFileName}`
