@@ -24,8 +24,6 @@ cropping image may replace wrong picture
 TODO
 
 # Camera
-enable/disable action button when camera is not available
-add ref function to enable/disable action button
 add error handling to useCameraDevices hook
 use reanimated to add focus indicator
 re-add icons rotation according device orientation
