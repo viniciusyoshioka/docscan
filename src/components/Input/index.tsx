@@ -6,7 +6,7 @@ import { InputBase } from "./style"
 
 
 export interface InputProps extends TextInputProps {
-    isFocused?: boolean,
+    isFocused?: boolean;
 }
 
 
