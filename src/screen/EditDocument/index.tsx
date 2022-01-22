@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react"
-import { Alert, FlatList } from "react-native"
+import { Alert, FlatList, useWindowDimensions } from "react-native"
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 import { createPdf, PdfCreatorOptions, viewPdf } from "react-native-pdf-creator"
@@ -16,7 +16,7 @@ import { DocumentPicture, NavigationParamProps, RouteParamProps, SimpleDocument 
 import { ConvertPdfOption } from "./ConvertPdfOption"
 import { EditDocumentHeader } from "./Header"
 import { RenameDocument } from "./RenameDocument"
-import { PictureItem } from "./Pictureitem"
+import { getPictureItemHeight, PictureItem } from "./Pictureitem"
 
 
 export function EditDocument() {
@@ -24,6 +24,8 @@ export function EditDocument() {
 
     const navigation = useNavigation<NavigationParamProps<"EditDocument">>()
     const { params } = useRoute<RouteParamProps<"EditDocument">>()
+
+    const { width } = useWindowDimensions()
 
     const { documentDataState, dispatchDocumentData } = useDocumentData()
     const [selectionMode, setSelectionMode] = useState(false)
@@ -349,6 +351,11 @@ export function EditDocument() {
         })
     }
 
+    function exitSelectionMode() {
+        setSelectedPictureIndex([])
+        setSelectionMode(false)
+    }
+
     function renderItem({ item, index }: { item: DocumentPicture, index: number }) {
         return (
             <PictureItem
@@ -361,10 +368,19 @@ export function EditDocument() {
         )
     }
 
-    function exitSelectionMode() {
-        setSelectedPictureIndex([])
-        setSelectionMode(false)
-    }
+    const keyExtractor = useCallback((item: DocumentPicture, index: number) => {
+        return item.id ? item.id.toString() : index.toString()
+    }, [])
+
+    const getItemLayout = useCallback((_: DocumentPicture[] | null | undefined, index: number) => {
+        const pictureItemHeight = getPictureItemHeight(width)
+
+        return {
+            length: pictureItemHeight,
+            offset: pictureItemHeight * index,
+            index: index,
+        }
+    }, [width])
 
 
     useEffect(() => {
@@ -456,6 +472,9 @@ export function EditDocument() {
             <FlatList
                 data={documentDataState?.pictureList}
                 renderItem={renderItem}
+                extraData={[width, openPicture, selectPicture, deselectPicture, selectionMode]}
+                keyExtractor={keyExtractor}
+                getItemLayout={getItemLayout}
                 numColumns={2}
                 contentContainerStyle={{ padding: 4 }}
             />
