@@ -1,7 +1,7 @@
 import React from "react"
 import { TouchableOpacityProps } from "react-native"
-import Icon from "react-native-vector-icons/MaterialIcons"
 
+import { Icon } from "../../../components"
 import { ButtonBase, IndexText, IndexView } from "./style"
 
 
@@ -18,9 +18,9 @@ export const ControlButton = (props: ControlButtonProps) => {
             <IndexView>
                 {props.icon && (
                     <Icon
-                        name={props.icon}
-                        size={props.size || 24}
-                        color={"rgb(255, 255, 255)"}
+                        iconName={props.icon}
+                        iconSize={props.size || 24}
+                        iconColor={"rgb(255, 255, 255)"}
                     />
                 )}
 

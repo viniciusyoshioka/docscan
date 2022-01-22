@@ -4,10 +4,9 @@ import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
 import { OrientationType } from "react-native-orientation-locker"
-import Icon from "react-native-vector-icons/MaterialIcons"
 import { Camera as RNCamera, useCameraDevices } from "react-native-vision-camera"
 
-import { SafeScreen } from "../../components"
+import { Icon, SafeScreen } from "../../components"
 import { useBackHandler, useDeviceOrientationChange, useIsForeground } from "../../hooks"
 import { useCameraSettings } from "../../services/camera"
 import { fullPathPicture } from "../../services/constant"
@@ -281,10 +280,10 @@ export function Camera() {
             {!cameraDevice && (
                 <CameraWrapper>
                     <Icon
-                        name={"no-photography"}
-                        size={56}
-                        color={color.screen_color}
-                        style={{ opacity: opacity.mediumEmphasis }}
+                        iconName={"no-photography"}
+                        iconSize={56}
+                        iconColor={color.screen_color}
+                        iconStyle={{ opacity: opacity.mediumEmphasis }}
                     />
 
                     <NoCameraAvailableText>

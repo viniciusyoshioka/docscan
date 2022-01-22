@@ -1,9 +1,10 @@
 import React from "react"
 import { TouchableOpacityProps } from "react-native"
-import Icon from "react-native-vector-icons/MaterialIcons"
 import styled from "styled-components/native"
 
-import { styledProps, useColorTheme } from "../../services/theme"
+import { Icon } from ".."
+import { useColorTheme } from "../../services/theme"
+import { StyledProps } from "../../types"
 
 
 const ShowPasswordButtonBase = styled.TouchableOpacity`
@@ -16,16 +17,16 @@ const ShowPasswordButtonBase = styled.TouchableOpacity`
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
-    background-color: ${(props: styledProps) => props.theme.color.input_background};
-    border-color: ${(props: styledProps & { isFocused: boolean }) => {
+    background-color: ${(props: StyledProps) => props.theme.color.input_background};
+    border-color: ${(props: StyledProps & { isFocused: boolean }) => {
         return props.isFocused ? props.theme.color.input_focus_border : props.theme.color.input_background
     }};
 `
 
 
 export interface ShowPasswordButtonProps extends TouchableOpacityProps {
-    showPassword: boolean,
-    isFocused: boolean,
+    showPassword: boolean;
+    isFocused: boolean;
 }
 
 
@@ -38,12 +39,10 @@ export function ShowPasswordButton(props: ShowPasswordButtonProps) {
     return (
         <ShowPasswordButtonBase activeOpacity={0.7} {...props}>
             <Icon
-                name={props.showPassword ? "visibility" : "visibility-off"}
-                size={24}
-                color={color.input_color}
-                style={{
-                    opacity: opacity.highEmphasis
-                }}
+                iconName={props.showPassword ? "visibility" : "visibility-off"}
+                iconSize={24}
+                iconColor={color.input_color}
+                iconStyle={{ opacity: opacity.highEmphasis }}
             />
         </ShowPasswordButtonBase>
     )

@@ -1,8 +1,9 @@
 import React from "react"
 import styled from "styled-components/native"
-import Icon from "react-native-vector-icons/MaterialIcons"
 
-import { styledProps, useColorTheme } from "../../services/theme"
+import { Icon } from ".."
+import { useColorTheme } from "../../services/theme"
+import { StyledProps } from "../../types"
 
 
 export const ButtonBase = styled.TouchableOpacity`
@@ -13,12 +14,12 @@ export const ButtonBase = styled.TouchableOpacity`
     height: 36px;
     border-radius: 4px;
     border-width: 2px;
-    border-color: ${(props: styledProps) => props.theme.color.button_background};
+    border-color: ${(props: StyledProps) => props.theme.color.button_background};
 `
 
 
 export interface ButtonIconProps {
-    icon: string,
+    icon: string;
 }
 
 
@@ -30,10 +31,10 @@ export function ButtonIcon(props: ButtonIconProps) {
 
     return (
         <Icon
-            name={props.icon}
-            size={18}
-            color={color.button_background}
-            style={{
+            iconName={props.icon}
+            iconSize={18}
+            iconColor={color.button_background}
+            iconStyle={{
                 marginRight: 8,
                 opacity: opacity.highEmphasis,
             }}
@@ -44,6 +45,6 @@ export function ButtonIcon(props: ButtonIconProps) {
 
 export const ButtonTextContent = styled.Text`
     font-size: 15px;
-    color: ${(props: styledProps) => props.theme.color.button_background};
-    opacity: ${(props: styledProps) => props.theme.opacity.highEmphasis};
+    color: ${(props: StyledProps) => props.theme.color.button_background};
+    opacity: ${(props: StyledProps) => props.theme.opacity.highEmphasis};
 `

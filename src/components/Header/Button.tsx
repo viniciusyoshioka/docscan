@@ -1,7 +1,7 @@
 import React from "react"
 import { BorderlessButton, BorderlessButtonProps } from "react-native-gesture-handler"
 import styled from "styled-components/native"
-import Icon from "react-native-vector-icons/MaterialIcons"
+import { Icon } from ".."
 
 import { useColorTheme } from "../../services/theme"
 
@@ -16,8 +16,8 @@ export const HeaderButtonBase = styled(BorderlessButton)`
 
 
 export interface HeaderButtonProps extends BorderlessButtonProps {
-    icon: string,
-    iconSize?: number,
+    icon: string;
+    iconSize?: number;
 }
 
 
@@ -30,12 +30,10 @@ export function HeaderButton(props: HeaderButtonProps) {
     return (
         <HeaderButtonBase rippleColor={color.header_ripple} {...props}>
             <Icon
-                name={props.icon}
-                size={props.iconSize || 24}
-                color={color.header_color}
-                style={{
-                    opacity: opacity.headerEmphasis
-                }}
+                iconName={props.icon}
+                iconSize={props.iconSize || 24}
+                iconColor={color.header_color}
+                iconStyle={{ opacity: opacity.headerEmphasis }}
             />
         </HeaderButtonBase>
     )
