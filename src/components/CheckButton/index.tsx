@@ -7,23 +7,20 @@ import { useColorTheme } from "../../services/theme"
 
 
 export interface CheckButtonProps extends TouchableOpacityProps {
-    text?: string,
-    value?: boolean,
-    onValueChange: (newValue: boolean) => void,
+    text?: string;
+    value?: boolean;
+    onValueChange?: (newValue: boolean) => void;
 }
 
 
-export function CheckButton(props: CheckButtonProps) {
+export const CheckButton = (props: CheckButtonProps) => {
 
 
     const { color, opacity } = useColorTheme()
 
 
     return (
-        <Button
-            activeOpacity={0.8}
-            {...props}
-        >
+        <Button activeOpacity={0.8} {...props}>
             <CheckBox
                 value={props.value}
                 onValueChange={props.onValueChange}
@@ -35,9 +32,7 @@ export function CheckButton(props: CheckButtonProps) {
             />
 
             {props.text && (
-                <Text>
-                    {props.text}
-                </Text>
+                <Text>{props.text}</Text>
             )}
         </Button>
     )
