@@ -1,15 +1,15 @@
 import React from "react"
 import { Image, ImageSourcePropType, useWindowDimensions } from "react-native"
 
-import { SafeScreen } from "../Screen"
+import { SafeScreen } from "../../../components/Screen"
 
 
 export interface ImageVisualizationItemProps {
-    source: ImageSourcePropType,
+    source: ImageSourcePropType;
 }
 
 
-export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
+export const ImageVisualizationItem = (props: ImageVisualizationItemProps) => {
     return (
         <SafeScreen style={{ width: useWindowDimensions().width }}>
             <Image

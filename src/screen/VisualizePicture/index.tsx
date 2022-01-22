@@ -5,13 +5,14 @@ import RNFS from "react-native-fs"
 import { ImageCrop, OnImageSavedResponse } from "react-native-image-crop"
 
 import { VisualizePictureHeader } from "./Header"
-import { ImageVisualizationItem, SafeScreen } from "../../components"
+import { SafeScreen } from "../../components"
 import { useBackHandler } from "../../hooks"
 import { log } from "../../services/log"
 import { fullPathPicture } from "../../services/constant"
 import { getDateTime } from "../../services/date"
 import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { useDocumentData } from "../../services/document"
+import { ImageVisualizationItem } from "./ImageVisualizationItem"
 
 
 export function VisualizePicture() {
@@ -112,7 +113,7 @@ export function VisualizePicture() {
         })
     }
 
-    function renderImageVisualizationItem({ item }: { item: DocumentPicture }) {
+    function renderItem({ item }: { item: DocumentPicture }) {
         return (
             <ImageVisualizationItem
                 source={{ uri: `file://${item.filepath}` }}
@@ -141,7 +142,7 @@ export function VisualizePicture() {
                 <FlatList
                     ref={imageFlatListRef}
                     data={documentDataState?.pictureList}
-                    renderItem={renderImageVisualizationItem}
+                    renderItem={renderItem}
                     scrollEnabled={isFlatListScrollEnable}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
