@@ -1,22 +1,22 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { useWindowDimensions } from "react-native"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
-import Icon from "react-native-vector-icons/MaterialIcons"
 
 import { SelectedSurface, FileNameText, FileNameView, PictureButton, PictureImage } from "./style"
 import { useColorTheme } from "../../../services/theme"
+import { Icon } from "../../../components"
 
 
 export interface PictureItemProps {
-    click: () => void,
-    select: () => void,
-    deselect: () => void,
-    selectionMode: boolean,
-    picturePath: string,
+    click: () => void;
+    select: () => void;
+    deselect: () => void;
+    selectionMode: boolean;
+    picturePath: string;
 }
 
 
-export function PictureItem(props: PictureItemProps) {
+export const PictureItem = (props: PictureItemProps) => {
 
 
     const { color } = useColorTheme()
@@ -67,10 +67,7 @@ export function PictureItem(props: PictureItemProps) {
             onHandlerStateChange={({ nativeEvent }) => longPress(nativeEvent)}
         >
             <PictureButton
-                style={{
-                    maxWidth: pictureItemSize,
-                    maxHeight: pictureItemSize,
-                }}
+                style={{ maxWidth: pictureItemSize }}
                 onPress={normalPress}
             >
                 <PictureImage source={{ uri: `file://${props.picturePath}` }} />
@@ -86,10 +83,10 @@ export function PictureItem(props: PictureItemProps) {
                         <SelectedSurface />
 
                         <Icon
-                            name={"done"}
-                            size={30}
-                            color={color.pictureItem_selected_color}
-                            style={{ position: "absolute" }}
+                            iconName={"done"}
+                            iconSize={30}
+                            iconColor={color.pictureItem_selected_color}
+                            iconStyle={{ position: "absolute" }}
                         />
                     </>
                 )}

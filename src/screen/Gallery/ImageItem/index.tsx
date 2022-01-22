@@ -17,7 +17,7 @@ export interface ImageItemProps {
 }
 
 
-export function ImageItem(props: ImageItemProps) {
+export const ImageItem = (props: ImageItemProps) => {
 
 
     const { color } = useColorTheme()

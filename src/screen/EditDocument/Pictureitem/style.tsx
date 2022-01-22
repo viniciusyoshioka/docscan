@@ -9,7 +9,7 @@ export const PictureButton = styled(RectButton)`
     align-items: center;
     justify-content: center;
     margin: 4px;
-    border-radius: 1px;
+    border-radius: 6px;
     background-color: ${(props: StyledProps) => props.theme.color.pictureItem_background};
     elevation: 2;
     aspect-ratio: 1;
@@ -18,7 +18,7 @@ export const PictureButton = styled(RectButton)`
 
 export const PictureImage = styled.Image`
     flex: 1;
-    border-radius: 1px;
+    border-radius: 6px;
     resize-mode: cover;
     aspect-ratio: 1;
 `
@@ -33,9 +33,9 @@ export const FileNameView = styled.View`
     justify-content: center;
     width: 100%;
     height: 32px;
-    padding-horizontal: 6px;
-    border-bottom-left-radius: 1px;
-    border-bottom-right-radius: 1px;
+    padding-horizontal: 8px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
     opacity: ${(props: StyledProps) => props.theme.opacity.highEmphasis};
     background-color: ${(props: StyledProps) => props.theme.color.pictureItem_background};
 `
@@ -54,9 +54,7 @@ export const SelectedSurface = styled.View`
     bottom: 0px;
     left: 0px;
     right: 0px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 1px;
+    border-radius: 6px;
     opacity: ${(props: StyledProps) => props.theme.opacity.mediumEmphasis};
     background-color: ${(props: StyledProps) => props.theme.color.pictureItem_selected_background};
 `
