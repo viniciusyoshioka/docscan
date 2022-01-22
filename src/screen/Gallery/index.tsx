@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react"
-import { ActivityIndicator, Alert, FlatList } from "react-native"
+import React, { useCallback, useEffect, useState } from "react"
+import { ActivityIndicator, Alert, FlatList, useWindowDimensions } from "react-native"
 import CameraRoll, { PhotoIdentifier } from "@react-native-community/cameraroll"
 import { useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
@@ -22,6 +22,8 @@ export function Gallery() {
 
     const navigation = useNavigation<NavigationParamProps<"Gallery">>()
     const { params } = useRoute<RouteParamProps<"Gallery">>()
+
+    const { width } = useWindowDimensions()
 
     const { color, opacity } = useColorTheme()
 
@@ -271,7 +273,12 @@ export function Gallery() {
         }
     }
 
-    function renderImageItem({ item }: { item: PhotoIdentifier }) {
+    function exitSelectionMode() {
+        setSelectedImage([])
+        setSelectionMode(false)
+    }
+
+    function renderItem({ item }: { item: PhotoIdentifier }) {
         return (
             <ImageItem
                 click={() => importSingleImage(item.node.image.uri)}
@@ -284,10 +291,17 @@ export function Gallery() {
         )
     }
 
-    function exitSelectionMode() {
-        setSelectedImage([])
-        setSelectionMode(false)
-    }
+    const keyExtractor = useCallback((_: PhotoIdentifier, index: number) => {
+        return index.toString()
+    }, [])
+
+    const getItemLayout = useCallback((_: PhotoIdentifier[] | null | undefined, index: number) => {
+        return {
+            length: (width / 3),
+            offset: (width / 3) * index,
+            index: index,
+        }
+    }, [width])
 
 
     useEffect(() => {
@@ -306,7 +320,10 @@ export function Gallery() {
 
             <FlatList
                 data={imageGallery}
-                renderItem={renderImageItem}
+                renderItem={renderItem}
+                extraData={[width, importSingleImage, selectImage, deselectImage, selectionMode]}
+                keyExtractor={keyExtractor}
+                getItemLayout={getItemLayout}
                 numColumns={3}
                 onEndReachedThreshold={0.2}
                 onEndReached={getImage}
