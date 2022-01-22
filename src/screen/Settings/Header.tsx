@@ -25,7 +25,7 @@ export class SettingsHeader extends Component<SettingsHeaderProps> {
         return (
             <Header>
                 <HeaderButton
-                    icon={"arrow-back"}
+                    iconName={"arrow-back"}
                     onPress={this.props.goBack}
                 />
 

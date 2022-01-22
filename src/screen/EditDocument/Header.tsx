@@ -31,14 +31,14 @@ export const EditDocumentHeader = (props: EditDocumentHeaderProps) => {
             {!props.selectionMode && (
                 <>
                     <HeaderButton
-                        icon={"arrow-back"}
+                        iconName={"arrow-back"}
                         onPress={props.goBack}
                     />
 
                     <HeaderTitle title={documentDataState?.name || ""} />
 
                     <HeaderButton
-                        icon={"add-a-photo"}
+                        iconName={"add-a-photo"}
                         onPress={props.openCamera}
                     />
 
@@ -56,14 +56,14 @@ export const EditDocumentHeader = (props: EditDocumentHeaderProps) => {
             {props.selectionMode && (
                 <>
                     <HeaderButton
-                        icon={"close"}
+                        iconName={"close"}
                         onPress={props.exitSelectionMode}
                     />
 
                     <HeaderTitle />
 
                     <HeaderButton
-                        icon={"delete"}
+                        iconName={"delete"}
                         onPress={props.deletePicture}
                     />
                 </>

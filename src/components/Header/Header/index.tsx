@@ -1,31 +1,19 @@
 import React, { Children, cloneElement, ReactNode } from "react"
 import { StyleProp, ViewProps, ViewStyle } from "react-native"
-import styled from "styled-components/native"
 
-import { StyledProps } from "../../types"
-import { HeaderButton } from "./Button"
-import { HeaderTitle } from "./Title"
+import { HeaderButton, HeaderTitle } from ".."
+import { HeaderBase } from "./style"
 
 
-export const HeaderHeight = 56
-
-
-const HeaderBase = styled.View`
-    flex-direction: row;
-    align-items: center;
-    height: ${HeaderHeight}px;
-    padding-left: 8px;
-    background-color: ${(props: StyledProps) => props.theme.color.header_background};
-    elevation: 4;
-`
+export { HEADER_HEIGHT } from "./style"
 
 
 export interface HeaderProps extends ViewProps {
-    children: ReactNode,
+    children: ReactNode;
 }
 
 
-export function Header(props: HeaderProps) {
+export const Header = (props: HeaderProps) => {
     return (
         <HeaderBase {...props}>
             {Children.toArray(props.children)

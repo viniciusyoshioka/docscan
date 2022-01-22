@@ -49,7 +49,7 @@ export const EditDocumentMenu = (props: EditDocumentMenuProps) => {
         <Menu ref={menuRef} onClose={removeBackhandler} onOpen={setBackhandler}>
             <MenuTrigger customStyles={{ TriggerTouchableComponent: RectButton }}>
                 <HeaderButton
-                    icon={"more-vert"}
+                    iconName={"more-vert"}
                     onPress={() => menuRef.current?.open()}
                 />
             </MenuTrigger>

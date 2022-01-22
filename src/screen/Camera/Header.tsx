@@ -31,14 +31,14 @@ export class CameraHeader extends Component<CameraHeaderProps> {
         return (
             <Header style={this.props.isLayoutPositionAbsolute ? styles.absolute : styles.relative}>
                 <HeaderButton
-                    icon={"arrow-back"}
+                    iconName={"arrow-back"}
                     onPress={this.props.goBack}
                 />
 
                 <HeaderTitle />
 
                 <HeaderButton
-                    icon={"settings"}
+                    iconName={"settings"}
                     onPress={this.props.openSettings}
                 />
             </Header>

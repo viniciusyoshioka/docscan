@@ -32,14 +32,14 @@ export class GalleryHeader extends Component<GalleryHeaderProps> {
             <Header>
                 {this.props.selectionMode && (
                     <HeaderButton
-                        icon={"close"}
+                        iconName={"close"}
                         onPress={this.props.exitSelectionMode}
                     />
                 )}
 
                 {!this.props.selectionMode && (
                     <HeaderButton
-                        icon={"arrow-back"}
+                        iconName={"arrow-back"}
                         onPress={this.props.goBack}
                     />
                 )}
@@ -54,7 +54,7 @@ export class GalleryHeader extends Component<GalleryHeaderProps> {
 
                 {this.props.selectionMode && (
                     <HeaderButton
-                        icon={"done"}
+                        iconName={"done"}
                         onPress={this.props.importImage}
                     />
                 )}

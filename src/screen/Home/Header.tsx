@@ -39,7 +39,7 @@ export class HomeHeader extends Component<HomeHeaderProps> {
             <Header>
                 {this.props.selectionMode && (
                     <HeaderButton
-                        icon={"close"}
+                        iconName={"close"}
                         onPress={this.props.exitSelectionMode}
                     />
                 )}
@@ -54,14 +54,14 @@ export class HomeHeader extends Component<HomeHeaderProps> {
 
                 {this.props.selectionMode && (
                     <HeaderButton
-                        icon={"delete"}
+                        iconName={"delete"}
                         onPress={this.props.deleteSelectedDocument}
                     />
                 )}
 
                 {!this.props.selectionMode && (
                     <HeaderButton
-                        icon={"add"}
+                        iconName={"add"}
                         onPress={this.props.scanNewDocument}
                     />
                 )}

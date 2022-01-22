@@ -12,7 +12,7 @@ export function FileExplorerHeader(props: FileExplorerHeaderProps) {
     return (
         <Header>
             <HeaderButton
-                icon={"arrow-back"}
+                iconName={"arrow-back"}
                 onPress={props.goBack}
             />
 

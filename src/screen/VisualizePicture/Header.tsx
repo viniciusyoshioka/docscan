@@ -33,14 +33,14 @@ export class VisualizePictureHeader extends Component<VisualizePictureHeaderProp
             <Header>
                 {!this.props.isCropping && (
                     <HeaderButton
-                        icon={"arrow-back"}
+                        iconName={"arrow-back"}
                         onPress={this.props.goBack}
                     />
                 )}
 
                 {this.props.isCropping && (
                     <HeaderButton
-                        icon={"close"}
+                        iconName={"close"}
                         onPress={() => this.props.setIsCropping(false)}
                     />
                 )}
@@ -55,21 +55,21 @@ export class VisualizePictureHeader extends Component<VisualizePictureHeaderProp
 
                 {!this.props.isCropping && (
                     <HeaderButton
-                        icon={"add-a-photo"}
+                        iconName={"add-a-photo"}
                         onPress={this.props.openCamera}
                     />
                 )}
 
                 {!this.props.isCropping && (
                     <HeaderButton
-                        icon={"crop"}
+                        iconName={"crop"}
                         onPress={() => this.props.setIsCropping(true)}
                     />
                 )}
 
                 {this.props.isCropping && (
                     <HeaderButton
-                        icon={"done"}
+                        iconName={"done"}
                         onPress={this.props.saveCroppedPicture}
                     />
                 )}
