@@ -1,28 +1,27 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Alert, StatusBar } from "react-native"
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core"
-import { Camera as RNCamera, useCameraDevices } from "react-native-vision-camera"
 import RNFS from "react-native-fs"
-import Icon from "react-native-vector-icons/MaterialIcons"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
 import { OrientationType } from "react-native-orientation-locker"
+import Icon from "react-native-vector-icons/MaterialIcons"
+import { Camera as RNCamera, useCameraDevices } from "react-native-vision-camera"
 
 import { SafeScreen } from "../../components"
+import { useBackHandler, useDeviceOrientationChange, useIsForeground } from "../../hooks"
 import { useCameraSettings } from "../../services/camera"
 import { fullPathPicture } from "../../services/constant"
 import { getDateTime } from "../../services/date"
 import { useDocumentData } from "../../services/document"
 import { createAllFolderAsync } from "../../services/folder-handler"
-import { useBackHandler, useDeviceOrientationChange, useIsForeground } from "../../hooks"
 import { log } from "../../services/log"
 import { getCameraPermission } from "../../services/permission"
+import { useColorTheme } from "../../services/theme"
 import { CameraOrientationType, NavigationParamProps, RouteParamProps } from "../../types"
+import { CameraControl, CameraControlRef } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
-// import { CameraControl, CameraControlHandle } from "./Control"
-import { CameraControl } from "./CameraControl"
 import { CameraHeader } from "./Header"
 import { CameraWrapper, NoCameraAvailableText } from "./style"
-import { useColorTheme } from "../../services/theme"
 
 
 export function Camera() {
@@ -33,7 +32,7 @@ export function Camera() {
     const isFocused = useIsFocused()
 
     const cameraRef = useRef<RNCamera>(null)
-    // const cameraControlRef = useRef<CameraControlHandle>(null)
+    const cameraControlRef = useRef<CameraControlRef>(null)
 
     const { cameraSettingsState } = useCameraSettings()
     const { documentDataState, dispatchDocumentData } = useDocumentData()
@@ -50,6 +49,7 @@ export function Camera() {
     const [hasChanges, setHasChanges] = useState(false)
     const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
     const [isFocusEnable, setIsFocusEnable] = useState(true)
+    const isCameraActive = isFocused && isForeground
 
 
     useBackHandler(() => {
@@ -178,19 +178,10 @@ export function Camera() {
             const date = getDateTime("-", "-", true)
             const picturePath = `${fullPathPicture}/${date}.jpg`
 
-            // cameraControlRef.current?.setTakePictureButtonEnable(false)
-
             const response = await cameraRef.current.takePhoto({
                 flash: cameraSettingsState.flash,
             })
             await RNFS.moveFile(response.path, picturePath)
-
-            // new Promise(() => {
-            //     const unlockTakePictureButton = setInterval(() => {
-            //         cameraControlRef.current?.setTakePictureButtonEnable(true)
-            //         clearInterval(unlockTakePictureButton)
-            //     }, 100)
-            // })
 
             if (params?.screenAction === "replace-picture") {
                 dispatchDocumentData({
@@ -268,6 +259,14 @@ export function Camera() {
         }
     }, [deviceOrientation])
 
+    useEffect(() => {
+        if (!isCameraActive) {
+            cameraControlRef.current?.disableAction()
+            return
+        }
+        cameraControlRef.current?.enableAction()
+    }, [isCameraActive])
+
 
     return (
         <SafeScreen style={{ backgroundColor: "black" }}>
@@ -299,7 +298,7 @@ export function Camera() {
                     <TapGestureHandler minPointers={1} onHandlerStateChange={onTapStateChange}>
                         <RNCamera
                             ref={cameraRef}
-                            isActive={isFocused && isForeground}
+                            isActive={isCameraActive}
                             device={cameraDevice}
                             photo={true}
                             audio={false}
@@ -312,7 +311,7 @@ export function Camera() {
             )}
 
             <CameraControl
-                // ref={cameraControlRef}
+                ref={cameraControlRef}
                 pictureListLength={documentDataState?.pictureList.length || 0}
                 screenAction={params?.screenAction}
                 addPictureFromGallery={addPictureFromGallery}
