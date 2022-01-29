@@ -242,16 +242,14 @@ export function EditDocument() {
 
     async function deleteCurrentDocument() {
         if (documentDataState) {
-            for (let i = 0; i < documentDataState.pictureList.length; i++) {
-                try {
-                    await RNFS.unlink(documentDataState.pictureList[i].filepath)
-                } catch (error) {
-                    log.warn("Erro apagando arquivos de imagem do documento ao apagar documento atual")
-                }
-            }
+            const picturePathToDelete = documentDataState.pictureList.map((item) => {
+                return item.filepath
+            })
+
             if (documentDataState.id) {
                 try {
                     await DocumentDatabase.deleteDocument([documentDataState.id])
+                    deletePicturesService(picturePathToDelete)
                 } catch (error) {
                     log.error(`Error deleting current document from database: "${error}"`)
                     Alert.alert(
