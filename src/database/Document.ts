@@ -95,6 +95,40 @@ export function getDocumentPicture(documentId: number): Promise<DocumentPicture[
     })
 }
 
+
+/**
+ * Get the picture path in all selected documents
+ * 
+ * @param documentId array with the id of selected documents
+ * 
+ * @returns an string array with the picture path contained in thoose documents
+ */
+export function getPicturePathFromDocument(documentId: number[]): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+
+        let documentIdPlaceholder = ""
+        if (documentId.length >= 1) {
+            documentIdPlaceholder += "?"
+        }
+        for (let i = 1; i < documentId.length; i++) {
+            documentIdPlaceholder += ", ?"
+        }
+
+        globalAppDatabase.executeSql(`
+            SELECT filepath FROM document_picture WHERE belongsToDocument IN (${documentIdPlaceholder});
+        `, documentId)
+            .then(([resultSet]) => {
+                const filepath = resultSet.rows.raw()
+                    .map((item: {filepath: string}) => {
+                        return item.filepath
+                    })
+                resolve(filepath)
+            })
+            .catch(reject)
+    })
+}
+
+
 /**
  * Insert a new document in the database
  * 
