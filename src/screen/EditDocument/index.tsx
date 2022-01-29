@@ -8,6 +8,7 @@ import Share from "react-native-share"
 import { SafeScreen } from "../../components"
 import { DocumentDatabase } from "../../database"
 import { fullPathPdf, fullPathTemporaryCompressedPicture } from "../../services/constant"
+import { deletePicturesService } from "../../services/document-service"
 import { useDocumentData } from "../../services/document"
 import { useBackHandler } from "../../hooks"
 import { log } from "../../services/log"
@@ -285,22 +286,24 @@ export function EditDocument() {
             return
         }
 
-        const pictureIdToDelete: number[] = []
-        for (let i = 0; i < selectedPictureIndex.length; i++) {
-            try {
-                const pictureIndex = selectedPictureIndex[i]
-                const pictureId = documentDataState.pictureList[pictureIndex].id
-                if (pictureId) {
-                    pictureIdToDelete.push(pictureId)
+        const pictureIdToDelete = selectedPictureIndex
+            .filter((pictureIndex) => {
+                if (documentDataState.pictureList[pictureIndex].id) {
+                    return true
                 }
-                await RNFS.unlink(documentDataState.pictureList[pictureIndex].filepath)
-            } catch (error) {
-                log.warn(`Erro apagando arquivo das imagens selecionadas do documento. "${error}"`)
-            }
-        }
+                return false
+            })
+            .map((pictureIndex) => {
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                return documentDataState.pictureList[pictureIndex].id!
+            })
+        const picturePathToDelete = selectedPictureIndex.map((pictureIndex) => {
+            return documentDataState.pictureList[pictureIndex].filepath
+        })
 
         try {
             await DocumentDatabase.deleteDocumentPicture(pictureIdToDelete)
+            deletePicturesService(picturePathToDelete)
         } catch (error) {
             log.error(`Error deleting selected picture from database: "${error}"`)
             Alert.alert(
@@ -308,6 +311,7 @@ export function EditDocument() {
                 "Erro apagando imagens selecionadas"
             )
         }
+
         dispatchDocumentData({
             type: "remove-picture",
             payload: selectedPictureIndex,
