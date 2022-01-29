@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react"
 import { Alert, BackHandler, FlatList } from "react-native"
 import { useNavigation } from "@react-navigation/core"
-import RNFS from "react-native-fs"
 
 import { HomeHeader } from "./Header"
 import { EmptyList, SafeScreen } from "../../components"
@@ -13,6 +12,7 @@ import { DocumentDatabase } from "../../database"
 import { NavigationParamProps } from "../../types"
 import { log } from "../../services/log"
 import { DocumentItem, DOCUMENT_PICTURE_HEIGHT } from "./DocumentItem"
+import { deletePicturesService } from "../../services/document-service"
 
 
 export function Home() {
@@ -48,35 +48,13 @@ export function Home() {
         }
     }
 
-    // TODO
     async function deleteSelectedDocument() {
-        for (let i = 0; i < selectedDocument.length; i++) {
-            let picturesToDelete
-            try {
-                picturesToDelete = await DocumentDatabase.getDocumentPicture(selectedDocument[i])
-            } catch (error) {
-                await getDocumentList()
-                exitSelectionMode()
-
-                log.error(`Error getting document picture from database to delete selected documents: "${error}"`)
-                Alert.alert(
-                    "Aviso",
-                    "Erro ao apagar documentos selecionados"
-                )
-                return
-            }
-
-            for (let j = 0; j < picturesToDelete.length; j++) {
-                try {
-                    await RNFS.unlink(picturesToDelete[j].filepath)
-                } catch (error) {
-                    log.warn(`Erro apagando imagens do documento ao apagar documento selecionados na tela Home "${error}"`)
-                }
-            }
-        }
-
         try {
+            const picturesToDelete = await DocumentDatabase.getPicturePathFromDocument(selectedDocument)
             await DocumentDatabase.deleteDocument(selectedDocument)
+            deletePicturesService(picturesToDelete)
+            await getDocumentList()
+            exitSelectionMode()
         } catch (error) {
             log.error(`Error deleting selected documents from database: "${error}"`)
             Alert.alert(
@@ -84,8 +62,6 @@ export function Home() {
                 "Erro ao apagar documentos selecionados"
             )
         }
-        await getDocumentList()
-        exitSelectionMode()
     }
 
     function alertDeleteDocument() {
