@@ -12,11 +12,12 @@ import { useCameraSettings } from "../../services/camera"
 import { fullPathPicture } from "../../services/constant"
 import { getDateTime } from "../../services/date"
 import { useDocumentData } from "../../services/document"
+import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
 import { log } from "../../services/log"
 import { getCameraPermission } from "../../services/permission"
 import { useColorTheme } from "../../services/theme"
-import { CameraOrientationType, NavigationParamProps, RouteParamProps } from "../../types"
+import { CameraOrientationType, DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { CameraControl, CameraControlRef } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
 import { CameraHeader } from "./Header"
@@ -82,15 +83,23 @@ export function Camera() {
             return
         }
 
-        for (let i = 0; i < documentDataState.pictureList.length; i++) {
-            if (!documentDataState.id || !documentDataState.pictureList[i].id) {
-                try {
-                    await RNFS.unlink(documentDataState.pictureList[i].filepath)
-                } catch (error) {
-                    log.warn(`Error deleting unsaved picture before leaving Camera screen: "${error}"`)
-                }
-            }
-        }
+        const filePathToDelete = documentDataState.id
+            ? documentDataState.pictureList
+                .filter((item: DocumentPicture) => {
+                    if (!item.id) {
+                        return true
+                    }
+                    return false
+                })
+                .map((item: DocumentPicture) => {
+                    return item.filepath
+                })
+            : documentDataState.pictureList
+                .map((item: DocumentPicture) => {
+                    return item.filepath
+                })
+
+        deletePicturesService(filePathToDelete)
         dispatchDocumentData({ type: "close-document" })
         navigation.navigate("Home")
     }
