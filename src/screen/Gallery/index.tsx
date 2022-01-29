@@ -7,6 +7,7 @@ import RNFS from "react-native-fs"
 import { EmptyList, SafeScreen } from "../../components"
 import { useBackHandler } from "../../hooks"
 import { fullPathPicture } from "../../services/constant"
+import { copyPicturesService } from "../../services/document-service"
 import { useDocumentData } from "../../services/document"
 import { log } from "../../services/log"
 import { getWritePermission } from "../../services/permission"
@@ -204,46 +205,29 @@ export function Gallery() {
             return
         }
 
-        const newImages: DocumentPicture[] = []
-        let firstIndex = documentDataState?.pictureList.length || 0
-        for (let x = 0; x < selectedImage.length; x++) {
-            const newImagePath = await getNewImagePath(selectedImage[x])
-            try {
-                await RNFS.copyFile(selectedImage[x], newImagePath)
-                newImages.push({
-                    id: undefined,
-                    filepath: newImagePath,
-                    position: firstIndex
-                })
-                firstIndex += 1
-            } catch (error) {
-                log.error(`Gallery importMultipleImage - Erro ao importar multiplas imagens da galeria. Mensagem: "${error}"`)
+        const imagesToCopy: string[] = []
+        const imagesToImport: DocumentPicture[] = []
+        let nextIndex = documentDataState?.pictureList.length ?? 0
 
-                for (let i = 0; i < newImages.length; i++) {
-                    try {
-                        await RNFS.unlink(newImages[i].filepath)
-                    } catch (error) {
-                        log.warn("Gallery importMultipleImage - Erro ao apagar imagens copiadas da galeria para o app após erro ao importar múltiplas imagens")
-                    }
-                }
+        for (let i = 0; i < selectedImage.length; i++) {
+            const newImagePath = await getNewImagePath(selectedImage[i])
 
-                Alert.alert(
-                    "Erro",
-                    "Erro deconhecido ao importar múltiplas imagens da galeria"
-                )
-                navigation.reset({
-                    routes: [
-                        { name: "Home" },
-                        { name: "Camera" }
-                    ]
-                })
-                return
-            }
+            imagesToCopy.push(selectedImage[i])
+            imagesToCopy.push(newImagePath)
+
+            imagesToImport.push({
+                id: undefined,
+                filepath: newImagePath,
+                position: nextIndex
+            } as DocumentPicture)
+
+            nextIndex += 1
         }
 
+        copyPicturesService(imagesToCopy)
         dispatchDocumentData({
             type: "add-picture",
-            payload: newImages
+            payload: imagesToImport
         })
 
         navigation.reset({
