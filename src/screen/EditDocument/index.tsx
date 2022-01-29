@@ -107,9 +107,8 @@ export function EditDocument() {
             temporaryPath: fullPathTemporaryCompressedPicture,
         }
 
-        const pictureList: string[] = []
-        documentDataState.pictureList.forEach((item) => {
-            pictureList.push(item.filepath)
+        const pictureList: string[] = documentDataState.pictureList.map((item) => {
+            return item.filepath
         })
 
         createPdf(pictureList, documentPath, pdfOptions)
