@@ -130,37 +130,37 @@ export function getPicturePathFromDocument(documentId: number[]): Promise<string
  * 
  * @returns operation result set
  */
-export function insertDocument(documentName: string, pictureList: DocumentPicture[]): Promise<SQLite.ResultSet[]> {
+export function insertDocument(documentName: string, pictureList: DocumentPicture[]): Promise<void> {
     return new Promise((resolve, reject) => {
-        globalAppDatabase.executeSql(`
-            INSERT INTO document (name) VALUES (?);
-        `, [documentName])
-            .then(async ([documentResultSet]) => {
-                let picturesToInsert = ""
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const picturesData: any[] = []
+        globalAppDatabase.transaction(tx => {
+            tx.executeSql(`
+                INSERT INTO document (name) VALUES (?);
+            `, [documentName], (_, insertDocumentResultSet) => {
+                let picturesToInsertPlaceholder = ""
+                const picturesData: unknown[] = []
 
                 if (pictureList.length >= 1) {
-                    picturesToInsert += "?, ?, ?"
+                    picturesToInsertPlaceholder += "?, ?, ?"
                     picturesData.push(pictureList[0].filepath)
-                    picturesData.push(documentResultSet.insertId)
+                    picturesData.push(insertDocumentResultSet.insertId)
                     picturesData.push(pictureList[0].position)
                 }
                 for (let i = 1; i < pictureList.length; i++) {
-                    picturesToInsert += "), (?, ?, ?"
+                    picturesToInsertPlaceholder += "), (?, ?, ?"
                     picturesData.push(pictureList[i].filepath)
-                    picturesData.push(documentResultSet.insertId)
+                    picturesData.push(insertDocumentResultSet.insertId)
                     picturesData.push(pictureList[i].position)
                 }
 
-                const [documentPictureResultSet] = await globalAppDatabase.executeSql(`
-                    INSERT INTO document_picture (filepath, belongsToDocument, position) VALUES (${picturesToInsert});
+                tx.executeSql(`
+                    INSERT INTO document_picture (filepath, belongsToDocument, position) VALUES (${picturesToInsertPlaceholder});
                 `, picturesData)
-                resolve([documentResultSet, documentPictureResultSet])
             })
-            .catch((error) => {
-                reject(error)
-            })
+        }, (error) => {
+            reject(error)
+        }, () => {
+            resolve()
+        })
     })
 }
 
@@ -177,28 +177,29 @@ export function updateDocument(
     id: number,
     documentName: string,
     pictureList: DocumentPicture[]
-): Promise<SQLite.ResultSet> {
+): Promise<void> {
     return new Promise((resolve, reject) => {
-        globalAppDatabase.executeSql(`
-            UPDATE document SET name = ?, lastModificationTimestamp = datetime(CURRENT_TIMESTAMP, 'localtime') WHERE id = ?;
-        `, [documentName, id])
-            .then(async ([documentResultSet]) => {
-                for (let i = 0; i < pictureList.length; i++) {
-                    if (pictureList[i].id) {
-                        await globalAppDatabase.executeSql(`
-                            UPDATE document_picture SET filepath = ?, position = ? WHERE id = ?;
-                        `, [pictureList[i].filepath, pictureList[i].position, pictureList[i].id])
-                    } else {
-                        await globalAppDatabase.executeSql(`
-                            INSERT INTO document_picture (filepath, belongsToDocument, position) VALUES (?, ?, ?);
-                        `, [pictureList[i].filepath, id, pictureList[i].position])
-                    }
+        globalAppDatabase.transaction(tx => {
+            tx.executeSql(`
+                UPDATE document SET name = ?, lastModificationTimestamp = datetime(CURRENT_TIMESTAMP, 'localtime') WHERE id = ?;
+            `, [documentName, id])
+
+            for (let i = 0; i < pictureList.length; i++) {
+                if (pictureList[i].id) {
+                    tx.executeSql(`
+                        UPDATE document_picture SET filepath = ?, position = ? WHERE id = ?;
+                    `, [pictureList[i].filepath, pictureList[i].position, pictureList[i].id])
+                } else {
+                    tx.executeSql(`
+                        INSERT INTO document_picture (filepath, belongsToDocument, position) VALUES (?, ?, ?);
+                    `, [pictureList[i].filepath, id, pictureList[i].position])
                 }
-                resolve(documentResultSet)
-            })
-            .catch((error) => {
-                reject(error)
-            })
+            }
+        }, (error) => {
+            reject(error)
+        }, () => {
+            resolve()
+        })
     })
 }
 
@@ -212,7 +213,7 @@ export function updateDocument(
  * 
  * @returns operation result set
  */
-export function deleteDocument(id: number[]): Promise<SQLite.ResultSet[]> {
+export function deleteDocument(id: number[]): Promise<void> {
     return new Promise((resolve, reject) => {
 
         let idToDelete = ""
@@ -223,18 +224,19 @@ export function deleteDocument(id: number[]): Promise<SQLite.ResultSet[]> {
             idToDelete += ", ?"
         }
 
-        globalAppDatabase.executeSql(`
-            DELETE FROM document WHERE id IN (${idToDelete});
-        `, id)
-            .then(async ([documentResultSet]) => {
-                const [documentPictureResultSet] = await globalAppDatabase.executeSql(`
-                    DELETE FROM document_picture WHERE belongsToDocument IN (${idToDelete});
-                `, id)
-                resolve([documentResultSet, documentPictureResultSet])
-            })
-            .catch((error) => {
-                reject(error)
-            })
+        globalAppDatabase.transaction(tx => {
+            tx.executeSql(`
+                DELETE FROM document WHERE id IN (${idToDelete});
+            `, id)
+
+            tx.executeSql(`
+                DELETE FROM document_picture WHERE belongsToDocument IN (${idToDelete});
+            `, id)
+        }, (error) => {
+            reject(error)
+        }, () =>{
+            resolve()
+        })
     })
 }
 
