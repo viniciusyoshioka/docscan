@@ -187,7 +187,7 @@ export function Gallery() {
         for (let i = 0; i < selectedImage.length; i++) {
             const newImagePath = await getDocumentPicturePath(selectedImage[i])
 
-            imagesToCopy.push(selectedImage[i])
+            imagesToCopy.push(selectedImage[i].replace("file://", ""))
             imagesToCopy.push(newImagePath)
 
             imagesToImport.push({
