@@ -9,9 +9,7 @@ import { Camera as RNCamera, useCameraDevices } from "react-native-vision-camera
 import { Icon, SafeScreen } from "../../components"
 import { useBackHandler, useDeviceOrientationChange, useIsForeground } from "../../hooks"
 import { useCameraSettings } from "../../services/camera"
-import { fullPathPicture } from "../../services/constant"
-import { getDateTime } from "../../services/date"
-import { useDocumentData } from "../../services/document"
+import { getDocumentPicturePath, useDocumentData } from "../../services/document"
 import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
 import { log } from "../../services/log"
@@ -183,12 +181,11 @@ export function Camera() {
 
             await createAllFolderAsync()
 
-            const date = getDateTime("-", "-", true)
-            const picturePath = `${fullPathPicture}/${date}.jpg`
-
             const response = await cameraRef.current.takePhoto({
                 flash: cameraSettingsState.flash,
             })
+
+            const picturePath = await getDocumentPicturePath(response.path)
             await RNFS.moveFile(response.path, picturePath)
 
             if (params?.screenAction === "replace-picture") {

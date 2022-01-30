@@ -6,9 +6,8 @@ import RNFS from "react-native-fs"
 
 import { EmptyList, SafeScreen } from "../../components"
 import { useBackHandler } from "../../hooks"
-import { fullPathPicture } from "../../services/constant"
 import { copyPicturesService } from "../../services/document-service"
-import { useDocumentData } from "../../services/document"
+import { getDocumentPicturePath, useDocumentData } from "../../services/document"
 import { log } from "../../services/log"
 import { getWritePermission } from "../../services/permission"
 import { useColorTheme } from "../../services/theme"
@@ -115,30 +114,6 @@ export function Gallery() {
         })
     }
 
-    async function getNewImagePath(imagePath: string) {
-        // Get file in path
-        const splitedImagePath = imagePath.split("/")
-        const fileImage = splitedImagePath[splitedImagePath.length - 1]
-        const splittedFileImage = fileImage.split(".")
-        // Get file name
-        let fileName = ""
-        splittedFileImage.forEach((item: string, index: number) => {
-            if (index !== splittedFileImage.length - 1) {
-                fileName += item
-            }
-        })
-        // Get file extension
-        const fileExtension = splittedFileImage[splittedFileImage.length - 1]
-
-        let counter = 0
-        let newFileName = `${fullPathPicture}/${fileName}.${fileExtension}`
-        while (await RNFS.exists(newFileName)) {
-            newFileName = `${fullPathPicture}/${fileName} - ${counter}.${fileExtension}`
-            counter += 1
-        }
-        return newFileName
-    }
-
     async function importSingleImage(imagePath: string) {
         const hasWritePermission = await getWritePermission()
         if (!hasWritePermission) {
@@ -150,7 +125,7 @@ export function Gallery() {
             return
         }
 
-        const newImagePath = await getNewImagePath(imagePath)
+        const newImagePath = await getDocumentPicturePath(imagePath)
         try {
             await RNFS.copyFile(imagePath, newImagePath)
         } catch (error) {
@@ -210,7 +185,7 @@ export function Gallery() {
         let nextIndex = documentDataState?.pictureList.length ?? 0
 
         for (let i = 0; i < selectedImage.length; i++) {
-            const newImagePath = await getNewImagePath(selectedImage[i])
+            const newImagePath = await getDocumentPicturePath(selectedImage[i])
 
             imagesToCopy.push(selectedImage[i])
             imagesToCopy.push(newImagePath)
