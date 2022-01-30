@@ -1,7 +1,8 @@
 import { createContext, useContext } from "react"
 import { Alert } from "react-native"
 import RNFS from "react-native-fs"
-import {v4 as uuid4} from "uuid"
+import "react-native-get-random-values"
+import { v4 as uuid4 } from "uuid"
 
 import { DocumentDatabase } from "../database"
 import { Document, DocumentDataContextType, DocumentDataReducerAction } from "../types"
