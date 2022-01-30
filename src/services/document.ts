@@ -1,8 +1,11 @@
 import { createContext, useContext } from "react"
 import { Alert } from "react-native"
+import RNFS from "react-native-fs"
+import {v4 as uuid4} from "uuid"
 
 import { DocumentDatabase } from "../database"
 import { Document, DocumentDataContextType, DocumentDataReducerAction } from "../types"
+import { fullPathPicture } from "./constant"
 import { getTimestamp } from "./date"
 import { log } from "./log"
 
@@ -12,6 +15,28 @@ import { log } from "./log"
  */
 export function getDocumentName(): string {
     return "Novo documento"
+}
+
+
+/**
+ * Get a new path for an image. The file will be
+ * in the pictures folder and renamed using UUID v4
+ * 
+ * @param imagePath string with image file name or path
+ * 
+ * @returns string of the new image path
+ */
+export async function getDocumentPicturePath(imagePath: string): Promise<string> {
+    const fileName = uuid4()
+    const splittedImagePath = imagePath.split(".")
+    const fileExtension = splittedImagePath[splittedImagePath.length - 1]
+
+    let newPath = `${fullPathPicture}/${fileName}.${fileExtension}`
+    while (await RNFS.exists(newPath)) {
+        const newFileName = uuid4()
+        newPath = `${fullPathPicture}/${newFileName}.${fileExtension}`
+    }
+    return newPath
 }
 
 
