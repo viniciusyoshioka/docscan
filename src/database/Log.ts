@@ -8,23 +8,15 @@ import { globalLogDatabase } from "."
  * 
  * @returns SQLite.ResultSet of the operation
  */
-export function createLogTable(): Promise<void> {
-    return new Promise((resolve, reject) => {
-        globalLogDatabase.executeSql(`
-            CREATE TABLE IF NOT EXISTS log (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                code TEXT,
-                message TEXT,
-                timestamp TEXT DEFAULT (datetime(CURRENT_TIMESTAMP, 'localtime'))
-            );
-        `)
-            .then(() => {
-                resolve()
-            })
-            .catch((error) => {
-                reject(error)
-            })
-    })
+export function createLogTable(tx: SQLite.Transaction) {
+    tx.executeSql(`
+        CREATE TABLE IF NOT EXISTS log (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            code TEXT,
+            message TEXT,
+            timestamp TEXT DEFAULT (datetime(CURRENT_TIMESTAMP, 'localtime'))
+        );
+    `)
 }
 
 

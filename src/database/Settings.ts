@@ -10,39 +10,30 @@ import { globalAppDatabase } from "."
  * Create settings table it not exists and inserts the
  * default settings object
  */
-export function createSettingsTable(): Promise<void> {
-    return new Promise((resolve, reject) => {
-        globalAppDatabase.executeSql(`
-            SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'settings';
-        `)
-            .then(([resultSet]) => {
-                return resultSet.rows.length === 1
-            })
-            .then(async (settingsTableExists: boolean) => {
-                if (!settingsTableExists) {
-                    await globalAppDatabase.executeSql(`
-                        CREATE TABLE settings (
-                            key TEXT,
-                            value TEXT,
-                            PRIMARY KEY("key")
-                        );
-                    `)
-                    await globalAppDatabase.executeSql(`
-                        INSERT INTO settings 
-                            (key, value) 
-                        VALUES 
-                            ('theme', ?),
-                            ('cameraFlash', ?),
-                            ('cameraWhiteBalance', ?),
-                            ('cameraType', ?),
-                            ('cameraId', ?);
-                    `, [themeDefault, cameraFlashDefault, cameraWhiteBalanceDefault, cameraTypeDefault, cameraIdDefault])
-                }
-                resolve()
-            })
-            .catch((error) => {
-                reject(error)
-            })
+export function createSettingsTable(tx: SQLite.Transaction) {
+    tx.executeSql(`
+        SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'settings';
+    `, undefined, (_, selectResultSet) => {
+        if (selectResultSet.rows.length === 0) {
+            tx.executeSql(`
+                CREATE TABLE settings (
+                    key TEXT,
+                    value TEXT,
+                    PRIMARY KEY("key")
+                );
+            `)         
+
+            tx.executeSql(`
+                INSERT INTO settings 
+                    (key, value) 
+                VALUES 
+                    ('theme', ?),
+                    ('cameraFlash', ?),
+                    ('cameraWhiteBalance', ?),
+                    ('cameraType', ?),
+                    ('cameraId', ?);
+            `, [themeDefault, cameraFlashDefault, cameraWhiteBalanceDefault, cameraTypeDefault, cameraIdDefault])  
+        }
     })
 }
 

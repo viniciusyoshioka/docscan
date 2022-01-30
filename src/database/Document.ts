@@ -7,31 +7,24 @@ import { globalAppDatabase } from "."
 /**
  * Creates the document and document_picture table
  */
-export function createDocumentTable(): Promise<void> {
-    return new Promise((resolve, reject) => {
-        globalAppDatabase.executeSql(`
-            CREATE TABLE IF NOT EXISTS document (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL DEFAULT '',
-                lastModificationTimestamp TEXT DEFAULT (datetime(CURRENT_TIMESTAMP, 'localtime'))
-            );
-        `)
-            .then(async () => {
-                await globalAppDatabase.executeSql(`
-                    CREATE TABLE IF NOT EXISTS document_picture (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        filepath TEXT NOT NULL,
-                        belongsToDocument INTEGER NOT NULL,
-                        position INTEGER NOT NULL,
-                        FOREIGN KEY(belongsToDocument) REFERENCES document(id)
-                    );
-                `)
-                resolve()
-            })
-            .catch((error) => {
-                reject(error)
-            })
-    })
+export function createDocumentTable(tx: SQLite.Transaction) {
+    tx.executeSql(`
+        CREATE TABLE IF NOT EXISTS document (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL DEFAULT '',
+            lastModificationTimestamp TEXT DEFAULT (datetime(CURRENT_TIMESTAMP, 'localtime'))
+        );
+    `)
+
+    tx.executeSql(`
+        CREATE TABLE IF NOT EXISTS document_picture (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            filepath TEXT NOT NULL,
+            belongsToDocument INTEGER NOT NULL,
+            position INTEGER NOT NULL,
+            FOREIGN KEY(belongsToDocument) REFERENCES document(id)
+        );
+    `)
 }
 
 /**

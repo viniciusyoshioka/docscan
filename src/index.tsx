@@ -65,19 +65,26 @@ export function App() {
         openAppDatabase()
             .then(async (database) => {
                 setGlobalAppDatabase(database)
-                await DocumentDatabase.createDocumentTable()
-                await SettingsDatabase.createSettingsTable()
-                const settings = await SettingsDatabase.getSettings()
-                dispatchCameraSettings({
-                    type: "set",
-                    payload: {
-                        flash: settings.cameraFlash,
-                        whiteBalance: settings.cameraWhiteBalance,
-                        cameraType: settings.cameraType,
-                        cameraId: settings.cameraId,
-                    }
+
+                database.transaction(tx => {
+                    DocumentDatabase.createDocumentTable(tx)
+                    SettingsDatabase.createSettingsTable(tx)
+                }, (error) => {
+                    logCriticalError(`Error creating tables in app database: "${error}"`)
+                }, async () => {
+                    const settings = await SettingsDatabase.getSettings()
+                    dispatchCameraSettings({
+                        type: "set",
+                        payload: {
+                            flash: settings.cameraFlash,
+                            whiteBalance: settings.cameraWhiteBalance,
+                            cameraType: settings.cameraType,
+                            cameraId: settings.cameraId,
+                        }
+                    })
+
+                    setAppDb(database)
                 })
-                setAppDb(database)
             })
             .catch((error) => {
                 logCriticalError(`Error opening app database: "${error}"`)
@@ -86,8 +93,14 @@ export function App() {
         openLogDatabase()
             .then(async (database) => {
                 setGlobalLogDatabase(database)
-                await LogDatabase.createLogTable()
-                setLogDb(database)
+
+                database.transaction(tx => {
+                    LogDatabase.createLogTable(tx)
+                }, (error) => {
+                    logCriticalError(`Error opening log database: "${error}"`)
+                }, () => {
+                    setLogDb(database)
+                })
             })
             .catch((error) => {
                 logCriticalError(`Error opening log database: "${error}"`)
