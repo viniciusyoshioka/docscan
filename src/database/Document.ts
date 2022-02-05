@@ -130,7 +130,7 @@ export function getPicturePathFromDocument(documentId: number[]): Promise<string
  * 
  * @returns operation result set
  */
-export function insertDocument(documentName: string, pictureList: DocumentPicture[]): Promise<void> {
+export function insertDocument(documentName: string, pictureList: DocumentPicture[]): Promise<number> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.transaction(tx => {
             tx.executeSql(`
@@ -154,13 +154,13 @@ export function insertDocument(documentName: string, pictureList: DocumentPictur
 
                 tx.executeSql(`
                     INSERT INTO document_picture (filepath, belongsToDocument, position) VALUES (${picturesToInsertPlaceholder});
-                `, picturesData)
+                `, picturesData, () => {
+                    resolve(insertDocumentResultSet.insertId)
+                })
             })
         }, (error) => {
             reject(error)
-        }, () => {
-            resolve()
-        })
+        }, () => {})
     })
 }
 

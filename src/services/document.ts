@@ -160,8 +160,8 @@ export function reducerDocumentData(
                 }
             } else if (state.pictureList.length > 0 && state.hasChanges) {
                 DocumentDatabase.insertDocument(state.name, state.pictureList)
-                    .then(([documentResultSet, _]) => {
-                        action.payload(documentResultSet.insertId)
+                    .then((insertedDocumentId) => {
+                        action.payload(insertedDocumentId)
                     })
                     .catch((error) => {
                         log.error(`Error saving (insert) document in action ${action.type}. "${error}"`)
