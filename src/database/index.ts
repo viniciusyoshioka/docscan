@@ -1,6 +1,6 @@
 import SQLite from "react-native-sqlite-storage"
 
-import { appDatabaseFileName, logDatabaseFileName } from "../services/constant"
+import { appDatabaseFullPath, logDatabaseFullPath } from "../services/constant"
 
 
 import * as DocumentDatabase from "./Document"
@@ -56,7 +56,7 @@ export function setGlobalLogDatabase(database: SQLite.SQLiteDatabase) {
 export function openAppDatabase(): Promise<SQLite.SQLiteDatabase> {
     return new Promise((resolve, reject) => {
         SQLite.openDatabase({
-            name: appDatabaseFileName,
+            name: appDatabaseFullPath,
             location: "default"
         })
             .then((db) => {
@@ -77,7 +77,7 @@ export function openAppDatabase(): Promise<SQLite.SQLiteDatabase> {
 export function openLogDatabase(): Promise<SQLite.SQLiteDatabase> {
     return new Promise((resolve, reject) => {
         SQLite.openDatabase({
-            name: logDatabaseFileName,
+            name: logDatabaseFullPath,
             location: "default"
         })
             .then((db) => {
@@ -93,14 +93,14 @@ export function openLogDatabase(): Promise<SQLite.SQLiteDatabase> {
 /**
  * Opens a temporary database
  * 
- * @param databaseFileName string of the name of the database file
+ * @param databaseFilePath string of the name of the database file
  * 
  * @returns the instance of the opened database
  */
-export function openTemporaryDatabase(databaseFileName: string): Promise<SQLite.SQLiteDatabase> {
+export function openTemporaryDatabase(databaseFilePath: string): Promise<SQLite.SQLiteDatabase> {
     return new Promise((resolve, reject) => {
         SQLite.openDatabase({
-            name: databaseFileName,
+            name: databaseFilePath,
             location: "default"
         })
             .then((db) => {
