@@ -6,7 +6,7 @@ import { v4 as uuid4 } from "uuid"
 
 import { DocumentDatabase } from "../database"
 import { Document, DocumentDataContextType, DocumentDataReducerAction } from "../types"
-import { fullPathPicture } from "./constant"
+import { fullPathPicture, fullPathTemporaryExported } from "./constant"
 import { getTimestamp } from "./date"
 import { log } from "./log"
 
@@ -38,6 +38,22 @@ export async function getDocumentPicturePath(imagePath: string): Promise<string>
         newPath = `${fullPathPicture}/${newFileName}.${fileExtension}`
     }
     return newPath
+}
+
+
+/**
+ * Get the path for an exported document picture. The file
+ * will be in the temporary exported folder.
+ * 
+ * @param imagePath string with image file path
+ * 
+ * @returns string of the new image path
+ */
+export async function getPictureTemporaryExportPath(imagePath: string): Promise<string> {
+    const splittedImagePath = imagePath.split("/")
+    const fileName = splittedImagePath[splittedImagePath.length - 1]
+
+    return `${fullPathTemporaryExported}/${fileName}`
 }
 
 
