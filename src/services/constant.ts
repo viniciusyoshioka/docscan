@@ -53,3 +53,6 @@ export const appDatabaseFullPath = `${databaseFolder}/${appDatabaseFileName}`
 // Log database
 export const logDatabaseFileName = "docscan_log.sqlite"
 export const logDatabaseFullPath = `${databaseFolder}/${logDatabaseFileName}`
+// Export database
+export const exportDatabaseFileName = "docscan_export.sqlite"
+export const exportDatabaseFullPath = `${databaseFolder}/${exportDatabaseFileName}`
