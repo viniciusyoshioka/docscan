@@ -1,5 +1,8 @@
-import React, { ForwardedRef, forwardRef, useImperativeHandle, useState } from "react"
+import React, { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from "react"
+import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
+import { OrientationType } from "react-native-orientation-locker"
 
+import { useDeviceOrientation } from "../../../hooks"
 import { ControlButton } from "./ControlButton"
 import { ControlAction, ControlView } from "./style"
 
@@ -23,7 +26,10 @@ export interface CameraControlRef {
 export const CameraControl = forwardRef((props: CameraControlProps, ref: ForwardedRef<CameraControlRef>) => {
 
 
+    const deviceOrientation = useDeviceOrientation()
+
     const [isActionEnabled, setIsActionEnabled] = useState(false)
+    const rotationDegree = useSharedValue(0)
 
 
     useImperativeHandle(ref, () => ({
@@ -32,12 +38,68 @@ export const CameraControl = forwardRef((props: CameraControlProps, ref: Forward
     }))
 
 
+    useEffect(() => {
+        switch (deviceOrientation) {
+            case OrientationType["PORTRAIT"]:
+                if (rotationDegree.value === 90) {
+                    rotationDegree.value -= 90
+                } else if (rotationDegree.value === 270) {
+                    rotationDegree.value += 90
+                } else {
+                    rotationDegree.value = 0
+                }
+                break
+            case OrientationType["PORTRAIT-UPSIDEDOWN"]:
+                if (rotationDegree.value === 90) {
+                    rotationDegree.value += 90
+                } else if (rotationDegree.value === 270) {
+                    rotationDegree.value -= 90
+                } else {
+                    rotationDegree.value = 180
+                }
+                break
+            case OrientationType["LANDSCAPE-LEFT"]:
+                if (rotationDegree.value === 0) {
+                    rotationDegree.value += 90
+                } else if (rotationDegree.value === 180) {
+                    rotationDegree.value -= 90
+                } else {
+                    rotationDegree.value = 90
+                }
+                break
+            case OrientationType["LANDSCAPE-RIGHT"]:
+                if (rotationDegree.value === 0) {
+                    rotationDegree.value -= 90
+                } else if (rotationDegree.value === 180) {
+                    rotationDegree.value += 90
+                } else {
+                    rotationDegree.value = 270
+                }
+                break
+        }
+    }, [deviceOrientation])
+
+    const animatedRotation = useDerivedValue(() => {
+        return withTiming(rotationDegree.value, {
+            duration: 200,
+        })
+    })
+
+    const orientationStyle = useAnimatedStyle(() => ({
+        transform: [
+            { rotate: `${animatedRotation.value}deg` },
+        ],
+    }))
+
+
     return (
         <ControlView isLayoutPositionAbsolute={props.isLayoutPositionAbsolute}>
-            <ControlButton
-                icon={"collections"}
-                onPress={props.addPictureFromGallery}
-            />
+            <Reanimated.View style={orientationStyle}>
+                <ControlButton
+                    icon={"collections"}
+                    onPress={props.addPictureFromGallery}
+                />
+            </Reanimated.View>
 
 
             <ControlAction
@@ -47,11 +109,13 @@ export const CameraControl = forwardRef((props: CameraControlProps, ref: Forward
 
 
             {props?.screenAction !== "replace-picture" && (
-                <ControlButton
-                    icon={"description"}
-                    indexCount={props.pictureListLength.toString()}
-                    onPress={props.editDocument}
-                />
+                <Reanimated.View style={orientationStyle}>
+                    <ControlButton
+                        icon={"description"}
+                        indexCount={props.pictureListLength.toString()}
+                        onPress={props.editDocument}
+                    />
+                </Reanimated.View>
             )}
 
             {props?.screenAction === "replace-picture" && (
