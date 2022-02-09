@@ -1,7 +1,10 @@
-import React, { useMemo } from "react"
+import React, { useEffect, useMemo } from "react"
 import { Alert } from "react-native"
+import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
+import { OrientationType } from "react-native-orientation-locker"
 
 import { SettingsDatabase } from "../../../database"
+import { useDeviceOrientation } from "../../../hooks"
 import { useCameraSettings } from "../../../services/camera"
 import { log } from "../../../services/log"
 import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "../../../services/settings"
@@ -22,7 +25,11 @@ export interface CameraSettingsProps extends CameraSettingsModalProps {
 export const CameraSettings = (props: CameraSettingsProps) => {
 
 
+    const deviceOrientation = useDeviceOrientation()
+
     const { cameraSettingsState, dispatchCameraSettings } = useCameraSettings()
+
+    const rotationDegree = useSharedValue(0)
 
 
     const flashIcon = useMemo((): string => {
@@ -217,41 +224,105 @@ export const CameraSettings = (props: CameraSettingsProps) => {
     }
 
 
+    useEffect(() => {
+        switch (deviceOrientation) {
+            case OrientationType["PORTRAIT"]:
+                if (rotationDegree.value === 90) {
+                    rotationDegree.value -= 90
+                } else if (rotationDegree.value === 270) {
+                    rotationDegree.value += 90
+                } else {
+                    rotationDegree.value = 0
+                }
+                break
+            case OrientationType["PORTRAIT-UPSIDEDOWN"]:
+                if (rotationDegree.value === 90) {
+                    rotationDegree.value += 90
+                } else if (rotationDegree.value === 270) {
+                    rotationDegree.value -= 90
+                } else {
+                    rotationDegree.value = 180
+                }
+                break
+            case OrientationType["LANDSCAPE-LEFT"]:
+                if (rotationDegree.value === 0) {
+                    rotationDegree.value += 90
+                } else if (rotationDegree.value === 180) {
+                    rotationDegree.value -= 90
+                } else {
+                    rotationDegree.value = 90
+                }
+                break
+            case OrientationType["LANDSCAPE-RIGHT"]:
+                if (rotationDegree.value === 0) {
+                    rotationDegree.value -= 90
+                } else if (rotationDegree.value === 180) {
+                    rotationDegree.value += 90
+                } else {
+                    rotationDegree.value = 270
+                }
+                break
+        }
+    }, [deviceOrientation])
+
+    const animatedRotation = useDerivedValue(() => {
+        return withTiming(rotationDegree.value, {
+            duration: 200,
+        })
+    })
+
+    const orientationStyle = useAnimatedStyle(() => ({
+        transform: [
+            { rotate: `${animatedRotation.value}deg` },
+        ],
+    }))
+
+
     return (
         <CameraSettingsModal {...props}>
-            <CameraSettingsButton
-                optionName={"Flash"}
-                iconName={flashIcon}
-                onPress={changeFlash}
-            />
+            <Reanimated.View style={orientationStyle}>
+                <CameraSettingsButton
+                    optionName={"Flash"}
+                    iconName={flashIcon}
+                    onPress={changeFlash}
+                />
+            </Reanimated.View>
 
-            {/* <CameraSettingsButton
-                optionName={"Balanço de branco"}
-                iconName={whiteBalanceIcon}
-                onPress={changeWhiteBalance}
-            /> */}
+            {/* <Reanimated.View style={orientationStyle}>
+                <CameraSettingsButton
+                    optionName={"Balanço de branco"}
+                    iconName={whiteBalanceIcon}
+                    onPress={changeWhiteBalance}
+                />
+            </Reanimated.View> */}
 
             {props.isFlippable && (
-                <CameraSettingsButton
-                    optionName={switchCameraButtonText}
-                    iconName={"flip-camera-android"}
-                    onPress={switchCameraType}
-                />
+                <Reanimated.View style={orientationStyle}>
+                    <CameraSettingsButton
+                        optionName={switchCameraButtonText}
+                        iconName={"flip-camera-android"}
+                        onPress={switchCameraType}
+                    />
+                </Reanimated.View>
             )}
 
             {/* {props.isMultipleCameraAvailable && (
-                <CameraSettingsButton
-                    optionName={"Mudar câmera"}
-                    iconName={"switch-camera"}
-                    onPress={switchCameraId}
-                />
+                <Reanimated.View style={orientationStyle}>
+                    <CameraSettingsButton
+                        optionName={"Mudar câmera"}
+                        iconName={"switch-camera"}
+                        onPress={switchCameraId}
+                    />
+                </Reanimated.View>
             )} */}
 
-            <CameraSettingsButton
-                optionName={"Redefinir"}
-                iconName={"restore"}
-                onPress={resetCameraSettings}
-            />
+            <Reanimated.View style={orientationStyle}>
+                <CameraSettingsButton
+                    optionName={"Redefinir"}
+                    iconName={"restore"}
+                    onPress={resetCameraSettings}
+                />
+            </Reanimated.View>
         </CameraSettingsModal>
     )
 }
