@@ -7,7 +7,7 @@ import OrientationLocker, { OrientationType } from "react-native-orientation-loc
  * 
  * @returns New device orientation
  */
-export function useDeviceOrientationChange(): OrientationType {
+export function useDeviceOrientation(): OrientationType {
     const [orientation, setOrientation] = useState(OrientationLocker.getInitialOrientation())
 
     useEffect(() => {

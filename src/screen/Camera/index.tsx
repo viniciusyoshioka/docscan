@@ -7,7 +7,7 @@ import { OrientationType } from "react-native-orientation-locker"
 import { Camera as RNCamera, useCameraDevices } from "react-native-vision-camera"
 
 import { Icon, SafeScreen } from "../../components"
-import { useBackHandler, useDeviceOrientationChange, useIsForeground } from "../../hooks"
+import { useBackHandler, useDeviceOrientation, useIsForeground } from "../../hooks"
 import { useCameraSettings } from "../../services/camera"
 import { getDocumentPicturePath, useDocumentData } from "../../services/document"
 import { deletePicturesService } from "../../services/document-service"
@@ -36,7 +36,7 @@ export function Camera() {
     const { documentDataState, dispatchDocumentData } = useDocumentData()
     const isForeground = useIsForeground()
     const { color, opacity } = useColorTheme()
-    const deviceOrientation = useDeviceOrientationChange()
+    const deviceOrientation = useDeviceOrientation()
 
     const [cameraOrientation, setCameraOrientation] = useState(getCameraOrientation)
     const cameraDevices = useCameraDevices()
