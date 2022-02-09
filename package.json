@@ -24,6 +24,7 @@
     "react-native-orientation-locker": "^1.4.0",
     "react-native-pdf-creator": "https://github.com/viniciusyoshioka/react-native-pdf-creator",
     "react-native-popup-menu": "^0.15.12",
+    "react-native-reanimated": "^2.4.1",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.1",
     "react-native-share": "^7.3.2",

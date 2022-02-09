@@ -12,3 +12,4 @@
 -keep class com.facebook.jni.** { *; }
 -keep class androidx.appcompat.widget.** { *; }
 -keep class com.facebook.react.turbomodule.** { *; }
+-keep class com.swmansion.reanimated.** { *; }
