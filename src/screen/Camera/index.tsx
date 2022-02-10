@@ -5,6 +5,7 @@ import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
 import { OrientationType } from "react-native-orientation-locker"
 import { Camera as RNCamera, useCameraDevices } from "react-native-vision-camera"
+import { useSharedValue } from "react-native-reanimated"
 
 import { Icon, SafeScreen } from "../../components"
 import { useBackHandler, useDeviceOrientation, useIsForeground } from "../../hooks"
@@ -19,7 +20,7 @@ import { CameraOrientationType, DocumentPicture, NavigationParamProps, RoutePara
 import { CameraControl, CameraControlRef } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
 import { CameraHeader } from "./Header"
-import { CameraWrapper, NoCameraAvailableText } from "./style"
+import { CameraWrapper, FocusIndicator, FOCUS_INDICATOR_SIZE, NoCameraAvailableText } from "./style"
 
 
 export function Camera() {
@@ -48,6 +49,9 @@ export function Camera() {
     const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
     const [isFocusEnable, setIsFocusEnable] = useState(true)
     const isCameraActive = isFocused && isForeground
+    const [isFocusing, setIsFocusing] = useState(false)
+    const focusPosX = useSharedValue(0)
+    const focusPosY = useSharedValue(0)
 
 
     useBackHandler(() => {
@@ -235,24 +239,23 @@ export function Camera() {
         }
 
         if (event.nativeEvent.state === State.ACTIVE) {
+            focusPosX.value = parseInt(event.nativeEvent.absoluteX.toFixed())
+            focusPosY.value = parseInt(event.nativeEvent.absoluteY.toFixed())
+
             setIsFocusEnable(false)
+            setIsFocusing(true)
 
             try {
                 await cameraRef.current?.focus({
                     x: parseInt(event.nativeEvent.x.toFixed()),
-                    y: parseInt(event.nativeEvent.y.toFixed())
+                    y: parseInt(event.nativeEvent.y.toFixed()),
                 })
             } catch (error) {
                 log.warn(`Error focusing camera ${error}`)
             }
 
-            new Promise<void>((resolve, _) => {
-                const interval = setInterval(() => {
-                    setIsFocusEnable(true)
-                    clearInterval(interval)
-                    resolve()
-                }, 1000)
-            })
+            setIsFocusEnable(true)
+            setIsFocusing(false)
         }
     }
 
@@ -271,6 +274,14 @@ export function Camera() {
         }
         cameraControlRef.current?.enableAction()
     }, [isCameraActive])
+
+    useEffect(() => {
+        if (isCameraSettingsVisible) {
+            setIsFocusEnable(false)
+            return
+        }
+        setIsFocusEnable(true)
+    }, [isCameraSettingsVisible])
 
 
     return (
@@ -313,6 +324,15 @@ export function Camera() {
                         />
                     </TapGestureHandler>
                 </CameraWrapper>
+            )}
+
+            {isFocusing && (
+                <FocusIndicator style={{
+                    transform: [
+                        { translateX: focusPosX.value - (FOCUS_INDICATOR_SIZE / 2) },
+                        { translateY: focusPosY.value - (FOCUS_INDICATOR_SIZE / 2) },
+                    ]
+                }} />
             )}
 
             <CameraControl
