@@ -13,9 +13,6 @@ change getDocument to dont blink screen on open app
 
 BUGS
 
-# Camera
-statusbar appears when modal is opened
-
 # EditDocument/VisualizePicture
 cropping image may replace wrong picture
 
@@ -25,8 +22,6 @@ TODO
 
 # Camera
 add error handling to useCameraDevices hook
-use reanimated to add focus indicator
-re-add icons rotation according device orientation
 re-add support for multiple front/back cameras
 get cameras ratio to adapt interface to it
 
