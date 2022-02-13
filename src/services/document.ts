@@ -20,6 +20,19 @@ export function getDocumentName(): string {
 
 
 /**
+ * Get the file name with the extension from a file path
+ * 
+ * @param filePath string of the file path
+ * 
+ * @returns string of the file name
+ */
+export function getFileName(filePath: string): string {
+    const splittedFilePath = filePath.split("/")
+    return splittedFilePath[splittedFilePath.length - 1]
+}
+
+
+/**
  * Get a new path for an image. The file will be
  * in the pictures folder and renamed using UUID v4
  * 
