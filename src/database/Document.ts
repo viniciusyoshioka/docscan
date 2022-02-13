@@ -19,7 +19,8 @@ export function createDocumentTable(tx: SQLite.Transaction) {
     tx.executeSql(`
         CREATE TABLE IF NOT EXISTS document_picture (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            filepath TEXT NOT NULL,
+            filePath TEXT NOT NULL UNIQUE,
+            fileName TEXT NOT NULL UNIQUE,
             belongsToDocument INTEGER NOT NULL,
             position INTEGER NOT NULL,
             FOREIGN KEY(belongsToDocument) REFERENCES document(id)
@@ -77,7 +78,7 @@ export function getDocument(id: number): Promise<SimpleDocument> {
 export function getDocumentPicture(documentId: number): Promise<DocumentPicture[]> {
     return new Promise((resolve, reject) => {
         globalAppDatabase.executeSql(`
-            SELECT id, filepath, position FROM document_picture WHERE belongsToDocument = ? ORDER BY position ASC;
+            SELECT id, filePath, fileName, position FROM document_picture WHERE belongsToDocument = ? ORDER BY position ASC;
         `, [documentId])
             .then(([resultSet]) => {
                 resolve(resultSet.rows.raw())
@@ -108,14 +109,14 @@ export function getPicturePathFromDocument(documentId: number[]): Promise<string
         }
 
         globalAppDatabase.executeSql(`
-            SELECT filepath FROM document_picture WHERE belongsToDocument IN (${documentIdPlaceholder});
+            SELECT filePath FROM document_picture WHERE belongsToDocument IN (${documentIdPlaceholder});
         `, documentId)
             .then(([resultSet]) => {
-                const filepath = resultSet.rows.raw()
-                    .map((item: {filepath: string}) => {
-                        return item.filepath
+                const filePath = resultSet.rows.raw()
+                    .map((item: { filePath: string }) => {
+                        return item.filePath
                     })
-                resolve(filepath)
+                resolve(filePath)
             })
             .catch(reject)
     })
@@ -140,20 +141,22 @@ export function insertDocument(documentName: string, pictureList: DocumentPictur
                 const picturesData: unknown[] = []
 
                 if (pictureList.length >= 1) {
-                    picturesToInsertPlaceholder += "?, ?, ?"
-                    picturesData.push(pictureList[0].filepath)
+                    picturesToInsertPlaceholder += "?, ?, ?, ?"
+                    picturesData.push(pictureList[0].filePath)
+                    picturesData.push(pictureList[0].fileName)
                     picturesData.push(insertDocumentResultSet.insertId)
                     picturesData.push(pictureList[0].position)
                 }
                 for (let i = 1; i < pictureList.length; i++) {
-                    picturesToInsertPlaceholder += "), (?, ?, ?"
-                    picturesData.push(pictureList[i].filepath)
+                    picturesToInsertPlaceholder += "), (?, ?, ?, ?"
+                    picturesData.push(pictureList[i].filePath)
+                    picturesData.push(pictureList[i].fileName)
                     picturesData.push(insertDocumentResultSet.insertId)
                     picturesData.push(pictureList[i].position)
                 }
 
                 tx.executeSql(`
-                    INSERT INTO document_picture (filepath, belongsToDocument, position) VALUES (${picturesToInsertPlaceholder});
+                    INSERT INTO document_picture (filePath, fileName, belongsToDocument, position) VALUES (${picturesToInsertPlaceholder});
                 `, picturesData, () => {
                     resolve(insertDocumentResultSet.insertId)
                 })
@@ -187,12 +190,12 @@ export function updateDocument(
             for (let i = 0; i < pictureList.length; i++) {
                 if (pictureList[i].id) {
                     tx.executeSql(`
-                        UPDATE document_picture SET filepath = ?, position = ? WHERE id = ?;
-                    `, [pictureList[i].filepath, pictureList[i].position, pictureList[i].id])
+                        UPDATE document_picture SET filePath = ?, fileName = ?, position = ? WHERE id = ?;
+                    `, [pictureList[i].filePath, pictureList[i].fileName, pictureList[i].position, pictureList[i].id])
                 } else {
                     tx.executeSql(`
-                        INSERT INTO document_picture (filepath, belongsToDocument, position) VALUES (?, ?, ?);
-                    `, [pictureList[i].filepath, id, pictureList[i].position])
+                        INSERT INTO document_picture (filePath, fileName, belongsToDocument, position) VALUES (?, ?, ?, ?);
+                    `, [pictureList[i].filePath, pictureList[i].fileName, id, pictureList[i].position])
                 }
             }
         }, (error) => {

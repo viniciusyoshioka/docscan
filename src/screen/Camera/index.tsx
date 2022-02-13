@@ -10,7 +10,7 @@ import { useSharedValue } from "react-native-reanimated"
 import { Icon, SafeScreen } from "../../components"
 import { useBackHandler, useDeviceOrientation, useIsForeground } from "../../hooks"
 import { useCameraSettings } from "../../services/camera"
-import { getDocumentPicturePath, useDocumentData } from "../../services/document"
+import { getDocumentPicturePath, getFileName, useDocumentData } from "../../services/document"
 import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
 import { log } from "../../services/log"
@@ -94,11 +94,11 @@ export function Camera() {
                     return false
                 })
                 .map((item: DocumentPicture) => {
-                    return item.filepath
+                    return item.filePath
                 })
             : documentDataState.pictureList
                 .map((item: DocumentPicture) => {
-                    return item.filepath
+                    return item.filePath
                 })
 
         deletePicturesService(filePathToDelete)
@@ -190,6 +190,7 @@ export function Camera() {
             })
 
             const picturePath = await getDocumentPicturePath(response.path)
+            const pictureName = getFileName(picturePath)
             await RNFS.moveFile(response.path, picturePath)
 
             if (params?.screenAction === "replace-picture") {
@@ -197,7 +198,8 @@ export function Camera() {
                     type: "replace-picture",
                     payload: {
                         indexToReplace: params.replaceIndex,
-                        newPicture: picturePath
+                        newPicturePath: picturePath,
+                        newPictureName: pictureName
                     }
                 })
 
@@ -211,7 +213,8 @@ export function Camera() {
                 type: "add-picture",
                 payload: [{
                     id: undefined,
-                    filepath: picturePath,
+                    filePath: picturePath,
+                    fileName: pictureName,
                     position: documentDataState?.pictureList.length || 0,
                 }]
             })

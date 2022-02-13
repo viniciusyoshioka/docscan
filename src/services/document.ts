@@ -157,7 +157,8 @@ export function reducerDocumentData(
                 return undefined
             }
 
-            state.pictureList[action.payload.indexToReplace].filepath = action.payload.newPicture
+            state.pictureList[action.payload.indexToReplace].filePath = action.payload.newPicturePath
+            state.pictureList[action.payload.indexToReplace].fileName = action.payload.newPictureName
             return {
                 ...state,
                 pictureList: state.pictureList,

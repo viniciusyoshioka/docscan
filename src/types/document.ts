@@ -30,7 +30,8 @@ export type SimpleDocument = {
  */
 export type DocumentPicture = {
     id: number | undefined;
-    filepath: string;
+    filePath: string;
+    fileName: string;
     position: number;
 }
 

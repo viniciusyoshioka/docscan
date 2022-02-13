@@ -109,7 +109,7 @@ export function EditDocument() {
         }
 
         const pictureList: string[] = documentDataState.pictureList.map((item) => {
-            return item.filepath
+            return item.filePath
         })
 
         createPdf(pictureList, documentPath, pdfOptions)
@@ -243,7 +243,7 @@ export function EditDocument() {
     async function deleteCurrentDocument() {
         if (documentDataState) {
             const picturePathToDelete = documentDataState.pictureList.map((item) => {
-                return item.filepath
+                return item.filePath
             })
 
             if (documentDataState.id) {
@@ -296,7 +296,7 @@ export function EditDocument() {
                 return documentDataState.pictureList[pictureIndex].id!
             })
         const picturePathToDelete = selectedPictureIndex.map((pictureIndex) => {
-            return documentDataState.pictureList[pictureIndex].filepath
+            return documentDataState.pictureList[pictureIndex].filePath
         })
 
         try {
@@ -361,7 +361,7 @@ export function EditDocument() {
     function renderItem({ item, index }: { item: DocumentPicture, index: number }) {
         return (
             <PictureItem
-                picturePath={item.filepath}
+                picturePath={item.filePath}
                 click={() => openPicture(index)}
                 select={() => selectPicture(index)}
                 deselect={() => deselectPicture(index)}

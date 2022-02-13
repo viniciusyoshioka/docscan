@@ -11,7 +11,7 @@ import { log } from "../../services/log"
 import { fullPathPicture } from "../../services/constant"
 import { getDateTime } from "../../services/date"
 import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
-import { useDocumentData } from "../../services/document"
+import { getFileName, useDocumentData } from "../../services/document"
 import { ImageVisualizationItem } from "./ImageVisualizationItem"
 
 
@@ -47,7 +47,7 @@ export function VisualizePicture() {
     }
 
     async function onImageSaved(response: OnImageSavedResponse) {
-        const currentPicturePath = documentDataState?.pictureList[currentIndex].filepath
+        const currentPicturePath = documentDataState?.pictureList[currentIndex].filePath
         if (!currentPicturePath) {
             log.warn("A imagem atual a ser substituída não existe")
             Alert.alert(
@@ -56,15 +56,18 @@ export function VisualizePicture() {
             )
             return
         }
+        const currentPictureName = getFileName(currentPicturePath)
 
         try {
             const newCroppedPictureUri = `${fullPathPicture}/${getDateTime("", "", true).replace(" ", "_")}.jpg`
+            const newCroppedPictureName = getFileName(newCroppedPictureUri)
 
             dispatchDocumentData({
                 type: "replace-picture",
                 payload: {
                     indexToReplace: currentIndex,
-                    newPicture: newCroppedPictureUri,
+                    newPicturePath: newCroppedPictureUri,
+                    newPictureName: newCroppedPictureName,
                 }
             })
 
@@ -77,7 +80,8 @@ export function VisualizePicture() {
                 type: "replace-picture",
                 payload: {
                     indexToReplace: currentIndex,
-                    newPicture: currentPicturePath
+                    newPicturePath: currentPicturePath,
+                    newPictureName: currentPictureName,
                 }
             })
 
@@ -116,7 +120,7 @@ export function VisualizePicture() {
     function renderItem({ item }: { item: DocumentPicture }) {
         return (
             <ImageVisualizationItem
-                source={{ uri: `file://${item.filepath}` }}
+                source={{ uri: `file://${item.filePath}` }}
             // onZoomActivated={() => {
             //     setIsFlatListScrollEnable(false)
             // }}
@@ -164,7 +168,7 @@ export function VisualizePicture() {
                 <ImageCrop
                     ref={cropViewRef}
                     style={{ flex: 1 }}
-                    sourceUrl={`file://${documentDataState?.pictureList[currentIndex].filepath}`}
+                    sourceUrl={`file://${documentDataState?.pictureList[currentIndex].filePath}`}
                     onSaveImage={onImageSaved}
                     onCropError={onSaveImageError}
                 />

@@ -7,7 +7,7 @@ import RNFS from "react-native-fs"
 import { EmptyList, SafeScreen } from "../../components"
 import { useBackHandler } from "../../hooks"
 import { copyPicturesService } from "../../services/document-service"
-import { getDocumentPicturePath, useDocumentData } from "../../services/document"
+import { getDocumentPicturePath, getFileName, useDocumentData } from "../../services/document"
 import { log } from "../../services/log"
 import { getWritePermission } from "../../services/permission"
 import { useColorTheme } from "../../services/theme"
@@ -126,6 +126,7 @@ export function Gallery() {
         }
 
         const newImagePath = await getDocumentPicturePath(imagePath)
+        const newImageName = getFileName(newImagePath)
         try {
             await RNFS.copyFile(imagePath, newImagePath)
         } catch (error) {
@@ -142,7 +143,8 @@ export function Gallery() {
                 type: "replace-picture",
                 payload: {
                     indexToReplace: params.replaceIndex,
-                    newPicture: newImagePath
+                    newPicturePath: newImagePath,
+                    newPictureName: newImageName,
                 }
             })
 
@@ -156,7 +158,8 @@ export function Gallery() {
             type: "add-picture",
             payload: [{
                 id: undefined,
-                filepath: newImagePath,
+                filePath: newImagePath,
+                fileName: newImageName,
                 position: documentDataState?.pictureList.length || 0
             }]
         })
@@ -186,13 +189,15 @@ export function Gallery() {
 
         for (let i = 0; i < selectedImage.length; i++) {
             const newImagePath = await getDocumentPicturePath(selectedImage[i])
+            const newImageName = getFileName(newImagePath)
 
             imagesToCopy.push(selectedImage[i].replace("file://", ""))
             imagesToCopy.push(newImagePath)
 
             imagesToImport.push({
                 id: undefined,
-                filepath: newImagePath,
+                filePath: newImagePath,
+                fileName: newImageName,
                 position: nextIndex
             } as DocumentPicture)
 

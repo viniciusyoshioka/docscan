@@ -59,7 +59,8 @@ type DocumentReplacePicture = {
     type: "replace-picture";
     payload: {
         indexToReplace: number;
-        newPicture: string;
+        newPicturePath: string;
+        newPictureName: string;
     };
 }
 
