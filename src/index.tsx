@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer, useState } from "react"
-import { useColorScheme } from "react-native"
+import { DevSettings, useColorScheme } from "react-native"
+import RNFS from "react-native-fs"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import KeepAwake from "react-native-keep-awake"
 import { MenuProvider } from "react-native-popup-menu"
@@ -7,12 +8,13 @@ import SQLite from "react-native-sqlite-storage"
 import { ThemeProvider } from "styled-components/native"
 
 import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase, SettingsDatabase } from "./database"
+import { Router } from "./router"
 import { cameraSettingsDefault, CameraSettingsProvider, reducerCameraSettings } from "./services/camera"
+import { databaseFolder, fullPathExported, fullPathPdf, fullPathPicture, fullPathRoot, fullPathRootExternal, fullPathTemporary, fullPathTemporaryCompressedPicture, fullPathTemporaryExported } from "./services/constant"
 import { DocumentDataProvider, reducerDocumentData } from "./services/document"
 import { logCriticalError } from "./services/log"
 import { ColorThemeDark, ColorThemeLight, ColorThemeProvider } from "./services/theme"
 import { ThemeType } from "./types"
-import { Router } from "./router"
 
 
 export function App() {
@@ -114,6 +116,127 @@ export function App() {
             return () => KeepAwake.deactivate()
         }
     }, [])
+
+    useEffect(() => {
+        if (__DEV__) {
+            DevSettings.addMenuItem("List temporary exported folder", async () => {
+                // App internal folders
+                console.log("======================================================================")
+                console.log(`fullPathRoot: "${fullPathRoot}"`)
+                console.log("----------------------------------------------------------------------")
+                const ls_fullPathRoot = await RNFS.readDir(fullPathRoot)
+                if (ls_fullPathRoot.length === 0) {
+                    console.log("Pasta vazia")
+                } else {
+                    ls_fullPathRoot.forEach((item) => {
+                        console.log(item.path)
+                    })
+                }
+
+                console.log("======================================================================")
+                console.log(`fullPathPicture: "${fullPathPicture}"`)
+                console.log("----------------------------------------------------------------------")
+                const ls_fullPathPicture = await RNFS.readDir(fullPathPicture)
+                if (ls_fullPathPicture.length === 0) {
+                    console.log("Pasta vazia")
+                } else {
+                    ls_fullPathPicture.forEach((item) => {
+                        console.log(item.path)
+                    })
+                }
+
+                console.log("======================================================================")
+                console.log(`fullPathTemporary: "${fullPathTemporary}"`)
+                console.log("----------------------------------------------------------------------")
+                const ls_fullPathTemporary = await RNFS.readDir(fullPathTemporary)
+                if (ls_fullPathTemporary.length === 0) {
+                    console.log("Pasta vazia")
+                } else {
+                    ls_fullPathTemporary.forEach((item) => {
+                        console.log(item.path)
+                    })
+                }
+
+                console.log("======================================================================")
+                console.log(`fullPathTemporaryExported: "${fullPathTemporaryExported}"`)
+                console.log("----------------------------------------------------------------------")
+                const ls_fullPathTemporaryExported = await RNFS.readDir(fullPathTemporaryExported)
+                if (ls_fullPathTemporaryExported.length === 0) {
+                    console.log("Pasta vazia")
+                } else {
+                    ls_fullPathTemporaryExported.forEach((item) => {
+                        console.log(item.path)
+                    })
+                }
+
+                console.log("======================================================================")
+                console.log(`fullPathTemporaryCompressedPicture: "${fullPathTemporaryCompressedPicture}"`)
+                console.log("----------------------------------------------------------------------")
+                const ls_fullPathTemporaryCompressedPicture = await RNFS.readDir(fullPathTemporaryCompressedPicture)
+                if (ls_fullPathTemporaryCompressedPicture.length === 0) {
+                    console.log("Pasta vazia")
+                } else {
+                    ls_fullPathTemporaryCompressedPicture.forEach((item) => {
+                        console.log(item.path)
+                    })
+                }
+
+
+
+                // App external folders
+                console.log("======================================================================")
+                console.log(`fullPathRootExternal: "${fullPathRootExternal}"`)
+                console.log("----------------------------------------------------------------------")
+                const ls_fullPathRootExternal = await RNFS.readDir(fullPathRootExternal)
+                if (ls_fullPathRootExternal.length === 0) {
+                    console.log("Pasta vazia")
+                } else {
+                    ls_fullPathRootExternal.forEach((item) => {
+                        console.log(item.path)
+                    })
+                }
+
+                console.log("======================================================================")
+                console.log(`fullPathExported: "${fullPathExported}"`)
+                console.log("----------------------------------------------------------------------")
+                const ls_fullPathExported = await RNFS.readDir(fullPathExported)
+                if (ls_fullPathExported.length === 0) {
+                    console.log("Pasta vazia")
+                } else {
+                    ls_fullPathExported.forEach((item) => {
+                        console.log(item.path)
+                    })
+                }
+
+                console.log("======================================================================")
+                console.log(`fullPathPdf: "${fullPathPdf}"`)
+                console.log("----------------------------------------------------------------------")
+                const ls_fullPathPdf = await RNFS.readDir(fullPathPdf)
+                if (ls_fullPathPdf.length === 0) {
+                    console.log("Pasta vazia")
+                } else {
+                    ls_fullPathPdf.forEach((item) => {
+                        console.log(item.path)
+                    })
+                }
+
+
+
+                // App database folder
+                console.log("======================================================================")
+                console.log(`databaseFolder: "${databaseFolder}"`)
+                console.log("----------------------------------------------------------------------")
+                const ls_databaseFolder = await RNFS.readDir(databaseFolder)
+                if (ls_databaseFolder.length === 0) {
+                    console.log("Pasta vazia")
+                } else {
+                    ls_databaseFolder.forEach((item) => {
+                        console.log(item.path)
+                    })
+                }
+            })
+        }
+    })
 
 
     if (!theme || !appDb || !logDb) {
