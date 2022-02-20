@@ -1,7 +1,10 @@
 import SQLite from "react-native-sqlite-storage"
 
+import { globalAppDatabase, openTemporaryDatabase } from "."
+import { exportDatabaseFullPath, fullPathExported, fullPathPicture, fullPathTemporaryExported } from "../services/constant"
+import { getDateTime } from "../services/date"
+import { exportDocumentService } from "../services/document-service"
 import { DocumentForList, DocumentPicture, SimpleDocument } from "../types"
-import { globalAppDatabase } from "."
 
 
 /**
@@ -277,17 +280,122 @@ export function deleteDocumentPicture(id: number[]): Promise<SQLite.ResultSet> {
 }
 
 /**
- * TODO
+ * Exports all documents or the selected documents when
+ * the id is provided.
+ * 
+ * @param id array of document id to export
  */
-export function exportDocument(id: number[] = []): Promise<null> {
-    return new Promise((resolve, reject) => {})
+export async function exportDocument(id: number[] = []) {
+    // Open database to export
+    const exportDb = await openTemporaryDatabase(exportDatabaseFullPath)
+
+    // Create export_document and export_document_picture tables
+    await exportDb.transaction(tx => {
+        tx.executeSql(`
+            CREATE TABLE IF NOT EXISTS export_document (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL DEFAULT '',
+                lastModificationTimestamp TEXT DEFAULT (datetime(CURRENT_TIMESTAMP, 'localtime'))
+            );
+        `)
+
+        tx.executeSql(`
+            CREATE TABLE IF NOT EXISTS export_document_picture (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                fileName TEXT NOT NULL UNIQUE,
+                belongsToDocument INTEGER NOT NULL,
+                position INTEGER NOT NULL,
+                FOREIGN KEY(belongsToDocument) REFERENCES document(id)
+            );
+        `)
+    })
+
+    // Delete all data in export_document and export_document_picture
+    await exportDb.transaction(tx => {
+        tx.executeSql(`
+            DELETE FROM export_document;
+        `)
+
+        tx.executeSql(`
+            DELETE FROM export_document_picture;
+        `)
+    })
+
+    // Attach databases
+    const exportDatabaseAlias = "export_database"
+    await globalAppDatabase.attach(exportDatabaseFullPath, exportDatabaseAlias)
+
+    // Transfer all data to export from app database to export database
+    await globalAppDatabase.transaction(tx => {
+        let documentIdPlaceholder = ""
+        let documentWherePlaceholder = ""
+        let documentPictureWherePlaceholder = ""
+
+        if (id.length > 0) {
+            if (id.length >= 1) {
+                documentIdPlaceholder += "?"
+            }
+            for (let i = 1; i < id.length; i++) {
+                documentIdPlaceholder += ", ?"
+            }
+
+            documentWherePlaceholder = ` WHERE id IN (${documentIdPlaceholder})`
+            documentPictureWherePlaceholder = ` WHERE belongsToDocument IN (${documentIdPlaceholder})`
+        }
+
+        tx.executeSql(`
+            INSERT INTO ${exportDatabaseAlias}.export_document (
+                id,
+                name,
+                lastModificationTimestamp
+            ) SELECT
+                id,
+                name,
+                lastModificationTimestamp
+            FROM document${documentWherePlaceholder};
+        `, (id.length > 0) ? id : undefined)
+
+        tx.executeSql(`
+            INSERT INTO ${exportDatabaseAlias}.export_document_picture (
+                id,
+                fileName,
+                belongsToDocument,
+                position
+            ) SELECT
+                id,
+                fileName,
+                belongsToDocument,
+                position
+            FROM document_picture${documentPictureWherePlaceholder};
+        `, (id.length > 0) ? id : undefined)
+    })
+
+    // Select the file names of all pictures to export
+    const [picturesToExportResultSet] = await globalAppDatabase.executeSql(`
+        SELECT fileName FROM ${exportDatabaseAlias}.export_document_picture;
+    `)
+
+    // Prepare an array with all the picture paths to export
+    const picturesToCopy: string[] = []
+    for (let i = 0; i < picturesToExportResultSet.rows.length; i++) {
+        const fromFileName = picturesToExportResultSet.rows.item(i).fileName
+        picturesToCopy.push(`${fullPathPicture}/${fromFileName}`)
+    }
+
+    // Create the name of exported document zip file
+    const dateTime = getDateTime("-", "-", true)
+    const pathZipTo = `${fullPathTemporaryExported}/DocScan - Documento exportado ${dateTime}.zip`
+    const pathExportedDocument = `${fullPathExported}/DocScan - Documento exportado ${dateTime}.zip`
+
+    // Run the service to export document
+    exportDocumentService(picturesToCopy, exportDatabaseFullPath, pathZipTo, pathExportedDocument)
 }
 
 /**
  * TODO
  */
-export function importDocument(path: string): Promise<null> {
-    return new Promise((resolve, reject) => {})
+export async function importDocument(path: string) {
+    // TODO
 }
 
 /**

@@ -47,3 +47,37 @@ export function movePicturesService(pictures: string[], notificationTitle?: stri
         notificationTitle ?? "Movendo imagens"
     )
 }
+
+
+/**
+ * Invokes a service to export documents
+ * 
+ * @param pictures string array with all the document picture path to export
+ * @param databasePath path to the database that stores the document data
+ * @param pathZipTo path to a temporary folder where the zip file will be until the export is finished
+ * @param pathExportedDocument final path where the zip file will be moved to be accessed by the user
+ * @param notificationTitle string to be shown in notification title
+ */
+export function exportDocumentService(
+    pictures: string[],
+    databasePath: string,
+    pathZipTo: string,
+    pathExportedDocument: string,
+    notificationTitle?: string
+) {
+    DocumentService.exportDocument(
+        pictures,
+        databasePath,
+        pathZipTo,
+        pathExportedDocument,
+        notificationTitle ?? "Exportando documento(s)"
+    )
+}
+
+
+/**
+ * TODO
+ */
+export function importDocumentService() {
+    // TODO
+}

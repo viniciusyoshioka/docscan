@@ -221,6 +221,7 @@ dependencies {
 
     implementation "com.android.support:multidex:1.0.3"
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+    implementation group: 'net.lingala.zip4j', name: 'zip4j', version: '2.6.4'
 }
 
 // Run this once to be able to run the application with BUCK

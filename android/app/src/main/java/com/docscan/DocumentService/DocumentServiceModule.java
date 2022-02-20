@@ -56,4 +56,24 @@ public class DocumentServiceModule extends ReactContextBaseJavaModule {
 
         mReactApplicationContext.startService(intent);
     }
+
+
+    @ReactMethod
+    public void exportDocument(ReadableArray pictures, String databasePath, String pathZipTo, String pathExportedDocument, String notificationTitle) {
+        Intent intent = new Intent(mReactApplicationContext, DocumentServiceService.class);
+        intent.setAction(DocumentServiceService.ACTION_EXPORT);
+        intent.putExtra(DocumentServiceService.EXTRA_PICTURES_ARRAY, pictures.toArrayList());
+        intent.putExtra(DocumentServiceService.EXTRA_DATABASE_PATH, databasePath);
+        intent.putExtra(DocumentServiceService.EXTRA_PATH_ZIP_TO, pathZipTo);
+        intent.putExtra(DocumentServiceService.EXTRA_PATH_EXPORTED_DOCUMENT, pathExportedDocument);
+        intent.putExtra(DocumentServiceService.EXTRA_NOTIFICATION_TITLE, notificationTitle);
+
+        mReactApplicationContext.startService(intent);
+    }
+
+
+    @ReactMethod
+    public void importDocument() {
+        // TODO
+    }
 }

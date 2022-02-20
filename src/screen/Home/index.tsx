@@ -2,17 +2,16 @@ import React, { useCallback, useEffect, useState } from "react"
 import { Alert, BackHandler, FlatList } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 
-import { HomeHeader } from "./Header"
 import { EmptyList, SafeScreen } from "../../components"
-import { appIconOutline } from "../../services/constant"
-import { createAllFolder } from "../../services/folder-handler"
-import { useBackHandler } from "../../hooks"
-import { DocumentForList } from "../../types"
 import { DocumentDatabase } from "../../database"
-import { NavigationParamProps } from "../../types"
-import { log } from "../../services/log"
-import { DocumentItem, DOCUMENT_PICTURE_HEIGHT } from "./DocumentItem"
+import { useBackHandler } from "../../hooks"
+import { appIconOutline } from "../../services/constant"
 import { deletePicturesService } from "../../services/document-service"
+import { createAllFolder } from "../../services/folder-handler"
+import { log } from "../../services/log"
+import { DocumentForList, NavigationParamProps } from "../../types"
+import { DocumentItem, DOCUMENT_PICTURE_HEIGHT } from "./DocumentItem"
+import { HomeHeader } from "./Header"
 
 
 export function Home() {
@@ -75,8 +74,8 @@ export function Home() {
         )
     }
 
-    // TODO
     async function exportSelectedDocument() {
+        DocumentDatabase.exportDocument(selectedDocument)
         exitSelectionMode()
     }
 
