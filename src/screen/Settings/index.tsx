@@ -7,7 +7,7 @@ import { SettingsHeader } from "./Header"
 import { ChangeTheme } from "./ChangeTheme"
 import { TextVersion, ViewVersion } from "./style"
 import { ListItem, SafeScreen } from "../../components"
-import { appName, appType, appVersion, logDatabaseFullPath } from "../../services/constant"
+import { appDatabaseFullPath, appName, appType, appVersion, logDatabaseFullPath } from "../../services/constant"
 import { useBackHandler } from "../../hooks"
 import { log } from "../../services/log"
 import { NavigationParamProps } from "../../types"
@@ -49,6 +49,24 @@ export function Settings() {
         }
     }
 
+    async function shareDocumentDatabaseFile() {
+        try {
+            await Share.open({
+                title: "Compartilhar banco de dados dos documentos",
+                message: "Enviar banco de dados dos documentos para o desenvolvedor",
+                type: "application/x-sqlite3",
+                url: `file://${appDatabaseFullPath}`,
+                failOnCancel: false,
+            })
+        } catch (error) {
+            log.error(`Error sharing document database file: "${error}"`)
+            Alert.alert(
+                "Aviso",
+                "Erro ao compartilhar banco de dados dos documentos"
+            )
+        }
+    }
+
 
     return (
         <SafeScreen>
@@ -69,6 +87,15 @@ export function Settings() {
                 description={"Enviar registro de erros"}
                 onPress={shareLogFile}
             />
+
+            {__DEV__ && (
+                <ListItem
+                    iconName={"receipt-long"}
+                    title={"Compartilhar banco de dados"}
+                    description={"Enviar banco de dados dos documentos"}
+                    onPress={shareDocumentDatabaseFile}
+                />
+            )}
 
             <ViewVersion>
                 <TextVersion>
