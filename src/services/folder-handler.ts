@@ -1,6 +1,6 @@
 import RNFS from "react-native-fs"
 
-import { fullPathRoot, fullPathPdf, fullPathPicture, fullPathRootExternal, fullPathExported, fullPathTemporary, fullPathTemporaryExported, fullPathTemporaryCompressedPicture } from "./constant"
+import { fullPathRoot, fullPathPdf, fullPathPicture, fullPathRootExternal, fullPathExported, fullPathTemporary, fullPathTemporaryExported, fullPathTemporaryCompressedPicture, fullPathTemporaryImported } from "./constant"
 import { log } from "./log"
 import { getWritePermission } from "./permission"
 
@@ -135,6 +135,25 @@ export async function createTemporaryExportedFolder() {
 
 
 /**
+ * Creates the internal folder to store, temporarialy,
+ * imported document files, before moving them to their directory
+ */
+export async function createTemporaryImportedFolder() {
+    const hasWritePermission = await getWritePermission()
+    if (!hasWritePermission) {
+        log.warn("Can't create temporary imported folder without write external storage permission")
+        return
+    }
+
+    try {
+        await RNFS.mkdir(fullPathTemporaryImported)
+    } catch (error) {
+        log.error(`folder-handler createTemporaryImportedFolder - Erro ao criar pasta. Mensagem: "${error}"`)
+    }
+}
+
+
+/**
  * Creates the internal folder to store, temporarialy, the
  * compressed pictures files, while the pdf is being created.
  */
@@ -166,6 +185,7 @@ export function createAllFolder() {
     createPictureFolder()
     // createTemporaryFolder()
     createTemporaryExportedFolder()
+    createTemporaryImportedFolder()
     createTemporaryCompressedPictureFolder()
 }
 
@@ -184,5 +204,6 @@ export async function createAllFolderAsync() {
     await createPictureFolder()
     // await createTemporaryFolder()
     await createTemporaryExportedFolder()
+    await createTemporaryImportedFolder()
     await createTemporaryCompressedPictureFolder()
 }
