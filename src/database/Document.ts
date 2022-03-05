@@ -542,3 +542,29 @@ export function duplicateDocument(id: number[]): Promise<void> {
 export function mergeDocument(id: number[]): Promise<void> {
     return new Promise((resolve, reject) => {})
 }
+
+
+/**
+ * Checks if already exists an picture with the same fileName
+ * as the given one
+ * 
+ * @param fileName string of the fileName to be checked
+ * 
+ * @returns boolean indicating if the fileName already is
+ * in the database
+ */
+export function pictureNameExists(fileName: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+        globalAppDatabase.executeSql(`
+            SELECT fileName FROM document_picture WHERE fileName = ?;
+        `, [fileName])
+            .then(([selectResultSet]) => {
+                if (selectResultSet.rows.length > 0) {
+                    resolve(true)
+                } else {
+                    resolve(false)
+                }
+            })
+            .catch(reject)
+    })
+}
