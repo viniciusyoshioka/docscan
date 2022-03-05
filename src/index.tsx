@@ -119,7 +119,7 @@ export function App() {
 
     useEffect(() => {
         if (__DEV__) {
-            DevSettings.addMenuItem("List temporary exported folder", async () => {
+            DevSettings.addMenuItem("List all app folders", async () => {
                 // App internal folders
                 console.log("======================================================================")
                 console.log(`fullPathRoot: "${fullPathRoot}"`)
