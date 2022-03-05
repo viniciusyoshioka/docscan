@@ -70,10 +70,4 @@ public class DocumentServiceModule extends ReactContextBaseJavaModule {
 
         mReactApplicationContext.startService(intent);
     }
-
-
-    @ReactMethod
-    public void importDocument() {
-        // TODO
-    }
 }

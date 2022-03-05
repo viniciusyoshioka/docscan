@@ -29,7 +29,6 @@ public class DocumentServiceService extends Service {
     public static final String ACTION_COPY = "com.docscan.DocumentService.DocumentServiceService.COPY";
     public static final String ACTION_MOVE = "com.docscan.DocumentService.DocumentServiceService.MOVE";
     public static final String ACTION_EXPORT = "com.docscan.DocumentService.DocumentServiceService.EXPORT";
-    public static final String ACTION_IMPORT = "com.docscan.DocumentService.DocumentServiceService.IMPORT";
 
     public static final String EXTRA_PICTURES_ARRAY = "picturesArray";
     public static final String EXTRA_DATABASE_PATH = "databasePath";
@@ -269,10 +268,6 @@ public class DocumentServiceService extends Service {
         Log.d("DocumentServiceService", "onEnd exportDocument");
     }
 
-    private void importDocument() {
-        // TODO
-    }
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -336,17 +331,6 @@ public class DocumentServiceService extends Service {
                     }
                 });
                 Log.i("DocumentServiceService", "Added exportDocument service operation to the queue");
-                break;
-            case ACTION_IMPORT:
-                serviceQueue.add(new Runnable() {
-                    @Override
-                    public void run() {
-                        String serviceNotificationTitle = intent.getStringExtra(EXTRA_NOTIFICATION_TITLE);
-                        updateNotificationTitle(serviceNotificationTitle);
-                        importDocument(); // TODO
-                    }
-                });
-                Log.i("DocumentServiceService", "Added importDocument service operation to the queue");
                 break;
         }
 
