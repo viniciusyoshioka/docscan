@@ -3,15 +3,17 @@ import { Alert, FlatList, useWindowDimensions } from "react-native"
 import { useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 import { ImageCrop, OnImageSavedResponse } from "react-native-image-crop"
+import "react-native-get-random-values"
+import { v4 as uuid4 } from "uuid"
 
-import { VisualizePictureHeader } from "./Header"
 import { SafeScreen } from "../../components"
+import { DocumentDatabase } from "../../database"
 import { useBackHandler } from "../../hooks"
-import { log } from "../../services/log"
 import { fullPathPicture } from "../../services/constant"
-import { getDateTime } from "../../services/date"
+import { getFileExtension, getFullFileName, useDocumentData } from "../../services/document"
+import { log } from "../../services/log"
 import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
-import { getFullFileName, useDocumentData } from "../../services/document"
+import { VisualizePictureHeader } from "./Header"
 import { ImageVisualizationItem } from "./ImageVisualizationItem"
 
 
@@ -59,8 +61,16 @@ export function VisualizePicture() {
         const currentPictureName = getFullFileName(currentPicturePath)
 
         try {
-            const newCroppedPictureUri = `${fullPathPicture}/${getDateTime("", "", true).replace(" ", "_")}.jpg`
-            const newCroppedPictureName = getFullFileName(newCroppedPictureUri)
+            let newCroppedPictureUri: string
+            let newCroppedPictureName: string
+
+            do {
+                const uniqueFileName = uuid4()
+                const fileExtension = getFileExtension(response.uri)
+
+                newCroppedPictureUri = `${fullPathPicture}/${uniqueFileName}.${fileExtension}`
+                newCroppedPictureName = getFullFileName(newCroppedPictureUri)
+            } while (await DocumentDatabase.pictureNameExists(newCroppedPictureName))
 
             dispatchDocumentData({
                 type: "replace-picture",
