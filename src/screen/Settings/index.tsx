@@ -31,7 +31,7 @@ export function Settings() {
         navigation.navigate("Home")
     }
 
-    async function shareLogFile() {
+    async function shareLogDatabaseFile() {
         try {
             await Share.open({
                 title: "Compartilhar logs",
@@ -49,7 +49,7 @@ export function Settings() {
         }
     }
 
-    async function shareDocumentDatabaseFile() {
+    async function shareAppDatabaseFile() {
         try {
             await Share.open({
                 title: "Compartilhar banco de dados dos documentos",
@@ -85,7 +85,7 @@ export function Settings() {
                 iconName={"receipt-long"}
                 title={"Compartilhar logs"}
                 description={"Enviar registro de erros"}
-                onPress={shareLogFile}
+                onPress={shareLogDatabaseFile}
             />
 
             {__DEV__ && (
@@ -93,7 +93,7 @@ export function Settings() {
                     iconName={"receipt-long"}
                     title={"Compartilhar banco de dados"}
                     description={"Enviar banco de dados dos documentos"}
-                    onPress={shareDocumentDatabaseFile}
+                    onPress={shareAppDatabaseFile}
                 />
             )}
 
