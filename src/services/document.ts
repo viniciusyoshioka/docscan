@@ -26,7 +26,7 @@ export function getDocumentName(): string {
  * 
  * @returns string of the file name
  */
-export function getFileName(filePath: string): string {
+export function getFullFileName(filePath: string): string {
     const splittedFilePath = filePath.split("/")
     return splittedFilePath[splittedFilePath.length - 1]
 }

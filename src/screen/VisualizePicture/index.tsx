@@ -11,7 +11,7 @@ import { log } from "../../services/log"
 import { fullPathPicture } from "../../services/constant"
 import { getDateTime } from "../../services/date"
 import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
-import { getFileName, useDocumentData } from "../../services/document"
+import { getFullFileName, useDocumentData } from "../../services/document"
 import { ImageVisualizationItem } from "./ImageVisualizationItem"
 
 
@@ -56,11 +56,11 @@ export function VisualizePicture() {
             )
             return
         }
-        const currentPictureName = getFileName(currentPicturePath)
+        const currentPictureName = getFullFileName(currentPicturePath)
 
         try {
             const newCroppedPictureUri = `${fullPathPicture}/${getDateTime("", "", true).replace(" ", "_")}.jpg`
-            const newCroppedPictureName = getFileName(newCroppedPictureUri)
+            const newCroppedPictureName = getFullFileName(newCroppedPictureUri)
 
             dispatchDocumentData({
                 type: "replace-picture",

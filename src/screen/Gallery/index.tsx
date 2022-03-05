@@ -7,7 +7,7 @@ import RNFS from "react-native-fs"
 import { EmptyList, SafeScreen } from "../../components"
 import { useBackHandler } from "../../hooks"
 import { copyPicturesService } from "../../services/document-service"
-import { getDocumentPicturePath, getFileName, useDocumentData } from "../../services/document"
+import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
 import { log } from "../../services/log"
 import { getWritePermission } from "../../services/permission"
 import { useColorTheme } from "../../services/theme"
@@ -126,7 +126,7 @@ export function Gallery() {
         }
 
         const newImagePath = await getDocumentPicturePath(imagePath)
-        const newImageName = getFileName(newImagePath)
+        const newImageName = getFullFileName(newImagePath)
         try {
             await RNFS.copyFile(imagePath, newImagePath)
         } catch (error) {
@@ -189,7 +189,7 @@ export function Gallery() {
 
         for (let i = 0; i < selectedImage.length; i++) {
             const newImagePath = await getDocumentPicturePath(selectedImage[i])
-            const newImageName = getFileName(newImagePath)
+            const newImageName = getFullFileName(newImagePath)
 
             imagesToCopy.push(selectedImage[i].replace("file://", ""))
             imagesToCopy.push(newImagePath)

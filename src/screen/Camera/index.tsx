@@ -10,7 +10,7 @@ import { useSharedValue } from "react-native-reanimated"
 import { Icon, SafeScreen } from "../../components"
 import { useBackHandler, useDeviceOrientation, useIsForeground } from "../../hooks"
 import { useCameraSettings } from "../../services/camera"
-import { getDocumentPicturePath, getFileName, useDocumentData } from "../../services/document"
+import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
 import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
 import { log } from "../../services/log"
@@ -190,7 +190,7 @@ export function Camera() {
             })
 
             const picturePath = await getDocumentPicturePath(response.path)
-            const pictureName = getFileName(picturePath)
+            const pictureName = getFullFileName(picturePath)
             await RNFS.moveFile(response.path, picturePath)
 
             if (params?.screenAction === "replace-picture") {
