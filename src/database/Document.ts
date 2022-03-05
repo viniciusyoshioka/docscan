@@ -1,9 +1,15 @@
+import RNFS from "react-native-fs"
+import "react-native-get-random-values"
 import SQLite from "react-native-sqlite-storage"
+import { unzip } from "react-native-zip-archive"
+import { v4 as uuid4 } from "uuid"
 
 import { globalAppDatabase, openTemporaryDatabase } from "."
-import { exportDatabaseFullPath, fullPathExported, fullPathPicture, fullPathTemporaryExported } from "../services/constant"
+import { exportDatabaseFileName, exportDatabaseFullPath, fullPathExported, fullPathPicture, fullPathTemporaryExported, fullPathTemporaryImported } from "../services/constant"
 import { getDateTime } from "../services/date"
-import { exportDocumentService } from "../services/document-service"
+import { getFileExtension } from "../services/document"
+import { exportDocumentService, movePicturesService } from "../services/document-service"
+import { createTemporaryImportedFolder } from "../services/folder-handler"
 import { DocumentForList, DocumentPicture, SimpleDocument } from "../types"
 
 
@@ -392,10 +398,135 @@ export async function exportDocument(id: number[] = []) {
 }
 
 /**
- * TODO
+ * Import the documents in the exported document in path
+ * 
+ * @param path string path to the exported document
+ * file to be imported
  */
 export async function importDocument(path: string) {
-    // TODO
+    // Clear temporary imported folder
+    await RNFS.unlink(fullPathTemporaryImported)
+
+    // Recreate temporary imported folder
+    await createTemporaryImportedFolder()
+
+    // Unzip document
+    await unzip(path, fullPathTemporaryImported)
+
+    // Attach database
+    const importDbPath = `${fullPathTemporaryImported}/${exportDatabaseFileName}`
+    const importDatabaseAlias = "import_database"
+    await globalAppDatabase.attach(importDbPath, importDatabaseAlias)
+
+    // Get all id and fileName to rename in export_document_picture
+    const [pictureToRenameResultSet] = await globalAppDatabase.executeSql(`
+        SELECT
+            id,
+            fileName
+        FROM
+            ${importDatabaseAlias}.export_document_picture
+        WHERE
+            fileName IN (
+                SELECT fileName FROM document_picture
+            );
+    `)
+
+    // Rename all duplicated fileName in export_document_picture
+    const renamedPicturesToSave: {id: number; fileName: string}[] = []
+    for (let i = 0; i < pictureToRenameResultSet.rows.length; i++) {
+        const pictureId: number = pictureToRenameResultSet.rows.item(i).id
+        const pictureFileName: string = pictureToRenameResultSet.rows.item(i).fileName
+        const pictureFileExtension = getFileExtension(pictureFileName)
+
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+            const newUniqueName = uuid4()
+            const newFileName = `${newUniqueName}.${pictureFileExtension}`
+
+            const [matchingNamesResultSet] = await globalAppDatabase.executeSql(`
+                SELECT id FROM document_picture WHERE fileName LIKE ?;
+            `, [`%${newFileName}%`])
+
+            if (matchingNamesResultSet.rows.length === 0) {
+                await RNFS.moveFile(
+                    `${fullPathTemporaryImported}/${pictureFileName}`,
+                    `${fullPathTemporaryImported}/${newFileName}`
+                )
+                renamedPicturesToSave.push({
+                    id: pictureId,
+                    fileName: newFileName,
+                })
+                break
+            }
+        }
+    }
+
+    // Save the renamed pictures to export_document_picture database
+    await globalAppDatabase.transaction(tx => {
+        renamedPicturesToSave.forEach(item => tx.executeSql(`
+            UPDATE
+                ${importDatabaseAlias}.export_document_picture
+            SET
+                fileName = ?
+            WHERE
+                id = ?;
+        `, [item.fileName, item.id]))
+    })
+
+    // Get the id of documents to import
+    const [selectIdResultSet] = await globalAppDatabase.executeSql(`
+        SELECT id FROM ${importDatabaseAlias}.export_document;
+    `)
+    const documentIdToImport = selectIdResultSet.rows.raw().map((item: {id: number}) => item.id)
+
+    // Transfer data from export database to app database
+    await globalAppDatabase.transaction(tx => {
+        for (let i = 0; i < documentIdToImport.length; i++) {
+            const id = documentIdToImport[i]
+
+            // Transfer all data from export_document to document
+            tx.executeSql(`
+                INSERT INTO document (
+                    name
+                ) SELECT
+                    name
+                FROM ${importDatabaseAlias}.export_document WHERE id = ?;
+            `, [id], (transaction, resultSet) => {
+                // Transfer all data from export_document_picture to document_picture
+                transaction.executeSql(`
+                    INSERT INTO document_picture (
+                        fileName,
+                        filePath,
+                        belongsToDocument,
+                        position
+                    ) SELECT
+                        fileName,
+                        ? || fileName AS filePath,
+                        ? AS belongsToDocument,
+                        position
+                    FROM ${importDatabaseAlias}.export_document_picture WHERE belongsToDocument = ?;
+                `, [`${fullPathPicture}/`, resultSet.insertId, id])
+            })
+        }
+    })
+
+    // Get all picture's fileName
+    const [completePicturePathResultSet] = await globalAppDatabase.executeSql(`
+        SELECT fileName FROM ${importDatabaseAlias}.export_document_picture;
+    `)
+
+    // Prepare the array to move pictures from temporary folder to pictures folder
+    const picturePathToMove: string[] = []
+    completePicturePathResultSet.rows.raw().forEach(({ fileName }: { fileName: string }) => {
+        picturePathToMove.push(`${fullPathTemporaryImported}/${fileName}`)
+        picturePathToMove.push(`${fullPathPicture}/${fileName}`)
+    })
+
+    // Delete export database in temporary folder
+    await RNFS.unlink(`${fullPathTemporaryImported}/${exportDatabaseFileName}`)
+
+    // Start the service to move picture's files
+    movePicturesService(picturePathToMove)
 }
 
 /**
