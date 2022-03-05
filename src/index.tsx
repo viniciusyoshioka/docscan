@@ -10,7 +10,7 @@ import { ThemeProvider } from "styled-components/native"
 import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase, SettingsDatabase } from "./database"
 import { Router } from "./router"
 import { cameraSettingsDefault, CameraSettingsProvider, reducerCameraSettings } from "./services/camera"
-import { databaseFolder, fullPathExported, fullPathPdf, fullPathPicture, fullPathRoot, fullPathRootExternal, fullPathTemporary, fullPathTemporaryCompressedPicture, fullPathTemporaryExported } from "./services/constant"
+import { databaseFolder, fullPathExported, fullPathPdf, fullPathPicture, fullPathRoot, fullPathRootExternal, fullPathTemporary, fullPathTemporaryCompressedPicture, fullPathTemporaryExported, fullPathTemporaryImported } from "./services/constant"
 import { DocumentDataProvider, reducerDocumentData } from "./services/document"
 import { logCriticalError } from "./services/log"
 import { ColorThemeDark, ColorThemeLight, ColorThemeProvider } from "./services/theme"
@@ -165,6 +165,18 @@ export function App() {
                     console.log("Pasta vazia")
                 } else {
                     ls_fullPathTemporaryExported.forEach((item) => {
+                        console.log(item.path)
+                    })
+                }
+
+                console.log("======================================================================")
+                console.log(`fullPathTemporaryImported: "${fullPathTemporaryImported}"`)
+                console.log("----------------------------------------------------------------------")
+                const ls_fullPathTemporaryImported = await RNFS.readDir(fullPathTemporaryImported)
+                if (ls_fullPathTemporaryImported.length === 0) {
+                    console.log("Pasta vazia")
+                } else {
+                    ls_fullPathTemporaryImported.forEach((item) => {
                         console.log(item.path)
                     })
                 }
