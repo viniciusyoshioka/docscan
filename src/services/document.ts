@@ -55,8 +55,7 @@ export function getFileExtension(filePath: string): string {
  */
 export async function getDocumentPicturePath(imagePath: string): Promise<string> {
     const fileName = uuid4()
-    const splittedImagePath = imagePath.split(".")
-    const fileExtension = splittedImagePath[splittedImagePath.length - 1]
+    const fileExtension = getFileExtension(imagePath)
 
     let newPath = `${fullPathPicture}/${fileName}.${fileExtension}`
     while (await RNFS.exists(newPath)) {
@@ -76,8 +75,7 @@ export async function getDocumentPicturePath(imagePath: string): Promise<string>
  * @returns string of the new image path
  */
 export async function getPictureTemporaryExportPath(imagePath: string): Promise<string> {
-    const splittedImagePath = imagePath.split("/")
-    const fileName = splittedImagePath[splittedImagePath.length - 1]
+    const fileName = getFullFileName(imagePath)
 
     return `${fullPathTemporaryExported}/${fileName}`
 }
