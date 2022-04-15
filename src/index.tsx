@@ -17,6 +17,9 @@ import { ColorThemeDark, ColorThemeLight, ColorThemeProvider } from "./services/
 import { ThemeType } from "./types"
 
 
+SQLite.enablePromise(true)
+
+
 export function App() {
 
 
@@ -62,8 +65,6 @@ export function App() {
     }, [deviceTheme, appDb, logDb])
 
     useEffect(() => {
-        SQLite.enablePromise(true)
-
         openAppDatabase()
             .then(async (database) => {
                 setGlobalAppDatabase(database)
