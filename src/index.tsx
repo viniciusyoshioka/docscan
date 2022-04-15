@@ -88,17 +88,20 @@ export function App() {
                 }, (error) => {
                     logCriticalError(`Error creating tables in app database: "${JSON.stringify(error)}"`)
                 }, async () => {
-                    // TODO try/catch
-                    const settings = await SettingsDatabase.getSettings()
-                    dispatchCameraSettings({
-                        type: "set",
-                        payload: {
-                            flash: settings.cameraFlash,
-                            whiteBalance: settings.cameraWhiteBalance,
-                            cameraType: settings.cameraType,
-                            cameraId: settings.cameraId,
-                        }
-                    })
+                    try {
+                        const settings = await SettingsDatabase.getSettings()
+                        dispatchCameraSettings({
+                            type: "set",
+                            payload: {
+                                flash: settings.cameraFlash,
+                                whiteBalance: settings.cameraWhiteBalance,
+                                cameraType: settings.cameraType,
+                                cameraId: settings.cameraId,
+                            }
+                        })
+                    } catch (error) {
+                        log.error(`Error getting all settings from settings database: "${JSON.stringify(error)}"`)
+                    }
 
                     setAppDb(database)
                 })
