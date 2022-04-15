@@ -101,7 +101,7 @@ export function App() {
                 database.transaction(tx => {
                     LogDatabase.createLogTable(tx)
                 }, (error) => {
-                    logCriticalError(`Error opening log database: "${JSON.stringify(error)}"`)
+                    logCriticalError(`Error creating tables in log database: "${JSON.stringify(error)}"`)
                 }, () => {
                     setLogDb(database)
                 })
