@@ -72,8 +72,9 @@ export function App() {
                     DocumentDatabase.createDocumentTable(tx)
                     SettingsDatabase.createSettingsTable(tx)
                 }, (error) => {
-                    logCriticalError(`Error creating tables in app database: "${error}"`)
+                    logCriticalError(`Error creating tables in app database: "${JSON.stringify(error)}"`)
                 }, async () => {
+                    // TODO try/catch
                     const settings = await SettingsDatabase.getSettings()
                     dispatchCameraSettings({
                         type: "set",
@@ -89,7 +90,7 @@ export function App() {
                 })
             })
             .catch((error) => {
-                logCriticalError(`Error opening app database: "${error}"`)
+                logCriticalError(`Error opening app database: "${JSON.stringify(error)}"`)
             })
 
         openLogDatabase()
@@ -99,13 +100,13 @@ export function App() {
                 database.transaction(tx => {
                     LogDatabase.createLogTable(tx)
                 }, (error) => {
-                    logCriticalError(`Error opening log database: "${error}"`)
+                    logCriticalError(`Error opening log database: "${JSON.stringify(error)}"`)
                 }, () => {
                     setLogDb(database)
                 })
             })
             .catch((error) => {
-                logCriticalError(`Error opening log database: "${error}"`)
+                logCriticalError(`Error opening log database: "${JSON.stringify(error)}"`)
             })
     }, [])
 
