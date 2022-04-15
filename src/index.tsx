@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react"
-import { DevSettings, useColorScheme } from "react-native"
+import { Alert, DevSettings, useColorScheme } from "react-native"
 import RNFS from "react-native-fs"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import KeepAwake from "react-native-keep-awake"
@@ -12,8 +12,8 @@ import { Router } from "./router"
 import { cameraSettingsDefault, CameraSettingsProvider, reducerCameraSettings } from "./services/camera"
 import { databaseFolder, fullPathExported, fullPathPdf, fullPathPicture, fullPathRoot, fullPathRootExternal, fullPathTemporary, fullPathTemporaryCompressedPicture, fullPathTemporaryExported, fullPathTemporaryImported } from "./services/constant"
 import { DocumentDataProvider, reducerDocumentData } from "./services/document"
-import { logCriticalError } from "./services/log"
-import { ColorThemeDark, ColorThemeLight, ColorThemeProvider } from "./services/theme"
+import { log, logCriticalError } from "./services/log"
+import { ColorThemeDark, ColorThemeLight, ColorThemeProvider, themeDefault } from "./services/theme"
 import { ThemeType } from "./types"
 
 
@@ -33,7 +33,12 @@ export function App() {
 
 
     async function getTheme() {
-        const appTheme = await SettingsDatabase.getSettingKey("theme")
+        let appTheme: ThemeType = themeDefault
+        try {
+            appTheme = await SettingsDatabase.getSettingKey("theme")
+        } catch (error) {
+            log.error(`Error getting theme from database: "${JSON.stringify(error)}". Fallback to default theme`)
+        }
 
         ColorThemeLight.appTheme = appTheme
         ColorThemeLight.switchTheme = switchTheme
@@ -53,7 +58,15 @@ export function App() {
     }
 
     async function switchTheme(newTheme: ThemeType) {
-        await SettingsDatabase.updateSettings("theme", newTheme)
+        try {
+            await SettingsDatabase.updateSettings("theme", newTheme)
+        } catch (error) {
+            log.error(`Error updating theme in settings database: "${JSON.stringify(error)}"`)
+            Alert.alert(
+                "Aviso",
+                "Erro salvando tema"
+            )
+        }
         await getTheme()
     }
 
