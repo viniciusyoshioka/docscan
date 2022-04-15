@@ -40,6 +40,7 @@
     "@babel/core": "^7.17.9",
     "@babel/preset-typescript": "^7.16.7",
     "@babel/runtime": "^7.17.9",
+    "@types/i18n-js": "^3.8.2",
     "@types/react": "^17.0.44",
     "@types/react-native": "^0.66.17",
     "@types/react-native-keep-awake": "^2.0.3",
