@@ -61,12 +61,13 @@ export function App() {
         try {
             await SettingsDatabase.updateSettings("theme", newTheme)
         } catch (error) {
-            log.error(`Error updating theme in settings database: "${JSON.stringify(error)}"`)
+            log.error(`Error updating theme in settings database: "${JSON.stringify(error)}". Previews value was kept`)
             Alert.alert(
                 "Aviso",
                 "Erro salvando tema"
             )
         }
+
         await getTheme()
     }
 
@@ -100,7 +101,7 @@ export function App() {
                             }
                         })
                     } catch (error) {
-                        log.error(`Error getting all settings from settings database: "${JSON.stringify(error)}"`)
+                        log.error(`Error getting all settings from settings database: "${JSON.stringify(error)}". Fallback to default settings`)
                     }
 
                     setAppDb(database)
