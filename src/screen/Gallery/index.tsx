@@ -4,7 +4,7 @@ import CameraRoll, { PhotoIdentifier } from "@react-native-community/cameraroll"
 import { useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 
-import { EmptyList, SafeScreen } from "../../components"
+import { EmptyList, Screen } from "../../components"
 import { useBackHandler } from "../../hooks"
 import { copyPicturesService } from "../../services/document-service"
 import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
@@ -274,7 +274,7 @@ export function Gallery() {
 
 
     return (
-        <SafeScreen>
+        <Screen>
             <GalleryHeader
                 goBack={goBack}
                 exitSelectionMode={exitSelectionMode}
@@ -317,6 +317,6 @@ export function Gallery() {
                     message={"Galeria vazia"}
                 />
             )}
-        </SafeScreen>
+        </Screen>
     )
 }

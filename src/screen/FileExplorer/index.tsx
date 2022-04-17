@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/core"
 import RNFS, { ReadDirItem } from "react-native-fs"
 
 import { FileExplorerHeader } from "./Header"
-import { ListItem, SafeScreen, SubHeader, SubHeaderText } from "../../components"
+import { ListItem, Screen, SubHeader, SubHeaderText } from "../../components"
 import { fullPathExported } from "../../services/constant"
 import { useBackHandler } from "../../hooks"
 import { log } from "../../services/log"
@@ -218,7 +218,7 @@ export function FileExplorer() {
 
 
     return (
-        <SafeScreen>
+        <Screen>
             <FileExplorerHeader
                 goBack={() => navigation.navigate("Home")}
             />
@@ -236,6 +236,6 @@ export function FileExplorer() {
                 renderItem={renderItem}
                 initialNumToRender={10}
             />
-        </SafeScreen>
+        </Screen>
     )
 }

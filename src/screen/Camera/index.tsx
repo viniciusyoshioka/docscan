@@ -7,7 +7,7 @@ import { OrientationType } from "react-native-orientation-locker"
 import { Camera as RNCamera, useCameraDevices } from "react-native-vision-camera"
 import { useSharedValue } from "react-native-reanimated"
 
-import { Icon, SafeScreen } from "../../components"
+import { Icon, Screen } from "../../components"
 import { useBackHandler, useDeviceOrientation, useIsForeground } from "../../hooks"
 import { useCameraSettings } from "../../services/camera"
 import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
@@ -39,6 +39,7 @@ export function Camera() {
     const { color, opacity } = useColorTheme()
     const deviceOrientation = useDeviceOrientation()
 
+    const [hasCameraPermission, setHasCameraPermission] = useState<boolean | undefined>(undefined)
     const [cameraOrientation, setCameraOrientation] = useState(getCameraOrientation)
     const cameraDevices = useCameraDevices()
     const cameraDevice = cameraDevices[cameraSettingsState.cameraType]
@@ -48,7 +49,7 @@ export function Camera() {
     const [hasChanges, setHasChanges] = useState(false)
     const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
     const [isFocusEnable, setIsFocusEnable] = useState(true)
-    const isCameraActive = isFocused && isForeground
+    const [isCameraActive, setIsCameraActive] = useState(isFocused && isForeground && (hasCameraPermission === true))
     const [isFocusing, setIsFocusing] = useState(false)
     const focusPosX = useSharedValue(0)
     const focusPosY = useSharedValue(0)
@@ -264,6 +265,19 @@ export function Camera() {
 
 
     useEffect(() => {
+        getCameraPermission()
+            .then((hasPermission) => {
+                setHasCameraPermission(hasPermission)
+            })
+
+        // RNCamera.
+    }, [])
+
+    useEffect(() => {
+        setIsCameraActive(isFocused && isForeground && (hasCameraPermission === true))
+    }, [hasCameraPermission])
+
+    useEffect(() => {
         const newCameraOrientation = getCameraOrientation()
         if (cameraOrientation !== newCameraOrientation) {
             setCameraOrientation(newCameraOrientation)
@@ -288,7 +302,7 @@ export function Camera() {
 
 
     return (
-        <SafeScreen style={{ backgroundColor: "black" }}>
+        <Screen style={{ backgroundColor: "black" }}>
             <StatusBar hidden={true} />
 
             <CameraHeader
@@ -296,6 +310,14 @@ export function Camera() {
                 openSettings={() => setIsCameraSettingsVisible(true)}
                 isLayoutPositionAbsolute={false}
             />
+
+            {(hasCameraPermission === false) && (
+                <CameraWrapper>
+                    <NoCameraAvailableText>
+                        Sem permissão
+                    </NoCameraAvailableText>
+                </CameraWrapper>
+            )}
 
             {!cameraDevice && (
                 <CameraWrapper>
@@ -312,7 +334,7 @@ export function Camera() {
                 </CameraWrapper>
             )}
 
-            {cameraDevice && (
+            {cameraDevice && hasCameraPermission && (
                 <CameraWrapper>
                     <TapGestureHandler minPointers={1} onHandlerStateChange={onTapStateChange}>
                         <RNCamera
@@ -353,6 +375,6 @@ export function Camera() {
                 setVisible={setIsCameraSettingsVisible}
                 isFlippable={isFlippable}
             />
-        </SafeScreen>
+        </Screen>
     )
 }

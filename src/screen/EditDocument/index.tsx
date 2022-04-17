@@ -5,7 +5,7 @@ import RNFS from "react-native-fs"
 import { createPdf, PdfCreatorOptions, viewPdf } from "react-native-pdf-creator"
 import Share from "react-native-share"
 
-import { SafeScreen } from "../../components"
+import { Screen } from "../../components"
 import { DocumentDatabase } from "../../database"
 import { fullPathPdf, fullPathTemporaryCompressedPicture } from "../../services/constant"
 import { deletePicturesService } from "../../services/document-service"
@@ -456,7 +456,7 @@ export function EditDocument() {
 
 
     return (
-        <SafeScreen>
+        <Screen>
             <EditDocumentHeader
                 goBack={goBack}
                 exitSelectionMode={exitSelectionMode}
@@ -491,6 +491,6 @@ export function EditDocument() {
                 onRequestClose={() => setConvertPdfOptionVisible(false)}
                 convertToPdf={convertDocumentToPdf}
             />
-        </SafeScreen>
+        </Screen>
     )
 }

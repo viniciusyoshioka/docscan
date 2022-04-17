@@ -6,7 +6,7 @@ import Share from "react-native-share"
 import { SettingsHeader } from "./Header"
 import { ChangeTheme } from "./ChangeTheme"
 import { TextVersion, ViewVersion } from "./style"
-import { ListItem, SafeScreen } from "../../components"
+import { ListItem, Screen } from "../../components"
 import { appDatabaseFullPath, appName, appType, appVersion, logDatabaseFullPath } from "../../services/constant"
 import { useBackHandler } from "../../hooks"
 import { log } from "../../services/log"
@@ -69,7 +69,7 @@ export function Settings() {
 
 
     return (
-        <SafeScreen>
+        <Screen>
             <SettingsHeader
                 goBack={goBack}
             />
@@ -107,6 +107,6 @@ export function Settings() {
                 visible={changeThemeVisible}
                 onRequestClose={() => setChangeThemeVisible(false)}
             />
-        </SafeScreen>
+        </Screen>
     )
 }

@@ -6,7 +6,7 @@ import { ImageCrop, OnImageSavedResponse } from "react-native-image-crop"
 import "react-native-get-random-values"
 import { v4 as uuid4 } from "uuid"
 
-import { SafeScreen } from "../../components"
+import { Screen } from "../../components"
 import { DocumentDatabase } from "../../database"
 import { useBackHandler } from "../../hooks"
 import { fullPathPicture } from "../../services/constant"
@@ -143,7 +143,7 @@ export function VisualizePicture() {
 
 
     return (
-        <SafeScreen>
+        <Screen>
             <VisualizePictureHeader
                 goBack={goBack}
                 isCropping={isCropping}
@@ -183,6 +183,6 @@ export function VisualizePicture() {
                     onCropError={onSaveImageError}
                 />
             )}
-        </SafeScreen>
+        </Screen>
     )
 }

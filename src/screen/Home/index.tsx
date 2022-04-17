@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react"
 import { Alert, BackHandler, FlatList } from "react-native"
 import { useNavigation } from "@react-navigation/core"
 
-import { EmptyList, SafeScreen } from "../../components"
+import { EmptyList, Screen } from "../../components"
 import { DocumentDatabase } from "../../database"
 import { useBackHandler } from "../../hooks"
 import { appIconOutline } from "../../services/constant"
@@ -176,7 +176,7 @@ export function Home() {
 
 
     return (
-        <SafeScreen>
+        <Screen>
             <HomeHeader
                 selectionMode={selectionMode}
                 exitSelectionMode={exitSelectionMode}
@@ -204,6 +204,6 @@ export function Home() {
                     message={"Nenhum documento"}
                 />
             )}
-        </SafeScreen>
+        </Screen>
     )
 }

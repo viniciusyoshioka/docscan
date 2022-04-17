@@ -1,7 +1,7 @@
 import React from "react"
 import { Image, ImageSourcePropType, useWindowDimensions } from "react-native"
 
-import { SafeScreen } from "../../../components/Screen"
+import { Screen } from "../../../components/Screen"
 
 
 export interface ImageVisualizationItemProps {
@@ -11,12 +11,12 @@ export interface ImageVisualizationItemProps {
 
 export const ImageVisualizationItem = (props: ImageVisualizationItemProps) => {
     return (
-        <SafeScreen style={{ width: useWindowDimensions().width }}>
+        <Screen style={{ width: useWindowDimensions().width }}>
             <Image
                 source={props.source}
                 resizeMode={"contain"}
                 style={{ flex: 1 }}
             />
-        </SafeScreen>
+        </Screen>
     )
 }
