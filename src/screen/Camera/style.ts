@@ -18,17 +18,3 @@ export const NoCameraAvailableText = styled.Text`
     color: ${(props: StyledProps) => props.theme.color.screen_color};
     opacity: ${(props: StyledProps) => props.theme.opacity.mediumEmphasis};
 `
-
-
-export const FOCUS_INDICATOR_SIZE = 64
-
-
-export const FocusIndicator = styled.View`
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: ${FOCUS_INDICATOR_SIZE}px;
-    height: ${FOCUS_INDICATOR_SIZE}px;
-    border-width: 2px;
-    border-color: white;
-`

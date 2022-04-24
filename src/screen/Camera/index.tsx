@@ -19,8 +19,9 @@ import { useColorTheme } from "../../services/theme"
 import { CameraOrientationType, DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { CameraControl, CameraControlRef } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
+import { FocusIndicator } from "./FocusIndicator"
 import { CameraHeader } from "./Header"
-import { CameraWrapper, FocusIndicator, FOCUS_INDICATOR_SIZE, NoCameraAvailableText } from "./style"
+import { CameraWrapper, NoCameraAvailableText } from "./style"
 
 
 export function Camera() {
@@ -361,14 +362,11 @@ export function Camera() {
                 </CameraWrapper>
             )}
 
-            {isFocusing && (
-                <FocusIndicator style={{
-                    transform: [
-                        { translateX: focusPosX.value - (FOCUS_INDICATOR_SIZE / 2) },
-                        { translateY: focusPosY.value - (FOCUS_INDICATOR_SIZE / 2) },
-                    ]
-                }} />
-            )}
+            <FocusIndicator
+                isFocusing={isFocusing}
+                focusPosX={focusPosX.value}
+                focusPosY={focusPosY.value}
+            />
 
             <CameraControl
                 ref={cameraControlRef}
