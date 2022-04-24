@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react"
-import { ActivityIndicator, Alert, FlatList, useWindowDimensions } from "react-native"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { ActivityIndicator, Alert, FlatList, StatusBar, useWindowDimensions } from "react-native"
 import CameraRoll, { PhotoIdentifier } from "@react-native-community/cameraroll"
 import { useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 
-import { EmptyList, Screen } from "../../components"
+import { EmptyList, HEADER_HEIGHT, Screen } from "../../components"
 import { useBackHandler } from "../../hooks"
 import { copyPicturesService } from "../../services/document-service"
 import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
@@ -23,7 +23,7 @@ export function Gallery() {
     const navigation = useNavigation<NavigationParamProps<"Gallery">>()
     const { params } = useRoute<RouteParamProps<"Gallery">>()
 
-    const { width } = useWindowDimensions()
+    const { width, height } = useWindowDimensions()
 
     const { color, opacity } = useColorTheme()
 
@@ -33,7 +33,9 @@ export function Gallery() {
     const [selectedImage, setSelectedImage] = useState<Array<string>>([])
     const [isRefreshing, setIsRefreshing] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
-
+    const minimumRowAmountInScreen = useMemo(() => {
+        return Math.ceil((height - (StatusBar.currentHeight ?? 0) - HEADER_HEIGHT) / (width / 3))
+    }, [width, height])
 
     useBackHandler(() => {
         goBack()
@@ -290,7 +292,13 @@ export function Gallery() {
                 getItemLayout={getItemLayout}
                 numColumns={3}
                 onEndReachedThreshold={0.05}
-                onEndReached={getImage}
+                onEndReached={() => {
+                    if (((imageGallery?.length ?? 0) / 3) < minimumRowAmountInScreen) {
+                        return
+                    }
+
+                    getImage()
+                }}
                 ListFooterComponent={() => (isLoading && imageGallery) ? <LoadingIndicator /> : null}
                 onRefresh={async () => {
                     setIsRefreshing(true)
