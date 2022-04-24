@@ -4,10 +4,10 @@ import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
 import { OrientationType } from "react-native-orientation-locker"
-import { Camera as RNCamera, useCameraDevices } from "react-native-vision-camera"
 import { useSharedValue } from "react-native-reanimated"
+import { Camera as RNCamera, useCameraDevices } from "react-native-vision-camera"
 
-import { Icon, Screen } from "../../components"
+import { Button, Icon, Screen } from "../../components"
 import { useBackHandler, useDeviceOrientation, useIsForeground } from "../../hooks"
 import { useCameraSettings } from "../../services/camera"
 import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
@@ -263,14 +263,14 @@ export function Camera() {
         }
     }
 
+    async function requestAndSetCameraPermission() {
+        const hasPermission = await getCameraPermission()
+        setHasCameraPermission(hasPermission)
+    }
+
 
     useEffect(() => {
-        getCameraPermission()
-            .then((hasPermission) => {
-                setHasCameraPermission(hasPermission)
-            })
-
-        // RNCamera.
+        requestAndSetCameraPermission()
     }, [])
 
     useEffect(() => {
@@ -311,15 +311,25 @@ export function Camera() {
                 isLayoutPositionAbsolute={false}
             />
 
+            {(hasCameraPermission === undefined) && (
+                <CameraWrapper />
+            )}
+
             {(hasCameraPermission === false) && (
                 <CameraWrapper>
                     <NoCameraAvailableText>
                         Sem permissão
                     </NoCameraAvailableText>
+
+                    <Button
+                        text={"Conceder permissão"}
+                        onPress={requestAndSetCameraPermission}
+                        style={{ marginTop: 16 }}
+                    />
                 </CameraWrapper>
             )}
 
-            {!cameraDevice && (
+            {(hasCameraPermission && !cameraDevice) && (
                 <CameraWrapper>
                     <Icon
                         iconName={"no-photography"}
@@ -334,7 +344,7 @@ export function Camera() {
                 </CameraWrapper>
             )}
 
-            {cameraDevice && hasCameraPermission && (
+            {(hasCameraPermission && cameraDevice) && (
                 <CameraWrapper>
                     <TapGestureHandler minPointers={1} onHandlerStateChange={onTapStateChange}>
                         <RNCamera
