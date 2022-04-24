@@ -13,7 +13,8 @@ export const ButtonBase = styled(RectButton)`
     flex-direction: row;
     min-width: 64px;
     height: 36px;
-    border-radius: 2px;
+    padding-horizontal: 16px;
+    border-radius: 4px;
     background-color: ${(props: StyledProps) => props.theme.color.button_background};
 `
 
