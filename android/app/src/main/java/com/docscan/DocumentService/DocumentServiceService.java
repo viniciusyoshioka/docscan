@@ -1,15 +1,19 @@
 package com.docscan.DocumentService;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
+
 import com.docscan.R;
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,10 +42,10 @@ public class DocumentServiceService extends Service {
 
     private static final int NOTIFICATION_ID_SERVICE = 1;
     private static final int NOTIFICATION_ID_RESPONSE = 2;
-    private static final String NOTIFICATION_CHANNEL_SERVICE = "com.docscan.DocumentService.DocumentServiceService.NOTIFICATION_CHANNEL_SERVICE";
-    private static final String NOTIFICATION_CHANNEL_RESPONSE = "com.docscan.DocumentService.DocumentServiceService.NOTIFICATION_CHANNEL_RESPONSE";
+    private static final String NOTIFICATION_CHANNEL = "com.docscan.DocumentService.DocumentServiceService.NOTIFICATION_CHANNEL";
 
-    private NotificationManagerCompat notificationManagerCompat;
+    private NotificationManager notificationManager;
+    private NotificationChannel notificationChannel;
     private NotificationCompat.Builder notificationServiceBuilder;
     private NotificationCompat.Builder notificationResponseBuilder;
 
@@ -50,7 +54,7 @@ public class DocumentServiceService extends Service {
 
 
     private void createNotification() {
-        notificationServiceBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_SERVICE)
+        notificationServiceBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL)
                 .setSmallIcon(R.drawable.ic_stat_name) // TODO
                 .setContentTitle("DocScan")
                 .setProgress(0, 0, true)
@@ -60,7 +64,7 @@ public class DocumentServiceService extends Service {
     private void updateNotificationTitle(String newTitle) {
         if (notificationServiceBuilder != null) {
             notificationServiceBuilder.setContentTitle(newTitle);
-            notificationManagerCompat.notify(NOTIFICATION_ID_SERVICE, notificationServiceBuilder.build());
+            notificationManager.notify(NOTIFICATION_ID_SERVICE, notificationServiceBuilder.build());
         }
     }
 
@@ -69,14 +73,14 @@ public class DocumentServiceService extends Service {
         if (notificationServiceBuilder != null) {
             notificationServiceBuilder.setProgress(total, current, false);
             notificationServiceBuilder.setContentText(String.format("%d de %d", current, total));
-            notificationManagerCompat.notify(NOTIFICATION_ID_SERVICE, notificationServiceBuilder.build());
+            notificationManager.notify(NOTIFICATION_ID_SERVICE, notificationServiceBuilder.build());
         }
     }
 
 
     private void createResponseNotification(String title, String text) {
         Uri notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        notificationResponseBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_RESPONSE)
+        notificationResponseBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL)
                 .setSmallIcon(R.drawable.ic_stat_name) // TODO
                 .setContentTitle(title)
                 .setContentText(text)
@@ -84,12 +88,12 @@ public class DocumentServiceService extends Service {
     }
 
     private void sendResponseNotification() {
-        if (notificationManagerCompat == null) {
-            notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
+        if (notificationManager == null) {
+            notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             Log.d("DocumentServiceService", "Notification manager compat didn't existed, created successfully to send response notification");
         }
         if (notificationResponseBuilder != null) {
-            notificationManagerCompat.notify(NOTIFICATION_ID_RESPONSE, notificationResponseBuilder.build());
+            notificationManager.notify(NOTIFICATION_ID_RESPONSE, notificationResponseBuilder.build());
             return;
         }
         Log.d("DocumentServiceService", "Response notification is null, can't send it");
@@ -271,6 +275,11 @@ public class DocumentServiceService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent == null) {
+            Log.w("DocumentServiceService", "DocumentServiceService must have an intent, received null");
+            return START_STICKY;
+        }
+
         String action = intent.getAction();
         if (action == null) {
             Log.w("DocumentServiceService", "DocumentServiceService must have an action set, received null");
@@ -281,6 +290,15 @@ public class DocumentServiceService extends Service {
         if ((action.equals(ACTION_COPY) || action.equals(ACTION_MOVE)) && (picturesArray.size() % 2 != 0)) {
             Log.w("DocumentServiceService", "DocumentServiceService onStartCommand: Picture array must be pair when action is COPY or MOVE");
             return START_STICKY;
+        }
+
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL, NOTIFICATION_CHANNEL, NotificationManager.IMPORTANCE_DEFAULT);
+
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(notificationChannel);
+            }
         }
 
         switch (action) {
@@ -339,7 +357,6 @@ public class DocumentServiceService extends Service {
             return START_STICKY;
         }
 
-        notificationManagerCompat = NotificationManagerCompat.from(getApplicationContext());
         createNotification();
         startForeground(NOTIFICATION_ID_SERVICE, notificationServiceBuilder.build());
 
