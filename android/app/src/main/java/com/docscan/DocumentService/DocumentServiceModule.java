@@ -1,8 +1,6 @@
 package com.docscan.DocumentService;
 
 import android.content.Intent;
-import android.os.Build;
-
 import androidx.annotation.NonNull;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
