@@ -33,12 +33,6 @@ export interface ColorTheme {
         documentItem_selected_color: string;
         documentItem_ripple: string;
 
-        noteItem_background: string;
-        noteItem_color: string;
-        noteItem_selected_background: string;
-        noteItem_selected_color: string;
-        noteItem_ripple: string;
-
         imageItem_background: string;
         imageItem_color: string;
         imageItem_selected_background: string;

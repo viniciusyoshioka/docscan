@@ -24,7 +24,7 @@ export const ColorThemeLight: ColorTheme = {
         subHeader_background: "rgb(60, 100, 220)",
         subHeader_color: "rgb(255, 255, 255)",
 
-        screen_background: "rgb(245, 245, 245)",
+        screen_background: "rgb(242, 242, 242)",
         screen_color: "rgb(0, 0, 0)",
 
         menuItem_background: "rgb(255, 255, 255)",
@@ -36,12 +36,6 @@ export const ColorThemeLight: ColorTheme = {
         documentItem_selected_background: "rgb(60, 100, 220)",
         documentItem_selected_color: "rgb(90, 90, 90)",
         documentItem_ripple: "rgb(230, 230, 230)",
-
-        noteItem_background: "rgb(255, 255, 255)",
-        noteItem_color: "rgb(0, 0, 0)",
-        noteItem_selected_background: "rgb(60, 100, 220)",
-        noteItem_selected_color: "rgb(90, 90, 90)",
-        noteItem_ripple: "rgb(230, 230, 230)",
 
         imageItem_background: "rgb(255, 255, 255)",
         imageItem_color: "rgb(0, 0, 0)",
@@ -93,31 +87,25 @@ export const ColorThemeDark: ColorTheme = {
     appTheme: "auto",
     switchTheme: () => { },
     color: {
-        header_background: "rgb(30, 30, 30)",
+        header_background: "rgb(20, 20, 20)",
         header_color: "rgb(255, 255, 255)",
         header_ripple: "rgb(50, 50, 50)",
 
-        subHeader_background: "rgb(30, 30, 30)",
+        subHeader_background: "rgb(20, 20, 20)",
         subHeader_color: "rgb(255, 255, 255)",
 
-        screen_background: "rgb(18, 18, 18)",
+        screen_background: "rgb(0, 0, 0)",
         screen_color: "rgb(255, 255, 255)",
 
-        menuItem_background: "rgb(45, 45, 45)",
+        menuItem_background: "rgb(30, 30, 30)",
         menuItem_color: "rgb(255, 255, 255)",
-        menuItem_ripple: "rgb(60, 60, 60)",
+        menuItem_ripple: "rgb(45, 45, 45)",
 
-        documentItem_background: "rgb(30, 30, 30)",
+        documentItem_background: "rgb(20, 20, 20)",
         documentItem_color: "rgb(255, 255, 255)",
         documentItem_selected_background: "rgb(180, 200, 255)",
         documentItem_selected_color: "rgb(180, 180, 180)",
-        documentItem_ripple: "rgb(50, 50, 50)",
-
-        noteItem_background: "rgb(30, 30, 30)",
-        noteItem_color: "rgb(255, 255, 255)",
-        noteItem_selected_background: "rgb(180, 200, 255)",
-        noteItem_selected_color: "rgb(180, 180, 180)",
-        noteItem_ripple: "rgb(50, 50, 50)",
+        documentItem_ripple: "rgb(45, 45, 45)",
 
         imageItem_background: "rgb(30, 30, 30)",
         imageItem_color: "rgb(255, 255, 255)",
