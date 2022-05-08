@@ -3,6 +3,7 @@ package com.docscan;
 import android.content.Context;
 import androidx.multidex.MultiDexApplication;
 import com.docscan.DocumentService.DocumentServicePackage;
+import com.docscan.PdfCreator.PdfCreatorPackage;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -29,6 +30,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
       // Packages that cannot be autolinked yet can be added manually here, for example:
       // packages.add(new MyReactNativePackage());
       packages.add(new DocumentServicePackage());
+      packages.add(new PdfCreatorPackage());
       return packages;
     }
 
