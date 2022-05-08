@@ -55,7 +55,7 @@ public class DocumentServiceService extends Service {
 
     private void createNotification() {
         notificationServiceBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL)
-                .setSmallIcon(R.drawable.ic_stat_name) // TODO
+                .setSmallIcon(R.mipmap.ic_launcher) // TODO
                 .setContentTitle("DocScan")
                 .setProgress(0, 0, true)
                 .setOngoing(true);
@@ -81,7 +81,7 @@ public class DocumentServiceService extends Service {
     private void createResponseNotification(String title, String text) {
         Uri notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         notificationResponseBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL)
-                .setSmallIcon(R.drawable.ic_stat_name) // TODO
+                .setSmallIcon(R.mipmap.ic_launcher) // TODO
                 .setContentTitle(title)
                 .setContentText(text)
                 .setSound(notificationSoundUri);
