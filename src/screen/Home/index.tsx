@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react"
-import { Alert, BackHandler, FlatList } from "react-native"
 import { useNavigation } from "@react-navigation/core"
+import React, { useCallback, useEffect, useState } from "react"
+import { Alert, BackHandler, FlatList, StatusBar } from "react-native"
 
 import { EmptyList, Screen } from "../../components"
 import { DocumentDatabase } from "../../database"
@@ -9,6 +9,7 @@ import { appIconOutline } from "../../services/constant"
 import { deletePicturesService } from "../../services/document-service"
 import { createAllFolder } from "../../services/folder-handler"
 import { log } from "../../services/log"
+import { useColorTheme } from "../../services/theme"
 import { DocumentForList, NavigationParamProps } from "../../types"
 import { DocumentItem, DOCUMENT_PICTURE_HEIGHT } from "./DocumentItem"
 import { HomeHeader } from "./Header"
@@ -18,6 +19,8 @@ export function Home() {
 
 
     const navigation = useNavigation<NavigationParamProps<"Home">>()
+
+    const { color, appTheme } = useColorTheme()
 
     const [document, setDocument] = useState<DocumentForList[]>([])
     const [selectionMode, setSelectionMode] = useState(false)
@@ -177,6 +180,11 @@ export function Home() {
 
     return (
         <Screen>
+            <StatusBar
+                backgroundColor={color.header_background}
+                barStyle={appTheme === "dark" ? "dark-content" : "light-content"}
+            />
+
             <HomeHeader
                 selectionMode={selectionMode}
                 exitSelectionMode={exitSelectionMode}

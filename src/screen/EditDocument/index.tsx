@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react"
-import { Alert, FlatList, useWindowDimensions } from "react-native"
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/core"
+import React, { useCallback, useEffect, useState } from "react"
+import { Alert, FlatList, StatusBar, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import Share from "react-native-share"
 
@@ -13,6 +13,7 @@ import { deletePicturesService } from "../../services/document-service"
 import { log } from "../../services/log"
 import { createPdf, PdfCreatorOptions, viewPdf } from "../../services/pdf-creator"
 import { getReadPermission, getWritePermission } from "../../services/permission"
+import { useColorTheme } from "../../services/theme"
 import { DocumentPicture, NavigationParamProps, RouteParamProps, SimpleDocument } from "../../types"
 import { ConvertPdfOption } from "./ConvertPdfOption"
 import { EditDocumentHeader } from "./Header"
@@ -27,6 +28,8 @@ export function EditDocument() {
     const { params } = useRoute<RouteParamProps<"EditDocument">>()
 
     const { width } = useWindowDimensions()
+
+    const { color, appTheme } = useColorTheme()
 
     const { documentDataState, dispatchDocumentData } = useDocumentData()
     const [selectionMode, setSelectionMode] = useState(false)
@@ -457,6 +460,11 @@ export function EditDocument() {
 
     return (
         <Screen>
+            <StatusBar
+                backgroundColor={color.header_background}
+                barStyle={appTheme === "dark" ? "dark-content" : "light-content"}
+            />
+
             <EditDocumentHeader
                 goBack={goBack}
                 exitSelectionMode={exitSelectionMode}
