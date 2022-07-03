@@ -16,10 +16,12 @@
     "fbjs": "^3.0.4",
     "i18n-js": "^3.9.2",
     "react": "17.0.2",
-    "react-native": "0.67.4",
+    "react-native": "0.68.2",
+    "react-native-codegen": "^0.69.1",
     "react-native-fs": "^2.19.0",
     "react-native-gesture-handler": "^2.3.2",
     "react-native-get-random-values": "^1.7.2",
+    "react-native-gradle-plugin": "0.0.7",
     "react-native-image-crop": "git+https://github.com/viniciusyoshioka/react-native-image-crop.git",
     "react-native-logs": "^3.0.4",
     "react-native-orientation-locker": "^1.5.0",
@@ -54,7 +56,7 @@
     "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^8.13.0",
     "eslint-plugin-react": "^7.29.4",
-    "metro-react-native-babel-preset": "^0.66.2",
+    "metro-react-native-babel-preset": "^0.67.0",
     "react-native-keep-awake": "^4.0.0",
     "typescript": "^4.6.3"
   }
