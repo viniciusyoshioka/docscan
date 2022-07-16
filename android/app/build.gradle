@@ -207,7 +207,6 @@ android {
                 }
             }
         }
-        multiDexEnabled true
     }
 
     splits {
@@ -287,7 +286,6 @@ dependencies {
         implementation jscFlavor
     }
 
-    implementation "com.android.support:multidex:1.0.3"
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
     implementation group: 'net.lingala.zip4j', name: 'zip4j', version: '2.6.4'
     implementation "com.tom-roush:pdfbox-android:2.0.0.0"

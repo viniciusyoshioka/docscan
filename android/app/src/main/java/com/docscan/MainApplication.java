@@ -1,7 +1,7 @@
 package com.docscan;
 
+import android.app.Application;
 import android.content.Context;
-import androidx.multidex.MultiDexApplication;
 import com.docscan.DocumentService.DocumentServicePackage;
 import com.docscan.PdfCreator.PdfCreatorPackage;
 import com.facebook.react.PackageList;
@@ -18,7 +18,7 @@ import com.facebook.react.bridge.JSIModulePackage;
 import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 
 
-public class MainApplication extends MultiDexApplication implements ReactApplication {
+public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
