@@ -16,7 +16,7 @@ export interface HomeMenuProps {
 }
 
 
-export const HomeMenu = (props: HomeMenuProps) => {
+export function HomeMenu(props: HomeMenuProps) {
 
 
     const menuRef = useRef<Menu>(null)
