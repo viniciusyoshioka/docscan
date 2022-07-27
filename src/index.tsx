@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react"
-import { Alert, DevSettings, useColorScheme } from "react-native"
+import { Alert, DevSettings, StatusBar, useColorScheme } from "react-native"
 import RNFS from "react-native-fs"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import KeepAwake from "react-native-keep-awake"
@@ -77,6 +77,11 @@ export function App() {
             getTheme()
         }
     }, [deviceTheme, appDb, logDb])
+
+    useEffect(() => {
+        StatusBar.setBarStyle("light-content")
+        StatusBar.setBackgroundColor(theme === "dark" ? ColorThemeDark.color.header_background : ColorThemeLight.color.header_background)
+    }, [theme])
 
     useEffect(() => {
         openAppDatabase()
