@@ -80,6 +80,14 @@ export function Home() {
     }
 
     function alertExportDocument() {
+        if (document.length === 0) {
+            Alert.alert(
+                "Aviso",
+                "Nenhum documento existente para ser exportado"
+            )
+            return
+        }
+
         Alert.alert(
             "Exportar",
             `Os documentos ${selectionMode ? "selecionados " : ""}serão exportados`,
