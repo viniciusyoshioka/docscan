@@ -1,8 +1,8 @@
-import React, { Component } from "react"
+import React from "react"
 
-import { HomeMenu } from "./HomeMenu"
 import { Header, HeaderButton, HeaderTitle } from "../../components"
 import { appName } from "../../services/constant"
+import { HomeMenu } from "./HomeMenu"
 
 
 export interface HomeHeaderProps {
@@ -18,63 +18,46 @@ export interface HomeHeaderProps {
 }
 
 
-export class HomeHeader extends Component<HomeHeaderProps> {
-
-
-    constructor(props: HomeHeaderProps) {
-        super(props)
-    }
-
-
-    shouldComponentUpdate(nextProps: HomeHeaderProps) {
-        if (this.props.selectionMode !== nextProps.selectionMode) {
-            return true
-        }
-        return false
-    }
-
-
-    render() {
-        return (
-            <Header>
-                {this.props.selectionMode && (
-                    <HeaderButton
-                        iconName={"close"}
-                        onPress={this.props.exitSelectionMode}
-                    />
-                )}
-
-                {!this.props.selectionMode && (
-                    <HeaderTitle title={appName} />
-                )}
-
-                {this.props.selectionMode && (
-                    <HeaderTitle />
-                )}
-
-                {this.props.selectionMode && (
-                    <HeaderButton
-                        iconName={"delete"}
-                        onPress={this.props.deleteSelectedDocument}
-                    />
-                )}
-
-                {!this.props.selectionMode && (
-                    <HeaderButton
-                        iconName={"add"}
-                        onPress={this.props.scanNewDocument}
-                    />
-                )}
-
-                <HomeMenu
-                    selectionMode={this.props.selectionMode}
-                    importDocument={this.props.importDocument}
-                    exportDocument={this.props.exportDocument}
-                    openSettings={this.props.openSettings}
-                    mergeDocument={this.props.mergeDocument}
-                    duplicateDocument={this.props.duplicateDocument}
+export function HomeHeader(props: HomeHeaderProps) {
+    return (
+        <Header>
+            {props.selectionMode && (
+                <HeaderButton
+                    iconName={"close"}
+                    onPress={props.exitSelectionMode}
                 />
-            </Header>
-        )
-    }
+            )}
+
+            {!props.selectionMode && (
+                <HeaderTitle title={appName} />
+            )}
+
+            {props.selectionMode && (
+                <HeaderTitle />
+            )}
+
+            {props.selectionMode && (
+                <HeaderButton
+                    iconName={"delete"}
+                    onPress={props.deleteSelectedDocument}
+                />
+            )}
+
+            {!props.selectionMode && (
+                <HeaderButton
+                    iconName={"add"}
+                    onPress={props.scanNewDocument}
+                />
+            )}
+
+            <HomeMenu
+                selectionMode={props.selectionMode}
+                importDocument={props.importDocument}
+                exportDocument={props.exportDocument}
+                openSettings={props.openSettings}
+                mergeDocument={props.mergeDocument}
+                duplicateDocument={props.duplicateDocument}
+            />
+        </Header>
+    )
 }
