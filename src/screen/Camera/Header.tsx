@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React from "react"
 import { StyleSheet } from "react-native"
 
 import { Header, HeaderButton, HeaderTitle } from "../../components"
@@ -11,39 +11,22 @@ export interface CameraHeaderProps {
 }
 
 
-export class CameraHeader extends Component<CameraHeaderProps> {
+export function CameraHeader(props: CameraHeaderProps) {
+    return (
+        <Header style={props.isLayoutPositionAbsolute ? styles.absolute : styles.relative}>
+            <HeaderButton
+                iconName={"arrow-back"}
+                onPress={props.goBack}
+            />
 
+            <HeaderTitle />
 
-    constructor(props: CameraHeaderProps) {
-        super(props)
-    }
-
-
-    shouldComponentUpdate(nextProps: CameraHeaderProps) {
-        if (this.props.isLayoutPositionAbsolute !== nextProps.isLayoutPositionAbsolute) {
-            return true
-        }
-        return false
-    }
-
-
-    render() {
-        return (
-            <Header style={this.props.isLayoutPositionAbsolute ? styles.absolute : styles.relative}>
-                <HeaderButton
-                    iconName={"arrow-back"}
-                    onPress={this.props.goBack}
-                />
-
-                <HeaderTitle />
-
-                <HeaderButton
-                    iconName={"settings"}
-                    onPress={this.props.openSettings}
-                />
-            </Header>
-        )
-    }
+            <HeaderButton
+                iconName={"settings"}
+                onPress={props.openSettings}
+            />
+        </Header>
+    )
 }
 
 
