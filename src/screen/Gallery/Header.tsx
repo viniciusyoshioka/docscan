@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React from "react"
 
 import { Header, HeaderButton, HeaderTitle } from "../../components"
 
@@ -11,54 +11,37 @@ export interface GalleryHeaderProps {
 }
 
 
-export class GalleryHeader extends Component<GalleryHeaderProps> {
+export function GalleryHeader(props: GalleryHeaderProps) {
+    return (
+        <Header>
+            {props.selectionMode && (
+                <HeaderButton
+                    iconName={"close"}
+                    onPress={props.exitSelectionMode}
+                />
+            )}
 
+            {!props.selectionMode && (
+                <HeaderButton
+                    iconName={"arrow-back"}
+                    onPress={props.goBack}
+                />
+            )}
 
-    constructor(props: GalleryHeaderProps) {
-        super(props)
-    }
+            {!props.selectionMode && (
+                <HeaderTitle title={"Importar imagem"} />
+            )}
 
+            {props.selectionMode && (
+                <HeaderTitle />
+            )}
 
-    shouldComponentUpdate(nextProps: GalleryHeaderProps) {
-        if (this.props.selectionMode !== nextProps.selectionMode) {
-            return true
-        }
-        return false
-    }
-
-
-    render() {
-        return (
-            <Header>
-                {this.props.selectionMode && (
-                    <HeaderButton
-                        iconName={"close"}
-                        onPress={this.props.exitSelectionMode}
-                    />
-                )}
-
-                {!this.props.selectionMode && (
-                    <HeaderButton
-                        iconName={"arrow-back"}
-                        onPress={this.props.goBack}
-                    />
-                )}
-
-                {!this.props.selectionMode && (
-                    <HeaderTitle title={"Importar imagem"} />
-                )}
-
-                {this.props.selectionMode && (
-                    <HeaderTitle />
-                )}
-
-                {this.props.selectionMode && (
-                    <HeaderButton
-                        iconName={"done"}
-                        onPress={this.props.importImage}
-                    />
-                )}
-            </Header>
-        )
-    }
+            {props.selectionMode && (
+                <HeaderButton
+                    iconName={"done"}
+                    onPress={props.importImage}
+                />
+            )}
+        </Header>
+    )
 }
