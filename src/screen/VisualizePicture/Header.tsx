@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React from "react"
 
 import { Header, HeaderButton, HeaderTitle } from "../../components"
 
@@ -12,68 +12,51 @@ export interface VisualizePictureHeaderProps {
 }
 
 
-export class VisualizePictureHeader extends Component<VisualizePictureHeaderProps> {
+export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
+    return (
+        <Header>
+            {!props.isCropping && (
+                <HeaderButton
+                    iconName={"arrow-back"}
+                    onPress={props.goBack}
+                />
+            )}
 
+            {props.isCropping && (
+                <HeaderButton
+                    iconName={"close"}
+                    onPress={() => props.setIsCropping(false)}
+                />
+            )}
 
-    constructor(props: VisualizePictureHeaderProps) {
-        super(props)
-    }
+            {!props.isCropping && (
+                <HeaderTitle title={"Visualizar foto"} />
+            )}
 
+            {props.isCropping && (
+                <HeaderTitle title={"Cortar foto"} />
+            )}
 
-    shouldComponentUpdate(nextProps: VisualizePictureHeaderProps) {
-        if (this.props.isCropping !== nextProps.isCropping) {
-            return true
-        }
-        return false
-    }
+            {!props.isCropping && (
+                <HeaderButton
+                    iconName={"add-a-photo"}
+                    onPress={props.openCamera}
+                />
+            )}
 
+            {!props.isCropping && (
+                <HeaderButton
+                    iconName={"crop"}
+                    onPress={() => props.setIsCropping(true)}
+                />
+            )}
 
-    render() {
-        return (
-            <Header>
-                {!this.props.isCropping && (
-                    <HeaderButton
-                        iconName={"arrow-back"}
-                        onPress={this.props.goBack}
-                    />
-                )}
-
-                {this.props.isCropping && (
-                    <HeaderButton
-                        iconName={"close"}
-                        onPress={() => this.props.setIsCropping(false)}
-                    />
-                )}
-
-                {!this.props.isCropping && (
-                    <HeaderTitle title={"Visualizar foto"} />
-                )}
-
-                {this.props.isCropping && (
-                    <HeaderTitle title={"Cortar foto"} />
-                )}
-
-                {!this.props.isCropping && (
-                    <HeaderButton
-                        iconName={"add-a-photo"}
-                        onPress={this.props.openCamera}
-                    />
-                )}
-
-                {!this.props.isCropping && (
-                    <HeaderButton
-                        iconName={"crop"}
-                        onPress={() => this.props.setIsCropping(true)}
-                    />
-                )}
-
-                {this.props.isCropping && (
-                    <HeaderButton
-                        iconName={"done"}
-                        onPress={this.props.saveCroppedPicture}
-                    />
-                )}
-            </Header>
-        )
-    }
+            {props.isCropping && (
+                <HeaderButton
+                    iconName={"done"}
+                    onPress={props.saveCroppedPicture}
+                />
+            )}
+        </Header>
+    )
 }
