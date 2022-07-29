@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/core"
 import React, { useCallback, useEffect, useState } from "react"
-import { Alert, FlatList, StatusBar, useWindowDimensions } from "react-native"
+import { Alert, FlatList, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import Share from "react-native-share"
 
@@ -460,11 +460,6 @@ export function EditDocument() {
 
     return (
         <Screen>
-            <StatusBar
-                backgroundColor={color.header_background}
-                barStyle={appTheme === "dark" ? "dark-content" : "light-content"}
-            />
-
             <EditDocumentHeader
                 goBack={goBack}
                 exitSelectionMode={exitSelectionMode}
