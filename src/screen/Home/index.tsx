@@ -135,17 +135,20 @@ export function Home() {
             setSelectionMode(true)
         }
         if (!selectedDocument.includes(documentId)) {
-            selectedDocument.push(documentId)
+            setSelectedDocument(currentSelectedDocument => [...currentSelectedDocument, documentId])
         }
     }
 
     function deselectDocument(documentId: number) {
         const index = selectedDocument.indexOf(documentId)
         if (index !== -1) {
-            selectedDocument.splice(index, 1)
-        }
-        if (selectionMode && selectedDocument.length === 0) {
-            setSelectionMode(false)
+            const newSelectedDocument = [...selectedDocument]
+            newSelectedDocument.splice(index, 1)
+            setSelectedDocument(newSelectedDocument)
+
+            if (selectionMode && newSelectedDocument.length === 0) {
+                setSelectionMode(false)
+            }
         }
     }
 
