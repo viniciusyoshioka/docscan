@@ -39,7 +39,7 @@ export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
 
             {!props.isCropping && (
                 <HeaderButton
-                    iconName={"add-a-photo"}
+                    iconName={"add-photo-alternate"}
                     onPress={props.openCamera}
                 />
             )}
