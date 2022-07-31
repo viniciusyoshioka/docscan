@@ -79,8 +79,10 @@ export function App() {
     }, [deviceTheme, appDb, logDb])
 
     useEffect(() => {
-        StatusBar.setBarStyle("light-content")
-        StatusBar.setBackgroundColor(theme === "dark" ? ColorThemeDark.color.header_background : ColorThemeLight.color.header_background)
+        if (theme) {
+            StatusBar.setBarStyle("light-content")
+            StatusBar.setBackgroundColor(theme === "dark" ? ColorThemeDark.color.header_background : ColorThemeLight.color.header_background)
+        }
     }, [theme])
 
     useEffect(() => {
