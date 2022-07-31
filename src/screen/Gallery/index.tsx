@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { ActivityIndicator, Alert, FlatList, StatusBar, useWindowDimensions } from "react-native"
 import CameraRoll, { PhotoIdentifier } from "@react-native-community/cameraroll"
 import { useNavigation, useRoute } from "@react-navigation/core"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { ActivityIndicator, Alert, FlatList, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 
 import { EmptyList, HEADER_HEIGHT, Screen } from "../../components"
 import { useBackHandler } from "../../hooks"
-import { copyPicturesService } from "../../services/document-service"
 import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
+import { copyPicturesService } from "../../services/document-service"
 import { log } from "../../services/log"
 import { getWritePermission } from "../../services/permission"
 import { useColorTheme } from "../../services/theme"
@@ -34,8 +34,11 @@ export function Gallery() {
     const [isRefreshing, setIsRefreshing] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const minimumRowAmountInScreen = useMemo(() => {
-        return Math.ceil((height - (StatusBar.currentHeight ?? 0) - HEADER_HEIGHT) / (width / 3))
+        return Math.ceil((height - HEADER_HEIGHT) / (width / 3))
     }, [width, height])
+    const amountOfImageToLoadPerTime = useMemo(() => {
+        return (minimumRowAmountInScreen + 1) * 3
+    }, [minimumRowAmountInScreen])
 
     useBackHandler(() => {
         goBack()
@@ -64,7 +67,7 @@ export function Gallery() {
 
         try {
             const cameraRollPhotos = await CameraRoll.getPhotos({
-                first: imageGallery ? imageGallery.length + 15 : 15,
+                first: imageGallery ? imageGallery.length + amountOfImageToLoadPerTime : amountOfImageToLoadPerTime,
                 assetType: "Photos",
             })
             setImageGallery(cameraRollPhotos.edges)
