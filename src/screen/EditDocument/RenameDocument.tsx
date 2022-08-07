@@ -2,8 +2,8 @@ import React, { createRef, useEffect, useState } from "react"
 import { TextInput } from "react-native"
 
 import { Input, Modal, ModalButton, ModalProps, ModalTitle, ModalViewButton, ModalViewContent } from "../../components"
-import { useDocumentData } from "../../services/document"
 import { useKeyboard } from "../../hooks"
+import { useDocumentData } from "../../services/document"
 
 
 export interface RenameDocumentProps extends ModalProps { }
@@ -33,6 +33,12 @@ export const RenameDocument = (props: RenameDocumentProps) => {
 
     useEffect(() => {
         setDocumentName(documentDataState?.name || "")
+
+        if (props.visible) {
+            setTimeout(() => {
+                inputRef.current?.focus()
+            }, 100)
+        }
     }, [props.visible])
 
 
@@ -48,7 +54,6 @@ export const RenameDocument = (props: RenameDocumentProps) => {
                     placeholder={"Nome do documento"}
                     value={documentName}
                     onChangeText={(text) => setDocumentName(text)}
-                    autoFocus={true}
                     selectTextOnFocus={true}
                     style={{ width: "100%" }}
                 />
