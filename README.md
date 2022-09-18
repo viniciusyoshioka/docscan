@@ -1,16 +1,18 @@
 # DocScan
 
+## Observation
+Currently, this app was tested only in Android, and the dependencies also were configured only for Android.
 
-### Installation
-Install node_modules libraries:<br>
-`yarn install`
+## Installation
+- Install node_modules libraries:
 
-Install application:<br>
-`yarn android` and `yarn start`<br>
-or `yarn android --variant=release`
+    `npm install`
 
+- Install application:
+    - Start development server:
 
-### Prepare for development
-Open `src/service/constant.tsx` and set `appInDevelopment = true`
+        `yarn start`
 
-This option enables a few debug buttons in Home screen as shortcuts for some actions
+    - Build app:
+
+        `yarn android`
