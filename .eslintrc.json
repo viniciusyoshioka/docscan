@@ -21,6 +21,12 @@
         "react",
         "@typescript-eslint"
     ],
+    "settings": {
+        "react": {
+            "pragma": "React",
+            "version": "18.1.0"
+        }
+    },
     "rules": {
         "array-element-newline": [
             "warn",
