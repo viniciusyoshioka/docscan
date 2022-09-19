@@ -7,7 +7,6 @@ import { DocumentDatabase } from "../../database"
 import { useBackHandler } from "../../hooks"
 import { appIconOutline } from "../../services/constant"
 import { deletePicturesService } from "../../services/document-service"
-import { createAllFolder } from "../../services/folder-handler"
 import { log } from "../../services/log"
 import { DocumentForList, NavigationParamProps } from "../../types"
 import { DocumentItem, DOCUMENT_PICTURE_HEIGHT } from "./DocumentItem"
@@ -188,8 +187,8 @@ export function Home() {
         )
     }, [])
 
+
     useEffect(() => {
-        createAllFolder()
         getDocumentList()
     }, [])
 

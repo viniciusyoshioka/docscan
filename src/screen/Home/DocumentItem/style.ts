@@ -12,7 +12,7 @@ export const Button = styled(RectButton)`
     align-items: center;
     justify-content: flex-start;
     height: ${DOCUMENT_PICTURE_HEIGHT}px;
-    margin-top: 8px;
+    margin-bottom: 8px;
     margin-horizontal: 8px;
     padding: 8px;
     border-radius: 4px;
