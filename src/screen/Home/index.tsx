@@ -212,7 +212,6 @@ export function Home() {
                 data={document}
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
-                extraData={[selectDocument, deselectDocument]}
                 getItemLayout={getItemLayout}
                 ListEmptyComponent={ListEmptyComponent}
                 contentContainerStyle={{
