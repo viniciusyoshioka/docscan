@@ -1,6 +1,6 @@
+import CheckBox from "@react-native-community/checkbox"
 import React, { useCallback, useEffect, useState } from "react"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
-import CheckBox from "@react-native-community/checkbox"
 
 import { toDateTime } from "../../../services/date"
 import { useColorTheme } from "../../../services/theme"
@@ -25,34 +25,34 @@ export const DocumentItem = (props: DocumentItemProps) => {
 
     const { color, opacity } = useColorTheme()
 
-    const [selected, setSelected] = useState(false)
+    const [isSelected, setIsSelected] = useState(false)
 
 
-    const normalPress = useCallback(() => {
+    const onNormalPress = useCallback(() => {
         if (!props.selectionMode) {
             props.click()
-        } else if (!selected) {
+        } else if (!isSelected) {
             props.select()
-            setSelected(true)
-        } else if (selected) {
+            setIsSelected(true)
+        } else if (isSelected) {
             props.deselect()
-            setSelected(false)
+            setIsSelected(false)
         }
-    }, [props.selectionMode, selected, props.click])
+    }, [props.selectionMode, isSelected, props.click])
 
-    const longPress = useCallback((nativeEvent) => {
+    const onLongPress = useCallback((nativeEvent) => {
         if (nativeEvent.state === State.ACTIVE) {
             if (!props.selectionMode) {
                 props.select()
-                setSelected(true)
+                setIsSelected(true)
             }
         }
     }, [props.selectionMode])
 
 
     useEffect(() => {
-        if (!props.selectionMode && selected) {
-            setSelected(false)
+        if (!props.selectionMode && isSelected) {
+            setIsSelected(false)
         }
     }, [props.selectionMode])
 
@@ -61,9 +61,9 @@ export const DocumentItem = (props: DocumentItemProps) => {
         <LongPressGestureHandler
             maxDist={30}
             minDurationMs={400}
-            onHandlerStateChange={({ nativeEvent }) => longPress(nativeEvent)}
+            onHandlerStateChange={({ nativeEvent }) => onLongPress(nativeEvent)}
         >
-            <Button rippleColor={color.documentItem_ripple} onPress={normalPress}>
+            <Button rippleColor={color.documentItem_ripple} onPress={onNormalPress}>
                 <Block style={{ flex: 1 }}>
                     <Title numberOfLines={1}>
                         {props.document.name}
@@ -77,8 +77,8 @@ export const DocumentItem = (props: DocumentItemProps) => {
                 {props.selectionMode && (
                     <Block style={{ paddingLeft: 16 }}>
                         <CheckBox
-                            value={selected}
-                            onChange={normalPress}
+                            value={isSelected}
+                            onChange={onNormalPress}
                             tintColors={{
                                 true: color.documentItem_selected_background,
                                 false: color.documentItem_selected_color
