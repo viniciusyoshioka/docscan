@@ -1,5 +1,5 @@
 import CheckBox from "@react-native-community/checkbox"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 
 import { toDateTime } from "../../../services/date"
@@ -28,7 +28,7 @@ export const DocumentItem = (props: DocumentItemProps) => {
     const [isSelected, setIsSelected] = useState(false)
 
 
-    const onNormalPress = useCallback(() => {
+    function onNormalPress() {
         if (!props.selectionMode) {
             props.click()
         } else if (!isSelected) {
@@ -38,16 +38,16 @@ export const DocumentItem = (props: DocumentItemProps) => {
             props.deselect()
             setIsSelected(false)
         }
-    }, [props.selectionMode, isSelected, props.click])
+    }
 
-    const onLongPress = useCallback((nativeEvent) => {
+    function onLongPress(nativeEvent) {
         if (nativeEvent.state === State.ACTIVE) {
             if (!props.selectionMode) {
                 props.select()
                 setIsSelected(true)
             }
         }
-    }, [props.selectionMode])
+    }
 
 
     useEffect(() => {
