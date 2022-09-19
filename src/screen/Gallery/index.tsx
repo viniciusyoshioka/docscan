@@ -1,4 +1,4 @@
-import CameraRoll, { PhotoIdentifier } from "@react-native-community/cameraroll"
+import { CameraRoll, PhotoIdentifier } from "@react-native-camera-roll/camera-roll"
 import { useNavigation, useRoute } from "@react-navigation/core"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { ActivityIndicator, Alert, FlatList, useWindowDimensions } from "react-native"
