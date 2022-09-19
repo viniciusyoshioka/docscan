@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/core"
 import React, { useCallback, useEffect, useState } from "react"
-import { Alert, BackHandler, FlatList } from "react-native"
+import { Alert, FlatList } from "react-native"
 
 import { EmptyList, Screen } from "../../components"
 import { DocumentDatabase } from "../../database"
@@ -26,10 +26,8 @@ export function Home() {
     useBackHandler(() => {
         if (selectionMode) {
             exitSelectionMode()
-        } else {
-            BackHandler.exitApp()
+            return true
         }
-        return true
     })
 
 
