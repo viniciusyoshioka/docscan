@@ -18,13 +18,13 @@ export function Home() {
 
     const navigation = useNavigation<NavigationParamProps<"Home">>()
 
-    const [document, setDocument] = useState<DocumentForList[]>([])
-    const [selectionMode, setSelectionMode] = useState(false)
-    const [selectedDocument, setSelectedDocument] = useState<number[]>([])
+    const [documents, setDocuments] = useState<DocumentForList[]>([])
+    const [isSelecionMode, setIsSelectionMode] = useState(false)
+    const [selectedDocumentsId, setSelectedDocumentsIs] = useState<number[]>([])
 
 
     useBackHandler(() => {
-        if (selectionMode) {
+        if (isSelecionMode) {
             exitSelectionMode()
             return true
         }
@@ -34,7 +34,7 @@ export function Home() {
     async function getDocumentList() {
         try {
             const documentList = await DocumentDatabase.getDocumentList()
-            setDocument(documentList)
+            setDocuments(documentList)
         } catch (error) {
             log.error(`Error getting document list from database: "${error}"`)
             Alert.alert(
@@ -46,8 +46,8 @@ export function Home() {
 
     async function deleteSelectedDocument() {
         try {
-            const picturesToDelete = await DocumentDatabase.getPicturePathFromDocument(selectedDocument)
-            await DocumentDatabase.deleteDocument(selectedDocument)
+            const picturesToDelete = await DocumentDatabase.getPicturePathFromDocument(selectedDocumentsId)
+            await DocumentDatabase.deleteDocument(selectedDocumentsId)
             deletePicturesService(picturesToDelete)
             await getDocumentList()
             exitSelectionMode()
@@ -72,12 +72,12 @@ export function Home() {
     }
 
     async function exportSelectedDocument() {
-        DocumentDatabase.exportDocument(selectedDocument)
+        DocumentDatabase.exportDocument(selectedDocumentsId)
         exitSelectionMode()
     }
 
     function alertExportDocument() {
-        if (document.length === 0) {
+        if (documents.length === 0) {
             Alert.alert(
                 "Aviso",
                 "Nenhum documento existente para ser exportado"
@@ -87,7 +87,7 @@ export function Home() {
 
         Alert.alert(
             "Exportar",
-            `Os documentos ${selectionMode ? "selecionados " : ""}serão exportados`,
+            `Os documentos ${isSelecionMode ? "selecionados " : ""}serão exportados`,
             [
                 { text: "Cancelar", onPress: () => { } },
                 { text: "Exportar", onPress: async () => await exportSelectedDocument() }
@@ -128,30 +128,30 @@ export function Home() {
     }
 
     function selectDocument(documentId: number) {
-        if (!selectionMode) {
-            setSelectionMode(true)
+        if (!isSelecionMode) {
+            setIsSelectionMode(true)
         }
-        if (!selectedDocument.includes(documentId)) {
-            setSelectedDocument(currentSelectedDocument => [...currentSelectedDocument, documentId])
+        if (!selectedDocumentsId.includes(documentId)) {
+            setSelectedDocumentsIs(currentSelectedDocument => [...currentSelectedDocument, documentId])
         }
     }
 
     function deselectDocument(documentId: number) {
-        const index = selectedDocument.indexOf(documentId)
+        const index = selectedDocumentsId.indexOf(documentId)
         if (index !== -1) {
-            const newSelectedDocument = [...selectedDocument]
+            const newSelectedDocument = [...selectedDocumentsId]
             newSelectedDocument.splice(index, 1)
-            setSelectedDocument(newSelectedDocument)
+            setSelectedDocumentsIs(newSelectedDocument)
 
-            if (selectionMode && newSelectedDocument.length === 0) {
-                setSelectionMode(false)
+            if (isSelecionMode && newSelectedDocument.length === 0) {
+                setIsSelectionMode(false)
             }
         }
     }
 
     function exitSelectionMode() {
-        setSelectedDocument([])
-        setSelectionMode(false)
+        setSelectedDocumentsIs([])
+        setIsSelectionMode(false)
     }
 
     function renderItem({ item }: { item: DocumentForList }) {
@@ -160,7 +160,7 @@ export function Home() {
                 click={() => navigation.navigate("EditDocument", { documentId: item.id })}
                 select={() => selectDocument(item.id)}
                 deselect={() => deselectDocument(item.id)}
-                selectionMode={selectionMode}
+                selectionMode={isSelecionMode}
                 document={item}
             />
         )
@@ -194,7 +194,7 @@ export function Home() {
     return (
         <Screen>
             <HomeHeader
-                selectionMode={selectionMode}
+                selectionMode={isSelecionMode}
                 exitSelectionMode={exitSelectionMode}
                 deleteSelectedDocument={alertDeleteDocument}
                 scanNewDocument={() => navigation.navigate("Camera")}
@@ -206,14 +206,14 @@ export function Home() {
             />
 
             <FlatList
-                data={document}
+                data={documents}
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
                 getItemLayout={getItemLayout}
                 ListEmptyComponent={ListEmptyComponent}
                 contentContainerStyle={{
                     flex: 1,
-                    paddingTop: document.length ? 8 : 0,
+                    paddingTop: documents.length ? 8 : 0,
                 }}
             />
         </Screen>
