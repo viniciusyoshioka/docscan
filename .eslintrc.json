@@ -89,6 +89,7 @@
             "always-multiline"
         ],
         "no-empty-function": "off",
+        "no-trailing-spaces": "warn",
         "quotes": [
             "warn",
             "double"
