@@ -12,10 +12,10 @@ export { DOCUMENT_PICTURE_HEIGHT } from "./style"
 
 
 export interface DocumentItemProps {
-    click: () => void;
-    select: () => void;
-    deselect: () => void;
-    selectionMode: boolean;
+    onClick: () => void;
+    onSelected: () => void;
+    onDeselected: () => void;
+    isSelectionMode: boolean;
     document: DocumentForList;
 }
 
@@ -29,21 +29,21 @@ export const DocumentItem = (props: DocumentItemProps) => {
 
 
     function onNormalPress() {
-        if (!props.selectionMode) {
-            props.click()
+        if (!props.isSelectionMode) {
+            props.onClick()
         } else if (!isSelected) {
-            props.select()
+            props.onSelected()
             setIsSelected(true)
         } else if (isSelected) {
-            props.deselect()
+            props.onDeselected()
             setIsSelected(false)
         }
     }
 
     function onLongPress(nativeEvent: Readonly<HandlerStateChangeEventPayload & LongPressGestureHandlerEventPayload>) {
         if (nativeEvent.state === State.ACTIVE) {
-            if (!props.selectionMode) {
-                props.select()
+            if (!props.isSelectionMode) {
+                props.onSelected()
                 setIsSelected(true)
             }
         }
@@ -51,10 +51,10 @@ export const DocumentItem = (props: DocumentItemProps) => {
 
 
     useEffect(() => {
-        if (!props.selectionMode && isSelected) {
+        if (!props.isSelectionMode && isSelected) {
             setIsSelected(false)
         }
-    }, [props.selectionMode])
+    }, [props.isSelectionMode])
 
 
     return (
@@ -74,7 +74,7 @@ export const DocumentItem = (props: DocumentItemProps) => {
                     </DocumentItemDate>
                 </DocumentItemBlock>
 
-                {props.selectionMode && (
+                {props.isSelectionMode && (
                     <DocumentItemBlock style={{ paddingLeft: 16 }}>
                         <CheckBox
                             value={isSelected}

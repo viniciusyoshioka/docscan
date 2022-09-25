@@ -157,10 +157,10 @@ export function Home() {
     function renderItem({ item }: { item: DocumentForList }) {
         return (
             <DocumentItem
-                click={() => navigation.navigate("EditDocument", { documentId: item.id })}
-                select={() => selectDocument(item.id)}
-                deselect={() => deselectDocument(item.id)}
-                selectionMode={isSelecionMode}
+                onClick={() => navigation.navigate("EditDocument", { documentId: item.id })}
+                onSelected={() => selectDocument(item.id)}
+                onDeselected={() => deselectDocument(item.id)}
+                isSelectionMode={isSelecionMode}
                 document={item}
             />
         )
