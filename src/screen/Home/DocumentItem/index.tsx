@@ -5,7 +5,7 @@ import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 import { toDateTime } from "../../../services/date"
 import { useColorTheme } from "../../../services/theme"
 import { DocumentForList } from "../../../types"
-import { Block, Button, Date, Title } from "./style"
+import { DocumentItemBlock, DocumentItemButton, DocumentItemDate, DocumentItemTitle } from "./style"
 
 
 export { DOCUMENT_PICTURE_HEIGHT } from "./style"
@@ -63,19 +63,19 @@ export const DocumentItem = (props: DocumentItemProps) => {
             minDurationMs={400}
             onHandlerStateChange={({ nativeEvent }) => onLongPress(nativeEvent)}
         >
-            <Button rippleColor={color.documentItem_ripple} onPress={onNormalPress}>
-                <Block style={{ flex: 1 }}>
-                    <Title numberOfLines={1}>
+            <DocumentItemButton rippleColor={color.documentItem_ripple} onPress={onNormalPress}>
+                <DocumentItemBlock style={{ flex: 1 }}>
+                    <DocumentItemTitle numberOfLines={1}>
                         {props.document.name}
-                    </Title>
+                    </DocumentItemTitle>
 
-                    <Date numberOfLines={1}>
+                    <DocumentItemDate numberOfLines={1}>
                         {toDateTime(props.document.lastModificationTimestamp)}
-                    </Date>
-                </Block>
+                    </DocumentItemDate>
+                </DocumentItemBlock>
 
                 {props.selectionMode && (
-                    <Block style={{ paddingLeft: 16 }}>
+                    <DocumentItemBlock style={{ paddingLeft: 16 }}>
                         <CheckBox
                             value={isSelected}
                             onChange={onNormalPress}
@@ -85,9 +85,9 @@ export const DocumentItem = (props: DocumentItemProps) => {
                             }}
                             style={{ opacity: opacity.highEmphasis }}
                         />
-                    </Block>
+                    </DocumentItemBlock>
                 )}
-            </Button>
+            </DocumentItemButton>
         </LongPressGestureHandler>
     )
 }

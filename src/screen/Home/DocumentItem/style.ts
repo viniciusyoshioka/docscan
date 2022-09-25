@@ -7,7 +7,7 @@ import { StyledProps } from "../../../types"
 export const DOCUMENT_PICTURE_HEIGHT = 60
 
 
-export const Button = styled(RectButton)`
+export const DocumentItemButton = styled(RectButton)`
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
@@ -21,13 +21,13 @@ export const Button = styled(RectButton)`
 `
 
 
-export const Block = styled.View`
+export const DocumentItemBlock = styled.View`
     align-items: center;
     justify-content: center;
 `
 
 
-export const Title = styled.Text`
+export const DocumentItemTitle = styled.Text`
     flex: 1;
     width: 100%;
     text-align: left;
@@ -38,7 +38,7 @@ export const Title = styled.Text`
 `
 
 
-export const Date = styled.Text`
+export const DocumentItemDate = styled.Text`
     width: 100%;
     text-align: left;
     text-align-vertical: bottom;
