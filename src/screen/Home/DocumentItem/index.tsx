@@ -1,6 +1,6 @@
 import CheckBox from "@react-native-community/checkbox"
 import React, { useEffect, useState } from "react"
-import { LongPressGestureHandler, State } from "react-native-gesture-handler"
+import { HandlerStateChangeEventPayload, LongPressGestureHandler, LongPressGestureHandlerEventPayload, State } from "react-native-gesture-handler"
 
 import { toDateTime } from "../../../services/date"
 import { useColorTheme } from "../../../services/theme"
@@ -40,7 +40,7 @@ export const DocumentItem = (props: DocumentItemProps) => {
         }
     }
 
-    function onLongPress(nativeEvent) {
+    function onLongPress(nativeEvent: Readonly<HandlerStateChangeEventPayload & LongPressGestureHandlerEventPayload>) {
         if (nativeEvent.state === State.ACTIVE) {
             if (!props.selectionMode) {
                 props.select()
