@@ -19,12 +19,12 @@ export function Home() {
     const navigation = useNavigation<NavigationParamProps<"Home">>()
 
     const [documents, setDocuments] = useState<DocumentForList[]>([])
-    const [isSelecionMode, setIsSelectionMode] = useState(false)
+    const [isSelectionMode, setIsSelectionMode] = useState(false)
     const [selectedDocumentsId, setSelectedDocumentsIs] = useState<number[]>([])
 
 
     useBackHandler(() => {
-        if (isSelecionMode) {
+        if (isSelectionMode) {
             exitSelectionMode()
             return true
         }
@@ -87,7 +87,7 @@ export function Home() {
 
         Alert.alert(
             "Exportar",
-            `Os documentos ${isSelecionMode ? "selecionados " : ""}serão exportados`,
+            `Os documentos ${isSelectionMode ? "selecionados " : ""}serão exportados`,
             [
                 { text: "Cancelar", onPress: () => { } },
                 { text: "Exportar", onPress: async () => await exportSelectedDocument() }
@@ -128,7 +128,7 @@ export function Home() {
     }
 
     function selectDocument(documentId: number) {
-        if (!isSelecionMode) {
+        if (!isSelectionMode) {
             setIsSelectionMode(true)
         }
         if (!selectedDocumentsId.includes(documentId)) {
@@ -143,7 +143,7 @@ export function Home() {
             newSelectedDocument.splice(index, 1)
             setSelectedDocumentsIs(newSelectedDocument)
 
-            if (isSelecionMode && newSelectedDocument.length === 0) {
+            if (isSelectionMode && newSelectedDocument.length === 0) {
                 setIsSelectionMode(false)
             }
         }
@@ -160,7 +160,7 @@ export function Home() {
                 onClick={() => navigation.navigate("EditDocument", { documentId: item.id })}
                 onSelected={() => selectDocument(item.id)}
                 onDeselected={() => deselectDocument(item.id)}
-                isSelectionMode={isSelecionMode}
+                isSelectionMode={isSelectionMode}
                 document={item}
             />
         )
@@ -194,7 +194,7 @@ export function Home() {
     return (
         <Screen>
             <HomeHeader
-                selectionMode={isSelecionMode}
+                selectionMode={isSelectionMode}
                 exitSelectionMode={exitSelectionMode}
                 deleteSelectedDocument={alertDeleteDocument}
                 scanNewDocument={() => navigation.navigate("Camera")}
