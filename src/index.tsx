@@ -73,19 +73,6 @@ export function App() {
 
 
     useEffect(() => {
-        if (appDb && logDb) {
-            getTheme()
-        }
-    }, [deviceTheme, appDb, logDb])
-
-    useEffect(() => {
-        if (theme) {
-            StatusBar.setBarStyle("light-content")
-            StatusBar.setBackgroundColor(theme === "dark" ? ColorThemeDark.color.header_background : ColorThemeLight.color.header_background)
-        }
-    }, [theme])
-
-    useEffect(() => {
         openAppDatabase()
             .then(async (database) => {
                 setGlobalAppDatabase(database)
@@ -134,6 +121,20 @@ export function App() {
                 logCriticalError(`Error opening log database: "${JSON.stringify(error)}"`)
             })
     }, [])
+
+    useEffect(() => {
+        if (appDb && logDb) {
+            getTheme()
+        }
+    }, [deviceTheme, appDb, logDb])
+
+    useEffect(() => {
+        if (theme) {
+            StatusBar.setBarStyle("light-content")
+            StatusBar.setBackgroundColor(theme === "dark" ? ColorThemeDark.color.header_background : ColorThemeLight.color.header_background)
+        }
+    }, [theme])
+
 
     useEffect(() => {
         if (__DEV__) {
