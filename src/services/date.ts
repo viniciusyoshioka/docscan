@@ -1,12 +1,12 @@
 
 /**
  * Get the date in format DD/MM/YYYY
- * 
+ *
  * @param separator string to be used as separator
  * between day, month and year
  * @param currentDate Date object to extract the date from.
  * If not passed, a new one will be created to get latest date.
- * 
+ *
  * @returns string of the date
  */
 export function getDate(separator = "/", currentDate = new Date()): string {
@@ -20,14 +20,14 @@ export function getDate(separator = "/", currentDate = new Date()): string {
 
 /**
  * Get the time in format HH:MM or HH:MM:SS
- * 
+ *
  * @param separator string to be used as separator
  * between hour, minute and seconds (if available)
  * @param hasSecond boolean indicating if seconds will
  * be added to time string
  * @param currentDate Date object to extract the time from.
  * If not passed, a new one will be created to get latest time.
- * 
+ *
  * @returns string of the time
  */
 export function getTime(separator = ":", hasSecond = false, currentDate = new Date()): string {
@@ -46,7 +46,7 @@ export function getTime(separator = ":", hasSecond = false, currentDate = new Da
 
 /**
  * Get the date time in format DD/MM/YYYY HH:MM or DD/MM/YYYY HH:MM:SS
- * 
+ *
  * @param dateSeparator string to be used as separator
  * between day, month and year
  * @param timeSeparator string to be used as separator
@@ -55,7 +55,7 @@ export function getTime(separator = ":", hasSecond = false, currentDate = new Da
  * be added to date time string
  * @param currentDate Date object to extract the date time from.
  * If not passed, a new one will be created to get latest date time.
- * 
+ *
  * @returns string of the date time
  */
 export function getDateTime(dateSeparator = "/", timeSeparator = ":", hasSecond = false, currentDate = new Date()): string {
@@ -68,7 +68,7 @@ export function getDateTime(dateSeparator = "/", timeSeparator = ":", hasSecond 
 
 /**
  * Get the date time, for timestamp, in format YYYY/MM/DD HH:MM:SS
- * 
+ *
  * @returns string of the timestamp
  */
 export function getTimestamp(): string {
@@ -88,9 +88,9 @@ export function getTimestamp(): string {
 
 /**
  * Get the date time string of the given timestamp
- * 
+ *
  * @param timestamp string
- * 
+ *
  * @returns string of the date time in format DD/MM/YYYY HH:MM
  */
 export function toDateTime(timestamp: string): string {

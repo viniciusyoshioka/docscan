@@ -20,21 +20,21 @@ export type TransportFunctionProps = {
 export type Logger = {
     /**
      * Disable an extension
-     * 
+     *
      * @param extension name of an extension to be disabled
      */
     disable: (extension: string) => boolean;
 
     /**
      * Enable an extension
-     * 
+     *
      * @param extension name of an extension to be enabled
      */
     enable: (extension: string) => boolean;
 
     /**
      * Extend logger with a new extension
-     * 
+     *
      * @param extension name of an extension to be added to logger
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

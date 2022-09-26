@@ -1,5 +1,5 @@
-import { Platform, NativeModules } from "react-native"
 import I18n from "i18n-js"
+import { NativeModules, Platform } from "react-native"
 
 import { en_US } from "./en_US"
 import { pt_BR } from "./pt_BR"
@@ -45,9 +45,9 @@ setLanguageToI18n()
 /**
  * Receives a key and returns the corresponding text
  * already translated to device language, if available
- * 
+ *
  * @param key string key to get the translation in language object
- * 
+ *
  * @returns translated text
  */
 export const translate = (key: string): string => I18n.t(key)

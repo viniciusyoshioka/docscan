@@ -6,7 +6,7 @@ const { DocumentService } = NativeModules
 
 /**
  * Invokes a service to delete files
- * 
+ *
  * @param pictures array of file paths to be deleted
  */
 export function deletePicturesService(pictures: string[], notificationTitle?: string) {
@@ -19,9 +19,9 @@ export function deletePicturesService(pictures: string[], notificationTitle?: st
 
 /**
  * Invokes a service to copy files
- * 
+ *
  * @param pictures array of file paths to be copied.
- * 
+ *
  * Obs.: The from and to paths are followed in the array.
  * I.e. ["/path/from/1", "/path/to/1", "/path/from/2", "/path/to/2"]
  */
@@ -35,9 +35,9 @@ export function copyPicturesService(pictures: string[], notificationTitle?: stri
 
 /**
  * Invokes a service to move files
- * 
+ *
  * @param pictures array of file paths to be moved.
- * 
+ *
  * Obs.: The from and to paths are followed in the array.
  * I.e. ["/path/from/1", "/path/to/1", "/path/from/2", "/path/to/2"]
  */
@@ -51,7 +51,7 @@ export function movePicturesService(pictures: string[], notificationTitle?: stri
 
 /**
  * Invokes a service to export documents
- * 
+ *
  * @param pictures string array with all the document picture path to export
  * @param databasePath path to the database that stores the document data
  * @param pathZipTo path to a temporary folder where the zip file will be until the export is finished

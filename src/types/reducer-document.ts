@@ -41,7 +41,7 @@ type DocumentAddPicture = {
 
 /**
  * Receives an array with DocumentPicture's index to be removed
- * 
+ *
  * This action just removes the images from the state
  * and updates the position property.
  * File and database deletion still needs to be invoked.
@@ -70,7 +70,7 @@ type DocumentReplacePicture = {
  * set new data in the state.
  * Those new data are the document id and/or
  * the id of document pictures.
- * 
+ *
  * This action only saves data addition or replacement.
  * If any data were removed, the file and database deletion still
  * has to be invoked.
@@ -83,7 +83,7 @@ type DocumentSave = {
 /**
  * Saves the data in the state into the database
  * and closes the document
- * 
+ *
  * This action only saves data addition or replacement.
  * If any data were removed, the file and database
  * deletion has to be invoked before.

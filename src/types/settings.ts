@@ -17,7 +17,7 @@ export type SettingsObject = {
  * Contains all keys of app settings object
  */
 export type SettingsKey = "theme"
-    | "cameraFlash" 
-    | "cameraWhiteBalance" 
+    | "cameraFlash"
+    | "cameraWhiteBalance"
     | "cameraType"
     | "cameraId"

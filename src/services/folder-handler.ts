@@ -1,6 +1,6 @@
 import RNFS from "react-native-fs"
 
-import { fullPathRoot, fullPathPdf, fullPathPicture, fullPathRootExternal, fullPathExported, fullPathTemporary, fullPathTemporaryExported, fullPathTemporaryCompressedPicture, fullPathTemporaryImported } from "./constant"
+import { fullPathExported, fullPathPdf, fullPathPicture, fullPathRoot, fullPathRootExternal, fullPathTemporary, fullPathTemporaryCompressedPicture, fullPathTemporaryExported, fullPathTemporaryImported } from "./constant"
 import { log } from "./log"
 import { getWritePermission } from "./permission"
 
@@ -174,7 +174,7 @@ export async function createTemporaryCompressedPictureFolder() {
 
 /**
  * Creates all folder needed by the app
- * 
+ *
  * Executes each function as a promise
  */
 export function createAllFolder() {
@@ -192,7 +192,7 @@ export function createAllFolder() {
 
 /**
  * Creates all folder needed by the app
- * 
+ *
  * Execute each function with async/await waiting for
  * one function ends to start another
  */

@@ -9,7 +9,7 @@ import { getDateTime } from "./date"
 /**
  * Function to log critical errors only.
  * Use this function when Logger or database is not available.
- * 
+ *
  * @param message a string with the error message to be logged
  */
 export function logCriticalError(message: string) {

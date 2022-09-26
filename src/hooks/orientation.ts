@@ -4,7 +4,7 @@ import OrientationLocker, { OrientationType } from "react-native-orientation-loc
 
 /**
  * Hook to add and remove the device orientation listener
- * 
+ *
  * @returns New device orientation
  */
 export function useDeviceOrientation(): OrientationType {

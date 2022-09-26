@@ -21,9 +21,9 @@ export function getDocumentName(): string {
 
 /**
  * Get the file name with the extension from a file path
- * 
+ *
  * @param filePath string of the file path
- * 
+ *
  * @returns string of the file name
  */
 export function getFullFileName(filePath: string): string {
@@ -34,9 +34,9 @@ export function getFullFileName(filePath: string): string {
 
 /**
  * Get the extenstion of the given file name or file path
- * 
+ *
  * @param filePath string of the file name or file path
- * 
+ *
  * @returns string of the file extension
  */
 export function getFileExtension(filePath: string): string {
@@ -48,9 +48,9 @@ export function getFileExtension(filePath: string): string {
 /**
  * Get a new path for an image. The file will be
  * in the pictures folder and renamed using UUID v4
- * 
+ *
  * @param imagePath string with image file name or path
- * 
+ *
  * @returns string of the new image path
  */
 export async function getDocumentPicturePath(imagePath: string): Promise<string> {
@@ -69,9 +69,9 @@ export async function getDocumentPicturePath(imagePath: string): Promise<string>
 /**
  * Get the path for an exported document picture. The file
  * will be in the temporary exported folder.
- * 
+ *
  * @param imagePath string with image file path
- * 
+ *
  * @returns string of the new image path
  */
 export async function getPictureTemporaryExportPath(imagePath: string): Promise<string> {
