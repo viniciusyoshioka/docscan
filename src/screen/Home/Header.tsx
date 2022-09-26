@@ -9,6 +9,7 @@ export interface HomeHeaderProps {
     selectionMode: boolean;
     selectedDocumentsAmount: number;
     exitSelectionMode: () => void;
+    invertSelection: () => void;
     deleteSelectedDocument: () => void;
     scanNewDocument: () => void;
     importDocument: () => void;
@@ -35,6 +36,13 @@ export function HomeHeader(props: HomeHeaderProps) {
 
             {props.selectionMode && (
                 <HeaderTitle title={props.selectedDocumentsAmount.toString()} />
+            )}
+
+            {props.selectionMode && (
+                <HeaderButton
+                    iconName={"swap-horiz"}
+                    onPress={props.invertSelection}
+                />
             )}
 
             {props.selectionMode && (

@@ -44,6 +44,14 @@ export function Home() {
         }
     }
 
+    function invertSelection() {
+        setSelectedDocumentsIs(current => {
+            return documents
+                .filter(documentItem => !current.includes(documentItem.id))
+                .map(documentItem => documentItem.id)
+        })
+    }
+
     async function deleteSelectedDocument() {
         try {
             const picturesToDelete = await DocumentDatabase.getPicturePathFromDocument(selectedDocumentsId)
@@ -161,6 +169,7 @@ export function Home() {
                 onSelected={() => selectDocument(item.id)}
                 onDeselected={() => deselectDocument(item.id)}
                 isSelectionMode={isSelectionMode}
+                isSelected={selectedDocumentsId.includes(item.id)}
                 document={item}
             />
         )
@@ -197,6 +206,7 @@ export function Home() {
                 selectionMode={isSelectionMode}
                 selectedDocumentsAmount={selectedDocumentsId.length}
                 exitSelectionMode={exitSelectionMode}
+                invertSelection={invertSelection}
                 deleteSelectedDocument={alertDeleteDocument}
                 scanNewDocument={() => navigation.navigate("Camera")}
                 importDocument={() => navigation.navigate("FileExplorer")}

@@ -1,5 +1,4 @@
 import CheckBox from "@react-native-community/checkbox"
-import React, { useEffect, useState } from "react"
 import { HandlerStateChangeEventPayload, LongPressGestureHandler, LongPressGestureHandlerEventPayload, State } from "react-native-gesture-handler"
 
 import { toDateTime } from "../../../services/date"
@@ -16,6 +15,7 @@ export interface DocumentItemProps {
     onSelected: () => void;
     onDeselected: () => void;
     isSelectionMode: boolean;
+    isSelected: boolean;
     document: DocumentForList;
 }
 
@@ -25,18 +25,14 @@ export const DocumentItem = (props: DocumentItemProps) => {
 
     const { color, opacity } = useColorTheme()
 
-    const [isSelected, setIsSelected] = useState(false)
-
 
     function onNormalPress() {
         if (!props.isSelectionMode) {
             props.onClick()
-        } else if (!isSelected) {
+        } else if (!props.isSelected) {
             props.onSelected()
-            setIsSelected(true)
-        } else if (isSelected) {
+        } else if (props.isSelected) {
             props.onDeselected()
-            setIsSelected(false)
         }
     }
 
@@ -44,17 +40,9 @@ export const DocumentItem = (props: DocumentItemProps) => {
         if (nativeEvent.state === State.ACTIVE) {
             if (!props.isSelectionMode) {
                 props.onSelected()
-                setIsSelected(true)
             }
         }
     }
-
-
-    useEffect(() => {
-        if (!props.isSelectionMode && isSelected) {
-            setIsSelected(false)
-        }
-    }, [props.isSelectionMode])
 
 
     return (
@@ -77,7 +65,7 @@ export const DocumentItem = (props: DocumentItemProps) => {
                 {props.isSelectionMode && (
                     <DocumentItemBlock style={{ paddingLeft: 16 }}>
                         <CheckBox
-                            value={isSelected}
+                            value={props.isSelected}
                             onChange={onNormalPress}
                             tintColors={{
                                 true: color.documentItem_selected_background,
