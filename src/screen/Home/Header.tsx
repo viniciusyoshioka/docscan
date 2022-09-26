@@ -7,6 +7,7 @@ import { HomeMenu } from "./HomeMenu"
 
 export interface HomeHeaderProps {
     selectionMode: boolean;
+    selectedDocumentsAmount: number;
     exitSelectionMode: () => void;
     deleteSelectedDocument: () => void;
     scanNewDocument: () => void;
@@ -33,7 +34,7 @@ export function HomeHeader(props: HomeHeaderProps) {
             )}
 
             {props.selectionMode && (
-                <HeaderTitle />
+                <HeaderTitle title={props.selectedDocumentsAmount.toString()} />
             )}
 
             {props.selectionMode && (

@@ -195,6 +195,7 @@ export function Home() {
         <Screen>
             <HomeHeader
                 selectionMode={isSelectionMode}
+                selectedDocumentsAmount={selectedDocumentsId.length}
                 exitSelectionMode={exitSelectionMode}
                 deleteSelectedDocument={alertDeleteDocument}
                 scanNewDocument={() => navigation.navigate("Camera")}
