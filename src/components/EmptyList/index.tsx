@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react"
+import { ReactNode } from "react"
 import { ImageSourcePropType, ViewProps } from "react-native"
 
 import { Icon, OptionalIconProps } from ".."
@@ -13,7 +13,7 @@ export interface EmptyListProps extends ViewProps, OptionalIconProps {
 }
 
 
-export const EmptyList = (props: EmptyListProps) => {
+export function EmptyList(props: EmptyListProps) {
     return (
         <EmptyListView {...props}>
             {props.iconName && (
