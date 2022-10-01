@@ -287,7 +287,7 @@ export function App() {
         <GestureHandlerRootView style={{ flex: 1 }}>
             <ColorThemeProvider value={(theme === "light") ? ColorThemeLight : ColorThemeDark}>
                 <ThemeProvider theme={(theme === "light") ? ColorThemeLight : ColorThemeDark}>
-                    <MenuProvider>
+                    <MenuProvider backHandler={true}>
                         <DocumentDataProvider value={{ documentDataState, dispatchDocumentData }}>
                             <CameraSettingsProvider value={{ cameraSettingsState, dispatchCameraSettings }}>
                                 <Router />
