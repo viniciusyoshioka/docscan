@@ -186,13 +186,6 @@ export function Home() {
         offset: DOCUMENT_PICTURE_HEIGHT * index,
     }), [])
 
-    const ListEmptyComponent = useCallback(() => (
-        <EmptyList
-            imageSource={appIconOutline}
-            message={"Nenhum documento"}
-        />
-    ), [])
-
 
     useEffect(() => {
         getDocumentList()
@@ -220,11 +213,14 @@ export function Home() {
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
                 getItemLayout={getItemLayout}
-                ListEmptyComponent={ListEmptyComponent}
-                contentContainerStyle={{
-                    flex: 1,
-                    paddingTop: documents.length ? 8 : 0,
-                }}
+                style={{ display: documents.length ? "flex" : "none" }}
+                contentContainerStyle={{ paddingTop: documents.length ? 8 : 0 }}
+            />
+
+            <EmptyList
+                imageSource={appIconOutline}
+                message={"Nenhum documento"}
+                visible={documents.length === 0}
             />
         </Screen>
     )
