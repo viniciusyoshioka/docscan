@@ -64,7 +64,7 @@ export function HomeHeader(props: HomeHeaderProps) {
             )}
 
             <HomeMenu
-                selectionMode={props.isSelectionMode}
+                isSelectionMode={props.isSelectionMode}
                 importDocument={props.importDocument}
                 exportDocument={props.exportDocument}
                 openSettings={props.openSettings}

@@ -7,7 +7,7 @@ import { HeaderButton, MenuItem } from "../../components"
 
 
 export interface HomeMenuProps {
-    selectionMode: boolean;
+    isSelectionMode: boolean;
     importDocument: () => void;
     exportDocument: () => void;
     openSettings: () => void;
@@ -55,7 +55,7 @@ export function HomeMenu(props: HomeMenuProps) {
             </MenuTrigger>
 
             <MenuOptions>
-                {!props.selectionMode && (
+                {!props.isSelectionMode && (
                     <>
                         <MenuItem
                             text={"Importar Documento"}
@@ -83,7 +83,7 @@ export function HomeMenu(props: HomeMenuProps) {
                     </>
                 )}
 
-                {props.selectionMode && (
+                {props.isSelectionMode && (
                     <>
                         <MenuItem
                             text={"Exportar Documento"}
