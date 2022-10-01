@@ -110,7 +110,7 @@ export function Home() {
     function alertMergeDocument() {
         Alert.alert(
             "Unir",
-            "Os documento selecionados serão unidos",
+            "Os documento selecionados serão unidos em um único documento",
             [
                 { text: "Cancelar", onPress: () => { } },
                 { text: "Unir", onPress: async () => await mergeSelectedDocument() }
