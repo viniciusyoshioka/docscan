@@ -21,6 +21,16 @@ export interface HomeHeaderProps {
 
 
 export function HomeHeader(props: HomeHeaderProps) {
+
+
+    function getTitle() {
+        if (props.isSelectionMode) {
+            return props.selectedDocumentsAmount.toString()
+        }
+        return appName
+    }
+
+
     return (
         <Header>
             {props.isSelectionMode && (
@@ -30,13 +40,7 @@ export function HomeHeader(props: HomeHeaderProps) {
                 />
             )}
 
-            {!props.isSelectionMode && (
-                <HeaderTitle title={appName} />
-            )}
-
-            {props.isSelectionMode && (
-                <HeaderTitle title={props.selectedDocumentsAmount.toString()} />
-            )}
+            <HeaderTitle title={getTitle()} />
 
             {props.isSelectionMode && (
                 <HeaderButton
