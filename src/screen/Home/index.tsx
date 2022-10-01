@@ -45,11 +45,10 @@ export function Home() {
     }
 
     function invertSelection() {
-        setSelectedDocumentsId(current => {
-            return documents
-                .filter(documentItem => !current.includes(documentItem.id))
-                .map(documentItem => documentItem.id)
-        })
+        setSelectedDocumentsId(current => documents
+            .filter(documentItem => !current.includes(documentItem.id))
+            .map(documentItem => documentItem.id)
+        )
     }
 
     async function deleteSelectedDocument() {
@@ -175,9 +174,7 @@ export function Home() {
         )
     }
 
-    const keyExtractor = useCallback((item: DocumentForList, _) => {
-        return item.id.toString()
-    }, [])
+    const keyExtractor = useCallback((item: DocumentForList) => item.id.toString(), [])
 
     const getItemLayout = useCallback((_, index: number) => ({
         index: index,
@@ -185,14 +182,12 @@ export function Home() {
         offset: DOCUMENT_PICTURE_HEIGHT * index,
     }), [])
 
-    const ListEmptyComponent = useCallback(() => {
-        return (
-            <EmptyList
-                imageSource={appIconOutline}
-                message={"Nenhum documento"}
-            />
-        )
-    }, [])
+    const ListEmptyComponent = useCallback(() => (
+        <EmptyList
+            imageSource={appIconOutline}
+            message={"Nenhum documento"}
+        />
+    ), [])
 
 
     useEffect(() => {
