@@ -1,5 +1,3 @@
-import React from "react"
-
 import { Header, HeaderButton, HeaderTitle } from "../../components"
 import { appName } from "../../services/constant"
 import { HomeMenu } from "./HomeMenu"
