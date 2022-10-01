@@ -28,9 +28,33 @@
         }
     },
     "rules": {
+        "array-bracket-spacing": [
+            "warn",
+            "never",
+            {
+                "singleValue": false,
+                "objectsInArrays": true,
+                "arraysInArrays": true
+            }
+        ],
+        "arrow-body-style": [
+            "warn",
+            "as-needed"
+        ],
         "array-element-newline": [
             "warn",
             "consistent"
+        ],
+        "arrow-parens": [
+            "warn",
+            "as-needed"
+        ],
+        "arrow-spacing": [
+            "warn",
+            {
+                "before": true,
+                "after": true
+            }
         ],
         "brace-style": [
             "warn",
@@ -39,6 +63,7 @@
                 "allowSingleLine": true
             }
         ],
+        "camelcase": "warn",
         "comma-dangle": [
             "warn",
             "only-multiline"
@@ -62,6 +87,20 @@
         "jsx-quotes": [
             "warn",
             "prefer-double"
+        ],
+        "key-spacing": [
+            "warn",
+            {
+                "beforeColon": false,
+                "afterColon": true
+            }
+        ],
+        "keyword-spacing": [
+            "warn",
+            {
+                "before": true,
+                "after": true
+            }
         ],
         "linebreak-style": [
             "warn",
@@ -89,7 +128,12 @@
             "always-multiline"
         ],
         "no-empty-function": "off",
+        "no-multi-spaces": "warn",
         "no-trailing-spaces": "warn",
+        "object-curly-spacing": [
+            "warn",
+            "always"
+        ],
         "quotes": [
             "warn",
             "double"
@@ -98,6 +142,32 @@
         "semi": [
             "warn",
             "never"
+        ],
+        "space-before-blocks": [
+            "warn",
+            "always"
+        ],
+        "space-before-function-paren": [
+            "warn",
+            {
+                "anonymous": "always",
+                "named": "never",
+                "asyncArrow": "always"
+            }
+        ],
+        "space-in-parens": "warn",
+        "space-infix-ops": [
+            "warn",
+            {
+                "int32Hint": false
+            }
+        ],
+        "switch-colon-spacing": [
+            "warn",
+            {
+                "before": false,
+                "after": true
+            }
         ],
         "@typescript-eslint/no-empty-function": "off",
         "@typescript-eslint/no-unused-vars": "off",
