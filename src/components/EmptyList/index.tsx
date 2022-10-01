@@ -9,7 +9,6 @@ export interface EmptyListProps extends ViewProps, OptionalIconProps {
     imageSource?: ImageSourcePropType;
     message?: string;
     children?: ReactNode;
-    isRelative?: boolean;
 }
 
 

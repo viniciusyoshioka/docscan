@@ -3,21 +3,7 @@ import styled from "styled-components/native"
 import { StyledProps } from "../../types"
 
 
-export interface EmptyListViewProps {
-    isRelative?: boolean;
-}
-
-
-export const EmptyListView = styled.View<EmptyListViewProps>`
-    ${(props) => !props.isRelative
-        ? `
-            position: absolute;
-            top: 0px;
-            bottom: 0px;
-            left: 0px;
-            right: 0px;
-        `
-        : ""}
+export const EmptyListView = styled.View`
     flex: 1;
     align-items: center;
     justify-content: center;
