@@ -6,11 +6,11 @@ import { HomeMenu } from "./HomeMenu"
 
 
 export interface HomeHeaderProps {
-    selectionMode: boolean;
+    isSelectionMode: boolean;
     selectedDocumentsAmount: number;
     exitSelectionMode: () => void;
     invertSelection: () => void;
-    deleteSelectedDocument: () => void;
+    deleteSelectedDocuments: () => void;
     scanNewDocument: () => void;
     importDocument: () => void;
     exportDocument: () => void;
@@ -23,36 +23,36 @@ export interface HomeHeaderProps {
 export function HomeHeader(props: HomeHeaderProps) {
     return (
         <Header>
-            {props.selectionMode && (
+            {props.isSelectionMode && (
                 <HeaderButton
                     iconName={"close"}
                     onPress={props.exitSelectionMode}
                 />
             )}
 
-            {!props.selectionMode && (
+            {!props.isSelectionMode && (
                 <HeaderTitle title={appName} />
             )}
 
-            {props.selectionMode && (
+            {props.isSelectionMode && (
                 <HeaderTitle title={props.selectedDocumentsAmount.toString()} />
             )}
 
-            {props.selectionMode && (
+            {props.isSelectionMode && (
                 <HeaderButton
                     iconName={"swap-horiz"}
                     onPress={props.invertSelection}
                 />
             )}
 
-            {props.selectionMode && (
+            {props.isSelectionMode && (
                 <HeaderButton
                     iconName={"delete"}
-                    onPress={props.deleteSelectedDocument}
+                    onPress={props.deleteSelectedDocuments}
                 />
             )}
 
-            {!props.selectionMode && (
+            {!props.isSelectionMode && (
                 <HeaderButton
                     iconName={"add"}
                     onPress={props.scanNewDocument}
@@ -60,7 +60,7 @@ export function HomeHeader(props: HomeHeaderProps) {
             )}
 
             <HomeMenu
-                selectionMode={props.selectionMode}
+                selectionMode={props.isSelectionMode}
                 importDocument={props.importDocument}
                 exportDocument={props.exportDocument}
                 openSettings={props.openSettings}

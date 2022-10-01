@@ -189,11 +189,11 @@ export function Home() {
     return (
         <Screen>
             <HomeHeader
-                selectionMode={isSelectionMode}
+                isSelectionMode={isSelectionMode}
                 selectedDocumentsAmount={selectedDocumentsId.length}
                 exitSelectionMode={exitSelectionMode}
                 invertSelection={invertSelection}
-                deleteSelectedDocument={alertDeleteDocument}
+                deleteSelectedDocuments={alertDeleteDocument}
                 scanNewDocument={() => navigation.navigate("Camera")}
                 importDocument={() => navigation.navigate("FileExplorer")}
                 exportDocument={alertExportDocument}
