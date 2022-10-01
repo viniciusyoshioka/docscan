@@ -92,9 +92,13 @@ export function Home() {
             return
         }
 
+        const exportAlertText = isSelectionMode
+            ? "Os documentos selecionados serão exportados"
+            : "Todos os documentos serão exportados"
+
         Alert.alert(
             "Exportar",
-            `Os documentos ${isSelectionMode ? "selecionados " : ""}serão exportados`,
+            exportAlertText,
             [
                 { text: "Cancelar", onPress: () => { } },
                 { text: "Exportar", onPress: async () => await exportSelectedDocument() }
