@@ -1,5 +1,4 @@
 import { useRef } from "react"
-import { BackHandler } from "react-native"
 import { RectButton } from "react-native-gesture-handler"
 import { Menu, MenuOptions, MenuTrigger } from "react-native-popup-menu"
 
@@ -22,31 +21,8 @@ export function HomeMenu(props: HomeMenuProps) {
     const menuRef = useRef<Menu>(null)
 
 
-    function backhandlerFunction() {
-        if (menuRef.current?.isOpen()) {
-            menuRef.current?.close()
-            return true
-        }
-        return false
-    }
-
-    function setBackhandler() {
-        BackHandler.addEventListener(
-            "hardwareBackPress",
-            backhandlerFunction
-        )
-    }
-
-    function removeBackhandler() {
-        BackHandler.removeEventListener(
-            "hardwareBackPress",
-            backhandlerFunction
-        )
-    }
-
-
     return (
-        <Menu ref={menuRef} onClose={removeBackhandler} onOpen={setBackhandler}>
+        <Menu ref={menuRef}>
             <MenuTrigger customStyles={{ TriggerTouchableComponent: RectButton }}>
                 <HeaderButton
                     iconName={"more-vert"}
