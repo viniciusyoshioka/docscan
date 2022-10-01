@@ -6,6 +6,14 @@ import { EmptyListImage, EmptyListText, EmptyListView } from "./style"
 
 
 export interface EmptyListProps extends ViewProps, OptionalIconProps {
+
+    /**
+     * Boolean that controls when the component is shown
+     *
+     * @default true
+     */
+    visible?: boolean;
+
     imageSource?: ImageSourcePropType;
     message?: string;
     children?: ReactNode;
@@ -13,6 +21,13 @@ export interface EmptyListProps extends ViewProps, OptionalIconProps {
 
 
 export function EmptyList(props: EmptyListProps) {
+
+
+    if (props.visible === false) {
+        return undefined
+    }
+
+
     return (
         <EmptyListView {...props}>
             {props.iconName && (
