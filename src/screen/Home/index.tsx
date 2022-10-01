@@ -9,7 +9,7 @@ import { appIconOutline } from "../../services/constant"
 import { deletePicturesService } from "../../services/document-service"
 import { log } from "../../services/log"
 import { DocumentForList, NavigationParamProps } from "../../types"
-import { DocumentItem, DOCUMENT_PICTURE_HEIGHT } from "./DocumentItem"
+import { DocumentItem } from "./DocumentItem"
 import { HomeHeader } from "./Header"
 
 
@@ -180,12 +180,6 @@ export function Home() {
 
     const keyExtractor = useCallback((item: DocumentForList) => item.id.toString(), [])
 
-    const getItemLayout = useCallback((_, index: number) => ({
-        index: index,
-        length: DOCUMENT_PICTURE_HEIGHT,
-        offset: DOCUMENT_PICTURE_HEIGHT * index,
-    }), [])
-
 
     useEffect(() => {
         getDocumentList()
@@ -212,7 +206,6 @@ export function Home() {
                 data={documents}
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
-                getItemLayout={getItemLayout}
                 style={{ display: documents.length ? "flex" : "none" }}
                 contentContainerStyle={{ paddingTop: documents.length ? 8 : 0 }}
             />
