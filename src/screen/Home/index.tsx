@@ -20,7 +20,7 @@ export function Home() {
 
     const [documents, setDocuments] = useState<DocumentForList[]>([])
     const [isSelectionMode, setIsSelectionMode] = useState(false)
-    const [selectedDocumentsId, setSelectedDocumentsIs] = useState<number[]>([])
+    const [selectedDocumentsId, setSelectedDocumentsId] = useState<number[]>([])
 
 
     useBackHandler(() => {
@@ -45,7 +45,7 @@ export function Home() {
     }
 
     function invertSelection() {
-        setSelectedDocumentsIs(current => {
+        setSelectedDocumentsId(current => {
             return documents
                 .filter(documentItem => !current.includes(documentItem.id))
                 .map(documentItem => documentItem.id)
@@ -140,7 +140,7 @@ export function Home() {
             setIsSelectionMode(true)
         }
         if (!selectedDocumentsId.includes(documentId)) {
-            setSelectedDocumentsIs(currentSelectedDocument => [...currentSelectedDocument, documentId])
+            setSelectedDocumentsId(currentSelectedDocument => [...currentSelectedDocument, documentId])
         }
     }
 
@@ -149,7 +149,7 @@ export function Home() {
         if (index !== -1) {
             const newSelectedDocument = [...selectedDocumentsId]
             newSelectedDocument.splice(index, 1)
-            setSelectedDocumentsIs(newSelectedDocument)
+            setSelectedDocumentsId(newSelectedDocument)
 
             if (isSelectionMode && newSelectedDocument.length === 0) {
                 setIsSelectionMode(false)
@@ -158,7 +158,7 @@ export function Home() {
     }
 
     function exitSelectionMode() {
-        setSelectedDocumentsIs([])
+        setSelectedDocumentsId([])
         setIsSelectionMode(false)
     }
 
