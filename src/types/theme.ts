@@ -66,6 +66,17 @@ export interface ThemeColors {
 
 
 /**
+ * Defines all opacity values used in the app
+ */
+export interface ThemeOpacity {
+    headerEmphasis: number;
+    highEmphasis: number;
+    mediumEmphasis: number;
+    disabled: number;
+}
+
+
+/**
  * Type defining theme color object attributes
  */
 export interface ColorTheme {
@@ -73,12 +84,7 @@ export interface ColorTheme {
     appTheme: ThemeType;
     switchTheme: (newTheme: ThemeType) => void;
     color: ThemeColors;
-    opacity: {
-        headerEmphasis: number;
-        highEmphasis: number;
-        mediumEmphasis: number;
-        disabled: number;
-    };
+    opacity: ThemeOpacity;
 }
 
 
