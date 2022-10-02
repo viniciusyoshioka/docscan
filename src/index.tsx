@@ -13,7 +13,7 @@ import { cameraSettingsDefault, CameraSettingsProvider, reducerCameraSettings } 
 import { databaseFolder, fullPathExported, fullPathPdf, fullPathPicture, fullPathRoot, fullPathRootExternal, fullPathTemporary, fullPathTemporaryCompressedPicture, fullPathTemporaryExported, fullPathTemporaryImported } from "./services/constant"
 import { DocumentDataProvider, reducerDocumentData } from "./services/document"
 import { log, logCriticalError } from "./services/log"
-import { ColorThemeDark, ColorThemeLight, ColorThemeProvider, themeDefault } from "./services/theme"
+import { AppThemeDark, AppThemeLight, AppThemeProvider, themeDefault } from "./services/theme"
 import { ThemeType } from "./types"
 
 
@@ -40,11 +40,11 @@ export function App() {
             log.error(`Error getting theme from database: "${JSON.stringify(error)}". Fallback to default theme`)
         }
 
-        ColorThemeLight.appTheme = appTheme
-        ColorThemeLight.switchTheme = switchTheme
+        AppThemeLight.appTheme = appTheme
+        AppThemeLight.switchTheme = switchTheme
 
-        ColorThemeDark.appTheme = appTheme
-        ColorThemeDark.switchTheme = switchTheme
+        AppThemeDark.appTheme = appTheme
+        AppThemeDark.switchTheme = switchTheme
 
         if (appTheme === "auto") {
             if (deviceTheme) {
@@ -131,7 +131,7 @@ export function App() {
     useEffect(() => {
         if (theme) {
             StatusBar.setBarStyle("light-content")
-            StatusBar.setBackgroundColor(theme === "dark" ? ColorThemeDark.color.header_background : ColorThemeLight.color.header_background)
+            StatusBar.setBackgroundColor(theme === "dark" ? AppThemeDark.color.header_background : AppThemeLight.color.header_background)
         }
     }, [theme])
 
@@ -285,8 +285,8 @@ export function App() {
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <ColorThemeProvider value={(theme === "light") ? ColorThemeLight : ColorThemeDark}>
-                <ThemeProvider theme={(theme === "light") ? ColorThemeLight : ColorThemeDark}>
+            <AppThemeProvider value={(theme === "light") ? AppThemeLight : AppThemeDark}>
+                <ThemeProvider theme={(theme === "light") ? AppThemeLight : AppThemeDark}>
                     <MenuProvider backHandler={true}>
                         <DocumentDataProvider value={{ documentDataState, dispatchDocumentData }}>
                             <CameraSettingsProvider value={{ cameraSettingsState, dispatchCameraSettings }}>
@@ -295,7 +295,7 @@ export function App() {
                         </DocumentDataProvider>
                     </MenuProvider>
                 </ThemeProvider>
-            </ColorThemeProvider>
+            </AppThemeProvider>
         </GestureHandlerRootView>
     )
 }

@@ -79,7 +79,7 @@ export interface ThemeOpacity {
 /**
  * Type defining theme color object attributes
  */
-export interface ColorTheme {
+export interface AppTheme {
     name: ThemeType;
     appTheme: ThemeType;
     switchTheme: (newTheme: ThemeType) => void;
@@ -89,8 +89,8 @@ export interface ColorTheme {
 
 
 /**
- * Type to add ColorTheme in styled-components props
+ * Type to add AppTheme in styled-components props
  */
 export interface StyledProps {
-    theme: ColorTheme;
+    theme: AppTheme;
 }
