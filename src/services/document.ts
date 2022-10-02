@@ -151,15 +151,11 @@ export function reducerDocumentData(
             return {
                 ...state,
                 pictureList: state.pictureList
-                    .filter((_, index) => {
-                        return !action.payload.includes(index)
-                    })
-                    .map((item, index) => {
-                        return {
-                            ...item,
-                            position: index,
-                        }
-                    }),
+                    .filter((_, index) => !action.payload.includes(index))
+                    .map((item, index) => ({
+                        ...item,
+                        position: index,
+                    })),
                 lastModificationTimestamp: getTimestamp(),
                 hasChanges: true,
             }
@@ -187,7 +183,7 @@ export function reducerDocumentData(
                         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                         action.payload(state.id!)
                     })
-                    .catch((error) => {
+                    .catch(error => {
                         log.error(`Error saving (update) document in action ${action.type}. "${error}"`)
                         Alert.alert(
                             "Aviso",
@@ -201,10 +197,10 @@ export function reducerDocumentData(
                 }
             } else if (state.pictureList.length > 0 && state.hasChanges) {
                 DocumentDatabase.insertDocument(state.name, state.pictureList)
-                    .then((insertedDocumentId) => {
+                    .then(insertedDocumentId => {
                         action.payload(insertedDocumentId)
                     })
-                    .catch((error) => {
+                    .catch(error => {
                         log.error(`Error saving (insert) document in action ${action.type}. "${error}"`)
                         Alert.alert(
                             "Aviso",
@@ -228,7 +224,7 @@ export function reducerDocumentData(
 
             if (state.id && state.hasChanges) {
                 DocumentDatabase.updateDocument(state.id, state.name, state.pictureList)
-                    .catch((error) => {
+                    .catch(error => {
                         log.error(`Error saving (update) document in action ${action.type}. "${error}"`)
                         Alert.alert(
                             "Aviso",
@@ -237,7 +233,7 @@ export function reducerDocumentData(
                     })
             } else if (state.pictureList.length > 0 && state.hasChanges) {
                 DocumentDatabase.insertDocument(state.name, state.pictureList)
-                    .catch((error) => {
+                    .catch(error => {
                         log.error(`Error saving (insert) document in action ${action.type}. "${error}"`)
                         Alert.alert(
                             "Aviso",

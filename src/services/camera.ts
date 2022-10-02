@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react"
 
-import { CameraSettingsReducerAction, CameraSettingsObject, CameraSettingsContextType } from "../types"
+import { CameraSettingsContextType, CameraSettingsObject, CameraSettingsReducerAction } from "../types"
 import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "./settings"
 
 
@@ -61,7 +61,7 @@ export function reducerCameraSettings(
 const CameraSettingsContext = createContext({
     cameraSettingsState: cameraSettingsDefault,
     dispatchCameraSettings: (value: CameraSettingsReducerAction) => {},
-}  as CameraSettingsContextType)
+} as CameraSettingsContextType)
 
 /**
  * Provider to pass camera settings through the component tree
