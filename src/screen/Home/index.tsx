@@ -54,14 +54,20 @@ export function Home() {
     }
 
     async function deleteSelectedDocument() {
+        setShowDocumentDeletionModal(true)
+
+        const selectedDocumentsIdCopy = [...selectedDocumentsId]
+        exitSelectionMode()
+
         try {
-            const picturesToDelete = await DocumentDatabase.getPicturePathFromDocument(selectedDocumentsId)
-            await DocumentDatabase.deleteDocument(selectedDocumentsId)
+            const picturesToDelete = await DocumentDatabase.getPicturePathFromDocument(selectedDocumentsIdCopy)
+            await DocumentDatabase.deleteDocument(selectedDocumentsIdCopy)
             deletePicturesService(picturesToDelete)
             await getDocumentList()
-            exitSelectionMode()
+            setShowDocumentDeletionModal(false)
         } catch (error) {
             log.error(`Error deleting selected documents from database: "${error}"`)
+            setShowDocumentDeletionModal(false)
             Alert.alert(
                 "Aviso",
                 "Erro ao apagar documentos selecionados"
