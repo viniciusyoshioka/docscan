@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/core"
 import { useCallback, useEffect, useState } from "react"
 import { Alert, FlatList } from "react-native"
 
-import { EmptyList, Screen } from "../../components"
+import { EmptyList, LoadingModal, Screen } from "../../components"
 import { DocumentDatabase } from "../../database"
 import { useBackHandler } from "../../hooks"
 import { appIconOutline } from "../../services/constant"
@@ -22,6 +22,7 @@ export function Home() {
     const [documents, setDocuments] = useState<DocumentForList[]>([])
     const [isSelectionMode, setIsSelectionMode] = useState(false)
     const [selectedDocumentsId, setSelectedDocumentsId] = useState<number[]>([])
+    const [showDocumentDeletionModal, setShowDocumentDeletionModal] = useState(false)
 
 
     useBackHandler(() => {
@@ -221,6 +222,11 @@ export function Home() {
                 imageSource={appIconOutline}
                 message={"Nenhum documento"}
                 visible={documents.length === 0}
+            />
+
+            <LoadingModal
+                visible={showDocumentDeletionModal}
+                message={"Apagando documentos..."}
             />
         </Screen>
     )
