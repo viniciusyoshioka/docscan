@@ -74,13 +74,13 @@ export function App() {
 
     useEffect(() => {
         openAppDatabase()
-            .then(async (database) => {
+            .then(async database => {
                 setGlobalAppDatabase(database)
 
                 database.transaction(tx => {
                     DocumentDatabase.createDocumentTable(tx)
                     SettingsDatabase.createSettingsTable(tx)
-                }, (error) => {
+                }, error => {
                     logCriticalError(`Error creating tables in app database: "${JSON.stringify(error)}"`)
                 }, async () => {
                     try {
@@ -101,23 +101,23 @@ export function App() {
                     setAppDb(database)
                 })
             })
-            .catch((error) => {
+            .catch(error => {
                 logCriticalError(`Error opening app database: "${JSON.stringify(error)}"`)
             })
 
         openLogDatabase()
-            .then(async (database) => {
+            .then(async database => {
                 setGlobalLogDatabase(database)
 
                 database.transaction(tx => {
                     LogDatabase.createLogTable(tx)
-                }, (error) => {
+                }, error => {
                     logCriticalError(`Error creating tables in log database: "${JSON.stringify(error)}"`)
                 }, () => {
                     setLogDb(database)
                 })
             })
-            .catch((error) => {
+            .catch(error => {
                 logCriticalError(`Error opening log database: "${JSON.stringify(error)}"`)
             })
     }, [])
@@ -151,11 +151,11 @@ export function App() {
                 console.log("======================================================================")
                 console.log(`fullPathRoot: "${fullPathRoot}"`)
                 console.log("----------------------------------------------------------------------")
-                const ls_fullPathRoot = await RNFS.readDir(fullPathRoot)
-                if (ls_fullPathRoot.length === 0) {
+                const lsFullPathRoot = await RNFS.readDir(fullPathRoot)
+                if (lsFullPathRoot.length === 0) {
                     console.log("Pasta vazia")
                 } else {
-                    ls_fullPathRoot.forEach((item) => {
+                    lsFullPathRoot.forEach(item => {
                         console.log(item.path)
                     })
                 }
@@ -163,11 +163,11 @@ export function App() {
                 console.log("======================================================================")
                 console.log(`fullPathPicture: "${fullPathPicture}"`)
                 console.log("----------------------------------------------------------------------")
-                const ls_fullPathPicture = await RNFS.readDir(fullPathPicture)
-                if (ls_fullPathPicture.length === 0) {
+                const lsFullPathPicture = await RNFS.readDir(fullPathPicture)
+                if (lsFullPathPicture.length === 0) {
                     console.log("Pasta vazia")
                 } else {
-                    ls_fullPathPicture.forEach((item) => {
+                    lsFullPathPicture.forEach(item => {
                         console.log(item.path)
                     })
                 }
@@ -175,11 +175,11 @@ export function App() {
                 console.log("======================================================================")
                 console.log(`fullPathTemporary: "${fullPathTemporary}"`)
                 console.log("----------------------------------------------------------------------")
-                const ls_fullPathTemporary = await RNFS.readDir(fullPathTemporary)
-                if (ls_fullPathTemporary.length === 0) {
+                const lsFullPathTemporary = await RNFS.readDir(fullPathTemporary)
+                if (lsFullPathTemporary.length === 0) {
                     console.log("Pasta vazia")
                 } else {
-                    ls_fullPathTemporary.forEach((item) => {
+                    lsFullPathTemporary.forEach(item => {
                         console.log(item.path)
                     })
                 }
@@ -187,11 +187,11 @@ export function App() {
                 console.log("======================================================================")
                 console.log(`fullPathTemporaryExported: "${fullPathTemporaryExported}"`)
                 console.log("----------------------------------------------------------------------")
-                const ls_fullPathTemporaryExported = await RNFS.readDir(fullPathTemporaryExported)
-                if (ls_fullPathTemporaryExported.length === 0) {
+                const lsFullPathTemporaryExported = await RNFS.readDir(fullPathTemporaryExported)
+                if (lsFullPathTemporaryExported.length === 0) {
                     console.log("Pasta vazia")
                 } else {
-                    ls_fullPathTemporaryExported.forEach((item) => {
+                    lsFullPathTemporaryExported.forEach(item => {
                         console.log(item.path)
                     })
                 }
@@ -199,11 +199,11 @@ export function App() {
                 console.log("======================================================================")
                 console.log(`fullPathTemporaryImported: "${fullPathTemporaryImported}"`)
                 console.log("----------------------------------------------------------------------")
-                const ls_fullPathTemporaryImported = await RNFS.readDir(fullPathTemporaryImported)
-                if (ls_fullPathTemporaryImported.length === 0) {
+                const lsFullPathTemporaryImported = await RNFS.readDir(fullPathTemporaryImported)
+                if (lsFullPathTemporaryImported.length === 0) {
                     console.log("Pasta vazia")
                 } else {
-                    ls_fullPathTemporaryImported.forEach((item) => {
+                    lsFullPathTemporaryImported.forEach(item => {
                         console.log(item.path)
                     })
                 }
@@ -211,11 +211,11 @@ export function App() {
                 console.log("======================================================================")
                 console.log(`fullPathTemporaryCompressedPicture: "${fullPathTemporaryCompressedPicture}"`)
                 console.log("----------------------------------------------------------------------")
-                const ls_fullPathTemporaryCompressedPicture = await RNFS.readDir(fullPathTemporaryCompressedPicture)
-                if (ls_fullPathTemporaryCompressedPicture.length === 0) {
+                const lsFullPathTemporaryCompressedPicture = await RNFS.readDir(fullPathTemporaryCompressedPicture)
+                if (lsFullPathTemporaryCompressedPicture.length === 0) {
                     console.log("Pasta vazia")
                 } else {
-                    ls_fullPathTemporaryCompressedPicture.forEach((item) => {
+                    lsFullPathTemporaryCompressedPicture.forEach(item => {
                         console.log(item.path)
                     })
                 }
@@ -226,11 +226,11 @@ export function App() {
                 console.log("======================================================================")
                 console.log(`fullPathRootExternal: "${fullPathRootExternal}"`)
                 console.log("----------------------------------------------------------------------")
-                const ls_fullPathRootExternal = await RNFS.readDir(fullPathRootExternal)
-                if (ls_fullPathRootExternal.length === 0) {
+                const lsFullPathRootExternal = await RNFS.readDir(fullPathRootExternal)
+                if (lsFullPathRootExternal.length === 0) {
                     console.log("Pasta vazia")
                 } else {
-                    ls_fullPathRootExternal.forEach((item) => {
+                    lsFullPathRootExternal.forEach(item => {
                         console.log(item.path)
                     })
                 }
@@ -238,11 +238,11 @@ export function App() {
                 console.log("======================================================================")
                 console.log(`fullPathExported: "${fullPathExported}"`)
                 console.log("----------------------------------------------------------------------")
-                const ls_fullPathExported = await RNFS.readDir(fullPathExported)
-                if (ls_fullPathExported.length === 0) {
+                const lsFullPathExported = await RNFS.readDir(fullPathExported)
+                if (lsFullPathExported.length === 0) {
                     console.log("Pasta vazia")
                 } else {
-                    ls_fullPathExported.forEach((item) => {
+                    lsFullPathExported.forEach(item => {
                         console.log(item.path)
                     })
                 }
@@ -250,11 +250,11 @@ export function App() {
                 console.log("======================================================================")
                 console.log(`fullPathPdf: "${fullPathPdf}"`)
                 console.log("----------------------------------------------------------------------")
-                const ls_fullPathPdf = await RNFS.readDir(fullPathPdf)
-                if (ls_fullPathPdf.length === 0) {
+                const lsFullPathPdf = await RNFS.readDir(fullPathPdf)
+                if (lsFullPathPdf.length === 0) {
                     console.log("Pasta vazia")
                 } else {
-                    ls_fullPathPdf.forEach((item) => {
+                    lsFullPathPdf.forEach(item => {
                         console.log(item.path)
                     })
                 }
@@ -265,11 +265,11 @@ export function App() {
                 console.log("======================================================================")
                 console.log(`databaseFolder: "${databaseFolder}"`)
                 console.log("----------------------------------------------------------------------")
-                const ls_databaseFolder = await RNFS.readDir(databaseFolder)
-                if (ls_databaseFolder.length === 0) {
+                const lsDatabaseFolder = await RNFS.readDir(databaseFolder)
+                if (lsDatabaseFolder.length === 0) {
                     console.log("Pasta vazia")
                 } else {
-                    ls_databaseFolder.forEach((item) => {
+                    lsDatabaseFolder.forEach(item => {
                         console.log(item.path)
                     })
                 }
