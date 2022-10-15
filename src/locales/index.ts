@@ -48,7 +48,7 @@ setLanguageToI18n()
  * Receives a key and returns the corresponding text
  * already translated to device language, if available
  *
- * @param key string key to get the translation in language object
+ * @param key TranslationKeyType to get the translation in language object
  *
  * @returns translated text
  */
