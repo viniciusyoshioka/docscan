@@ -1,5 +1,7 @@
+import { TranslationKeyType } from "../types"
+
 
 // eslint-disable-next-line camelcase
-export const en_US = {
-
+export const en_US: TranslationKeyType = {
+    "": "",
 }
