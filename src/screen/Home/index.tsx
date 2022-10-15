@@ -80,6 +80,11 @@ export function Home() {
     }
 
     async function exportSelectedDocument() {
+        Alert.alert(
+            "Aguarde",
+            "A exportação de documentos pode demorar um pouco"
+        )
+
         await createAllFolderAsync()
         DocumentDatabase.exportDocument(selectedDocumentsId)
         exitSelectionMode()
