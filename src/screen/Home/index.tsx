@@ -7,6 +7,7 @@ import { DocumentDatabase } from "../../database"
 import { useBackHandler } from "../../hooks"
 import { appIconOutline } from "../../services/constant"
 import { deletePicturesService } from "../../services/document-service"
+import { createAllFolderAsync } from "../../services/folder-handler"
 import { log } from "../../services/log"
 import { DocumentForList, NavigationParamProps } from "../../types"
 import { DocumentItem } from "./DocumentItem"
@@ -79,6 +80,7 @@ export function Home() {
     }
 
     async function exportSelectedDocument() {
+        await createAllFolderAsync()
         DocumentDatabase.exportDocument(selectedDocumentsId)
         exitSelectionMode()
     }
