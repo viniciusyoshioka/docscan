@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
-import { TranslationKeyType } from "../types"
+import { TranslationType } from "../types"
 
 
-export const pt_BR: TranslationKeyType = {
+export const pt_BR: TranslationType = {
     "": "",
 }
