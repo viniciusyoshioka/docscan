@@ -5,11 +5,12 @@ import { Alert, FlatList } from "react-native"
 import { EmptyList, LoadingModal, Screen } from "../../components"
 import { DocumentDatabase } from "../../database"
 import { useBackHandler } from "../../hooks"
+import { translate } from "../../locales"
 import { appIconOutline } from "../../services/constant"
 import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
 import { log } from "../../services/log"
-import { DocumentForList, NavigationParamProps } from "../../types"
+import { DocumentForList, NavigationParamProps, TranslationKeyType } from "../../types"
 import { DocumentItem } from "./DocumentItem"
 import { HomeHeader } from "./Header"
 
@@ -40,8 +41,8 @@ export function Home() {
         } catch (error) {
             log.error(`Error getting document list from database: "${error}"`)
             Alert.alert(
-                "Aviso",
-                "Erro ao carregar documentos"
+                translate("warn"),
+                translate("home_alert_errorLoadingDocuments_text")
             )
         }
     }
@@ -69,27 +70,27 @@ export function Home() {
             log.error(`Error deleting selected documents from database: "${error}"`)
             setShowDocumentDeletionModal(false)
             Alert.alert(
-                "Aviso",
-                "Erro ao apagar documentos selecionados"
+                translate("warn"),
+                translate("home_alert_errorDeletingSelectedDocuments_text")
             )
         }
     }
 
     function alertDeleteDocument() {
         Alert.alert(
-            "Apagar",
-            "Estes documentos serão apagados permanentemente",
+            translate("home_alert_deleteDocuments_title"),
+            translate("home_alert_deleteDocuments_text"),
             [
-                { text: "Cancelar", onPress: () => { } },
-                { text: "Apagar", onPress: async () => await deleteSelectedDocument() }
+                { text: translate("cancel"), onPress: () => { } },
+                { text: translate("delete"), onPress: async () => await deleteSelectedDocument() }
             ]
         )
     }
 
     async function exportSelectedDocument() {
         Alert.alert(
-            "Aguarde",
-            "A exportação de documentos pode demorar um pouco"
+            translate("home_alert_exportingDocuments_title"),
+            translate("home_alert_exportingDocuments_text")
         )
 
         await createAllFolderAsync()
@@ -100,22 +101,22 @@ export function Home() {
     function alertExportDocument() {
         if (documents.length === 0) {
             Alert.alert(
-                "Aviso",
-                "Nenhum documento existente para ser exportado"
+                translate("warn"),
+                translate("home_alert_noDocumentsToExport_text")
             )
             return
         }
 
-        const exportAlertText = isSelectionMode
-            ? "Os documentos selecionados serão exportados"
-            : "Todos os documentos serão exportados"
+        const exportAlertText: TranslationKeyType = isSelectionMode
+            ? "home_alert_allSelectedDocumentsWillBeExported_text"
+            : "home_alert_allDocumentsWillBeExported_text"
 
         Alert.alert(
-            "Exportar",
-            exportAlertText,
+            translate("home_alert_exportDocuments_title"),
+            translate(exportAlertText),
             [
-                { text: "Cancelar", onPress: () => { } },
-                { text: "Exportar", onPress: async () => await exportSelectedDocument() }
+                { text: translate("cancel"), onPress: () => { } },
+                { text: translate("home_export"), onPress: async () => await exportSelectedDocument() }
             ]
         )
     }
@@ -127,11 +128,11 @@ export function Home() {
 
     function alertMergeDocument() {
         Alert.alert(
-            "Unir",
-            "Os documento selecionados serão unidos em um único documento",
+            translate("home_alert_mergeDocuments_title"),
+            translate("home_alert_mergeDocuments_text"),
             [
-                { text: "Cancelar", onPress: () => { } },
-                { text: "Unir", onPress: async () => await mergeSelectedDocument() }
+                { text: translate("cancel"), onPress: () => { } },
+                { text: translate("home_merge"), onPress: async () => await mergeSelectedDocument() }
             ]
         )
     }
@@ -143,11 +144,11 @@ export function Home() {
 
     function alertDuplicateDocument() {
         Alert.alert(
-            "Duplicar",
-            "Os documento selecionados serão duplicados",
+            translate("home_alert_duplicateDocuments_title"),
+            translate("home_alert_duplicateDocuments_text"),
             [
-                { text: "Cancelar", onPress: () => { } },
-                { text: "Duplicar", onPress: async () => await duplicateSelectedDocument() }
+                { text: translate("cancel"), onPress: () => { } },
+                { text: translate("home_duplicate"), onPress: async () => await duplicateSelectedDocument() }
             ]
         )
     }
@@ -226,13 +227,13 @@ export function Home() {
 
             <EmptyList
                 imageSource={appIconOutline}
-                message={"Nenhum documento"}
+                message={translate("home_emptyDocumentList")}
                 visible={documents.length === 0}
             />
 
             <LoadingModal
                 visible={showDocumentDeletionModal}
-                message={"Apagando documentos..."}
+                message={translate("home_deletingDocuments")}
             />
         </Screen>
     )
