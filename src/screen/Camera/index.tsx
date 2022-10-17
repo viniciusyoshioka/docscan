@@ -266,12 +266,6 @@ export function Camera() {
 
     async function requestAndSetCameraPermission() {
         const hasPermission = await getCameraPermission()
-        if (!hasPermission) {
-            Alert.alert(
-                "Permissão negada",
-                "Vá em configurações e permita o uso da câmera para este aplicativo"
-            )
-        }
         setHasCameraPermission(hasPermission)
     }
 
