@@ -4,62 +4,62 @@
 #include <fbjni/fbjni.h>
 #include <react/renderer/componentregistry/ComponentDescriptorProviderRegistry.h>
 #include <react/renderer/components/rncore/ComponentDescriptors.h>
+#include <rncli.h>
 
-namespace facebook
-{
-    namespace react
-    {
-        MainComponentsRegistry::MainComponentsRegistry(ComponentFactory *delegate) {}
+namespace facebook {
+namespace react {
 
-        std::shared_ptr<ComponentDescriptorProviderRegistry const>
-        MainComponentsRegistry::sharedProviderRegistry()
-        {
-            auto providerRegistry = CoreComponentsRegistry::sharedProviderRegistry();
+MainComponentsRegistry::MainComponentsRegistry(ComponentFactory *delegate) {}
 
-            // Custom Fabric Components go here. You can register custom
-            // components coming from your App or from 3rd party libraries here.
-            //
-            // providerRegistry->add(concreteComponentDescriptorProvider<
-            //        AocViewerComponentDescriptor>());
-            return providerRegistry;
-        }
+std::shared_ptr<ComponentDescriptorProviderRegistry const>
+MainComponentsRegistry::sharedProviderRegistry() {
+  auto providerRegistry = CoreComponentsRegistry::sharedProviderRegistry();
 
-        jni::local_ref<MainComponentsRegistry::jhybriddata>
-        MainComponentsRegistry::initHybrid(
-            jni::alias_ref<jclass>,
-            ComponentFactory *delegate)
-        {
-            auto instance = makeCxxInstance(delegate);
+  // Autolinked providers registered by RN CLI
+  rncli_registerProviders(providerRegistry);
 
-            auto buildRegistryFunction =
-                [](EventDispatcher::Weak const &eventDispatcher,
-                   ContextContainer::Shared const &contextContainer)
-                -> ComponentDescriptorRegistry::Shared
-            {
-                auto registry = MainComponentsRegistry::sharedProviderRegistry()
-                                    ->createComponentDescriptorRegistry(
-                                        {eventDispatcher, contextContainer});
+  // Custom Fabric Components go here. You can register custom
+  // components coming from your App or from 3rd party libraries here.
+  //
+  // providerRegistry->add(concreteComponentDescriptorProvider<
+  //        AocViewerComponentDescriptor>());
+  return providerRegistry;
+}
 
-                auto mutableRegistry =
-                    std::const_pointer_cast<ComponentDescriptorRegistry>(registry);
+jni::local_ref<MainComponentsRegistry::jhybriddata>
+MainComponentsRegistry::initHybrid(
+    jni::alias_ref<jclass>,
+    ComponentFactory *delegate) {
+  auto instance = makeCxxInstance(delegate);
 
-                mutableRegistry->setFallbackComponentDescriptor(
-                    std::make_shared<UnimplementedNativeViewComponentDescriptor>(
-                        ComponentDescriptorParameters{
-                            eventDispatcher, contextContainer, nullptr}));
+  auto buildRegistryFunction =
+      [](EventDispatcher::Weak const &eventDispatcher,
+         ContextContainer::Shared const &contextContainer)
+      -> ComponentDescriptorRegistry::Shared {
+    auto registry = MainComponentsRegistry::sharedProviderRegistry()
+                        ->createComponentDescriptorRegistry(
+                            {eventDispatcher, contextContainer});
 
-                return registry;
-            };
+    auto mutableRegistry =
+        std::const_pointer_cast<ComponentDescriptorRegistry>(registry);
 
-            delegate->buildRegistryFunction = buildRegistryFunction;
-            return instance;
-        }
+    mutableRegistry->setFallbackComponentDescriptor(
+        std::make_shared<UnimplementedNativeViewComponentDescriptor>(
+            ComponentDescriptorParameters{
+                eventDispatcher, contextContainer, nullptr}));
 
-        void MainComponentsRegistry::registerNatives()
-        {
-            registerHybrid({
-                makeNativeMethod("initHybrid", MainComponentsRegistry::initHybrid),
-            });
-        }
-    } // namespace react
+    return registry;
+  };
+
+  delegate->buildRegistryFunction = buildRegistryFunction;
+  return instance;
+}
+
+void MainComponentsRegistry::registerNatives() {
+  registerHybrid({
+      makeNativeMethod("initHybrid", MainComponentsRegistry::initHybrid),
+  });
+}
+
+} // namespace react
 } // namespace facebook
