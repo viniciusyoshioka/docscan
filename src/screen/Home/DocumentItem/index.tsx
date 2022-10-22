@@ -20,7 +20,7 @@ export interface DocumentItemProps {
 }
 
 
-export const DocumentItem = (props: DocumentItemProps) => {
+export function DocumentItem(props: DocumentItemProps) {
 
 
     const { color, opacity } = useColorTheme()
