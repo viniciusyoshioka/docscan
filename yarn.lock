@@ -4789,7 +4789,7 @@ react-native-popup-menu@^0.16.1:
   resolved "https://registry.yarnpkg.com/react-native-popup-menu/-/react-native-popup-menu-0.16.1.tgz#b1bb56be5c0838bbc2f532af7b1f554b7ceef566"
   integrity sha512-xRS7mRh0exwu7Iw8PPVHdM11d13A/KzYjy0/fZx3zVtxISxPkNaDGayau6oa7HqO3Nj0oS9ulFCYjcQfG6vahA==
 
-react-native-reanimated@^2.11.0:
+react-native-reanimated@2.11.0:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-2.11.0.tgz#415ef668440d1b7d8b2b36a20342b1035432dd80"
   integrity sha512-/QnujrXSNyXasv7v8K3eu5Z4XGRYMPRa0+x0RjNr6Z5/KEuPHwrg1Xm7UZ2YSm6jCF2b1BW6ceqP/1d626gvhQ==
@@ -4832,9 +4832,10 @@ react-native-sqlite-storage@^6.0.1:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
-"react-native-vision-camera@git+https://github.com/mrousavy/react-native-vision-camera.git":
-  version "2.14.1"
-  resolved "git+https://github.com/mrousavy/react-native-vision-camera.git#4781ad983530493ee13069fd69ef9f15d154a3cc"
+react-native-vision-camera@2.15.0:
+  version "2.15.0"
+  resolved "https://registry.yarnpkg.com/react-native-vision-camera/-/react-native-vision-camera-2.15.0.tgz#b7eb3db7c6f0e0e7d227c9e41d759df7794d0fba"
+  integrity sha512-2OJlU9MfoCP5wre8VH+V3zKQv7YX4i61YLbsSX+G7zEaYJTuQXY5GKsNa0r0x42zf9UDm+Cmv3fqHT/p69AvqQ==
 
 react-native-zip-archive@^6.0.8:
   version "6.0.8"
