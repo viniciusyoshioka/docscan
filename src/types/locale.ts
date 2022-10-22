@@ -4,7 +4,8 @@
  * and translation function param
  */
 export type TranslationKeyType =
-    "cancel"
+    "ok"
+    | "cancel"
     | "warn"
     | "delete"
 
@@ -35,6 +36,24 @@ export type TranslationKeyType =
     | "home_menu_settings"
     | "home_menu_mergeDocument"
     | "home_menu_duplicateDocument"
+
+    // Settings alert
+    | "settings_alert_errorSharingLogDatabase_text"
+    | "settings_alert_errorSharingAppDatabase_text"
+    // Settings header
+    | "settings_header_title"
+    // Settings screen
+    | "settings_theme_title"
+    | "settings_theme_text"
+    | "settings_shareLogDatabase_title"
+    | "settings_shareLogDatabase_text"
+    | "settings_shareAppDatabase_title"
+    | "settings_shareAppDatabase_text"
+    // Settings ChangeTheme
+    | "ChangeTheme_title"
+    | "ChangeTheme_auto"
+    | "ChangeTheme_light"
+    | "ChangeTheme_dark"
 
 
 /**

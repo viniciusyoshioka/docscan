@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { NativeSyntheticEvent } from "react-native"
 
 import { Modal, ModalButton, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, RadioButton } from "../../components"
+import { translate } from "../../locales"
 import { useColorTheme } from "../../services/theme"
 
 
@@ -24,27 +25,27 @@ export function ChangeTheme(props: ChangeThemeProps) {
     return (
         <Modal {...props}>
             <ModalTitle>
-                Mudar tema
+                {translate("ChangeTheme_title")}
             </ModalTitle>
 
             <ModalViewContent>
                 <RadioButton
-                    text={"Automático"}
+                    text={translate("ChangeTheme_auto")}
                     value={selectedTheme === "auto"}
                     onPress={() => setSelectedTheme("auto")} />
                 <RadioButton
-                    text={"Claro"}
+                    text={translate("ChangeTheme_light")}
                     value={selectedTheme === "light"}
                     onPress={() => setSelectedTheme("light")} />
                 <RadioButton
-                    text={"Escuro"}
+                    text={translate("ChangeTheme_dark")}
                     value={selectedTheme === "dark"}
                     onPress={() => setSelectedTheme("dark")} />
             </ModalViewContent>
 
             <ModalViewButton>
                 <ModalButton
-                    text={"Cancelar"}
+                    text={translate("cancel")}
                     onPress={() => {
                         if (props.onRequestClose) {
                             props.onRequestClose({} as NativeSyntheticEvent<unknown>)
@@ -53,7 +54,7 @@ export function ChangeTheme(props: ChangeThemeProps) {
                 />
 
                 <ModalButton
-                    text={"Ok"}
+                    text={translate("ok")}
                     onPress={() => {
                         switchTheme(selectedTheme)
                         if (props.onRequestClose) {

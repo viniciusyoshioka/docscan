@@ -1,16 +1,17 @@
+import { useNavigation } from "@react-navigation/core"
 import React, { useState } from "react"
 import { Alert } from "react-native"
-import { useNavigation } from "@react-navigation/core"
 import Share from "react-native-share"
 
-import { SettingsHeader } from "./Header"
-import { ChangeTheme } from "./ChangeTheme"
-import { TextVersion, ViewVersion } from "./style"
 import { ListItem, Screen } from "../../components"
-import { appDatabaseFullPath, appName, appType, appVersion, logDatabaseFullPath } from "../../services/constant"
 import { useBackHandler } from "../../hooks"
+import { translate } from "../../locales"
+import { appDatabaseFullPath, appName, appType, appVersion, logDatabaseFullPath } from "../../services/constant"
 import { log } from "../../services/log"
 import { NavigationParamProps } from "../../types"
+import { ChangeTheme } from "./ChangeTheme"
+import { SettingsHeader } from "./Header"
+import { TextVersion, ViewVersion } from "./style"
 
 
 export function Settings() {
@@ -41,8 +42,8 @@ export function Settings() {
         } catch (error) {
             log.error(`Error sharing log file: "${error}"`)
             Alert.alert(
-                "Aviso",
-                "Erro ao compartilhar log"
+                translate("warn"),
+                translate("settings_alert_errorSharingLogDatabase_text")
             )
         }
     }
@@ -57,8 +58,8 @@ export function Settings() {
         } catch (error) {
             log.error(`Error sharing document database file: "${error}"`)
             Alert.alert(
-                "Aviso",
-                "Erro ao compartilhar banco de dados dos documentos"
+                translate("warn"),
+                translate("settings_alert_errorSharingAppDatabase_text")
             )
         }
     }
@@ -72,23 +73,23 @@ export function Settings() {
 
             <ListItem
                 iconName={"brightness-medium"}
-                title={"Tema"}
-                description={"Mudar tema de cores do aplicativo"}
+                title={translate("settings_theme_title")}
+                description={translate("settings_theme_text")}
                 onPress={() => setChangeThemeVisible(true)}
             />
 
             <ListItem
                 iconName={"receipt-long"}
-                title={"Compartilhar logs"}
-                description={"Enviar registro de erros"}
+                title={translate("settings_shareLogDatabase_title")}
+                description={translate("settings_shareLogDatabase_text")}
                 onPress={shareLogDatabaseFile}
             />
 
             {__DEV__ && (
                 <ListItem
                     iconName={"receipt-long"}
-                    title={"Compartilhar banco de dados"}
-                    description={"Enviar banco de dados dos documentos"}
+                    title={translate("settings_shareAppDatabase_title")}
+                    description={translate("settings_shareAppDatabase_text")}
                     onPress={shareAppDatabaseFile}
                 />
             )}

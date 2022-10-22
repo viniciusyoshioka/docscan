@@ -1,6 +1,7 @@
 import React from "react"
 
 import { Header, HeaderButton, HeaderTitle } from "../../components"
+import { translate } from "../../locales"
 
 
 export interface SettingsHeaderProps {
@@ -16,7 +17,7 @@ export function SettingsHeader(props: SettingsHeaderProps) {
                 onPress={props.goBack}
             />
 
-            <HeaderTitle title={"Configurações"} />
+            <HeaderTitle title={translate("settings_header_title")} />
         </Header>
     )
 }

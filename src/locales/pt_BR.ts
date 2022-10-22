@@ -3,6 +3,7 @@ import { TranslationType } from "../types"
 
 
 export const pt_BR: TranslationType = {
+    ok: "Ok",
     cancel: "Cancelar",
     warn: "Aviso",
     delete: "Apagar",
@@ -34,4 +35,22 @@ export const pt_BR: TranslationType = {
     home_menu_settings: "Configurações",
     home_menu_mergeDocument: "Unir documentos",
     home_menu_duplicateDocument: "Duplicar documentos",
+
+    // Settings alert
+    settings_alert_errorSharingLogDatabase_text: "Erro ao compartilhar logs",
+    settings_alert_errorSharingAppDatabase_text: "Erro ao compartilhar banco de dados dos documentos",
+    // Settings header
+    settings_header_title: "Configurações",
+    // Settings screen
+    settings_theme_title: "Tema",
+    settings_theme_text: "Mudar tema de cores do aplicativo",
+    settings_shareLogDatabase_title: "Compartilhar logs",
+    settings_shareLogDatabase_text: "Enviar registro de erros",
+    settings_shareAppDatabase_title: "Compartilhar banco de dados",
+    settings_shareAppDatabase_text: "Enviar banco de dados dos documentos",
+    // Settings ChangeTheme
+    ChangeTheme_title: "Mudar tema",
+    ChangeTheme_auto: "Automático",
+    ChangeTheme_light: "Claro",
+    ChangeTheme_dark: "Escuro",
 }
