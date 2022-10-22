@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import I18n from "i18n-js"
+import { I18n } from "i18n-js"
 import { NativeModules, Platform } from "react-native"
 
 import { TranslationKeyType } from "../types"
@@ -12,6 +12,13 @@ const normalizeLanguageCode = {
     "en_US": "en_US",
     "pt_BR": "pt_BR",
     "pt_US": "pt_BR",
+}
+
+
+const i18n = new I18n()
+i18n.translations = {
+    "en_US": en_US,
+    "pt_BR": pt_BR,
 }
 
 
@@ -29,17 +36,14 @@ function getDeviceLanguage(): string {
 
 function setLanguageToI18n() {
     const deviceLanguage = getDeviceLanguage()
-    const isLanguageSupported = I18n.translations.hasOwnProperty(deviceLanguage)
+    const allSupportedLanguages = Object.keys(i18n.translations)
+
+    const isLanguageSupported = allSupportedLanguages.includes(deviceLanguage)
     isLanguageSupported
-        ? I18n.locale = deviceLanguage
-        : I18n.defaultLocale = "en_US"
+        ? i18n.locale = deviceLanguage
+        : i18n.defaultLocale = "en_US"
 }
 
-
-I18n.translations = {
-    "en_US": en_US,
-    "pt_BR": pt_BR,
-}
 
 setLanguageToI18n()
 
@@ -52,4 +56,4 @@ setLanguageToI18n()
  *
  * @returns translated text
  */
-export const translate = (key: TranslationKeyType): string => I18n.t(key)
+export const translate = (key: TranslationKeyType): string => i18n.t(key)
