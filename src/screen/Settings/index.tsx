@@ -34,8 +34,6 @@ export function Settings() {
     async function shareLogDatabaseFile() {
         try {
             await Share.open({
-                title: "Compartilhar logs",
-                message: "Enviar registros de erro para o desenvolvedor",
                 type: "application/x-sqlite3",
                 url: `file://${logDatabaseFullPath}`,
                 failOnCancel: false,
@@ -52,8 +50,6 @@ export function Settings() {
     async function shareAppDatabaseFile() {
         try {
             await Share.open({
-                title: "Compartilhar banco de dados dos documentos",
-                message: "Enviar banco de dados dos documentos para o desenvolvedor",
                 type: "application/x-sqlite3",
                 url: `file://${appDatabaseFullPath}`,
                 failOnCancel: false,
