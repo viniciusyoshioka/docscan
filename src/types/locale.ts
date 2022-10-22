@@ -23,12 +23,18 @@ export type TranslationKeyType =
     | "home_alert_mergeDocuments_text"
     | "home_alert_duplicateDocuments_title"
     | "home_alert_duplicateDocuments_text"
-    // Home
+    // Home screen
     | "home_export"
     | "home_merge"
     | "home_duplicate"
     | "home_emptyDocumentList"
     | "home_deletingDocuments"
+    // Home menu
+    | "home_menu_importDocument"
+    | "home_menu_exportDocument"
+    | "home_menu_settings"
+    | "home_menu_mergeDocument"
+    | "home_menu_duplicateDocument"
 
 
 /**

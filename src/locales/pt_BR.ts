@@ -22,10 +22,16 @@ export const pt_BR: TranslationType = {
     home_alert_mergeDocuments_text: "Os documento selecionados serão unidos em um único documento",
     home_alert_duplicateDocuments_title: "Duplicar",
     home_alert_duplicateDocuments_text: "Os documentos selecionados serão duplicados",
-    // Home
+    // Home screen
     home_export: "Exportar",
     home_merge: "Unir",
     home_duplicate: "Duplicar",
     home_emptyDocumentList: "Nenhum documento",
     home_deletingDocuments: "Apagando documentos...",
+    // Home menu
+    home_menu_importDocument: "Importar documentos",
+    home_menu_exportDocument: "Exportar documentos",
+    home_menu_settings: "Configurações",
+    home_menu_mergeDocument: "Unir documentos",
+    home_menu_duplicateDocument: "Duplicar documentos",
 }

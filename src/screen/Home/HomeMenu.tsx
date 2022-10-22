@@ -3,6 +3,7 @@ import { RectButton } from "react-native-gesture-handler"
 import { Menu, MenuOptions, MenuTrigger } from "react-native-popup-menu"
 
 import { HeaderButton, MenuItem } from "../../components"
+import { translate } from "../../locales"
 
 
 export interface HomeMenuProps {
@@ -33,7 +34,7 @@ export function HomeMenu(props: HomeMenuProps) {
             <MenuOptions>
                 {!props.isSelectionMode && (
                     <MenuItem
-                        text={"Importar Documento"}
+                        text={translate("home_menu_importDocument")}
                         onPress={() => {
                             menuRef.current?.close()
                             props.importDocument()
@@ -42,7 +43,7 @@ export function HomeMenu(props: HomeMenuProps) {
                 )}
 
                 <MenuItem
-                    text={"Exportar Documento"}
+                    text={translate("home_menu_exportDocument")}
                     onPress={() => {
                         menuRef.current?.close()
                         props.exportDocument()
@@ -51,7 +52,7 @@ export function HomeMenu(props: HomeMenuProps) {
 
                 {!props.isSelectionMode && (
                     <MenuItem
-                        text={"Configurações"}
+                        text={translate("home_menu_settings")}
                         onPress={() => {
                             menuRef.current?.close()
                             props.openSettings()
@@ -61,7 +62,7 @@ export function HomeMenu(props: HomeMenuProps) {
 
                 {props.isSelectionMode && (
                     <MenuItem
-                        text={"Combinar Documento"}
+                        text={translate("home_menu_mergeDocument")}
                         onPress={() => {
                             menuRef.current?.close()
                             props.mergeDocument()
@@ -71,7 +72,7 @@ export function HomeMenu(props: HomeMenuProps) {
 
                 {props.isSelectionMode && (
                     <MenuItem
-                        text={"Duplicar Documento"}
+                        text={translate("home_menu_duplicateDocument")}
                         onPress={() => {
                             menuRef.current?.close()
                             props.duplicateDocument()
