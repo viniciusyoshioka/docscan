@@ -24,6 +24,8 @@ export type TranslationKeyType =
     | "home_alert_mergeDocuments_text"
     | "home_alert_duplicateDocuments_title"
     | "home_alert_duplicateDocuments_text"
+    // Home header
+    | "home_header_title"
     // Home screen
     | "home_export"
     | "home_merge"

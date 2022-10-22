@@ -23,6 +23,8 @@ export const pt_BR: TranslationType = {
     home_alert_mergeDocuments_text: "Os documento selecionados serão unidos em um único documento",
     home_alert_duplicateDocuments_title: "Duplicar",
     home_alert_duplicateDocuments_text: "Os documentos selecionados serão duplicados",
+    // Home header
+    home_header_title: "DocScan",
     // Home screen
     home_export: "Exportar",
     home_merge: "Unir",

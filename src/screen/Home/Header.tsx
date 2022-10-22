@@ -1,5 +1,5 @@
 import { Header, HeaderButton, HeaderTitle } from "../../components"
-import { appName } from "../../services/constant"
+import { translate } from "../../locales"
 import { HomeMenu } from "./HomeMenu"
 
 
@@ -25,7 +25,7 @@ export function HomeHeader(props: HomeHeaderProps) {
         if (props.isSelectionMode) {
             return props.selectedDocumentsAmount.toString()
         }
-        return appName
+        return translate("home_header_title")
     }
 
 
