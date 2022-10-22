@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import { NativeSyntheticEvent } from "react-native"
 
 import { Modal, ModalButton, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, RadioButton } from "../../components"
 import { useColorTheme } from "../../services/theme"
@@ -44,7 +45,11 @@ export const ChangeTheme = (props: ChangeThemeProps) => {
             <ModalViewButton>
                 <ModalButton
                     text={"Cancelar"}
-                    onPress={props.onRequestClose}
+                    onPress={() => {
+                        if (props.onRequestClose) {
+                            props.onRequestClose({} as NativeSyntheticEvent<unknown>)
+                        }
+                    }}
                 />
 
                 <ModalButton
@@ -52,7 +57,7 @@ export const ChangeTheme = (props: ChangeThemeProps) => {
                     onPress={() => {
                         switchTheme(selectedTheme)
                         if (props.onRequestClose) {
-                            props.onRequestClose()
+                            props.onRequestClose({} as NativeSyntheticEvent<unknown>)
                         }
                     }}
                 />
