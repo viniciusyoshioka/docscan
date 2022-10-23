@@ -8,6 +8,7 @@ export type TranslationKeyType =
     | "cancel"
     | "warn"
     | "delete"
+    | "criticalError"
 
     // Home alert
     | "home_alert_errorLoadingDocuments_text"
@@ -56,6 +57,9 @@ export type TranslationKeyType =
     | "ChangeTheme_auto"
     | "ChangeTheme_light"
     | "ChangeTheme_dark"
+
+    // Log service
+    | "log_alert_errorRegisteringLog_text"
 
 
 /**

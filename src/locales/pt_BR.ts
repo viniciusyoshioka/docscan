@@ -7,6 +7,7 @@ export const pt_BR: TranslationType = {
     cancel: "Cancelar",
     warn: "Aviso",
     delete: "Apagar",
+    criticalError: "Erro crítico",
 
     // Home alert
     home_alert_errorLoadingDocuments_text: "Erro ao carregar documentos",
@@ -55,4 +56,7 @@ export const pt_BR: TranslationType = {
     ChangeTheme_auto: "Automático",
     ChangeTheme_light: "Claro",
     ChangeTheme_dark: "Escuro",
+
+    // Log service
+    log_alert_errorRegisteringLog_text: "Erro registrando log.",
 }
