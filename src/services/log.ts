@@ -7,6 +7,27 @@ import { getDateTime } from "./date"
 
 
 /**
+ * Receives an error and converts it from any type to string
+ *
+ * @param error string or object with the error message
+ *
+ * @returns string of the error provided
+ */
+export function stringfyError(error: unknown): string {
+    if (typeof error === "string") {
+        return error
+    }
+
+    const stringfiedObject = JSON.stringify(error)
+    if (stringfiedObject === "{}") {
+        return error as string
+    }
+
+    return stringfiedObject
+}
+
+
+/**
  * Function to log critical errors only.
  * Use this function when Logger or database is not available.
  *
