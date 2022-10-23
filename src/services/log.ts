@@ -2,6 +2,7 @@ import { Alert } from "react-native"
 import { logger } from "react-native-logs"
 
 import { LogDatabase } from "../database"
+import { translate } from "../locales"
 import { Logger, TransportFunctionProps } from "../types"
 import { getDateTime } from "./date"
 
@@ -29,15 +30,17 @@ export function stringfyError(error: unknown): string {
 
 /**
  * Function to log critical errors only.
- * Use this function when Logger or database is not available.
+ * Use this function when Logger or database are not available.
  *
- * @param message a string with the error message to be logged
+ * @param error string or object of the error message to be logged
  */
-export function logCriticalError(message: string) {
-    console.log(`FALHA CRÍTICA - Erro registrando log. Mensagem: "${message}"`)
+export function logCriticalError(error: unknown) {
+    const stringfiedError = stringfyError(error)
+
+    console.log(`ERRO CRÍTICO - Erro registrando log. "${stringfiedError}"`)
     Alert.alert(
-        "FALHA CRÍTICA",
-        `Erro registrando log. Mensagem: "${message}"`
+        translate("criticalError"),
+        `${translate("log_alert_errorRegisteringLog_text")} "${stringfiedError}"`
     )
 }
 
