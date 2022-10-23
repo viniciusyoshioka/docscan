@@ -12,6 +12,8 @@ import { log } from "./log"
 
 
 /**
+ * Gets the default name of a new document
+ *
  * @returns a string with the default name of the new document
  */
 export function getDocumentName(): string {
@@ -24,7 +26,7 @@ export function getDocumentName(): string {
  *
  * @param filePath string of the file path
  *
- * @returns string of the file name
+ * @returns string of the full file name
  */
 export function getFullFileName(filePath: string): string {
     const splittedFilePath = filePath.split("/")
@@ -262,7 +264,7 @@ const DocumentDataContext = createContext({
 export const DocumentDataProvider = DocumentDataContext.Provider
 
 /**
- * Hook to get document data state and dispatch
+ * Hook to get document data state and the dispatch function
  */
 export function useDocumentData() {
     return useContext(DocumentDataContext)
