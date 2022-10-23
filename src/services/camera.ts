@@ -69,7 +69,7 @@ const CameraSettingsContext = createContext({
 export const CameraSettingsProvider = CameraSettingsContext.Provider
 
 /**
- * Hook to get the camera settings state and dispatch
+ * Hook to get the camera settings state and the dispatch function
  */
 export function useCameraSettings() {
     return useContext(CameraSettingsContext)
