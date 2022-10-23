@@ -70,10 +70,7 @@ async function databaseTransport(props: TransportFunctionProps) {
 
         await LogDatabase.insertLog(level, message)
     } catch (error) {
-        const errorMessage: string = typeof error === "object"
-            ? JSON.stringify(error)
-            : error as string
-        logCriticalError(errorMessage)
+        logCriticalError(error)
     }
 }
 
