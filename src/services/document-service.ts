@@ -8,6 +8,7 @@ const { DocumentService } = NativeModules
  * Invokes a service to delete files
  *
  * @param pictures array of file paths to be deleted
+ * @param notificationTitle string to be shown in notification title
  */
 export function deletePicturesService(pictures: string[], notificationTitle?: string) {
     DocumentService.deletePictures(
@@ -21,6 +22,7 @@ export function deletePicturesService(pictures: string[], notificationTitle?: st
  * Invokes a service to copy files
  *
  * @param pictures array of file paths to be copied.
+ * @param notificationTitle string to be shown in notification title
  *
  * Obs.: The from and to paths are followed in the array.
  * I.e. ["/path/from/1", "/path/to/1", "/path/from/2", "/path/to/2"]
@@ -37,6 +39,7 @@ export function copyPicturesService(pictures: string[], notificationTitle?: stri
  * Invokes a service to move files
  *
  * @param pictures array of file paths to be moved.
+ * @param notificationTitle string to be shown in notification title
  *
  * Obs.: The from and to paths are followed in the array.
  * I.e. ["/path/from/1", "/path/to/1", "/path/from/2", "/path/to/2"]
