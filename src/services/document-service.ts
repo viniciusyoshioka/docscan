@@ -1,5 +1,7 @@
 import { NativeModules } from "react-native"
 
+import { translate } from "../locales"
+
 
 const { DocumentService } = NativeModules
 
@@ -13,7 +15,7 @@ const { DocumentService } = NativeModules
 export function deletePicturesService(pictures: string[], notificationTitle?: string) {
     DocumentService.deletePictures(
         pictures,
-        notificationTitle ?? "Apagando imagens"
+        notificationTitle ?? translate("documentService_notification_deletingImages_title")
     )
 }
 
@@ -30,7 +32,7 @@ export function deletePicturesService(pictures: string[], notificationTitle?: st
 export function copyPicturesService(pictures: string[], notificationTitle?: string) {
     DocumentService.copyPictures(
         pictures,
-        notificationTitle ?? "Copiando imagens"
+        notificationTitle ?? translate("documentService_notification_copyingImages_title")
     )
 }
 
@@ -47,7 +49,7 @@ export function copyPicturesService(pictures: string[], notificationTitle?: stri
 export function movePicturesService(pictures: string[], notificationTitle?: string) {
     DocumentService.movePictures(
         pictures,
-        notificationTitle ?? "Movendo imagens"
+        notificationTitle ?? translate("documentService_notification_movingImages_title")
     )
 }
 
@@ -73,6 +75,6 @@ export function exportDocumentService(
         databasePath,
         pathZipTo,
         pathExportedDocument,
-        notificationTitle ?? "Exportando documento(s)"
+        notificationTitle ?? translate("documentService_notification_exportingDocuments_title")
     )
 }

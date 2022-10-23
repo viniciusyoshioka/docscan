@@ -57,6 +57,11 @@ export const pt_BR: TranslationType = {
     ChangeTheme_light: "Claro",
     ChangeTheme_dark: "Escuro",
 
+    // document-service service
+    documentService_notification_deletingImages_title: "Apagando imagens",
+    documentService_notification_copyingImages_title: "Copiando imagens",
+    documentService_notification_movingImages_title: "Movendo imagens",
+    documentService_notification_exportingDocuments_title: "Exportando documentos",
     // Log service
     log_alert_errorRegisteringLog_text: "Erro registrando log.",
 }

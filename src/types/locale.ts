@@ -58,6 +58,11 @@ export type TranslationKeyType =
     | "ChangeTheme_light"
     | "ChangeTheme_dark"
 
+    // document-service service
+    | "documentService_notification_deletingImages_title"
+    | "documentService_notification_copyingImages_title"
+    | "documentService_notification_movingImages_title"
+    | "documentService_notification_exportingDocuments_title"
     // Log service
     | "log_alert_errorRegisteringLog_text"
 
