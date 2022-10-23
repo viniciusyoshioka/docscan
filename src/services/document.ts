@@ -5,6 +5,7 @@ import "react-native-get-random-values"
 import { v4 as uuid4 } from "uuid"
 
 import { DocumentDatabase } from "../database"
+import { translate } from "../locales"
 import { Document, DocumentDataContextType, DocumentDataReducerAction } from "../types"
 import { fullPathPicture, fullPathTemporaryExported } from "./constant"
 import { getTimestamp } from "./date"
@@ -17,7 +18,7 @@ import { log } from "./log"
  * @returns a string with the default name of the new document
  */
 export function getDocumentName(): string {
-    return "Novo documento"
+    return translate("document_newDocumentName")
 }
 
 
@@ -188,8 +189,8 @@ export function reducerDocumentData(
                     .catch(error => {
                         log.error(`Error saving (update) document in action ${action.type}. "${error}"`)
                         Alert.alert(
-                            "Aviso",
-                            "Erro salvando documento"
+                            translate("warn"),
+                            translate("document_alert_errorSavingDocument_text")
                         )
                     })
 
@@ -205,8 +206,8 @@ export function reducerDocumentData(
                     .catch(error => {
                         log.error(`Error saving (insert) document in action ${action.type}. "${error}"`)
                         Alert.alert(
-                            "Aviso",
-                            "Erro salvando documento"
+                            translate("warn"),
+                            translate("document_alert_errorSavingDocument_text")
                         )
                     })
 
@@ -229,8 +230,8 @@ export function reducerDocumentData(
                     .catch(error => {
                         log.error(`Error saving (update) document in action ${action.type}. "${error}"`)
                         Alert.alert(
-                            "Aviso",
-                            "Erro salvando documento"
+                            translate("warn"),
+                            translate("document_alert_errorSavingDocument_text")
                         )
                     })
             } else if (state.pictureList.length > 0 && state.hasChanges) {
@@ -238,8 +239,8 @@ export function reducerDocumentData(
                     .catch(error => {
                         log.error(`Error saving (insert) document in action ${action.type}. "${error}"`)
                         Alert.alert(
-                            "Aviso",
-                            "Erro salvando documento"
+                            translate("warn"),
+                            translate("document_alert_errorSavingDocument_text")
                         )
                     })
             }

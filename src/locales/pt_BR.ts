@@ -62,6 +62,9 @@ export const pt_BR: TranslationType = {
     documentService_notification_copyingImages_title: "Copiando imagens",
     documentService_notification_movingImages_title: "Movendo imagens",
     documentService_notification_exportingDocuments_title: "Exportando documentos",
+    // document service
+    document_newDocumentName: "Novo documento",
+    document_alert_errorSavingDocument_text: "Erro salvando documento",
     // Log service
     log_alert_errorRegisteringLog_text: "Erro registrando log.",
 }

@@ -63,6 +63,9 @@ export type TranslationKeyType =
     | "documentService_notification_copyingImages_title"
     | "documentService_notification_movingImages_title"
     | "documentService_notification_exportingDocuments_title"
+    // document service
+    | "document_newDocumentName"
+    | "document_alert_errorSavingDocument_text"
     // Log service
     | "log_alert_errorRegisteringLog_text"
 
