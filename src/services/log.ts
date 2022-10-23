@@ -47,6 +47,8 @@ export function logCriticalError(error: unknown) {
 
 async function databaseTransport(props: TransportFunctionProps) {
     try {
+        const resetColor = "\x1b[m"
+
         let color = ""
         switch (props.level.text) {
             case "info":
@@ -66,7 +68,7 @@ async function databaseTransport(props: TransportFunctionProps) {
         const level = props.level.text.toUpperCase().padEnd(5)
         const message = props.rawMsg.join(" ")
 
-        console.log(`${color}[${datetime}] ${level} - ${message}\x1b[m`)
+        console.log(`${color}[${datetime}] ${level} - ${message}${resetColor}`)
 
         await LogDatabase.insertLog(level, message)
     } catch (error) {
