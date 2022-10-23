@@ -47,7 +47,7 @@ export function logCriticalError(error: unknown) {
 
 async function databaseTransport(props: TransportFunctionProps) {
     try {
-        let color
+        let color = ""
         switch (props.level.text) {
             case "info":
                 color = "\x1b[96m"
