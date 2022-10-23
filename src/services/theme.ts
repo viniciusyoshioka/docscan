@@ -10,7 +10,7 @@ export const themeDefault: ThemeType = "auto"
 
 
 /**
- * AppTheme object for light mode
+ * AppTheme object for light theme
  */
 export const AppThemeLight: AppTheme = {
     name: "light",
@@ -80,7 +80,7 @@ export const AppThemeLight: AppTheme = {
 }
 
 /**
- * AppTheme object for dark mode
+ * AppTheme object for dark theme
  */
 export const AppThemeDark: AppTheme = {
     name: "dark",
