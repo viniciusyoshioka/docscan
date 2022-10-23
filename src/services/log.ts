@@ -62,7 +62,7 @@ async function databaseTransport(props: TransportFunctionProps) {
                 break
         }
 
-        const datetime = getDateTime("/", ":", true)
+        const datetime = getDateTime()
         const level = props.level.text.toUpperCase().padEnd(5)
         const message = props.rawMsg.join(" ")
 
