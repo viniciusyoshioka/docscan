@@ -12,7 +12,7 @@ import { Router } from "./router"
 import { cameraSettingsDefault, CameraSettingsProvider, reducerCameraSettings } from "./services/camera"
 import { databaseFolder, fullPathExported, fullPathPdf, fullPathPicture, fullPathRoot, fullPathRootExternal, fullPathTemporary, fullPathTemporaryCompressedPicture, fullPathTemporaryExported, fullPathTemporaryImported } from "./services/constant"
 import { DocumentDataProvider, reducerDocumentData } from "./services/document"
-import { log, logCriticalError } from "./services/log"
+import { log, logCriticalError, stringfyError } from "./services/log"
 import { AppThemeDark, AppThemeLight, AppThemeProvider, themeDefault } from "./services/theme"
 import { ThemeType } from "./types"
 
@@ -75,14 +75,11 @@ export function App() {
     useEffect(() => {
         openAppDatabase()
             .then(async database => {
-                setGlobalAppDatabase(database)
+                function onTransactionError(error: SQLite.SQLError) {
+                    logCriticalError(`Error creating tables in app database: "${stringfyError(error)}"`)
+                }
 
-                database.transaction(tx => {
-                    DocumentDatabase.createDocumentTable(tx)
-                    SettingsDatabase.createSettingsTable(tx)
-                }, error => {
-                    logCriticalError(`Error creating tables in app database: "${JSON.stringify(error)}"`)
-                }, async () => {
+                async function onTransactionSuccess() {
                     try {
                         const settings = await SettingsDatabase.getSettings()
                         dispatchCameraSettings({
@@ -95,30 +92,41 @@ export function App() {
                             }
                         })
                     } catch (error) {
-                        log.error(`Error getting all settings from settings database: "${JSON.stringify(error)}". Fallback to default settings`)
+                        logCriticalError(`Error getting all settings from database: "${stringfyError(error)}". Fallback to default settings`)
                     }
 
                     setAppDb(database)
-                })
+                }
+
+                setGlobalAppDatabase(database)
+
+                database.transaction(tx => {
+                    DocumentDatabase.createDocumentTable(tx)
+                    SettingsDatabase.createSettingsTable(tx)
+                }, onTransactionError, onTransactionSuccess)
             })
             .catch(error => {
-                logCriticalError(`Error opening app database: "${JSON.stringify(error)}"`)
+                logCriticalError(`Error opening app database: "${stringfyError(error)}"`)
             })
 
         openLogDatabase()
             .then(async database => {
+                function onTransactionError(error: SQLite.SQLError) {
+                    logCriticalError(`Error creating tables in log database: "${stringfyError(error)}"`)
+                }
+
+                function onTransactionSuccess() {
+                    setLogDb(database)
+                }
+
                 setGlobalLogDatabase(database)
 
                 database.transaction(tx => {
                     LogDatabase.createLogTable(tx)
-                }, error => {
-                    logCriticalError(`Error creating tables in log database: "${JSON.stringify(error)}"`)
-                }, () => {
-                    setLogDb(database)
-                })
+                }, onTransactionError, onTransactionSuccess)
             })
             .catch(error => {
-                logCriticalError(`Error opening log database: "${JSON.stringify(error)}"`)
+                logCriticalError(`Error opening log database: "${stringfyError(error)}"`)
             })
     }, [])
 
