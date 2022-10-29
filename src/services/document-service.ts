@@ -27,7 +27,7 @@ export function deletePicturesService(pictures: string[], notificationTitle?: st
  * @param notificationTitle string to be shown in notification title
  *
  * Obs.: The from and to paths are followed in the array.
- * I.e. ["/path/from/1", "/path/to/1", "/path/from/2", "/path/to/2"]
+ * I.e. `["/path/from/1", "/path/to/1", "/path/from/2", "/path/to/2"]`
  */
 export function copyPicturesService(pictures: string[], notificationTitle?: string) {
     DocumentService.copyPictures(
@@ -44,7 +44,7 @@ export function copyPicturesService(pictures: string[], notificationTitle?: stri
  * @param notificationTitle string to be shown in notification title
  *
  * Obs.: The from and to paths are followed in the array.
- * I.e. ["/path/from/1", "/path/to/1", "/path/from/2", "/path/to/2"]
+ * I.e. `["/path/from/1", "/path/to/1", "/path/from/2", "/path/to/2"]`
  */
 export function movePicturesService(pictures: string[], notificationTitle?: string) {
     DocumentService.movePictures(
