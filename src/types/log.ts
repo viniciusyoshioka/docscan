@@ -5,7 +5,7 @@
  */
 export type TransportFunctionProps = {
     msg: string;
-    rawMsg: Array<string>;
+    rawMsg: string[];
     level: {
         severity: number;
         text: string;
