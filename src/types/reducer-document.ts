@@ -32,7 +32,7 @@ type DocumentRename = {
 }
 
 /**
- * Receives an array of DocumentPicture to add to pictureList property
+ * Receives an array of `DocumentPicture` to add to `pictureList` property
  */
 type DocumentAddPicture = {
     type: "add-picture";
@@ -40,7 +40,7 @@ type DocumentAddPicture = {
 }
 
 /**
- * Receives an array with DocumentPicture's index to be removed
+ * Receives an array with `DocumentPicture`'s index to be removed
  *
  * This action just removes the images from the state
  * and updates the position property.
@@ -52,7 +52,7 @@ type DocumentRemovePicture = {
 }
 
 /**
- * Replaces the picture path in the indexToReplace's
+ * Replaces the picture path in the `indexToReplace`'s
  * index for the path of newPicture
  */
 type DocumentReplacePicture = {
