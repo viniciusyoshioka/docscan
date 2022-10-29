@@ -5,7 +5,7 @@ import { DocumentDataReducerAction } from "."
 
 /**
  * Contains all document's attributes needed for a list.
- * Usually returned from database through the method getDocumentList.
+ * Usually returned from database through the method `getDocumentList`.
  */
 export type DocumentForList = {
     id: number;
@@ -15,8 +15,8 @@ export type DocumentForList = {
 
 
 /**
- * Contains all document's data, except the id, from the document table.
- * Usually returned from database through the method getDocument.
+ * Contains all document's data, except the `id`, from the `document` table.
+ * Usually returned from database through the method `getDocument`.
  */
 export type SimpleDocument = {
     name: string;
