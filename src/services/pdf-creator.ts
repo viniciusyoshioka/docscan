@@ -29,7 +29,7 @@ export type PdfCreatorOptions = {
  * @param documentPath path to where the PDF file will be moved when the conversion is over
  * @param options PdfCreatorOptions object containing options for the conversion
  */
-export function createPdf(pictureList: Array<string>, documentPath: string, options: PdfCreatorOptions) {
+export function createPdf(pictureList: string[], documentPath: string, options: PdfCreatorOptions) {
     PdfCreator.createPdf(pictureList, documentPath, options)
 }
 
