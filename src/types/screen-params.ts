@@ -3,7 +3,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 
 
 /**
- * Contains all screens and screen's params
+ * Defines the screen's params and its types
  */
 export type ScreenParams = {
     Home: undefined;
