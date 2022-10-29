@@ -37,7 +37,7 @@ export function stringfyError(error: unknown): string {
 export function logCriticalError(error: unknown) {
     const stringfiedError = stringfyError(error)
 
-    console.log(`ERRO CRÍTICO - Erro registrando log. "${stringfiedError}"`)
+    console.log(`CRITICAL ERROR - Error registering log. "${stringfiedError}"`)
     Alert.alert(
         translate("criticalError"),
         `${translate("log_alert_errorRegisteringLog_text")} "${stringfiedError}"`
