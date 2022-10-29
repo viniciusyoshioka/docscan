@@ -9,7 +9,7 @@ import { translate } from "../locales"
 import { Document, DocumentDataContextType, DocumentDataReducerAction } from "../types"
 import { fullPathPicture, fullPathTemporaryExported } from "./constant"
 import { getTimestamp } from "./date"
-import { log } from "./log"
+import { log, stringfyError } from "./log"
 
 
 /**
@@ -187,7 +187,7 @@ export function reducerDocumentData(
                         action.payload(state.id!)
                     })
                     .catch(error => {
-                        log.error(`Error saving (update) document in action ${action.type}. "${error}"`)
+                        log.error(`Error saving, to update, document with action ${action.type}. "${stringfyError(error)}"`)
                         Alert.alert(
                             translate("warn"),
                             translate("document_alert_errorSavingDocument_text")
@@ -204,7 +204,7 @@ export function reducerDocumentData(
                         action.payload(insertedDocumentId)
                     })
                     .catch(error => {
-                        log.error(`Error saving (insert) document in action ${action.type}. "${error}"`)
+                        log.error(`Error saving, to insert, document with action ${action.type}. "${stringfyError(error)}"`)
                         Alert.alert(
                             translate("warn"),
                             translate("document_alert_errorSavingDocument_text")
@@ -228,7 +228,7 @@ export function reducerDocumentData(
             if (state.id && state.hasChanges) {
                 DocumentDatabase.updateDocument(state.id, state.name, state.pictureList)
                     .catch(error => {
-                        log.error(`Error saving (update) document in action ${action.type}. "${error}"`)
+                        log.error(`Error saving, to update, document with action ${action.type}. "${stringfyError(error)}"`)
                         Alert.alert(
                             translate("warn"),
                             translate("document_alert_errorSavingDocument_text")
@@ -237,7 +237,7 @@ export function reducerDocumentData(
             } else if (state.pictureList.length > 0 && state.hasChanges) {
                 DocumentDatabase.insertDocument(state.name, state.pictureList)
                     .catch(error => {
-                        log.error(`Error saving (insert) document in action ${action.type}. "${error}"`)
+                        log.error(`Error saving, to insert, document with action ${action.type}. "${stringfyError(error)}"`)
                         Alert.alert(
                             translate("warn"),
                             translate("document_alert_errorSavingDocument_text")
