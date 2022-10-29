@@ -89,7 +89,7 @@ export interface AppTheme {
 
 
 /**
- * Type to add AppTheme in styled-components props
+ * Type to add `AppTheme` in styled-components props
  */
 export interface StyledProps {
     theme: AppTheme;
