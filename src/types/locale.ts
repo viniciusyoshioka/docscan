@@ -10,6 +10,9 @@ export type TranslationKeyType =
     | "delete"
     | "criticalError"
 
+    // App alert
+    | "app_alert_errorSavingTheme_text"
+
     // Home alert
     | "home_alert_errorLoadingDocuments_text"
     | "home_alert_errorDeletingSelectedDocuments_text"

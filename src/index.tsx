@@ -61,10 +61,10 @@ export function App() {
         try {
             await SettingsDatabase.updateSettings("theme", newTheme)
         } catch (error) {
-            log.error(`Error updating theme in settings database: "${JSON.stringify(error)}". Previews value was kept`)
+            log.error(`Error updating theme in settings database: "${stringfyError(error)}". Previews value was kept`)
             Alert.alert(
-                "Aviso",
-                "Erro salvando tema"
+                translate("warn"),
+                translate("app_alert_errorSavingTheme_text")
             )
         }
 

@@ -9,6 +9,9 @@ export const pt_BR: TranslationType = {
     delete: "Apagar",
     criticalError: "Erro crítico",
 
+    // App
+    app_alert_errorSavingTheme_text: "Erro salvando novo tema de cores",
+
     // Home alert
     home_alert_errorLoadingDocuments_text: "Erro ao carregar documentos",
     home_alert_errorDeletingSelectedDocuments_text: "Erro ao apagar documentos selecionados",
