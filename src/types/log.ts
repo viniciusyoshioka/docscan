@@ -37,8 +37,7 @@ export type Logger = {
      *
      * @param extension name of an extension to be added to logger
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    extend: (extension: string) => (...msgs: any[]) => boolean | any;
+    extend: (extension: string) => (...msgs: unknown[]) => boolean | unknown;
 
     /**
      * Return all created extensions
