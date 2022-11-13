@@ -1,7 +1,7 @@
 import CheckBox from "@react-native-community/checkbox"
 import { HandlerStateChangeEventPayload, LongPressGestureHandler, LongPressGestureHandlerEventPayload, State } from "react-native-gesture-handler"
 
-import { toDateTime } from "../../../services/date"
+import { getLocaleDateTime } from "../../../services/date"
 import { useColorTheme } from "../../../services/theme"
 import { DocumentForList } from "../../../types"
 import { DocumentItemBlock, DocumentItemButton, DocumentItemDate, DocumentItemTitle } from "./style"
@@ -58,7 +58,7 @@ export function DocumentItem(props: DocumentItemProps) {
                     </DocumentItemTitle>
 
                     <DocumentItemDate numberOfLines={1}>
-                        {toDateTime(props.document.lastModificationTimestamp)}
+                        {getLocaleDateTime(new Date(props.document.lastModificationTimestamp), "/", ":", false)}
                     </DocumentItemDate>
                 </DocumentItemBlock>
 
