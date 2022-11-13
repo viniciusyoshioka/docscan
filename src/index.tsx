@@ -8,6 +8,7 @@ import SQLite from "react-native-sqlite-storage"
 import { ThemeProvider } from "styled-components/native"
 
 import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase, SettingsDatabase } from "./database"
+import { translate } from "./locales"
 import { Router } from "./router"
 import { cameraSettingsDefault, CameraSettingsProvider, reducerCameraSettings } from "./services/camera"
 import { databaseFolder, fullPathExported, fullPathPdf, fullPathPicture, fullPathRoot, fullPathRootExternal, fullPathTemporary, fullPathTemporaryCompressedPicture, fullPathTemporaryExported, fullPathTemporaryImported } from "./services/constant"
@@ -158,14 +159,14 @@ export function App() {
 
     useEffect(() => {
         if (__DEV__) {
-            DevSettings.addMenuItem("List all app folders", async () => {
+            DevSettings.addMenuItem("List all app's folders", async () => {
                 // App internal folders
                 console.log("======================================================================")
                 console.log(`fullPathRoot: "${fullPathRoot}"`)
                 console.log("----------------------------------------------------------------------")
                 const lsFullPathRoot = await RNFS.readDir(fullPathRoot)
                 if (lsFullPathRoot.length === 0) {
-                    console.log("Pasta vazia")
+                    console.log("Empty folder")
                 } else {
                     lsFullPathRoot.forEach(item => {
                         console.log(item.path)
@@ -177,7 +178,7 @@ export function App() {
                 console.log("----------------------------------------------------------------------")
                 const lsFullPathPicture = await RNFS.readDir(fullPathPicture)
                 if (lsFullPathPicture.length === 0) {
-                    console.log("Pasta vazia")
+                    console.log("Empty folder")
                 } else {
                     lsFullPathPicture.forEach(item => {
                         console.log(item.path)
@@ -189,7 +190,7 @@ export function App() {
                 console.log("----------------------------------------------------------------------")
                 const lsFullPathTemporary = await RNFS.readDir(fullPathTemporary)
                 if (lsFullPathTemporary.length === 0) {
-                    console.log("Pasta vazia")
+                    console.log("Empty folder")
                 } else {
                     lsFullPathTemporary.forEach(item => {
                         console.log(item.path)
@@ -201,7 +202,7 @@ export function App() {
                 console.log("----------------------------------------------------------------------")
                 const lsFullPathTemporaryExported = await RNFS.readDir(fullPathTemporaryExported)
                 if (lsFullPathTemporaryExported.length === 0) {
-                    console.log("Pasta vazia")
+                    console.log("Empty folder")
                 } else {
                     lsFullPathTemporaryExported.forEach(item => {
                         console.log(item.path)
@@ -213,7 +214,7 @@ export function App() {
                 console.log("----------------------------------------------------------------------")
                 const lsFullPathTemporaryImported = await RNFS.readDir(fullPathTemporaryImported)
                 if (lsFullPathTemporaryImported.length === 0) {
-                    console.log("Pasta vazia")
+                    console.log("Empty folder")
                 } else {
                     lsFullPathTemporaryImported.forEach(item => {
                         console.log(item.path)
@@ -225,7 +226,7 @@ export function App() {
                 console.log("----------------------------------------------------------------------")
                 const lsFullPathTemporaryCompressedPicture = await RNFS.readDir(fullPathTemporaryCompressedPicture)
                 if (lsFullPathTemporaryCompressedPicture.length === 0) {
-                    console.log("Pasta vazia")
+                    console.log("Empty folder")
                 } else {
                     lsFullPathTemporaryCompressedPicture.forEach(item => {
                         console.log(item.path)
@@ -240,7 +241,7 @@ export function App() {
                 console.log("----------------------------------------------------------------------")
                 const lsFullPathRootExternal = await RNFS.readDir(fullPathRootExternal)
                 if (lsFullPathRootExternal.length === 0) {
-                    console.log("Pasta vazia")
+                    console.log("Empty folder")
                 } else {
                     lsFullPathRootExternal.forEach(item => {
                         console.log(item.path)
@@ -252,7 +253,7 @@ export function App() {
                 console.log("----------------------------------------------------------------------")
                 const lsFullPathExported = await RNFS.readDir(fullPathExported)
                 if (lsFullPathExported.length === 0) {
-                    console.log("Pasta vazia")
+                    console.log("Empty folder")
                 } else {
                     lsFullPathExported.forEach(item => {
                         console.log(item.path)
@@ -264,7 +265,7 @@ export function App() {
                 console.log("----------------------------------------------------------------------")
                 const lsFullPathPdf = await RNFS.readDir(fullPathPdf)
                 if (lsFullPathPdf.length === 0) {
-                    console.log("Pasta vazia")
+                    console.log("Empty folder")
                 } else {
                     lsFullPathPdf.forEach(item => {
                         console.log(item.path)
@@ -279,7 +280,7 @@ export function App() {
                 console.log("----------------------------------------------------------------------")
                 const lsDatabaseFolder = await RNFS.readDir(databaseFolder)
                 if (lsDatabaseFolder.length === 0) {
-                    console.log("Pasta vazia")
+                    console.log("Empty folder")
                 } else {
                     lsDatabaseFolder.forEach(item => {
                         console.log(item.path)
