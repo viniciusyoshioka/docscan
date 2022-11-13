@@ -183,8 +183,7 @@ export function reducerDocumentData(
             if (state.id && state.hasChanges) {
                 DocumentDatabase.updateDocument(state.id, state.name, state.pictureList)
                     .then(() => {
-                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                        action.payload(state.id!)
+                        action.payload(state.id)
                     })
                     .catch(error => {
                         log.error(`Error saving, to update, document with action ${action.type}. "${stringfyError(error)}"`)
