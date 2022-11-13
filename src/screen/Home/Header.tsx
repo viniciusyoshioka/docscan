@@ -21,7 +21,7 @@ export interface HomeHeaderProps {
 export function HomeHeader(props: HomeHeaderProps) {
 
 
-    function getTitle() {
+    function getTitle(): string {
         if (props.isSelectionMode) {
             return props.selectedDocumentsAmount.toString()
         }
