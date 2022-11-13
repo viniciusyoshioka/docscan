@@ -10,6 +10,7 @@ export const pt_BR: TranslationType = {
     criticalError: "Erro crítico",
 
     // App
+    app_alert_errorLoadingTheme_text: "Erro carregando tema de cores",
     app_alert_errorSavingTheme_text: "Erro salvando novo tema de cores",
 
     // Home alert

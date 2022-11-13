@@ -38,6 +38,10 @@ export function App() {
             appTheme = await SettingsDatabase.getSettingKey("theme")
         } catch (error) {
             log.error(`Error getting theme from database: "${stringfyError(error)}". Fallback to default theme`)
+            Alert.alert(
+                translate("warn"),
+                translate("app_alert_errorLoadingTheme_text")
+            )
         }
 
         AppThemeLight.appTheme = appTheme

@@ -11,6 +11,7 @@ export type TranslationKeyType =
     | "criticalError"
 
     // App alert
+    | "app_alert_errorLoadingTheme_text"
     | "app_alert_errorSavingTheme_text"
 
     // Home alert
