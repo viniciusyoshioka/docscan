@@ -6,7 +6,7 @@ import { AppState, AppStateStatus } from "react-native"
  * @returns boolean indicating if app is in foreground
  */
 export function useIsForeground(): boolean {
-    const [isForeground, setIsForeground] = useState(true)
+    const [isForeground, setIsForeground] = useState(AppState.currentState === "active")
 
     useEffect(() => {
         function onChangeAppState(state: AppStateStatus) {
