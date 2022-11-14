@@ -7,7 +7,7 @@ import { ListItem, Screen } from "../../components"
 import { useBackHandler } from "../../hooks"
 import { translate } from "../../locales"
 import { appDatabaseFullPath, appName, appType, appVersion, logDatabaseFullPath } from "../../services/constant"
-import { log } from "../../services/log"
+import { log, stringfyError } from "../../services/log"
 import { NavigationParamProps } from "../../types"
 import { ChangeTheme } from "./ChangeTheme"
 import { SettingsHeader } from "./Header"
@@ -40,7 +40,7 @@ export function Settings() {
                 failOnCancel: false,
             })
         } catch (error) {
-            log.error(`Error sharing log file: "${error}"`)
+            log.error(`Error sharing log file: "${stringfyError(error)}"`)
             Alert.alert(
                 translate("warn"),
                 translate("settings_alert_errorSharingLogDatabase_text")
@@ -56,7 +56,7 @@ export function Settings() {
                 failOnCancel: false,
             })
         } catch (error) {
-            log.error(`Error sharing document database file: "${error}"`)
+            log.error(`Error sharing document database file: "${stringfyError(error)}"`)
             Alert.alert(
                 translate("warn"),
                 translate("settings_alert_errorSharingAppDatabase_text")
