@@ -20,6 +20,7 @@ export const pt_BR: TranslationType = {
     home_alert_deleteDocuments_text: "Estes documentos serão apagados permanentemente",
     home_alert_exportingDocuments_title: "Aguarde",
     home_alert_exportingDocuments_text: "A exportação de documentos pode demorar um pouco",
+    home_alert_errorExportingDocuments_text: "Erro exportando documentos",
     home_alert_noDocumentsToExport_text: "Nenhum documento existente para ser exportado",
     home_alert_exportDocuments_title: "Exportar",
     home_alert_allSelectedDocumentsWillBeExported_text: "Os documentos selecionados serão exportados",

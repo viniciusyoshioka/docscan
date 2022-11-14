@@ -21,6 +21,7 @@ export type TranslationKeyType =
     | "home_alert_deleteDocuments_text"
     | "home_alert_exportingDocuments_title"
     | "home_alert_exportingDocuments_text"
+    | "home_alert_errorExportingDocuments_text"
     | "home_alert_noDocumentsToExport_text"
     | "home_alert_exportDocuments_title"
     | "home_alert_allSelectedDocumentsWillBeExported_text"

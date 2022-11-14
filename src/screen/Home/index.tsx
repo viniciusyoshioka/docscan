@@ -95,6 +95,13 @@ export function Home() {
 
         await createAllFolderAsync()
         DocumentDatabase.exportDocument(selectedDocumentsId)
+            .catch(error => {
+                log.error(`Error exporting documents before invoking the background service: "${stringfyError(error)}"`)
+                Alert.alert(
+                    translate("warn"),
+                    translate("home_alert_errorExportingDocuments_text")
+                )
+            })
         exitSelectionMode()
     }
 
