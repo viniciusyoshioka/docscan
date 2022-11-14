@@ -1,16 +1,15 @@
-import React from "react"
 import { NavigationContainer } from "@react-navigation/native"
-import { enableScreens } from "react-native-screens"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import React from "react"
+import { enableScreens } from "react-native-screens"
 
-import { Home } from "../screen/Home"
 import { Camera } from "../screen/Camera"
-import { Settings } from "../screen/Settings"
 import { EditDocument } from "../screen/EditDocument"
-import { VisualizePicture } from "../screen/VisualizePicture"
-import { Gallery } from "../screen/Gallery"
 import { FileExplorer } from "../screen/FileExplorer"
-
+import { Gallery } from "../screen/Gallery"
+import { Home } from "../screen/Home"
+import { Settings } from "../screen/Settings"
+import { VisualizePicture } from "../screen/VisualizePicture"
 import { ScreenParams } from "../types"
 
 
