@@ -2,7 +2,7 @@ import CheckBox from "@react-native-community/checkbox"
 import { HandlerStateChangeEventPayload, LongPressGestureHandler, LongPressGestureHandlerEventPayload, State } from "react-native-gesture-handler"
 
 import { getLocaleDateTime } from "../../../services/date"
-import { useColorTheme } from "../../../services/theme"
+import { useAppTheme } from "../../../services/theme"
 import { DocumentForList } from "../../../types"
 import { DocumentItemBlock, DocumentItemButton, DocumentItemDate, DocumentItemTitle } from "./style"
 
@@ -23,7 +23,7 @@ export interface DocumentItemProps {
 export function DocumentItem(props: DocumentItemProps) {
 
 
-    const { color, opacity } = useColorTheme()
+    const { color, opacity } = useAppTheme()
 
 
     function onNormalPress() {

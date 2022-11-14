@@ -3,7 +3,7 @@ import { useWindowDimensions } from "react-native"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 
 import { SelectedSurface, FileNameText, FileNameView, PictureButton, PictureImage } from "./style"
-import { useColorTheme } from "../../../services/theme"
+import { useAppTheme } from "../../../services/theme"
 import { Icon } from "../../../components"
 
 
@@ -24,7 +24,7 @@ export interface PictureItemProps {
 export const PictureItem = (props: PictureItemProps) => {
 
 
-    const { color } = useColorTheme()
+    const { color } = useAppTheme()
 
     const [selected, setSelected] = useState(false)
     const { width } = useWindowDimensions()

@@ -3,7 +3,7 @@ import { NativeSyntheticEvent } from "react-native"
 
 import { Modal, ModalButton, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, RadioButton } from "../../components"
 import { translate } from "../../locales"
-import { useColorTheme } from "../../services/theme"
+import { useAppTheme } from "../../services/theme"
 
 
 export interface ChangeThemeProps extends ModalProps { }
@@ -12,7 +12,7 @@ export interface ChangeThemeProps extends ModalProps { }
 export function ChangeTheme(props: ChangeThemeProps) {
 
 
-    const { appTheme, switchTheme } = useColorTheme()
+    const { appTheme, switchTheme } = useAppTheme()
 
     const [selectedTheme, setSelectedTheme] = useState(appTheme)
 

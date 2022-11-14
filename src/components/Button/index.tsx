@@ -1,7 +1,7 @@
 import React from "react"
 import { RectButtonProps } from "react-native-gesture-handler"
 
-import { useColorTheme } from "../../services/theme"
+import { useAppTheme } from "../../services/theme"
 import { ButtonBase, ButtonIcon, ButtonTextContent } from "./style"
 
 
@@ -14,7 +14,7 @@ export interface ButtonProps extends RectButtonProps {
 export function Button(props: ButtonProps) {
 
 
-    const { color } = useColorTheme()
+    const { color } = useAppTheme()
 
 
     return (

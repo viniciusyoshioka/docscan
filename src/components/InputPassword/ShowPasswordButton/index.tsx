@@ -2,7 +2,7 @@ import React from "react"
 import { TouchableOpacityProps } from "react-native"
 
 import { Icon } from "../../"
-import { useColorTheme } from "../../../services/theme"
+import { useAppTheme } from "../../../services/theme"
 import { ShowPasswordButtonBase } from "./style"
 
 
@@ -15,7 +15,7 @@ export interface ShowPasswordButtonProps extends TouchableOpacityProps {
 export const ShowPasswordButton = (props: ShowPasswordButtonProps) => {
 
 
-    const { color, opacity } = useColorTheme()
+    const { color, opacity } = useAppTheme()
 
 
     return (

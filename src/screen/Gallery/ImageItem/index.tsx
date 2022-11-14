@@ -3,7 +3,7 @@ import { Image, useWindowDimensions } from "react-native"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 
 import { Icon } from "../../../components"
-import { useColorTheme } from "../../../services/theme"
+import { useAppTheme } from "../../../services/theme"
 import { Button, SelectionSurface } from "./style"
 
 
@@ -20,7 +20,7 @@ export interface ImageItemProps {
 export const ImageItem = (props: ImageItemProps) => {
 
 
-    const { color } = useColorTheme()
+    const { color } = useAppTheme()
 
     const [selected, setSelected] = useState(false)
     const imageSize = useWindowDimensions().width / 3

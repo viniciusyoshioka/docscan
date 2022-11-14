@@ -3,7 +3,7 @@ import { TouchableOpacityProps } from "react-native"
 import CheckBox from "@react-native-community/checkbox"
 
 import { Button, Text } from "./style"
-import { useColorTheme } from "../../services/theme"
+import { useAppTheme } from "../../services/theme"
 
 
 export interface CheckButtonProps extends TouchableOpacityProps {
@@ -16,7 +16,7 @@ export interface CheckButtonProps extends TouchableOpacityProps {
 export const CheckButton = (props: CheckButtonProps) => {
 
 
-    const { color, opacity } = useColorTheme()
+    const { color, opacity } = useAppTheme()
 
 
     return (

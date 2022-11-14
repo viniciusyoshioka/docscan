@@ -1,7 +1,7 @@
 import React from "react"
 import { RectButtonProps } from "react-native-gesture-handler"
 
-import { useColorTheme } from "../../services/theme"
+import { useAppTheme } from "../../services/theme"
 import { MenuItemBase, MenuItemText } from "./style"
 
 
@@ -13,7 +13,7 @@ export interface MenuItemProps extends RectButtonProps {
 export const MenuItem = (props: MenuItemProps) => {
 
 
-    const { color } = useColorTheme()
+    const { color } = useAppTheme()
 
 
     return (

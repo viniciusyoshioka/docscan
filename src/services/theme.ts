@@ -160,6 +160,6 @@ export const AppThemeProvider = AppThemeContext.Provider
 /**
  * @returns AppTheme object currently in use
  */
-export function useColorTheme(): AppTheme {
+export function useAppTheme(): AppTheme {
     return useContext(AppThemeContext)
 }

@@ -15,7 +15,7 @@ import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
 import { log } from "../../services/log"
 import { getCameraPermission } from "../../services/permission"
-import { useColorTheme } from "../../services/theme"
+import { useAppTheme } from "../../services/theme"
 import { CameraOrientationType, DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { CameraControl, CameraControlRef } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
@@ -37,7 +37,7 @@ export function Camera() {
     const { cameraSettingsState } = useCameraSettings()
     const { documentDataState, dispatchDocumentData } = useDocumentData()
     const isForeground = useIsForeground()
-    const { color, opacity } = useColorTheme()
+    const { color, opacity } = useAppTheme()
     const deviceOrientation = useDeviceOrientation()
 
     const [hasCameraPermission, setHasCameraPermission] = useState<boolean | undefined>(undefined)

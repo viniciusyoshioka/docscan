@@ -4,7 +4,7 @@ import MaterialIcon from "react-native-vector-icons/MaterialIcons"
 import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons"
 
 import { IconGroup } from "../../types"
-import { useColorTheme } from "../../services/theme"
+import { useAppTheme } from "../../services/theme"
 
 
 function getIconComponent(iconGroup: IconGroup) {
@@ -43,7 +43,7 @@ export const Icon = (props: IconProps) => {
     const IconComponent = getIconComponent(props.iconGroup || "material")
 
 
-    const { color } = useColorTheme()
+    const { color } = useAppTheme()
 
 
     return (

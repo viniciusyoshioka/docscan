@@ -13,7 +13,7 @@ import { deletePicturesService } from "../../services/document-service"
 import { log } from "../../services/log"
 import { createPdf, PdfCreatorOptions, viewPdf } from "../../services/pdf-creator"
 import { getReadPermission, getWritePermission } from "../../services/permission"
-import { useColorTheme } from "../../services/theme"
+import { useAppTheme } from "../../services/theme"
 import { DocumentPicture, NavigationParamProps, RouteParamProps, SimpleDocument } from "../../types"
 import { ConvertPdfOption } from "./ConvertPdfOption"
 import { EditDocumentHeader } from "./Header"
@@ -29,7 +29,7 @@ export function EditDocument() {
 
     const { width } = useWindowDimensions()
 
-    const { color, appTheme } = useColorTheme()
+    const { color, appTheme } = useAppTheme()
 
     const { documentDataState, dispatchDocumentData } = useDocumentData()
     const [selectionMode, setSelectionMode] = useState(false)

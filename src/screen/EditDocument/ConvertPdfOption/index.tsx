@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import Slider from "@react-native-community/slider"
 
 import { Modal, ModalButton, ModalDescription, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, RadioButton } from "../../../components"
-import { useColorTheme } from "../../../services/theme"
+import { useAppTheme } from "../../../services/theme"
 import { DocumentPdfCompressionLevel } from "../../../types"
 import { CompressionText, ViewSlider } from "./style"
 
@@ -15,7 +15,7 @@ export interface ConvertPdfOptionProps extends ModalProps {
 export const ConvertPdfOption = (props: ConvertPdfOptionProps) => {
 
 
-    const { color, opacity } = useColorTheme()
+    const { color, opacity } = useAppTheme()
 
     const [compressionVisualValue, setCompressionVisualValue] = useState(40)
     const [compressionValue, setCompressionValue] = useState(40)

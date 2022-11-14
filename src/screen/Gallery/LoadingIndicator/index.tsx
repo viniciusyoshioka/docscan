@@ -1,14 +1,14 @@
 import React from "react"
 import { ActivityIndicator } from "react-native"
 
-import { useColorTheme } from "../../../services/theme"
+import { useAppTheme } from "../../../services/theme"
 import { LoadingIndicatorView } from "./style"
 
 
 export const LoadingIndicator = () => {
 
 
-    const { color, opacity } = useColorTheme()
+    const { color, opacity } = useAppTheme()
 
 
     return (

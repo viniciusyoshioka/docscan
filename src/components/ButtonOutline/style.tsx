@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components/native"
 
 import { Icon } from ".."
-import { useColorTheme } from "../../services/theme"
+import { useAppTheme } from "../../services/theme"
 import { StyledProps } from "../../types"
 
 
@@ -26,7 +26,7 @@ export interface ButtonIconProps {
 export function ButtonIcon(props: ButtonIconProps) {
 
 
-    const { color, opacity } = useColorTheme()
+    const { color, opacity } = useAppTheme()
 
 
     return (

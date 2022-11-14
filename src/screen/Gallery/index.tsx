@@ -10,7 +10,7 @@ import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../
 import { copyPicturesService } from "../../services/document-service"
 import { log } from "../../services/log"
 import { getWritePermission } from "../../services/permission"
-import { useColorTheme } from "../../services/theme"
+import { useAppTheme } from "../../services/theme"
 import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { GalleryHeader } from "./Header"
 import { ImageItem } from "./ImageItem"
@@ -25,7 +25,7 @@ export function Gallery() {
 
     const { width, height } = useWindowDimensions()
 
-    const { color, opacity } = useColorTheme()
+    const { color, opacity } = useAppTheme()
 
     const { documentDataState, dispatchDocumentData } = useDocumentData()
     const [imageGallery, setImageGallery] = useState<Array<PhotoIdentifier> | null>(null)
