@@ -9,7 +9,7 @@ import { translate } from "../../locales"
 import { appIconOutline } from "../../services/constant"
 import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
-import { log } from "../../services/log"
+import { log, stringfyError } from "../../services/log"
 import { DocumentForList, NavigationParamProps, TranslationKeyType } from "../../types"
 import { DocumentItem } from "./DocumentItem"
 import { HomeHeader } from "./Header"
@@ -39,7 +39,7 @@ export function Home() {
             const documentList = await DocumentDatabase.getDocumentList()
             setDocuments(documentList)
         } catch (error) {
-            log.error(`Error getting document list from database: "${error}"`)
+            log.error(`Error getting document list from database: "${stringfyError(error)}"`)
             Alert.alert(
                 translate("warn"),
                 translate("home_alert_errorLoadingDocuments_text")
@@ -67,7 +67,7 @@ export function Home() {
             await getDocumentList()
             setShowDocumentDeletionModal(false)
         } catch (error) {
-            log.error(`Error deleting selected documents from database: "${error}"`)
+            log.error(`Error deleting selected documents from database: "${stringfyError(error)}"`)
             setShowDocumentDeletionModal(false)
             Alert.alert(
                 translate("warn"),
