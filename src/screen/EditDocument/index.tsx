@@ -56,7 +56,7 @@ export function EditDocument() {
         }
 
         dispatchDocumentData({ type: "save-and-close-document" })
-        navigation.reset({ routes: [{ name: "Home" }] })
+        navigation.reset({ routes: [ { name: "Home" } ] })
     }
 
     async function convertDocumentToPdf(quality: number) {
@@ -111,9 +111,7 @@ export function EditDocument() {
             temporaryPath: fullPathTemporaryCompressedPicture,
         }
 
-        const pictureList: string[] = documentDataState.pictureList.map((item) => {
-            return item.filePath
-        })
+        const pictureList: string[] = documentDataState.pictureList.map(item => item.filePath)
 
         createPdf(pictureList, documentPath, pdfOptions)
     }
@@ -245,9 +243,7 @@ export function EditDocument() {
 
     async function deleteCurrentDocument() {
         if (documentDataState) {
-            const picturePathToDelete = documentDataState.pictureList.map((item) => {
-                return item.filePath
-            })
+            const picturePathToDelete = documentDataState.pictureList.map(item => item.filePath)
 
             if (documentDataState.id) {
                 try {
@@ -263,7 +259,7 @@ export function EditDocument() {
             }
             dispatchDocumentData({ type: "close-document" })
         }
-        navigation.reset({ routes: [{ name: "Home" }] })
+        navigation.reset({ routes: [ { name: "Home" } ] })
     }
 
     function alertDeleteCurrentDocument() {
@@ -288,19 +284,16 @@ export function EditDocument() {
         }
 
         const pictureIdToDelete = selectedPictureIndex
-            .filter((pictureIndex) => {
+            .filter(pictureIndex => {
                 if (documentDataState.pictureList[pictureIndex].id) {
                     return true
                 }
                 return false
             })
-            .map((pictureIndex) => {
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                return documentDataState.pictureList[pictureIndex].id!
-            })
-        const picturePathToDelete = selectedPictureIndex.map((pictureIndex) => {
-            return documentDataState.pictureList[pictureIndex].filePath
-        })
+            .map(pictureIndex => documentDataState.pictureList[pictureIndex].id)
+        const picturePathToDelete = selectedPictureIndex.map(pictureIndex =>
+            documentDataState.pictureList[pictureIndex].filePath
+        )
 
         try {
             await DocumentDatabase.deleteDocumentPicture(pictureIdToDelete)
@@ -373,9 +366,9 @@ export function EditDocument() {
         )
     }
 
-    const keyExtractor = useCallback((item: DocumentPicture, index: number) => {
-        return item.id ? item.id.toString() : index.toString()
-    }, [])
+    const keyExtractor = useCallback((item: DocumentPicture, index: number) => item.id
+        ? item.id.toString()
+        : index.toString(), [])
 
     const getItemLayout = useCallback((_: DocumentPicture[] | null | undefined, index: number) => {
         const pictureItemHeight = getPictureItemHeight(width)
@@ -416,7 +409,7 @@ export function EditDocument() {
                         }
                     })
                 })
-                .catch((error) => {
+                .catch(error => {
                     log.error(`Error getting document from database while opening: "${error}"`)
                     Alert.alert(
                         "Aviso",
