@@ -1,14 +1,14 @@
-import React, { useEffect, useMemo, useRef, useState } from "react"
-import { Alert, StatusBar } from "react-native"
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core"
+import React, { useEffect, useMemo, useRef, useState } from "react"
+import { Alert, Linking, StatusBar } from "react-native"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
 import { OrientationType } from "react-native-orientation-locker"
 import { useSharedValue } from "react-native-reanimated"
-import { Camera as RNCamera, useCameraDevices } from "react-native-vision-camera"
+import { Camera as RNCamera } from "react-native-vision-camera"
 
 import { Button, Icon, Screen } from "../../components"
-import { useBackHandler, useDeviceOrientation, useIsForeground } from "../../hooks"
+import { useBackHandler, useCameraDevices, useDeviceOrientation, useIsForeground } from "../../hooks"
 import { useCameraSettings } from "../../services/camera"
 import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
 import { deletePicturesService } from "../../services/document-service"
@@ -31,29 +31,31 @@ export function Camera() {
     const { params } = useRoute<RouteParamProps<"Camera">>()
     const isFocused = useIsFocused()
 
-    const cameraRef = useRef<RNCamera>(null)
-    const cameraControlRef = useRef<CameraControlRef>(null)
-
-    const { cameraSettingsState } = useCameraSettings()
-    const { documentDataState, dispatchDocumentData } = useDocumentData()
     const isForeground = useIsForeground()
     const { color, opacity } = useAppTheme()
     const deviceOrientation = useDeviceOrientation()
 
-    const [hasCameraPermission, setHasCameraPermission] = useState<boolean | undefined>(undefined)
-    const [cameraOrientation, setCameraOrientation] = useState(getCameraOrientation)
-    const cameraDevices = useCameraDevices()
-    const cameraDevice = cameraDevices[cameraSettingsState.cameraType]
-    const isFlippable = useMemo(() => {
-        return cameraDevices.back !== undefined && cameraDevices.front !== undefined
-    }, [cameraDevices])
+    const { cameraSettingsState } = useCameraSettings()
+    const { documentDataState, dispatchDocumentData } = useDocumentData()
+
+    const cameraRef = useRef<RNCamera>(null)
+    const cameraControlRef = useRef<CameraControlRef>(null)
+
     const [hasChanges, setHasChanges] = useState(false)
+    const [hasCameraPermission, setHasCameraPermission] = useState<boolean | undefined>(undefined)
+    const [cameraOrientation, setCameraOrientation] = useState(getCameraOrientation())
     const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
-    const [isFocusEnable, setIsFocusEnable] = useState(true)
     const [isCameraActive, setIsCameraActive] = useState(isFocused && isForeground && (hasCameraPermission === true))
+    const [isFocusEnable, setIsFocusEnable] = useState(true)
     const [isFocusing, setIsFocusing] = useState(false)
     const focusPosX = useSharedValue(0)
     const focusPosY = useSharedValue(0)
+
+    const cameraDevices = useCameraDevices()
+    const cameraDevice = cameraDevices ? cameraDevices[cameraSettingsState.cameraType] : undefined
+    const isCameraFlippable = useMemo(() =>
+        cameraDevices !== undefined && cameraDevices.back !== undefined && cameraDevices.front !== undefined
+    , [cameraDevices])
 
 
     useBackHandler(() => {
@@ -381,7 +383,7 @@ export function Camera() {
             <CameraSettings
                 visible={isCameraSettingsVisible}
                 setVisible={setIsCameraSettingsVisible}
-                isFlippable={isFlippable}
+                isFlippable={isCameraFlippable}
             />
         </Screen>
     )
