@@ -94,6 +94,7 @@ export function App() {
                                 whiteBalance: settings.cameraWhiteBalance,
                                 cameraType: settings.cameraType,
                                 cameraId: settings.cameraId,
+                                cameraRatio: settings.cameraRatio,
                             }
                         })
                     } catch (error) {
