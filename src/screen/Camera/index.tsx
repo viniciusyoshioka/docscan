@@ -21,7 +21,7 @@ import { CameraControl, CameraControlRef } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
 import { FocusIndicator } from "./FocusIndicator"
 import { CameraHeader } from "./Header"
-import { CameraWrapper, NoCameraAvailableText } from "./style"
+import { CameraButtonWrapper, CameraTextWrapper, CameraWrapper, NoCameraAvailableText, NoCameraAvailableTitle } from "./style"
 
 
 export function Camera() {
@@ -300,22 +300,41 @@ export function Camera() {
                 isLayoutPositionAbsolute={false}
             />
 
-            {(hasCameraPermission === undefined) && (
-                <CameraWrapper />
-            )}
+            {(hasCameraPermission === undefined || hasCameraPermission === false) && (
+                <>
+                    <CameraTextWrapper>
+                        <NoCameraAvailableTitle>
+                            Sem permissão
+                        </NoCameraAvailableTitle>
 
-            {(hasCameraPermission === false) && (
-                <CameraWrapper>
-                    <NoCameraAvailableText>
-                        Sem permissão
-                    </NoCameraAvailableText>
+                        <NoCameraAvailableText>
+                            &bull; Permita o uso da câmera com &quot;Conceder permissão&quot;
+                        </NoCameraAvailableText>
 
-                    <Button
-                        text={"Conceder permissão"}
-                        onPress={requestAndSetCameraPermission}
-                        style={{ marginTop: 16 }}
-                    />
-                </CameraWrapper>
+                        <NoCameraAvailableText>
+                            &bull; Permita o uso da câmera através das configurações do aplicativo
+                            com &quot;Abrir configurações&quot;
+                        </NoCameraAvailableText>
+
+                        <NoCameraAvailableText>
+                            &bull; Ou habilite o uso da câmera nas configurações de privacidade do dispositivo
+                        </NoCameraAvailableText>
+                    </CameraTextWrapper>
+
+                    <CameraButtonWrapper>
+                        <Button
+                            text={"Abrir configurações"}
+                            onPress={() => Linking.openSettings()}
+                            style={{ width: "100%" }}
+                        />
+
+                        <Button
+                            text={"Conceder permissão"}
+                            onPress={requestAndSetCameraPermission}
+                            style={{ marginTop: 8, width: "100%" }}
+                        />
+                    </CameraButtonWrapper>
+                </>
             )}
 
             {(hasCameraPermission && !cameraDevice) && (
