@@ -64,6 +64,11 @@ export function Camera() {
     })
 
 
+    async function requestAndSetCameraPermission() {
+        const hasPermission = await getCameraPermission()
+        setHasCameraPermission(hasPermission)
+    }
+
     function getCameraOrientation(): CameraOrientationType {
         switch (deviceOrientation) {
             case OrientationType["PORTRAIT"]:
@@ -266,11 +271,6 @@ export function Camera() {
         }
     }
 
-    async function requestAndSetCameraPermission() {
-        const hasPermission = await getCameraPermission()
-        setHasCameraPermission(hasPermission)
-    }
-
 
     useEffect(() => {
         requestAndSetCameraPermission()
@@ -278,14 +278,7 @@ export function Camera() {
 
     useEffect(() => {
         setIsCameraActive(isFocused && isForeground && (hasCameraPermission === true))
-    }, [hasCameraPermission])
-
-    useEffect(() => {
-        const newCameraOrientation = getCameraOrientation()
-        if (cameraOrientation !== newCameraOrientation) {
-            setCameraOrientation(newCameraOrientation)
-        }
-    }, [deviceOrientation])
+    }, [isFocused, isForeground, hasCameraPermission])
 
     useEffect(() => {
         if (!isCameraActive) {
@@ -294,6 +287,13 @@ export function Camera() {
         }
         cameraControlRef.current?.enableAction()
     }, [isCameraActive])
+
+    useEffect(() => {
+        const newCameraOrientation = getCameraOrientation()
+        if (cameraOrientation !== newCameraOrientation) {
+            setCameraOrientation(newCameraOrientation)
+        }
+    }, [deviceOrientation])
 
     useEffect(() => {
         if (isCameraSettingsVisible) {
