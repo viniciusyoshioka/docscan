@@ -13,7 +13,6 @@ export interface CameraControlProps {
     addPictureFromGallery: () => void;
     takePicture: () => void;
     editDocument: () => void;
-    isLayoutPositionAbsolute: boolean;
 }
 
 
@@ -91,7 +90,7 @@ export const CameraControl = forwardRef((props: CameraControlProps, ref: Forward
 
 
     return (
-        <ControlView isLayoutPositionAbsolute={props.isLayoutPositionAbsolute}>
+        <ControlView>
             <Reanimated.View style={orientationStyle}>
                 <ControlButton
                     icon={"collections"}

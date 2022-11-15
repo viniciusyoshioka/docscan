@@ -380,7 +380,6 @@ export function Camera() {
                 addPictureFromGallery={addPictureFromGallery}
                 takePicture={takePicture}
                 editDocument={editDocument}
-                isLayoutPositionAbsolute={false}
             />
 
             <CameraSettings
