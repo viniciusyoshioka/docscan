@@ -102,13 +102,9 @@ export function Camera() {
                     }
                     return false
                 })
-                .map((item: DocumentPicture) => {
-                    return item.filePath
-                })
+                .map((item: DocumentPicture) => item.filePath)
             : documentDataState.pictureList
-                .map((item: DocumentPicture) => {
-                    return item.filePath
-                })
+                .map((item: DocumentPicture) => item.filePath)
 
         deletePicturesService(filePathToDelete)
         dispatchDocumentData({ type: "close-document" })
@@ -117,7 +113,7 @@ export function Camera() {
 
     function saveChangesAndGoBack() {
         dispatchDocumentData({ type: "save-and-close-document" })
-        navigation.reset({ routes: [{ name: "Home" }] })
+        navigation.reset({ routes: [ { name: "Home" } ] })
     }
 
     function goBack() {
@@ -220,12 +216,12 @@ export function Camera() {
 
             dispatchDocumentData({
                 type: "add-picture",
-                payload: [{
+                payload: [ {
                     id: undefined,
                     filePath: picturePath,
                     fileName: pictureName,
                     position: documentDataState?.pictureList.length || 0,
-                }]
+                } ]
             })
             setHasChanges(true)
         } catch (error) {
@@ -241,7 +237,7 @@ export function Camera() {
         dispatchDocumentData({ type: "create-new-if-empty" })
 
         navigation.reset({
-            routes: [{ name: "EditDocument" }]
+            routes: [ { name: "EditDocument" } ]
         })
     }
 
