@@ -21,7 +21,7 @@ export function createSettingsTable(tx: SQLite.Transaction) {
                     value TEXT,
                     PRIMARY KEY("key")
                 );
-            `)         
+            `)
 
             tx.executeSql(`
                 INSERT INTO settings 
@@ -48,124 +48,85 @@ export function createSettingsTable(tx: SQLite.Transaction) {
 
 /**
  * Get all settings
- * 
+ *
  * @returns SettingsObject
  */
-export function getSettings(): Promise<SettingsObject> {
-    return new Promise((resolve, reject) => {
-        globalAppDatabase.executeSql(`
-            SELECT * FROM settings;
-        `)
-            .then(([resultSet]) => {
-                const settings = {} as SettingsObject
-                resultSet.rows.raw().forEach((item: {key: SettingsKey, value: never}) => {
-                    settings[item.key] = item.value
-                })
-                // console.log("getSettings settings", settings)
-                resolve(settings)
-            })
-            .catch((error) => {
-                reject(error)
-            })
+export async function getSettings(): Promise<SettingsObject> {
+    const [resultSet] = await globalAppDatabase.executeSql(`
+        SELECT * FROM settings;
+    `)
+
+    const settings = {} as SettingsObject
+    resultSet.rows.raw().forEach((item: {key: SettingsKey, value: never}) => {
+        settings[item.key] = item.value
     })
+    return settings
 }
 
 
 /**
  * Get the setting of the given key
- * 
+ *
  * @param key string of type SettingsKey to get its settings
- * 
+ *
  * @returns the setting of the given key
  */
-export function getSettingKey<K extends SettingsKey>(key: K): Promise<SettingsObject[K]> {
-    return new Promise((resolve, reject) => {
-        globalAppDatabase.executeSql(`
-            SELECT value FROM settings WHERE key = ?;
-        `, [key])
-            .then(([resultSet]) => {
-                // console.log("getSettingKey settings", resultSet.rows.raw())
-                resolve(resultSet.rows.raw()[0].value)
-            })
-            .catch((error) => {
-                reject(error)
-            })
-    })
+export async function getSettingKey<K extends SettingsKey>(key: K): Promise<SettingsObject[K]> {
+    const [resultSet] = await globalAppDatabase.executeSql(`
+        SELECT value FROM settings WHERE key = ?;
+    `, [key])
+
+    return resultSet.rows.raw()[0].value
 }
 
 
 /**
  * Adds a new setting into the database
- * 
+ *
  * @param key SettingsKey string to add
  * @param value the value to add for the given SettingsKey
- * 
+ *
  * @returns the operation's result set
  */
-export function insertSettings<K extends SettingsKey>(key: K, value: SettingsObject[K]): Promise<SQLite.ResultSet> {
-    return new Promise((resolve, reject) => {
-        globalAppDatabase.executeSql(`
-            INSERT INTO settings (key, value) VALUES (?, ?);
-        `, [key, value])
-            .then(([resultSet]) => {
-                resolve(resultSet)
-            })
-            .catch((error) => {
-                reject(error)
-            })
-    })
+export async function insertSettings<K extends SettingsKey>(key: K, value: SettingsObject[K]) {
+    await globalAppDatabase.executeSql(`
+        INSERT INTO settings (key, value) VALUES (?, ?);
+    `, [key, value])
 }
 
 
 /**
  * Updates the value of an existin setting
- * 
+ *
  * @param key SettingsKey string to update
  * @param value the new value for the given SettingsKey
- * 
+ *
  * @returns the operation's result set
  */
-export function updateSettings<K extends SettingsKey>(key: K, value: SettingsObject[K]): Promise<SQLite.ResultSet> {
-    return new Promise((resolve, reject) => {
-        globalAppDatabase.executeSql(`
-            UPDATE settings SET value = ? WHERE key = ?;
-        `, [value, key])
-            .then(([resultSet]) => {
-                resolve(resultSet)
-            })
-            .catch((error) => {
-                reject(error)
-            })
-    })
+export async function updateSettings<K extends SettingsKey>(key: K, value: SettingsObject[K]) {
+    await globalAppDatabase.executeSql(`
+        UPDATE settings SET value = ? WHERE key = ?;
+    `, [value, key])
 }
 
 
 /**
  * Deletes the settings with the given keys
- * 
+ *
  * @param keys SettingsKey's array to be deleted
- * 
+ *
  * @returns the operation's result set
  */
-export function deleteSettings(keys: SettingsKey[]): Promise<SQLite.ResultSet> {
-    return new Promise((resolve, reject) => {
+export async function deleteSettings(keys: SettingsKey[]) {
+    let keysToDelete = ""
+    if (keys.length >= 1) {
+        keysToDelete += "?"
+    }
+    for (let i = 1; i < keys.length; i++) {
+        keysToDelete += ", ?"
+    }
 
-        let keysToDelete = ""
-        if (keys.length >= 1) {
-            keysToDelete += "?"
-        }
-        for (let i = 1; i < keys.length; i++) {
-            keysToDelete += ", ?"
-        }
-
-        globalAppDatabase.executeSql(`
-            DELETE FROM settings WHERE key IN (${keysToDelete});
-        `, keys)
-            .then(([resultSet]) => {
-                resolve(resultSet)
-            })
-            .catch((error) => {
-                reject(error)
-            })
-    })
+    await globalAppDatabase.executeSql(`
+        DELETE FROM settings WHERE key IN (${keysToDelete});
+    `, keys)
 }
