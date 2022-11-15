@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createContext, useContext } from "react"
 import { Alert } from "react-native"
 import RNFS from "react-native-fs"
@@ -183,7 +184,7 @@ export function reducerDocumentData(
             if (state.id && state.hasChanges) {
                 DocumentDatabase.updateDocument(state.id, state.name, state.pictureList)
                     .then(() => {
-                        action.payload(state.id)
+                        action.payload(state.id!)
                     })
                     .catch(error => {
                         log.error(`Error saving, to update, document with action ${action.type}. "${stringfyError(error)}"`)
