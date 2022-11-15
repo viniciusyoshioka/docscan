@@ -6,7 +6,7 @@ import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTimi
 import { SettingsDatabase } from "../../../database"
 import { useDeviceOrientation } from "../../../hooks"
 import { useCameraSettings } from "../../../services/camera"
-import { log } from "../../../services/log"
+import { log, stringfyError } from "../../../services/log"
 import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "../../../services/settings"
 import { CameraType, FlashType, WhiteBalanceType } from "../../../types"
 import { CameraSettingsButton } from "./CameraSettingsButton"
@@ -92,7 +92,7 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         try {
             await SettingsDatabase.updateSettings("cameraFlash", newFlash)
         } catch (error) {
-            log.error(`Error saving new camera flash setting in database: "${error}"`)
+            log.error(`Error saving new camera flash setting in database: "${stringfyError(error)}"`)
             Alert.alert(
                 "Aviso",
                 "Erro salvando nova configuração de flash"
@@ -124,7 +124,7 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         try {
             await SettingsDatabase.updateSettings("cameraWhiteBalance", newWhiteBalance)
         } catch (error) {
-            log.error(`Error saving new camera white balance setting in database: "${error}"`)
+            log.error(`Error saving new camera white balance setting in database: "${stringfyError(error)}"`)
             Alert.alert(
                 "Aviso",
                 "Erro salvando nova configuração de balanço de branco"
@@ -152,7 +152,7 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         try {
             await SettingsDatabase.updateSettings("cameraType", newCameraType)
         } catch (error) {
-            log.error(`Error saving new camera type setting in database: "${error}"`)
+            log.error(`Error saving new camera type setting in database: "${stringfyError(error)}"`)
             Alert.alert(
                 "Aviso",
                 "Erro salvando nova configuração de tipo da câmera"
@@ -185,7 +185,7 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         try {
             await SettingsDatabase.updateSettings("cameraFlash", cameraFlashDefault)
         } catch (error) {
-            log.error(`Error reseting camera flash setting in database: "${error}"`)
+            log.error(`Error reseting camera flash setting in database: "${stringfyError(error)}"`)
             Alert.alert(
                 "Aviso",
                 "Erro redefinindo configuração de flash"
@@ -195,7 +195,7 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         try {
             await SettingsDatabase.updateSettings("cameraWhiteBalance", cameraWhiteBalanceDefault)
         } catch (error) {
-            log.error(`Error reseting camera white balance setting in database: "${error}"`)
+            log.error(`Error reseting camera white balance setting in database: "${stringfyError(error)}"`)
             Alert.alert(
                 "Aviso",
                 "Erro redefinindo configuração de balanço de branco"
@@ -205,7 +205,7 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         try {
             await SettingsDatabase.updateSettings("cameraType", cameraTypeDefault)
         } catch (error) {
-            log.error(`Error reseting camera type setting in database: "${error}"`)
+            log.error(`Error reseting camera type setting in database: "${stringfyError(error)}"`)
             Alert.alert(
                 "Aviso",
                 "Erro redefinindo configuração de tipo de câmera"
@@ -215,7 +215,7 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         try {
             await SettingsDatabase.updateSettings("cameraId", cameraIdDefault)
         } catch (error) {
-            log.error(`Error reseting camera id setting in database: "${error}"`)
+            log.error(`Error reseting camera id setting in database: "${stringfyError(error)}"`)
             Alert.alert(
                 "Aviso",
                 "Erro redefinindo configuração de id da câmera"
