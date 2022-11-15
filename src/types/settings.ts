@@ -1,4 +1,4 @@
-import { CameraType, FlashType, ThemeType, WhiteBalanceType } from "."
+import { CameraRatio, CameraType, FlashType, ThemeType, WhiteBalanceType } from "."
 
 
 /**
@@ -10,6 +10,7 @@ export type SettingsObject = {
     cameraWhiteBalance: WhiteBalanceType;
     cameraType: CameraType;
     cameraId: string;
+    cameraRatio: CameraRatio;
 }
 
 
@@ -21,3 +22,4 @@ export type SettingsKey = "theme"
     | "cameraWhiteBalance"
     | "cameraType"
     | "cameraId"
+    | "cameraRatio"

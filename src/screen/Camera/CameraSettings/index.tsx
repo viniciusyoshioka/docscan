@@ -8,7 +8,7 @@ import { useDeviceOrientation } from "../../../hooks"
 import { useCameraSettings } from "../../../services/camera"
 import { log, stringfyError } from "../../../services/log"
 import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "../../../services/settings"
-import { CameraType, FlashType, WhiteBalanceType } from "../../../types"
+import { CameraRatio, CameraType, FlashType, WhiteBalanceType } from "../../../types"
 import { CameraSettingsButton } from "./CameraSettingsButton"
 import { CameraSettingsModal, CameraSettingsModalProps } from "./CameraSettingsModal"
 
@@ -72,6 +72,17 @@ export const CameraSettings = (props: CameraSettingsProps) => {
                 return "Virar"
         }
     }, [cameraSettingsState.cameraType])
+
+    const changeRatioButtonText = useMemo((): string => {
+        switch (cameraSettingsState.cameraRatio) {
+            case "3:4":
+                return "Proporção 3:4"
+            case "9:16":
+                return "Proporção 9:16"
+            default:
+                return "Proporção"
+        }
+    }, [cameraSettingsState.cameraRatio])
 
 
     async function changeFlash() {
@@ -177,6 +188,29 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         //         "Erro salvando nova configuração de id da câmera"
         //     )
         // }
+    }
+
+    async function changeCameraRatio() {
+        let newCameraRatio: CameraRatio = "3:4"
+        switch (cameraSettingsState.cameraRatio) {
+            case "3:4":
+                newCameraRatio = "9:16"
+                break
+            case "9:16":
+                newCameraRatio = "3:4"
+                break
+        }
+
+        dispatchCameraSettings({ type: "camera-ratio", payload: newCameraRatio })
+        try {
+            await SettingsDatabase.updateSettings("cameraRatio", newCameraRatio)
+        } catch (error) {
+            log.error(`Error saving new camera ratio setting in database: "${stringfyError(error)}"`)
+            Alert.alert(
+                "Aviso",
+                "Erro salvando nova configuração de proporção da câmera"
+            )
+        }
     }
 
     async function resetCameraSettings() {
@@ -313,6 +347,14 @@ export const CameraSettings = (props: CameraSettingsProps) => {
                     />
                 </Reanimated.View>
             )} */}
+
+            <Reanimated.View style={orientationStyle}>
+                <CameraSettingsButton
+                    optionName={changeRatioButtonText}
+                    iconName={"aspect-ratio"}
+                    onPress={changeCameraRatio}
+                />
+            </Reanimated.View>
 
             <Reanimated.View style={orientationStyle}>
                 <CameraSettingsButton

@@ -20,6 +20,12 @@ export type CameraType = "front" | "back"
 
 
 /**
+ * All camera ratio setting options
+ */
+export type CameraRatio = "3:4" | "9:16"
+
+
+/**
  * Type of the complete camera settings object
  */
 export type CameraSettingsObject = {
@@ -27,6 +33,7 @@ export type CameraSettingsObject = {
     whiteBalance: WhiteBalanceType;
     cameraType: CameraType;
     cameraId: string;
+    cameraRatio: CameraRatio;
 }
 
 

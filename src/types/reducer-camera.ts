@@ -1,4 +1,4 @@
-import { CameraSettingsObject, CameraType, FlashType, WhiteBalanceType } from "."
+import { CameraRatio, CameraSettingsObject, CameraType, FlashType, WhiteBalanceType } from "."
 
 
 /**
@@ -37,6 +37,15 @@ type CameraSettingsCameraId = {
 }
 
 /**
+ * Receives the new camera ratio and sets it
+ * to the state
+ */
+type CameraSettingsCameraRatio = {
+    type: "camera-ratio";
+    payload: CameraRatio;
+}
+
+/**
  * Receives an object with all camera settings data
  * to set the state
  */
@@ -62,4 +71,5 @@ export type CameraSettingsReducerAction = CameraSettingsSet
     | CameraSettingsWhiteBalance
     | CameraSettingsCameraType
     | CameraSettingsCameraId
+    | CameraSettingsCameraRatio
     | CameraSettingsReset

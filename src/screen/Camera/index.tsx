@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core"
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { Alert, Linking, StatusBar } from "react-native"
+import { Alert, Linking, StatusBar, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
 import { OrientationType } from "react-native-orientation-locker"
@@ -15,6 +15,7 @@ import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { getCameraPermission } from "../../services/permission"
+import { getCameraRatioNumber } from "../../services/settings"
 import { CameraOrientationType, DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { CameraControl, CameraControlRef } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
@@ -30,6 +31,7 @@ export function Camera() {
     const { params } = useRoute<RouteParamProps<"Camera">>()
     const isFocused = useIsFocused()
 
+    const { width } = useWindowDimensions()
     const isForeground = useIsForeground()
     const deviceOrientation = useDeviceOrientation()
 
@@ -43,6 +45,7 @@ export function Camera() {
     const [hasCameraPermission, setHasCameraPermission] = useState<boolean | undefined>(undefined)
     const [cameraOrientation, setCameraOrientation] = useState(getCameraOrientation())
     const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
+    const [showCamera, setShowCamera] = useState(true)
     const [isCameraActive, setIsCameraActive] = useState(isFocused && isForeground && (hasCameraPermission === true))
     const [isFocusEnable, setIsFocusEnable] = useState(true)
     const [isFocusing, setIsFocusing] = useState(false)
@@ -287,6 +290,14 @@ export function Camera() {
         setIsFocusEnable(true)
     }, [isCameraSettingsVisible])
 
+    useEffect(() => {
+        setShowCamera(false)
+
+        setTimeout(() => {
+            setShowCamera(true)
+        }, 100)
+    }, [cameraSettingsState.cameraRatio])
+
 
     return (
         <Screen style={{ backgroundColor: "black" }}>
@@ -343,7 +354,7 @@ export function Camera() {
                 />
             )}
 
-            {(hasCameraPermission && cameraDevice) && (
+            {(hasCameraPermission && cameraDevice && showCamera) && (
                 <CameraWrapper>
                     <TapGestureHandler
                         minPointers={1}
@@ -358,7 +369,10 @@ export function Camera() {
                             audio={false}
                             enableZoomGesture={true}
                             orientation={cameraOrientation}
-                            style={{ width: "100%", aspectRatio: 3 / 4 }}
+                            style={{
+                                width: width,
+                                height: width * getCameraRatioNumber(cameraSettingsState.cameraRatio),
+                            }}
                         />
                     </TapGestureHandler>
                 </CameraWrapper>

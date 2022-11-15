@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react"
 
 import { CameraSettingsContextType, CameraSettingsObject, CameraSettingsReducerAction } from "../types"
-import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "./settings"
+import { cameraFlashDefault, cameraIdDefault, cameraRatioDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "./settings"
 
 
 /**
@@ -12,6 +12,7 @@ export const cameraSettingsDefault: CameraSettingsObject = {
     whiteBalance: cameraWhiteBalanceDefault,
     cameraType: cameraTypeDefault,
     cameraId: cameraIdDefault,
+    cameraRatio: cameraRatioDefault,
 }
 
 
@@ -43,6 +44,11 @@ export function reducerCameraSettings(
             return {
                 ...state,
                 cameraId: action.payload,
+            }
+        case "camera-ratio":
+            return {
+                ...state,
+                cameraRatio: action.payload,
             }
         case "set":
             return {
