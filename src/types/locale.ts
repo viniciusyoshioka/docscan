@@ -113,3 +113,11 @@ export type TranslationKeyType =
 export type TranslationType = {
     [key in TranslationKeyType]: string;
 }
+
+
+/**
+ * Type for object used to normalize language code
+ */
+export type LanguageCodeMap = {
+    [key in string]: string;
+}
