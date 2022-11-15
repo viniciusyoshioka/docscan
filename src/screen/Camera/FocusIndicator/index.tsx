@@ -23,7 +23,7 @@ export function FocusIndicator(props: FocusIndicatorProps) {
     return (
         <FocusIndicatorBase
             {...props}
-            style={[{
+            style={[ {
                 transform: [
                     { translateX: props.focusPosX - (FOCUS_INDICATOR_SIZE / 2) },
                     { translateY: props.focusPosY - (FOCUS_INDICATOR_SIZE / 2) }
