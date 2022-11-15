@@ -9,6 +9,7 @@ import { Camera as RNCamera } from "react-native-vision-camera"
 
 import { Button, EmptyList, Screen } from "../../components"
 import { useBackHandler, useCameraDevices, useDeviceOrientation, useIsForeground } from "../../hooks"
+import { translate } from "../../locales"
 import { useCameraSettings } from "../../services/camera"
 import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
 import { deletePicturesService } from "../../services/document-service"
@@ -132,12 +133,12 @@ export function Camera() {
 
         if (!params && hasChanges) {
             Alert.alert(
-                "Aviso",
-                "Você tem fotos que não foram salvas, ao voltar elas serão perdidas",
+                translate("warn"),
+                translate("camera_alert_unsavedPictures_text"),
                 [
-                    { text: "Cancelar", onPress: () => { } },
-                    { text: "Não salvar", onPress: async () => await deleteUnsavedPictures() },
-                    { text: "Salvar", onPress: () => saveChangesAndGoBack() }
+                    { text: translate("cancel"), onPress: () => { } },
+                    { text: translate("dont_save"), onPress: async () => await deleteUnsavedPictures() },
+                    { text: translate("save"), onPress: () => saveChangesAndGoBack() }
                 ]
             )
         }
@@ -218,8 +219,8 @@ export function Camera() {
         } catch (error) {
             log.error(`Error taking picture: "${stringfyError(error)}"`)
             Alert.alert(
-                "Erro",
-                "Erro desconhecido ao tirar foto, tente novamente"
+                translate("warn"),
+                translate("camera_alert_unknownErrorTakingPicture_text")
             )
         }
     }
@@ -312,32 +313,31 @@ export function Camera() {
                 <>
                     <CameraTextWrapper>
                         <NoCameraAvailableTitle>
-                            Sem permissão
+                            {translate("camera_noPermission")}
                         </NoCameraAvailableTitle>
 
                         <NoCameraAvailableText>
-                            &bull; Permita o uso da câmera com &quot;Conceder permissão&quot;
+                            &bull; {translate("camera_allowCameraWithGrantPermission")}
                         </NoCameraAvailableText>
 
                         <NoCameraAvailableText>
-                            &bull; Permita o uso da câmera através das configurações do aplicativo
-                            com &quot;Abrir configurações&quot;
+                            &bull; {translate("camera_allowCameraThroughSettings")}
                         </NoCameraAvailableText>
 
                         <NoCameraAvailableText>
-                            &bull; Ou habilite o uso da câmera nas configurações de privacidade do dispositivo
+                            &bull; {translate("camera_enableCamera")}
                         </NoCameraAvailableText>
                     </CameraTextWrapper>
 
                     <CameraButtonWrapper>
                         <Button
-                            text={"Abrir configurações"}
+                            text={translate("camera_openSettings")}
                             onPress={() => Linking.openSettings()}
                             style={{ width: "100%" }}
                         />
 
                         <Button
-                            text={"Conceder permissão"}
+                            text={translate("camera_grantPermission")}
                             onPress={requestAndSetCameraPermission}
                             style={{ marginTop: 8, width: "100%" }}
                         />
@@ -349,7 +349,7 @@ export function Camera() {
                 <EmptyList
                     iconName={"no-photography"}
                     iconSize={56}
-                    message={"Câmera indisponível"}
+                    message={translate("camera_cameraNotAvailable")}
                     iconStyle={{ marginBottom: 16 }}
                 />
             )}

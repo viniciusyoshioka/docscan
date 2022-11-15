@@ -8,6 +8,8 @@ export const pt_BR: TranslationType = {
     warn: "Aviso",
     delete: "Apagar",
     criticalError: "Erro crítico",
+    save: "Salvar",
+    dont_save: "Não salvar",
 
     // App
     app_alert_errorLoadingTheme_text: "Erro carregando tema de cores",
@@ -43,6 +45,36 @@ export const pt_BR: TranslationType = {
     home_menu_settings: "Configurações",
     home_menu_mergeDocument: "Unir documentos",
     home_menu_duplicateDocument: "Duplicar documentos",
+
+    // Camera alert
+    camera_alert_unsavedPictures_text: "Você tem fotos que não foram salvas, ao voltar elas serão perdidas",
+    camera_alert_unknownErrorTakingPicture_text: "Erro desconhecido ao tirar foto, tente novamente",
+    // Camera screen
+    camera_noPermission: "Sem permissão",
+    camera_allowCameraWithGrantPermission: "Permita o uso da câmera com \"Conceder permissão\"",
+    camera_allowCameraThroughSettings: "Permita o uso da câmera através das configurações do aplicativo com \"Abrir configurações\"",
+    camera_enableCamera: "Ou habilite o uso da câmera nas configurações de privacidade do dispositivo",
+    camera_openSettings: "Abrir configurações",
+    camera_grantPermission: "Conceder permissão",
+    camera_cameraNotAvailable: "Câmera indisponível",
+    // Camera CameraSettings alert
+    CameraSettings_alert_errorSavingNewFlashSetting_text: "Erro salvando nova configuração de flash",
+    CameraSettings_alert_errorSavingNewWhiteBalanceSetting_text: "Erro salvando nova configuração de balanço de branco",
+    CameraSettings_alert_errorSavingNewCameraTypeSetting_text: "Erro salvando nova configuração de tipo da câmera",
+    CameraSettings_alert_errorSavingNewRatioSetting_text: "Erro salvando nova configuração de proporção",
+    CameraSettings_alert_errorResetingFlashSetting_text: "Erro redefinindo configuração de flash da câmera",
+    CameraSettings_alert_errorResetingWhiteBalanceSetting_text: "Erro redefinindo configuração de balanço de branco da câmera",
+    CameraSettings_alert_errorResetingCameraTypeSetting_text: "Erro redefinindo configuração de tipo de câmera",
+    CameraSettings_alert_errorResetingCameraIdSetting_text: "Erro redefinindo configuração de id da câmera",
+    CameraSettings_alert_errorResetingRatioSetting_text: "Erro redefinindo configuração de porporção da câmera",
+    // Camera CameraSettings
+    CameraSettings_frontalCamera: "Câmera frontal",
+    CameraSettings_backCamera: "Câmera traseira",
+    CameraSettings_flip: "Virar",
+    CameraSettings_ratio: "Proporção",
+    CameraSettings_flash: "Flash",
+    CameraSettings_whiteBalance: "Balanço de branco",
+    CameraSettings_reset: "Redefinir",
 
     // Settings alert
     settings_alert_errorSharingLogDatabase_text: "Erro ao compartilhar logs",

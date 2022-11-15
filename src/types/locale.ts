@@ -9,6 +9,8 @@ export type TranslationKeyType =
     | "warn"
     | "delete"
     | "criticalError"
+    | "save"
+    | "dont_save"
 
     // App alert
     | "app_alert_errorLoadingTheme_text"
@@ -44,6 +46,36 @@ export type TranslationKeyType =
     | "home_menu_settings"
     | "home_menu_mergeDocument"
     | "home_menu_duplicateDocument"
+
+    // Camera alert
+    | "camera_alert_unsavedPictures_text"
+    | "camera_alert_unknownErrorTakingPicture_text"
+    // Camera screen
+    | "camera_noPermission"
+    | "camera_allowCameraWithGrantPermission"
+    | "camera_allowCameraThroughSettings"
+    | "camera_enableCamera"
+    | "camera_openSettings"
+    | "camera_grantPermission"
+    | "camera_cameraNotAvailable"
+    // Camera CameraSettings alert
+    | "CameraSettings_alert_errorSavingNewFlashSetting_text"
+    | "CameraSettings_alert_errorSavingNewWhiteBalanceSetting_text"
+    | "CameraSettings_alert_errorSavingNewCameraTypeSetting_text"
+    | "CameraSettings_alert_errorSavingNewRatioSetting_text"
+    | "CameraSettings_alert_errorResetingFlashSetting_text"
+    | "CameraSettings_alert_errorResetingWhiteBalanceSetting_text"
+    | "CameraSettings_alert_errorResetingCameraTypeSetting_text"
+    | "CameraSettings_alert_errorResetingCameraIdSetting_text"
+    | "CameraSettings_alert_errorResetingRatioSetting_text"
+    // Camera CameraSettings
+    | "CameraSettings_frontalCamera"
+    | "CameraSettings_backCamera"
+    | "CameraSettings_flip"
+    | "CameraSettings_ratio"
+    | "CameraSettings_flash"
+    | "CameraSettings_whiteBalance"
+    | "CameraSettings_reset"
 
     // Settings alert
     | "settings_alert_errorSharingLogDatabase_text"

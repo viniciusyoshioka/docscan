@@ -5,9 +5,10 @@ import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTimi
 
 import { SettingsDatabase } from "../../../database"
 import { useDeviceOrientation } from "../../../hooks"
+import { translate } from "../../../locales"
 import { useCameraSettings } from "../../../services/camera"
 import { log, stringfyError } from "../../../services/log"
-import { cameraFlashDefault, cameraIdDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "../../../services/settings"
+import { cameraFlashDefault, cameraIdDefault, cameraRatioDefault, cameraTypeDefault, cameraWhiteBalanceDefault } from "../../../services/settings"
 import { CameraRatio, CameraType, FlashType, WhiteBalanceType } from "../../../types"
 import { CameraSettingsButton } from "./CameraSettingsButton"
 import { CameraSettingsModal, CameraSettingsModalProps } from "./CameraSettingsModal"
@@ -65,22 +66,22 @@ export const CameraSettings = (props: CameraSettingsProps) => {
     const switchCameraButtonText = useMemo((): string => {
         switch (cameraSettingsState.cameraType) {
             case "back":
-                return "Câmera frontal"
+                return translate("CameraSettings_frontalCamera")
             case "front":
-                return "Câmera traseira"
+                return translate("CameraSettings_backCamera")
             default:
-                return "Virar"
+                return translate("CameraSettings_flip")
         }
     }, [cameraSettingsState.cameraType])
 
     const changeRatioButtonText = useMemo((): string => {
         switch (cameraSettingsState.cameraRatio) {
             case "3:4":
-                return "Proporção 3:4"
+                return `${translate("CameraSettings_ratio")} 3:4`
             case "9:16":
-                return "Proporção 9:16"
+                return `${translate("CameraSettings_ratio")} 9:16`
             default:
-                return "Proporção"
+                return translate("CameraSettings_ratio")
         }
     }, [cameraSettingsState.cameraRatio])
 
@@ -105,8 +106,8 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         } catch (error) {
             log.error(`Error saving new camera flash setting in database: "${stringfyError(error)}"`)
             Alert.alert(
-                "Aviso",
-                "Erro salvando nova configuração de flash"
+                translate("warn"),
+                translate("CameraSettings_alert_errorSavingNewFlashSetting_text")
             )
         }
     }
@@ -137,8 +138,8 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         } catch (error) {
             log.error(`Error saving new camera white balance setting in database: "${stringfyError(error)}"`)
             Alert.alert(
-                "Aviso",
-                "Erro salvando nova configuração de balanço de branco"
+                translate("warn"),
+                translate("CameraSettings_alert_errorSavingNewWhiteBalanceSetting_text")
             )
         }
     }
@@ -165,8 +166,8 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         } catch (error) {
             log.error(`Error saving new camera type setting in database: "${stringfyError(error)}"`)
             Alert.alert(
-                "Aviso",
-                "Erro salvando nova configuração de tipo da câmera"
+                translate("warn"),
+                translate("CameraSettings_alert_errorSavingNewCameraTypeSetting_text")
             )
         }
     }
@@ -207,8 +208,8 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         } catch (error) {
             log.error(`Error saving new camera ratio setting in database: "${stringfyError(error)}"`)
             Alert.alert(
-                "Aviso",
-                "Erro salvando nova configuração de proporção da câmera"
+                translate("warn"),
+                translate("CameraSettings_alert_errorSavingNewRatioSetting_text")
             )
         }
     }
@@ -221,8 +222,8 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         } catch (error) {
             log.error(`Error reseting camera flash setting in database: "${stringfyError(error)}"`)
             Alert.alert(
-                "Aviso",
-                "Erro redefinindo configuração de flash"
+                translate("warn"),
+                translate("CameraSettings_alert_errorResetingFlashSetting_text")
             )
         }
 
@@ -231,8 +232,8 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         } catch (error) {
             log.error(`Error reseting camera white balance setting in database: "${stringfyError(error)}"`)
             Alert.alert(
-                "Aviso",
-                "Erro redefinindo configuração de balanço de branco"
+                translate("warn"),
+                translate("CameraSettings_alert_errorResetingWhiteBalanceSetting_text")
             )
         }
 
@@ -241,8 +242,8 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         } catch (error) {
             log.error(`Error reseting camera type setting in database: "${stringfyError(error)}"`)
             Alert.alert(
-                "Aviso",
-                "Erro redefinindo configuração de tipo de câmera"
+                translate("warn"),
+                translate("CameraSettings_alert_errorResetingCameraTypeSetting_text")
             )
         }
 
@@ -251,8 +252,18 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         } catch (error) {
             log.error(`Error reseting camera id setting in database: "${stringfyError(error)}"`)
             Alert.alert(
-                "Aviso",
-                "Erro redefinindo configuração de id da câmera"
+                translate("warn"),
+                translate("CameraSettings_alert_errorResetingCameraIdSetting_text")
+            )
+        }
+
+        try {
+            await SettingsDatabase.updateSettings("cameraRatio", cameraRatioDefault)
+        } catch (error) {
+            log.error(`Error reseting camera ratio setting in database: "${stringfyError(error)}"`)
+            Alert.alert(
+                translate("warn"),
+                translate("CameraSettings_alert_errorResetingRatioSetting_text")
             )
         }
     }
@@ -314,7 +325,7 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         <CameraSettingsModal {...props}>
             <Reanimated.View style={orientationStyle}>
                 <CameraSettingsButton
-                    optionName={"Flash"}
+                    optionName={translate("CameraSettings_flash")}
                     iconName={flashIcon}
                     onPress={changeFlash}
                 />
@@ -322,7 +333,7 @@ export const CameraSettings = (props: CameraSettingsProps) => {
 
             {/* <Reanimated.View style={orientationStyle}>
                 <CameraSettingsButton
-                    optionName={"Balanço de branco"}
+                    optionName={translate("CameraSettings_whiteBalance")}
                     iconName={whiteBalanceIcon}
                     onPress={changeWhiteBalance}
                 />
@@ -358,7 +369,7 @@ export const CameraSettings = (props: CameraSettingsProps) => {
 
             <Reanimated.View style={orientationStyle}>
                 <CameraSettingsButton
-                    optionName={"Redefinir"}
+                    optionName={translate("CameraSettings_reset")}
                     iconName={"restore"}
                     onPress={resetCameraSettings}
                 />
