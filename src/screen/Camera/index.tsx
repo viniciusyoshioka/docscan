@@ -297,7 +297,6 @@ export function Camera() {
             <CameraHeader
                 goBack={goBack}
                 openSettings={() => setIsCameraSettingsVisible(true)}
-                isLayoutPositionAbsolute={false}
             />
 
             {(hasCameraPermission === undefined || hasCameraPermission === false) && (

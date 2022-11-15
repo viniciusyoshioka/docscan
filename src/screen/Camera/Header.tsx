@@ -7,13 +7,12 @@ import { Header, HeaderButton, HeaderTitle } from "../../components"
 export interface CameraHeaderProps {
     goBack: () => void;
     openSettings: () => void;
-    isLayoutPositionAbsolute: boolean;
 }
 
 
 export function CameraHeader(props: CameraHeaderProps) {
     return (
-        <Header style={props.isLayoutPositionAbsolute ? styles.absolute : styles.relative}>
+        <Header style={styles.absolute}>
             <HeaderButton
                 iconName={"arrow-back"}
                 onPress={props.goBack}
@@ -36,9 +35,8 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         right: 0,
-        backgroundColor: "transparent",
-    },
-    relative: {
-        backgroundColor: "transparent",
+        elevation: 0,
+        zIndex: 1,
+        backgroundColor: "rgba(0, 0, 0, 0.3)",
     },
 })
