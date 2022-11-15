@@ -348,7 +348,11 @@ export function Camera() {
 
             {(hasCameraPermission && cameraDevice) && (
                 <CameraWrapper>
-                    <TapGestureHandler minPointers={1} onHandlerStateChange={onTapStateChange}>
+                    <TapGestureHandler
+                        minPointers={1}
+                        enabled={isCameraActive && isFocusEnable}
+                        onHandlerStateChange={onTapStateChange}
+                    >
                         <RNCamera
                             ref={cameraRef}
                             isActive={isCameraActive}
