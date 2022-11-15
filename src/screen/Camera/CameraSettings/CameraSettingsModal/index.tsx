@@ -12,7 +12,7 @@ export interface CameraSettingsModalProps {
 }
 
 
-export const CameraSettingsModal = (props: CameraSettingsModalProps) => {
+export function CameraSettingsModal(props: CameraSettingsModalProps) {
 
 
     function closeModal() {
