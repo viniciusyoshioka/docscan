@@ -1,6 +1,6 @@
 import React, { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from "react"
-import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
 import { OrientationType } from "react-native-orientation-locker"
+import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
 
 import { useDeviceOrientation } from "../../../hooks"
 import { ControlButton } from "./ControlButton"
@@ -79,11 +79,9 @@ export const CameraControl = forwardRef((props: CameraControlProps, ref: Forward
         }
     }, [deviceOrientation])
 
-    const animatedRotation = useDerivedValue(() => {
-        return withTiming(rotationDegree.value, {
-            duration: 200,
-        })
-    })
+    const animatedRotation = useDerivedValue(() => withTiming(rotationDegree.value, {
+        duration: 200,
+    }))
 
     const orientationStyle = useAnimatedStyle(() => ({
         transform: [
