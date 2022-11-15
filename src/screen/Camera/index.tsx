@@ -13,7 +13,7 @@ import { useCameraSettings } from "../../services/camera"
 import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
 import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
-import { log } from "../../services/log"
+import { log, stringfyError } from "../../services/log"
 import { getCameraPermission } from "../../services/permission"
 import { useAppTheme } from "../../services/theme"
 import { CameraOrientationType, DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
@@ -215,7 +215,7 @@ export function Camera() {
             })
             setHasChanges(true)
         } catch (error) {
-            log.error(`Camera takePicture - Erro ao tirar foto. Mensagem: "${error}"`)
+            log.error(`Error taking picture: "${stringfyError(error)}"`)
             Alert.alert(
                 "Erro",
                 "Erro desconhecido ao tirar foto, tente novamente"
