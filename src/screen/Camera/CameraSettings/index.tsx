@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react"
 import { Alert } from "react-native"
-import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
 import { OrientationType } from "react-native-orientation-locker"
+import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
 
 import { SettingsDatabase } from "../../../database"
 import { useDeviceOrientation } from "../../../hooks"
@@ -165,7 +165,7 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         // if ((props.currentCameraIndex + 1) < props.cameraList.length) {
         //     newIndex = props.currentCameraIndex + 1
         // }
-        // 
+        //
         // dispatchCameraSettings({ type: "camera-id", payload: props.cameraList[newIndex].id })
         // props.setCurrentCameraIndex(newIndex)
         // try {
@@ -265,11 +265,9 @@ export const CameraSettings = (props: CameraSettingsProps) => {
         }
     }, [deviceOrientation])
 
-    const animatedRotation = useDerivedValue(() => {
-        return withTiming(rotationDegree.value, {
-            duration: 200,
-        })
-    })
+    const animatedRotation = useDerivedValue(() => withTiming(rotationDegree.value, {
+        duration: 200,
+    }))
 
     const orientationStyle = useAnimatedStyle(() => ({
         transform: [
