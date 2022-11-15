@@ -1,7 +1,8 @@
+import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
 
-export const ControlAction = styled.TouchableOpacity`
+export const ControlAction = styled(TouchableOpacity)`
     width: 56px;
     height: 56px;
     border-radius: 56px;
