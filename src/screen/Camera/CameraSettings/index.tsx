@@ -23,7 +23,7 @@ export interface CameraSettingsProps extends CameraSettingsModalProps {
 }
 
 
-export const CameraSettings = (props: CameraSettingsProps) => {
+export function CameraSettings(props: CameraSettingsProps) {
 
 
     const deviceOrientation = useDeviceOrientation()
