@@ -173,16 +173,6 @@ export function Camera() {
     }
 
     async function takePicture() {
-        const hasCameraPermission = await getCameraPermission()
-        if (!hasCameraPermission) {
-            log.warn("Camera takePicture - Não tem permissão para tirar foto")
-            Alert.alert(
-                "Erro",
-                "Sem permissão para usar a câmera"
-            )
-            return
-        }
-
         try {
             if (!cameraRef.current) {
                 throw new Error("Camera ref is undefined")
