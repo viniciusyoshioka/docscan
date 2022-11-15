@@ -249,7 +249,7 @@ export function Camera() {
                     y: parseInt(event.nativeEvent.y.toFixed()),
                 })
             } catch (error) {
-                log.warn(`Error focusing camera ${error}`)
+                log.warn(`Error focusing camera ${stringfyError(error)}`)
             }
 
             setIsFocusEnable(true)
