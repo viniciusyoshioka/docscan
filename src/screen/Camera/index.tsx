@@ -173,12 +173,12 @@ export function Camera() {
     }
 
     async function takePicture() {
+        await createAllFolderAsync()
+
         try {
             if (!cameraRef.current) {
                 throw new Error("Camera ref is undefined")
             }
-
-            await createAllFolderAsync()
 
             const response = await cameraRef.current.takePhoto({
                 flash: cameraSettingsState.flash,
