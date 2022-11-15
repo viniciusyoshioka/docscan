@@ -7,7 +7,7 @@ import { OrientationType } from "react-native-orientation-locker"
 import { useSharedValue } from "react-native-reanimated"
 import { Camera as RNCamera } from "react-native-vision-camera"
 
-import { Button, Icon, Screen } from "../../components"
+import { Button, EmptyList, Screen } from "../../components"
 import { useBackHandler, useCameraDevices, useDeviceOrientation, useIsForeground } from "../../hooks"
 import { useCameraSettings } from "../../services/camera"
 import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
@@ -338,18 +338,12 @@ export function Camera() {
             )}
 
             {(hasCameraPermission && !cameraDevice) && (
-                <CameraWrapper>
-                    <Icon
-                        iconName={"no-photography"}
-                        iconSize={56}
-                        iconColor={color.screen_color}
-                        iconStyle={{ opacity: opacity.mediumEmphasis }}
-                    />
-
-                    <NoCameraAvailableText>
-                        Câmera indisponível
-                    </NoCameraAvailableText>
-                </CameraWrapper>
+                <EmptyList
+                    iconName={"no-photography"}
+                    iconSize={56}
+                    message={"Câmera indisponível"}
+                    iconStyle={{ marginBottom: 16 }}
+                />
             )}
 
             {(hasCameraPermission && cameraDevice) && (
