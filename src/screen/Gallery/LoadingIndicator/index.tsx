@@ -5,7 +5,7 @@ import { useAppTheme } from "../../../services/theme"
 import { LoadingIndicatorView } from "./style"
 
 
-export const LoadingIndicator = () => {
+export function LoadingIndicator() {
 
 
     const { color, opacity } = useAppTheme()

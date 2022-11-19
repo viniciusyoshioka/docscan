@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React from "react"
 import { Image, useWindowDimensions } from "react-native"
-import { LongPressGestureHandler, State } from "react-native-gesture-handler"
+import { HandlerStateChangeEventPayload, LongPressGestureHandler, LongPressGestureHandlerEventPayload, State } from "react-native-gesture-handler"
 
 import { Icon } from "../../../components"
 import { useAppTheme } from "../../../services/theme"
@@ -8,61 +8,51 @@ import { Button, SelectionSurface } from "./style"
 
 
 export interface ImageItemProps {
-    click: () => void;
-    select: () => void;
-    deselect: () => void;
-    selectionMode: boolean;
+    onClick: () => void;
+    onSelected: () => void;
+    onDeselected: () => void;
+    isSelectionMode: boolean;
+    isSelected: boolean;
     imagePath: string;
     screenAction: "replace-picture" | undefined;
 }
 
 
-export const ImageItem = (props: ImageItemProps) => {
+export function ImageItem(props: ImageItemProps) {
 
 
     const { color } = useAppTheme()
 
-    const [selected, setSelected] = useState(false)
     const imageSize = useWindowDimensions().width / 3
 
 
-    const normalPress = useCallback(() => {
-        if (!props.selectionMode) {
-            props.click()
-        } else if (!selected) {
-            props.select()
-            setSelected(true)
-        } else if (selected) {
-            props.deselect()
-            setSelected(false)
+    function onNormalPress() {
+        if (!props.isSelectionMode) {
+            props.onClick()
+        } else if (!props.isSelected) {
+            props.onSelected()
+        } else if (props.isSelected) {
+            props.onDeselected()
         }
-    }, [props.selectionMode, selected, props.click])
+    }
 
-    const longPress = useCallback((nativeEvent) => {
+    function onLongPress(nativeEvent: Readonly<HandlerStateChangeEventPayload & LongPressGestureHandlerEventPayload>) {
         if (nativeEvent.state === State.ACTIVE && props.screenAction === undefined) {
-            if (!props.selectionMode) {
-                props.select()
-                setSelected(true)
+            if (!props.isSelectionMode) {
+                props.onSelected()
             }
         }
-    }, [props.selectionMode])
-
-
-    useEffect(() => {
-        if (!props.selectionMode && selected) {
-            setSelected(false)
-        }
-    }, [props.selectionMode])
+    }
 
 
     return (
         <LongPressGestureHandler
             maxDist={30}
             minDurationMs={400}
-            onHandlerStateChange={({ nativeEvent }) => longPress(nativeEvent)}
+            onHandlerStateChange={({ nativeEvent }) => onLongPress(nativeEvent)}
         >
             <Button
-                onPress={normalPress}
+                onPress={onNormalPress}
                 style={{ width: imageSize }}
             >
                 <Image
@@ -70,7 +60,7 @@ export const ImageItem = (props: ImageItemProps) => {
                     style={{ width: imageSize, aspectRatio: 1 }}
                 />
 
-                {props.selectionMode && selected && (
+                {props.isSelectionMode && props.isSelected && (
                     <>
                         <SelectionSurface />
 

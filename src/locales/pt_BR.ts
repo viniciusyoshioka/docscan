@@ -76,6 +76,17 @@ export const pt_BR: TranslationType = {
     CameraSettings_whiteBalance: "Balanço de branco",
     CameraSettings_reset: "Redefinir",
 
+    // Gallery alert
+    Gallery_alert_noPermissionForGallery_text: "Sem permissão para abrir galeria",
+    Gallery_alert_errorOpeningGallery_text: "Erro desconhecido ao abrir galeria",
+    Gallery_alert_noPermissionToImportSingle_text: "Sem permissão para importar imagem",
+    Gallery_alert_unknownErrorImportingSingle_text: "Erro desconhecido ao importar imagem da galeria",
+    Gallery_alert_noPermissionToImportMultiple_text: "Sem permissão para importar múltiplas imagens",
+    // Gallery header
+    Gallery_header_title: "Importar imagem",
+    // Gallery screen
+    Gallery_emptyGallery: "Galeria vazia",
+
     // Settings alert
     settings_alert_errorSharingLogDatabase_text: "Erro ao compartilhar logs",
     settings_alert_errorSharingAppDatabase_text: "Erro ao compartilhar banco de dados dos documentos",

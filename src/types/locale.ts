@@ -77,6 +77,17 @@ export type TranslationKeyType =
     | "CameraSettings_whiteBalance"
     | "CameraSettings_reset"
 
+    // Gallery alert
+    | "Gallery_alert_noPermissionForGallery_text"
+    | "Gallery_alert_errorOpeningGallery_text"
+    | "Gallery_alert_noPermissionToImportSingle_text"
+    | "Gallery_alert_unknownErrorImportingSingle_text"
+    | "Gallery_alert_noPermissionToImportMultiple_text"
+    // Gallery header
+    | "Gallery_header_title"
+    // Gallery screen
+    | "Gallery_emptyGallery"
+
     // Settings alert
     | "settings_alert_errorSharingLogDatabase_text"
     | "settings_alert_errorSharingAppDatabase_text"

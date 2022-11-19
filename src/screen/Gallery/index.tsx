@@ -6,9 +6,10 @@ import RNFS from "react-native-fs"
 
 import { EmptyList, HEADER_HEIGHT, Screen } from "../../components"
 import { useBackHandler } from "../../hooks"
+import { translate } from "../../locales"
 import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
 import { copyPicturesService } from "../../services/document-service"
-import { log } from "../../services/log"
+import { log, stringfyError } from "../../services/log"
 import { getWritePermission } from "../../services/permission"
 import { useAppTheme } from "../../services/theme"
 import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
@@ -28,17 +29,16 @@ export function Gallery() {
     const { color, opacity } = useAppTheme()
 
     const { documentDataState, dispatchDocumentData } = useDocumentData()
-    const [imageGallery, setImageGallery] = useState<Array<PhotoIdentifier> | null>(null)
-    const [selectionMode, setSelectionMode] = useState(false)
-    const [selectedImage, setSelectedImage] = useState<Array<string>>([])
-    const [isRefreshing, setIsRefreshing] = useState(false)
+
     const [isLoading, setIsLoading] = useState(false)
-    const minimumRowAmountInScreen = useMemo(() => {
-        return Math.ceil((height - HEADER_HEIGHT) / (width / 3))
-    }, [width, height])
-    const amountOfImageToLoadPerTime = useMemo(() => {
-        return (minimumRowAmountInScreen + 1) * 3
-    }, [minimumRowAmountInScreen])
+    const [isRefreshing, setIsRefreshing] = useState(false)
+    const [imageGallery, setImageGallery] = useState<PhotoIdentifier[] | null>(null)
+    const [isSelectionMode, setIsSelectionMode] = useState(false)
+    const [selectedImages, setSelectedImages] = useState<string[]>([])
+
+    const minimumRowAmountInScreen = useMemo(() => Math.ceil((height - HEADER_HEIGHT) / (width / 3)), [width, height])
+    const amountOfImageToLoadPerTime = useMemo(() => (minimumRowAmountInScreen + 1) * 3, [minimumRowAmountInScreen])
+
 
     useBackHandler(() => {
         goBack()
@@ -57,10 +57,10 @@ export function Gallery() {
         if (!hasWritePermission) {
             setImageGallery([])
             setIsLoading(false)
-            log.warn("Gallery getImage - Não tem permissão pra usar a CameraRoll")
+            log.warn("No permission to access CameraRoll")
             Alert.alert(
-                "Erro",
-                "Sem permissão para abrir galeria"
+                translate("warn"),
+                translate("Gallery_alert_noPermissionForGallery_text")
             )
             return
         }
@@ -73,17 +73,18 @@ export function Gallery() {
             setImageGallery(cameraRollPhotos.edges)
             setIsLoading(false)
         } catch (error) {
+            setImageGallery([])
             setIsLoading(false)
-            log.error(`Gallery getImage - Erro ao pegar imagens da CameraRoll. Mensagem: "${error}"`)
+            log.error(`Error getting images from CameraRoll: "${stringfyError(error)}"`)
             Alert.alert(
-                "Erro",
-                "Erro desconhecido ao abrir galeria"
+                translate("warn"),
+                translate("Gallery_alert_errorOpeningGallery_text")
             )
         }
     }
 
     function goBack() {
-        if (selectionMode) {
+        if (isSelectionMode) {
             exitSelectionMode()
             return
         }
@@ -122,10 +123,10 @@ export function Gallery() {
     async function importSingleImage(imagePath: string) {
         const hasWritePermission = await getWritePermission()
         if (!hasWritePermission) {
-            log.warn("Sem permissão para importar uma imagem")
+            log.warn("No permission to import image")
             Alert.alert(
-                "Erro",
-                "Sem permissão para importar imagem"
+                translate("warn"),
+                translate("Gallery_alert_noPermissionToImportSingle_text")
             )
             return
         }
@@ -135,10 +136,10 @@ export function Gallery() {
         try {
             await RNFS.copyFile(imagePath, newImagePath)
         } catch (error) {
-            log.error(`Gallery importSingleImage - Erro ao importar uma imagem da galeria. Mensagem: "${error}"`)
+            log.error(`Error importing a single image from gallery: "${stringfyError(error)}"`)
             Alert.alert(
-                "Erro",
-                "Erro desconhecido ao importar imagem da galeria"
+                translate("warn"),
+                translate("Gallery_alert_unknownErrorImportingSingle_text")
             )
             return
         }
@@ -161,12 +162,12 @@ export function Gallery() {
 
         dispatchDocumentData({
             type: "add-picture",
-            payload: [{
+            payload: [ {
                 id: undefined,
                 filePath: newImagePath,
                 fileName: newImageName,
                 position: documentDataState?.pictureList.length || 0
-            }]
+            } ]
         })
 
         navigation.reset({
@@ -180,10 +181,10 @@ export function Gallery() {
     async function importMultipleImage() {
         const hasWritePermission = await getWritePermission()
         if (!hasWritePermission) {
-            log.warn("Sem permissão para importar múltiplas imagens")
+            log.warn("No permission to import multiple images")
             Alert.alert(
-                "Erro",
-                "Sem permissão para importar múltiplas imagens"
+                translate("warn"),
+                translate("Gallery_alert_noPermissionToImportMultiple_text")
             )
             return
         }
@@ -192,11 +193,11 @@ export function Gallery() {
         const imagesToImport: DocumentPicture[] = []
         let nextIndex = documentDataState?.pictureList.length ?? 0
 
-        for (let i = 0; i < selectedImage.length; i++) {
-            const newImagePath = await getDocumentPicturePath(selectedImage[i])
+        for (let i = 0; i < selectedImages.length; i++) {
+            const newImagePath = await getDocumentPicturePath(selectedImages[i])
             const newImageName = getFullFileName(newImagePath)
 
-            imagesToCopy.push(selectedImage[i].replace("file://", ""))
+            imagesToCopy.push(selectedImages[i].replace("file://", ""))
             imagesToCopy.push(newImagePath)
 
             imagesToImport.push({
@@ -224,53 +225,71 @@ export function Gallery() {
     }
 
     function selectImage(imagePath: string) {
-        if (!selectionMode) {
-            setSelectionMode(true)
+        if (!isSelectionMode) {
+            setIsSelectionMode(true)
         }
-        if (!selectedImage.includes(imagePath)) {
-            selectedImage.push(imagePath)
+        if (!selectedImages.includes(imagePath)) {
+            setSelectedImages(currentSelectedImages => [...currentSelectedImages, imagePath])
         }
     }
 
     function deselectImage(imagePath: string) {
-        const index = selectedImage.indexOf(imagePath)
+        const index = selectedImages.indexOf(imagePath)
         if (index !== -1) {
-            selectedImage.splice(index, 1)
-        }
-        if (selectionMode && selectedImage.length === 0) {
-            setSelectionMode(false)
+            const newSelectedImages = [...selectedImages]
+            newSelectedImages.splice(index, 1)
+            setSelectedImages(newSelectedImages)
+
+            if (isSelectionMode && newSelectedImages.length === 0) {
+                setIsSelectionMode(false)
+            }
         }
     }
 
     function exitSelectionMode() {
-        setSelectedImage([])
-        setSelectionMode(false)
+        setIsSelectionMode(false)
+        setSelectedImages([])
     }
 
     function renderItem({ item }: { item: PhotoIdentifier }) {
         return (
             <ImageItem
-                click={() => importSingleImage(item.node.image.uri)}
-                select={() => selectImage(item.node.image.uri)}
-                deselect={() => deselectImage(item.node.image.uri)}
-                selectionMode={selectionMode}
+                onClick={() => importSingleImage(item.node.image.uri)}
+                onSelected={() => selectImage(item.node.image.uri)}
+                onDeselected={() => deselectImage(item.node.image.uri)}
+                isSelectionMode={isSelectionMode}
+                isSelected={selectedImages.includes(item.node.image.uri)}
                 imagePath={item.node.image.uri}
                 screenAction={params?.screenAction}
             />
         )
     }
 
-    const keyExtractor = useCallback((_: PhotoIdentifier, index: number) => {
-        return index.toString()
-    }, [])
+    const keyExtractor = useCallback((_: PhotoIdentifier, index: number) => index.toString(), [])
 
-    const getItemLayout = useCallback((_: PhotoIdentifier[] | null | undefined, index: number) => {
-        return {
-            length: (width / 3),
-            offset: (width / 3) * index,
-            index: index,
+    async function onEndReached() {
+        const galleryLength = imageGallery?.length ?? 0
+        const currentRowAmount = (galleryLength / 3)
+        if (currentRowAmount < minimumRowAmountInScreen) {
+            return
         }
-    }, [width])
+
+        await getImage()
+    }
+
+    function ListFooterComponent() {
+        if (isLoading && imageGallery) {
+            return <LoadingIndicator />
+        }
+        return null
+    }
+
+    async function onRefresh() {
+        setIsRefreshing(true)
+        setImageGallery(null)
+        await getImage()
+        setIsRefreshing(false)
+    }
 
 
     useEffect(() => {
@@ -284,50 +303,36 @@ export function Gallery() {
                 goBack={goBack}
                 exitSelectionMode={exitSelectionMode}
                 importImage={importMultipleImage}
-                selectionMode={selectionMode}
+                isSelectionMode={isSelectionMode}
+                selectedImagesAmount={selectedImages.length}
             />
 
             <FlatList
                 data={imageGallery}
                 renderItem={renderItem}
-                extraData={[width, importSingleImage, selectImage, deselectImage, selectionMode]}
                 keyExtractor={keyExtractor}
-                getItemLayout={getItemLayout}
                 numColumns={3}
                 onEndReachedThreshold={0.05}
-                onEndReached={() => {
-                    if (((imageGallery?.length ?? 0) / 3) < minimumRowAmountInScreen) {
-                        return
-                    }
-
-                    getImage()
-                }}
-                ListFooterComponent={() => (isLoading && imageGallery) ? <LoadingIndicator /> : null}
-                onRefresh={async () => {
-                    setIsRefreshing(true)
-                    setImageGallery(null)
-                    await getImage()
-                    setIsRefreshing(false)
-                }}
+                onEndReached={onEndReached}
+                ListFooterComponent={ListFooterComponent}
+                onRefresh={imageGallery?.length ? onRefresh : undefined}
                 refreshing={isRefreshing}
+                style={{ display: imageGallery?.length ? "flex" : "none" }}
             />
 
-            {!imageGallery && (
-                <EmptyList>
-                    <ActivityIndicator
-                        color={color.screen_color}
-                        size={"large"}
-                        style={{ opacity: opacity.mediumEmphasis }}
-                    />
-                </EmptyList>
-            )}
-
-            {imageGallery?.length === 0 && (
-                <EmptyList
-                    imageSource={require("../../image/empty_gallery.png")}
-                    message={"Galeria vazia"}
+            <EmptyList visible={!imageGallery && !isRefreshing}>
+                <ActivityIndicator
+                    color={color.screen_color}
+                    size={"large"}
+                    style={{ opacity: opacity.mediumEmphasis }}
                 />
-            )}
+            </EmptyList>
+
+            <EmptyList
+                imageSource={require("../../image/empty_gallery.png")}
+                message={translate("Gallery_emptyGallery")}
+                visible={imageGallery?.length === 0}
+            />
         </Screen>
     )
 }
