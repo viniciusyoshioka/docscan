@@ -1,17 +1,18 @@
+import { useNavigation, useRoute } from "@react-navigation/core"
 import React, { useRef, useState } from "react"
 import { Alert, FlatList, useWindowDimensions } from "react-native"
-import { useNavigation, useRoute } from "@react-navigation/core"
 import RNFS from "react-native-fs"
-import { ImageCrop, OnImageSavedResponse } from "react-native-image-crop"
 import "react-native-get-random-values"
+import { ImageCrop, OnImageSavedResponse } from "react-native-image-crop"
 import { v4 as uuid4 } from "uuid"
 
 import { Screen } from "../../components"
 import { DocumentDatabase } from "../../database"
 import { useBackHandler } from "../../hooks"
+import { translate } from "../../locales"
 import { fullPathPicture } from "../../services/constant"
 import { getFileExtension, getFullFileName, useDocumentData } from "../../services/document"
-import { log } from "../../services/log"
+import { log, stringfyError } from "../../services/log"
 import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { VisualizePictureHeader } from "./Header"
 import { ImageVisualizationItem } from "./ImageVisualizationItem"
@@ -28,6 +29,7 @@ export function VisualizePicture() {
     const imageFlatListRef = useRef<FlatList>(null)
 
     const { documentDataState, dispatchDocumentData } = useDocumentData()
+
     const [isCropping, setIsCropping] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(params.pictureIndex)
     const [isFlatListScrollEnable, setIsFlatListScrollEnable] = useState(true)
@@ -45,20 +47,20 @@ export function VisualizePicture() {
             return
         }
 
-        navigation.navigate("EditDocument")
+        navigation.goBack()
     }
 
     async function onImageSaved(response: OnImageSavedResponse) {
         const currentPicturePath = documentDataState?.pictureList[currentIndex].filePath
+
         if (!currentPicturePath) {
-            log.warn("A imagem atual a ser substituída não existe")
+            log.warn("Current image to be replaced does not exists")
             Alert.alert(
-                "Erro",
-                "A imagem atual a ser substituída não existe"
+                translate("warn"),
+                translate("VisualizePicture_alert_warnCurrentPicture_text")
             )
             return
         }
-        const currentPictureName = getFullFileName(currentPicturePath)
 
         try {
             let newCroppedPictureUri: string
@@ -72,6 +74,11 @@ export function VisualizePicture() {
                 newCroppedPictureName = getFullFileName(newCroppedPictureUri)
             } while (await DocumentDatabase.pictureNameExists(newCroppedPictureName))
 
+            if (await RNFS.exists(currentPicturePath)) {
+                await RNFS.unlink(currentPicturePath)
+            }
+            await RNFS.moveFile(response.uri, newCroppedPictureUri)
+
             dispatchDocumentData({
                 type: "replace-picture",
                 payload: {
@@ -80,29 +87,15 @@ export function VisualizePicture() {
                     newPictureName: newCroppedPictureName,
                 }
             })
-
-            if (await RNFS.exists(currentPicturePath)) {
-                await RNFS.unlink(currentPicturePath)
-            }
-            await RNFS.moveFile(response.uri, newCroppedPictureUri)
         } catch (error) {
-            dispatchDocumentData({
-                type: "replace-picture",
-                payload: {
-                    indexToReplace: currentIndex,
-                    newPicturePath: currentPicturePath,
-                    newPictureName: currentPictureName,
-                }
-            })
-
             if (await RNFS.exists(response.uri)) {
                 await RNFS.unlink(response.uri)
             }
 
-            log.error(`VisualizePicture onImageSaved - Erro movendo arquivo. Mensagem: "${error}"`)
+            log.error(`Error replacing image by cropped image: "${stringfyError(error)}"`)
             Alert.alert(
-                "Erro",
-                "Não foi possível salvar imagem cortada"
+                translate("warn"),
+                translate("VisualizePicture_alert_errorSavingCroppedImage_text")
             )
             setIsCropping(false)
             return
@@ -112,10 +105,10 @@ export function VisualizePicture() {
     }
 
     function onSaveImageError(response: string) {
-        log.error(`VisualizePicture onSaveImageError - Erro ao cortar imagem. Mensagem: "${response}"`)
+        log.error(`Error cropping image: "${response}"`)
         Alert.alert(
-            "Erro",
-            "Não foi possível cortar imagem"
+            translate("warn"),
+            translate("VisualizePicture_alert_errorCroppingImage_text")
         )
         setIsCropping(false)
     }

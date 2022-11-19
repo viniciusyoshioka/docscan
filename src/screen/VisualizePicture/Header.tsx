@@ -1,6 +1,7 @@
 import React from "react"
 
 import { Header, HeaderButton, HeaderTitle } from "../../components"
+import { translate } from "../../locales"
 
 
 export interface VisualizePictureHeaderProps {
@@ -30,11 +31,11 @@ export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
             )}
 
             {!props.isCropping && (
-                <HeaderTitle title={"Visualizar foto"} />
+                <HeaderTitle title={translate("VisualizePicture_header_visualize_title")} />
             )}
 
             {props.isCropping && (
-                <HeaderTitle title={"Cortar foto"} />
+                <HeaderTitle title={translate("VisualizePicture_header_crop_title")} />
             )}
 
             {!props.isCropping && (

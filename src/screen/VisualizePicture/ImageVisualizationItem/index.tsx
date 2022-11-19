@@ -9,9 +9,14 @@ export interface ImageVisualizationItemProps {
 }
 
 
-export const ImageVisualizationItem = (props: ImageVisualizationItemProps) => {
+export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
+
+
+    const { width } = useWindowDimensions()
+
+
     return (
-        <Screen style={{ width: useWindowDimensions().width }}>
+        <Screen style={{ width }}>
             <Image
                 source={props.source}
                 resizeMode={"contain"}
