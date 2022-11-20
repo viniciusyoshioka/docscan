@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         elevation: 0,
-        zIndex: 1,
         backgroundColor: "rgba(0, 0, 0, 0.3)",
     },
 })
