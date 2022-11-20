@@ -16,37 +16,6 @@ export type TranslationKeyType =
     | "app_alert_errorLoadingTheme_text"
     | "app_alert_errorSavingTheme_text"
 
-    // Home alert
-    | "home_alert_errorLoadingDocuments_text"
-    | "home_alert_errorDeletingSelectedDocuments_text"
-    | "home_alert_deleteDocuments_title"
-    | "home_alert_deleteDocuments_text"
-    | "home_alert_exportingDocuments_title"
-    | "home_alert_exportingDocuments_text"
-    | "home_alert_errorExportingDocuments_text"
-    | "home_alert_noDocumentsToExport_text"
-    | "home_alert_exportDocuments_title"
-    | "home_alert_allSelectedDocumentsWillBeExported_text"
-    | "home_alert_allDocumentsWillBeExported_text"
-    | "home_alert_mergeDocuments_title"
-    | "home_alert_mergeDocuments_text"
-    | "home_alert_duplicateDocuments_title"
-    | "home_alert_duplicateDocuments_text"
-    // Home header
-    | "home_header_title"
-    // Home screen
-    | "home_export"
-    | "home_merge"
-    | "home_duplicate"
-    | "home_emptyDocumentList"
-    | "home_deletingDocuments"
-    // Home menu
-    | "home_menu_importDocument"
-    | "home_menu_exportDocument"
-    | "home_menu_settings"
-    | "home_menu_mergeDocument"
-    | "home_menu_duplicateDocument"
-
     // Camera alert
     | "camera_alert_unsavedPictures_text"
     | "camera_alert_unknownErrorTakingPicture_text"
@@ -88,6 +57,37 @@ export type TranslationKeyType =
     // Gallery screen
     | "Gallery_emptyGallery"
 
+    // Home alert
+    | "home_alert_errorLoadingDocuments_text"
+    | "home_alert_errorDeletingSelectedDocuments_text"
+    | "home_alert_deleteDocuments_title"
+    | "home_alert_deleteDocuments_text"
+    | "home_alert_exportingDocuments_title"
+    | "home_alert_exportingDocuments_text"
+    | "home_alert_errorExportingDocuments_text"
+    | "home_alert_noDocumentsToExport_text"
+    | "home_alert_exportDocuments_title"
+    | "home_alert_allSelectedDocumentsWillBeExported_text"
+    | "home_alert_allDocumentsWillBeExported_text"
+    | "home_alert_mergeDocuments_title"
+    | "home_alert_mergeDocuments_text"
+    | "home_alert_duplicateDocuments_title"
+    | "home_alert_duplicateDocuments_text"
+    // Home header
+    | "home_header_title"
+    // Home screen
+    | "home_export"
+    | "home_merge"
+    | "home_duplicate"
+    | "home_emptyDocumentList"
+    | "home_deletingDocuments"
+    // Home menu
+    | "home_menu_importDocument"
+    | "home_menu_exportDocument"
+    | "home_menu_settings"
+    | "home_menu_mergeDocument"
+    | "home_menu_duplicateDocument"
+
     // Settings alert
     | "settings_alert_errorSharingLogDatabase_text"
     | "settings_alert_errorSharingAppDatabase_text"
@@ -113,7 +113,6 @@ export type TranslationKeyType =
     // VisualizePicture header
     | "VisualizePicture_header_visualize_title"
     | "VisualizePicture_header_crop_title"
-    // VisualizePicture screen
 
     // document-service service
     | "documentService_notification_deletingImages_title"

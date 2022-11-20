@@ -11,40 +11,9 @@ export const pt_BR: TranslationType = {
     save: "Salvar",
     dont_save: "Não salvar",
 
-    // App
+    // App alert
     app_alert_errorLoadingTheme_text: "Erro carregando tema de cores",
     app_alert_errorSavingTheme_text: "Erro salvando novo tema de cores",
-
-    // Home alert
-    home_alert_errorLoadingDocuments_text: "Erro ao carregar documentos",
-    home_alert_errorDeletingSelectedDocuments_text: "Erro ao apagar documentos selecionados",
-    home_alert_deleteDocuments_title: "Apagar",
-    home_alert_deleteDocuments_text: "Estes documentos serão apagados permanentemente",
-    home_alert_exportingDocuments_title: "Aguarde",
-    home_alert_exportingDocuments_text: "A exportação de documentos pode demorar um pouco",
-    home_alert_errorExportingDocuments_text: "Erro exportando documentos",
-    home_alert_noDocumentsToExport_text: "Nenhum documento existente para ser exportado",
-    home_alert_exportDocuments_title: "Exportar",
-    home_alert_allSelectedDocumentsWillBeExported_text: "Os documentos selecionados serão exportados",
-    home_alert_allDocumentsWillBeExported_text: "Todos os documentos serão exportados",
-    home_alert_mergeDocuments_title: "Unir",
-    home_alert_mergeDocuments_text: "Os documento selecionados serão unidos em um único documento",
-    home_alert_duplicateDocuments_title: "Duplicar",
-    home_alert_duplicateDocuments_text: "Os documentos selecionados serão duplicados",
-    // Home header
-    home_header_title: "DocScan",
-    // Home screen
-    home_export: "Exportar",
-    home_merge: "Unir",
-    home_duplicate: "Duplicar",
-    home_emptyDocumentList: "Nenhum documento",
-    home_deletingDocuments: "Apagando documentos...",
-    // Home menu
-    home_menu_importDocument: "Importar documentos",
-    home_menu_exportDocument: "Exportar documentos",
-    home_menu_settings: "Configurações",
-    home_menu_mergeDocument: "Unir documentos",
-    home_menu_duplicateDocument: "Duplicar documentos",
 
     // Camera alert
     camera_alert_unsavedPictures_text: "Você tem fotos que não foram salvas, ao voltar elas serão perdidas",
@@ -87,6 +56,37 @@ export const pt_BR: TranslationType = {
     // Gallery screen
     Gallery_emptyGallery: "Galeria vazia",
 
+    // Home alert
+    home_alert_errorLoadingDocuments_text: "Erro ao carregar documentos",
+    home_alert_errorDeletingSelectedDocuments_text: "Erro ao apagar documentos selecionados",
+    home_alert_deleteDocuments_title: "Apagar",
+    home_alert_deleteDocuments_text: "Estes documentos serão apagados permanentemente",
+    home_alert_exportingDocuments_title: "Aguarde",
+    home_alert_exportingDocuments_text: "A exportação de documentos pode demorar um pouco",
+    home_alert_errorExportingDocuments_text: "Erro exportando documentos",
+    home_alert_noDocumentsToExport_text: "Nenhum documento existente para ser exportado",
+    home_alert_exportDocuments_title: "Exportar",
+    home_alert_allSelectedDocumentsWillBeExported_text: "Os documentos selecionados serão exportados",
+    home_alert_allDocumentsWillBeExported_text: "Todos os documentos serão exportados",
+    home_alert_mergeDocuments_title: "Unir",
+    home_alert_mergeDocuments_text: "Os documento selecionados serão unidos em um único documento",
+    home_alert_duplicateDocuments_title: "Duplicar",
+    home_alert_duplicateDocuments_text: "Os documentos selecionados serão duplicados",
+    // Home header
+    home_header_title: "DocScan",
+    // Home screen
+    home_export: "Exportar",
+    home_merge: "Unir",
+    home_duplicate: "Duplicar",
+    home_emptyDocumentList: "Nenhum documento",
+    home_deletingDocuments: "Apagando documentos...",
+    // Home menu
+    home_menu_importDocument: "Importar documentos",
+    home_menu_exportDocument: "Exportar documentos",
+    home_menu_settings: "Configurações",
+    home_menu_mergeDocument: "Unir documentos",
+    home_menu_duplicateDocument: "Duplicar documentos",
+
     // Settings alert
     settings_alert_errorSharingLogDatabase_text: "Erro ao compartilhar logs",
     settings_alert_errorSharingAppDatabase_text: "Erro ao compartilhar banco de dados dos documentos",
@@ -112,7 +112,6 @@ export const pt_BR: TranslationType = {
     // VisualizePicture header
     VisualizePicture_header_visualize_title: "Visualizar foto",
     VisualizePicture_header_crop_title: "Cortar foto",
-    // VisualizePicture screen
 
     // document-service service
     documentService_notification_deletingImages_title: "Apagando imagens",
