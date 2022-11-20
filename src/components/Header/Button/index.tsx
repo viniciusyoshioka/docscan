@@ -11,6 +11,7 @@ export interface HeaderButtonProps extends BorderlessButtonProps {
     iconName: string;
     iconGroup?: IconGroup;
     iconSize?: number;
+    iconColor?: string;
 }
 
 
@@ -26,7 +27,7 @@ export const HeaderButton = (props: HeaderButtonProps) => {
                 iconName={props.iconName}
                 iconGroup={props.iconGroup}
                 iconSize={props.iconSize || 24}
-                iconColor={color.header_color}
+                iconColor={props.iconColor ?? color.header_color}
                 iconStyle={{ opacity: opacity.headerEmphasis }}
             />
         </HeaderButtonBase>
