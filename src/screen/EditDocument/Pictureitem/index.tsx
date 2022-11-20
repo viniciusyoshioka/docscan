@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useState } from "react"
 import { useWindowDimensions } from "react-native"
 import { LongPressGestureHandler, State } from "react-native-gesture-handler"
 
-import { SelectedSurface, FileNameText, FileNameView, PictureButton, PictureImage } from "./style"
-import { useAppTheme } from "../../../services/theme"
 import { Icon } from "../../../components"
+import { useAppTheme } from "../../../services/theme"
+import { PictureButton, PictureImage, SelectedSurface } from "./style"
 
 
 export function getPictureItemHeight(width: number) {
@@ -31,11 +31,6 @@ export const PictureItem = (props: PictureItemProps) => {
     const pictureItemSize = getPictureItemHeight(width)
 
 
-    const getPictureName = useCallback(() => {
-        const splittedPath = props.picturePath.split("/")
-        return splittedPath[splittedPath.length - 1]
-    }, [props.picturePath])
-
     const normalPress = useCallback(() => {
         if (!props.selectionMode) {
             props.click()
@@ -48,7 +43,7 @@ export const PictureItem = (props: PictureItemProps) => {
         }
     }, [props.selectionMode, selected, props.click])
 
-    const longPress = useCallback((nativeEvent) => {
+    const longPress = useCallback(nativeEvent => {
         if (nativeEvent.state === State.ACTIVE) {
             if (!props.selectionMode) {
                 props.select()
@@ -76,12 +71,6 @@ export const PictureItem = (props: PictureItemProps) => {
                 onPress={normalPress}
             >
                 <PictureImage source={{ uri: `file://${props.picturePath}` }} />
-
-                <FileNameView>
-                    <FileNameText numberOfLines={1}>
-                        {getPictureName()}
-                    </FileNameText>
-                </FileNameView>
 
                 {props.selectionMode && selected && (
                     <>

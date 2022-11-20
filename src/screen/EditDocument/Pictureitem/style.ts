@@ -24,30 +24,6 @@ export const PictureImage = styled.Image`
 `
 
 
-export const FileNameView = styled.View`
-    position: absolute;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    align-items: flex-start;
-    justify-content: center;
-    width: 100%;
-    height: 32px;
-    padding-horizontal: 8px;
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
-    opacity: ${(props: StyledProps) => props.theme.opacity.highEmphasis};
-    background-color: ${(props: StyledProps) => props.theme.color.pictureItem_background};
-`
-
-
-export const FileNameText = styled.Text`
-    width: 100%;
-    font-size: 15px;
-    color: ${(props: StyledProps) => props.theme.color.pictureItem_color};
-`
-
-
 export const SelectedSurface = styled.View`
     position: absolute;
     top: 0px;
