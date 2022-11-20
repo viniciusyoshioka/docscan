@@ -18,7 +18,7 @@ import { log, stringfyError } from "../../services/log"
 import { getCameraPermission } from "../../services/permission"
 import { getCameraRatioNumber } from "../../services/settings"
 import { CameraOrientationType, DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
-import { CameraControl, CameraControlRef } from "./CameraControl"
+import { CameraControl, CameraControlRef, CAMERA_CONTROL_HEIGHT } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
 import { FocusIndicator } from "./FocusIndicator"
 import { CameraHeader } from "./Header"
@@ -329,7 +329,7 @@ export function Camera() {
                         </NoCameraAvailableText>
                     </CameraTextWrapper>
 
-                    <CameraButtonWrapper>
+                    <CameraButtonWrapper style={{ bottom: CAMERA_CONTROL_HEIGHT }}>
                         <Button
                             text={translate("camera_openSettings")}
                             onPress={() => Linking.openSettings()}

@@ -4,7 +4,14 @@ import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTimi
 
 import { useDeviceOrientation } from "../../../hooks"
 import { ControlButton } from "./ControlButton"
-import { ControlAction, ControlView } from "./style"
+import { ControlAction, ControlView, CONTROL_ACTION_HEIGHT, CONTROL_BUTTON_HEIGHT, CONTROL_VIEW_MIN_HEIGHT, CONTROL_VIEW_PADDING_VERTIVAL } from "./style"
+
+
+export const CAMERA_CONTROL_HEIGHT = Math.max(
+    CONTROL_VIEW_MIN_HEIGHT,
+    CONTROL_ACTION_HEIGHT + (2 * CONTROL_VIEW_PADDING_VERTIVAL),
+    CONTROL_BUTTON_HEIGHT + (2 * CONTROL_VIEW_PADDING_VERTIVAL)
+)
 
 
 export interface CameraControlProps {
