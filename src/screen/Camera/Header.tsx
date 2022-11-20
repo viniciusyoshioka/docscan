@@ -1,20 +1,43 @@
-import React from "react"
-import { StyleSheet } from "react-native"
+import React, { useMemo } from "react"
+import { StyleProp, StyleSheet, ViewStyle } from "react-native"
 
 import { Header, HeaderButton, HeaderTitle } from "../../components"
+import { useAppTheme } from "../../services/theme"
 
 
 export interface CameraHeaderProps {
     goBack: () => void;
     openSettings: () => void;
+    isShowingCamera: boolean;
 }
 
 
 export function CameraHeader(props: CameraHeaderProps) {
+
+
+    const { isDark } = useAppTheme()
+
+
+    const headerStyle = useMemo((): StyleProp<ViewStyle> => {
+        if (!props.isShowingCamera) {
+            return { ...styles.absolute, backgroundColor: "transparent" }
+        }
+        return styles.absolute
+    }, [props.isShowingCamera])
+
+    const iconColor = useMemo((): string => {
+        if (!props.isShowingCamera) {
+            return isDark ? "white" : "black"
+        }
+        return "white"
+    }, [props.isShowingCamera, isDark])
+
+
     return (
-        <Header style={styles.absolute}>
+        <Header style={headerStyle}>
             <HeaderButton
                 iconName={"arrow-back"}
+                iconColor={iconColor}
                 onPress={props.goBack}
             />
 
@@ -22,6 +45,7 @@ export function CameraHeader(props: CameraHeaderProps) {
 
             <HeaderButton
                 iconName={"settings"}
+                iconColor={iconColor}
                 onPress={props.openSettings}
             />
         </Header>

@@ -313,6 +313,7 @@ export function Camera() {
             <CameraHeader
                 goBack={goBack}
                 openSettings={() => setIsCameraSettingsVisible(true)}
+                isShowingCamera={hasCameraPermission === true && cameraDevice !== undefined}
             />
 
             {(hasCameraPermission === undefined || hasCameraPermission === false) && (
