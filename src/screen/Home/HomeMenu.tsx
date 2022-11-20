@@ -34,7 +34,7 @@ export function HomeMenu(props: HomeMenuProps) {
             <MenuOptions>
                 {!props.isSelectionMode && (
                     <MenuItem
-                        text={translate("home_menu_importDocument")}
+                        text={translate("Home_menu_importDocument")}
                         onPress={() => {
                             menuRef.current?.close()
                             props.importDocument()
@@ -43,7 +43,7 @@ export function HomeMenu(props: HomeMenuProps) {
                 )}
 
                 <MenuItem
-                    text={translate("home_menu_exportDocument")}
+                    text={translate("Home_menu_exportDocument")}
                     onPress={() => {
                         menuRef.current?.close()
                         props.exportDocument()
@@ -52,7 +52,7 @@ export function HomeMenu(props: HomeMenuProps) {
 
                 {!props.isSelectionMode && (
                     <MenuItem
-                        text={translate("home_menu_settings")}
+                        text={translate("Home_menu_settings")}
                         onPress={() => {
                             menuRef.current?.close()
                             props.openSettings()
@@ -62,7 +62,7 @@ export function HomeMenu(props: HomeMenuProps) {
 
                 {props.isSelectionMode && (
                     <MenuItem
-                        text={translate("home_menu_mergeDocument")}
+                        text={translate("Home_menu_mergeDocument")}
                         onPress={() => {
                             menuRef.current?.close()
                             props.mergeDocument()
@@ -72,7 +72,7 @@ export function HomeMenu(props: HomeMenuProps) {
 
                 {props.isSelectionMode && (
                     <MenuItem
-                        text={translate("home_menu_duplicateDocument")}
+                        text={translate("Home_menu_duplicateDocument")}
                         onPress={() => {
                             menuRef.current?.close()
                             props.duplicateDocument()

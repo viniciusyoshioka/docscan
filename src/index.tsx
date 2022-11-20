@@ -41,7 +41,7 @@ export function App() {
             log.error(`Error getting theme from database: "${stringfyError(error)}". Fallback to default theme`)
             Alert.alert(
                 translate("warn"),
-                translate("app_alert_errorLoadingTheme_text")
+                translate("App_alert_errorLoadingTheme_text")
             )
         }
 
@@ -69,7 +69,7 @@ export function App() {
             log.error(`Error updating theme in settings database: "${stringfyError(error)}". Previews value was kept`)
             Alert.alert(
                 translate("warn"),
-                translate("app_alert_errorSavingTheme_text")
+                translate("App_alert_errorSavingTheme_text")
             )
         }
 

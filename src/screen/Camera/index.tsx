@@ -149,7 +149,7 @@ export function Camera() {
         if (!params && hasChanges) {
             Alert.alert(
                 translate("warn"),
-                translate("camera_alert_unsavedPictures_text"),
+                translate("Camera_alert_unsavedPictures_text"),
                 [
                     { text: translate("cancel"), onPress: () => { } },
                     { text: translate("dont_save"), onPress: async () => await deleteUnsavedPictures() },
@@ -235,7 +235,7 @@ export function Camera() {
             log.error(`Error taking picture: "${stringfyError(error)}"`)
             Alert.alert(
                 translate("warn"),
-                translate("camera_alert_unknownErrorTakingPicture_text")
+                translate("Camera_alert_unknownErrorTakingPicture_text")
             )
         }
     }
@@ -333,31 +333,31 @@ export function Camera() {
                 <>
                     <CameraTextWrapper>
                         <NoCameraAvailableTitle>
-                            {translate("camera_noPermission")}
+                            {translate("Camera_noPermission")}
                         </NoCameraAvailableTitle>
 
                         <NoCameraAvailableText>
-                            &bull; {translate("camera_allowCameraWithGrantPermission")}
+                            &bull; {translate("Camera_allowCameraWithGrantPermission")}
                         </NoCameraAvailableText>
 
                         <NoCameraAvailableText>
-                            &bull; {translate("camera_allowCameraThroughSettings")}
+                            &bull; {translate("Camera_allowCameraThroughSettings")}
                         </NoCameraAvailableText>
 
                         <NoCameraAvailableText>
-                            &bull; {translate("camera_enableCamera")}
+                            &bull; {translate("Camera_enableCamera")}
                         </NoCameraAvailableText>
                     </CameraTextWrapper>
 
                     <CameraButtonWrapper style={{ bottom: CAMERA_CONTROL_HEIGHT }}>
                         <Button
-                            text={translate("camera_openSettings")}
+                            text={translate("Camera_openSettings")}
                             onPress={() => Linking.openSettings()}
                             style={{ width: "100%" }}
                         />
 
                         <Button
-                            text={translate("camera_grantPermission")}
+                            text={translate("Camera_grantPermission")}
                             onPress={requestAndSetCameraPermission}
                             style={{ marginTop: 8, width: "100%" }}
                         />
@@ -369,7 +369,7 @@ export function Camera() {
                 <EmptyList
                     iconName={"no-photography"}
                     iconSize={56}
-                    message={translate("camera_cameraNotAvailable")}
+                    message={translate("Camera_cameraNotAvailable")}
                     iconStyle={{ marginBottom: 16 }}
                 />
             )}

@@ -42,7 +42,7 @@ export function Home() {
             log.error(`Error getting document list from database: "${stringfyError(error)}"`)
             Alert.alert(
                 translate("warn"),
-                translate("home_alert_errorLoadingDocuments_text")
+                translate("Home_alert_errorLoadingDocuments_text")
             )
         }
     }
@@ -71,15 +71,15 @@ export function Home() {
             setShowDocumentDeletionModal(false)
             Alert.alert(
                 translate("warn"),
-                translate("home_alert_errorDeletingSelectedDocuments_text")
+                translate("Home_alert_errorDeletingSelectedDocuments_text")
             )
         }
     }
 
     function alertDeleteDocument() {
         Alert.alert(
-            translate("home_alert_deleteDocuments_title"),
-            translate("home_alert_deleteDocuments_text"),
+            translate("Home_alert_deleteDocuments_title"),
+            translate("Home_alert_deleteDocuments_text"),
             [
                 { text: translate("cancel"), onPress: () => { } },
                 { text: translate("delete"), onPress: async () => await deleteSelectedDocument() }
@@ -89,8 +89,8 @@ export function Home() {
 
     async function exportSelectedDocument() {
         Alert.alert(
-            translate("home_alert_exportingDocuments_title"),
-            translate("home_alert_exportingDocuments_text")
+            translate("Home_alert_exportingDocuments_title"),
+            translate("Home_alert_exportingDocuments_text")
         )
 
         await createAllFolderAsync()
@@ -99,7 +99,7 @@ export function Home() {
                 log.error(`Error exporting documents before invoking the background service: "${stringfyError(error)}"`)
                 Alert.alert(
                     translate("warn"),
-                    translate("home_alert_errorExportingDocuments_text")
+                    translate("Home_alert_errorExportingDocuments_text")
                 )
             })
         exitSelectionMode()
@@ -109,21 +109,21 @@ export function Home() {
         if (documents.length === 0) {
             Alert.alert(
                 translate("warn"),
-                translate("home_alert_noDocumentsToExport_text")
+                translate("Home_alert_noDocumentsToExport_text")
             )
             return
         }
 
         const exportAlertText: TranslationKeyType = isSelectionMode
-            ? "home_alert_allSelectedDocumentsWillBeExported_text"
-            : "home_alert_allDocumentsWillBeExported_text"
+            ? "Home_alert_allSelectedDocumentsWillBeExported_text"
+            : "Home_alert_allDocumentsWillBeExported_text"
 
         Alert.alert(
-            translate("home_alert_exportDocuments_title"),
+            translate("Home_alert_exportDocuments_title"),
             translate(exportAlertText),
             [
                 { text: translate("cancel"), onPress: () => { } },
-                { text: translate("home_export"), onPress: async () => await exportSelectedDocument() }
+                { text: translate("Home_export"), onPress: async () => await exportSelectedDocument() }
             ]
         )
     }
@@ -135,11 +135,11 @@ export function Home() {
 
     function alertMergeDocument() {
         Alert.alert(
-            translate("home_alert_mergeDocuments_title"),
-            translate("home_alert_mergeDocuments_text"),
+            translate("Home_alert_mergeDocuments_title"),
+            translate("Home_alert_mergeDocuments_text"),
             [
                 { text: translate("cancel"), onPress: () => { } },
-                { text: translate("home_merge"), onPress: async () => await mergeSelectedDocument() }
+                { text: translate("Home_merge"), onPress: async () => await mergeSelectedDocument() }
             ]
         )
     }
@@ -151,11 +151,11 @@ export function Home() {
 
     function alertDuplicateDocument() {
         Alert.alert(
-            translate("home_alert_duplicateDocuments_title"),
-            translate("home_alert_duplicateDocuments_text"),
+            translate("Home_alert_duplicateDocuments_title"),
+            translate("Home_alert_duplicateDocuments_text"),
             [
                 { text: translate("cancel"), onPress: () => { } },
-                { text: translate("home_duplicate"), onPress: async () => await duplicateSelectedDocument() }
+                { text: translate("Home_duplicate"), onPress: async () => await duplicateSelectedDocument() }
             ]
         )
     }
@@ -234,13 +234,13 @@ export function Home() {
 
             <EmptyList
                 imageSource={appIconOutline}
-                message={translate("home_emptyDocumentList")}
+                message={translate("Home_emptyDocumentList")}
                 visible={documents.length === 0}
             />
 
             <LoadingModal
                 visible={showDocumentDeletionModal}
-                message={translate("home_deletingDocuments")}
+                message={translate("Home_deletingDocuments")}
             />
         </Screen>
     )

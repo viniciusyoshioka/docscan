@@ -43,7 +43,7 @@ export function Settings() {
             log.error(`Error sharing log file: "${stringfyError(error)}"`)
             Alert.alert(
                 translate("warn"),
-                translate("settings_alert_errorSharingLogDatabase_text")
+                translate("Settings_alert_errorSharingLogDatabase_text")
             )
         }
     }
@@ -59,7 +59,7 @@ export function Settings() {
             log.error(`Error sharing document database file: "${stringfyError(error)}"`)
             Alert.alert(
                 translate("warn"),
-                translate("settings_alert_errorSharingAppDatabase_text")
+                translate("Settings_alert_errorSharingAppDatabase_text")
             )
         }
     }
@@ -73,23 +73,23 @@ export function Settings() {
 
             <ListItem
                 iconName={"brightness-medium"}
-                title={translate("settings_theme_title")}
-                description={translate("settings_theme_text")}
+                title={translate("Settings_theme_title")}
+                description={translate("Settings_theme_text")}
                 onPress={() => setChangeThemeVisible(true)}
             />
 
             <ListItem
                 iconName={"receipt-long"}
-                title={translate("settings_shareLogDatabase_title")}
-                description={translate("settings_shareLogDatabase_text")}
+                title={translate("Settings_shareLogDatabase_title")}
+                description={translate("Settings_shareLogDatabase_text")}
                 onPress={shareLogDatabaseFile}
             />
 
             {__DEV__ && (
                 <ListItem
                     iconName={"receipt-long"}
-                    title={translate("settings_shareAppDatabase_title")}
-                    description={translate("settings_shareAppDatabase_text")}
+                    title={translate("Settings_shareAppDatabase_title")}
+                    description={translate("Settings_shareAppDatabase_text")}
                     onPress={shareAppDatabaseFile}
                 />
             )}

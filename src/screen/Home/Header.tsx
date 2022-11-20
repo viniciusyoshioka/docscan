@@ -25,7 +25,7 @@ export function HomeHeader(props: HomeHeaderProps) {
         if (props.isSelectionMode) {
             return props.selectedDocumentsAmount.toString()
         }
-        return translate("home_header_title")
+        return translate("Home_header_title")
     }
 
 
