@@ -39,7 +39,7 @@ export function Camera() {
 
     const { cameraSettingsState } = useCameraSettings()
     const { documentDataState, dispatchDocumentData } = useDocumentData()
-    const { color, appTheme } = useAppTheme()
+    const { color, isDark } = useAppTheme()
 
     const cameraRef = useRef<RNCamera>(null)
     const cameraControlRef = useRef<CameraControlRef>(null)
@@ -307,7 +307,7 @@ export function Camera() {
             <StatusBar
                 hidden={hasCameraPermission === true && cameraDevice !== undefined}
                 backgroundColor={color.screen_background}
-                barStyle={appTheme === "dark" ? "light-content" : "dark-content"}
+                barStyle={isDark ? "light-content" : "dark-content"}
             />
 
             <CameraHeader
