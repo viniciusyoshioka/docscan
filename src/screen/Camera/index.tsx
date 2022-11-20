@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core"
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { Alert, Linking, StatusBar, useWindowDimensions } from "react-native"
+import { Alert, Linking, StatusBar, StyleProp, useWindowDimensions, ViewStyle } from "react-native"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
 import { OrientationType } from "react-native-orientation-locker"
@@ -60,6 +60,19 @@ export function Camera() {
     const isCameraFlippable = useMemo(() =>
         cameraDevices !== undefined && cameraDevices.back !== undefined && cameraDevices.front !== undefined
     , [cameraDevices])
+
+    const isShowingCamera = useMemo((): boolean => {
+        const hasPermission = hasCameraPermission === true
+        const hasDevice = cameraDevice !== undefined
+        return hasPermission && hasDevice
+    }, [hasCameraPermission, cameraDevice])
+
+    const screenStyle = useMemo((): StyleProp<ViewStyle> => {
+        if (!isShowingCamera) {
+            return undefined
+        }
+        return { backgroundColor: "black" }
+    }, [isShowingCamera])
 
 
     useBackHandler(() => {
@@ -303,9 +316,9 @@ export function Camera() {
 
 
     return (
-        <Screen>
+        <Screen style={screenStyle}>
             <StatusBar
-                hidden={hasCameraPermission === true && cameraDevice !== undefined}
+                hidden={isShowingCamera}
                 backgroundColor={color.screen_background}
                 barStyle={isDark ? "light-content" : "dark-content"}
             />
@@ -313,7 +326,7 @@ export function Camera() {
             <CameraHeader
                 goBack={goBack}
                 openSettings={() => setIsCameraSettingsVisible(true)}
-                isShowingCamera={hasCameraPermission === true && cameraDevice !== undefined}
+                isShowingCamera={isShowingCamera}
             />
 
             {(hasCameraPermission === undefined || hasCameraPermission === false) && (
