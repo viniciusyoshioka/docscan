@@ -14,6 +14,7 @@ export const themeDefault: ThemeType = "auto"
  */
 export const AppThemeLight: AppTheme = {
     name: "light",
+    isDark: false,
     appTheme: "auto",
     switchTheme: () => { },
     color: {
@@ -84,6 +85,7 @@ export const AppThemeLight: AppTheme = {
  */
 export const AppThemeDark: AppTheme = {
     name: "dark",
+    isDark: true,
     appTheme: "auto",
     switchTheme: () => { },
     color: {

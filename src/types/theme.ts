@@ -88,6 +88,7 @@ export interface ThemeOpacity {
  */
 export interface AppTheme {
     name: ThemeName;
+    isDark: boolean;
     appTheme: ThemeType;
     switchTheme: (newTheme: ThemeType) => void;
     color: ThemeColors;
