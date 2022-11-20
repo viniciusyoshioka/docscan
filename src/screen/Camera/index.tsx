@@ -17,6 +17,7 @@ import { createAllFolderAsync } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { getCameraPermission } from "../../services/permission"
 import { getCameraRatioNumber } from "../../services/settings"
+import { useAppTheme } from "../../services/theme"
 import { CameraOrientationType, DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { CameraControl, CameraControlRef, CAMERA_CONTROL_HEIGHT } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
@@ -38,6 +39,7 @@ export function Camera() {
 
     const { cameraSettingsState } = useCameraSettings()
     const { documentDataState, dispatchDocumentData } = useDocumentData()
+    const { color, appTheme } = useAppTheme()
 
     const cameraRef = useRef<RNCamera>(null)
     const cameraControlRef = useRef<CameraControlRef>(null)
@@ -302,7 +304,11 @@ export function Camera() {
 
     return (
         <Screen>
-            <StatusBar hidden={true} />
+            <StatusBar
+                hidden={hasCameraPermission === true && cameraDevice !== undefined}
+                backgroundColor={color.screen_background}
+                barStyle={appTheme === "dark" ? "light-content" : "dark-content"}
+            />
 
             <CameraHeader
                 goBack={goBack}
