@@ -6,6 +6,13 @@ export type ThemeType = "auto" | "light" | "dark"
 
 
 /**
+ * Name of a theme
+ * Excludes `"auto"` from `ThemeType` to only use specific names
+ */
+export type ThemeName = Omit<ThemeType, "auto">
+
+
+/**
  * Defines all color codes used in the app
  */
 export interface ThemeColors {
@@ -80,7 +87,7 @@ export interface ThemeOpacity {
  * Type defining theme color object attributes
  */
 export interface AppTheme {
-    name: ThemeType;
+    name: ThemeName;
     appTheme: ThemeType;
     switchTheme: (newTheme: ThemeType) => void;
     color: ThemeColors;
