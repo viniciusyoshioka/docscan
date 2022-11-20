@@ -301,7 +301,7 @@ export function Camera() {
 
 
     return (
-        <Screen style={{ backgroundColor: "black" }}>
+        <Screen>
             <StatusBar hidden={true} />
 
             <CameraHeader
