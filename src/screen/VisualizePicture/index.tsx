@@ -97,11 +97,8 @@ export function VisualizePicture() {
                 translate("warn"),
                 translate("VisualizePicture_alert_errorSavingCroppedImage_text")
             )
-            setIsCropping(false)
-            return
         }
-
-        navigation.navigate("EditDocument")
+        setIsCropping(false)
     }
 
     function onSaveImageError(response: string) {
