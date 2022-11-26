@@ -35,6 +35,8 @@ export function Gallery() {
     const [imageGallery, setImageGallery] = useState<PhotoIdentifier[] | null>(null)
     const [isSelectionMode, setIsSelectionMode] = useState(false)
     const [selectedImages, setSelectedImages] = useState<string[]>([])
+    const currentAmountOfImages = useMemo(() => imageGallery?.length ?? 0, [imageGallery])
+    const [isGalleryFullLoaded, setIsGalleryFullLoaded] = useState(false)
 
     const minimumRowAmountInScreen = useMemo(() => Math.ceil((height - HEADER_HEIGHT) / (width / 3)), [width, height])
     const amountOfImageToLoadPerTime = useMemo(() => (minimumRowAmountInScreen + 1) * 3, [minimumRowAmountInScreen])
@@ -46,7 +48,7 @@ export function Gallery() {
     })
 
 
-    async function getImage() {
+    async function getImage(refreshing?: boolean) {
         if (isLoading) {
             return
         }
@@ -65,11 +67,23 @@ export function Gallery() {
             return
         }
 
+        let amoutToLoad = amountOfImageToLoadPerTime
+        if (!refreshing && imageGallery) {
+            amoutToLoad += imageGallery.length
+        }
+
         try {
             const cameraRollPhotos = await CameraRoll.getPhotos({
-                first: imageGallery ? imageGallery.length + amountOfImageToLoadPerTime : amountOfImageToLoadPerTime,
+                first: amoutToLoad,
                 assetType: "Photos",
             })
+
+            if (cameraRollPhotos.edges.length === currentAmountOfImages && !refreshing) {
+                setIsGalleryFullLoaded(true)
+                setIsLoading(false)
+                return
+            }
+
             setImageGallery(cameraRollPhotos.edges)
             setIsLoading(false)
         } catch (error) {
@@ -268,13 +282,17 @@ export function Gallery() {
     const keyExtractor = useCallback((_: PhotoIdentifier, index: number) => index.toString(), [])
 
     async function onEndReached() {
+        if (isGalleryFullLoaded) {
+            return
+        }
+
         const galleryLength = imageGallery?.length ?? 0
         const currentRowAmount = (galleryLength / 3)
         if (currentRowAmount < minimumRowAmountInScreen) {
             return
         }
 
-        await getImage()
+        await getImage(false)
     }
 
     function ListFooterComponent() {
@@ -286,14 +304,14 @@ export function Gallery() {
 
     async function onRefresh() {
         setIsRefreshing(true)
-        setImageGallery(null)
-        await getImage()
+        setIsGalleryFullLoaded(false)
+        await getImage(true)
         setIsRefreshing(false)
     }
 
 
     useEffect(() => {
-        getImage()
+        getImage(false)
     }, [])
 
 
