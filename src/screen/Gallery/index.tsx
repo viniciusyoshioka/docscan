@@ -303,6 +303,7 @@ export function Gallery() {
     }
 
     async function onRefresh() {
+        exitSelectionMode()
         setIsRefreshing(true)
         setIsGalleryFullLoaded(false)
         await getImage(true)
