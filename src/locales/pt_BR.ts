@@ -82,7 +82,7 @@ export const pt_BR: TranslationType = {
     EditDocument_menu_deleteDocument: "Apagar documento",
     // EditDocument ConvertPdfOption
     ConvertPdfOption_title: "Converter para PDF",
-    ConvertPdfOption_description: "Escolha a compressão das imagens do documento",
+    ConvertPdfOption_description: "Escolha a taxa compressão das imagens do documento",
     ConvertPdfOption_highCompression: "Alta",
     ConvertPdfOption_lowCompression: "Baixa",
     ConvertPdfOption_customCompression: "Personalizada",

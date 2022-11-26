@@ -19,14 +19,14 @@ export function ConvertPdfOption(props: ConvertPdfOptionProps) {
 
     const { color, opacity } = useAppTheme()
 
-    const [compressionVisualValue, setCompressionVisualValue] = useState(40)
-    const [compressionValue, setCompressionValue] = useState(40)
+    const [compressionVisualValue, setCompressionVisualValue] = useState(60)
+    const [compressionValue, setCompressionValue] = useState(60)
     const [compressionLevel, setCompressionLevel] = useState<DocumentPdfCompressionLevel>("high")
 
 
     useEffect(() => {
-        setCompressionVisualValue(40)
-        setCompressionValue(40)
+        setCompressionVisualValue(60)
+        setCompressionValue(60)
         setCompressionLevel("high")
     }, [props.visible])
 
@@ -47,8 +47,8 @@ export function ConvertPdfOption(props: ConvertPdfOptionProps) {
                     value={compressionLevel === "high"}
                     onPress={() => {
                         setCompressionLevel("high")
-                        setCompressionVisualValue(40)
-                        setCompressionValue(40)
+                        setCompressionVisualValue(60)
+                        setCompressionValue(60)
                     }}
                 />
 
@@ -57,8 +57,8 @@ export function ConvertPdfOption(props: ConvertPdfOptionProps) {
                     value={compressionLevel === "low"}
                     onPress={() => {
                         setCompressionLevel("low")
-                        setCompressionVisualValue(80)
-                        setCompressionValue(80)
+                        setCompressionVisualValue(20)
+                        setCompressionValue(20)
                     }}
                 />
 
@@ -67,8 +67,8 @@ export function ConvertPdfOption(props: ConvertPdfOptionProps) {
                     value={compressionLevel === "custom"}
                     onPress={() => {
                         setCompressionLevel("custom")
-                        setCompressionVisualValue(100)
-                        setCompressionValue(100)
+                        setCompressionVisualValue(0)
+                        setCompressionValue(0)
                     }}
                 />
 
@@ -80,7 +80,7 @@ export function ConvertPdfOption(props: ConvertPdfOptionProps) {
                     <Slider
                         disabled={!(compressionLevel === "custom")}
                         style={{ flex: 1, opacity: opacity.highEmphasis }}
-                        minimumValue={1}
+                        minimumValue={0}
                         maximumValue={100}
                         step={1}
                         value={compressionValue}
@@ -102,7 +102,7 @@ export function ConvertPdfOption(props: ConvertPdfOptionProps) {
                 <ModalButton
                     text={translate("ok")}
                     onPress={() => {
-                        props.convertToPdf(compressionValue)
+                        props.convertToPdf(100 - compressionValue)
                         if (props.onRequestClose) {
                             props.onRequestClose({} as NativeSyntheticEvent<unknown>)
                         }
