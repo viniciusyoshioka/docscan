@@ -9,9 +9,9 @@ export const CompressionText = styled.Text`
     text-align-vertical: center;
     font-size: 15px;
     color: ${(props: StyledProps & { disabled: boolean }) => props.theme.color.screen_color};
-    opacity: ${(props: StyledProps & { disabled: boolean }) => {
-        return props.disabled ? props.theme.opacity.disabled : props.theme.opacity.highEmphasis
-    }};
+    opacity: ${(props: StyledProps & { disabled: boolean }) => props.disabled
+        ? props.theme.opacity.disabled
+        : props.theme.opacity.highEmphasis};
 `
 
 

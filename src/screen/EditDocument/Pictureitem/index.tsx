@@ -1,78 +1,68 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useMemo } from "react"
 import { useWindowDimensions } from "react-native"
-import { LongPressGestureHandler, State } from "react-native-gesture-handler"
+import { HandlerStateChangeEventPayload, LongPressGestureHandler, LongPressGestureHandlerEventPayload, State } from "react-native-gesture-handler"
 
 import { Icon } from "../../../components"
 import { useAppTheme } from "../../../services/theme"
-import { PictureButton, PictureImage, SelectedSurface } from "./style"
-
-
-export function getPictureItemHeight(width: number) {
-    return ((width - (2 * 4)) / 2) - (2 * 4)
-}
+import { PictureButton, PictureImage, PICTURE_BUTTON_MARGIN, SelectedSurface } from "./style"
 
 
 export interface PictureItemProps {
-    click: () => void;
-    select: () => void;
-    deselect: () => void;
-    selectionMode: boolean;
+    onClick: () => void;
+    onSelected: () => void;
+    onDeselected: () => void;
+    isSelectionMode: boolean;
+    isSelected: boolean;
     picturePath: string;
 }
 
 
-export const PictureItem = (props: PictureItemProps) => {
+export function PictureItem(props: PictureItemProps) {
 
+
+    const { width } = useWindowDimensions()
 
     const { color } = useAppTheme()
 
-    const [selected, setSelected] = useState(false)
-    const { width } = useWindowDimensions()
-    const pictureItemSize = getPictureItemHeight(width)
+    const pictureItemSize = useMemo(() => {
+        const singlePictureItemMarginWidth = (2 * PICTURE_BUTTON_MARGIN)
+        const pictureItemRowWidth = width - singlePictureItemMarginWidth
+        return (pictureItemRowWidth / 2) - singlePictureItemMarginWidth
+    }, [width])
 
 
-    const normalPress = useCallback(() => {
-        if (!props.selectionMode) {
-            props.click()
-        } else if (!selected) {
-            props.select()
-            setSelected(true)
-        } else if (selected) {
-            props.deselect()
-            setSelected(false)
+    function onNormalPress() {
+        if (!props.isSelectionMode) {
+            props.onClick()
+        } else if (!props.isSelected) {
+            props.onSelected()
+        } else if (props.isSelected) {
+            props.onDeselected()
         }
-    }, [props.selectionMode, selected, props.click])
+    }
 
-    const longPress = useCallback(nativeEvent => {
+    function onLongPress(nativeEvent: Readonly<HandlerStateChangeEventPayload & LongPressGestureHandlerEventPayload>) {
         if (nativeEvent.state === State.ACTIVE) {
-            if (!props.selectionMode) {
-                props.select()
-                setSelected(true)
+            if (!props.isSelectionMode) {
+                props.onSelected()
             }
         }
-    }, [props.selectionMode])
-
-
-    useEffect(() => {
-        if (!props.selectionMode && selected) {
-            setSelected(false)
-        }
-    }, [props.selectionMode])
+    }
 
 
     return (
         <LongPressGestureHandler
             maxDist={30}
             minDurationMs={400}
-            onHandlerStateChange={({ nativeEvent }) => longPress(nativeEvent)}
+            onHandlerStateChange={({ nativeEvent }) => onLongPress(nativeEvent)}
         >
             <PictureButton
                 style={{ maxWidth: pictureItemSize }}
-                onPress={normalPress}
+                onPress={onNormalPress}
             >
                 <PictureImage source={{ uri: `file://${props.picturePath}` }} />
 
-                {props.selectionMode && selected && (
+                {props.isSelectionMode && props.isSelected && (
                     <>
                         <SelectedSurface />
 

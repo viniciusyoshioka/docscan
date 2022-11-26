@@ -1,21 +1,23 @@
 import React, { createRef, useEffect, useState } from "react"
-import { TextInput } from "react-native"
+import { NativeSyntheticEvent, TextInput } from "react-native"
 
 import { Input, Modal, ModalButton, ModalProps, ModalTitle, ModalViewButton, ModalViewContent } from "../../components"
 import { useKeyboard } from "../../hooks"
+import { translate } from "../../locales"
 import { useDocumentData } from "../../services/document"
 
 
 export interface RenameDocumentProps extends ModalProps { }
 
 
-export const RenameDocument = (props: RenameDocumentProps) => {
+export function RenameDocument(props: RenameDocumentProps) {
 
 
     const inputRef = createRef<TextInput>()
 
     const { documentDataState, dispatchDocumentData } = useDocumentData()
-    const [documentName, setDocumentName] = useState(documentDataState?.name || "")
+
+    const [documentName, setDocumentName] = useState(documentDataState?.name ?? "")
 
 
     useKeyboard("keyboardDidHide", () => {
@@ -32,7 +34,7 @@ export const RenameDocument = (props: RenameDocumentProps) => {
 
 
     useEffect(() => {
-        setDocumentName(documentDataState?.name || "")
+        setDocumentName(documentDataState?.name ?? "")
 
         if (props.visible) {
             setTimeout(() => {
@@ -45,15 +47,15 @@ export const RenameDocument = (props: RenameDocumentProps) => {
     return (
         <Modal {...props}>
             <ModalTitle>
-                Renomear documento
+                {translate("RenameDocument_title")}
             </ModalTitle>
 
             <ModalViewContent>
                 <Input
                     ref={inputRef}
-                    placeholder={"Nome do documento"}
+                    placeholder={translate("RenameDocument_documentName_placeholder")}
                     value={documentName}
-                    onChangeText={(text) => setDocumentName(text)}
+                    onChangeText={text => setDocumentName(text)}
                     selectTextOnFocus={true}
                     style={{ width: "100%" }}
                 />
@@ -61,16 +63,16 @@ export const RenameDocument = (props: RenameDocumentProps) => {
 
             <ModalViewButton>
                 <ModalButton
-                    text={"Cancelar"}
+                    text={translate("cancel")}
                     onPress={props.onRequestClose}
                 />
 
                 <ModalButton
-                    text={"Ok"}
+                    text={translate("ok")}
                     onPress={() => {
                         renameDocument()
                         if (props.onRequestClose) {
-                            props.onRequestClose()
+                            props.onRequestClose({} as NativeSyntheticEvent<unknown>)
                         }
                     }}
                 />

@@ -8,6 +8,7 @@ export const pt_BR: TranslationType = {
     warn: "Aviso",
     delete: "Apagar",
     criticalError: "Erro crítico",
+    success: "Sucesso",
     save: "Salvar",
     dont_save: "Não salvar",
 
@@ -44,6 +45,50 @@ export const pt_BR: TranslationType = {
     CameraSettings_flash: "Flash",
     CameraSettings_whiteBalance: "Balanço de branco",
     CameraSettings_reset: "Redefinir",
+
+    // EditDocument alert
+    EditDocument_alert_errorLoadingDocument_text: "Erro ao carregar documento",
+    EditDocument_alert_errorLoadingDocumentPicture_text: "Erro ao carregar imagens do documento",
+    EditDocument_alert_errorSavingDocumentChanges_text: "Erro ao salvar alterações do documento",
+    EditDocument_alert_emptyDocument_text: "O documento está vazio",
+    EditDocument_alert_documentWithoutName_text: "Não é possível converter um documento sem nome para PDF",
+    EditDocument_alert_documentWithoutPictures_text: "Não é possível converter um documento sem fotos para PDF",
+    EditDocument_alert_noPermissionToConvertToPdf_text: "Sem permissão para converter documento para PDF",
+    EditDocument_alert_convertNotExistentPdfToShare_text: "Arquivo PDF não existe, converta o documento para compartilhá-lo",
+    EditDocument_alert_errorSharingPdf_text: "Erro compartilhando PDF",
+    EditDocument_alert_noPermissionToVisualizePdf_text: "Sem permissão para visualizar PDF",
+    EditDocument_alert_convertNotExistentPdfToVisualize_text: "Arquivo PDF não existe, converta o documento para visualizá-lo",
+    EditDocument_alert_noPermissionToDeletePdf_text: "Sem permissão para apagar PDF",
+    EditDocument_alert_pdfFileDoesNotExists_text: "Arquivo PDF não existe",
+    EditDocument_alert_pdfFileDeletedSuccessfully_text: "Arquivo PDF apagado com sucesso",
+    EditDocument_alert_errorDeletingPdfFile_text: "Erro apagando arquivo PDF",
+    EditDocument_alert_deletePdf_title: "Apagar PDF",
+    EditDocument_alert_deletePdf_text: "O PDF deste documento será apagado permanentemente",
+    EditDocument_alert_errorDeletingCurrentDocument_text: "Erro apagando documento atual",
+    EditDocument_alert_deleteDocument_title: "Apagar documento",
+    EditDocument_alert_deleteDocument_text: "Este documento será apagado permanentemente",
+    EditDocument_alert_cantDeletePictureFromEmptyDocument_text: "Não é possível apagar imagens selecionadas, o documento está vazio",
+    EditDocument_alert_errorDeletingSelectedPictures_text: "Erro apagando imagens selecionadas",
+    EditDocument_alert_deletePicture_title: "Apagar foto",
+    EditDocument_alert_deletePicture_text: "Esta foto será apagada permanentemente",
+    // EditDocument screen
+    EditDocument_shareDocument: "Compartilhar documento",
+    // EditDocument menu
+    EditDocument_menu_convertToPdf: "Converter para PDF",
+    EditDocument_menu_sharePdf: "Compartilhar PDF",
+    EditDocument_menu_visualizePdf: "Visualizar PDF",
+    EditDocument_menu_rename: "Renomear",
+    EditDocument_menu_deletePdf: "Apagar PDF",
+    EditDocument_menu_deleteDocument: "Apagar documento",
+    // EditDocument ConvertPdfOption
+    ConvertPdfOption_title: "Converter para PDF",
+    ConvertPdfOption_description: "Escolha a compressão das imagens do documento",
+    ConvertPdfOption_highCompression: "Alta",
+    ConvertPdfOption_lowCompression: "Baixa",
+    ConvertPdfOption_customCompression: "Personalizada",
+    // EditDocument RenameDocument
+    RenameDocument_title: "Renomear documento",
+    RenameDocument_documentName_placeholder: "Nome do documento",
 
     // Gallery alert
     Gallery_alert_noPermissionForGallery_text: "Sem permissão para abrir galeria",

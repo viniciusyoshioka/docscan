@@ -4,11 +4,13 @@ import styled from "styled-components/native"
 import { StyledProps } from "../../../types"
 
 
+export const PICTURE_BUTTON_MARGIN = 4
+
 export const PictureButton = styled(RectButton)`
     flex: 1;
     align-items: center;
     justify-content: center;
-    margin: 4px;
+    margin: ${PICTURE_BUTTON_MARGIN}px;
     border-radius: 6px;
     background-color: ${(props: StyledProps) => props.theme.color.pictureItem_background};
     elevation: 2;

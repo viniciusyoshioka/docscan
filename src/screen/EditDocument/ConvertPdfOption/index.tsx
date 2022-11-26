@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react"
 import Slider from "@react-native-community/slider"
+import React, { useEffect, useState } from "react"
+import { NativeSyntheticEvent } from "react-native"
 
 import { Modal, ModalButton, ModalDescription, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, RadioButton } from "../../../components"
+import { translate } from "../../../locales"
 import { useAppTheme } from "../../../services/theme"
 import { DocumentPdfCompressionLevel } from "../../../types"
 import { CompressionText, ViewSlider } from "./style"
@@ -12,7 +14,7 @@ export interface ConvertPdfOptionProps extends ModalProps {
 }
 
 
-export const ConvertPdfOption = (props: ConvertPdfOptionProps) => {
+export function ConvertPdfOption(props: ConvertPdfOptionProps) {
 
 
     const { color, opacity } = useAppTheme()
@@ -32,16 +34,16 @@ export const ConvertPdfOption = (props: ConvertPdfOptionProps) => {
     return (
         <Modal {...props}>
             <ModalTitle>
-                Converter para PDF
+                {translate("ConvertPdfOption_title")}
             </ModalTitle>
 
             <ModalDescription>
-                Escolha a compressão das imagens do documento
+                {translate("ConvertPdfOption_description")}
             </ModalDescription>
 
             <ModalViewContent>
                 <RadioButton
-                    text={"Alta"}
+                    text={translate("ConvertPdfOption_highCompression")}
                     value={compressionLevel === "high"}
                     onPress={() => {
                         setCompressionLevel("high")
@@ -51,7 +53,7 @@ export const ConvertPdfOption = (props: ConvertPdfOptionProps) => {
                 />
 
                 <RadioButton
-                    text={"Baixa"}
+                    text={translate("ConvertPdfOption_lowCompression")}
                     value={compressionLevel === "low"}
                     onPress={() => {
                         setCompressionLevel("low")
@@ -61,7 +63,7 @@ export const ConvertPdfOption = (props: ConvertPdfOptionProps) => {
                 />
 
                 <RadioButton
-                    text={"Personalizada"}
+                    text={translate("ConvertPdfOption_customCompression")}
                     value={compressionLevel === "custom"}
                     onPress={() => {
                         setCompressionLevel("custom")
@@ -82,8 +84,8 @@ export const ConvertPdfOption = (props: ConvertPdfOptionProps) => {
                         maximumValue={100}
                         step={1}
                         value={compressionValue}
-                        onSlidingComplete={(value) => setCompressionValue(value)}
-                        onValueChange={(value) => setCompressionVisualValue(value)}
+                        onSlidingComplete={value => setCompressionValue(value)}
+                        onValueChange={value => setCompressionVisualValue(value)}
                         minimumTrackTintColor={color.screen_color}
                         maximumTrackTintColor={color.screen_color}
                         thumbTintColor={color.screen_color}
@@ -93,16 +95,16 @@ export const ConvertPdfOption = (props: ConvertPdfOptionProps) => {
 
             <ModalViewButton>
                 <ModalButton
-                    text={"Cancelar"}
+                    text={translate("cancel")}
                     onPress={props.onRequestClose}
                 />
 
                 <ModalButton
-                    text={"Ok"}
+                    text={translate("ok")}
                     onPress={() => {
                         props.convertToPdf(compressionValue)
                         if (props.onRequestClose) {
-                            props.onRequestClose()
+                            props.onRequestClose({} as NativeSyntheticEvent<unknown>)
                         }
                     }}
                 />

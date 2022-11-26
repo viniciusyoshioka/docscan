@@ -1,23 +1,23 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/core"
 import React, { useCallback, useEffect, useState } from "react"
-import { Alert, FlatList, useWindowDimensions } from "react-native"
+import { Alert, FlatList } from "react-native"
 import RNFS from "react-native-fs"
 import Share from "react-native-share"
 
 import { Screen } from "../../components"
 import { DocumentDatabase } from "../../database"
 import { useBackHandler } from "../../hooks"
+import { translate } from "../../locales"
 import { fullPathPdf, fullPathTemporaryCompressedPicture } from "../../services/constant"
 import { useDocumentData } from "../../services/document"
 import { deletePicturesService } from "../../services/document-service"
-import { log } from "../../services/log"
+import { log, stringfyError } from "../../services/log"
 import { createPdf, PdfCreatorOptions, viewPdf } from "../../services/pdf-creator"
 import { getReadPermission, getWritePermission } from "../../services/permission"
-import { useAppTheme } from "../../services/theme"
 import { DocumentPicture, NavigationParamProps, RouteParamProps, SimpleDocument } from "../../types"
 import { ConvertPdfOption } from "./ConvertPdfOption"
 import { EditDocumentHeader } from "./Header"
-import { getPictureItemHeight, PictureItem } from "./Pictureitem"
+import { PictureItem } from "./Pictureitem"
 import { RenameDocument } from "./RenameDocument"
 
 
@@ -27,30 +27,97 @@ export function EditDocument() {
     const navigation = useNavigation<NavigationParamProps<"EditDocument">>()
     const { params } = useRoute<RouteParamProps<"EditDocument">>()
 
-    const { width } = useWindowDimensions()
-
-    const { color, appTheme } = useAppTheme()
-
     const { documentDataState, dispatchDocumentData } = useDocumentData()
-    const [selectionMode, setSelectionMode] = useState(false)
+
+    const [isSelectionMode, setIsSelectionMode] = useState(false)
     const [selectedPictureIndex, setSelectedPictureIndex] = useState<number[]>([])
     const [renameDocumentVisible, setRenameDocumentVisible] = useState(false)
     const [convertPdfOptionVisible, setConvertPdfOptionVisible] = useState(false)
 
 
     useBackHandler(() => {
-        if (renameDocumentVisible) {
-            setRenameDocumentVisible(false)
-            return true
-        }
-
         goBack()
         return true
     })
 
 
+    async function loadDocument() {
+        if (!params) {
+            return
+        }
+
+        let document: SimpleDocument | undefined = undefined
+        try {
+            document = await DocumentDatabase.getDocument(params.documentId)
+        } catch (error) {
+            log.error(`Error getting document from database while opening: "${stringfyError(error)}"`)
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_errorLoadingDocument_text")
+            )
+            return
+        }
+
+        let documentPicture: DocumentPicture[] | undefined = undefined
+        try {
+            documentPicture = await DocumentDatabase.getDocumentPicture(params.documentId)
+        } catch (error) {
+            log.error(`Error getting document picture from database while opening: "${stringfyError(error)}"`)
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_errorLoadingDocumentPicture_text")
+            )
+            return
+        }
+
+        dispatchDocumentData({
+            type: "set-document",
+            payload: {
+                document: {
+                    id: params.documentId,
+                    name: document.name,
+                    lastModificationTimestamp: document.lastModificationTimestamp,
+                },
+                pictureList: documentPicture,
+            }
+        })
+    }
+
+    async function saveChanges() {
+        if (!documentDataState?.hasChanges) {
+            return
+        }
+
+        dispatchDocumentData({
+            type: "save-document",
+            payload: async (documentId: number) => {
+                try {
+                    const document = await DocumentDatabase.getDocument(documentId)
+                    const documentPicture = await DocumentDatabase.getDocumentPicture(documentId)
+
+                    dispatchDocumentData({
+                        type: "set-document",
+                        payload: {
+                            document: {
+                                id: documentId,
+                                ...document,
+                            },
+                            pictureList: documentPicture
+                        }
+                    })
+                } catch (error) {
+                    log.error(`Error getting document and document pictures from database while saving changes: "${stringfyError(error)}"`)
+                    Alert.alert(
+                        translate("warn"),
+                        translate("EditDocument_alert_errorSavingDocumentChanges_text")
+                    )
+                }
+            }
+        })
+    }
+
     function goBack() {
-        if (selectionMode) {
+        if (isSelectionMode) {
             exitSelectionMode()
             return
         }
@@ -61,48 +128,50 @@ export function EditDocument() {
 
     async function convertDocumentToPdf(quality: number) {
         if (!documentDataState) {
-            log.warn("documentDataState está vazio - verificação antes de converter para pdf")
+            log.warn("Can not convert document to PDF because the document is empty")
             Alert.alert(
-                "Aviso",
-                "Não é possível converter documento para PDF, o documento está vazio"
+                translate("warn"),
+                translate("EditDocument_alert_emptyDocument_text")
             )
             return
         }
 
         if (documentDataState.name === "") {
-            log.warn("Documento sem nome - Não é possível converter um documento sem nome para PDF")
+            log.warn("Can not convert document to PDF because the document name is empty")
             Alert.alert(
-                "Documento sem nome",
-                "Não é possível converter um documento sem nome para PDF"
+                translate("warn"),
+                translate("EditDocument_alert_documentWithoutName_text")
             )
             return
         }
 
         if (documentDataState.pictureList.length === 0) {
-            log.warn("Documento sem fotos - Não é possível converter um documento sem fotos para PDF")
+            log.warn("Can not convert document to PDF because the document do not have any picture")
             Alert.alert(
-                "Documento sem fotos",
-                "Não é possível converter um documento sem fotos para PDF"
+                translate("warn"),
+                translate("EditDocument_alert_documentWithoutPictures_text")
             )
             return
         }
 
         const hasPermission = await getWritePermission()
         if (!hasPermission) {
-            log.warn("Sem permissão para converter o documento em pdf")
+            log.warn("Can not convert document to PDF because the permission was not granted")
             Alert.alert(
-                "Erro",
-                "Sem permissão para converter documento para PDF"
+                translate("warn"),
+                translate("EditDocument_alert_noPermissionToConvertToPdf_text")
             )
             return
         }
 
         const documentPath = `${fullPathPdf}/${documentDataState.name}.pdf`
-        if (await RNFS.exists(documentPath)) {
+
+        const pdfFileExists = await RNFS.exists(documentPath)
+        if (pdfFileExists) {
             try {
                 await RNFS.unlink(documentPath)
             } catch (error) {
-                log.error(`Erro ao apagar arquivo PDF já existente com mesmo nome do documento a ser convertido. "${error}"`)
+                log.error(`Error deleting PDF file with the same name of the document to be converted: "${stringfyError(error)}"`)
             }
         }
 
@@ -118,66 +187,70 @@ export function EditDocument() {
 
     async function shareDocument() {
         if (!documentDataState) {
-            log.warn("documentDataState está vazio - verificação antes de compartilhar pdf do documento")
+            log.warn("Can not share PDF file because the document is empty")
             Alert.alert(
-                "Aviso",
-                "Não é possível compartilhar o PDF, o documento está vazio"
+                translate("warn"),
+                translate("EditDocument_alert_emptyDocument_text")
             )
             return
         }
 
         const documentPath = `file://${fullPathPdf}/${documentDataState.name}.pdf`
-        if (!(await RNFS.exists(documentPath))) {
-            log.warn("Can't shared PDF file because it doesn't exists")
+
+        const pdfFileExists = await RNFS.exists(documentPath)
+        if (!pdfFileExists) {
+            log.warn("Can not shared PDF file because it doesn't exists")
             Alert.alert(
-                "Aviso",
-                "Converta o documento para PDF antes de compartilhá-lo"
+                translate("warn"),
+                translate("EditDocument_alert_convertNotExistentPdfToShare_text")
             )
             return
         }
 
         try {
             await Share.open({
-                title: "Compartilhar documento",
+                title: translate("EditDocument_shareDocument"),
                 type: "pdf/application",
                 url: documentPath,
                 failOnCancel: false
             })
         } catch (error) {
-            log.error(`Erro ao compartilhar pdf do documento. "${error}"`)
+            log.error(`Error sharing PDF file: "${stringfyError(error)}"`)
             Alert.alert(
-                "Erro",
-                "Erro desconhecido ao compartilhar PDF do documento"
+                translate("warn"),
+                translate("EditDocument_alert_errorSharingPdf_text")
             )
         }
     }
 
     async function visualizePdf() {
         if (!documentDataState) {
-            log.warn("documentDataState está vazio - verificação antes de visualizar pdf do documento")
+            log.warn("Can not visualize PDF because the document is empty")
             Alert.alert(
-                "Aviso",
-                "Não é possível visualizar PDF, o documento está vazio"
+                translate("warn"),
+                translate("EditDocument_alert_emptyDocument_text")
             )
             return
         }
 
         const hasPermission = await getReadPermission()
         if (!hasPermission) {
-            log.warn("Sem permissão READ_EXTERNAL_STORAGE para visualizar PDF")
+            log.warn("Can not visualize PDF because the permission was not granted")
             Alert.alert(
-                "Erro",
-                "Sem permissão para visualizar PDF"
+                translate("warn"),
+                translate("EditDocument_alert_noPermissionToVisualizePdf_text")
             )
             return
         }
 
         const pdfFilePath = `${fullPathPdf}/${documentDataState.name}.pdf`
-        if (!await RNFS.exists(pdfFilePath)) {
-            log.warn("Arquivo PDF não existe para ser visualizado")
+
+        const pdfFileExists = await RNFS.exists(pdfFilePath)
+        if (!pdfFileExists) {
+            log.warn("Can not visualize PDF because it doesn't exists")
             Alert.alert(
-                "Aviso",
-                "Documento não existe em PDF. Converta o documento primeiro para visualizar"
+                translate("warn"),
+                translate("EditDocument_alert_convertNotExistentPdfToVisualize_text")
             )
             return
         }
@@ -187,110 +260,114 @@ export function EditDocument() {
 
     async function deletePdf() {
         if (!documentDataState) {
-            log.warn("documentDataState está vazio - verificação antes de apagar pdf")
+            log.warn("Can not delete PDF because the document is empty")
             Alert.alert(
-                "Aviso",
-                "Não é possível apagar PDF"
+                translate("warn"),
+                translate("EditDocument_alert_emptyDocument_text")
             )
             return
         }
 
         const hasPermission = await getWritePermission()
         if (!hasPermission) {
-            log.warn("Sem permissão WRITE_EXTERNAL_STORAGE para apagar PDF")
+            log.warn("Can not delete PDF because the permission was not granted")
             Alert.alert(
-                "Erro",
-                "Sem permissão para apagar PDF"
+                translate("warn"),
+                translate("EditDocument_alert_noPermissionToDeletePdf_text")
             )
             return
         }
 
         const pdfFilePath = `${fullPathPdf}/${documentDataState.name}.pdf`
-        if (await RNFS.exists(pdfFilePath)) {
-            try {
-                await RNFS.unlink(pdfFilePath)
-                Alert.alert(
-                    "PDF apagado",
-                    "Arquivo PDF do documento apagado com sucesso"
-                )
-            } catch (error) {
-                log.error(`Erro ao apagar arquivo PDF do documento "${error}"`)
-                Alert.alert(
-                    "Erro",
-                    "Erro desconhecido apagando PDF"
-                )
-            }
+
+        const pdfFileExists = await RNFS.exists(pdfFilePath)
+        if (!pdfFileExists) {
+            log.warn("Can not delete PDF because it doesn't exists")
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_pdfFileDoesNotExists_text")
+            )
             return
         }
 
-        log.warn("Can't delete PDF file because it doesn't exists")
-        Alert.alert(
-            "Alerta",
-            "Arquivo PDF do documento não existe"
-        )
+        try {
+            await RNFS.unlink(pdfFilePath)
+            Alert.alert(
+                translate("success"),
+                translate("EditDocument_alert_pdfFileDeletedSuccessfully_text")
+            )
+        } catch (error) {
+            log.error(`Error deleting PDF file "${stringfyError(error)}"`)
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_errorDeletingPdfFile_text")
+            )
+        }
     }
 
     function alertDeletePdf() {
         Alert.alert(
-            "Apagar PDF",
-            "O PDF deste documento será apagado permanentemente",
+            translate("EditDocument_alert_deletePdf_title"),
+            translate("EditDocument_alert_deletePdf_text"),
             [
-                { text: "Cancelar", onPress: () => { } },
-                { text: "Apagar", onPress: async () => await deletePdf() }
+                { text: translate("cancel"), onPress: () => { } },
+                { text: translate("ok"), onPress: async () => await deletePdf() },
             ]
         )
     }
 
     async function deleteCurrentDocument() {
-        if (documentDataState) {
-            const picturePathToDelete = documentDataState.pictureList.map(item => item.filePath)
-
-            if (documentDataState.id) {
-                try {
-                    await DocumentDatabase.deleteDocument([documentDataState.id])
-                    deletePicturesService(picturePathToDelete)
-                } catch (error) {
-                    log.error(`Error deleting current document from database: "${error}"`)
-                    Alert.alert(
-                        "Aviso",
-                        "Erro apagando documento atual"
-                    )
-                }
-            }
-            dispatchDocumentData({ type: "close-document" })
+        if (!documentDataState) {
+            navigation.reset({ routes: [ { name: "Home" } ] })
+            return
         }
+
+        if (!documentDataState.id) {
+            dispatchDocumentData({ type: "close-document" })
+            navigation.reset({ routes: [ { name: "Home" } ] })
+            return
+        }
+
+        const picturePathsToDelete = documentDataState.pictureList.map(item => item.filePath)
+        try {
+            await DocumentDatabase.deleteDocument([documentDataState.id])
+            deletePicturesService(picturePathsToDelete)
+        } catch (error) {
+            log.error(`Error deleting current document from database: "${stringfyError(error)}"`)
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_errorDeletingCurrentDocument_text")
+            )
+        }
+        dispatchDocumentData({ type: "close-document" })
         navigation.reset({ routes: [ { name: "Home" } ] })
     }
 
     function alertDeleteCurrentDocument() {
         Alert.alert(
-            "Apagar documento",
-            "Este documento será apagado permanentemente",
+            translate("EditDocument_alert_deleteDocument_title"),
+            translate("EditDocument_alert_deleteDocument_text"),
             [
-                { text: "Cancelar", onPress: () => { } },
-                { text: "Ok", onPress: async () => await deleteCurrentDocument() }
+                { text: translate("cancel"), onPress: () => { } },
+                { text: translate("ok"), onPress: async () => await deleteCurrentDocument() },
             ]
         )
     }
 
     async function deleteSelectedPicture() {
         if (!documentDataState) {
-            log.warn("Was not possible to delete selected picture because document state is undefined")
+            log.warn("Was not possible to delete selected pictures because document state is undefined")
             Alert.alert(
-                "Aviso",
-                "Não é possível apagar imagens selecionadas, o documento está vazio"
+                translate("warn"),
+                translate("EditDocument_alert_cantDeletePictureFromEmptyDocument_text")
             )
             return
         }
 
         const pictureIdToDelete = selectedPictureIndex
-            .filter(pictureIndex => {
-                if (documentDataState.pictureList[pictureIndex].id) {
-                    return true
-                }
-                return false
-            })
-            .map(pictureIndex => documentDataState.pictureList[pictureIndex].id)
+            .filter(pictureIndex => documentDataState.pictureList[pictureIndex].id !== undefined)
+            .map(pictureIndex => documentDataState.pictureList[pictureIndex].id as number)
+
         const picturePathToDelete = selectedPictureIndex.map(pictureIndex =>
             documentDataState.pictureList[pictureIndex].filePath
         )
@@ -299,11 +376,13 @@ export function EditDocument() {
             await DocumentDatabase.deleteDocumentPicture(pictureIdToDelete)
             deletePicturesService(picturePathToDelete)
         } catch (error) {
-            log.error(`Error deleting selected picture from database: "${error}"`)
+            log.error(`Error deleting selected pictures from database: "${stringfyError(error)}"`)
             Alert.alert(
-                "Aviso",
-                "Erro apagando imagens selecionadas"
+                translate("warn"),
+                translate("EditDocument_alert_errorDeletingSelectedPictures_text")
             )
+            exitSelectionMode()
+            return
         }
 
         dispatchDocumentData({
@@ -315,140 +394,65 @@ export function EditDocument() {
 
     function alertDeletePicture() {
         Alert.alert(
-            "Apagar foto",
-            "Esta foto será apagada permanentemente",
+            translate("EditDocument_alert_deletePicture_title"),
+            translate("EditDocument_alert_deletePicture_text"),
             [
-                { text: "Cancelar", onPress: () => { } },
-                { text: "Apagar", onPress: async () => await deleteSelectedPicture() }
+                { text: translate("cancel"), onPress: () => { } },
+                { text: translate("ok"), onPress: async () => await deleteSelectedPicture() },
             ]
         )
     }
 
     function selectPicture(pictureIndex: number) {
-        if (!selectionMode) {
-            setSelectionMode(true)
+        if (!isSelectionMode) {
+            setIsSelectionMode(true)
         }
         if (!selectedPictureIndex.includes(pictureIndex)) {
-            selectedPictureIndex.push(pictureIndex)
+            setSelectedPictureIndex(currentSelectedPictureIndex => [...currentSelectedPictureIndex, pictureIndex])
         }
     }
 
     function deselectPicture(pictureIndex: number) {
         const index = selectedPictureIndex.indexOf(pictureIndex)
         if (index !== -1) {
-            selectedPictureIndex.splice(index, 1)
-        }
-        if (selectionMode && selectedPictureIndex.length === 0) {
-            setSelectionMode(false)
-        }
-    }
+            const newSelectedPictureIndex = [...selectedPictureIndex]
+            newSelectedPictureIndex.splice(index, 1)
+            setSelectedPictureIndex(newSelectedPictureIndex)
 
-    function openPicture(pictureIndex: number) {
-        navigation.navigate("VisualizePicture", {
-            pictureIndex: pictureIndex
-        })
+            if (isSelectionMode && newSelectedPictureIndex.length === 0) {
+                setIsSelectionMode(false)
+            }
+        }
     }
 
     function exitSelectionMode() {
         setSelectedPictureIndex([])
-        setSelectionMode(false)
+        setIsSelectionMode(false)
     }
 
     function renderItem({ item, index }: { item: DocumentPicture, index: number }) {
         return (
             <PictureItem
+                onClick={() => navigation.navigate("VisualizePicture", { pictureIndex: index })}
+                onSelected={() => selectPicture(index)}
+                onDeselected={() => deselectPicture(index)}
+                isSelectionMode={isSelectionMode}
+                isSelected={selectedPictureIndex.includes(index)}
                 picturePath={item.filePath}
-                click={() => openPicture(index)}
-                select={() => selectPicture(index)}
-                deselect={() => deselectPicture(index)}
-                selectionMode={selectionMode}
             />
         )
     }
 
-    const keyExtractor = useCallback((item: DocumentPicture, index: number) => item.id
-        ? item.id.toString()
-        : index.toString(), [])
-
-    const getItemLayout = useCallback((_: DocumentPicture[] | null | undefined, index: number) => {
-        const pictureItemHeight = getPictureItemHeight(width)
-
-        return {
-            length: pictureItemHeight,
-            offset: pictureItemHeight * index,
-            index: index,
-        }
-    }, [width])
+    const keyExtractor = useCallback((_: DocumentPicture, index: number) => index.toString(), [])
 
 
     useEffect(() => {
-        if (params?.documentId) {
-            DocumentDatabase.getDocument(params.documentId)
-                .then(async (document: SimpleDocument) => {
-                    let documentPicture
-                    try {
-                        documentPicture = await DocumentDatabase.getDocumentPicture(params.documentId)
-                    } catch (error) {
-                        log.error("Error getting document picture while openin document")
-                        Alert.alert(
-                            "Aviso",
-                            "Erro carregando imagens do documento"
-                        )
-                        return
-                    }
-
-                    dispatchDocumentData({
-                        type: "set-document",
-                        payload: {
-                            document: {
-                                id: params.documentId,
-                                name: document.name,
-                                lastModificationTimestamp: document.lastModificationTimestamp,
-                            },
-                            pictureList: documentPicture,
-                        }
-                    })
-                })
-                .catch(error => {
-                    log.error(`Error getting document from database while opening: "${error}"`)
-                    Alert.alert(
-                        "Aviso",
-                        "Erro ao carregar document"
-                    )
-                })
-        }
+        loadDocument()
     }, [])
 
     useFocusEffect(useCallback(() => {
-        if (documentDataState?.hasChanges) {
-            dispatchDocumentData({
-                type: "save-document",
-                payload: async (documentId: number) => {
-                    try {
-                        const document = await DocumentDatabase.getDocument(documentId)
-                        const documentPicture = await DocumentDatabase.getDocumentPicture(documentId)
-
-                        dispatchDocumentData({
-                            type: "set-document",
-                            payload: {
-                                document: {
-                                    id: documentId,
-                                    ...document,
-                                },
-                                pictureList: documentPicture
-                            }
-                        })
-                    } catch (error) {
-                        log.error(`Error getting document and document picture from database while saving changes: "${error}"`)
-                        Alert.alert(
-                            "Aviso",
-                            "Erro ao salvar alterações do documento"
-                        )
-                    }
-                }
-            })
-        }
-    }, []))
+        saveChanges()
+    }, [documentDataState?.name]))
 
 
     return (
@@ -456,7 +460,8 @@ export function EditDocument() {
             <EditDocumentHeader
                 goBack={goBack}
                 exitSelectionMode={exitSelectionMode}
-                selectionMode={selectionMode}
+                isSelectionMode={isSelectionMode}
+                selectedPicturesAmount={selectedPictureIndex.length}
                 deletePicture={alertDeletePicture}
                 openCamera={() => navigation.navigate("Camera")}
                 convertToPdf={() => setConvertPdfOptionVisible(true)}
@@ -470,9 +475,7 @@ export function EditDocument() {
             <FlatList
                 data={documentDataState?.pictureList}
                 renderItem={renderItem}
-                extraData={[width, openPicture, selectPicture, deselectPicture, selectionMode]}
                 keyExtractor={keyExtractor}
-                getItemLayout={getItemLayout}
                 numColumns={2}
                 contentContainerStyle={{ padding: 4 }}
             />

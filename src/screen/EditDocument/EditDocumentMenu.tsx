@@ -1,9 +1,9 @@
 import React, { useRef } from "react"
-import { BackHandler } from "react-native"
 import { RectButton } from "react-native-gesture-handler"
 import { Menu, MenuOptions, MenuTrigger } from "react-native-popup-menu"
 
 import { HeaderButton, MenuItem } from "../../components"
+import { translate } from "../../locales"
 
 
 export interface EditDocumentMenuProps {
@@ -16,37 +16,14 @@ export interface EditDocumentMenuProps {
 }
 
 
-export const EditDocumentMenu = (props: EditDocumentMenuProps) => {
+export function EditDocumentMenu(props: EditDocumentMenuProps) {
 
 
     const menuRef = useRef<Menu>(null)
 
 
-    function backhandlerFunction() {
-        if (menuRef.current?.isOpen()) {
-            menuRef.current?.close()
-            return true
-        }
-        return false
-    }
-
-    function setBackhandler() {
-        BackHandler.addEventListener(
-            "hardwareBackPress",
-            backhandlerFunction
-        )
-    }
-
-    function removeBackhandler() {
-        BackHandler.removeEventListener(
-            "hardwareBackPress",
-            backhandlerFunction
-        )
-    }
-
-
     return (
-        <Menu ref={menuRef} onClose={removeBackhandler} onOpen={setBackhandler}>
+        <Menu ref={menuRef}>
             <MenuTrigger customStyles={{ TriggerTouchableComponent: RectButton }}>
                 <HeaderButton
                     iconName={"more-vert"}
@@ -56,7 +33,7 @@ export const EditDocumentMenu = (props: EditDocumentMenuProps) => {
 
             <MenuOptions>
                 <MenuItem
-                    text={"Converter para PDF"}
+                    text={translate("EditDocument_menu_convertToPdf")}
                     onPress={() => {
                         menuRef.current?.close()
                         props.convertToPdf()
@@ -64,7 +41,7 @@ export const EditDocumentMenu = (props: EditDocumentMenuProps) => {
                 />
 
                 <MenuItem
-                    text={"Compartilhar PDF"}
+                    text={translate("EditDocument_menu_sharePdf")}
                     onPress={() => {
                         menuRef.current?.close()
                         props.shareDocument()
@@ -72,7 +49,7 @@ export const EditDocumentMenu = (props: EditDocumentMenuProps) => {
                 />
 
                 <MenuItem
-                    text={"Visualizar PDF"}
+                    text={translate("EditDocument_menu_visualizePdf")}
                     onPress={() => {
                         menuRef.current?.close()
                         props.visualizePdf()
@@ -80,7 +57,7 @@ export const EditDocumentMenu = (props: EditDocumentMenuProps) => {
                 />
 
                 <MenuItem
-                    text={"Renomear"}
+                    text={translate("EditDocument_menu_rename")}
                     onPress={() => {
                         menuRef.current?.close()
                         props.renameDocument()
@@ -88,7 +65,7 @@ export const EditDocumentMenu = (props: EditDocumentMenuProps) => {
                 />
 
                 <MenuItem
-                    text={"Apagar PDF"}
+                    text={translate("EditDocument_menu_deletePdf")}
                     onPress={() => {
                         menuRef.current?.close()
                         props.deletePdf()
@@ -96,7 +73,7 @@ export const EditDocumentMenu = (props: EditDocumentMenuProps) => {
                 />
 
                 <MenuItem
-                    text={"Apagar documento"}
+                    text={translate("EditDocument_menu_deleteDocument")}
                     onPress={() => {
                         menuRef.current?.close()
                         props.deleteDocument()

@@ -9,6 +9,7 @@ export type TranslationKeyType =
     | "warn"
     | "delete"
     | "criticalError"
+    | "success"
     | "save"
     | "dont_save"
 
@@ -45,6 +46,50 @@ export type TranslationKeyType =
     | "CameraSettings_flash"
     | "CameraSettings_whiteBalance"
     | "CameraSettings_reset"
+
+    // EditDocument alert
+    | "EditDocument_alert_errorLoadingDocument_text"
+    | "EditDocument_alert_errorLoadingDocumentPicture_text"
+    | "EditDocument_alert_errorSavingDocumentChanges_text"
+    | "EditDocument_alert_emptyDocument_text"
+    | "EditDocument_alert_documentWithoutName_text"
+    | "EditDocument_alert_documentWithoutPictures_text"
+    | "EditDocument_alert_noPermissionToConvertToPdf_text"
+    | "EditDocument_alert_convertNotExistentPdfToShare_text"
+    | "EditDocument_alert_errorSharingPdf_text"
+    | "EditDocument_alert_noPermissionToVisualizePdf_text"
+    | "EditDocument_alert_convertNotExistentPdfToVisualize_text"
+    | "EditDocument_alert_noPermissionToDeletePdf_text"
+    | "EditDocument_alert_pdfFileDoesNotExists_text"
+    | "EditDocument_alert_pdfFileDeletedSuccessfully_text"
+    | "EditDocument_alert_errorDeletingPdfFile_text"
+    | "EditDocument_alert_deletePdf_title"
+    | "EditDocument_alert_deletePdf_text"
+    | "EditDocument_alert_errorDeletingCurrentDocument_text"
+    | "EditDocument_alert_deleteDocument_title"
+    | "EditDocument_alert_deleteDocument_text"
+    | "EditDocument_alert_cantDeletePictureFromEmptyDocument_text"
+    | "EditDocument_alert_errorDeletingSelectedPictures_text"
+    | "EditDocument_alert_deletePicture_title"
+    | "EditDocument_alert_deletePicture_text"
+    // EditDocument screen
+    | "EditDocument_shareDocument"
+    // EditDocument menu
+    | "EditDocument_menu_convertToPdf"
+    | "EditDocument_menu_sharePdf"
+    | "EditDocument_menu_visualizePdf"
+    | "EditDocument_menu_rename"
+    | "EditDocument_menu_deletePdf"
+    | "EditDocument_menu_deleteDocument"
+    // EditDocument ConvertPdfOption
+    | "ConvertPdfOption_title"
+    | "ConvertPdfOption_description"
+    | "ConvertPdfOption_highCompression"
+    | "ConvertPdfOption_lowCompression"
+    | "ConvertPdfOption_customCompression"
+    // EditDocument RenameDocument
+    | "RenameDocument_title"
+    | "RenameDocument_documentName_placeholder"
 
     // Gallery alert
     | "Gallery_alert_noPermissionForGallery_text"
