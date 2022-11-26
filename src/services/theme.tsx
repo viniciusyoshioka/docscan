@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react"
+import { ThemeProvider as StyledThemeProvider } from "styled-components/native"
 
-import { AppTheme, ThemeType } from "../types"
+import { AppTheme, ThemeProviderProps, ThemeType } from "../types"
 
 
 /**
@@ -157,7 +158,15 @@ const AppThemeContext = createContext(AppThemeLight)
 /**
  * AppTheme provider to pass the theme object to component tree
  */
-export const AppThemeProvider = AppThemeContext.Provider
+export function ThemeProvider(props: ThemeProviderProps) {
+    return (
+        <AppThemeContext.Provider value={props.theme}>
+            <StyledThemeProvider theme={props.theme}>
+                {props.children}
+            </StyledThemeProvider>
+        </AppThemeContext.Provider>
+    )
+}
 
 /**
  * @returns AppTheme object currently in use

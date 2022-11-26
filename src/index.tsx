@@ -5,7 +5,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler"
 import KeepAwake from "react-native-keep-awake"
 import { MenuProvider } from "react-native-popup-menu"
 import SQLite from "react-native-sqlite-storage"
-import { ThemeProvider } from "styled-components/native"
 
 import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase, SettingsDatabase } from "./database"
 import { translate } from "./locales"
@@ -14,7 +13,7 @@ import { cameraSettingsDefault, CameraSettingsProvider, reducerCameraSettings } 
 import { databaseFolder, fullPathExported, fullPathPdf, fullPathPicture, fullPathRoot, fullPathRootExternal, fullPathTemporary, fullPathTemporaryCompressedPicture, fullPathTemporaryExported, fullPathTemporaryImported } from "./services/constant"
 import { DocumentDataProvider, reducerDocumentData } from "./services/document"
 import { log, logCriticalError, stringfyError } from "./services/log"
-import { AppThemeDark, AppThemeLight, AppThemeProvider, themeDefault } from "./services/theme"
+import { AppThemeDark, AppThemeLight, themeDefault, ThemeProvider } from "./services/theme"
 import { ThemeType } from "./types"
 
 
@@ -299,17 +298,15 @@ export function App() {
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <AppThemeProvider value={(theme === "light") ? AppThemeLight : AppThemeDark}>
-                <ThemeProvider theme={(theme === "light") ? AppThemeLight : AppThemeDark}>
-                    <MenuProvider backHandler={true}>
-                        <DocumentDataProvider value={{ documentDataState, dispatchDocumentData }}>
-                            <CameraSettingsProvider value={{ cameraSettingsState, dispatchCameraSettings }}>
-                                <Router />
-                            </CameraSettingsProvider>
-                        </DocumentDataProvider>
-                    </MenuProvider>
-                </ThemeProvider>
-            </AppThemeProvider>
+            <ThemeProvider theme={(theme === "light") ? AppThemeLight : AppThemeDark}>
+                <MenuProvider backHandler={true}>
+                    <DocumentDataProvider value={{ documentDataState, dispatchDocumentData }}>
+                        <CameraSettingsProvider value={{ cameraSettingsState, dispatchCameraSettings }}>
+                            <Router />
+                        </CameraSettingsProvider>
+                    </DocumentDataProvider>
+                </MenuProvider>
+            </ThemeProvider>
         </GestureHandlerRootView>
     )
 }

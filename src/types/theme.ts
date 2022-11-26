@@ -1,3 +1,5 @@
+import { ReactNode } from "react"
+
 
 /**
  * Themes available in the app
@@ -101,4 +103,14 @@ export interface AppTheme {
  */
 export interface StyledProps {
     theme: AppTheme;
+}
+
+
+/**
+ * Type for ThemeProvider props
+ * It wraps all theme providers used in the app
+ */
+export interface ThemeProviderProps {
+    theme: AppTheme;
+    children?: ReactNode;
 }
