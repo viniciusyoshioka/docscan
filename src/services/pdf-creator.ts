@@ -9,7 +9,7 @@ const PdfCreator = NativeModules.PdfCreator
  */
 export type PdfCreatorOptions = {
     /**
-     * Number from `0.0` to `1.0` indicating the
+     * Number from `0` to `100` indicating the
      * compression level aplied to the images.
      */
     imageCompressQuality: number;
