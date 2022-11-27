@@ -1,4 +1,4 @@
-import { Dispatch } from "react"
+import { Dispatch, ReactNode } from "react"
 
 import { DocumentDataReducerAction } from "."
 
@@ -55,6 +55,15 @@ export type Document = {
 export type DocumentDataContextType = {
     documentDataState: undefined | Document;
     dispatchDocumentData: Dispatch<DocumentDataReducerAction>;
+}
+
+
+/**
+ * Type for `DocumentDataProvider` props
+ */
+export interface DocumentDataProviderProps {
+    value: DocumentDataContextType;
+    children?: ReactNode;
 }
 
 

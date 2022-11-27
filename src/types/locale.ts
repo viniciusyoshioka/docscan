@@ -50,7 +50,6 @@ export type TranslationKeyType =
     // EditDocument alert
     | "EditDocument_alert_errorLoadingDocument_text"
     | "EditDocument_alert_errorLoadingDocumentPicture_text"
-    | "EditDocument_alert_errorSavingDocumentChanges_text"
     | "EditDocument_alert_emptyDocument_text"
     | "EditDocument_alert_documentWithoutName_text"
     | "EditDocument_alert_documentWithoutPictures_text"
@@ -167,6 +166,7 @@ export type TranslationKeyType =
     // document service
     | "document_newDocumentName"
     | "document_alert_errorSavingDocument_text"
+    | "document_alert_errorSavingDocumentChanges_text"
     // Log service
     | "log_alert_errorRegisteringLog_text"
 

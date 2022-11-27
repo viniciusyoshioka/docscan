@@ -1,4 +1,4 @@
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/core"
+import { useNavigation, useRoute } from "@react-navigation/core"
 import React, { useCallback, useEffect, useState } from "react"
 import { Alert, FlatList } from "react-native"
 import RNFS from "react-native-fs"
@@ -79,39 +79,6 @@ export function EditDocument() {
                     lastModificationTimestamp: document.lastModificationTimestamp,
                 },
                 pictureList: documentPicture,
-            }
-        })
-    }
-
-    async function saveChanges() {
-        if (!documentDataState?.hasChanges) {
-            return
-        }
-
-        dispatchDocumentData({
-            type: "save-document",
-            payload: async (documentId: number) => {
-                try {
-                    const document = await DocumentDatabase.getDocument(documentId)
-                    const documentPicture = await DocumentDatabase.getDocumentPicture(documentId)
-
-                    dispatchDocumentData({
-                        type: "set-document",
-                        payload: {
-                            document: {
-                                id: documentId,
-                                ...document,
-                            },
-                            pictureList: documentPicture
-                        }
-                    })
-                } catch (error) {
-                    log.error(`Error getting document and document pictures from database while saving changes: "${stringfyError(error)}"`)
-                    Alert.alert(
-                        translate("warn"),
-                        translate("EditDocument_alert_errorSavingDocumentChanges_text")
-                    )
-                }
             }
         })
     }
@@ -449,10 +416,6 @@ export function EditDocument() {
     useEffect(() => {
         loadDocument()
     }, [])
-
-    useFocusEffect(useCallback(() => {
-        saveChanges()
-    }, [documentDataState?.name]))
 
 
     return (

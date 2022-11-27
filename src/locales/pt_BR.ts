@@ -49,7 +49,6 @@ export const pt_BR: TranslationType = {
     // EditDocument alert
     EditDocument_alert_errorLoadingDocument_text: "Erro ao carregar documento",
     EditDocument_alert_errorLoadingDocumentPicture_text: "Erro ao carregar imagens do documento",
-    EditDocument_alert_errorSavingDocumentChanges_text: "Erro ao salvar alterações do documento",
     EditDocument_alert_emptyDocument_text: "O documento está vazio",
     EditDocument_alert_documentWithoutName_text: "Não é possível converter um documento sem nome para PDF",
     EditDocument_alert_documentWithoutPictures_text: "Não é possível converter um documento sem fotos para PDF",
@@ -166,6 +165,7 @@ export const pt_BR: TranslationType = {
     // document service
     document_newDocumentName: "Novo documento",
     document_alert_errorSavingDocument_text: "Erro salvando documento",
+    document_alert_errorSavingDocumentChanges_text: "Erro ao salvar alterações do documento",
     // Log service
     log_alert_errorRegisteringLog_text: "Erro registrando log.",
 }
