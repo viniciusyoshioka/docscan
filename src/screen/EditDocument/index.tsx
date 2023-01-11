@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
-import React, { useCallback, useEffect, useState } from "react"
-import { Alert } from "react-native"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { Alert, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import Share from "react-native-share"
 
@@ -18,7 +18,7 @@ import { getReadPermission, getWritePermission } from "../../services/permission
 import { DocumentPicture, NavigationParamProps, RouteParamProps, SimpleDocument } from "../../types"
 import { ConvertPdfOption } from "./ConvertPdfOption"
 import { EditDocumentHeader } from "./Header"
-import { PictureItem } from "./Pictureitem"
+import { getPictureItemSize, HORIZONTAL_COLUMN_COUNT, PictureItem, VERTICAL_COLUMN_COUNT } from "./Pictureitem"
 import { RenameDocument } from "./RenameDocument"
 
 
@@ -27,8 +27,15 @@ export function EditDocument() {
 
     const navigation = useNavigation<NavigationParamProps<"EditDocument">>()
     const { params } = useRoute<RouteParamProps<"EditDocument">>()
+    const { width: windowWidth, height: windowHeight } = useWindowDimensions()
 
     const { documentDataState, dispatchDocumentData } = useDocumentData()
+
+    const columnCount = useMemo(() => (windowWidth < windowHeight)
+        ? VERTICAL_COLUMN_COUNT
+        : HORIZONTAL_COLUMN_COUNT
+    , [windowWidth, windowHeight])
+    const estimatedItemSize = useMemo(() => getPictureItemSize(windowWidth, columnCount), [windowWidth, columnCount])
 
     const [isSelectionMode, setIsSelectionMode] = useState(false)
     const [selectedPictureIndex, setSelectedPictureIndex] = useState<number[]>([])
@@ -407,6 +414,7 @@ export function EditDocument() {
                 isSelectionMode={isSelectionMode}
                 isSelected={selectedPictureIndex.includes(index)}
                 picturePath={item.filePath}
+                columnCount={columnCount}
             />
         )
     }
@@ -440,7 +448,9 @@ export function EditDocument() {
                 data={documentDataState?.pictureList}
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
-                numColumns={2}
+                extraData={[isSelectionMode]}
+                estimatedItemSize={estimatedItemSize}
+                numColumns={columnCount}
                 contentContainerStyle={{ padding: 4 }}
             />
 

@@ -7,6 +7,31 @@ import { useAppTheme } from "../../../services/theme"
 import { PictureButton, PictureImage, PICTURE_BUTTON_MARGIN, SelectedSurface } from "./style"
 
 
+/**
+ * Amount of columns to be shown when the windows is vertical
+ */
+export const VERTICAL_COLUMN_COUNT = 2
+
+/**
+ * Amount of columns to be shown when the windows is horizontal
+ */
+export const HORIZONTAL_COLUMN_COUNT = 4
+
+/**
+ * Function that calculates the size of PictureItem and returns it
+ *
+ * @param windowWidth width of app's window
+ * @param columnCount amount of columns that are being shown in PictureItem's list
+ *
+ * @returns number of PictureItem's size
+ */
+export function getPictureItemSize(windowWidth: number, columnCount: number): number {
+    const singlePictureItemMarginWidth = (2 * PICTURE_BUTTON_MARGIN)
+    const pictureItemRowWidth = windowWidth - singlePictureItemMarginWidth
+    return (pictureItemRowWidth / columnCount) - singlePictureItemMarginWidth
+}
+
+
 export interface PictureItemProps {
     onClick: () => void;
     onSelected: () => void;
@@ -14,6 +39,7 @@ export interface PictureItemProps {
     isSelectionMode: boolean;
     isSelected: boolean;
     picturePath: string;
+    columnCount: number;
 }
 
 
@@ -24,11 +50,7 @@ export function PictureItem(props: PictureItemProps) {
 
     const { color } = useAppTheme()
 
-    const pictureItemSize = useMemo(() => {
-        const singlePictureItemMarginWidth = (2 * PICTURE_BUTTON_MARGIN)
-        const pictureItemRowWidth = width - singlePictureItemMarginWidth
-        return (pictureItemRowWidth / 2) - singlePictureItemMarginWidth
-    }, [width])
+    const pictureItemSize = useMemo(() => getPictureItemSize(width, props.columnCount), [width, props.columnCount])
 
 
     function onNormalPress() {
