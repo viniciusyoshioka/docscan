@@ -12,6 +12,7 @@ import { translate } from "../../locales"
 import { fullPathPdf, fullPathTemporaryCompressedPicture } from "../../services/constant"
 import { useDocumentData } from "../../services/document"
 import { deletePicturesService } from "../../services/document-service"
+import { createAllFolderAsync } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { createPdf, PdfCreatorOptions, viewPdf } from "../../services/pdf-creator"
 import { getReadPermission, getWritePermission } from "../../services/permission"
@@ -157,6 +158,7 @@ export function EditDocument() {
 
         const pictureList: string[] = documentDataState.pictureList.map(item => item.filePath)
 
+        await createAllFolderAsync()
         createPdf(pictureList, documentPath, pdfOptions)
     }
 
