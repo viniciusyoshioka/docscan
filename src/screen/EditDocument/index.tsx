@@ -1,6 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/core"
+import { FlashList } from "@shopify/flash-list"
 import React, { useCallback, useEffect, useState } from "react"
-import { Alert, FlatList } from "react-native"
+import { Alert } from "react-native"
 import RNFS from "react-native-fs"
 import Share from "react-native-share"
 
@@ -435,7 +436,7 @@ export function EditDocument() {
                 deleteDocument={alertDeleteCurrentDocument}
             />
 
-            <FlatList
+            <FlashList
                 data={documentDataState?.pictureList}
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
