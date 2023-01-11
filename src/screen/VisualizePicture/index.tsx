@@ -1,6 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/core"
+import { FlashList } from "@shopify/flash-list"
 import React, { useRef, useState } from "react"
-import { Alert, FlatList, useWindowDimensions } from "react-native"
+import { Alert, useWindowDimensions, View } from "react-native"
 import RNFS from "react-native-fs"
 import "react-native-get-random-values"
 import { ImageCrop, OnImageSavedResponse } from "react-native-image-crop"
@@ -26,7 +27,6 @@ export function VisualizePicture() {
     const { width } = useWindowDimensions()
 
     const cropViewRef = useRef<ImageCrop>(null)
-    const imageFlatListRef = useRef<FlatList>(null)
 
     const { documentDataState, dispatchDocumentData } = useDocumentData()
 
@@ -143,25 +143,24 @@ export function VisualizePicture() {
             />
 
             {!isCropping && (
-                <FlatList
-                    ref={imageFlatListRef}
-                    data={documentDataState?.pictureList}
-                    renderItem={renderItem}
-                    scrollEnabled={isFlatListScrollEnable}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    pagingEnabled={true}
-                    initialScrollIndex={currentIndex}
-                    onMomentumScrollEnd={({ nativeEvent }) => {
-                        setCurrentIndex(nativeEvent.contentOffset.x / width)
-                    }}
-                    onLayout={() => {
-                        imageFlatListRef.current?.scrollToOffset({
-                            animated: false,
-                            offset: currentIndex * width,
-                        })
-                    }}
-                />
+                <View style={{ flex: 1, flexDirection: "row" }}>
+                    <FlashList
+                        data={documentDataState?.pictureList}
+                        renderItem={renderItem}
+                        estimatedItemSize={width}
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}
+                        pagingEnabled={true}
+                        initialScrollIndex={currentIndex}
+                        scrollEnabled={isFlatListScrollEnable}
+                        onMomentumScrollEnd={({ nativeEvent }) => {
+                            const newCurrentIndex = nativeEvent.contentOffset.x / width
+                            if (currentIndex !== newCurrentIndex) {
+                                setCurrentIndex(newCurrentIndex)
+                            }
+                        }}
+                    />
+                </View>
             )}
 
             {isCropping && (
