@@ -38,7 +38,7 @@ export function getLocaleDate(dateObject = new Date(), separator = "/"): string 
  *
  * @returns string of the time
  */
-function getTime(dateObject = new Date()): string {
+export function getTime(dateObject = new Date()): string {
     const hour = dateObject.getHours().toString().padStart(2, "0")
     const minute = dateObject.getMinutes().toString().padStart(2, "0")
     const second = dateObject.getSeconds().toString().padStart(2, "0")
