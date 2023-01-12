@@ -32,7 +32,7 @@ export function getLocaleDate(dateObject = new Date(), separator = "/"): string 
 
 
 /**
- * Get the time in format HH:MM:SS
+ * Get the time in format HH-MM-SS
  *
  * @param dateObject Date object to extract the time from. Defaults to `new Date()`
  *
@@ -42,7 +42,7 @@ function getTime(dateObject = new Date()): string {
     const hour = dateObject.getHours().toString().padStart(2, "0")
     const minute = dateObject.getMinutes().toString().padStart(2, "0")
     const second = dateObject.getSeconds().toString().padStart(2, "0")
-    return `${hour}:${minute}:${second}`
+    return `${hour}-${minute}-${second}`
 }
 
 
@@ -71,7 +71,7 @@ export function getLocaleTime(dateObject = new Date(), separator = ":", hasSecon
 
 
 /**
- * Get the date and time in format YYYY-MM-DD HH:MM:SS
+ * Get the date and time in format YYYY-MM-DD HH-MM-SS
  *
  * @param dateObject Date object to extract the date and time from. Defaults to `new Date()`
  *
