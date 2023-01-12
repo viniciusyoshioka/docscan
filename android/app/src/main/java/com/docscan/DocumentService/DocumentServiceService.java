@@ -240,9 +240,21 @@ public class DocumentServiceService extends Service {
             Log.d("DocumentServiceService", String.format("Zipped database file (to export), path: %s", databasePath));
 
             // Copy (to move) zip file to its destiny path
-            Log.d("DocumentServiceService", String.format("Renaming (to move) zip file of exported document to its destiny path. From: '%s', to: '%s'", zipTo, destinyPath));
-            boolean isSourceFileMoved = fileZipTo.renameTo(new File(destinyPath));
-            Log.d("DocumentServiceService", String.format("Zip file of exported document was moved: %b", isSourceFileMoved));
+            Log.d("DocumentServiceService", String.format("Copying (to move) zip file of exported document to its destiny path. From: '%s', to: '%s'", zipTo, destinyPath));
+            FileInputStream fileInputStream = new FileInputStream(fileZipTo);
+            FileOutputStream fileOutputStream = new FileOutputStream(destinyPath);
+            byte[] buffer = new byte[2048];
+            int len;
+            while ((len = fileInputStream.read(buffer)) > 0) {
+                fileOutputStream.write(buffer, 0, len);
+            }
+            fileOutputStream.close();
+            fileInputStream.close();
+            Log.d("DocumentServiceService", "Copied (to move) zip file of exported document");
+
+            // Delete original zip file (to move)
+            boolean isSourceFileDeleted = fileZipTo.delete();
+            Log.d("DocumentServiceService", String.format("Check deletion of zip source file of exported document in moving process to destiny path. Was file deleted: %b", isSourceFileDeleted));
 
             // Delete export database
             File exportDatabase = new File(databasePath);
