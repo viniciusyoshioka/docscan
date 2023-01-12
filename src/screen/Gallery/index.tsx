@@ -1,7 +1,8 @@
 import { CameraRoll, PhotoIdentifier } from "@react-native-camera-roll/camera-roll"
 import { useNavigation, useRoute } from "@react-navigation/core"
+import { FlashList } from "@shopify/flash-list"
 import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { ActivityIndicator, Alert, FlatList, useWindowDimensions } from "react-native"
+import { ActivityIndicator, Alert, useWindowDimensions, View } from "react-native"
 import RNFS from "react-native-fs"
 
 import { EmptyList, HEADER_HEIGHT, Screen } from "../../components"
@@ -14,7 +15,7 @@ import { getWritePermission } from "../../services/permission"
 import { useAppTheme } from "../../services/theme"
 import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { GalleryHeader } from "./Header"
-import { ImageItem } from "./ImageItem"
+import { getImageItemSize, HORIZONTAL_COLUMN_COUNT, ImageItem, VERTICAL_COLUMN_COUNT } from "./ImageItem"
 import { LoadingIndicator } from "./LoadingIndicator"
 
 
@@ -24,7 +25,7 @@ export function Gallery() {
     const navigation = useNavigation<NavigationParamProps<"Gallery">>()
     const { params } = useRoute<RouteParamProps<"Gallery">>()
 
-    const { width, height } = useWindowDimensions()
+    const { width: windowWidth, height: windowHeight } = useWindowDimensions()
 
     const { color, opacity } = useAppTheme()
 
@@ -38,8 +39,18 @@ export function Gallery() {
     const currentAmountOfImages = useMemo(() => imageGallery?.length ?? 0, [imageGallery])
     const [isGalleryFullLoaded, setIsGalleryFullLoaded] = useState(false)
 
-    const minimumRowAmountInScreen = useMemo(() => Math.ceil((height - HEADER_HEIGHT) / (width / 3)), [width, height])
-    const amountOfImageToLoadPerTime = useMemo(() => (minimumRowAmountInScreen + 1) * 3, [minimumRowAmountInScreen])
+    const columnCount = useMemo(() => (windowWidth < windowHeight)
+        ? VERTICAL_COLUMN_COUNT
+        : HORIZONTAL_COLUMN_COUNT
+    , [windowWidth, windowHeight])
+    const estimatedItemSize = useMemo(() => getImageItemSize(windowWidth, columnCount), [windowWidth, columnCount])
+
+    const minimumRowAmountInScreen = useMemo(() => Math.ceil(
+        (windowHeight - HEADER_HEIGHT) / estimatedItemSize
+    ), [windowHeight, estimatedItemSize])
+    const amountOfImageToLoadPerTime = useMemo(() => (
+        (minimumRowAmountInScreen + 1) * columnCount
+    ), [minimumRowAmountInScreen, columnCount])
 
 
     useBackHandler(() => {
@@ -275,6 +286,7 @@ export function Gallery() {
                 isSelected={selectedImages.includes(item.node.image.uri)}
                 imagePath={item.node.image.uri}
                 screenAction={params?.screenAction}
+                columnCount={columnCount}
             />
         )
     }
@@ -287,7 +299,7 @@ export function Gallery() {
         }
 
         const galleryLength = imageGallery?.length ?? 0
-        const currentRowAmount = (galleryLength / 3)
+        const currentRowAmount = (galleryLength / columnCount)
         if (currentRowAmount < minimumRowAmountInScreen) {
             return
         }
@@ -326,18 +338,25 @@ export function Gallery() {
                 selectedImagesAmount={selectedImages.length}
             />
 
-            <FlatList
-                data={imageGallery}
-                renderItem={renderItem}
-                keyExtractor={keyExtractor}
-                numColumns={3}
-                onEndReachedThreshold={0.05}
-                onEndReached={onEndReached}
-                ListFooterComponent={ListFooterComponent}
-                onRefresh={imageGallery?.length ? onRefresh : undefined}
-                refreshing={isRefreshing}
-                style={{ display: imageGallery?.length ? "flex" : "none" }}
-            />
+            <View style={{
+                flex: 1,
+                flexDirection: "row",
+                display: imageGallery?.length ? "flex" : "none",
+            }}>
+                <FlashList
+                    data={imageGallery}
+                    renderItem={renderItem}
+                    keyExtractor={keyExtractor}
+                    extraData={[isSelectionMode]}
+                    estimatedItemSize={estimatedItemSize}
+                    numColumns={columnCount}
+                    onEndReachedThreshold={0.05}
+                    onEndReached={onEndReached}
+                    ListFooterComponent={ListFooterComponent}
+                    onRefresh={imageGallery?.length ? onRefresh : undefined}
+                    refreshing={isRefreshing}
+                />
+            </View>
 
             <EmptyList visible={!imageGallery && !isRefreshing}>
                 <ActivityIndicator

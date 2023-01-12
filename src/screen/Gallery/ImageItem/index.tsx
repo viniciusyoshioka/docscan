@@ -1,10 +1,33 @@
-import React from "react"
+import React, { useMemo } from "react"
 import { Image, useWindowDimensions } from "react-native"
 import { HandlerStateChangeEventPayload, LongPressGestureHandler, LongPressGestureHandlerEventPayload, State } from "react-native-gesture-handler"
 
 import { Icon } from "../../../components"
 import { useAppTheme } from "../../../services/theme"
 import { Button, SelectionSurface } from "./style"
+
+
+/**
+ * Amount of columns to be shown when the window is vertical
+ */
+export const VERTICAL_COLUMN_COUNT = 3
+
+/**
+ * Amount of columns to be shown when the window is horizontal
+ */
+export const HORIZONTAL_COLUMN_COUNT = 6
+
+/**
+ * Function that calculates the size of ImageItem and returns it
+ *
+ * @param windowWidth width of app's window
+ * @param columnCount amount of columns that are being shown in ImageItem's list
+ *
+ * @returns number of ImageItem's size
+ */
+export function getImageItemSize(windowWidth: number, columnCount: number): number {
+    return (windowWidth / columnCount)
+}
 
 
 export interface ImageItemProps {
@@ -15,15 +38,18 @@ export interface ImageItemProps {
     isSelected: boolean;
     imagePath: string;
     screenAction: "replace-picture" | undefined;
+    columnCount: number;
 }
 
 
 export function ImageItem(props: ImageItemProps) {
 
 
+    const { width } = useWindowDimensions()
+
     const { color } = useAppTheme()
 
-    const imageSize = useWindowDimensions().width / 3
+    const imageSize = useMemo(() => getImageItemSize(width, props.columnCount), [width, props.columnCount])
 
 
     function onNormalPress() {
