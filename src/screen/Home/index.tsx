@@ -4,7 +4,7 @@ import { Alert, FlatList } from "react-native"
 
 import { EmptyList, LoadingModal, Screen } from "../../components"
 import { DocumentDatabase } from "../../database"
-import { useBackHandler } from "../../hooks"
+import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
 import { appIconOutline } from "../../services/constant"
 import { deletePicturesService } from "../../services/document-service"
@@ -21,14 +21,13 @@ export function Home() {
     const navigation = useNavigation<NavigationParamProps<"Home">>()
 
     const [documents, setDocuments] = useState<DocumentForList[]>([])
-    const [isSelectionMode, setIsSelectionMode] = useState(false)
-    const [selectedDocumentsId, setSelectedDocumentsId] = useState<number[]>([])
+    const documentSelection = useSelectionMode<number>()
     const [showDocumentDeletionModal, setShowDocumentDeletionModal] = useState(false)
 
 
     useBackHandler(() => {
-        if (isSelectionMode) {
-            exitSelectionMode()
+        if (documentSelection.isSelectionMode) {
+            documentSelection.exitSelection()
             return true
         }
     })
@@ -48,7 +47,7 @@ export function Home() {
     }
 
     function invertSelection() {
-        setSelectedDocumentsId(current => documents
+        documentSelection.setSelectedData(current => documents
             .filter(documentItem => !current.includes(documentItem.id))
             .map(documentItem => documentItem.id)
         )
@@ -57,8 +56,8 @@ export function Home() {
     async function deleteSelectedDocument() {
         setShowDocumentDeletionModal(true)
 
-        const selectedDocumentsIdCopy = [...selectedDocumentsId]
-        exitSelectionMode()
+        const selectedDocumentsIdCopy = [...documentSelection.selectedData]
+        documentSelection.exitSelection()
 
         try {
             const picturesToDelete = await DocumentDatabase.getPicturePathFromDocument(selectedDocumentsIdCopy)
@@ -94,7 +93,7 @@ export function Home() {
         )
 
         await createAllFolderAsync()
-        DocumentDatabase.exportDocument(selectedDocumentsId)
+        DocumentDatabase.exportDocument(documentSelection.selectedData)
             .catch(error => {
                 log.error(`Error exporting documents before invoking the background service: "${stringfyError(error)}"`)
                 Alert.alert(
@@ -102,7 +101,7 @@ export function Home() {
                     translate("Home_alert_errorExportingDocuments_text")
                 )
             })
-        exitSelectionMode()
+        documentSelection.exitSelection()
     }
 
     function alertExportDocument() {
@@ -114,7 +113,7 @@ export function Home() {
             return
         }
 
-        const exportAlertText: TranslationKeyType = isSelectionMode
+        const exportAlertText: TranslationKeyType = documentSelection.isSelectionMode
             ? "Home_alert_allSelectedDocumentsWillBeExported_text"
             : "Home_alert_allDocumentsWillBeExported_text"
 
@@ -130,7 +129,7 @@ export function Home() {
 
     // TODO
     async function mergeSelectedDocument() {
-        exitSelectionMode()
+        documentSelection.exitSelection()
     }
 
     function alertMergeDocument() {
@@ -146,7 +145,7 @@ export function Home() {
 
     // TODO
     async function duplicateSelectedDocument() {
-        exitSelectionMode()
+        documentSelection.exitSelection()
     }
 
     function alertDuplicateDocument() {
@@ -160,41 +159,14 @@ export function Home() {
         )
     }
 
-    function selectDocument(documentId: number) {
-        if (!isSelectionMode) {
-            setIsSelectionMode(true)
-        }
-        if (!selectedDocumentsId.includes(documentId)) {
-            setSelectedDocumentsId(currentSelectedDocument => [...currentSelectedDocument, documentId])
-        }
-    }
-
-    function deselectDocument(documentId: number) {
-        const index = selectedDocumentsId.indexOf(documentId)
-        if (index !== -1) {
-            const newSelectedDocument = [...selectedDocumentsId]
-            newSelectedDocument.splice(index, 1)
-            setSelectedDocumentsId(newSelectedDocument)
-
-            if (isSelectionMode && newSelectedDocument.length === 0) {
-                setIsSelectionMode(false)
-            }
-        }
-    }
-
-    function exitSelectionMode() {
-        setSelectedDocumentsId([])
-        setIsSelectionMode(false)
-    }
-
     function renderItem({ item }: { item: DocumentForList }) {
         return (
             <DocumentItem
                 onClick={() => navigation.navigate("EditDocument", { documentId: item.id })}
-                onSelected={() => selectDocument(item.id)}
-                onDeselected={() => deselectDocument(item.id)}
-                isSelectionMode={isSelectionMode}
-                isSelected={selectedDocumentsId.includes(item.id)}
+                onSelected={() => documentSelection.selectItem(item.id)}
+                onDeselected={() => documentSelection.deselectItem(item.id)}
+                isSelectionMode={documentSelection.isSelectionMode}
+                isSelected={documentSelection.selectedData.includes(item.id)}
                 document={item}
             />
         )
@@ -211,9 +183,9 @@ export function Home() {
     return (
         <Screen>
             <HomeHeader
-                isSelectionMode={isSelectionMode}
-                selectedDocumentsAmount={selectedDocumentsId.length}
-                exitSelectionMode={exitSelectionMode}
+                isSelectionMode={documentSelection.isSelectionMode}
+                selectedDocumentsAmount={documentSelection.selectedData.length}
+                exitSelectionMode={documentSelection.exitSelection}
                 invertSelection={invertSelection}
                 deleteSelectedDocuments={alertDeleteDocument}
                 scanNewDocument={() => navigation.navigate("Camera")}
