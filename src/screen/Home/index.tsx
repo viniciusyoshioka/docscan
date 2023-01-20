@@ -127,7 +127,7 @@ export function Home() {
         )
     }
 
-    // TODO
+    // TODO merge selected documents
     async function mergeSelectedDocument() {
         documentSelection.exitSelection()
     }
@@ -143,7 +143,7 @@ export function Home() {
         )
     }
 
-    // TODO
+    // TODO duplicate selected documents
     async function duplicateSelectedDocument() {
         documentSelection.exitSelection()
     }
