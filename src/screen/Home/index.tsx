@@ -163,8 +163,8 @@ export function Home() {
         return (
             <DocumentItem
                 onClick={() => navigation.navigate("EditDocument", { documentId: item.id })}
-                onSelected={() => documentSelection.selectItem(item.id)}
-                onDeselected={() => documentSelection.deselectItem(item.id)}
+                onSelect={() => documentSelection.selectItem(item.id)}
+                onDeselect={() => documentSelection.deselectItem(item.id)}
                 isSelectionMode={documentSelection.isSelectionMode}
                 isSelected={documentSelection.selectedData.includes(item.id)}
                 document={item}

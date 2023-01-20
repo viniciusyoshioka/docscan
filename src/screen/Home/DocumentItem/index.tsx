@@ -1,6 +1,7 @@
 import CheckBox from "@react-native-community/checkbox"
-import { HandlerStateChangeEventPayload, LongPressGestureHandler, LongPressGestureHandlerEventPayload, State } from "react-native-gesture-handler"
+import { LongPressGestureHandler } from "react-native-gesture-handler"
 
+import { SelectableItem, useSelectableItem } from "../../../hooks"
 import { getLocaleDateTime } from "../../../services/date"
 import { useAppTheme } from "../../../services/theme"
 import { DocumentForList } from "../../../types"
@@ -10,12 +11,7 @@ import { DocumentItemBlock, DocumentItemButton, DocumentItemDate, DocumentItemTi
 export { DOCUMENT_PICTURE_HEIGHT } from "./style"
 
 
-export interface DocumentItemProps {
-    onClick: () => void;
-    onSelected: () => void;
-    onDeselected: () => void;
-    isSelectionMode: boolean;
-    isSelected: boolean;
+export interface DocumentItemProps extends SelectableItem {
     document: DocumentForList;
 }
 
@@ -25,24 +21,7 @@ export function DocumentItem(props: DocumentItemProps) {
 
     const { color, opacity } = useAppTheme()
 
-
-    function onNormalPress() {
-        if (!props.isSelectionMode) {
-            props.onClick()
-        } else if (!props.isSelected) {
-            props.onSelected()
-        } else if (props.isSelected) {
-            props.onDeselected()
-        }
-    }
-
-    function onLongPress(nativeEvent: Readonly<HandlerStateChangeEventPayload & LongPressGestureHandlerEventPayload>) {
-        if (nativeEvent.state === State.ACTIVE) {
-            if (!props.isSelectionMode) {
-                props.onSelected()
-            }
-        }
-    }
+    const { onPress, onLongPress } = useSelectableItem(props)
 
 
     return (
@@ -51,7 +30,7 @@ export function DocumentItem(props: DocumentItemProps) {
             minDurationMs={400}
             onHandlerStateChange={({ nativeEvent }) => onLongPress(nativeEvent)}
         >
-            <DocumentItemButton rippleColor={color.documentItem_ripple} onPress={onNormalPress}>
+            <DocumentItemButton rippleColor={color.documentItem_ripple} onPress={onPress}>
                 <DocumentItemBlock style={{ flex: 1 }}>
                     <DocumentItemTitle numberOfLines={1}>
                         {props.document.name}
@@ -66,7 +45,7 @@ export function DocumentItem(props: DocumentItemProps) {
                     <DocumentItemBlock style={{ paddingLeft: 16 }}>
                         <CheckBox
                             value={props.isSelected}
-                            onChange={onNormalPress}
+                            onChange={onPress}
                             tintColors={{
                                 true: color.documentItem_selected_background,
                                 false: color.documentItem_selected_color
