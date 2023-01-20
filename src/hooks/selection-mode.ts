@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { HandlerStateChangeEventPayload, LongPressGestureHandlerEventPayload, State } from "react-native-gesture-handler"
 
 
 export function useSelectionMode<T>() {
@@ -46,5 +47,43 @@ export function useSelectionMode<T>() {
         selectItem,
         deselectItem,
         exitSelection,
+    }
+}
+
+
+export interface SelectableItem {
+    onClick: () => void;
+    onSelect: () => void;
+    onDeselect: () => void;
+    isSelectionMode: boolean;
+    isSelected: boolean;
+}
+
+
+export function useSelectableItem<T extends SelectableItem>(props: T) {
+
+
+    function onPress() {
+        if (!props.isSelectionMode) {
+            props.onClick()
+        } else if (!props.isSelected) {
+            props.onSelect()
+        } else if (props.isSelected) {
+            props.onDeselect()
+        }
+    }
+
+    function onLongPress(nativeEvent: Readonly<HandlerStateChangeEventPayload & LongPressGestureHandlerEventPayload>) {
+        if (nativeEvent.state === State.ACTIVE) {
+            if (!props.isSelectionMode) {
+                props.onSelect()
+            }
+        }
+    }
+
+
+    return {
+        onPress,
+        onLongPress,
     }
 }
