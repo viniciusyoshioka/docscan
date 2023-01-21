@@ -5,6 +5,7 @@ import { translate } from "../locales"
 
 const { DocumentService } = NativeModules
 
+// TODO add pluralization in strings translated to document-service
 
 /**
  * Invokes a service to delete files

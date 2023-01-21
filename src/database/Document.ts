@@ -256,6 +256,7 @@ export async function deleteDocumentPicture(id: number[]) {
  *
  * @param id array of document id to export
  */
+// TODO use service to export documents
 export async function exportDocument(id: number[] = []) {
     // Open database to export
     const exportDb = await openTemporaryDatabase(exportDatabaseFullPath)
@@ -370,6 +371,7 @@ export async function exportDocument(id: number[] = []) {
  * @param path string path to the exported document
  * file to be imported
  */
+// TODO use service to import documents
 export async function importDocument(path: string) {
 
 
@@ -499,6 +501,7 @@ export async function importDocument(path: string) {
 /**
  * TODO
  */
+// TODO implement
 export function duplicateDocument(id: number[]): Promise<void> {
     return new Promise((resolve, reject) => resolve())
 }
@@ -507,6 +510,7 @@ export function duplicateDocument(id: number[]): Promise<void> {
 /**
  * TODO
  */
+// TODO implement
 export function mergeDocument(id: number[]): Promise<void> {
     return new Promise((resolve, reject) => resolve())
 }

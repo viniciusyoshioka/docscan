@@ -55,6 +55,7 @@ const returnDirectoryItem: ReadDirItem = {
 }
 
 
+// TODO replace screen with a library to select the file
 export function FileExplorer() {
 
 
@@ -121,9 +122,9 @@ export function FileExplorer() {
 
         DocumentDatabase.importDocument(documentPathToImport)
             .then(() => {
-                navigation.reset({ routes: [{ name: "Home" }] })
+                navigation.reset({ routes: [ { name: "Home" } ] })
             })
-            .catch((error) => {
+            .catch(error => {
                 log.error(`Erro importando documento "${error}"`)
             })
 

@@ -89,6 +89,7 @@ export async function getPictureTemporaryExportPath(imagePath: string): Promise<
  * Reducer function to handle with document data actions
  * and update its state
  */
+// TODO restaure document when there is an error on save
 export function reducerDocumentData(
     state: Document | undefined,
     action: DocumentDataReducerAction

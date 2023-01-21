@@ -1,3 +1,4 @@
+// TODO add internationalization to return the date formatted to use location
 
 /**
  * Get the date in format YYYY-MM-DD

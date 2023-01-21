@@ -1,5 +1,6 @@
 import { PermissionsAndroid } from "react-native"
 
+// TODO request permission for Android and iOS
 
 /**
  * Request Android's `CAMERA` permission to the user

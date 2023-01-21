@@ -23,6 +23,9 @@ import { getPictureItemSize, HORIZONTAL_COLUMN_COUNT, PictureItem, VERTICAL_COLU
 import { RenameDocument } from "./RenameDocument"
 
 
+// TODO implement drag and drop to reorder list
+// TODO implement split selected images to new document
+// TODO implement invert selection
 export function EditDocument() {
 
 

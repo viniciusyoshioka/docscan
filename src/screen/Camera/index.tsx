@@ -26,6 +26,9 @@ import { CameraHeader } from "./Header"
 import { CameraButtonWrapper, CameraTextWrapper, CameraWrapper, NoCameraAvailableText, NoCameraAvailableTitle } from "./style"
 
 
+// TODO goBack() function sometimes go back to Home instead of EditDocument
+// TODO add support to multiple back cameras
+// TODO add zoom indicator
 export function Camera() {
 
 

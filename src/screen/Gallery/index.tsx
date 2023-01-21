@@ -19,6 +19,7 @@ import { getImageItemSize, HORIZONTAL_COLUMN_COUNT, ImageItem, VERTICAL_COLUMN_C
 import { LoadingIndicator } from "./LoadingIndicator"
 
 
+// TODO improve icon when gallery is empty
 export function Gallery() {
 
 
