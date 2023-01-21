@@ -4,14 +4,11 @@ import styled from "styled-components/native"
 import { StyledProps } from "../../../types"
 
 
-export const DOCUMENT_PICTURE_HEIGHT = 60
-
-
 export const DocumentItemButton = styled(RectButton)`
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    height: ${DOCUMENT_PICTURE_HEIGHT}px;
+    height: 60px;
     margin-bottom: 8px;
     margin-horizontal: 8px;
     padding: 8px;

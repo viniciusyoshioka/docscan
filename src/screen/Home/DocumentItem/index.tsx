@@ -8,9 +8,6 @@ import { DocumentForList } from "../../../types"
 import { DocumentItemBlock, DocumentItemButton, DocumentItemDate, DocumentItemTitle } from "./style"
 
 
-export { DOCUMENT_PICTURE_HEIGHT } from "./style"
-
-
 export interface DocumentItemProps extends SelectableItem {
     document: DocumentForList;
 }
