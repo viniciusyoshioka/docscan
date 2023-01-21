@@ -1,5 +1,5 @@
 import Slider from "@react-native-community/slider"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { NativeSyntheticEvent } from "react-native"
 
 import { Modal, ModalButton, ModalDescription, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, RadioButton } from "../../../components"

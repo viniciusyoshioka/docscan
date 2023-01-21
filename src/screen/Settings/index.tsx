@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/core"
-import React, { useState } from "react"
+import { useState } from "react"
 import { Alert } from "react-native"
 import Share from "react-native-share"
 

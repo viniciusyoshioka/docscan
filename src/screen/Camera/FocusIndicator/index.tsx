@@ -1,4 +1,3 @@
-import React from "react"
 import { ViewProps } from "react-native"
 
 import { FocusIndicatorBase } from "./style"

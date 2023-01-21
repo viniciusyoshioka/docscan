@@ -1,5 +1,5 @@
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core"
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { Alert, Linking, StatusBar, StyleProp, useWindowDimensions, ViewStyle } from "react-native"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"

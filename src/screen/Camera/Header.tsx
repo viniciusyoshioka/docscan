@@ -1,4 +1,4 @@
-import React, { useMemo } from "react"
+import { useMemo } from "react"
 import { StyleProp, StyleSheet, ViewStyle } from "react-native"
 
 import { Header, HeaderButton, HeaderTitle } from "../../components"

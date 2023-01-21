@@ -1,5 +1,3 @@
-import React from "react"
-
 import { Header, HeaderButton, HeaderTitle } from "../../components"
 import { useDocumentData } from "../../services/document"
 import { EditDocumentMenu } from "./EditDocumentMenu"

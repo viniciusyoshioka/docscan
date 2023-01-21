@@ -1,6 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import React from "react"
 import { enableScreens } from "react-native-screens"
 
 import { Camera } from "../screen/Camera"

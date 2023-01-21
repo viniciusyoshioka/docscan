@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
-import React, { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { Alert, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import Share from "react-native-share"

@@ -1,4 +1,3 @@
-import React from "react"
 import { ActivityIndicator } from "react-native"
 
 import { useAppTheme } from "../../../services/theme"

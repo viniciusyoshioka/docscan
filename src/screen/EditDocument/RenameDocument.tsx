@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useState } from "react"
+import { createRef, useEffect, useState } from "react"
 import { NativeSyntheticEvent, TextInput } from "react-native"
 
 import { Input, Modal, ModalButton, ModalProps, ModalTitle, ModalViewButton, ModalViewContent } from "../../components"

@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
-import React, { useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { Alert, useWindowDimensions, View } from "react-native"
 import RNFS from "react-native-fs"
 import "react-native-get-random-values"

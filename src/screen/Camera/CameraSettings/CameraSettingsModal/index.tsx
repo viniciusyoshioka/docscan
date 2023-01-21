@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react"
+import { ReactNode } from "react"
 
 import { PseudoModal } from "../../../../components"
 import { ModalBackground, ModalContent, ModalView } from "./style"

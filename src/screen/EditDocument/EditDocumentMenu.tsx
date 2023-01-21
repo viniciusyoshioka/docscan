@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import { useRef } from "react"
 import { RectButton } from "react-native-gesture-handler"
 import { Menu, MenuOptions, MenuTrigger } from "react-native-popup-menu"
 

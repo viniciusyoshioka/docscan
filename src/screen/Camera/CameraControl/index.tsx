@@ -1,4 +1,4 @@
-import React, { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from "react"
+import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from "react"
 import { OrientationType } from "react-native-orientation-locker"
 import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
 

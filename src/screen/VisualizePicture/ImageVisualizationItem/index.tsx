@@ -1,7 +1,6 @@
-import React from "react"
 import { Image, ImageSourcePropType, useWindowDimensions } from "react-native"
 
-import { Screen } from "../../../components/Screen"
+import { Screen } from "../../../components"
 
 
 export interface ImageVisualizationItemProps {
