@@ -1,10 +1,11 @@
 import React from "react"
 import { StyleProp, ViewStyle } from "react-native"
-import MaterialIcon from "react-native-vector-icons/MaterialIcons"
+import Ionicons from "react-native-vector-icons/Ionicons"
 import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons"
+import MaterialIcon from "react-native-vector-icons/MaterialIcons"
 
-import { IconGroup } from "../../types"
 import { useAppTheme } from "../../services/theme"
+import { IconGroup } from "../../types"
 
 
 function getIconComponent(iconGroup: IconGroup) {
@@ -13,6 +14,8 @@ function getIconComponent(iconGroup: IconGroup) {
             return MaterialIcon
         case "material-community":
             return MaterialCommunityIcon
+        case "ionicons":
+            return Ionicons
         default:
             throw new Error(`Invalid icon group "${iconGroup}"`)
     }
