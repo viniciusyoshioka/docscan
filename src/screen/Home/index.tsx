@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/core"
 import { useCallback, useEffect, useState } from "react"
 import { Alert, FlatList } from "react-native"
+import DocumentPicker from "react-native-document-picker"
 
 import { EmptyList, LoadingModal, Screen } from "../../components"
 import { DocumentDatabase } from "../../database"
@@ -84,6 +85,52 @@ export function Home() {
                 { text: translate("delete"), onPress: async () => await deleteSelectedDocument() }
             ]
         )
+    }
+
+    async function importDocument() {
+        let pickedFile
+        try {
+            pickedFile = await DocumentPicker.pickSingle({
+                copyTo: "cachesDirectory",
+                type: DocumentPicker.types.zip
+            })
+        } catch (error) {
+            if (DocumentPicker.isCancel(error)) {
+                return
+            }
+
+            log.error(`Error picking file to import document: "${stringfyError(error)}"`)
+            Alert.alert(
+                translate("warn"),
+                translate("Home_alert_errorImportingDocuments_text")
+            )
+            return
+        }
+
+        if (pickedFile.copyError || !pickedFile.fileCopyUri) {
+            log.error(`Error copying picked file to import document: "${stringfyError(pickedFile.copyError)}"`)
+            Alert.alert(
+                translate("warn"),
+                translate("Home_alert_errorImportingDocuments_text")
+            )
+            return
+        }
+
+        Alert.alert(
+            translate("Home_alert_importDocuments_title"),
+            translate("Home_alert_importDocuments_text")
+        )
+
+        await createAllFolderAsync()
+        const fileUri = pickedFile.fileCopyUri.replace(/%20/g, " ")
+        DocumentDatabase.importDocument(fileUri)
+            .catch(error => {
+                log.error(`Error importing document: "${stringfyError(error)}"`)
+                Alert.alert(
+                    translate("warn"),
+                    translate("Home_alert_errorImportingDocuments_text")
+                )
+            })
     }
 
     async function exportSelectedDocument() {
@@ -189,7 +236,7 @@ export function Home() {
                 invertSelection={invertSelection}
                 deleteSelectedDocuments={alertDeleteDocument}
                 scanNewDocument={() => navigation.navigate("Camera")}
-                importDocument={() => navigation.navigate("FileExplorer")}
+                importDocument={importDocument}
                 exportDocument={alertExportDocument}
                 openSettings={() => navigation.navigate("Settings")}
                 mergeDocument={alertMergeDocument}
