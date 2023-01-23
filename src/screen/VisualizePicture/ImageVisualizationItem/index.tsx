@@ -1,10 +1,11 @@
-import { Image, ImageSourcePropType, useWindowDimensions } from "react-native"
+import { ImageRequireSource, useWindowDimensions } from "react-native"
+import FastImage, { Source } from "react-native-fast-image"
 
 import { Screen } from "../../../components"
 
 
 export interface ImageVisualizationItemProps {
-    source: ImageSourcePropType;
+    source: Source | ImageRequireSource;
 }
 
 
@@ -16,7 +17,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
     return (
         <Screen style={{ width }}>
-            <Image
+            <FastImage
                 source={props.source}
                 resizeMode={"contain"}
                 style={{ flex: 1 }}
