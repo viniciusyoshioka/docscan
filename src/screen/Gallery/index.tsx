@@ -19,7 +19,6 @@ import { getImageItemSize, HORIZONTAL_COLUMN_COUNT, ImageItem, VERTICAL_COLUMN_C
 import { LoadingIndicator } from "./LoadingIndicator"
 
 
-// TODO improve icon when gallery is empty
 export function Gallery() {
 
 
@@ -340,7 +339,10 @@ export function Gallery() {
             </EmptyList>
 
             <EmptyList
-                imageSource={require("../../image/empty_gallery.png")}
+                iconName={"images-outline"}
+                iconGroup={"ionicons"}
+                iconSize={56}
+                iconStyle={{ opacity: opacity.mediumEmphasis }}
                 message={translate("Gallery_emptyGallery")}
                 visible={imageGallery?.length === 0}
             />
