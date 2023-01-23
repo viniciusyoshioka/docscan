@@ -29,6 +29,9 @@ import { CameraButtonWrapper, CameraTextWrapper, CameraWrapper, NoCameraAvailabl
 // TODO goBack() function sometimes go back to Home instead of EditDocument
 // TODO add support to multiple back cameras
 // TODO add zoom indicator
+// TODO fix camera control overlapping camera
+// TODO move camera settings modal to the bottom of the screen
+// TODO fix bug that camera settings modal opens when closing in its buttons
 export function Camera() {
 
 
