@@ -8,6 +8,7 @@ export interface EditDocumentHeaderProps {
     exitSelectionMode: () => void;
     isSelectionMode: boolean;
     selectedPicturesAmount: number;
+    invertSelection: () => void;
     deletePicture: () => void;
     openCamera: () => void;
     convertToPdf: () => void;
@@ -66,6 +67,13 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
                     renameDocument={props.renameDocument}
                     deletePdf={props.deletePdf}
                     deleteDocument={props.deleteDocument}
+                />
+            )}
+
+            {props.isSelectionMode && (
+                <HeaderButton
+                    iconName={"swap-horiz"}
+                    onPress={props.invertSelection}
                 />
             )}
 

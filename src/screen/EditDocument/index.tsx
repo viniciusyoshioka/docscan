@@ -25,7 +25,6 @@ import { RenameDocument } from "./RenameDocument"
 
 // TODO implement drag and drop to reorder list
 // TODO implement split selected images to new document
-// TODO implement invert selection
 export function EditDocument() {
 
 
@@ -333,6 +332,20 @@ export function EditDocument() {
         )
     }
 
+    function invertSelection() {
+        if (!documentDataState) {
+            return
+        }
+
+        const newSelectedData = []
+        for (let i = 0; i < documentDataState.pictureList.length; i++) {
+            if (!pictureSelection.selectedData.includes(i)) {
+                newSelectedData.push(i)
+            }
+        }
+        pictureSelection.setSelectedData(newSelectedData)
+    }
+
     async function deleteSelectedPicture() {
         if (!documentDataState) {
             log.warn("Was not possible to delete selected pictures because document state is undefined")
@@ -411,6 +424,7 @@ export function EditDocument() {
                 exitSelectionMode={pictureSelection.exitSelection}
                 isSelectionMode={pictureSelection.isSelectionMode}
                 selectedPicturesAmount={pictureSelection.selectedData.length}
+                invertSelection={invertSelection}
                 deletePicture={alertDeletePicture}
                 openCamera={() => navigation.navigate("Camera")}
                 convertToPdf={() => setConvertPdfOptionVisible(true)}
