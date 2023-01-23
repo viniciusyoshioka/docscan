@@ -19,6 +19,7 @@
         "react": "18.1.0",
         "react-native": "0.70.5",
         "react-native-codegen": "^0.69.1",
+        "react-native-document-picker": "^8.1.3",
         "react-native-fs": "^2.20.0",
         "react-native-gesture-handler": "^2.9.0",
         "react-native-get-random-values": "^1.8.0",
