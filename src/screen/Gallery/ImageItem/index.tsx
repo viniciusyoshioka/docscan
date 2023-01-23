@@ -1,5 +1,6 @@
 import { useMemo } from "react"
-import { Image, useWindowDimensions } from "react-native"
+import { useWindowDimensions } from "react-native"
+import FastImage from "react-native-fast-image"
 import { LongPressGestureHandler } from "react-native-gesture-handler"
 
 import { Icon } from "../../../components"
@@ -60,7 +61,7 @@ export function ImageItem(props: ImageItemProps) {
                 onPress={onPress}
                 style={{ width: imageSize }}
             >
-                <Image
+                <FastImage
                     source={{ uri: `file://${props.imagePath}` }}
                     style={{ width: imageSize, aspectRatio: 1 }}
                 />
