@@ -1,3 +1,4 @@
+import FastImage from "react-native-fast-image"
 import { RectButton } from "react-native-gesture-handler"
 import styled from "styled-components/native"
 
@@ -18,7 +19,7 @@ export const PictureButton = styled(RectButton)`
 `
 
 
-export const PictureImage = styled.Image`
+export const PictureImage = styled(FastImage)`
     flex: 1;
     border-radius: 6px;
     resize-mode: cover;
