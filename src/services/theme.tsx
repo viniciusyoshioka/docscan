@@ -23,9 +23,6 @@ export const AppThemeLight: AppTheme = {
         header_color: "rgb(255, 255, 255)",
         header_ripple: "rgb(120, 155, 235)",
 
-        subHeader_background: "rgb(60, 100, 220)",
-        subHeader_color: "rgb(255, 255, 255)",
-
         screen_background: "rgb(242, 242, 242)",
         screen_color: "rgb(0, 0, 0)",
 
@@ -93,9 +90,6 @@ export const AppThemeDark: AppTheme = {
         header_background: "rgb(20, 20, 20)",
         header_color: "rgb(255, 255, 255)",
         header_ripple: "rgb(50, 50, 50)",
-
-        subHeader_background: "rgb(20, 20, 20)",
-        subHeader_color: "rgb(255, 255, 255)",
 
         screen_background: "rgb(0, 0, 0)",
         screen_color: "rgb(255, 255, 255)",

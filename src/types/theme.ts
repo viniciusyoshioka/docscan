@@ -22,9 +22,6 @@ export interface ThemeColors {
     header_color: string;
     header_ripple: string;
 
-    subHeader_background: string;
-    subHeader_color: string;
-
     screen_background: string;
     screen_color: string;
 
