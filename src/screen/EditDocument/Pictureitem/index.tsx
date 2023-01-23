@@ -1,8 +1,9 @@
 import { useMemo } from "react"
 import { useWindowDimensions } from "react-native"
-import { HandlerStateChangeEventPayload, LongPressGestureHandler, LongPressGestureHandlerEventPayload, State } from "react-native-gesture-handler"
+import { LongPressGestureHandler } from "react-native-gesture-handler"
 
 import { Icon } from "../../../components"
+import { SelectableItem, useSelectableItem } from "../../../hooks"
 import { useAppTheme } from "../../../services/theme"
 import { PictureButton, PictureImage, PICTURE_BUTTON_MARGIN, SelectedSurface } from "./style"
 
@@ -32,12 +33,7 @@ export function getPictureItemSize(windowWidth: number, columnCount: number): nu
 }
 
 
-export interface PictureItemProps {
-    onClick: () => void;
-    onSelected: () => void;
-    onDeselected: () => void;
-    isSelectionMode: boolean;
-    isSelected: boolean;
+export interface PictureItemProps extends SelectableItem {
     picturePath: string;
     columnCount: number;
 }
@@ -52,24 +48,7 @@ export function PictureItem(props: PictureItemProps) {
 
     const pictureItemSize = useMemo(() => getPictureItemSize(width, props.columnCount), [width, props.columnCount])
 
-
-    function onNormalPress() {
-        if (!props.isSelectionMode) {
-            props.onClick()
-        } else if (!props.isSelected) {
-            props.onSelected()
-        } else if (props.isSelected) {
-            props.onDeselected()
-        }
-    }
-
-    function onLongPress(nativeEvent: Readonly<HandlerStateChangeEventPayload & LongPressGestureHandlerEventPayload>) {
-        if (nativeEvent.state === State.ACTIVE) {
-            if (!props.isSelectionMode) {
-                props.onSelected()
-            }
-        }
-    }
+    const { onPress, onLongPress } = useSelectableItem(props)
 
 
     return (
@@ -80,7 +59,7 @@ export function PictureItem(props: PictureItemProps) {
         >
             <PictureButton
                 style={{ maxWidth: pictureItemSize }}
-                onPress={onNormalPress}
+                onPress={onPress}
             >
                 <PictureImage source={{ uri: `file://${props.picturePath}` }} />
 

@@ -7,7 +7,7 @@ import Share from "react-native-share"
 
 import { Screen } from "../../components"
 import { DocumentDatabase } from "../../database"
-import { useBackHandler } from "../../hooks"
+import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
 import { fullPathPdf, fullPathTemporaryCompressedPicture } from "../../services/constant"
 import { useDocumentData } from "../../services/document"
@@ -41,8 +41,7 @@ export function EditDocument() {
     , [windowWidth, windowHeight])
     const estimatedItemSize = useMemo(() => getPictureItemSize(windowWidth, columnCount), [windowWidth, columnCount])
 
-    const [isSelectionMode, setIsSelectionMode] = useState(false)
-    const [selectedPictureIndex, setSelectedPictureIndex] = useState<number[]>([])
+    const pictureSelection = useSelectionMode<number>()
     const [renameDocumentVisible, setRenameDocumentVisible] = useState(false)
     const [convertPdfOptionVisible, setConvertPdfOptionVisible] = useState(false)
 
@@ -96,8 +95,8 @@ export function EditDocument() {
     }
 
     function goBack() {
-        if (isSelectionMode) {
-            exitSelectionMode()
+        if (pictureSelection.isSelectionMode) {
+            pictureSelection.exitSelection()
             return
         }
 
@@ -344,11 +343,11 @@ export function EditDocument() {
             return
         }
 
-        const pictureIdToDelete = selectedPictureIndex
+        const pictureIdToDelete = pictureSelection.selectedData
             .filter(pictureIndex => documentDataState.pictureList[pictureIndex].id !== undefined)
             .map(pictureIndex => documentDataState.pictureList[pictureIndex].id as number)
 
-        const picturePathToDelete = selectedPictureIndex.map(pictureIndex =>
+        const picturePathToDelete = pictureSelection.selectedData.map(pictureIndex =>
             documentDataState.pictureList[pictureIndex].filePath
         )
 
@@ -361,15 +360,15 @@ export function EditDocument() {
                 translate("warn"),
                 translate("EditDocument_alert_errorDeletingSelectedPictures_text")
             )
-            exitSelectionMode()
+            pictureSelection.exitSelection()
             return
         }
 
         dispatchDocumentData({
             type: "remove-picture",
-            payload: selectedPictureIndex,
+            payload: pictureSelection.selectedData,
         })
-        exitSelectionMode()
+        pictureSelection.exitSelection()
     }
 
     function alertDeletePicture() {
@@ -383,41 +382,14 @@ export function EditDocument() {
         )
     }
 
-    function selectPicture(pictureIndex: number) {
-        if (!isSelectionMode) {
-            setIsSelectionMode(true)
-        }
-        if (!selectedPictureIndex.includes(pictureIndex)) {
-            setSelectedPictureIndex(currentSelectedPictureIndex => [...currentSelectedPictureIndex, pictureIndex])
-        }
-    }
-
-    function deselectPicture(pictureIndex: number) {
-        const index = selectedPictureIndex.indexOf(pictureIndex)
-        if (index !== -1) {
-            const newSelectedPictureIndex = [...selectedPictureIndex]
-            newSelectedPictureIndex.splice(index, 1)
-            setSelectedPictureIndex(newSelectedPictureIndex)
-
-            if (isSelectionMode && newSelectedPictureIndex.length === 0) {
-                setIsSelectionMode(false)
-            }
-        }
-    }
-
-    function exitSelectionMode() {
-        setSelectedPictureIndex([])
-        setIsSelectionMode(false)
-    }
-
     function renderItem({ item, index }: { item: DocumentPicture, index: number }) {
         return (
             <PictureItem
                 onClick={() => navigation.navigate("VisualizePicture", { pictureIndex: index })}
-                onSelected={() => selectPicture(index)}
-                onDeselected={() => deselectPicture(index)}
-                isSelectionMode={isSelectionMode}
-                isSelected={selectedPictureIndex.includes(index)}
+                onSelect={() => pictureSelection.selectItem(index)}
+                onDeselect={() => pictureSelection.deselectItem(index)}
+                isSelectionMode={pictureSelection.isSelectionMode}
+                isSelected={pictureSelection.selectedData.includes(index)}
                 picturePath={item.filePath}
                 columnCount={columnCount}
             />
@@ -436,9 +408,9 @@ export function EditDocument() {
         <Screen>
             <EditDocumentHeader
                 goBack={goBack}
-                exitSelectionMode={exitSelectionMode}
-                isSelectionMode={isSelectionMode}
-                selectedPicturesAmount={selectedPictureIndex.length}
+                exitSelectionMode={pictureSelection.exitSelection}
+                isSelectionMode={pictureSelection.isSelectionMode}
+                selectedPicturesAmount={pictureSelection.selectedData.length}
                 deletePicture={alertDeletePicture}
                 openCamera={() => navigation.navigate("Camera")}
                 convertToPdf={() => setConvertPdfOptionVisible(true)}
@@ -453,7 +425,7 @@ export function EditDocument() {
                 data={documentDataState?.pictureList}
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
-                extraData={[isSelectionMode]}
+                extraData={[pictureSelection.isSelectionMode]}
                 estimatedItemSize={estimatedItemSize}
                 numColumns={columnCount}
                 contentContainerStyle={{ padding: 4 }}
