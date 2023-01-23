@@ -15,7 +15,6 @@ export type ScreenParams = {
         documentId: number;
     } | undefined;
     Settings: undefined;
-    FileExplorer: undefined;
     Gallery: {
         screenAction: "replace-picture";
         replaceIndex: number;
