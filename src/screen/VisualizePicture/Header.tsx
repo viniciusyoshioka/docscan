@@ -38,7 +38,8 @@ export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
 
             {!props.isCropping && (
                 <HeaderButton
-                    iconName={"add-photo-alternate"}
+                    iconName={"image-edit-outline"}
+                    iconGroup={"material-community"}
                     onPress={props.openCamera}
                 />
             )}
