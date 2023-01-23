@@ -6,7 +6,7 @@ import { ActivityIndicator, Alert, useWindowDimensions, View } from "react-nativ
 import RNFS from "react-native-fs"
 
 import { EmptyList, HEADER_HEIGHT, Screen } from "../../components"
-import { useBackHandler } from "../../hooks"
+import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
 import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
 import { copyPicturesService } from "../../services/document-service"
@@ -32,11 +32,10 @@ export function Gallery() {
 
     const { documentDataState, dispatchDocumentData } = useDocumentData()
 
+    const gallerySelection = useSelectionMode<string>()
     const [isLoading, setIsLoading] = useState(false)
     const [isRefreshing, setIsRefreshing] = useState(false)
     const [imageGallery, setImageGallery] = useState<PhotoIdentifier[] | null>(null)
-    const [isSelectionMode, setIsSelectionMode] = useState(false)
-    const [selectedImages, setSelectedImages] = useState<string[]>([])
     const currentAmountOfImages = useMemo(() => imageGallery?.length ?? 0, [imageGallery])
     const [isGalleryFullLoaded, setIsGalleryFullLoaded] = useState(false)
 
@@ -110,8 +109,8 @@ export function Gallery() {
     }
 
     function goBack() {
-        if (isSelectionMode) {
-            exitSelectionMode()
+        if (gallerySelection.isSelectionMode) {
+            gallerySelection.exitSelection()
             return
         }
 
@@ -219,11 +218,11 @@ export function Gallery() {
         const imagesToImport: DocumentPicture[] = []
         let nextIndex = documentDataState?.pictureList.length ?? 0
 
-        for (let i = 0; i < selectedImages.length; i++) {
-            const newImagePath = await getDocumentPicturePath(selectedImages[i])
+        for (let i = 0; i < gallerySelection.selectedData.length; i++) {
+            const newImagePath = await getDocumentPicturePath(gallerySelection.selectedData[i])
             const newImageName = getFullFileName(newImagePath)
 
-            imagesToCopy.push(selectedImages[i].replace("file://", ""))
+            imagesToCopy.push(gallerySelection.selectedData[i].replace("file://", ""))
             imagesToCopy.push(newImagePath)
 
             imagesToImport.push({
@@ -250,41 +249,14 @@ export function Gallery() {
         })
     }
 
-    function selectImage(imagePath: string) {
-        if (!isSelectionMode) {
-            setIsSelectionMode(true)
-        }
-        if (!selectedImages.includes(imagePath)) {
-            setSelectedImages(currentSelectedImages => [...currentSelectedImages, imagePath])
-        }
-    }
-
-    function deselectImage(imagePath: string) {
-        const index = selectedImages.indexOf(imagePath)
-        if (index !== -1) {
-            const newSelectedImages = [...selectedImages]
-            newSelectedImages.splice(index, 1)
-            setSelectedImages(newSelectedImages)
-
-            if (isSelectionMode && newSelectedImages.length === 0) {
-                setIsSelectionMode(false)
-            }
-        }
-    }
-
-    function exitSelectionMode() {
-        setIsSelectionMode(false)
-        setSelectedImages([])
-    }
-
     function renderItem({ item }: { item: PhotoIdentifier }) {
         return (
             <ImageItem
                 onClick={() => importSingleImage(item.node.image.uri)}
-                onSelected={() => selectImage(item.node.image.uri)}
-                onDeselected={() => deselectImage(item.node.image.uri)}
-                isSelectionMode={isSelectionMode}
-                isSelected={selectedImages.includes(item.node.image.uri)}
+                onSelect={() => gallerySelection.selectItem(item.node.image.uri)}
+                onDeselect={() => gallerySelection.deselectItem(item.node.image.uri)}
+                isSelectionMode={gallerySelection.isSelectionMode}
+                isSelected={gallerySelection.selectedData.includes(item.node.image.uri)}
                 imagePath={item.node.image.uri}
                 screenAction={params?.screenAction}
                 columnCount={columnCount}
@@ -316,7 +288,7 @@ export function Gallery() {
     }
 
     async function onRefresh() {
-        exitSelectionMode()
+        gallerySelection.exitSelection()
         setIsRefreshing(true)
         setIsGalleryFullLoaded(false)
         await getImage(true)
@@ -333,10 +305,10 @@ export function Gallery() {
         <Screen>
             <GalleryHeader
                 goBack={goBack}
-                exitSelectionMode={exitSelectionMode}
+                exitSelectionMode={gallerySelection.exitSelection}
                 importImage={importMultipleImage}
-                isSelectionMode={isSelectionMode}
-                selectedImagesAmount={selectedImages.length}
+                isSelectionMode={gallerySelection.isSelectionMode}
+                selectedImagesAmount={gallerySelection.selectedData.length}
             />
 
             <View style={{
@@ -348,7 +320,7 @@ export function Gallery() {
                     data={imageGallery}
                     renderItem={renderItem}
                     keyExtractor={keyExtractor}
-                    extraData={[isSelectionMode]}
+                    extraData={[gallerySelection.isSelectionMode]}
                     estimatedItemSize={estimatedItemSize}
                     numColumns={columnCount}
                     onEndReachedThreshold={0.05}

@@ -1,8 +1,9 @@
 import { useMemo } from "react"
 import { Image, useWindowDimensions } from "react-native"
-import { HandlerStateChangeEventPayload, LongPressGestureHandler, LongPressGestureHandlerEventPayload, State } from "react-native-gesture-handler"
+import { LongPressGestureHandler } from "react-native-gesture-handler"
 
 import { Icon } from "../../../components"
+import { SelectableItem, useSelectableItem } from "../../../hooks"
 import { useAppTheme } from "../../../services/theme"
 import { Button, SelectionSurface } from "./style"
 
@@ -30,12 +31,7 @@ export function getImageItemSize(windowWidth: number, columnCount: number): numb
 }
 
 
-export interface ImageItemProps {
-    onClick: () => void;
-    onSelected: () => void;
-    onDeselected: () => void;
-    isSelectionMode: boolean;
-    isSelected: boolean;
+export interface ImageItemProps extends SelectableItem {
     imagePath: string;
     screenAction: "replace-picture" | undefined;
     columnCount: number;
@@ -51,24 +47,7 @@ export function ImageItem(props: ImageItemProps) {
 
     const imageSize = useMemo(() => getImageItemSize(width, props.columnCount), [width, props.columnCount])
 
-
-    function onNormalPress() {
-        if (!props.isSelectionMode) {
-            props.onClick()
-        } else if (!props.isSelected) {
-            props.onSelected()
-        } else if (props.isSelected) {
-            props.onDeselected()
-        }
-    }
-
-    function onLongPress(nativeEvent: Readonly<HandlerStateChangeEventPayload & LongPressGestureHandlerEventPayload>) {
-        if (nativeEvent.state === State.ACTIVE && props.screenAction === undefined) {
-            if (!props.isSelectionMode) {
-                props.onSelected()
-            }
-        }
-    }
+    const { onPress, onLongPress } = useSelectableItem(props)
 
 
     return (
@@ -78,7 +57,7 @@ export function ImageItem(props: ImageItemProps) {
             onHandlerStateChange={({ nativeEvent }) => onLongPress(nativeEvent)}
         >
             <Button
-                onPress={onNormalPress}
+                onPress={onPress}
                 style={{ width: imageSize }}
             >
                 <Image
