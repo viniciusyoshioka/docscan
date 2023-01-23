@@ -4,7 +4,6 @@ import { enableScreens } from "react-native-screens"
 
 import { Camera } from "../screen/Camera"
 import { EditDocument } from "../screen/EditDocument"
-import { FileExplorer } from "../screen/FileExplorer"
 import { Gallery } from "../screen/Gallery"
 import { Home } from "../screen/Home"
 import { Settings } from "../screen/Settings"
@@ -56,11 +55,6 @@ export function Router() {
                 <Stack.Screen
                     name={"Gallery"}
                     component={Gallery}
-                />
-
-                <Stack.Screen
-                    name={"FileExplorer"}
-                    component={FileExplorer}
                 />
             </Stack.Navigator>
         </NavigationContainer>
