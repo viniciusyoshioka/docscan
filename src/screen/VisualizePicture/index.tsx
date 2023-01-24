@@ -21,7 +21,6 @@ import { ImageVisualizationItem } from "./ImageVisualizationItem"
 
 // TODO improve screen design
 // TODO add button to rotate the image
-// TODO lock crop button to avoid multiple crops
 // TODO add zoom
 // TODO fix scroll not centralized when rotating screen
 export function VisualizePicture() {
@@ -36,6 +35,7 @@ export function VisualizePicture() {
     const { documentDataState, dispatchDocumentData } = useDocumentData()
 
     const [isCropping, setIsCropping] = useState(false)
+    const [isCropProcessing, setIsCropProcessing] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(params.pictureIndex)
     const [isFlatListScrollEnable, setIsFlatListScrollEnable] = useState(true)
 
@@ -104,6 +104,7 @@ export function VisualizePicture() {
             )
         }
         setIsCropping(false)
+        setIsCropProcessing(false)
     }
 
     function onSaveImageError(response: string) {
@@ -113,6 +114,7 @@ export function VisualizePicture() {
             translate("VisualizePicture_alert_errorCroppingImage_text")
         )
         setIsCropping(false)
+        setIsCropProcessing(false)
     }
 
     function openCamera() {
@@ -120,6 +122,19 @@ export function VisualizePicture() {
             screenAction: "replace-picture",
             replaceIndex: currentIndex,
         })
+    }
+
+    function exitCrop() {
+        if (!isCropProcessing) {
+            setIsCropping(false)
+        }
+    }
+
+    function saveCroppedPicture() {
+        if (!isCropProcessing) {
+            setIsCropProcessing(true)
+            cropViewRef.current?.saveImage()
+        }
     }
 
     function renderItem({ item }: { item: DocumentPicture }) {
@@ -143,8 +158,9 @@ export function VisualizePicture() {
                 goBack={goBack}
                 isCropping={isCropping}
                 openCamera={openCamera}
-                setIsCropping={setIsCropping}
-                saveCroppedPicture={() => cropViewRef.current?.saveImage()}
+                openCrop={() => setIsCropping(true)}
+                exitCrop={exitCrop}
+                saveCroppedPicture={saveCroppedPicture}
             />
 
             {!isCropping && (

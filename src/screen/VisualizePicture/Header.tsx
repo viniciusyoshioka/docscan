@@ -6,7 +6,8 @@ export interface VisualizePictureHeaderProps {
     goBack: () => void;
     isCropping: boolean;
     openCamera: () => void;
-    setIsCropping: (newIsCropping: boolean) => void;
+    openCrop: () => void;
+    exitCrop: () => void;
     saveCroppedPicture: () => void;
 }
 
@@ -24,7 +25,7 @@ export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
             {props.isCropping && (
                 <HeaderButton
                     iconName={"close"}
-                    onPress={() => props.setIsCropping(false)}
+                    onPress={props.exitCrop}
                 />
             )}
 
@@ -47,7 +48,7 @@ export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
             {!props.isCropping && (
                 <HeaderButton
                     iconName={"crop"}
-                    onPress={() => props.setIsCropping(true)}
+                    onPress={props.openCrop}
                 />
             )}
 
