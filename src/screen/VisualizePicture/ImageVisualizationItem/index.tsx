@@ -14,6 +14,7 @@ export interface ImageVisualizationItemProps {
     source: Source | ImageRequireSource;
     minZoom?: number;
     maxZoom?: number;
+    doubleTabZoom?: number;
     onZoomActivated?: () => void;
     onZoomDeactivated?: () => void;
 }
@@ -26,6 +27,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
     const minZoom = useMemo(() => props.minZoom ?? 0.9, [props.minZoom])
     const maxZoom = useMemo(() => props.maxZoom ?? 10, [props.maxZoom])
+    const doubleTabZoom = useMemo(() => props.doubleTabZoom ?? 2, [props.doubleTabZoom])
 
     const zoom = useSharedValue(1)
     const savedZoom = useSharedValue(1)
@@ -71,6 +73,30 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
             }
         })
 
+    const doubleTapGesture = Gesture.Tap()
+        .numberOfTaps(2)
+        .maxDistance(20)
+        .maxDuration(200)
+        .onStart(event => {
+            if (zoom.value === 1) {
+                zoom.value = doubleTabZoom
+                savedZoom.value = doubleTabZoom
+
+                if (props.onZoomActivated) {
+                    runOnJS(props.onZoomActivated)()
+                }
+                return
+            }
+
+            zoom.value = 1
+            savedZoom.value = 1
+            if (props.onZoomDeactivated) {
+                runOnJS(props.onZoomDeactivated)()
+            }
+        })
+
+    const raceComposedGestures = Gesture.Race(pinchGesture, doubleTapGesture)
+
 
     const imageStyle = useAnimatedStyle(() => ({
         flex: 1,
@@ -82,7 +108,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
     return (
         <Screen style={{ width }}>
-            <GestureDetector gesture={pinchGesture}>
+            <GestureDetector gesture={raceComposedGestures}>
                 <AnimatedFastImage
                     source={props.source}
                     resizeMode={"contain"}
