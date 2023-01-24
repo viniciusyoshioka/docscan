@@ -1,11 +1,14 @@
+import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
 
-export const ButtonBase = styled.TouchableOpacity`
+export const CAMERA_SETTINGS_BUTTON_HEIGHT = 80
+
+export const ButtonBase = styled(TouchableOpacity)`
     align-items: center;
     justify-content: center;
-    width: 80px;
-    height: 80px;
+    width: ${CAMERA_SETTINGS_BUTTON_HEIGHT}px;
+    height: ${CAMERA_SETTINGS_BUTTON_HEIGHT}px;
     padding: 8px;
 `
 

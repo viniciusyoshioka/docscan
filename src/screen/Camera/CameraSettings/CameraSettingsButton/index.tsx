@@ -4,6 +4,9 @@ import { Icon } from "../../../../components"
 import { ButtonBase, ButtonChildrenWrapper, ButtonText } from "./style"
 
 
+export { CAMERA_SETTINGS_BUTTON_HEIGHT } from "./style"
+
+
 export interface CameraSettingsButtonProps extends TouchableOpacityProps {
     optionName: string;
     iconName: string;
