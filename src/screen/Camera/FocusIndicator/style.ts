@@ -10,6 +10,7 @@ export const FocusIndicatorBase = styled(View)`
     left: 0px;
     width: ${FOCUS_INDICATOR_SIZE}px;
     height: ${FOCUS_INDICATOR_SIZE}px;
-    border-width: 2px;
+    border-radius: ${FOCUS_INDICATOR_SIZE}px;
+    border-width: 1px;
     border-color: white;
 `

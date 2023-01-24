@@ -3,7 +3,7 @@ import { ViewProps } from "react-native"
 import { FocusIndicatorBase } from "./style"
 
 
-export const FOCUS_INDICATOR_SIZE = 64
+export const FOCUS_INDICATOR_SIZE = 56
 
 
 export interface FocusIndicatorProps extends ViewProps {
