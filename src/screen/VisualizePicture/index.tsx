@@ -23,7 +23,6 @@ import { ImageVisualizationItem } from "./ImageVisualizationItem"
 // TODO add button to rotate the image
 // TODO lock crop button to avoid multiple crops
 // TODO add zoom
-// TODO use a component to show the image with a better quality
 // TODO fix scroll not centralized when rotating screen
 export function VisualizePicture() {
 
