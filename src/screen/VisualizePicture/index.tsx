@@ -171,7 +171,7 @@ export function VisualizePicture() {
             {isCropping && (
                 <ImageCrop
                     ref={cropViewRef}
-                    style={{ flex: 1 }}
+                    style={{ flex: 1, margin: 16 }}
                     sourceUrl={`file://${documentDataState?.pictureList[currentIndex].filePath}`}
                     onSaveImage={onImageSaved}
                     onCropError={onSaveImageError}
