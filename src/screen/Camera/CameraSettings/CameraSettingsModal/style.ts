@@ -1,5 +1,7 @@
 import styled from "styled-components/native"
 
+import { CAMERA_SETTINGS_BUTTON_HEIGHT } from "../CameraSettingsButton"
+
 
 export const ModalView = styled.TouchableOpacity`
     flex: 1;
@@ -20,5 +22,5 @@ export const ModalBackground = styled.TouchableOpacity`
 
 
 export const ModalContent = styled.ScrollView`
-    max-height: 344px;
+    max-height: ${3.3 * CAMERA_SETTINGS_BUTTON_HEIGHT}px;
 `
