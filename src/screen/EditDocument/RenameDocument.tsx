@@ -10,7 +10,6 @@ import { useDocumentData } from "../../services/document"
 export interface RenameDocumentProps extends ModalProps { }
 
 
-// TODO fix bug that the input is not focused when the modal is opened
 // TODO fix clicking outside the modal with keyboard opened closes the modal
 export function RenameDocument(props: RenameDocumentProps) {
 
@@ -19,7 +18,7 @@ export function RenameDocument(props: RenameDocumentProps) {
 
     const { documentDataState, dispatchDocumentData } = useDocumentData()
 
-    const [documentName, setDocumentName] = useState(documentDataState?.name ?? "")
+    const [documentName, setDocumentName] = useState<string | undefined>(undefined)
 
 
     useKeyboard("keyboardDidHide", () => {
@@ -28,6 +27,10 @@ export function RenameDocument(props: RenameDocumentProps) {
 
 
     function renameDocument() {
+        if (documentName === undefined) {
+            return
+        }
+
         dispatchDocumentData({
             type: "rename-document",
             payload: documentName
@@ -36,14 +39,24 @@ export function RenameDocument(props: RenameDocumentProps) {
 
 
     useEffect(() => {
-        setDocumentName(documentDataState?.name ?? "")
-
         if (props.visible) {
+            setDocumentName(documentDataState?.name ?? "")
+        } else {
+            setDocumentName(undefined)
+        }
+    }, [props.visible])
+
+    useEffect(() => {
+        if (documentName === undefined) {
+            return
+        }
+
+        if (!inputRef.current?.isFocused()) {
             setTimeout(() => {
                 inputRef.current?.focus()
             }, 100)
         }
-    }, [props.visible])
+    }, [documentName])
 
 
     return (
