@@ -30,7 +30,6 @@ import { CameraButtonWrapper, CameraTextWrapper, CameraWrapper, NoCameraAvailabl
 // TODO add support to multiple back cameras
 // TODO add zoom indicator
 // TODO fix camera control overlapping camera
-// TODO move camera settings modal to the bottom of the screen
 export function Camera() {
 
 
