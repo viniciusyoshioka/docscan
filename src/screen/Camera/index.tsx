@@ -45,7 +45,7 @@ export function Camera() {
 
     const { cameraSettingsState } = useCameraSettings()
     const { documentDataState, dispatchDocumentData } = useDocumentData()
-    const { color, isDark } = useAppTheme()
+    const { color, isDark, opacity } = useAppTheme()
 
     const cameraRef = useRef<RNCamera>(null)
     const cameraControlRef = useRef<CameraControlRef>(null)
@@ -373,10 +373,11 @@ export function Camera() {
 
             {(hasCameraPermission && !cameraDevice) && (
                 <EmptyList
-                    iconName={"no-photography"}
+                    iconName={"camera-off-outline"}
+                    iconGroup={"material-community"}
                     iconSize={56}
                     message={translate("Camera_cameraNotAvailable")}
-                    iconStyle={{ marginBottom: 16 }}
+                    iconStyle={{ marginBottom: 16, opacity: opacity.mediumEmphasis }}
                 />
             )}
 
