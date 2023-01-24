@@ -1,5 +1,5 @@
 import React from "react"
-import { Modal as RNModal, ModalProps as RNModalProps, StyleProp, ViewStyle } from "react-native"
+import { Keyboard, Modal as RNModal, ModalProps as RNModalProps, StyleProp, ViewStyle } from "react-native"
 
 import { ModalContent, ModalView } from "./style"
 
@@ -14,6 +14,11 @@ export const Modal = (props: ModalProps) => {
 
 
     function closeModal() {
+        if (Keyboard.isVisible()) {
+            Keyboard.dismiss()
+            return
+        }
+
         if (props.onRequestClose) {
             props.onRequestClose()
         }

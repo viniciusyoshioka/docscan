@@ -10,7 +10,6 @@ import { useDocumentData } from "../../services/document"
 export interface RenameDocumentProps extends ModalProps { }
 
 
-// TODO fix clicking outside the modal with keyboard opened closes the modal
 export function RenameDocument(props: RenameDocumentProps) {
 
 
