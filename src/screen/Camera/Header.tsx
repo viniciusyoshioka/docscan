@@ -25,19 +25,22 @@ export function CameraHeader(props: CameraHeaderProps) {
         return styles.absolute
     }, [props.isShowingCamera])
 
-    const iconColor = useMemo((): string => {
-        if (!props.isShowingCamera) {
-            return isDark ? "white" : "black"
+    function getIconColor(enabled: boolean) {
+        if (props.isShowingCamera) {
+            return "white"
         }
-        return "white"
-    }, [props.isShowingCamera, isDark])
+        if (isDark) {
+            return enabled ? "white" : "rgb(200, 200, 200)"
+        }
+        return enabled ? "black" : "rgb(110, 110, 110)"
+    }
 
 
     return (
         <Header style={headerStyle}>
             <HeaderButton
                 iconName={"arrow-back"}
-                iconColor={iconColor}
+                iconColor={getIconColor(true)}
                 onPress={props.goBack}
             />
 
@@ -45,8 +48,9 @@ export function CameraHeader(props: CameraHeaderProps) {
 
             <HeaderButton
                 iconName={"settings"}
-                iconColor={iconColor}
+                iconColor={getIconColor(props.isShowingCamera)}
                 onPress={props.openSettings}
+                enabled={props.isShowingCamera}
             />
         </Header>
     )
