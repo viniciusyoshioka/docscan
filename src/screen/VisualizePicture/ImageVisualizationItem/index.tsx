@@ -40,6 +40,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
         }
         return height - HEADER_HEIGHT
     }, [height, HEADER_HEIGHT, StatusBar.currentHeight])
+    const ANIMATION_DURATION = 150
 
     const zoom = useSharedValue(1)
     const savedZoom = useSharedValue(1)
@@ -82,8 +83,8 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
             }
 
             if (zoom.value < 1) {
-                zoom.value = withTiming(1, { duration: 150 })
-                savedZoom.value = withTiming(1, { duration: 150 })
+                zoom.value = withTiming(1, { duration: ANIMATION_DURATION })
+                savedZoom.value = withTiming(1, { duration: ANIMATION_DURATION })
             } else {
                 savedZoom.value = zoom.value
             }
@@ -110,8 +111,8 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
         .maxDuration(200)
         .onStart(event => {
             if (zoom.value === 1) {
-                zoom.value = withTiming(doubleTabZoom, { duration: 150 })
-                savedZoom.value = withTiming(doubleTabZoom, { duration: 150 })
+                zoom.value = withTiming(doubleTabZoom, { duration: ANIMATION_DURATION })
+                savedZoom.value = withTiming(doubleTabZoom, { duration: ANIMATION_DURATION })
 
                 runOnJS(setIsPanGestureEnabled)(true)
                 if (props.onZoomActivated) {
@@ -120,12 +121,12 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
                 return
             }
 
-            zoom.value = withTiming(1, { duration: 150 })
-            savedZoom.value = withTiming(1, { duration: 150 })
-            initialTranslationX.value = withTiming(0, { duration: 150 })
-            initialTranslationY.value = withTiming(0, { duration: 150 })
-            translateX.value = withTiming(0, { duration: 150 })
-            translateY.value = withTiming(0, { duration: 150 })
+            zoom.value = withTiming(1, { duration: ANIMATION_DURATION })
+            savedZoom.value = withTiming(1, { duration: ANIMATION_DURATION })
+            initialTranslationX.value = withTiming(0, { duration: ANIMATION_DURATION })
+            initialTranslationY.value = withTiming(0, { duration: ANIMATION_DURATION })
+            translateX.value = withTiming(0, { duration: ANIMATION_DURATION })
+            translateY.value = withTiming(0, { duration: ANIMATION_DURATION })
 
             runOnJS(setIsPanGestureEnabled)(false)
             if (props.onZoomDeactivated) {
@@ -154,9 +155,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
                     translateX.value = (limitX * -1) - margin
                 }
             } else {
-                translateX.value = withTiming(0, {
-                    duration: 100,
-                })
+                translateX.value = withTiming(0, { duration: ANIMATION_DURATION })
             }
 
             if (imageHeight.value * zoom.value > windowHeight) {
@@ -168,9 +167,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
                     translateY.value = (limitY * -1) - margin
                 }
             } else {
-                translateY.value = withTiming(0, {
-                    duration: 100,
-                })
+                translateY.value = withTiming(0, { duration: ANIMATION_DURATION })
             }
         })
 
