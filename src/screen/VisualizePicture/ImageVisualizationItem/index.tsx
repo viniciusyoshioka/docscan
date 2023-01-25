@@ -110,27 +110,31 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
         .maxDistance(20)
         .maxDuration(200)
         .onStart(event => {
-            if (zoom.value === 1) {
-                zoom.value = withTiming(doubleTabZoom, { duration: ANIMATION_DURATION })
-                savedZoom.value = withTiming(doubleTabZoom, { duration: ANIMATION_DURATION })
+            if (event.numberOfPointers !== 1) {
+                return
+            }
 
-                runOnJS(setIsPanGestureEnabled)(true)
-                if (props.onZoomActivated) {
-                    runOnJS(props.onZoomActivated)()
+            if (zoom.value !== 1) {
+                zoom.value = withTiming(1, { duration: ANIMATION_DURATION })
+                savedZoom.value = withTiming(1, { duration: ANIMATION_DURATION })
+                initialTranslationX.value = withTiming(0, { duration: ANIMATION_DURATION })
+                initialTranslationY.value = withTiming(0, { duration: ANIMATION_DURATION })
+                translateX.value = withTiming(0, { duration: ANIMATION_DURATION })
+                translateY.value = withTiming(0, { duration: ANIMATION_DURATION })
+
+                runOnJS(setIsPanGestureEnabled)(false)
+                if (props.onZoomDeactivated) {
+                    runOnJS(props.onZoomDeactivated)()
                 }
                 return
             }
 
-            zoom.value = withTiming(1, { duration: ANIMATION_DURATION })
-            savedZoom.value = withTiming(1, { duration: ANIMATION_DURATION })
-            initialTranslationX.value = withTiming(0, { duration: ANIMATION_DURATION })
-            initialTranslationY.value = withTiming(0, { duration: ANIMATION_DURATION })
-            translateX.value = withTiming(0, { duration: ANIMATION_DURATION })
-            translateY.value = withTiming(0, { duration: ANIMATION_DURATION })
+            zoom.value = withTiming(doubleTabZoom, { duration: ANIMATION_DURATION })
+            savedZoom.value = withTiming(doubleTabZoom, { duration: ANIMATION_DURATION })
 
-            runOnJS(setIsPanGestureEnabled)(false)
-            if (props.onZoomDeactivated) {
-                runOnJS(props.onZoomDeactivated)()
+            runOnJS(setIsPanGestureEnabled)(true)
+            if (props.onZoomActivated) {
+                runOnJS(props.onZoomActivated)()
             }
         })
 
