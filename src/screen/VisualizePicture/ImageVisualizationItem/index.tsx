@@ -2,7 +2,7 @@ import { ComponentClass, useEffect, useMemo, useState } from "react"
 import { Dimensions, Image, StatusBar, useWindowDimensions } from "react-native"
 import FastImage, { FastImageProps, Source } from "react-native-fast-image"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
-import Reanimated, { runOnJS, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
+import Reanimated, { runOnJS, useAnimatedReaction, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 
 import { HEADER_HEIGHT, Screen } from "../../../components"
 
@@ -141,36 +141,47 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
             initialTranslationY.value = translateY.value
         })
         .onUpdate(event => {
-            const limitX = ((imageWidth.value * zoom.value) - windowWidth) / (2 * zoom.value)
-            const limitY = ((imageHeight.value * zoom.value) - windowHeight) / (2 * zoom.value)
-
-            const margin = zoomMargin / zoom.value
-
             if (imageWidth.value * zoom.value > windowWidth) {
                 translateX.value = initialTranslationX.value + (event.translationX / zoom.value)
-                if (translateX.value > limitX + margin) {
-                    translateX.value = limitX + margin
-                }
-                if (translateX.value < (limitX * -1) - margin) {
-                    translateX.value = (limitX * -1) - margin
-                }
             } else {
                 translateX.value = withTiming(0, { duration: ANIMATION_DURATION })
             }
 
             if (imageHeight.value * zoom.value > windowHeight) {
                 translateY.value = initialTranslationY.value + (event.translationY / zoom.value)
-                if (translateY.value > limitY + margin) {
-                    translateY.value = limitY + margin
-                }
-                if (translateY.value < (limitY * -1) - margin) {
-                    translateY.value = (limitY * -1) - margin
-                }
             } else {
                 translateY.value = withTiming(0, { duration: ANIMATION_DURATION })
             }
         })
 
+    useAnimatedReaction(
+        () => ({
+            translateX: translateX.value,
+            translateY: translateY.value,
+        }),
+        (current, previous) => {
+            const margin = (zoom.value === 0) ? 0 : (zoomMargin / zoom.value)
+
+            if (imageWidth.value * zoom.value > windowWidth) {
+                const sizeOutsideScreenX = ((imageWidth.value * zoom.value) - windowWidth) / (2 * zoom.value)
+                const limitRight = sizeOutsideScreenX + margin
+                const limitLeft = (-sizeOutsideScreenX - margin)
+
+                if (current.translateX > limitRight) translateX.value = limitRight
+                if (current.translateX < limitLeft) translateX.value = limitLeft
+            }
+
+            if (imageHeight.value * zoom.value > windowHeight) {
+                const sizeOutsideScreenY = ((imageHeight.value * zoom.value) - windowHeight) / (2 * zoom.value)
+                const limitTop = sizeOutsideScreenY + margin
+                const limitBottom = (-sizeOutsideScreenY - margin)
+
+                if (current.translateY > limitTop) translateY.value = limitTop
+                if (current.translateY < limitBottom) translateY.value = limitBottom
+            }
+        },
+        [translateX, translateY]
+    )
 
     const raceComposedGestures = Gesture.Race(pinchGesture, doubleTapGesture)
     const simultaneousComposedGestures = Gesture.Simultaneous(raceComposedGestures, panGesture)
