@@ -62,9 +62,11 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
             }
 
             if (zoom.value < 1) {
-                zoom.value = 1
+                zoom.value = withTiming(1, { duration: 150 })
+                savedZoom.value = withTiming(1, { duration: 150 })
+            } else {
+                savedZoom.value = zoom.value
             }
-            savedZoom.value = zoom.value
 
             if (zoom.value === 1) {
                 if (props.onZoomDeactivated) {
