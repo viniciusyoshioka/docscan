@@ -16,6 +16,7 @@ export interface ImageVisualizationItemProps {
     maxZoom?: number;
     doubleTabZoom?: number;
     zoomMargin?: number;
+    allowZoomOut?: boolean;
     onZoomActivated?: () => void;
     onZoomDeactivated?: () => void;
 }
@@ -30,6 +31,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
     const maxZoom = useMemo(() => props.maxZoom ?? 10, [props.maxZoom])
     const doubleTabZoom = useMemo(() => props.doubleTabZoom ?? 2, [props.doubleTabZoom])
     const zoomMargin = useMemo(() => props.zoomMargin ?? 0, [props.zoomMargin])
+    const allowZoomOut = useMemo(() => props.allowZoomOut ?? false, [props.allowZoomOut])
     const windowWidth = useMemo(() => width, [width])
     const windowHeight = useMemo(() => {
         const { height: screenHeight } = Dimensions.get("screen")
@@ -82,14 +84,10 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
                 return
             }
 
-            if (zoom.value < 1) {
+            if (!allowZoomOut && zoom.value < 1) {
                 zoom.value = withTiming(1, { duration: ANIMATION_DURATION })
                 savedZoom.value = withTiming(1, { duration: ANIMATION_DURATION })
-            } else {
-                savedZoom.value = zoom.value
-            }
 
-            if (zoom.value === 1) {
                 initialTranslationX.value = 0
                 initialTranslationY.value = 0
                 translateX.value = 0
@@ -102,6 +100,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
                 return
             }
 
+            savedZoom.value = zoom.value
             runOnJS(setIsPanGestureEnabled)(true)
         })
 
