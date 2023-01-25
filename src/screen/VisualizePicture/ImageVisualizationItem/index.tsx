@@ -81,8 +81,8 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
         .maxDuration(200)
         .onStart(event => {
             if (zoom.value === 1) {
-                zoom.value = doubleTabZoom
-                savedZoom.value = doubleTabZoom
+                zoom.value = withTiming(doubleTabZoom, { duration: 150 })
+                savedZoom.value = withTiming(doubleTabZoom, { duration: 150 })
 
                 if (props.onZoomActivated) {
                     runOnJS(props.onZoomActivated)()
@@ -90,8 +90,8 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
                 return
             }
 
-            zoom.value = 1
-            savedZoom.value = 1
+            zoom.value = withTiming(1, { duration: 150 })
+            savedZoom.value = withTiming(1, { duration: 150 })
             if (props.onZoomDeactivated) {
                 runOnJS(props.onZoomDeactivated)()
             }
