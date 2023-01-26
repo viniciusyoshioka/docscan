@@ -21,7 +21,6 @@ import { ImageVisualizationItem } from "./ImageVisualizationItem"
 
 // TODO improve screen design
 // TODO add button to rotate the image
-// TODO add zoom
 // TODO fix scroll not centralized when rotating screen
 export function VisualizePicture() {
 
@@ -141,12 +140,8 @@ export function VisualizePicture() {
         return (
             <ImageVisualizationItem
                 source={{ uri: `file://${item.filePath}` }}
-            // onZoomActivated={() => {
-            //     setIsFlatListScrollEnable(false)
-            // }}
-            // onZoomDeactivated={() => {
-            //     setIsFlatListScrollEnable(true)
-            // }}
+                onZoomActivated={() => setIsFlatListScrollEnable(false)}
+                onZoomDeactivated={() => setIsFlatListScrollEnable(true)}
             />
         )
     }
