@@ -22,6 +22,7 @@ export interface ImageVisualizationItemProps {
 }
 
 
+// TODO implement focal when zooming
 export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
 
@@ -127,6 +128,19 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
                 }
                 return
             }
+
+            // if (imageWidth.value * doubleTabZoom > windowWidth) {
+            //     const sizeOutsideScreenX = ((imageWidth.value * doubleTabZoom) - windowWidth) / (2 * doubleTabZoom)
+            //     const dx = (sizeOutsideScreenX - event.x) + (event.x / doubleTabZoom)
+            //     const dx = -(event.x - (imageWidth.value / 2)) / doubleTabZoom
+            //     translateX.value = withTiming(dx, { duration: ANIMATION_DURATION })
+            // }
+            // if (imageHeight.value * doubleTabZoom > windowHeight) {
+            //     const sizeOutsideScreenY = ((imageHeight.value * doubleTabZoom) - windowHeight) / (2 * doubleTabZoom)
+            //     const dy = (sizeOutsideScreenY - event.y) + (event.y / doubleTabZoom)
+            //     const dy = -(event.y - (imageHeight.value / 2)) / doubleTabZoom
+            //     translateY.value = withTiming(dy, { duration: ANIMATION_DURATION })
+            // }
 
             zoom.value = withTiming(doubleTabZoom, { duration: ANIMATION_DURATION })
             savedZoom.value = withTiming(doubleTabZoom, { duration: ANIMATION_DURATION })
