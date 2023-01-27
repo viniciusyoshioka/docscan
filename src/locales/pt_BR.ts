@@ -156,9 +156,6 @@ export const pt_BR: TranslationType = {
     VisualizePicture_alert_errorCroppingImage_text: "Erro cortando imagem",
     VisualizePicture_alert_warnCurrentPicture_text: "A imagem atual a ser substituída não existe",
     VisualizePicture_alert_errorSavingCroppedImage_text: "Não foi possível salvar imagem cortada",
-    // VisualizePicture header
-    VisualizePicture_header_visualize_title: "Visualizar foto",
-    VisualizePicture_header_crop_title: "Cortar foto",
 
     // document-service service
     documentService_notification_deletingImages_title: "Apagando imagens",

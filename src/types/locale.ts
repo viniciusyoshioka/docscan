@@ -157,9 +157,6 @@ export type TranslationKeyType =
     | "VisualizePicture_alert_errorCroppingImage_text"
     | "VisualizePicture_alert_warnCurrentPicture_text"
     | "VisualizePicture_alert_errorSavingCroppedImage_text"
-    // VisualizePicture header
-    | "VisualizePicture_header_visualize_title"
-    | "VisualizePicture_header_crop_title"
 
     // document-service service
     | "documentService_notification_deletingImages_title"

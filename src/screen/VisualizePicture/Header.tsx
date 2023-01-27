@@ -1,5 +1,7 @@
+import { useMemo } from "react"
+import { StyleSheet } from "react-native"
+
 import { Header, HeaderButton, HeaderTitle } from "../../components"
-import { translate } from "../../locales"
 
 
 export interface VisualizePictureHeaderProps {
@@ -13,8 +15,13 @@ export interface VisualizePictureHeaderProps {
 
 
 export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
+
+
+    const headerStyle = useMemo(() => !props.isCropping ? styles.absolute : undefined, [props.isCropping])
+
+
     return (
-        <Header>
+        <Header style={headerStyle}>
             {!props.isCropping && (
                 <HeaderButton
                     iconName={"arrow-back"}
@@ -29,13 +36,7 @@ export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
                 />
             )}
 
-            {!props.isCropping && (
-                <HeaderTitle title={translate("VisualizePicture_header_visualize_title")} />
-            )}
-
-            {props.isCropping && (
-                <HeaderTitle title={translate("VisualizePicture_header_crop_title")} />
-            )}
+            <HeaderTitle />
 
             {!props.isCropping && (
                 <HeaderButton
@@ -61,3 +62,16 @@ export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
         </Header>
     )
 }
+
+
+const styles = StyleSheet.create({
+    absolute: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: "rgba(0, 0, 0, 0.4)",
+        elevation: 0,
+        zIndex: 1,
+    },
+})
