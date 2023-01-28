@@ -216,32 +216,17 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
     useEffect(() => {
         function onSuccess(widthSize: number, heightSize: number) {
-            // TODO improve function to get image width and height fot partrait and landscape
             const imageRatio = widthSize / heightSize
 
-            if (widthSize > heightSize) {
-                imageWidth.value = width
-                imageHeight.value = width / imageRatio
-                return
-            }
-            if (widthSize < heightSize) {
-                if (windowHeight * imageRatio >= windowWidth) {
-                    imageWidth.value = width
-                    imageHeight.value = width / imageRatio
-                } else {
-                    imageWidth.value = windowHeight * imageRatio
-                    imageHeight.value = windowHeight
-                }
-                return
+            let newImageWidth = windowWidth
+            let newImageHeight = windowWidth / imageRatio
+            if (newImageHeight > windowHeight) {
+                newImageWidth = windowHeight * imageRatio
+                newImageHeight = windowHeight
             }
 
-            if (windowWidth <= windowHeight) {
-                imageWidth.value = width
-                imageHeight.value = width / imageRatio
-            } else {
-                imageWidth.value = windowHeight * imageRatio
-                imageHeight.value = windowHeight
-            }
+            imageWidth.value = newImageWidth
+            imageHeight.value = newImageHeight
         }
 
         function onError(error: unknown) {
