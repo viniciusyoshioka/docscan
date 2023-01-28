@@ -4,7 +4,7 @@ import FastImage, { FastImageProps, Source } from "react-native-fast-image"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import Reanimated, { runOnJS, useAnimatedReaction, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 
-import { HEADER_HEIGHT, Screen } from "../../../components"
+import { Screen } from "../../../components"
 
 
 const AnimatedFastImage = Reanimated.createAnimatedComponent(FastImage as ComponentClass<FastImageProps>)
@@ -39,10 +39,10 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
         const statusBarHeight = StatusBar.currentHeight ?? 0
 
         if (screenHeight === height) {
-            return height - HEADER_HEIGHT - statusBarHeight
+            return height - statusBarHeight
         }
-        return height - HEADER_HEIGHT
-    }, [height, HEADER_HEIGHT, StatusBar.currentHeight])
+        return height
+    }, [height, StatusBar.currentHeight])
     const ANIMATION_DURATION = 150
 
     const zoom = useSharedValue(1)
