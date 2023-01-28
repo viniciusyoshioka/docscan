@@ -35,6 +35,8 @@ export function VisualizePicture() {
 
     const [isCropping, setIsCropping] = useState(false)
     const [isCropProcessing, setIsCropProcessing] = useState(false)
+    const [isRotating, setIsRotating] = useState(false)
+    const [isRotationProcessing, setIsRotationProcessing] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(params.pictureIndex)
     const [isFlatListScrollEnable, setIsFlatListScrollEnable] = useState(true)
 
@@ -47,14 +49,61 @@ export function VisualizePicture() {
 
     function goBack() {
         if (isCropping) {
-            setIsCropping(false)
+            exitCrop()
+            return
+        }
+        if (isRotating) {
+            exitRotation()
             return
         }
 
         navigation.goBack()
     }
 
-    async function onImageSaved(response: OnImageSavedResponse) {
+    function replacePicture() {
+        navigation.navigate("Camera", {
+            screenAction: "replace-picture",
+            replaceIndex: currentIndex,
+        })
+    }
+
+    function exitCrop() {
+        if (!isCropProcessing) {
+            setIsCropping(false)
+        }
+    }
+
+    function saveCroppedPicture() {
+        if (!isCropProcessing) {
+            setIsCropProcessing(true)
+            cropViewRef.current?.saveImage()
+        }
+    }
+
+    function exitRotation() {
+        if (!isRotationProcessing) {
+            setIsRotating(false)
+        }
+    }
+
+    function saveRotatedPicture() {
+        if (!isRotationProcessing) {
+            setIsRotationProcessing(true)
+            // TODO rotate the image and save it
+        }
+    }
+
+    function renderItem({ item }: { item: DocumentPicture }) {
+        return (
+            <ImageVisualizationItem
+                source={{ uri: `file://${item.filePath}` }}
+                onZoomActivated={() => setIsFlatListScrollEnable(false)}
+                onZoomDeactivated={() => setIsFlatListScrollEnable(true)}
+            />
+        )
+    }
+
+    async function onCroppedImageSaved(response: OnImageSavedResponse) {
         const currentPicturePath = documentDataState?.pictureList[currentIndex].filePath
 
         if (!currentPicturePath) {
@@ -106,7 +155,7 @@ export function VisualizePicture() {
         setIsCropProcessing(false)
     }
 
-    function onSaveImageError(response: string) {
+    function onCropError(response: string) {
         log.error(`Error cropping image: "${response}"`)
         Alert.alert(
             translate("warn"),
@@ -116,49 +165,29 @@ export function VisualizePicture() {
         setIsCropProcessing(false)
     }
 
-    function openCamera() {
-        navigation.navigate("Camera", {
-            screenAction: "replace-picture",
-            replaceIndex: currentIndex,
-        })
-    }
-
-    function exitCrop() {
-        if (!isCropProcessing) {
-            setIsCropping(false)
-        }
-    }
-
-    function saveCroppedPicture() {
-        if (!isCropProcessing) {
-            setIsCropProcessing(true)
-            cropViewRef.current?.saveImage()
-        }
-    }
-
-    function renderItem({ item }: { item: DocumentPicture }) {
-        return (
-            <ImageVisualizationItem
-                source={{ uri: `file://${item.filePath}` }}
-                onZoomActivated={() => setIsFlatListScrollEnable(false)}
-                onZoomDeactivated={() => setIsFlatListScrollEnable(true)}
-            />
-        )
-    }
-
 
     return (
         <Screen>
             <VisualizePictureHeader
                 goBack={goBack}
-                isCropping={isCropping}
-                openCamera={openCamera}
-                openCrop={() => setIsCropping(true)}
-                exitCrop={exitCrop}
-                saveCroppedPicture={saveCroppedPicture}
+                replacePicture={replacePicture}
+                rotation={{
+                    isActive: isRotating,
+                    open: () => setIsRotating(true),
+                    exit: exitRotation,
+                    save: saveRotatedPicture,
+                    rotateLeft: () => {}, // TODO implement rotation to the left
+                    rotateRight: () => {}, // TODO implement rotation to the right
+                }}
+                crop={{
+                    isActive: isCropping,
+                    open: () => setIsCropping(true),
+                    exit: exitCrop,
+                    save: saveCroppedPicture,
+                }}
             />
 
-            {!isCropping && (
+            {!isRotating && !isCropping && (
                 <View style={{ flex: 1, flexDirection: "row" }}>
                     <FlashList
                         data={documentDataState?.pictureList}
@@ -184,8 +213,8 @@ export function VisualizePicture() {
                     ref={cropViewRef}
                     style={{ flex: 1, margin: 16 }}
                     sourceUrl={`file://${documentDataState?.pictureList[currentIndex].filePath}`}
-                    onSaveImage={onImageSaved}
-                    onCropError={onSaveImageError}
+                    onSaveImage={onCroppedImageSaved}
+                    onCropError={onCropError}
                 />
             )}
         </Screen>
