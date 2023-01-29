@@ -33,6 +33,7 @@ export interface ImageVisualizationItemProps {
     allowZoomOut?: boolean;
     onZoomActivated?: () => void;
     onZoomDeactivated?: () => void;
+    onError?: (error?: unknown) => void;
 }
 
 
@@ -247,13 +248,8 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
             imageHeight.value = newImageHeight
         }
 
-        function onError(error: unknown) {
-            // TODO handle error
-            console.log("Error getting image size", error)
-        }
-
         if (props.source.uri) {
-            Image.getSize(props.source.uri, onSuccess, onError)
+            Image.getSize(props.source.uri, onSuccess, props.onError)
         }
     }, [])
 
@@ -265,6 +261,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
                     source={props.source}
                     resizeMode={"contain"}
                     style={imageStyle}
+                    onError={props.onError}
                 />
             </Screen>
         </GestureDetector>
