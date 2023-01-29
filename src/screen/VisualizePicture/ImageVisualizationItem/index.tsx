@@ -2,7 +2,15 @@ import { ComponentClass, useEffect, useMemo, useState } from "react"
 import { Dimensions, Image, StatusBar, useWindowDimensions } from "react-native"
 import FastImage, { FastImageProps, Source } from "react-native-fast-image"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
-import Reanimated, { runOnJS, useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
+import Reanimated, {
+    cancelAnimation,
+    runOnJS,
+    useAnimatedStyle,
+    useDerivedValue,
+    useSharedValue,
+    withDecay,
+    withTiming
+} from "react-native-reanimated"
 
 import { Screen } from "../../../components"
 
@@ -170,11 +178,15 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
     const panGesture = Gesture.Pan()
         .enabled(isPanGestureEnabled)
+        .onBegin(event => {
+            cancelAnimation(translateX)
+            cancelAnimation(translateY)
+        })
         .onStart(event => {
             initialTranslationX.value = translateX.value
             initialTranslationY.value = translateY.value
         })
-        .onUpdate(event => {
+        .onChange(event => {
             if (imageWidth.value * zoom.value > windowWidth) {
                 const newTranslateX = initialTranslationX.value + (event.translationX / zoom.value)
                 translateX.value = clamp(newTranslateX, -boudaries.value.x, boudaries.value.x)
@@ -187,6 +199,21 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
                 translateY.value = clamp(newTranslateY, -boudaries.value.y, boudaries.value.y)
             } else {
                 translateY.value = withTiming(0, { duration: ANIMATION_DURATION })
+            }
+        })
+        .onEnd((event, success) => {
+            if (Math.abs(event.velocityX) >= 200) {
+                translateX.value = withDecay({
+                    velocity: event.velocityX / zoom.value,
+                    clamp: [-boudaries.value.x, boudaries.value.x],
+                })
+            }
+
+            if (Math.abs(event.velocityY) >= 200) {
+                translateY.value = withDecay({
+                    velocity: event.velocityY / zoom.value,
+                    clamp: [-boudaries.value.y, boudaries.value.y],
+                })
             }
         })
 
