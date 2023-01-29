@@ -241,14 +241,14 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
 
     return (
-        <Screen style={{ width }}>
-            <GestureDetector gesture={simultaneousComposedGestures}>
+        <GestureDetector gesture={simultaneousComposedGestures}>
+            <Screen style={{ width }}>
                 <AnimatedFastImage
                     source={props.source}
                     resizeMode={"contain"}
                     style={imageStyle}
                 />
-            </GestureDetector>
-        </Screen>
+            </Screen>
+        </GestureDetector>
     )
 }
