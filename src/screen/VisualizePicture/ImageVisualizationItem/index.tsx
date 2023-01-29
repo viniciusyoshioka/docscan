@@ -2,12 +2,18 @@ import { ComponentClass, useEffect, useMemo, useState } from "react"
 import { Dimensions, Image, StatusBar, useWindowDimensions } from "react-native"
 import FastImage, { FastImageProps, Source } from "react-native-fast-image"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
-import Reanimated, { runOnJS, useAnimatedReaction, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
+import Reanimated, { runOnJS, useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
 
 import { Screen } from "../../../components"
 
 
 const AnimatedFastImage = Reanimated.createAnimatedComponent(FastImage as ComponentClass<FastImageProps>)
+
+
+function clamp(value: number, lowerBound: number, upperBound: number): number {
+    "worklet"
+    return Math.max(lowerBound, Math.min(value, upperBound))
+}
 
 
 export interface ImageVisualizationItemProps {
@@ -55,6 +61,17 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
     const imageHeight = useSharedValue(0)
 
     const [isPanGestureEnabled, setIsPanGestureEnabled] = useState(false)
+
+
+    const boudaries = useDerivedValue(() => {
+        const margin = (zoom.value === 0) ? 0 : (zoomMargin / zoom.value)
+        const limitX = (imageWidth.value * zoom.value - windowWidth) / (2 * zoom.value)
+        const limitY = (imageHeight.value * zoom.value - windowHeight) / (2 * zoom.value)
+        return {
+            x: limitX + margin,
+            y: limitY + margin,
+        }
+    }, [zoomMargin, zoom.value, imageWidth.value, imageHeight.value, windowWidth, windowHeight])
 
 
     const pinchGesture = Gesture.Pinch()
@@ -159,46 +176,20 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
         })
         .onUpdate(event => {
             if (imageWidth.value * zoom.value > windowWidth) {
-                translateX.value = initialTranslationX.value + (event.translationX / zoom.value)
+                const newTranslateX = initialTranslationX.value + (event.translationX / zoom.value)
+                translateX.value = clamp(newTranslateX, -boudaries.value.x, boudaries.value.x)
             } else {
                 translateX.value = withTiming(0, { duration: ANIMATION_DURATION })
             }
 
             if (imageHeight.value * zoom.value > windowHeight) {
-                translateY.value = initialTranslationY.value + (event.translationY / zoom.value)
+                const newTranslateY = initialTranslationY.value + (event.translationY / zoom.value)
+                translateY.value = clamp(newTranslateY, -boudaries.value.y, boudaries.value.y)
             } else {
                 translateY.value = withTiming(0, { duration: ANIMATION_DURATION })
             }
         })
 
-    useAnimatedReaction(
-        () => ({
-            translateX: translateX.value,
-            translateY: translateY.value,
-        }),
-        (current, previous) => {
-            const margin = (zoom.value === 0) ? 0 : (zoomMargin / zoom.value)
-
-            if (imageWidth.value * zoom.value > windowWidth) {
-                const sizeOutsideScreenX = ((imageWidth.value * zoom.value) - windowWidth) / (2 * zoom.value)
-                const limitRight = sizeOutsideScreenX + margin
-                const limitLeft = (-sizeOutsideScreenX - margin)
-
-                if (current.translateX > limitRight) translateX.value = limitRight
-                if (current.translateX < limitLeft) translateX.value = limitLeft
-            }
-
-            if (imageHeight.value * zoom.value > windowHeight) {
-                const sizeOutsideScreenY = ((imageHeight.value * zoom.value) - windowHeight) / (2 * zoom.value)
-                const limitTop = sizeOutsideScreenY + margin
-                const limitBottom = (-sizeOutsideScreenY - margin)
-
-                if (current.translateY > limitTop) translateY.value = limitTop
-                if (current.translateY < limitBottom) translateY.value = limitBottom
-            }
-        },
-        [translateX, translateY]
-    )
 
     const raceComposedGestures = Gesture.Race(pinchGesture, doubleTapGesture)
     const simultaneousComposedGestures = Gesture.Simultaneous(raceComposedGestures, panGesture)
