@@ -1,5 +1,5 @@
 import { ComponentClass, useEffect, useMemo, useState } from "react"
-import { Image, useWindowDimensions } from "react-native"
+import { Image, useWindowDimensions, View } from "react-native"
 import FastImage, { FastImageProps, Source } from "react-native-fast-image"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import Reanimated, {
@@ -11,8 +11,6 @@ import Reanimated, {
     withDecay,
     withTiming
 } from "react-native-reanimated"
-
-import { Screen } from "../../../components"
 
 
 const AnimatedFastImage = Reanimated.createAnimatedComponent(FastImage as ComponentClass<FastImageProps>)
@@ -238,7 +236,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
     return (
         <GestureDetector gesture={simultaneousComposedGestures}>
-            <Screen style={{ width }}>
+            <View style={{ flex: 1, width }}>
                 <AnimatedFastImage
                     source={props.source}
                     resizeMode={"contain"}
@@ -249,7 +247,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
                         setWindowHeight(event.nativeEvent.layout.height)
                     }}
                 />
-            </Screen>
+            </View>
         </GestureDetector>
     )
 }
