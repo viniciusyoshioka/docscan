@@ -39,6 +39,8 @@ export interface ImageVisualizationItemProps {
 
 
 // TODO implement focal when zooming
+// TODO add style prop
+// TODO handle scaled image overflow in its parent component
 export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
 
