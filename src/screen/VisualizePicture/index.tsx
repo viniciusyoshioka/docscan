@@ -1,19 +1,15 @@
 import { useNavigation, useRoute } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { Alert, useWindowDimensions, View } from "react-native"
-import RNFS from "react-native-fs"
 import "react-native-get-random-values"
-import { ImageCrop, OnImageSavedResponse } from "react-native-image-crop"
-import { v4 as uuid4 } from "uuid"
+// import { ImageCrop, OnImageSavedResponse } from "react-native-image-crop"
 
 import { Screen } from "../../components"
-import { DocumentDatabase } from "../../database"
 import { useBackHandler } from "../../hooks"
 import { translate } from "../../locales"
-import { fullPathPicture } from "../../services/constant"
-import { getFileExtension, getFullFileName, useDocumentData } from "../../services/document"
-import { log, stringfyError } from "../../services/log"
+import { useDocumentData } from "../../services/document"
+import { log } from "../../services/log"
 import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { VisualizePictureHeader } from "./Header"
 import { ImageVisualizationItem } from "./ImageVisualizationItem"
@@ -29,7 +25,7 @@ export function VisualizePicture() {
     const { params } = useRoute<RouteParamProps<"VisualizePicture">>()
     const { width } = useWindowDimensions()
 
-    const cropViewRef = useRef<ImageCrop>(null)
+    // const cropViewRef = useRef<ImageCrop>(null)
 
     const { documentDataState, dispatchDocumentData } = useDocumentData()
 
@@ -76,7 +72,7 @@ export function VisualizePicture() {
     function saveCroppedPicture() {
         if (!isCropProcessing) {
             setIsCropProcessing(true)
-            cropViewRef.current?.saveImage()
+            // cropViewRef.current?.saveImage()
         }
     }
 
@@ -103,57 +99,57 @@ export function VisualizePicture() {
         )
     }
 
-    async function onCroppedImageSaved(response: OnImageSavedResponse) {
-        const currentPicturePath = documentDataState?.pictureList[currentIndex].filePath
+    // async function onCroppedImageSaved(response: OnImageSavedResponse) {
+    //     const currentPicturePath = documentDataState?.pictureList[currentIndex].filePath
 
-        if (!currentPicturePath) {
-            log.warn("Current image to be replaced does not exists")
-            Alert.alert(
-                translate("warn"),
-                translate("VisualizePicture_alert_warnCurrentPicture_text")
-            )
-            return
-        }
+    //     if (!currentPicturePath) {
+    //         log.warn("Current image to be replaced does not exists")
+    //         Alert.alert(
+    //             translate("warn"),
+    //             translate("VisualizePicture_alert_warnCurrentPicture_text")
+    //         )
+    //         return
+    //     }
 
-        try {
-            let newCroppedPictureUri: string
-            let newCroppedPictureName: string
+    //     try {
+    //         let newCroppedPictureUri: string
+    //         let newCroppedPictureName: string
 
-            do {
-                const uniqueFileName = uuid4()
-                const fileExtension = getFileExtension(response.uri)
+    //         do {
+    //             const uniqueFileName = uuid4()
+    //             const fileExtension = getFileExtension(response.uri)
 
-                newCroppedPictureUri = `${fullPathPicture}/${uniqueFileName}.${fileExtension}`
-                newCroppedPictureName = getFullFileName(newCroppedPictureUri)
-            } while (await DocumentDatabase.pictureNameExists(newCroppedPictureName))
+    //             newCroppedPictureUri = `${fullPathPicture}/${uniqueFileName}.${fileExtension}`
+    //             newCroppedPictureName = getFullFileName(newCroppedPictureUri)
+    //         } while (await DocumentDatabase.pictureNameExists(newCroppedPictureName))
 
-            if (await RNFS.exists(currentPicturePath)) {
-                await RNFS.unlink(currentPicturePath)
-            }
-            await RNFS.moveFile(response.uri, newCroppedPictureUri)
+    //         if (await RNFS.exists(currentPicturePath)) {
+    //             await RNFS.unlink(currentPicturePath)
+    //         }
+    //         await RNFS.moveFile(response.uri, newCroppedPictureUri)
 
-            dispatchDocumentData({
-                type: "replace-picture",
-                payload: {
-                    indexToReplace: currentIndex,
-                    newPicturePath: newCroppedPictureUri,
-                    newPictureName: newCroppedPictureName,
-                }
-            })
-        } catch (error) {
-            if (await RNFS.exists(response.uri)) {
-                await RNFS.unlink(response.uri)
-            }
+    //         dispatchDocumentData({
+    //             type: "replace-picture",
+    //             payload: {
+    //                 indexToReplace: currentIndex,
+    //                 newPicturePath: newCroppedPictureUri,
+    //                 newPictureName: newCroppedPictureName,
+    //             }
+    //         })
+    //     } catch (error) {
+    //         if (await RNFS.exists(response.uri)) {
+    //             await RNFS.unlink(response.uri)
+    //         }
 
-            log.error(`Error replacing image by cropped image: "${stringfyError(error)}"`)
-            Alert.alert(
-                translate("warn"),
-                translate("VisualizePicture_alert_errorSavingCroppedImage_text")
-            )
-        }
-        setIsCropping(false)
-        setIsCropProcessing(false)
-    }
+    //         log.error(`Error replacing image by cropped image: "${stringfyError(error)}"`)
+    //         Alert.alert(
+    //             translate("warn"),
+    //             translate("VisualizePicture_alert_errorSavingCroppedImage_text")
+    //         )
+    //     }
+    //     setIsCropping(false)
+    //     setIsCropProcessing(false)
+    // }
 
     function onCropError(response: string) {
         log.error(`Error cropping image: "${response}"`)
@@ -208,7 +204,7 @@ export function VisualizePicture() {
                 </View>
             )}
 
-            {isCropping && (
+            {/* {isCropping && (
                 <ImageCrop
                     ref={cropViewRef}
                     style={{ flex: 1, margin: 16 }}
@@ -216,7 +212,7 @@ export function VisualizePicture() {
                     onSaveImage={onCroppedImageSaved}
                     onCropError={onCropError}
                 />
-            )}
+            )} */}
         </Screen>
     )
 }
