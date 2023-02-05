@@ -52,25 +52,25 @@ public class PdfCreatorService extends Service {
         } else {
             pendingIntent = PendingIntent.getService(getApplicationContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         }
-        NotificationCompat.Action action = new NotificationCompat.Action(0, "Cancelar", pendingIntent); // TODO
+        NotificationCompat.Action action = new NotificationCompat.Action(0, "Cancelar", pendingIntent); // TODO add internationalization
 
         notificationServiceBuilder = new NotificationCompat.Builder(getApplicationContext(), NOTIFICATION_CHANNEL)
-                .setSmallIcon(R.mipmap.ic_launcher) // TODO
-                .setContentTitle("DocScan") // TODO
-                .setContentText("Convertendo documento em PDF") // TODO
+                .setSmallIcon(R.mipmap.ic_launcher) // TODO update notification icon
+                .setContentTitle("DocScan") // TODO add internationalization
+                .setContentText("Convertendo documento em PDF") // TODO add internationalization
                 .addAction(action)
                 .setProgress(0, 0, true)
                 .setOngoing(true);
     }
 
     private void sendResponseNotification(boolean success) {
-        String notificationText = success ? "Conversão concluída" : "Falha durante conversão"; // TODO
+        String notificationText = success ? "Conversão concluída" : "Falha durante conversão"; // TODO add internationalization
 
         Uri notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         Notification notification = new NotificationCompat.Builder(getApplicationContext(), NOTIFICATION_CHANNEL)
-                .setSmallIcon(R.mipmap.ic_launcher) // TODO
-                .setContentTitle("DocScan") // TODO
+                .setSmallIcon(R.mipmap.ic_launcher) // TODO update notification icon
+                .setContentTitle("DocScan") // TODO add internationalization
                 .setContentText(notificationText)
                 .setSound(notificationSoundUri)
                 .build();
