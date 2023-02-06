@@ -154,6 +154,7 @@ export type TranslationKeyType =
     | "ChangeTheme_dark"
 
     // VisualizePicture alert
+    | "VisualizePicture_alert_errorSavingRotatedImage_text"
     | "VisualizePicture_alert_errorCroppingImage_text"
     | "VisualizePicture_alert_warnCurrentPicture_text"
     | "VisualizePicture_alert_errorSavingCroppedImage_text"

@@ -153,6 +153,7 @@ export const pt_BR: TranslationType = {
     ChangeTheme_dark: "Escuro",
 
     // VisualizePicture alert
+    VisualizePicture_alert_errorSavingRotatedImage_text: "Erro salvando imagem rotacionada",
     VisualizePicture_alert_errorCroppingImage_text: "Erro cortando imagem",
     VisualizePicture_alert_warnCurrentPicture_text: "A imagem atual a ser substituída não existe",
     VisualizePicture_alert_errorSavingCroppedImage_text: "Não foi possível salvar imagem cortada",

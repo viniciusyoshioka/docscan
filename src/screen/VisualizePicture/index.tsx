@@ -1,22 +1,23 @@
 import { useNavigation, useRoute } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Alert, useWindowDimensions, View } from "react-native"
+import RNFS from "react-native-fs"
 import "react-native-get-random-values"
 // import { ImageCrop, OnImageSavedResponse } from "react-native-image-crop"
 
 import { Screen } from "../../components"
 import { useBackHandler } from "../../hooks"
 import { translate } from "../../locales"
-import { useDocumentData } from "../../services/document"
-import { log } from "../../services/log"
+import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
+import { log, stringfyError } from "../../services/log"
 import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { VisualizePictureHeader } from "./Header"
+import { ImageRotation, ImageRotationRef } from "./ImageRotation"
 import { ImageVisualizationItem } from "./ImageVisualizationItem"
 
 
 // TODO improve screen design
-// TODO add button to rotate the image
 // TODO fix scroll not centralized when rotating screen
 export function VisualizePicture() {
 
@@ -26,6 +27,7 @@ export function VisualizePicture() {
     const { width } = useWindowDimensions()
 
     // const cropViewRef = useRef<ImageCrop>(null)
+    const imageRotationRef = useRef<ImageRotationRef>(null)
 
     const { documentDataState, dispatchDocumentData } = useDocumentData()
 
@@ -44,12 +46,12 @@ export function VisualizePicture() {
 
 
     function goBack() {
-        if (isCropping) {
-            exitCrop()
-            return
-        }
         if (isRotating) {
             exitRotation()
+            return
+        }
+        if (isCropping) {
+            exitCrop()
             return
         }
 
@@ -82,10 +84,56 @@ export function VisualizePicture() {
         }
     }
 
-    function saveRotatedPicture() {
+    async function saveRotatedPicture() {
+        if (isRotationProcessing || !documentDataState) {
+            return
+        }
+
+        setIsRotationProcessing(true)
+
+        const pictureToRotatePath = documentDataState.pictureList[currentIndex].filePath
+        const rotatedPicturePath = await getDocumentPicturePath(pictureToRotatePath)
+        try {
+            await imageRotationRef.current?.save(rotatedPicturePath)
+            dispatchDocumentData({
+                type: "replace-picture",
+                payload: {
+                    indexToReplace: currentIndex,
+                    newPicturePath: rotatedPicturePath,
+                    newPictureName: getFullFileName(rotatedPicturePath),
+                },
+            })
+
+            setIsRotating(false)
+            setIsRotationProcessing(false)
+        } catch (error) {
+            log.error(`Error saving rotated picture: "${stringfyError(error)}"`)
+            Alert.alert(
+                translate("warn"),
+                translate("VisualizePicture_alert_errorSavingRotatedImage_text")
+            )
+
+            setIsRotating(false)
+            setIsRotationProcessing(false)
+            return
+        }
+
+        try {
+            RNFS.unlink(pictureToRotatePath)
+        } catch (error) {
+            log.warn(`Error deleting original image after rotate: "${stringfyError(error)}"`)
+        }
+    }
+
+    function rotateLeft() {
         if (!isRotationProcessing) {
-            setIsRotationProcessing(true)
-            // TODO rotate the image and save it
+            imageRotationRef.current?.rotateLeft()
+        }
+    }
+
+    function rotateRight() {
+        if (!isRotationProcessing) {
+            imageRotationRef.current?.rotateRight()
         }
     }
 
@@ -172,8 +220,8 @@ export function VisualizePicture() {
                     open: () => setIsRotating(true),
                     exit: exitRotation,
                     save: saveRotatedPicture,
-                    rotateLeft: () => {}, // TODO implement rotation to the left
-                    rotateRight: () => {}, // TODO implement rotation to the right
+                    rotateLeft: rotateLeft,
+                    rotateRight: rotateRight,
                 }}
                 crop={{
                     isActive: isCropping,
@@ -202,6 +250,14 @@ export function VisualizePicture() {
                         }}
                     />
                 </View>
+            )}
+
+            {isRotating && (
+                <ImageRotation
+                    ref={imageRotationRef}
+                    source={`file://${documentDataState?.pictureList[currentIndex].filePath}`}
+                    style={{ flex: 1 }}
+                />
             )}
 
             {/* {isCropping && (
