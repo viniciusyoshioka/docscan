@@ -1,5 +1,5 @@
 import { ComponentClass, useEffect, useMemo, useState } from "react"
-import { Image, useWindowDimensions, View } from "react-native"
+import { Image, StyleProp, useWindowDimensions, View, ViewStyle } from "react-native"
 import FastImage, { FastImageProps, Source } from "react-native-fast-image"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import Reanimated, {
@@ -35,12 +35,11 @@ export interface ImageVisualizationItemProps {
     onZoomActivated?: () => void;
     onZoomDeactivated?: () => void;
     onError?: (error?: unknown) => void;
+    style?: StyleProp<ViewStyle>;
 }
 
 
 // TODO implement focal when zooming
-// TODO add style prop
-// TODO handle scaled image overflow in its parent component
 export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
 
@@ -238,7 +237,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
     return (
         <GestureDetector gesture={simultaneousComposedGestures}>
-            <View style={{ flex: 1, width }}>
+            <View style={[ { flex: 1, width, overflow: "hidden" }, props.style]}>
                 <AnimatedFastImage
                     source={props.source}
                     resizeMode={"contain"}
