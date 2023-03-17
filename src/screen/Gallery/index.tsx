@@ -11,7 +11,7 @@ import { translate } from "../../locales"
 import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
 import { copyPicturesService } from "../../services/document-service"
 import { log, stringfyError } from "../../services/log"
-import { getWritePermission } from "../../services/permission"
+import { getReadMediaImagesPermission } from "../../services/permission"
 import { useAppTheme } from "../../services/theme"
 import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { GalleryHeader } from "./Header"
@@ -65,8 +65,8 @@ export function Gallery() {
 
         setIsLoading(true)
 
-        const hasWritePermission = await getWritePermission()
-        if (!hasWritePermission) {
+        const hasReadMediaImagesPermission = await getReadMediaImagesPermission()
+        if (!hasReadMediaImagesPermission) {
             setImageGallery([])
             setIsLoading(false)
             log.warn("No permission to access CameraRoll")
@@ -145,8 +145,8 @@ export function Gallery() {
     }
 
     async function importSingleImage(imagePath: string) {
-        const hasWritePermission = await getWritePermission()
-        if (!hasWritePermission) {
+        const hasReadMediaImagesPermission = await getReadMediaImagesPermission()
+        if (!hasReadMediaImagesPermission) {
             log.warn("No permission to import image")
             Alert.alert(
                 translate("warn"),
@@ -203,8 +203,8 @@ export function Gallery() {
     }
 
     async function importMultipleImage() {
-        const hasWritePermission = await getWritePermission()
-        if (!hasWritePermission) {
+        const hasReadMediaImagesPermission = await getReadMediaImagesPermission()
+        if (!hasReadMediaImagesPermission) {
             log.warn("No permission to import multiple images")
             Alert.alert(
                 translate("warn"),
