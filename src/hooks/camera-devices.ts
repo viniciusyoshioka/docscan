@@ -3,15 +3,6 @@ import { CameraDevices, LogicalCameraDeviceType, PhysicalCameraDeviceType, useCa
 import { log, stringfyError } from "../services/log"
 
 
-/**
- * Wraps `useCameraDevice` from react-native-vision-camera to handle erros
- *
- * @param deviceType The device type to get. `PhysicalCameraDeviceType` or
- * `LogicalCameraDeviceType`. Defaults to undefined
- *
- * @returns `CameraDevices` that were selected. Returns undefined if
- * an error is thrown by vision camera's `useCameraDevices`
- */
 export function useCameraDevices(
     deviceType?: PhysicalCameraDeviceType | LogicalCameraDeviceType
 ): CameraDevices | undefined {
