@@ -2,11 +2,11 @@ import { useEffect, useReducer, useState } from "react"
 import { Alert, DevSettings, StatusBar, useColorScheme } from "react-native"
 import RNFS from "react-native-fs"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
-import KeepAwake from "react-native-keep-awake"
 import { MenuProvider } from "react-native-popup-menu"
 import SQLite from "react-native-sqlite-storage"
 
 import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase, SettingsDatabase } from "./database"
+import { useKeepAwakeOnDev } from "./hooks"
 import { translate } from "./locales"
 import { Router } from "./router"
 import { cameraSettingsDefault, CameraSettingsProvider, reducerCameraSettings } from "./services/camera"
@@ -23,6 +23,9 @@ SQLite.enablePromise(true)
 // TODO import only AppThemeLight or AppThemeDark that were used
 // TODO change database library
 export function App() {
+
+
+    useKeepAwakeOnDev()
 
 
     const deviceTheme = useColorScheme()
@@ -150,14 +153,6 @@ export function App() {
         }
     }, [theme])
 
-
-    useEffect(() => {
-        if (__DEV__) {
-            KeepAwake.activate()
-
-            return () => KeepAwake.deactivate()
-        }
-    }, [])
 
     useEffect(() => {
         if (__DEV__) {
