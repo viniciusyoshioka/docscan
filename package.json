@@ -43,6 +43,8 @@
         "@babel/plugin-transform-react-jsx": "^7.20.13",
         "@babel/preset-env": "^7.20.0",
         "@babel/runtime": "^7.20.0",
+        "@elementium/eslint-config": "file:../elementium/packages/eslint-config",
+        "@elementium/eslint-config-typescript": "file:../elementium/packages/eslint-config-typescript",
         "@elementium/tsconfig": "file:../elementium/packages/tsconfig",
         "@react-native-community/eslint-config": "^3.2.0",
         "@types/i18n-js": "^3.8.4",
