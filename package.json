@@ -45,9 +45,9 @@
         "@elementium/eslint-config": "file:../elementium/packages/eslint-config",
         "@elementium/eslint-config-typescript": "file:../elementium/packages/eslint-config-typescript",
         "@elementium/tsconfig": "file:../elementium/packages/tsconfig",
+        "@sayem314/react-native-keep-awake": "^1.1.0",
         "@types/i18n-js": "^3.8.4",
         "@types/react": "^18.0.24",
-        "@types/react-native-keep-awake": "^2.0.3",
         "@types/react-native-share": "^3.3.3",
         "@types/react-native-sqlite-storage": "^5.0.2",
         "@types/react-native-vector-icons": "^6.4.13",
@@ -59,7 +59,6 @@
         "babel-plugin-transform-remove-console": "^6.9.4",
         "eslint": "^8.32.0",
         "metro-react-native-babel-preset": "0.73.7",
-        "react-native-keep-awake": "^4.0.0",
         "typescript": "^4.9.4"
     }
 }
