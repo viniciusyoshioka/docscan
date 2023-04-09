@@ -1,7 +1,7 @@
 import { Text, View } from "react-native"
 import styled from "styled-components/native"
 
-import { StyledProps } from "../../types"
+import { StyledProps } from "../../theme"
 
 
 export const CameraTextWrapper = styled(View)`
@@ -32,14 +32,12 @@ export const NoCameraAvailableTitle = styled(Text)`
     font-size: 19px;
     font-weight: bold;
     text-align: center;
-    color: ${(props: StyledProps) => props.theme.color.screen_color};
-    opacity: ${(props: StyledProps) => props.theme.opacity.mediumEmphasis};
+    color: ${(props: StyledProps) => props.theme.color.onBackground};
 `
 
 
 export const NoCameraAvailableText = styled(Text)`
     margin-bottom: 2px;
     font-size: 17px;
-    color: ${(props: StyledProps) => props.theme.color.screen_color};
-    opacity: ${(props: StyledProps) => props.theme.opacity.mediumEmphasis};
+    color: ${(props: StyledProps) => props.theme.color.onBackground};
 `

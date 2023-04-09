@@ -1,6 +1,6 @@
 import { ActivityIndicator } from "react-native"
 
-import { useAppTheme } from "../../services/theme"
+import { useAppTheme } from "../../theme"
 import { LoadingModalBackground, LoadingModalText, LoadingModalView } from "./style"
 
 
@@ -13,11 +13,11 @@ export interface LoadingModalProps {
 export function LoadingModal(props: LoadingModalProps) {
 
 
-    const { color, opacity } = useAppTheme()
+    const { color } = useAppTheme()
 
 
     if (!props.visible) {
-        return undefined
+        return null
     }
 
 
@@ -26,8 +26,7 @@ export function LoadingModal(props: LoadingModalProps) {
             <LoadingModalView>
                 <ActivityIndicator
                     size={"large"}
-                    color={color.modal_color}
-                    style={{ opacity: opacity.highEmphasis }}
+                    color={color.onSurface}
                 />
 
                 <LoadingModalText>

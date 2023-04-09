@@ -1,11 +1,11 @@
+import { ExtendableOptionalIconProps, Icon } from "@elementium/native"
 import { ReactNode } from "react"
 import { ImageSourcePropType, ViewProps } from "react-native"
 
-import { Icon, OptionalIconProps } from ".."
 import { EmptyListImage, EmptyListText, EmptyListView } from "./style"
 
 
-export interface EmptyListProps extends ViewProps, OptionalIconProps {
+export interface EmptyListProps extends ViewProps, Omit<ExtendableOptionalIconProps, "style"> {
 
     /**
      * Boolean that controls when the component is shown
@@ -24,7 +24,7 @@ export function EmptyList(props: EmptyListProps) {
 
 
     if (props.visible === false) {
-        return undefined
+        return null
     }
 
 
@@ -32,11 +32,11 @@ export function EmptyList(props: EmptyListProps) {
         <EmptyListView {...props}>
             {props.iconName && (
                 <Icon
-                    iconName={props.iconName}
-                    iconGroup={props.iconGroup}
-                    iconSize={props.iconSize}
-                    iconColor={props.iconColor}
-                    iconStyle={props.iconStyle}
+                    name={props.iconName}
+                    group={props.iconGroup}
+                    size={props.iconSize}
+                    color={props.iconColor}
+                    style={props.style}
                 />
             )}
 

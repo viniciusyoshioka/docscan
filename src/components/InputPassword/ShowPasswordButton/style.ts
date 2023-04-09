@@ -1,6 +1,6 @@
 import styled from "styled-components/native"
 
-import { StyledProps } from "../../../types"
+import { StyledProps } from "../../../theme"
 
 
 export const ShowPasswordButtonBase = styled.TouchableOpacity`
@@ -13,8 +13,8 @@ export const ShowPasswordButtonBase = styled.TouchableOpacity`
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
-    background-color: ${(props: StyledProps) => props.theme.color.input_background};
-    border-color: ${(props: StyledProps & { isFocused: boolean }) => {
-        return props.isFocused ? props.theme.color.input_focus_border : props.theme.color.input_background
-    }};
+    background-color: ${(props: StyledProps) => props.theme.color.onSurface};
+    border-color: ${(props: StyledProps & { isFocused: boolean }) => (
+        props.isFocused ? props.theme.color.primary : props.theme.color.onSurface
+    )};
 `

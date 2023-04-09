@@ -1,7 +1,8 @@
+import { Button, Modal, ModalActions, ModalProps, ModalTitle } from "@elementium/native"
 import { createRef, useEffect, useState } from "react"
 import { NativeSyntheticEvent, TextInput } from "react-native"
 
-import { Input, Modal, ModalButton, ModalProps, ModalTitle, ModalViewButton, ModalViewContent } from "../../components"
+import { Input } from "../../components"
 import { useKeyboard } from "../../hooks"
 import { translate } from "../../locales"
 import { useDocumentData } from "../../services/document"
@@ -64,24 +65,24 @@ export function RenameDocument(props: RenameDocumentProps) {
                 {translate("RenameDocument_title")}
             </ModalTitle>
 
-            <ModalViewContent>
-                <Input
-                    ref={inputRef}
-                    placeholder={translate("RenameDocument_documentName_placeholder")}
-                    value={documentName}
-                    onChangeText={text => setDocumentName(text)}
-                    selectTextOnFocus={true}
-                    style={{ width: "100%" }}
-                />
-            </ModalViewContent>
+            <Input
+                ref={inputRef}
+                placeholder={translate("RenameDocument_documentName_placeholder")}
+                value={documentName}
+                onChangeText={text => setDocumentName(text)}
+                selectTextOnFocus={true}
+                style={{ width: "100%" }}
+            />
 
-            <ModalViewButton>
-                <ModalButton
+            <ModalActions>
+                <Button
+                    variant={"text"}
                     text={translate("cancel")}
                     onPress={props.onRequestClose}
                 />
 
-                <ModalButton
+                <Button
+                    variant={"text"}
                     text={translate("ok")}
                     onPress={() => {
                         renameDocument()
@@ -90,7 +91,7 @@ export function RenameDocument(props: RenameDocumentProps) {
                         }
                     }}
                 />
-            </ModalViewButton>
+            </ModalActions>
         </Modal>
     )
 }

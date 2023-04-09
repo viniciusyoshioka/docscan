@@ -13,28 +13,26 @@ export interface HeaderProps extends ViewProps {
 }
 
 
-export const Header = (props: HeaderProps) => {
-    return (
-        <HeaderBase {...props}>
-            {Children.toArray(props.children)
-                .filter((child) => child != null && typeof child !== "boolean")
-                .map((child, index) => {
-                    // @ts-expect-error: TypeScript complains about the type of type but it doesn't matter
-                    if (!React.isValidElement(child) || ![HeaderTitle, HeaderButton].includes(child.type)) {
-                        return child
-                    }
+export const Header = (props: HeaderProps) => (
+    <HeaderBase {...props}>
+        {Children.toArray(props.children)
+            .filter(child => child != null && typeof child !== "boolean")
+            .map((child, index) => {
+                // @ts-expect-error: TypeScript complains about the type of type but it doesn't matter
+                if (!React.isValidElement(child) || ![HeaderTitle, HeaderButton].includes(child.type)) {
+                    return child
+                }
 
-                    const props: { style?: StyleProp<ViewStyle> } = {}
+                const props: { style?: StyleProp<ViewStyle> } = {}
 
-                    if (child.type === HeaderTitle) {
-                        props.style = [
-                            index === 0 && { marginLeft: 8 },
-                            index !== 0 && { marginLeft: 24 },
-                            child.props.style,
-                        ]
-                    }
-                    return cloneElement(child, props)
-                })}
-        </HeaderBase>
-    )
-}
+                if (child.type === HeaderTitle) {
+                    props.style = [
+                        index === 0 && { marginLeft: 8 },
+                        index !== 0 && { marginLeft: 24 },
+                        child.props.style,
+                    ]
+                }
+                return cloneElement(child, props)
+            })}
+    </HeaderBase>
+)

@@ -1,14 +1,14 @@
 import { RectButton } from "react-native-gesture-handler"
 import styled from "styled-components/native"
 
-import { StyledProps } from "../../../types"
+import { StyledProps } from "../../../theme"
 
 
 export const Button = styled(RectButton)`
     align-items: center;
     justify-content: center;
     aspect-ratio: 1;
-    background-color: ${(props: StyledProps) => props.theme.color.imageItem_background};
+    background-color: ${(props: StyledProps) => props.theme.color.surface};
 `
 
 
@@ -18,6 +18,6 @@ export const SelectionSurface = styled.View`
     bottom: 0px;
     left: 0px;
     right: 0px;
-    opacity: ${(props: StyledProps) => props.theme.opacity.mediumEmphasis};
-    background-color: ${(props: StyledProps) => props.theme.color.imageItem_selected_background};
+    opacity: 0.5;
+    background-color: ${(props: StyledProps) => props.theme.color.primary};
 `

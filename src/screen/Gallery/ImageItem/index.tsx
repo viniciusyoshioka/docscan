@@ -1,11 +1,11 @@
+import { Icon } from "@elementium/native"
 import { useMemo } from "react"
 import { useWindowDimensions } from "react-native"
 import FastImage from "react-native-fast-image"
 import { LongPressGestureHandler } from "react-native-gesture-handler"
 
-import { Icon } from "../../../components"
 import { SelectableItem, useSelectableItem } from "../../../hooks"
-import { useAppTheme } from "../../../services/theme"
+import { useAppTheme } from "../../../theme"
 import { Button, SelectionSurface } from "./style"
 
 
@@ -71,10 +71,10 @@ export function ImageItem(props: ImageItemProps) {
                         <SelectionSurface />
 
                         <Icon
-                            iconName={"done"}
-                            iconSize={30}
-                            iconColor={color.imageItem_selected_color}
-                            iconStyle={{ position: "absolute" }}
+                            name={"done"}
+                            size={30}
+                            color={color.onPrimary}
+                            style={{ position: "absolute" }}
                         />
                     </>
                 )}

@@ -1,6 +1,6 @@
 import styled from "styled-components/native"
 
-import { StyledProps } from "../../types"
+import { StyledProps } from "../../theme"
 
 
 export const LoadingModalBackground = styled.View`
@@ -22,7 +22,7 @@ export const LoadingModalView = styled.View<StyledProps>`
     padding: 16px;
     width: 100%;
     max-width: 250px;
-    background-color: ${props => props.theme.color.modal_background};
+    background-color: ${props => props.theme.color.surface};
     border-radius: 4px;
 `
 
@@ -31,6 +31,5 @@ export const LoadingModalText = styled.Text<StyledProps>`
     flex: 1;
     margin-left: 16px;
     font-size: 15px;
-    color: ${props => props.theme.color.modal_color};
-    opacity: ${props => props.theme.opacity.highEmphasis};
+    color: ${props => props.theme.color.onSurface};
 `

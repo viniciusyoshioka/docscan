@@ -1,7 +1,7 @@
 import { RectButton } from "react-native-gesture-handler"
 import styled from "styled-components/native"
 
-import { StyledProps } from "../../../types"
+import { StyledProps } from "../../../theme"
 
 
 export const DocumentItemButton = styled(RectButton)`
@@ -9,12 +9,10 @@ export const DocumentItemButton = styled(RectButton)`
     align-items: center;
     justify-content: flex-start;
     height: 60px;
-    margin-bottom: 8px;
-    margin-horizontal: 8px;
-    padding: 8px;
+    padding-horizontal: 16px;
+    padding-vertical: 8px;
     border-radius: 4px;
-    background-color: ${(props: StyledProps) => props.theme.color.documentItem_background};
-    elevation: 2;
+    background-color: ${(props: StyledProps) => props.theme.color.surface};
 `
 
 
@@ -30,8 +28,7 @@ export const DocumentItemTitle = styled.Text`
     text-align: left;
     text-align-vertical: top;
     font-size: 16px;
-    opacity: ${(props: StyledProps) => props.theme.opacity.highEmphasis};
-    color: ${(props: StyledProps) => props.theme.color.documentItem_color};
+    color: ${(props: StyledProps) => props.theme.color.onSurface};
 `
 
 
@@ -40,6 +37,5 @@ export const DocumentItemDate = styled.Text`
     text-align: left;
     text-align-vertical: bottom;
     font-size: 12px;
-    opacity: ${(props: StyledProps) => props.theme.opacity.mediumEmphasis};
-    color: ${(props: StyledProps) => props.theme.color.documentItem_color};
+    color: ${(props: StyledProps) => props.theme.color.onSurface};
 `

@@ -1,7 +1,7 @@
-import React, { forwardRef, Ref, useState } from "react"
+import { forwardRef, Ref, useState } from "react"
 import { TextInput, TextInputProps } from "react-native"
 
-import { useAppTheme } from "../../services/theme"
+import { useAppTheme } from "../../theme"
 import { InputBase } from "./style"
 
 
@@ -21,10 +21,10 @@ export const Input = forwardRef((props: InputProps, ref?: Ref<TextInput>) => {
     return (
         <InputBase
             blurOnSubmit={false}
-            placeholderTextColor={color.input_placeholder}
+            placeholderTextColor={color.onSurfaceVariant}
             ref={ref}
-            selectionColor={color.input_selection}
-            onBlur={(e) => {
+            selectionColor={color.primary}
+            onBlur={e => {
                 if (props.isFocused === undefined) {
                     setIsFocused(false)
                 }
@@ -32,7 +32,7 @@ export const Input = forwardRef((props: InputProps, ref?: Ref<TextInput>) => {
                     props.onBlur(e)
                 }
             }}
-            onFocus={(e) => {
+            onFocus={e => {
                 if (props.isFocused === undefined) {
                     setIsFocused(true)
                 }

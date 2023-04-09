@@ -1,7 +1,8 @@
+import { Button, Modal, ModalActions, ModalProps, ModalTitle } from "@elementium/native"
 import { useEffect, useState } from "react"
 import { NativeSyntheticEvent } from "react-native"
 
-import { Modal, ModalButton, ModalProps, ModalTitle, ModalViewButton, ModalViewContent, RadioButton } from "../../components"
+import { RadioButton } from "../../components"
 import { translate } from "../../locales"
 import { useAppTheme } from "../../services/theme"
 
@@ -28,23 +29,22 @@ export function ChangeTheme(props: ChangeThemeProps) {
                 {translate("ChangeTheme_title")}
             </ModalTitle>
 
-            <ModalViewContent>
-                <RadioButton
-                    text={translate("ChangeTheme_auto")}
-                    value={selectedTheme === "auto"}
-                    onPress={() => setSelectedTheme("auto")} />
-                <RadioButton
-                    text={translate("ChangeTheme_light")}
-                    value={selectedTheme === "light"}
-                    onPress={() => setSelectedTheme("light")} />
-                <RadioButton
-                    text={translate("ChangeTheme_dark")}
-                    value={selectedTheme === "dark"}
-                    onPress={() => setSelectedTheme("dark")} />
-            </ModalViewContent>
+            <RadioButton
+                text={translate("ChangeTheme_auto")}
+                value={selectedTheme === "auto"}
+                onPress={() => setSelectedTheme("auto")} />
+            <RadioButton
+                text={translate("ChangeTheme_light")}
+                value={selectedTheme === "light"}
+                onPress={() => setSelectedTheme("light")} />
+            <RadioButton
+                text={translate("ChangeTheme_dark")}
+                value={selectedTheme === "dark"}
+                onPress={() => setSelectedTheme("dark")} />
 
-            <ModalViewButton>
-                <ModalButton
+            <ModalActions>
+                <Button
+                    variant={"text"}
                     text={translate("cancel")}
                     onPress={() => {
                         if (props.onRequestClose) {
@@ -53,7 +53,8 @@ export function ChangeTheme(props: ChangeThemeProps) {
                     }}
                 />
 
-                <ModalButton
+                <Button
+                    variant={"text"}
                     text={translate("ok")}
                     onPress={() => {
                         switchTheme(selectedTheme)
@@ -62,7 +63,7 @@ export function ChangeTheme(props: ChangeThemeProps) {
                         }
                     }}
                 />
-            </ModalViewButton>
+            </ModalActions>
         </Modal>
     )
 }

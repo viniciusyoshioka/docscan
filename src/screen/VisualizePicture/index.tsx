@@ -1,3 +1,4 @@
+import { Screen } from "@elementium/native"
 import { useNavigation, useRoute } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
 import { useRef, useState } from "react"
@@ -6,7 +7,6 @@ import RNFS from "react-native-fs"
 import "react-native-get-random-values"
 import { v4 as uuid4 } from "uuid"
 
-import { Screen } from "../../components"
 import { DocumentDatabase } from "../../database"
 import { useBackHandler } from "../../hooks"
 import { translate } from "../../locales"

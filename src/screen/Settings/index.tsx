@@ -1,9 +1,9 @@
+import { ListItem, Screen } from "@elementium/native"
 import { useNavigation } from "@react-navigation/core"
 import { useState } from "react"
 import { Alert } from "react-native"
 import Share from "react-native-share"
 
-import { ListItem, Screen } from "../../components"
 import { useBackHandler } from "../../hooks"
 import { translate } from "../../locales"
 import { appDatabaseFullPath, appName, appType, appVersion, logDatabaseFullPath } from "../../services/constant"
@@ -72,14 +72,14 @@ export function Settings() {
             />
 
             <ListItem
-                iconName={"brightness-medium"}
+                leadingIcon={{ iconName: "brightness-medium" }}
                 title={translate("Settings_theme_title")}
                 description={translate("Settings_theme_text")}
                 onPress={() => setChangeThemeVisible(true)}
             />
 
             <ListItem
-                iconName={"receipt-long"}
+                leadingIcon={{ iconName: "receipt-long" }}
                 title={translate("Settings_shareLogDatabase_title")}
                 description={translate("Settings_shareLogDatabase_text")}
                 onPress={shareLogDatabaseFile}
@@ -87,7 +87,7 @@ export function Settings() {
 
             {__DEV__ && (
                 <ListItem
-                    iconName={"receipt-long"}
+                    leadingIcon={{ iconName: "receipt-long" }}
                     title={translate("Settings_shareAppDatabase_title")}
                     description={translate("Settings_shareAppDatabase_text")}
                     onPress={shareAppDatabaseFile}

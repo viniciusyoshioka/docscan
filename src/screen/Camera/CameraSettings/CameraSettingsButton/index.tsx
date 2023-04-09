@@ -1,6 +1,6 @@
 import { TouchableOpacityProps } from "react-native"
 
-import { Icon } from "../../../../components"
+import { Icon } from "@elementium/native"
 import { ButtonBase, ButtonChildrenWrapper, ButtonText } from "./style"
 
 
@@ -19,9 +19,9 @@ export function CameraSettingsButton(props: CameraSettingsButtonProps) {
         <ButtonBase activeOpacity={0.6} {...props}>
             <ButtonChildrenWrapper>
                 <Icon
-                    iconName={props.iconName}
-                    iconSize={props.iconSize || 24}
-                    iconColor={"rgb(255, 255, 255)"}
+                    name={props.iconName}
+                    size={props.iconSize || 24}
+                    color={"rgb(255, 255, 255)"}
                 />
             </ButtonChildrenWrapper>
 

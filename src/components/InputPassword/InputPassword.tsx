@@ -1,4 +1,4 @@
-import React, { forwardRef, Ref, useState } from "react"
+import { forwardRef, Ref, useState } from "react"
 import { TextInput, TextInputProps } from "react-native"
 
 import { Input } from "../Input"
@@ -29,13 +29,13 @@ export const InputPassword = forwardRef((props: TextInputProps, ref?: Ref<TextIn
                     borderBottomRightRadius: 0,
                     borderTopRightRadius: 0,
                 }}
-                onBlur={(e) => {
+                onBlur={e => {
                     setIsFocused(false)
                     if (props.onBlur) {
                         props.onBlur(e)
                     }
                 }}
-                onFocus={(e) => {
+                onFocus={e => {
                     setIsFocused(true)
                     if (props.onFocus) {
                         props.onFocus(e)

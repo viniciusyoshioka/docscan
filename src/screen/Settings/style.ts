@@ -1,6 +1,6 @@
 import styled from "styled-components/native"
 
-import { StyledProps } from "../../types"
+import { StyledProps } from "../../theme"
 
 
 export const ViewVersion = styled.View`
@@ -13,6 +13,5 @@ export const ViewVersion = styled.View`
 
 export const TextVersion = styled.Text`
     font-size: 15px;
-    opacity: ${(props: StyledProps) => props.theme.opacity.mediumEmphasis};
-    color: ${(props: StyledProps) => props.theme.color.screen_color};
+    color: ${(props: StyledProps) => props.theme.color.onBackground};
 `

@@ -1,3 +1,4 @@
+import { Button, Screen } from "@elementium/native"
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { Alert, Linking, StatusBar, StyleProp, useWindowDimensions, ViewStyle } from "react-native"
@@ -7,7 +8,7 @@ import { OrientationType } from "react-native-orientation-locker"
 import { useSharedValue } from "react-native-reanimated"
 import { Camera as RNCamera } from "react-native-vision-camera"
 
-import { Button, EmptyList, Screen } from "../../components"
+import { EmptyList } from "../../components"
 import { useBackHandler, useCameraDevices, useDeviceOrientation, useIsForeground } from "../../hooks"
 import { translate } from "../../locales"
 import { useCameraSettings } from "../../services/camera"
@@ -17,7 +18,7 @@ import { createAllFolderAsync } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { getCameraPermission } from "../../services/permission"
 import { getCameraRatioNumber } from "../../services/settings"
-import { useAppTheme } from "../../services/theme"
+import { useAppTheme } from "../../theme"
 import { CameraOrientationType, DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { CameraControl, CameraControlRef, CAMERA_CONTROL_HEIGHT } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
@@ -43,7 +44,7 @@ export function Camera() {
 
     const { cameraSettingsState } = useCameraSettings()
     const { documentDataState, dispatchDocumentData } = useDocumentData()
-    const { color, isDark, opacity } = useAppTheme()
+    const { color, isDark } = useAppTheme()
 
     const cameraRef = useRef<RNCamera>(null)
     const cameraControlRef = useRef<CameraControlRef>(null)
@@ -323,7 +324,7 @@ export function Camera() {
         <Screen style={screenStyle}>
             <StatusBar
                 hidden={isShowingCamera}
-                backgroundColor={color.screen_background}
+                backgroundColor={color.background}
                 barStyle={isDark ? "light-content" : "dark-content"}
             />
 
@@ -375,7 +376,7 @@ export function Camera() {
                     iconGroup={"material-community"}
                     iconSize={56}
                     message={translate("Camera_cameraNotAvailable")}
-                    iconStyle={{ marginBottom: 16, opacity: opacity.mediumEmphasis }}
+                    style={{ marginBottom: 16 }}
                 />
             )}
 

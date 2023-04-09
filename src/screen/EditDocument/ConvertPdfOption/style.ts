@@ -1,6 +1,6 @@
 import styled from "styled-components/native"
 
-import { StyledProps } from "../../../types"
+import { StyledProps } from "../../../theme"
 
 
 export const CompressionText = styled.Text`
@@ -8,10 +8,10 @@ export const CompressionText = styled.Text`
     text-align: left;
     text-align-vertical: center;
     font-size: 15px;
-    color: ${(props: StyledProps & { disabled: boolean }) => props.theme.color.screen_color};
+    color: ${(props: StyledProps & { disabled: boolean }) => props.theme.color.onBackground};
     opacity: ${(props: StyledProps & { disabled: boolean }) => props.disabled
-        ? props.theme.opacity.disabled
-        : props.theme.opacity.highEmphasis};
+        ? props.theme.state.content.disabled
+        : 1};
 `
 
 

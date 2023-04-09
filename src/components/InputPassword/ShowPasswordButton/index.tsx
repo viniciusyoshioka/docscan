@@ -1,7 +1,6 @@
-import React from "react"
+import { Icon } from "@elementium/native"
 import { TouchableOpacityProps } from "react-native"
 
-import { Icon } from "../../"
 import { useAppTheme } from "../../../services/theme"
 import { ShowPasswordButtonBase } from "./style"
 
@@ -21,10 +20,10 @@ export const ShowPasswordButton = (props: ShowPasswordButtonProps) => {
     return (
         <ShowPasswordButtonBase activeOpacity={0.7} {...props}>
             <Icon
-                iconName={props.showPassword ? "visibility" : "visibility-off"}
-                iconSize={24}
-                iconColor={color.input_color}
-                iconStyle={{ opacity: opacity.highEmphasis }}
+                name={props.showPassword ? "visibility" : "visibility-off"}
+                size={24}
+                color={color.input_color}
+                style={{ opacity: opacity.highEmphasis }}
             />
         </ShowPasswordButtonBase>
     )

@@ -1,6 +1,6 @@
 import styled from "styled-components/native"
 
-import { StyledProps } from "../../types"
+import { StyledProps } from "../../theme"
 
 
 export const Button = styled.TouchableOpacity`
@@ -15,6 +15,5 @@ export const Button = styled.TouchableOpacity`
 export const Text = styled.Text`
     margin-left: 24px;
     font-size: 15px;
-    opacity: ${(props: StyledProps) => props.theme.opacity.highEmphasis};
-    color: ${(props: StyledProps) => props.theme.color.radioButton_unchecked_color};
+    color: ${(props: StyledProps) => props.theme.color.onSurface};
 `

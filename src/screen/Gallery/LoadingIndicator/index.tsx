@@ -1,21 +1,20 @@
 import { ActivityIndicator } from "react-native"
 
-import { useAppTheme } from "../../../services/theme"
+import { useAppTheme } from "../../../theme"
 import { LoadingIndicatorView } from "./style"
 
 
 export function LoadingIndicator() {
 
 
-    const { color, opacity } = useAppTheme()
+    const { color } = useAppTheme()
 
 
     return (
         <LoadingIndicatorView>
             <ActivityIndicator
                 size={"small"}
-                color={color.screen_color}
-                style={{ opacity: opacity.mediumEmphasis }}
+                color={color.onBackground}
             />
         </LoadingIndicatorView>
     )

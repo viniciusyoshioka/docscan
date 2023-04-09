@@ -2,7 +2,7 @@ import { useMemo } from "react"
 import { StyleProp, StyleSheet, ViewStyle } from "react-native"
 
 import { Header, HeaderButton, HeaderTitle } from "../../components"
-import { useAppTheme } from "../../services/theme"
+import { useAppTheme } from "../../theme"
 
 
 export interface CameraHeaderProps {

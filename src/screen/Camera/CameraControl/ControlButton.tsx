@@ -1,6 +1,6 @@
 import { TouchableOpacityProps } from "react-native"
 
-import { Icon } from "../../../components"
+import { Icon } from "@elementium/native"
 import { ButtonBase, IndexText, IndexView } from "./style"
 
 
@@ -17,9 +17,9 @@ export function ControlButton(props: ControlButtonProps) {
             <IndexView>
                 {props.icon && (
                     <Icon
-                        iconName={props.icon}
-                        iconSize={props.size || 24}
-                        iconColor={"rgb(255, 255, 255)"}
+                        name={props.icon}
+                        size={props.size || 24}
+                        color={"rgb(255, 255, 255)"}
                     />
                 )}
 

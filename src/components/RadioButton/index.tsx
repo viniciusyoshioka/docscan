@@ -1,8 +1,7 @@
-import React from "react"
+import { Icon } from "@elementium/native"
 import { TouchableOpacityProps } from "react-native"
 
-import { Icon } from ".."
-import { useAppTheme } from "../../services/theme"
+import { useAppTheme } from "../../theme"
 import { Button, Text } from "./style"
 
 
@@ -15,15 +14,14 @@ export interface RadioButtonProps extends TouchableOpacityProps {
 export const RadioButton = (props: RadioButtonProps) => {
 
 
-    const { color, opacity } = useAppTheme()
+    const { color } = useAppTheme()
 
 
     return (
         <Button {...props} activeOpacity={0.7}>
             <Icon
-                iconName={props.value ? "radio-button-checked" : "radio-button-unchecked"}
-                iconColor={props.value ? color.radioButton_checked_color : color.radioButton_unchecked_color}
-                iconStyle={{ opacity: opacity.highEmphasis }}
+                name={props.value ? "radio-button-checked" : "radio-button-unchecked"}
+                color={props.value ? color.primary : color.onSurface}
             />
 
             {props.text && (

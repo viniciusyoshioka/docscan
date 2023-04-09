@@ -1,3 +1,4 @@
+import { Screen } from "@elementium/native"
 import { CameraRoll, PhotoIdentifier } from "@react-native-camera-roll/camera-roll"
 import { useNavigation, useRoute } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
@@ -5,14 +6,14 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 import { ActivityIndicator, Alert, useWindowDimensions, View } from "react-native"
 import RNFS from "react-native-fs"
 
-import { EmptyList, HEADER_HEIGHT, Screen } from "../../components"
+import { EmptyList, HEADER_HEIGHT } from "../../components"
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
 import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
 import { copyPicturesService } from "../../services/document-service"
 import { log, stringfyError } from "../../services/log"
 import { getReadMediaImagesPermission } from "../../services/permission"
-import { useAppTheme } from "../../services/theme"
+import { useAppTheme } from "../../theme"
 import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { GalleryHeader } from "./Header"
 import { getImageItemSize, HORIZONTAL_COLUMN_COUNT, ImageItem, VERTICAL_COLUMN_COUNT } from "./ImageItem"
@@ -27,7 +28,7 @@ export function Gallery() {
 
     const { width: windowWidth, height: windowHeight } = useWindowDimensions()
 
-    const { color, opacity } = useAppTheme()
+    const { color } = useAppTheme()
 
     const { documentDataState, dispatchDocumentData } = useDocumentData()
 
@@ -332,9 +333,8 @@ export function Gallery() {
 
             <EmptyList visible={!imageGallery && !isRefreshing}>
                 <ActivityIndicator
-                    color={color.screen_color}
+                    color={color.onBackground}
                     size={"large"}
-                    style={{ opacity: opacity.mediumEmphasis }}
                 />
             </EmptyList>
 
@@ -342,7 +342,6 @@ export function Gallery() {
                 iconName={"images-outline"}
                 iconGroup={"ionicons"}
                 iconSize={56}
-                iconStyle={{ opacity: opacity.mediumEmphasis }}
                 message={translate("Gallery_emptyGallery")}
                 visible={imageGallery?.length === 0}
             />

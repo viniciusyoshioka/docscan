@@ -1,9 +1,8 @@
-import React from "react"
-import { TouchableOpacityProps } from "react-native"
 import CheckBox from "@react-native-community/checkbox"
+import { TouchableOpacityProps } from "react-native"
 
+import { useAppTheme } from "../../theme"
 import { Button, Text } from "./style"
-import { useAppTheme } from "../../services/theme"
 
 
 export interface CheckButtonProps extends TouchableOpacityProps {
@@ -16,7 +15,7 @@ export interface CheckButtonProps extends TouchableOpacityProps {
 export const CheckButton = (props: CheckButtonProps) => {
 
 
-    const { color, opacity } = useAppTheme()
+    const { color } = useAppTheme()
 
 
     return (
@@ -25,10 +24,9 @@ export const CheckButton = (props: CheckButtonProps) => {
                 value={props.value}
                 onValueChange={props.onValueChange}
                 tintColors={{
-                    true: color.checkButton_checked_color,
-                    false: color.checkButton_unchecked_color,
+                    true: color.primary,
+                    false: color.onSurface,
                 }}
-                style={{ opacity: opacity.highEmphasis }}
             />
 
             {props.text && (

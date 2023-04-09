@@ -1,8 +1,7 @@
-import React from "react"
+import { Icon } from "@elementium/native"
 import { BorderlessButtonProps } from "react-native-gesture-handler"
 
-import { Icon } from "../.."
-import { useAppTheme } from "../../../services/theme"
+import { useAppTheme } from "../../../theme"
 import { IconGroup } from "../../../types"
 import { HeaderButtonBase } from "./style"
 
@@ -18,17 +17,16 @@ export interface HeaderButtonProps extends BorderlessButtonProps {
 export const HeaderButton = (props: HeaderButtonProps) => {
 
 
-    const { color, opacity } = useAppTheme()
+    const { color } = useAppTheme()
 
 
     return (
-        <HeaderButtonBase rippleColor={color.header_ripple} {...props}>
+        <HeaderButtonBase {...props}>
             <Icon
-                iconName={props.iconName}
-                iconGroup={props.iconGroup}
-                iconSize={props.iconSize || 24}
-                iconColor={props.iconColor ?? color.header_color}
-                iconStyle={{ opacity: opacity.headerEmphasis }}
+                name={props.iconName}
+                group={props.iconGroup}
+                size={props.iconSize ?? 24}
+                color={props.iconColor ?? color.onSurface}
             />
         </HeaderButtonBase>
     )
