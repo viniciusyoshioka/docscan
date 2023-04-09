@@ -13,7 +13,8 @@ import { cameraSettingsDefault, CameraSettingsProvider, reducerCameraSettings } 
 import { databaseFolder, fullPathExported, fullPathPdf, fullPathPicture, fullPathRoot, fullPathRootExternal, fullPathTemporary, fullPathTemporaryCompressedPicture, fullPathTemporaryExported, fullPathTemporaryImported } from "./services/constant"
 import { DocumentDataProvider, reducerDocumentData } from "./services/document"
 import { log, logCriticalError, stringfyError } from "./services/log"
-import { AppThemeDark, AppThemeLight, themeDefault, ThemeProvider } from "./services/theme"
+import { themeDefault } from "./services/theme"
+import { AppDarkTheme, AppLightTheme, AppThemeProvider } from "./theme"
 import { ThemeType } from "./types"
 
 
@@ -49,11 +50,8 @@ export function App() {
             )
         }
 
-        AppThemeLight.appTheme = appTheme
-        AppThemeLight.switchTheme = switchTheme
-
-        AppThemeDark.appTheme = appTheme
-        AppThemeDark.switchTheme = switchTheme
+        AppLightTheme.switchTheme = switchTheme
+        AppDarkTheme.switchTheme = switchTheme
 
         if (appTheme === "auto") {
             if (deviceTheme) {
@@ -149,7 +147,7 @@ export function App() {
     useEffect(() => {
         if (theme) {
             StatusBar.setBarStyle("light-content")
-            StatusBar.setBackgroundColor(theme === "dark" ? AppThemeDark.color.header_background : AppThemeLight.color.header_background)
+            StatusBar.setBackgroundColor(theme === "dark" ? AppDarkTheme.color.background : AppLightTheme.color.background)
         }
     }, [theme])
 
@@ -295,7 +293,7 @@ export function App() {
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <ThemeProvider theme={(theme === "light") ? AppThemeLight : AppThemeDark}>
+            <AppThemeProvider value={(theme === "light") ? AppLightTheme : AppDarkTheme}>
                 <MenuProvider backHandler={true}>
                     <DocumentDataProvider value={{ documentDataState, dispatchDocumentData }}>
                         <CameraSettingsProvider value={{ cameraSettingsState, dispatchCameraSettings }}>
@@ -303,7 +301,7 @@ export function App() {
                         </CameraSettingsProvider>
                     </DocumentDataProvider>
                 </MenuProvider>
-            </ThemeProvider>
+            </AppThemeProvider>
         </GestureHandlerRootView>
     )
 }
