@@ -13,9 +13,7 @@ import { cameraSettingsDefault, CameraSettingsProvider, reducerCameraSettings } 
 import { databaseFolder, fullPathExported, fullPathPdf, fullPathPicture, fullPathRoot, fullPathRootExternal, fullPathTemporary, fullPathTemporaryCompressedPicture, fullPathTemporaryExported, fullPathTemporaryImported } from "./services/constant"
 import { DocumentDataProvider, reducerDocumentData } from "./services/document"
 import { log, logCriticalError, stringfyError } from "./services/log"
-import { themeDefault } from "./services/theme"
-import { AppDarkTheme, AppLightTheme, AppThemeProvider } from "./theme"
-import { ThemeType } from "./types"
+import { AppDarkTheme, AppLightTheme, AppThemeProvider, themeDefault, ThemeType } from "./theme"
 
 
 SQLite.enablePromise(true)
