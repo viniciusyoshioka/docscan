@@ -1,5 +1,0 @@
-export * from "./ModalButton"
-export * from "./ModalDescription"
-export * from "./ModalTitle"
-export * from "./ModalViewButton"
-export * from "./ModalViewContent"
