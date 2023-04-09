@@ -48,7 +48,9 @@ export function App() {
             )
         }
 
+        AppLightTheme.appTheme = appTheme
         AppLightTheme.switchTheme = switchTheme
+        AppDarkTheme.appTheme = appTheme
         AppDarkTheme.switchTheme = switchTheme
 
         if (appTheme === "auto") {
