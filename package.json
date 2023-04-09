@@ -9,6 +9,8 @@
         "lint": "eslint . --ext .js --ext .jsx --ext .ts --ext .tsx"
     },
     "dependencies": {
+        "@elementium/color": "file:..\\elementium\\packages\\color",
+        "@elementium/native": "file:..\\elementium\\packages\\native",
         "@react-native-camera-roll/camera-roll": "^5.3.1",
         "@react-native-community/checkbox": "^0.5.15",
         "@react-native-community/slider": "^4.4.2",
