@@ -1,7 +1,7 @@
 import { Icon } from "@elementium/native"
 import { TouchableOpacityProps } from "react-native"
 
-import { useAppTheme } from "../../../services/theme"
+import { useAppTheme } from "../../../theme"
 import { ShowPasswordButtonBase } from "./style"
 
 
@@ -14,7 +14,7 @@ export interface ShowPasswordButtonProps extends TouchableOpacityProps {
 export const ShowPasswordButton = (props: ShowPasswordButtonProps) => {
 
 
-    const { color, opacity } = useAppTheme()
+    const { color } = useAppTheme()
 
 
     return (
@@ -22,8 +22,7 @@ export const ShowPasswordButton = (props: ShowPasswordButtonProps) => {
             <Icon
                 name={props.showPassword ? "visibility" : "visibility-off"}
                 size={24}
-                color={color.input_color}
-                style={{ opacity: opacity.highEmphasis }}
+                color={color.onSurface}
             />
         </ShowPasswordButtonBase>
     )

@@ -4,7 +4,7 @@ import { NativeSyntheticEvent } from "react-native"
 
 import { RadioButton } from "../../components"
 import { translate } from "../../locales"
-import { useAppTheme } from "../../services/theme"
+import { useAppTheme } from "../../theme"
 
 
 export interface ChangeThemeProps extends ModalProps { }
