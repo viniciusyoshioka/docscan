@@ -2,12 +2,16 @@
 import { I18n } from "i18n-js"
 import { NativeModules, Platform } from "react-native"
 
-import { LanguageCodeMap, TranslationKeyType } from "../types"
 import { en_US } from "./en_US"
 import { pt_BR } from "./pt_BR"
+import { TranslationKeyType } from "./types"
 
 
-const normalizeLanguageCode: LanguageCodeMap = {
+type LanguageCodeNormalization = {
+    [key in string]: string;
+}
+
+const normalizedLanguageCode: LanguageCodeNormalization = {
     "en": "en_US",
     "en_US": "en_US",
     "pt_BR": "pt_BR",
@@ -24,9 +28,9 @@ const i18n = new I18n({
 function getDeviceLanguage(): string {
     switch (Platform.OS) {
         case "android":
-            return normalizeLanguageCode[NativeModules.I18nManager.localeIdentifier as string]
+            return normalizedLanguageCode[NativeModules.I18nManager.localeIdentifier as string]
         case "ios":
-            return normalizeLanguageCode[NativeModules.SettingsManager.settings.AppleLocale as string]
+            return normalizedLanguageCode[NativeModules.SettingsManager.settings.AppleLocale as string]
         default:
             throw new Error("Only Android and iOS are supported.")
     }
@@ -47,12 +51,4 @@ function setLanguageToI18n() {
 setLanguageToI18n()
 
 
-/**
- * Receives a key and returns the corresponding text
- * already translated to device language, if available
- *
- * @param key TranslationKeyType to get the translation in language object
- *
- * @returns translated text
- */
 export const translate = (key: TranslationKeyType): string => i18n.t(key)

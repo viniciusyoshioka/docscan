@@ -1,8 +1,4 @@
 
-/**
- * Defines the keys used in translation object
- * and translation function param
- */
 export type TranslationKeyType =
     "ok"
     | "cancel"
@@ -172,17 +168,6 @@ export type TranslationKeyType =
     | "log_alert_errorRegisteringLog_text"
 
 
-/**
- * Type of translation object
- */
-export type TranslationType = {
+export type TranslationObjectType = {
     [key in TranslationKeyType]: string;
-}
-
-
-/**
- * Type for object used to normalize language code
- */
-export type LanguageCodeMap = {
-    [key in string]: string;
 }

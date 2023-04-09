@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
-import { TranslationType } from "../types"
+import { TranslationObjectType } from "./types"
 
 
-export const pt_BR: TranslationType = {
+export const pt_BR: TranslationObjectType = {
     ok: "Ok",
     cancel: "Cancelar",
     warn: "Aviso",

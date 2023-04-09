@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
-import { TranslationType } from "../types"
+import { TranslationObjectType } from "./types"
 
 
-export const en_US: TranslationType = {
+export const en_US: TranslationObjectType = {
     "": "",
 }

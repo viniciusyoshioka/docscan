@@ -1,6 +1,5 @@
 export * from "./camera"
 export * from "./document"
-export * from "./locale"
 export * from "./log"
 export * from "./reducer-camera"
 export * from "./reducer-document"
