@@ -146,7 +146,7 @@ export function App() {
 
     useEffect(() => {
         if (theme) {
-            StatusBar.setBarStyle("light-content")
+            StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content")
             StatusBar.setBackgroundColor(theme === "dark" ? AppDarkTheme.color.background : AppLightTheme.color.background)
         }
     }, [theme])
