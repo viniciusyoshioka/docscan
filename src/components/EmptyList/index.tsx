@@ -1,19 +1,12 @@
-import { ExtendableOptionalIconProps, Icon } from "@elementium/native"
+import { ExtendableOptionalIconProps, Icon, Text } from "@elementium/native"
 import { ReactNode } from "react"
-import { ImageSourcePropType, ViewProps } from "react-native"
+import { Image, ImageSourcePropType, StyleSheet, View, ViewProps } from "react-native"
 
-import { EmptyListImage, EmptyListText, EmptyListView } from "./style"
+import { useAppTheme } from "../../theme"
 
 
 export interface EmptyListProps extends ViewProps, Omit<ExtendableOptionalIconProps, "style"> {
-
-    /**
-     * Boolean that controls when the component is shown
-     *
-     * @default true
-     */
     visible?: boolean;
-
     imageSource?: ImageSourcePropType;
     message?: string;
     children?: ReactNode;
@@ -23,34 +16,52 @@ export interface EmptyListProps extends ViewProps, Omit<ExtendableOptionalIconPr
 export function EmptyList(props: EmptyListProps) {
 
 
-    if (props.visible === false) {
+    const { color } = useAppTheme()
+
+
+    if (!props.visible) {
         return null
     }
 
 
     return (
-        <EmptyListView {...props}>
+        <View {...props} style={[styles.container, props.style]}>
             {props.iconName && (
                 <Icon
                     name={props.iconName}
                     group={props.iconGroup}
                     size={props.iconSize}
-                    color={props.iconColor}
+                    color={props.iconColor ?? color.onBackground}
                     style={props.style}
                 />
             )}
 
             {props.imageSource && (
-                <EmptyListImage source={props.imageSource} />
+                <Image
+                    source={props.imageSource}
+                    style={{ width: 100, height: 100, tintColor: color.onBackground }}
+                />
             )}
 
             {props.message && (
-                <EmptyListText>
-                    {props.message}
-                </EmptyListText>
+                <Text
+                    variant={"body"}
+                    size={"large"}
+                    style={{ color: color.onBackground, marginTop: 8 }}
+                    children={props.message}
+                />
             )}
 
             {props.children}
-        </EmptyListView>
+        </View>
     )
 }
+
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+})
