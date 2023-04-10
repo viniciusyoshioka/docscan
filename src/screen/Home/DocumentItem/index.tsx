@@ -1,3 +1,4 @@
+import { Text } from "@elementium/native"
 import CheckBox from "@react-native-community/checkbox"
 import { LongPressGestureHandler } from "react-native-gesture-handler"
 
@@ -5,7 +6,7 @@ import { SelectableItem, useSelectableItem } from "../../../hooks"
 import { getLocaleDateTime } from "../../../services/date"
 import { useAppTheme } from "../../../theme"
 import { DocumentForList } from "../../../types"
-import { DocumentItemBlock, DocumentItemButton, DocumentItemDate, DocumentItemTitle } from "./style"
+import { DocumentItemBlock, DocumentItemButton } from "./style"
 
 
 export interface DocumentItemProps extends SelectableItem {
@@ -28,27 +29,34 @@ export function DocumentItem(props: DocumentItemProps) {
             onHandlerStateChange={({ nativeEvent }) => onLongPress(nativeEvent)}
         >
             <DocumentItemButton onPress={onPress}>
-                <DocumentItemBlock style={{ flex: 1 }}>
-                    <DocumentItemTitle numberOfLines={1}>
-                        {props.document.name}
-                    </DocumentItemTitle>
+                <DocumentItemBlock>
+                    <Text
+                        variant={"body"}
+                        size={"large"}
+                        numberOfLines={1}
+                        style={{ color: color.onSurface }}
+                        children={props.document.name}
+                    />
 
-                    <DocumentItemDate numberOfLines={1}>
-                        {getLocaleDateTime(new Date(props.document.lastModificationTimestamp), "/", ":", false)}
-                    </DocumentItemDate>
+                    <Text
+                        variant={"body"}
+                        size={"small"}
+                        numberOfLines={1}
+                        style={{ color: color.onSurfaceVariant }}
+                        children={getLocaleDateTime(new Date(props.document.lastModificationTimestamp), "/", ":", false)}
+                    />
                 </DocumentItemBlock>
 
                 {props.isSelectionMode && (
-                    <DocumentItemBlock style={{ paddingLeft: 16 }}>
-                        <CheckBox
-                            value={props.isSelected}
-                            onChange={onPress}
-                            tintColors={{
-                                true: color.primary,
-                                false: color.onSurface
-                            }}
-                        />
-                    </DocumentItemBlock>
+                    <CheckBox
+                        value={props.isSelected}
+                        onChange={onPress}
+                        tintColors={{
+                            true: color.primary,
+                            false: color.onSurfaceVariant,
+                        }}
+                        style={{ marginLeft: 16 }}
+                    />
                 )}
             </DocumentItemButton>
         </LongPressGestureHandler>
