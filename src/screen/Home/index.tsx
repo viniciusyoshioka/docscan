@@ -220,8 +220,6 @@ export function Home() {
         )
     }
 
-    const keyExtractor = useCallback((item: DocumentForList) => item.id.toString(), [])
-
 
     useEffect(() => {
         getDocumentList()
@@ -247,7 +245,6 @@ export function Home() {
             <FlatList
                 data={documents}
                 renderItem={renderItem}
-                keyExtractor={keyExtractor}
                 style={{ display: documents.length ? "flex" : "none" }}
             />
 
