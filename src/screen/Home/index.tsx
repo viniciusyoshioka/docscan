@@ -32,6 +32,7 @@ export function Home() {
             documentSelection.exitSelection()
             return true
         }
+        return false
     })
 
 
