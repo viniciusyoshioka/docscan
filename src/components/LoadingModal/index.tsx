@@ -1,7 +1,7 @@
+import { ModalContainer, ModalScrim, Text } from "@elementium/native"
 import { ActivityIndicator } from "react-native"
 
 import { useAppTheme } from "../../theme"
-import { LoadingModalBackground, LoadingModalText, LoadingModalView } from "./style"
 
 
 export interface LoadingModalProps {
@@ -22,17 +22,20 @@ export function LoadingModal(props: LoadingModalProps) {
 
 
     return (
-        <LoadingModalBackground>
-            <LoadingModalView>
+        <ModalScrim>
+            <ModalContainer style={{ flexDirection: "row", alignItems: "center" }}>
                 <ActivityIndicator
                     size={"large"}
                     color={color.onSurface}
                 />
 
-                <LoadingModalText>
-                    {props.message}
-                </LoadingModalText>
-            </LoadingModalView>
-        </LoadingModalBackground>
+                <Text
+                    variant={"body"}
+                    size={"large"}
+                    style={{ color: color.onSurface, marginLeft: 16, flex: 1 }}
+                    children={props.message}
+                />
+            </ModalContainer>
+        </ModalScrim>
     )
 }
