@@ -249,7 +249,6 @@ export function Home() {
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
                 style={{ display: documents.length ? "flex" : "none" }}
-                contentContainerStyle={{ paddingTop: documents.length ? 8 : 0 }}
             />
 
             <EmptyList
