@@ -1,5 +1,7 @@
+import { Color, Prisma } from "@elementium/color"
 import { Text } from "@elementium/native"
 import CheckBox from "@react-native-community/checkbox"
+import { useMemo } from "react"
 import { LongPressGestureHandler } from "react-native-gesture-handler"
 
 import { SelectableItem, useSelectableItem } from "../../../hooks"
@@ -17,9 +19,16 @@ export interface DocumentItemProps extends SelectableItem {
 export function DocumentItem(props: DocumentItemProps) {
 
 
-    const { color } = useAppTheme()
+    const { color, state } = useAppTheme()
 
     const { onPress, onLongPress } = useSelectableItem(props)
+
+
+    const rippleColor = useMemo(() => {
+        const backgroundColor = new Color(color.surface)
+        const overlayColor = new Color(color.onSurface).setA(state.container.pressed)
+        return Prisma.addColors(backgroundColor, overlayColor).toRgba()
+    }, [color.surface, color.onSurface, state.container.pressed])
 
 
     return (
@@ -28,7 +37,7 @@ export function DocumentItem(props: DocumentItemProps) {
             minDurationMs={400}
             onHandlerStateChange={({ nativeEvent }) => onLongPress(nativeEvent)}
         >
-            <DocumentItemButton onPress={onPress}>
+            <DocumentItemButton onPress={onPress} rippleColor={rippleColor}>
                 <DocumentItemBlock>
                     <Text
                         variant={"body"}
