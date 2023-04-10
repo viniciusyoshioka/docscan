@@ -1,4 +1,4 @@
-import { Screen } from "@elementium/native"
+import { Divider, Screen } from "@elementium/native"
 import { useNavigation } from "@react-navigation/core"
 import { useEffect, useState } from "react"
 import { Alert, FlatList } from "react-native"
@@ -247,6 +247,7 @@ export function Home() {
                 data={documents}
                 renderItem={renderItem}
                 style={{ display: documents.length ? "flex" : "none" }}
+                ItemSeparatorComponent={() => <Divider wrapperStyle={{ paddingHorizontal: 16 }} />}
             />
 
             <EmptyList
