@@ -1,4 +1,4 @@
-import { ListItem, Screen } from "@elementium/native"
+import { ListItem, Screen, Text } from "@elementium/native"
 import { useNavigation } from "@react-navigation/core"
 import { useState } from "react"
 import { Alert } from "react-native"
@@ -8,16 +8,18 @@ import { useBackHandler } from "../../hooks"
 import { translate } from "../../locales"
 import { appDatabaseFullPath, appName, appType, appVersion, logDatabaseFullPath } from "../../services/constant"
 import { log, stringfyError } from "../../services/log"
+import { useAppTheme } from "../../theme"
 import { NavigationParamProps } from "../../types"
 import { ChangeTheme } from "./ChangeTheme"
 import { SettingsHeader } from "./Header"
-import { TextVersion, ViewVersion } from "./style"
+import { ViewVersion } from "./style"
 
 
 export function Settings() {
 
 
     const navigation = useNavigation<NavigationParamProps<"Settings">>()
+    const { color } = useAppTheme()
 
     const [changeThemeVisible, setChangeThemeVisible] = useState(false)
 
@@ -95,9 +97,12 @@ export function Settings() {
             )}
 
             <ViewVersion>
-                <TextVersion>
-                    {appName} - {appVersion} - {appType}
-                </TextVersion>
+                <Text
+                    variant={"body"}
+                    size={"medium"}
+                    style={{ color: color.onBackground }}
+                    children={`${appName} ${appVersion} - ${appType}`}
+                />
             </ViewVersion>
 
             <ChangeTheme
