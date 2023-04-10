@@ -1,4 +1,3 @@
-export * from "./CheckButton"
 export * from "./EmptyList"
 export * from "./Header"
 export * from "./Input"
