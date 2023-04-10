@@ -7,6 +7,9 @@ import { pt_BR } from "./pt_BR"
 import { TranslationKeyType } from "./types"
 
 
+export * from "./types"
+
+
 type LanguageCodeNormalization = {
     [key in string]: string;
 }
@@ -19,7 +22,7 @@ const normalizedLanguageCode: LanguageCodeNormalization = {
 }
 
 
-const i18n = new I18n({
+export const i18n = new I18n({
     "en_US": en_US,
     "pt_BR": pt_BR,
 })
