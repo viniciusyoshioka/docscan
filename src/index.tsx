@@ -19,6 +19,7 @@ SQLite.enablePromise(true)
 
 
 // TODO change database library
+// TODO remove CameraSettingsProvider
 export function App() {
 
 
