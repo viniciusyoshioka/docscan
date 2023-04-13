@@ -13,7 +13,7 @@ import { cameraSettingsDefault, CameraSettingsProvider, reducerCameraSettings } 
 import { databaseFolder, fullPathExported, fullPathPdf, fullPathPicture, fullPathRoot, fullPathRootExternal, fullPathTemporary, fullPathTemporaryCompressedPicture, fullPathTemporaryExported, fullPathTemporaryImported } from "./services/constant"
 import { DocumentDataProvider, reducerDocumentData } from "./services/document"
 import { logCriticalError, stringfyError } from "./services/log"
-import { AppSettingsKeys } from "./services/storage"
+import { AppSettingsKeys, setStorageDefaultValues } from "./services/storage"
 import { AppThemeProvider, themeDefault, ThemeType } from "./theme"
 
 
@@ -54,6 +54,8 @@ export function App() {
 
 
     useEffect(() => {
+        setStorageDefaultValues()
+
         openAppDatabase()
             .then(async database => {
                 function onTransactionError(error: SQLite.SQLError) {
