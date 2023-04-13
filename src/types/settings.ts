@@ -1,4 +1,5 @@
-import { CameraRatio, CameraType, FlashType, ThemeType, WhiteBalanceType } from "."
+import { CameraRatio, CameraType, FlashType, WhiteBalanceType } from "."
+import { ThemeType } from "../theme"
 
 
 /**

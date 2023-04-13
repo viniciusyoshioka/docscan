@@ -1,8 +1,7 @@
-import { Icon } from "@elementium/native"
+import { Icon, IconGroup } from "@elementium/native"
 import { BorderlessButtonProps } from "react-native-gesture-handler"
 
 import { useAppTheme } from "../../../theme"
-import { IconGroup } from "../../../types"
 import { HeaderButtonBase } from "./style"
 
 
