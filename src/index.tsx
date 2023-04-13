@@ -6,7 +6,7 @@ import { useMMKVString } from "react-native-mmkv"
 import { MenuProvider } from "react-native-popup-menu"
 import SQLite from "react-native-sqlite-storage"
 
-import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase, SettingsDatabase } from "./database"
+import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase } from "./database"
 import { useKeepAwakeOnDev } from "./hooks"
 import { Router } from "./router"
 import { cameraSettingsDefault, CameraSettingsProvider, reducerCameraSettings } from "./services/camera"
@@ -32,8 +32,8 @@ export function App() {
     const [appTheme, setAppTheme] = useMMKVString(AppSettingsKeys.THEME)
     const isDarkTheme = (appTheme === "auto" && deviceTheme === "dark") || appTheme === "dark"
 
-    const [appDb, setAppDb] = useState<SQLite.SQLiteDatabase | undefined>(undefined)
-    const [logDb, setLogDb] = useState<SQLite.SQLiteDatabase | undefined>(undefined)
+    const [appDb, setAppDb] = useState<SQLite.SQLiteDatabase>()
+    const [logDb, setLogDb] = useState<SQLite.SQLiteDatabase>()
     const [cameraSettingsState, dispatchCameraSettings] = useReducer(reducerCameraSettings, cameraSettingsDefault)
     const [documentDataState, dispatchDocumentData] = useReducer(reducerDocumentData, undefined)
 
@@ -62,22 +62,6 @@ export function App() {
                 }
 
                 async function onTransactionSuccess() {
-                    try {
-                        const settings = await SettingsDatabase.getSettings()
-                        dispatchCameraSettings({
-                            type: "set",
-                            payload: {
-                                flash: settings.cameraFlash,
-                                whiteBalance: settings.cameraWhiteBalance,
-                                cameraType: settings.cameraType,
-                                cameraId: settings.cameraId,
-                                cameraRatio: settings.cameraRatio,
-                            }
-                        })
-                    } catch (error) {
-                        logCriticalError(`Error getting all settings from database: "${stringfyError(error)}". Fallback to default settings`)
-                    }
-
                     setAppDb(database)
                 }
 
@@ -85,7 +69,6 @@ export function App() {
 
                 database.transaction(tx => {
                     DocumentDatabase.createDocumentTable(tx)
-                    SettingsDatabase.createSettingsTable(tx)
                 }, onTransactionError, onTransactionSuccess)
             })
             .catch(error => {
