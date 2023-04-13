@@ -1,8 +1,4 @@
 
-
-/**
- * Defines the type for transport function's props
- */
 export type TransportFunctionProps = {
     msg: string;
     rawMsg: string[];
@@ -14,9 +10,6 @@ export type TransportFunctionProps = {
 }
 
 
-/**
- * Type for the logger object
- */
 export type Logger = {
     /**
      * Disable an extension
