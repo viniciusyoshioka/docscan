@@ -20,7 +20,6 @@ import { AppThemeProvider, themeDefault, ThemeType } from "./theme"
 SQLite.enablePromise(true)
 
 
-// TODO import only AppThemeLight or AppThemeDark that were used
 // TODO change database library
 export function App() {
 
