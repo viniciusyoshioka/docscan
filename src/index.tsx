@@ -1,6 +1,5 @@
 import { useEffect, useReducer, useState } from "react"
-import { DevSettings, useColorScheme } from "react-native"
-import RNFS from "react-native-fs"
+import { useColorScheme } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { useMMKVString } from "react-native-mmkv"
 import { MenuProvider } from "react-native-popup-menu"
@@ -10,7 +9,6 @@ import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlo
 import { useKeepAwakeOnDev } from "./hooks"
 import { Router } from "./router"
 import { cameraSettingsDefault, CameraSettingsProvider, reducerCameraSettings } from "./services/camera"
-import { databaseFolder, fullPathExported, fullPathPdf, fullPathPicture, fullPathRoot, fullPathRootExternal, fullPathTemporary, fullPathTemporaryCompressedPicture, fullPathTemporaryExported, fullPathTemporaryImported } from "./services/constant"
 import { DocumentDataProvider, reducerDocumentData } from "./services/document"
 import { logCriticalError, stringfyError } from "./services/log"
 import { AppSettingsKeys, setStorageDefaultValues } from "./services/storage"
@@ -96,140 +94,6 @@ export function App() {
                 logCriticalError(`Error opening log database: "${stringfyError(error)}"`)
             })
     }, [])
-
-
-    useEffect(() => {
-        if (__DEV__) {
-            DevSettings.addMenuItem("List all app's folders", async () => {
-                // App internal folders
-                console.log("======================================================================")
-                console.log(`fullPathRoot: "${fullPathRoot}"`)
-                console.log("----------------------------------------------------------------------")
-                const lsFullPathRoot = await RNFS.readDir(fullPathRoot)
-                if (lsFullPathRoot.length === 0) {
-                    console.log("Empty folder")
-                } else {
-                    lsFullPathRoot.forEach(item => {
-                        console.log(item.path)
-                    })
-                }
-
-                console.log("======================================================================")
-                console.log(`fullPathPicture: "${fullPathPicture}"`)
-                console.log("----------------------------------------------------------------------")
-                const lsFullPathPicture = await RNFS.readDir(fullPathPicture)
-                if (lsFullPathPicture.length === 0) {
-                    console.log("Empty folder")
-                } else {
-                    lsFullPathPicture.forEach(item => {
-                        console.log(item.path)
-                    })
-                }
-
-                console.log("======================================================================")
-                console.log(`fullPathTemporary: "${fullPathTemporary}"`)
-                console.log("----------------------------------------------------------------------")
-                const lsFullPathTemporary = await RNFS.readDir(fullPathTemporary)
-                if (lsFullPathTemporary.length === 0) {
-                    console.log("Empty folder")
-                } else {
-                    lsFullPathTemporary.forEach(item => {
-                        console.log(item.path)
-                    })
-                }
-
-                console.log("======================================================================")
-                console.log(`fullPathTemporaryExported: "${fullPathTemporaryExported}"`)
-                console.log("----------------------------------------------------------------------")
-                const lsFullPathTemporaryExported = await RNFS.readDir(fullPathTemporaryExported)
-                if (lsFullPathTemporaryExported.length === 0) {
-                    console.log("Empty folder")
-                } else {
-                    lsFullPathTemporaryExported.forEach(item => {
-                        console.log(item.path)
-                    })
-                }
-
-                console.log("======================================================================")
-                console.log(`fullPathTemporaryImported: "${fullPathTemporaryImported}"`)
-                console.log("----------------------------------------------------------------------")
-                const lsFullPathTemporaryImported = await RNFS.readDir(fullPathTemporaryImported)
-                if (lsFullPathTemporaryImported.length === 0) {
-                    console.log("Empty folder")
-                } else {
-                    lsFullPathTemporaryImported.forEach(item => {
-                        console.log(item.path)
-                    })
-                }
-
-                console.log("======================================================================")
-                console.log(`fullPathTemporaryCompressedPicture: "${fullPathTemporaryCompressedPicture}"`)
-                console.log("----------------------------------------------------------------------")
-                const lsFullPathTemporaryCompressedPicture = await RNFS.readDir(fullPathTemporaryCompressedPicture)
-                if (lsFullPathTemporaryCompressedPicture.length === 0) {
-                    console.log("Empty folder")
-                } else {
-                    lsFullPathTemporaryCompressedPicture.forEach(item => {
-                        console.log(item.path)
-                    })
-                }
-
-
-
-                // App external folders
-                console.log("======================================================================")
-                console.log(`fullPathRootExternal: "${fullPathRootExternal}"`)
-                console.log("----------------------------------------------------------------------")
-                const lsFullPathRootExternal = await RNFS.readDir(fullPathRootExternal)
-                if (lsFullPathRootExternal.length === 0) {
-                    console.log("Empty folder")
-                } else {
-                    lsFullPathRootExternal.forEach(item => {
-                        console.log(item.path)
-                    })
-                }
-
-                console.log("======================================================================")
-                console.log(`fullPathExported: "${fullPathExported}"`)
-                console.log("----------------------------------------------------------------------")
-                const lsFullPathExported = await RNFS.readDir(fullPathExported)
-                if (lsFullPathExported.length === 0) {
-                    console.log("Empty folder")
-                } else {
-                    lsFullPathExported.forEach(item => {
-                        console.log(item.path)
-                    })
-                }
-
-                console.log("======================================================================")
-                console.log(`fullPathPdf: "${fullPathPdf}"`)
-                console.log("----------------------------------------------------------------------")
-                const lsFullPathPdf = await RNFS.readDir(fullPathPdf)
-                if (lsFullPathPdf.length === 0) {
-                    console.log("Empty folder")
-                } else {
-                    lsFullPathPdf.forEach(item => {
-                        console.log(item.path)
-                    })
-                }
-
-
-
-                // App database folder
-                console.log("======================================================================")
-                console.log(`databaseFolder: "${databaseFolder}"`)
-                console.log("----------------------------------------------------------------------")
-                const lsDatabaseFolder = await RNFS.readDir(databaseFolder)
-                if (lsDatabaseFolder.length === 0) {
-                    console.log("Empty folder")
-                } else {
-                    lsDatabaseFolder.forEach(item => {
-                        console.log(item.path)
-                    })
-                }
-            })
-        }
-    })
 
 
     if (!appDb || !logDb) {
