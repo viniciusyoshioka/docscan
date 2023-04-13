@@ -1,19 +1,20 @@
 import { useEffect, useReducer, useState } from "react"
-import { Alert, DevSettings, StatusBar, useColorScheme } from "react-native"
+import { DevSettings, useColorScheme } from "react-native"
 import RNFS from "react-native-fs"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
+import { useMMKVString } from "react-native-mmkv"
 import { MenuProvider } from "react-native-popup-menu"
 import SQLite from "react-native-sqlite-storage"
 
 import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase, SettingsDatabase } from "./database"
 import { useKeepAwakeOnDev } from "./hooks"
-import { translate } from "./locales"
 import { Router } from "./router"
 import { cameraSettingsDefault, CameraSettingsProvider, reducerCameraSettings } from "./services/camera"
 import { databaseFolder, fullPathExported, fullPathPdf, fullPathPicture, fullPathRoot, fullPathRootExternal, fullPathTemporary, fullPathTemporaryCompressedPicture, fullPathTemporaryExported, fullPathTemporaryImported } from "./services/constant"
 import { DocumentDataProvider, reducerDocumentData } from "./services/document"
-import { log, logCriticalError, stringfyError } from "./services/log"
-import { AppDarkTheme, AppLightTheme, AppThemeProvider, themeDefault, ThemeType } from "./theme"
+import { logCriticalError, stringfyError } from "./services/log"
+import { AppSettingsKeys } from "./services/storage"
+import { AppThemeProvider, themeDefault, ThemeType } from "./theme"
 
 
 SQLite.enablePromise(true)
@@ -28,54 +29,28 @@ export function App() {
 
 
     const deviceTheme = useColorScheme()
+    const [appTheme, setAppTheme] = useMMKVString(AppSettingsKeys.THEME)
+    const isDarkTheme = (appTheme === "auto" && deviceTheme === "dark") || appTheme === "dark"
 
     const [appDb, setAppDb] = useState<SQLite.SQLiteDatabase | undefined>(undefined)
     const [logDb, setLogDb] = useState<SQLite.SQLiteDatabase | undefined>(undefined)
-    const [theme, setTheme] = useState<ThemeType | undefined>(undefined)
     const [cameraSettingsState, dispatchCameraSettings] = useReducer(reducerCameraSettings, cameraSettingsDefault)
     const [documentDataState, dispatchDocumentData] = useReducer(reducerDocumentData, undefined)
 
 
-    async function getTheme() {
-        let appTheme: ThemeType = themeDefault
-        try {
-            appTheme = await SettingsDatabase.getSettingKey("theme")
-        } catch (error) {
-            log.error(`Error getting theme from database: "${stringfyError(error)}". Fallback to default theme`)
-            Alert.alert(
-                translate("warn"),
-                translate("App_alert_errorLoadingTheme_text")
-            )
+    function getAppTheme() {
+        if (isDarkTheme) {
+            const { AppDarkTheme } = require("./theme")
+            AppDarkTheme.appTheme = appTheme
+            AppDarkTheme.switchTheme = setAppTheme
+            return AppDarkTheme
         }
 
-        AppLightTheme.appTheme = appTheme
-        AppLightTheme.switchTheme = switchTheme
-        AppDarkTheme.appTheme = appTheme
-        AppDarkTheme.switchTheme = switchTheme
-
-        if (appTheme === "auto") {
-            if (deviceTheme) {
-                setTheme(deviceTheme)
-                return
-            }
-            setTheme("light")
-            return
-        }
-        setTheme(appTheme)
-    }
-
-    async function switchTheme(newTheme: ThemeType) {
-        try {
-            await SettingsDatabase.updateSettings("theme", newTheme)
-        } catch (error) {
-            log.error(`Error updating theme in settings database: "${stringfyError(error)}". Previews value was kept`)
-            Alert.alert(
-                translate("warn"),
-                translate("App_alert_errorSavingTheme_text")
-            )
-        }
-
-        await getTheme()
+        const currentAppTheme = (appTheme ?? themeDefault) as ThemeType
+        const { AppLightTheme } = require("./theme")
+        AppLightTheme.appTheme = currentAppTheme
+        AppLightTheme.switchTheme = setAppTheme
+        return AppLightTheme
     }
 
 
@@ -137,19 +112,6 @@ export function App() {
                 logCriticalError(`Error opening log database: "${stringfyError(error)}"`)
             })
     }, [])
-
-    useEffect(() => {
-        if (appDb && logDb) {
-            getTheme()
-        }
-    }, [deviceTheme, appDb, logDb])
-
-    useEffect(() => {
-        if (theme) {
-            StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content")
-            StatusBar.setBackgroundColor(theme === "dark" ? AppDarkTheme.color.background : AppLightTheme.color.background)
-        }
-    }, [theme])
 
 
     useEffect(() => {
@@ -286,14 +248,14 @@ export function App() {
     })
 
 
-    if (!theme || !appDb || !logDb) {
+    if (!appDb || !logDb) {
         return null
     }
 
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <AppThemeProvider value={(theme === "light") ? AppLightTheme : AppDarkTheme}>
+            <AppThemeProvider value={getAppTheme()}>
                 <MenuProvider backHandler={true}>
                     <DocumentDataProvider value={{ documentDataState, dispatchDocumentData }}>
                         <CameraSettingsProvider value={{ cameraSettingsState, dispatchCameraSettings }}>
