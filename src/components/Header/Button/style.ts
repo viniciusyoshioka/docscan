@@ -7,5 +7,4 @@ export const HeaderButtonBase = styled(BorderlessButton)`
     justify-content: center;
     width: 40px;
     height: 40px;
-    margin-right: 2px;
 `

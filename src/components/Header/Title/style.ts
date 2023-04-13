@@ -6,6 +6,5 @@ import { StyledProps } from "../../../theme"
 export const HeaderTitleBase = styled.Text`
     flex: 1;
     font-size: 20px;
-    margin-right: 4px;
     color: ${(props: StyledProps) => props.theme.color.onSurface};
 `

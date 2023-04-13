@@ -27,8 +27,7 @@ export const Header = (props: HeaderProps) => (
 
                 if (child.type === HeaderTitle) {
                     props.style = [
-                        index === 0 && { marginLeft: 8 },
-                        index !== 0 && { marginLeft: 24 },
+                        { marginLeft: 8 },
                         child.props.style,
                     ]
                 }
