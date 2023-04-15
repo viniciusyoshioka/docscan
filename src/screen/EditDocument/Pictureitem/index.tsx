@@ -8,24 +8,10 @@ import { useAppTheme } from "../../../theme"
 import { PictureButton, PictureImage, PICTURE_BUTTON_MARGIN, SelectedSurface } from "./style"
 
 
-/**
- * Amount of columns to be shown when the windows is vertical
- */
 export const VERTICAL_COLUMN_COUNT = 2
-
-/**
- * Amount of columns to be shown when the windows is horizontal
- */
 export const HORIZONTAL_COLUMN_COUNT = 4
 
-/**
- * Function that calculates the size of PictureItem and returns it
- *
- * @param windowWidth width of app's window
- * @param columnCount amount of columns that are being shown in PictureItem's list
- *
- * @returns number of PictureItem's size
- */
+
 export function getPictureItemSize(windowWidth: number, columnCount: number): number {
     const singlePictureItemMarginWidth = (2 * PICTURE_BUTTON_MARGIN)
     const pictureItemRowWidth = windowWidth - singlePictureItemMarginWidth
@@ -45,10 +31,9 @@ export function PictureItem(props: PictureItemProps) {
     const { width } = useWindowDimensions()
 
     const { color } = useAppTheme()
+    const { onPress, onLongPress } = useSelectableItem(props)
 
     const pictureItemSize = useMemo(() => getPictureItemSize(width, props.columnCount), [width, props.columnCount])
-
-    const { onPress, onLongPress } = useSelectableItem(props)
 
 
     return (
@@ -57,24 +42,19 @@ export function PictureItem(props: PictureItemProps) {
             minDurationMs={400}
             onHandlerStateChange={({ nativeEvent }) => onLongPress(nativeEvent)}
         >
-            <PictureButton
-                style={{ maxWidth: pictureItemSize }}
-                onPress={onPress}
-            >
+            <PictureButton style={{ maxWidth: pictureItemSize }} onPress={onPress}>
                 <PictureImage source={{ uri: `file://${props.picturePath}` }} />
 
-                {props.isSelectionMode && props.isSelected && (
-                    <>
-                        <SelectedSurface />
+                {props.isSelectionMode && props.isSelected && <>
+                    <SelectedSurface />
 
-                        <Icon
-                            name={"done"}
-                            size={30}
-                            color={color.onPrimary}
-                            style={{ position: "absolute" }}
-                        />
-                    </>
-                )}
+                    <Icon
+                        name={"done"}
+                        size={32}
+                        color={color.onPrimary}
+                        style={{ position: "absolute" }}
+                    />
+                </>}
             </PictureButton>
         </LongPressGestureHandler>
     )
