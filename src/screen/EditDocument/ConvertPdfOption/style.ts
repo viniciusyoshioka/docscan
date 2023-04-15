@@ -1,17 +1,15 @@
+import { Text } from "@elementium/native"
 import styled from "styled-components/native"
 
 import { StyledProps } from "../../../theme"
 
 
-export const CompressionText = styled.Text`
+export const CompressionText = styled(Text)<StyledProps>`
     width: 40px;
     text-align: left;
     text-align-vertical: center;
-    font-size: 15px;
-    color: ${(props: StyledProps & { disabled: boolean }) => props.theme.color.onBackground};
-    opacity: ${(props: StyledProps & { disabled: boolean }) => props.disabled
-        ? props.theme.state.content.disabled
-        : 1};
+    color: ${props => props.theme.color.onSurface};
+    opacity: ${props => props.disabled ? props.theme.state.content.disabled : 1};
 `
 
 
