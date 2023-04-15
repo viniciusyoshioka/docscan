@@ -31,6 +31,7 @@ import { CameraButtonWrapper, CameraTextWrapper, CameraWrapper, NoCameraAvailabl
 // TODO add support to multiple back cameras
 // TODO add zoom indicator
 // TODO fix camera control overlapping camera
+// TODO fix focus indicator showing in its last position
 export function Camera() {
 
 
@@ -322,11 +323,7 @@ export function Camera() {
 
     return (
         <Screen style={screenStyle}>
-            <StatusBar
-                hidden={isShowingCamera}
-                backgroundColor={color.background}
-                barStyle={isDark ? "light-content" : "dark-content"}
-            />
+            <StatusBar hidden={isShowingCamera} />
 
             <CameraHeader
                 goBack={goBack}
@@ -337,25 +334,26 @@ export function Camera() {
             {(hasCameraPermission === undefined || hasCameraPermission === false) && (
                 <>
                     <CameraTextWrapper>
-                        <NoCameraAvailableTitle>
+                        <NoCameraAvailableTitle variant={"title"} size={"large"}>
                             {translate("Camera_noPermission")}
                         </NoCameraAvailableTitle>
 
-                        <NoCameraAvailableText>
+                        <NoCameraAvailableText variant={"body"} size={"large"}>
                             &bull; {translate("Camera_allowCameraWithGrantPermission")}
                         </NoCameraAvailableText>
 
-                        <NoCameraAvailableText>
+                        <NoCameraAvailableText variant={"body"} size={"large"}>
                             &bull; {translate("Camera_allowCameraThroughSettings")}
                         </NoCameraAvailableText>
 
-                        <NoCameraAvailableText>
+                        <NoCameraAvailableText variant={"body"} size={"large"}>
                             &bull; {translate("Camera_enableCamera")}
                         </NoCameraAvailableText>
                     </CameraTextWrapper>
 
                     <CameraButtonWrapper style={{ bottom: CAMERA_CONTROL_HEIGHT }}>
                         <Button
+                            variant={"outline"}
                             text={translate("Camera_openSettings")}
                             onPress={() => Linking.openSettings()}
                             style={{ width: "100%" }}
@@ -364,21 +362,19 @@ export function Camera() {
                         <Button
                             text={translate("Camera_grantPermission")}
                             onPress={requestAndSetCameraPermission}
-                            style={{ marginTop: 8, width: "100%" }}
+                            style={{ width: "100%" }}
                         />
                     </CameraButtonWrapper>
                 </>
             )}
 
-            {(hasCameraPermission && !cameraDevice) && (
-                <EmptyList
-                    iconName={"camera-off-outline"}
-                    iconGroup={"material-community"}
-                    iconSize={56}
-                    message={translate("Camera_cameraNotAvailable")}
-                    style={{ marginBottom: 16 }}
-                />
-            )}
+            <EmptyList
+                iconName={"camera-off-outline"}
+                iconGroup={"material-community"}
+                iconSize={56}
+                message={translate("Camera_cameraNotAvailable")}
+                visible={hasCameraPermission && !cameraDevice}
+            />
 
             {(hasCameraPermission && cameraDevice && showCamera) && (
                 <CameraWrapper>

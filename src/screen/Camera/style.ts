@@ -1,4 +1,5 @@
-import { Text, View } from "react-native"
+import { Text } from "@elementium/native"
+import { View } from "react-native"
 import styled from "styled-components/native"
 
 import { StyledProps } from "../../theme"
@@ -16,6 +17,7 @@ export const CameraButtonWrapper = styled(View)`
     align-items: center;
     justify-content: center;
     padding: 16px;
+    gap: 8px;
 `
 
 
@@ -26,18 +28,16 @@ export const CameraWrapper = styled(View)`
 `
 
 
-export const NoCameraAvailableTitle = styled(Text)`
+export const NoCameraAvailableTitle = styled(Text)<StyledProps>`
     width: 100%;
     margin-bottom: 16px;
-    font-size: 19px;
     font-weight: bold;
     text-align: center;
-    color: ${(props: StyledProps) => props.theme.color.onBackground};
+    color: ${props => props.theme.color.onBackground};
 `
 
 
-export const NoCameraAvailableText = styled(Text)`
-    margin-bottom: 2px;
-    font-size: 17px;
-    color: ${(props: StyledProps) => props.theme.color.onBackground};
+export const NoCameraAvailableText = styled(Text)<StyledProps>`
+    margin-bottom: 4px;
+    color: ${props => props.theme.color.onBackground};
 `
