@@ -1,31 +1,41 @@
-import { Icon, IconGroup } from "@elementium/native"
+import { Color } from "@elementium/color"
+import { ExtendableIconProps, Icon } from "@elementium/native"
 import { BorderlessButtonProps } from "react-native-gesture-handler"
 
 import { useAppTheme } from "../../../theme"
-import { HeaderButtonBase } from "./style"
+import { HeaderButtonBase, HEADER_BUTTON_RADIUS } from "./style"
 
 
-export interface HeaderButtonProps extends BorderlessButtonProps {
-    iconName: string;
-    iconGroup?: IconGroup;
-    iconSize?: number;
-    iconColor?: string;
-}
+export { HEADER_BUTTON_RADIUS, HEADER_BUTTON_SIZE } from "./style"
 
 
-export const HeaderButton = (props: HeaderButtonProps) => {
+type PropsToOmit = "style" | "onPress" | "onLongPress"
 
 
-    const { color } = useAppTheme()
+export interface HeaderButtonProps extends BorderlessButtonProps, Omit<ExtendableIconProps, PropsToOmit> {}
+
+
+export function HeaderButton(props: HeaderButtonProps) {
+
+
+    const { color, state } = useAppTheme()
+
+
+    const contentColor = props.iconColor ?? color.onSurface
+    const rippleColor = props.rippleColor ?? new Color(contentColor as string).setA(state.container.pressed).toRgba()
 
 
     return (
-        <HeaderButtonBase {...props}>
+        <HeaderButtonBase
+            rippleColor={rippleColor}
+            rippleRadius={HEADER_BUTTON_RADIUS}
+            {...props}
+        >
             <Icon
                 name={props.iconName}
                 group={props.iconGroup}
                 size={props.iconSize ?? 24}
-                color={props.iconColor ?? color.onSurface}
+                color={props.iconColor ?? contentColor}
             />
         </HeaderButtonBase>
     )

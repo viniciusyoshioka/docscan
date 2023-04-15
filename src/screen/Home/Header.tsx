@@ -38,7 +38,7 @@ export function HomeHeader(props: HomeHeaderProps) {
                 />
             )}
 
-            <HeaderTitle title={getTitle()} />
+            <HeaderTitle children={getTitle()} />
 
             {props.isSelectionMode && (
                 <HeaderButton

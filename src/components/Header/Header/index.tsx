@@ -1,37 +1,53 @@
-import React, { Children, cloneElement, ReactNode } from "react"
+import React, { Children, cloneElement } from "react"
 import { StyleProp, ViewProps, ViewStyle } from "react-native"
 
-import { HeaderButton, HeaderTitle } from ".."
+import { HeaderButton } from "../Button"
+import { HeaderTitle } from "../Title"
 import { HeaderBase } from "./style"
 
 
 export { HEADER_HEIGHT } from "./style"
 
 
-export interface HeaderProps extends ViewProps {
-    children: ReactNode;
-}
+export interface HeaderProps extends ViewProps {}
 
 
-export const Header = (props: HeaderProps) => (
-    <HeaderBase {...props}>
-        {Children.toArray(props.children)
-            .filter(child => child != null && typeof child !== "boolean")
-            .map((child, index) => {
-                // @ts-expect-error: TypeScript complains about the type of type but it doesn't matter
-                if (!React.isValidElement(child) || ![HeaderTitle, HeaderButton].includes(child.type)) {
+export function Header(props: HeaderProps) {
+    return (
+        <HeaderBase {...props}>
+            {Children.toArray(props.children)
+                .filter(child => child != null && typeof child !== "boolean")
+                .map((child, index) => {
+                    const isValidElement = React.isValidElement(child)
+
+                    const isHeaderButton = isValidElement && child.type === HeaderButton
+                    if (isHeaderButton && index === 0) {
+                        const styleProps: StyleProp<ViewStyle> = { marginLeft: 4 }
+
+                        const childProps = child.props as { style?: StyleProp<ViewStyle> }
+                        const componentProps = {
+                            ...childProps,
+                            style: [styleProps, childProps.style],
+                        }
+                        return cloneElement(child, componentProps)
+                    }
+
+                    const isHeaderTitle = isValidElement && child.type === HeaderTitle
+                    if (isHeaderTitle) {
+                        const styleProps: StyleProp<ViewStyle> = {
+                            marginLeft: (index === 0) ? 16 : 4,
+                        }
+
+                        const childProps = child.props as { style?: StyleProp<ViewStyle> }
+                        const componentProps = {
+                            ...childProps,
+                            style: [styleProps, childProps.style],
+                        }
+                        return cloneElement(child, componentProps)
+                    }
+
                     return child
-                }
-
-                const props: { style?: StyleProp<ViewStyle> } = {}
-
-                if (child.type === HeaderTitle) {
-                    props.style = [
-                        { marginLeft: 8 },
-                        child.props.style,
-                    ]
-                }
-                return cloneElement(child, props)
-            })}
-    </HeaderBase>
-)
+                })}
+        </HeaderBase>
+    )
+}
