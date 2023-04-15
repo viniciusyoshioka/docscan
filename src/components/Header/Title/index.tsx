@@ -4,7 +4,9 @@ import { StyleSheet } from "react-native"
 import { useAppTheme } from "../../../theme"
 
 
-export interface HeaderTitleProps extends TextProps {}
+export interface HeaderTitleProps extends TextProps {
+    title?: string;
+}
 
 
 export function HeaderTitle(props: HeaderTitleProps) {
@@ -19,6 +21,7 @@ export function HeaderTitle(props: HeaderTitleProps) {
             size={"large"}
             numberOfLines={1}
             {...props}
+            children={props.children ?? props.title}
             style={[styles.title, { color: color.onSurface }, props.style]}
         />
     )
