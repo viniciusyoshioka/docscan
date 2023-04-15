@@ -52,14 +52,12 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
 
             <HeaderTitle title={getTitle()} />
 
-            {!props.isSelectionMode && (
+            {!props.isSelectionMode && <>
                 <HeaderButton
                     iconName={"add-a-photo"}
                     onPress={props.openCamera}
                 />
-            )}
 
-            {!props.isSelectionMode && (
                 <EditDocumentMenu
                     convertToPdf={props.convertToPdf}
                     shareDocument={props.shareDocument}
@@ -68,21 +66,19 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
                     deletePdf={props.deletePdf}
                     deleteDocument={props.deleteDocument}
                 />
-            )}
+            </>}
 
-            {props.isSelectionMode && (
+            {props.isSelectionMode && <>
                 <HeaderButton
                     iconName={"swap-horiz"}
                     onPress={props.invertSelection}
                 />
-            )}
 
-            {props.isSelectionMode && (
                 <HeaderButton
                     iconName={"delete"}
                     onPress={props.deletePicture}
                 />
-            )}
+            </>}
         </Header>
     )
 }
