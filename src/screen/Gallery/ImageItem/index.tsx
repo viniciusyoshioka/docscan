@@ -9,24 +9,10 @@ import { useAppTheme } from "../../../theme"
 import { Button, SelectionSurface } from "./style"
 
 
-/**
- * Amount of columns to be shown when the window is vertical
- */
-export const VERTICAL_COLUMN_COUNT = 3
+export const VERTICAL_COLUMN_COUNT = 4
+export const HORIZONTAL_COLUMN_COUNT = 7
 
-/**
- * Amount of columns to be shown when the window is horizontal
- */
-export const HORIZONTAL_COLUMN_COUNT = 6
 
-/**
- * Function that calculates the size of ImageItem and returns it
- *
- * @param windowWidth width of app's window
- * @param columnCount amount of columns that are being shown in ImageItem's list
- *
- * @returns number of ImageItem's size
- */
 export function getImageItemSize(windowWidth: number, columnCount: number): number {
     return (windowWidth / columnCount)
 }
@@ -45,10 +31,9 @@ export function ImageItem(props: ImageItemProps) {
     const { width } = useWindowDimensions()
 
     const { color } = useAppTheme()
+    const { onPress, onLongPress } = useSelectableItem(props)
 
     const imageSize = useMemo(() => getImageItemSize(width, props.columnCount), [width, props.columnCount])
-
-    const { onPress, onLongPress } = useSelectableItem(props)
 
 
     return (
@@ -57,27 +42,22 @@ export function ImageItem(props: ImageItemProps) {
             minDurationMs={400}
             onHandlerStateChange={({ nativeEvent }) => onLongPress(nativeEvent)}
         >
-            <Button
-                onPress={onPress}
-                style={{ width: imageSize }}
-            >
+            <Button onPress={onPress} style={{ width: imageSize }}>
                 <FastImage
                     source={{ uri: `file://${props.imagePath}` }}
                     style={{ width: imageSize, aspectRatio: 1 }}
                 />
 
-                {props.isSelectionMode && props.isSelected && (
-                    <>
-                        <SelectionSurface />
+                {props.isSelectionMode && props.isSelected && <>
+                    <SelectionSurface />
 
-                        <Icon
-                            name={"done"}
-                            size={30}
-                            color={color.onPrimary}
-                            style={{ position: "absolute" }}
-                        />
-                    </>
-                )}
+                    <Icon
+                        name={"done"}
+                        size={32}
+                        color={color.onPrimary}
+                        style={{ position: "absolute" }}
+                    />
+                </>}
             </Button>
         </LongPressGestureHandler>
     )
