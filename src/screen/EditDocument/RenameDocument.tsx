@@ -71,7 +71,7 @@ export function RenameDocument(props: RenameDocumentProps) {
                 value={documentName}
                 onChangeText={text => setDocumentName(text)}
                 selectTextOnFocus={true}
-                style={{ width: "100%" }}
+                style={{ width: "100%", marginTop: 16 }}
             />
 
             <ModalActions>

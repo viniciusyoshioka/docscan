@@ -86,7 +86,7 @@ export const pt_BR: TranslationObjectType = {
     ConvertPdfOption_lowCompression: "Baixa",
     ConvertPdfOption_customCompression: "Personalizada",
     // EditDocument RenameDocument
-    RenameDocument_title: "Renomear documento",
+    RenameDocument_title: "Renomear",
     RenameDocument_documentName_placeholder: "Nome do documento",
 
     // Gallery alert
