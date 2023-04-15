@@ -38,21 +38,7 @@ export function HomeHeader(props: HomeHeaderProps) {
                 />
             )}
 
-            <HeaderTitle children={getTitle()} />
-
-            {props.isSelectionMode && (
-                <HeaderButton
-                    iconName={"swap-horiz"}
-                    onPress={props.invertSelection}
-                />
-            )}
-
-            {props.isSelectionMode && (
-                <HeaderButton
-                    iconName={"delete"}
-                    onPress={props.deleteSelectedDocuments}
-                />
-            )}
+            <HeaderTitle title={getTitle()} />
 
             {!props.isSelectionMode && (
                 <HeaderButton
@@ -60,6 +46,18 @@ export function HomeHeader(props: HomeHeaderProps) {
                     onPress={props.scanNewDocument}
                 />
             )}
+
+            {props.isSelectionMode && <>
+                <HeaderButton
+                    iconName={"swap-horiz"}
+                    onPress={props.invertSelection}
+                />
+
+                <HeaderButton
+                    iconName={"delete"}
+                    onPress={props.deleteSelectedDocuments}
+                />
+            </>}
 
             <HomeMenu
                 isSelectionMode={props.isSelectionMode}

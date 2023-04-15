@@ -15,7 +15,7 @@ export function SettingsHeader(props: SettingsHeaderProps) {
                 onPress={props.goBack}
             />
 
-            <HeaderTitle children={translate("Settings_header_title")} />
+            <HeaderTitle title={translate("Settings_header_title")} />
         </Header>
     )
 }
