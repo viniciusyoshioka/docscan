@@ -20,6 +20,7 @@ import { getImageItemSize, HORIZONTAL_COLUMN_COUNT, ImageItem, VERTICAL_COLUMN_C
 import { LoadingIndicator } from "./LoadingIndicator"
 
 
+// TODO move the loading of images to a hook
 export function Gallery() {
 
 
