@@ -3,23 +3,25 @@ import { OrientationType } from "react-native-orientation-locker"
 import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
 
 import { useDeviceOrientation } from "../../../hooks"
-import { ControlButton } from "./ControlButton"
-import { ControlAction, ControlView, CONTROL_ACTION_HEIGHT, CONTROL_BUTTON_HEIGHT, CONTROL_VIEW_MIN_HEIGHT, CONTROL_VIEW_PADDING_VERTIVAL } from "./style"
+import { ControlAction, CONTROL_ACTION_SIZE } from "./ControlAction"
+import { ControlButton, CONTROL_BUTTON_HEIGHT } from "./ControlButton"
+import { ControlView, CONTROL_VIEW_MIN_HEIGHT, CONTROL_VIEW_PADDING_VERTIVAL } from "./ControlView"
 
 
 export const CAMERA_CONTROL_HEIGHT = Math.max(
     CONTROL_VIEW_MIN_HEIGHT,
-    CONTROL_ACTION_HEIGHT + (2 * CONTROL_VIEW_PADDING_VERTIVAL),
+    CONTROL_ACTION_SIZE + (2 * CONTROL_VIEW_PADDING_VERTIVAL),
     CONTROL_BUTTON_HEIGHT + (2 * CONTROL_VIEW_PADDING_VERTIVAL)
 )
 
 
 export interface CameraControlProps {
     screenAction?: "replace-picture";
-    pictureListLength: number;
+    isShowingCamera: boolean;
     addPictureFromGallery: () => void;
     takePicture: () => void;
     editDocument: () => void;
+    pictureListLength: number;
 }
 
 
@@ -97,10 +99,10 @@ export const CameraControl = forwardRef((props: CameraControlProps, ref: Forward
 
 
     return (
-        <ControlView>
+        <ControlView isShowingCamera={props.isShowingCamera}>
             <Reanimated.View style={orientationStyle}>
                 <ControlButton
-                    icon={"collections"}
+                    iconName={"collections"}
                     onPress={props.addPictureFromGallery}
                 />
             </Reanimated.View>
@@ -115,7 +117,7 @@ export const CameraControl = forwardRef((props: CameraControlProps, ref: Forward
             {props?.screenAction !== "replace-picture" && (
                 <Reanimated.View style={orientationStyle}>
                     <ControlButton
-                        icon={"description"}
+                        iconName={"description"}
                         indexCount={props.pictureListLength.toString()}
                         onPress={props.editDocument}
                     />

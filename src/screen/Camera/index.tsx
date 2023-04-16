@@ -351,7 +351,7 @@ export function Camera() {
                         </NoCameraAvailableText>
                     </CameraTextWrapper>
 
-                    <CameraButtonWrapper style={{ bottom: CAMERA_CONTROL_HEIGHT }}>
+                    <CameraButtonWrapper style={{ paddingBottom: CAMERA_CONTROL_HEIGHT }}>
                         <Button
                             variant={"outline"}
                             text={translate("Camera_openSettings")}
@@ -408,11 +408,12 @@ export function Camera() {
 
             <CameraControl
                 ref={cameraControlRef}
-                pictureListLength={documentDataState?.pictureList.length || 0}
                 screenAction={params?.screenAction}
+                isShowingCamera={isShowingCamera}
                 addPictureFromGallery={addPictureFromGallery}
                 takePicture={takePicture}
                 editDocument={editDocument}
+                pictureListLength={documentDataState?.pictureList.length || 0}
             />
 
             <CameraSettings
