@@ -7,3 +7,9 @@ export enum AppSettingsKeys {
     CAMERA_ID = "settings.camera.id",
     CAMERA_RATIO = "settings.camera.ratio",
 }
+
+
+export type MMKVHook<T> = [
+    value: T | undefined,
+    setValue: (value: T | ((current: T | undefined) => T | undefined) | undefined) => void
+]
