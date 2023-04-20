@@ -5,7 +5,6 @@ import { appDatabaseFullPath, logDatabaseFullPath } from "../services/constant"
 
 export * as DocumentDatabase from "./Document"
 export * as LogDatabase from "./Log"
-export * as SettingsDatabase from "./Settings"
 
 
 /**
