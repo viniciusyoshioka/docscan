@@ -5,9 +5,8 @@ import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTimi
 
 import { useDeviceOrientation } from "../../../hooks"
 import { translate } from "../../../locales"
-import { cameraFlashDefault, cameraRatioDefault, cameraTypeDefault } from "../../../services/settings"
+import { CameraRatio, CameraType, FlashType, settingsCameraFlashDefault, settingsCameraRatioDefault, settingsCameraTypeDefault } from "../../../services/settings"
 import { AppSettingsKeys, MMKVHook } from "../../../services/storage"
-import { CameraRatio, CameraType, FlashType } from "../../../types"
 import { CameraSettingsButton } from "./CameraSettingsButton"
 import { CameraSettingsModal, CameraSettingsModalProps } from "./CameraSettingsModal"
 
@@ -102,9 +101,9 @@ export function CameraSettings(props: CameraSettingsProps) {
     }
 
     async function resetCameraSettings() {
-        setCameraFlash(cameraFlashDefault)
-        setCameraType(cameraTypeDefault)
-        setCameraRatio(cameraRatioDefault)
+        setCameraFlash(settingsCameraFlashDefault)
+        setCameraType(settingsCameraTypeDefault)
+        setCameraRatio(settingsCameraRatioDefault)
     }
 
 
