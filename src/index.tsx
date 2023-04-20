@@ -10,7 +10,7 @@ import { useKeepAwakeOnDev } from "./hooks"
 import { Router } from "./router"
 import { DocumentDataProvider, reducerDocumentData } from "./services/document"
 import { logCriticalError, stringfyError } from "./services/log"
-import { AppSettingsKeys, setStorageDefaultValues } from "./services/storage"
+import { AppSettingsKeys, MMKVHook, setStorageDefaultValues } from "./services/storage"
 import { AppThemeProvider, themeDefault, ThemeType } from "./theme"
 
 
@@ -25,7 +25,7 @@ export function App() {
 
 
     const deviceTheme = useColorScheme()
-    const [appTheme, setAppTheme] = useMMKVString(AppSettingsKeys.THEME)
+    const [appTheme, setAppTheme] = useMMKVString(AppSettingsKeys.THEME) as MMKVHook<ThemeType>
     const isDarkTheme = (appTheme === "auto" && deviceTheme === "dark") || appTheme === "dark"
 
     const [appDb, setAppDb] = useState<SQLite.SQLiteDatabase>()
