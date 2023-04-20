@@ -8,7 +8,6 @@ import SQLite from "react-native-sqlite-storage"
 import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase } from "./database"
 import { useKeepAwakeOnDev } from "./hooks"
 import { Router } from "./router"
-import { cameraSettingsDefault, CameraSettingsProvider, reducerCameraSettings } from "./services/camera"
 import { DocumentDataProvider, reducerDocumentData } from "./services/document"
 import { logCriticalError, stringfyError } from "./services/log"
 import { AppSettingsKeys, setStorageDefaultValues } from "./services/storage"
@@ -32,7 +31,6 @@ export function App() {
 
     const [appDb, setAppDb] = useState<SQLite.SQLiteDatabase>()
     const [logDb, setLogDb] = useState<SQLite.SQLiteDatabase>()
-    const [cameraSettingsState, dispatchCameraSettings] = useReducer(reducerCameraSettings, cameraSettingsDefault)
     const [documentDataState, dispatchDocumentData] = useReducer(reducerDocumentData, undefined)
 
 
@@ -107,9 +105,7 @@ export function App() {
             <AppThemeProvider value={getAppTheme()}>
                 <MenuProvider backHandler={true}>
                     <DocumentDataProvider value={{ documentDataState, dispatchDocumentData }}>
-                        <CameraSettingsProvider value={{ cameraSettingsState, dispatchCameraSettings }}>
-                            <Router />
-                        </CameraSettingsProvider>
+                        <Router />
                     </DocumentDataProvider>
                 </MenuProvider>
             </AppThemeProvider>

@@ -1,7 +1,4 @@
 export * from "./camera"
 export * from "./document"
-export * from "./reducer-camera"
 export * from "./reducer-document"
 export * from "./screen-params"
-export * from "./settings"
-export * from "./settings-camera"
