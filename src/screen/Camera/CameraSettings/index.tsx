@@ -6,7 +6,7 @@ import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTimi
 import { useDeviceOrientation } from "../../../hooks"
 import { translate } from "../../../locales"
 import { CameraRatio, CameraType, FlashType, settingsCameraFlashDefault, settingsCameraRatioDefault, settingsCameraTypeDefault } from "../../../services/settings"
-import { AppSettingsKeys, MMKVHook } from "../../../services/storage"
+import { AppStorageKeys, MMKVHook } from "../../../services/storage"
 import { CameraSettingsButton } from "./CameraSettingsButton"
 import { CameraSettingsModal, CameraSettingsModalProps } from "./CameraSettingsModal"
 
@@ -21,9 +21,9 @@ export function CameraSettings(props: CameraSettingsProps) {
 
     const deviceOrientation = useDeviceOrientation()
 
-    const [cameraFlash, setCameraFlash] = useMMKVString(AppSettingsKeys.CAMERA_FLASH) as MMKVHook<FlashType>
-    const [cameraType, setCameraType] = useMMKVString(AppSettingsKeys.CAMERA_TYPE) as MMKVHook<CameraType>
-    const [cameraRatio, setCameraRatio] = useMMKVString(AppSettingsKeys.CAMERA_RATIO) as MMKVHook<CameraRatio>
+    const [cameraFlash, setCameraFlash] = useMMKVString(AppStorageKeys.CAMERA_FLASH) as MMKVHook<FlashType>
+    const [cameraType, setCameraType] = useMMKVString(AppStorageKeys.CAMERA_TYPE) as MMKVHook<CameraType>
+    const [cameraRatio, setCameraRatio] = useMMKVString(AppStorageKeys.CAMERA_RATIO) as MMKVHook<CameraRatio>
 
     const rotationDegree = useSharedValue(0)
 

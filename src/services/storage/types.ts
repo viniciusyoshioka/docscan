@@ -1,5 +1,5 @@
 
-export enum AppSettingsKeys {
+export enum AppStorageKeys {
     THEME = "settings.theme",
     CAMERA_FLASH = "settings.camera.flash",
     CAMERA_TYPE = "settings.camera.type",
