@@ -112,6 +112,7 @@ export const CameraControl = forwardRef((props: CameraControlProps, ref: Forward
             <ControlAction
                 disabled={!isActionEnabled}
                 onPress={props.takePicture}
+                isShowingCamera={props.isShowingCamera}
             />
 
 

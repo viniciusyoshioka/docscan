@@ -8,23 +8,29 @@ import { useAppTheme } from "../../../theme"
 export const CONTROL_ACTION_SIZE = 56
 
 
-export interface ControlActionProps extends TouchableOpacityProps {}
+export interface ControlActionProps extends TouchableOpacityProps {
+    isShowingCamera?: boolean;
+}
 
 
 export function ControlAction(props: ControlActionProps) {
 
 
-    const { state } = useAppTheme()
+    const { color, state } = useAppTheme()
 
 
     const style = StyleSheet.flatten(props.style)
-    const backgroundColorStyle = (style && style.backgroundColor) ?? "white"
+    const backgroundColorStyle = useMemo(() => {
+        if (props.isShowingCamera) return "white"
+        if (style && style.backgroundColor) return style.backgroundColor
+        return color.onBackground
+    }, [props.isShowingCamera, style, color.onBackground])
     const backgroundColor = useMemo(() => {
         if (props.disabled) {
             return new Color(backgroundColorStyle as string).setA(state.content.disabled).toRgba()
         }
         return backgroundColorStyle
-    }, [props.disabled])
+    }, [props.disabled, backgroundColorStyle, state.container.disabled])
 
 
     return (
