@@ -15,7 +15,6 @@ import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { getCameraRatioNumber, useSettings } from "../../services/settings"
-import { useAppTheme } from "../../theme"
 import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { CameraControl, CameraControlRef, CAMERA_CONTROL_HEIGHT } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
@@ -47,7 +46,6 @@ export function Camera() {
 
     const { settings } = useSettings()
     const { documentDataState, dispatchDocumentData } = useDocumentData()
-    const { color, isDark } = useAppTheme()
 
     const cameraRef = useRef<RNCamera>(null)
     const cameraControlRef = useRef<CameraControlRef>(null)
