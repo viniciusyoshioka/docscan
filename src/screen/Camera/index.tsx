@@ -16,7 +16,7 @@ import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { getCameraPermission } from "../../services/permission"
-import { getCameraRatioNumber } from "../../services/settings"
+import { getCameraRatioNumber, useSettings } from "../../services/settings"
 import { useAppTheme } from "../../theme"
 import { CameraOrientationType, DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { CameraControl, CameraControlRef, CAMERA_CONTROL_HEIGHT } from "./CameraControl"
@@ -42,6 +42,7 @@ export function Camera() {
     const isForeground = useIsForeground()
     const deviceOrientation = useDeviceOrientation()
 
+    const { settings } = useSettings()
     const { documentDataState, dispatchDocumentData } = useDocumentData()
     const { color, isDark } = useAppTheme()
 
@@ -60,7 +61,7 @@ export function Camera() {
     const focusPosY = useSharedValue(0)
 
     const cameraDevices = useCameraDevices()
-    const cameraDevice = cameraDevices ? cameraDevices[cameraSettingsState.cameraType] : undefined
+    const cameraDevice = cameraDevices ? cameraDevices[settings.camera.type] : undefined
     const isCameraFlippable = useMemo(() =>
         cameraDevices !== undefined && cameraDevices.back !== undefined && cameraDevices.front !== undefined
     , [cameraDevices])
@@ -202,7 +203,7 @@ export function Camera() {
             }
 
             const response = await cameraRef.current.takePhoto({
-                flash: cameraSettingsState.flash,
+                flash: settings.camera.flash,
             })
 
             const picturePath = await getDocumentPicturePath(response.path)
@@ -316,7 +317,7 @@ export function Camera() {
         setTimeout(() => {
             setShowCamera(true)
         }, 100)
-    }, [cameraSettingsState.cameraRatio])
+    }, [settings.camera.ratio])
 
 
     return (
