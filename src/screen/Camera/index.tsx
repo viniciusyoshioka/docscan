@@ -11,7 +11,6 @@ import { Camera as RNCamera } from "react-native-vision-camera"
 import { EmptyList } from "../../components"
 import { useBackHandler, useCameraDevices, useDeviceOrientation, useIsForeground } from "../../hooks"
 import { translate } from "../../locales"
-import { useCameraSettings } from "../../services/camera"
 import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
 import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
@@ -43,7 +42,6 @@ export function Camera() {
     const isForeground = useIsForeground()
     const deviceOrientation = useDeviceOrientation()
 
-    const { cameraSettingsState } = useCameraSettings()
     const { documentDataState, dispatchDocumentData } = useDocumentData()
     const { color, isDark } = useAppTheme()
 
