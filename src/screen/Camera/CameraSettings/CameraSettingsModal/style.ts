@@ -1,22 +1,27 @@
 import styled from "styled-components/native"
 
+import { StyledProps } from "../../../../theme"
 import { CAMERA_SETTINGS_BUTTON_HEIGHT } from "../CameraSettingsButton"
 
 
-export const ModalView = styled.TouchableOpacity`
-    flex: 1;
+export const PseudoModal = styled.TouchableOpacity`
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
     align-items: center;
     justify-content: center;
     padding: 16px;
-    background-color: rgba(255, 255, 255, 0);
+    z-index: 1;
 `
 
 
-export const ModalBackground = styled.TouchableOpacity`
+export const ModalBackground = styled.TouchableOpacity<StyledProps>`
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    border-radius: 10px;
+    border-radius: ${props => props.theme.shape.medium}px;
     background-color: rgba(0, 0, 0, 0.5);
 `
 

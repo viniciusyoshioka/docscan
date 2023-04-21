@@ -1,26 +1,16 @@
 import { ReactNode } from "react"
 
-import { PseudoModal } from "../../../../components"
-import { ModalBackground, ModalContent, ModalView } from "./style"
+import { ModalBackground, ModalContent, PseudoModal } from "./style"
 
 
 export interface CameraSettingsModalProps {
-    visible: boolean;
-    setVisible: (visible: boolean) => void;
-    onClose?: () => void;
+    visible?: boolean;
+    onRequestClose?: () => void;
     children?: ReactNode;
 }
 
 
 export function CameraSettingsModal(props: CameraSettingsModalProps) {
-
-
-    function closeModal() {
-        if (props.onClose) {
-            props.onClose()
-        }
-        props.setVisible(false)
-    }
 
 
     if (!props.visible) {
@@ -29,23 +19,20 @@ export function CameraSettingsModal(props: CameraSettingsModalProps) {
 
 
     return (
-        <PseudoModal>
-            <ModalView activeOpacity={1} onPress={closeModal}>
-                <ModalBackground activeOpacity={1}>
-                    <ModalContent
-                        fadingEdgeLength={16}
-                        showsVerticalScrollIndicator={false}
-                        contentContainerStyle={{
-                            flexWrap: "wrap",
-                            flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "center",
-                        }}
-                    >
-                        {props.children}
-                    </ModalContent>
-                </ModalBackground>
-            </ModalView>
+        <PseudoModal activeOpacity={1} onPress={props.onRequestClose}>
+            <ModalBackground activeOpacity={1}>
+                <ModalContent
+                    fadingEdgeLength={32}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{
+                        flexWrap: "wrap",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                    children={props.children}
+                />
+            </ModalBackground>
         </PseudoModal>
     )
 }

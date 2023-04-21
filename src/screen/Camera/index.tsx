@@ -416,7 +416,7 @@ export function Camera() {
 
             <CameraSettings
                 visible={isCameraSettingsVisible}
-                setVisible={setIsCameraSettingsVisible}
+                onRequestClose={() => setIsCameraSettingsVisible(false)}
                 isFlippable={isCameraFlippable}
             />
         </Screen>
