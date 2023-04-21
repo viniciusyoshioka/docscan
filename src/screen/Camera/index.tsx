@@ -139,6 +139,11 @@ export function Camera() {
     }
 
     function goBack() {
+        if (isCameraSettingsVisible) {
+            setIsCameraSettingsVisible(false)
+            return
+        }
+
         if (params?.screenAction === "replace-picture") {
             navigation.navigate("VisualizePicture", {
                 pictureIndex: params.replaceIndex,
