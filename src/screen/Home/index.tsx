@@ -18,6 +18,8 @@ import { DocumentItem, DOCUMENT_ITEM_HEIGHT } from "./DocumentItem"
 import { HomeHeader } from "./Header"
 
 
+// TODO add comunication with background service to alert when export is done
+// TODO add comunication with background service to alert when import is done
 export function Home() {
 
 
