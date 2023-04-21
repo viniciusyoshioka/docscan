@@ -21,6 +21,7 @@ import { LoadingIndicator } from "./LoadingIndicator"
 
 
 // TODO move the loading of images to a hook
+// TODO optimize performance of ImageItem when in selection mode
 export function Gallery() {
 
 
