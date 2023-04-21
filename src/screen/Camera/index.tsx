@@ -51,29 +51,23 @@ export function Camera() {
     const cameraControlRef = useRef<CameraControlRef>(null)
 
     const [hasChanges, setHasChanges] = useState(false)
-    const [hasCameraPermission, setHasCameraPermission] = useState<boolean>()
-    const cameraOrientation = useCameraOrientation()
     const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
-    const [showCamera, setShowCamera] = useState(true)
+
+    const cameraDevices = useCameraDevices()
+    const cameraDevice = cameraDevices ? cameraDevices[settings.camera.type] : undefined
+    const cameraOrientation = useCameraOrientation()
+    const [hasCameraPermission, setHasCameraPermission] = useState<boolean>()
     const isCameraActive = useIsCameraActive({ isFocused, isForeground, hasPermission: hasCameraPermission })
+    const isCameraFlippable = useIsCameraFlippable({ cameraDevices })
+    const isShowingCamera = useIsShowingCamera({ hasPermission: hasCameraPermission, cameraDevice })
+    const [showCamera, setShowCamera] = useState(true)
     const [isFocusEnable, setIsFocusEnable] = useState(true)
     const [isFocusing, setIsFocusing] = useState(false)
     const focusPosX = useSharedValue(0)
     const focusPosY = useSharedValue(0)
 
-    const cameraDevices = useCameraDevices()
-    const cameraDevice = cameraDevices ? cameraDevices[settings.camera.type] : undefined
-    const isCameraFlippable = useIsCameraFlippable({ cameraDevices })
 
-    const isShowingCamera = useIsShowingCamera({ hasPermission: hasCameraPermission, cameraDevice })
-
-
-    const screenStyle = useMemo((): StyleProp<ViewStyle> => {
-        if (!isShowingCamera) {
-            return undefined
-        }
-        return { backgroundColor: "black" }
-    }, [isShowingCamera])
+    const screenStyle: StyleProp<ViewStyle> = useMemo(() => isShowingCamera ? { backgroundColor: "black" } : undefined, [isShowingCamera])
 
 
     useBackHandler(() => {
@@ -342,7 +336,7 @@ export function Camera() {
                             orientation={cameraOrientation}
                             style={{
                                 width: width,
-                                height: width * getCameraRatioNumber(cameraSettingsState.cameraRatio),
+                                height: width * getCameraRatioNumber(settings.camera.ratio),
                             }}
                         />
                     </TapGestureHandler>
