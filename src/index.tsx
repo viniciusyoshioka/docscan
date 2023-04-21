@@ -1,7 +1,6 @@
 import { useEffect, useReducer, useState } from "react"
 import { useColorScheme } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
-import { useMMKVString } from "react-native-mmkv"
 import { MenuProvider } from "react-native-popup-menu"
 import SQLite from "react-native-sqlite-storage"
 
@@ -10,7 +9,8 @@ import { useKeepAwakeOnDev } from "./hooks"
 import { Router } from "./router"
 import { DocumentDataProvider, reducerDocumentData } from "./services/document"
 import { logCriticalError, stringfyError } from "./services/log"
-import { AppStorageKeys, MMKVHook, setStorageDefaultValues } from "./services/storage"
+import { Settings, SettingsProvider } from "./services/settings"
+import { AppStorageKeys, setStorageDefaultValues, useMMKVObject } from "./services/storage"
 import { AppThemeProvider, themeDefault, ThemeType } from "./theme"
 
 
@@ -25,26 +25,30 @@ export function App() {
 
 
     const deviceTheme = useColorScheme()
-    const [appTheme, setAppTheme] = useMMKVString(AppStorageKeys.THEME) as MMKVHook<ThemeType>
-    const isDarkTheme = (appTheme === "auto" && deviceTheme === "dark") || appTheme === "dark"
 
     const [appDb, setAppDb] = useState<SQLite.SQLiteDatabase>()
     const [logDb, setLogDb] = useState<SQLite.SQLiteDatabase>()
     const [documentDataState, dispatchDocumentData] = useReducer(reducerDocumentData, undefined)
+    const [settings, setSettings] = useMMKVObject<Settings>(AppStorageKeys.SETTINGS)
+
+    const isDarkTheme = (settings?.theme === "auto" && deviceTheme === "dark") || settings?.theme === "dark"
 
 
     function getAppTheme() {
+        const switchTheme = (newTheme: ThemeType) => {
+            if (settings) setSettings({ ...settings, theme: newTheme })
+        }
+
         if (isDarkTheme) {
             const { AppDarkTheme } = require("./theme")
-            AppDarkTheme.appTheme = appTheme
-            AppDarkTheme.switchTheme = setAppTheme
+            AppDarkTheme.appTheme = settings?.theme
+            AppDarkTheme.switchTheme = switchTheme
             return AppDarkTheme
         }
 
-        const currentAppTheme = (appTheme ?? themeDefault) as ThemeType
         const { AppLightTheme } = require("./theme")
-        AppLightTheme.appTheme = currentAppTheme
-        AppLightTheme.switchTheme = setAppTheme
+        AppLightTheme.appTheme = (settings?.theme ?? themeDefault) as ThemeType
+        AppLightTheme.switchTheme = switchTheme
         return AppLightTheme
     }
 
@@ -94,7 +98,7 @@ export function App() {
     }, [])
 
 
-    if (!appDb || !logDb) {
+    if (!settings || !appDb || !logDb) {
         return null
     }
 
@@ -103,9 +107,11 @@ export function App() {
         <GestureHandlerRootView style={{ flex: 1 }}>
             <AppThemeProvider value={getAppTheme()}>
                 <MenuProvider backHandler={true}>
-                    <DocumentDataProvider value={{ documentDataState, dispatchDocumentData }}>
-                        <Router />
-                    </DocumentDataProvider>
+                    <SettingsProvider value={{ settings, setSettings }}>
+                        <DocumentDataProvider value={{ documentDataState, dispatchDocumentData }}>
+                            <Router />
+                        </DocumentDataProvider>
+                    </SettingsProvider>
                 </MenuProvider>
             </AppThemeProvider>
         </GestureHandlerRootView>
