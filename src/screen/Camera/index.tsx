@@ -24,6 +24,7 @@ import { CameraHeader } from "./Header"
 import { CameraButtonWrapper, CameraTextWrapper, CameraWrapper, NoCameraAvailableText, NoCameraAvailableTitle } from "./style"
 import { useCameraOrientation } from "./useCameraOrientation"
 import { useIsCameraActive } from "./useIsCameraActive"
+import { useIsCameraFlippable } from "./useIsCameraFlippable"
 import { useIsShowingCamera } from "./useIsShowingCamera"
 import { useRequestCameraPermission } from "./useRequestCameraPermission"
 
@@ -63,9 +64,7 @@ export function Camera() {
 
     const cameraDevices = useCameraDevices()
     const cameraDevice = cameraDevices ? cameraDevices[settings.camera.type] : undefined
-    const isCameraFlippable = useMemo(() =>
-        cameraDevices !== undefined && cameraDevices.back !== undefined && cameraDevices.front !== undefined
-    , [cameraDevices])
+    const isCameraFlippable = useIsCameraFlippable({ cameraDevices })
 
     const isShowingCamera = useIsShowingCamera({ hasPermission: hasCameraPermission, cameraDevice })
 
