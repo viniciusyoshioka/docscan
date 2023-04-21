@@ -23,6 +23,7 @@ import { CameraSettings } from "./CameraSettings"
 import { FocusIndicator } from "./FocusIndicator"
 import { CameraHeader } from "./Header"
 import { CameraButtonWrapper, CameraTextWrapper, CameraWrapper, NoCameraAvailableText, NoCameraAvailableTitle } from "./style"
+import { useIsCameraActive } from "./useIsCameraActive"
 import { useRequestCameraPermission } from "./useRequestCameraPermission"
 
 
@@ -54,7 +55,7 @@ export function Camera() {
     const [cameraOrientation, setCameraOrientation] = useState(getCameraOrientation())
     const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
     const [showCamera, setShowCamera] = useState(true)
-    const [isCameraActive, setIsCameraActive] = useState(isFocused && isForeground && (hasCameraPermission === true))
+    const isCameraActive = useIsCameraActive({ isFocused, isForeground, hasPermission: hasCameraPermission })
     const [isFocusEnable, setIsFocusEnable] = useState(true)
     const [isFocusing, setIsFocusing] = useState(false)
     const focusPosX = useSharedValue(0)
@@ -281,10 +282,6 @@ export function Camera() {
 
 
     const requestCameraPermission = useRequestCameraPermission(setHasCameraPermission)
-
-    useEffect(() => {
-        setIsCameraActive(isFocused && isForeground && (hasCameraPermission === true))
-    }, [isFocused, isForeground, hasCameraPermission])
 
     useEffect(() => {
         if (!isCameraActive) {
