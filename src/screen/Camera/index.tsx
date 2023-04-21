@@ -15,7 +15,6 @@ import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../
 import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
-import { getCameraPermission } from "../../services/permission"
 import { getCameraRatioNumber, useSettings } from "../../services/settings"
 import { useAppTheme } from "../../theme"
 import { CameraOrientationType, DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
@@ -24,6 +23,7 @@ import { CameraSettings } from "./CameraSettings"
 import { FocusIndicator } from "./FocusIndicator"
 import { CameraHeader } from "./Header"
 import { CameraButtonWrapper, CameraTextWrapper, CameraWrapper, NoCameraAvailableText, NoCameraAvailableTitle } from "./style"
+import { useRequestCameraPermission } from "./useRequestCameraPermission"
 
 
 // TODO goBack() function sometimes go back to Home instead of EditDocument
@@ -50,7 +50,7 @@ export function Camera() {
     const cameraControlRef = useRef<CameraControlRef>(null)
 
     const [hasChanges, setHasChanges] = useState(false)
-    const [hasCameraPermission, setHasCameraPermission] = useState<boolean | undefined>(undefined)
+    const [hasCameraPermission, setHasCameraPermission] = useState<boolean>()
     const [cameraOrientation, setCameraOrientation] = useState(getCameraOrientation())
     const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
     const [showCamera, setShowCamera] = useState(true)
@@ -85,11 +85,6 @@ export function Camera() {
         return true
     })
 
-
-    async function requestAndSetCameraPermission() {
-        const hasPermission = await getCameraPermission()
-        setHasCameraPermission(hasPermission)
-    }
 
     function getCameraOrientation(): CameraOrientationType {
         switch (deviceOrientation) {
@@ -285,9 +280,7 @@ export function Camera() {
     }
 
 
-    useEffect(() => {
-        requestAndSetCameraPermission()
-    }, [])
+    const requestCameraPermission = useRequestCameraPermission(setHasCameraPermission)
 
     useEffect(() => {
         setIsCameraActive(isFocused && isForeground && (hasCameraPermission === true))
@@ -365,7 +358,7 @@ export function Camera() {
 
                         <Button
                             text={translate("Camera_grantPermission")}
-                            onPress={requestAndSetCameraPermission}
+                            onPress={requestCameraPermission}
                             style={{ width: "100%" }}
                         />
                     </CameraButtonWrapper>
