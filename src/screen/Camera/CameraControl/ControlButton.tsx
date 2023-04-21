@@ -14,6 +14,7 @@ type PropsToOmit = "children" | "style" | "disabled" | "onPress" | "onLongPress"
 
 
 export interface ControlButtonProps extends Omit<PressableProps, PropsToOmit>, Omit<ExtendableOptionalIconProps, "style"> {
+    isShowingCamera?: boolean;
     indexCount?: string;
     style?: StyleProp<ViewStyle>;
 }
@@ -22,9 +23,13 @@ export interface ControlButtonProps extends Omit<PressableProps, PropsToOmit>, O
 export function ControlButton(props: ControlButtonProps) {
 
 
-    const { state } = useAppTheme()
+    const { color, state } = useAppTheme()
 
-    const colorStyle = props.iconColor ?? "rgb(255, 255, 255)"
+    const colorStyle = useMemo(() => {
+        if (props.isShowingCamera) return "white"
+        if (props.iconColor) return props.iconColor
+        return color.onBackground
+    }, [props.isShowingCamera, props.iconColor, color.onBackground])
     const contentColor = useMemo(() => {
         if (props.disabled) {
             return new Color(colorStyle as string).setA(state.content.disabled).toRgba()
@@ -51,7 +56,7 @@ export function ControlButton(props: ControlButtonProps) {
 
             {props.indexCount && (
                 <Text
-                    style={{ color: "white" }}
+                    style={{ color: contentColor }}
                     children={props.indexCount}
                 />
             )}

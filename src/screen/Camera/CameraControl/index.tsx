@@ -104,6 +104,7 @@ export const CameraControl = forwardRef((props: CameraControlProps, ref: Forward
                 <ControlButton
                     iconName={"collections"}
                     onPress={props.addPictureFromGallery}
+                    isShowingCamera={props.isShowingCamera}
                 />
             </Reanimated.View>
 
@@ -120,6 +121,7 @@ export const CameraControl = forwardRef((props: CameraControlProps, ref: Forward
                         iconName={"description"}
                         indexCount={props.pictureListLength.toString()}
                         onPress={props.editDocument}
+                        isShowingCamera={props.isShowingCamera}
                     />
                 </Reanimated.View>
             )}
