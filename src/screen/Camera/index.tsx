@@ -4,12 +4,11 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { Alert, Linking, StatusBar, StyleProp, useWindowDimensions, ViewStyle } from "react-native"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
-import { OrientationType } from "react-native-orientation-locker"
 import { useSharedValue } from "react-native-reanimated"
 import { Camera as RNCamera } from "react-native-vision-camera"
 
 import { EmptyList } from "../../components"
-import { useBackHandler, useCameraDevices, useDeviceOrientation, useIsForeground } from "../../hooks"
+import { useBackHandler, useCameraDevices, useIsForeground } from "../../hooks"
 import { translate } from "../../locales"
 import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
 import { deletePicturesService } from "../../services/document-service"
@@ -17,12 +16,13 @@ import { createAllFolderAsync } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { getCameraRatioNumber, useSettings } from "../../services/settings"
 import { useAppTheme } from "../../theme"
-import { CameraOrientationType, DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
+import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { CameraControl, CameraControlRef, CAMERA_CONTROL_HEIGHT } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
 import { FocusIndicator } from "./FocusIndicator"
 import { CameraHeader } from "./Header"
 import { CameraButtonWrapper, CameraTextWrapper, CameraWrapper, NoCameraAvailableText, NoCameraAvailableTitle } from "./style"
+import { useCameraOrientation } from "./useCameraOrientation"
 import { useIsCameraActive } from "./useIsCameraActive"
 import { useRequestCameraPermission } from "./useRequestCameraPermission"
 
@@ -41,7 +41,6 @@ export function Camera() {
 
     const { width } = useWindowDimensions()
     const isForeground = useIsForeground()
-    const deviceOrientation = useDeviceOrientation()
 
     const { settings } = useSettings()
     const { documentDataState, dispatchDocumentData } = useDocumentData()
@@ -52,7 +51,7 @@ export function Camera() {
 
     const [hasChanges, setHasChanges] = useState(false)
     const [hasCameraPermission, setHasCameraPermission] = useState<boolean>()
-    const [cameraOrientation, setCameraOrientation] = useState(getCameraOrientation())
+    const cameraOrientation = useCameraOrientation()
     const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
     const [showCamera, setShowCamera] = useState(true)
     const isCameraActive = useIsCameraActive({ isFocused, isForeground, hasPermission: hasCameraPermission })
@@ -86,25 +85,6 @@ export function Camera() {
         return true
     })
 
-
-    function getCameraOrientation(): CameraOrientationType {
-        switch (deviceOrientation) {
-            case OrientationType["PORTRAIT"]:
-                return "portrait"
-            case OrientationType["PORTRAIT-UPSIDEDOWN"]:
-                return "portraitUpsideDown"
-            case OrientationType["LANDSCAPE-LEFT"]:
-                // Thoose landscape are the oposite because
-                // the libraries uses diferent reference point
-                return "landscapeRight"
-            case OrientationType["LANDSCAPE-RIGHT"]:
-                // Thoose landscape are the oposite because
-                // the libraries uses diferent reference point
-                return "landscapeLeft"
-            default:
-                return cameraOrientation
-        }
-    }
 
     async function deleteUnsavedPictures() {
         if (!documentDataState) {
@@ -290,13 +270,6 @@ export function Camera() {
         }
         cameraControlRef.current?.enableAction()
     }, [isCameraActive])
-
-    useEffect(() => {
-        const newCameraOrientation = getCameraOrientation()
-        if (cameraOrientation !== newCameraOrientation) {
-            setCameraOrientation(newCameraOrientation)
-        }
-    }, [deviceOrientation])
 
     useEffect(() => {
         if (isCameraSettingsVisible) {
