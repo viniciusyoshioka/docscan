@@ -264,14 +264,6 @@ export function Camera() {
     useControlActionEnabled({ isCameraActive, cameraControlRef })
 
     useEffect(() => {
-        if (isCameraSettingsVisible) {
-            setIsFocusEnable(false)
-            return
-        }
-        setIsFocusEnable(true)
-    }, [isCameraSettingsVisible])
-
-    useEffect(() => {
         setShowCamera(false)
 
         setTimeout(() => {
