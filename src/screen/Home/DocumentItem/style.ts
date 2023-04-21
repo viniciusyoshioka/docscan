@@ -4,11 +4,14 @@ import styled from "styled-components/native"
 import { StyledProps } from "../../../theme"
 
 
+export const DOCUMENT_ITEM_HEIGHT = 60
+
+
 export const DocumentItemButton = styled(RectButton)`
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    height: 60px;
+    height: ${DOCUMENT_ITEM_HEIGHT}px;
     padding-horizontal: 16px;
     padding-vertical: 8px;
     background-color: ${(props: StyledProps) => props.theme.color.surface};

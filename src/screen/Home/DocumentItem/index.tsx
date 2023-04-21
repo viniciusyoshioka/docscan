@@ -11,6 +11,9 @@ import { DocumentForList } from "../../../types"
 import { DocumentItemBlock, DocumentItemButton } from "./style"
 
 
+export { DOCUMENT_ITEM_HEIGHT } from "./style"
+
+
 export interface DocumentItemProps extends SelectableItem {
     document: DocumentForList;
 }
