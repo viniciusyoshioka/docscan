@@ -24,6 +24,7 @@ import { CameraHeader } from "./Header"
 import { CameraButtonWrapper, CameraTextWrapper, CameraWrapper, NoCameraAvailableText, NoCameraAvailableTitle } from "./style"
 import { useCameraOrientation } from "./useCameraOrientation"
 import { useIsCameraActive } from "./useIsCameraActive"
+import { useIsShowingCamera } from "./useIsShowingCamera"
 import { useRequestCameraPermission } from "./useRequestCameraPermission"
 
 
@@ -66,11 +67,8 @@ export function Camera() {
         cameraDevices !== undefined && cameraDevices.back !== undefined && cameraDevices.front !== undefined
     , [cameraDevices])
 
-    const isShowingCamera = useMemo((): boolean => {
-        const hasPermission = hasCameraPermission === true
-        const hasDevice = cameraDevice !== undefined
-        return hasPermission && hasDevice
-    }, [hasCameraPermission, cameraDevice])
+    const isShowingCamera = useIsShowingCamera({ hasPermission: hasCameraPermission, cameraDevice })
+
 
     const screenStyle = useMemo((): StyleProp<ViewStyle> => {
         if (!isShowingCamera) {
