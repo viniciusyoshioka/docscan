@@ -1,7 +1,10 @@
-import { CameraRatio, CameraType, FlashType } from "./types"
+
+export type CameraFlash = "auto" | "on" | "off"
+export type CameraType = "front" | "back"
+export type CameraRatio = "3:4" | "9:16"
 
 
-export const settingsCameraFlashDefault: FlashType = "off"
+export const settingsCameraFlashDefault: CameraFlash = "off"
 export const settingsCameraTypeDefault: CameraType = "back"
 export const settingsCameraRatioDefault: CameraRatio = "3:4"
 

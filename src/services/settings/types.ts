@@ -1,4 +1,18 @@
+import { ThemeType } from "../../theme"
+import { CameraFlash, CameraRatio, CameraType } from "./camera"
 
-export type FlashType = "auto" | "on" | "off"
-export type CameraType = "front" | "back"
-export type CameraRatio = "3:4" | "9:16"
+
+export interface Settings {
+    theme: ThemeType;
+    camera: {
+        flash: CameraFlash;
+        type: CameraType;
+        ratio: CameraRatio;
+    };
+}
+
+
+export interface SettingsContextValue {
+    settings: Settings;
+    setSettings: (settings: Settings) => void;
+}
