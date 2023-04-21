@@ -60,7 +60,7 @@ export function Camera() {
     const isCameraActive = useIsCameraActive({ isFocused, isForeground, hasPermission: hasCameraPermission })
     const isCameraFlippable = useIsCameraFlippable({ cameraDevices })
     const isShowingCamera = useIsShowingCamera({ hasPermission: hasCameraPermission, cameraDevice })
-    const [showCamera, setShowCamera] = useState(true)
+    const [resetingCamera, setResetingCamera] = useState(false)
     const [isFocusEnable, setIsFocusEnable] = useState(true)
     const [isFocusing, setIsFocusing] = useState(false)
     const focusPosX = useSharedValue(0)
@@ -256,10 +256,10 @@ export function Camera() {
     useControlActionEnabled({ isCameraActive, cameraControlRef })
 
     useEffect(() => {
-        setShowCamera(false)
+        setResetingCamera(true)
 
         setTimeout(() => {
-            setShowCamera(true)
+            setResetingCamera(false)
         }, 100)
     }, [settings.camera.ratio])
 
@@ -319,7 +319,7 @@ export function Camera() {
                 visible={hasCameraPermission && !cameraDevice}
             />
 
-            {(hasCameraPermission && cameraDevice && showCamera) && (
+            {(hasCameraPermission && cameraDevice && !resetingCamera) && (
                 <CameraWrapper>
                     <TapGestureHandler
                         minPointers={1}
