@@ -1,11 +1,6 @@
 import { MMKV } from "react-native-mmkv"
 
-import { themeDefault } from "../../theme"
-import {
-    settingsCameraFlashDefault,
-    settingsCameraRatioDefault,
-    settingsCameraTypeDefault
-} from "../settings"
+import { settingsDefault } from "../settings"
 import { AppStorageKeys } from "./types"
 
 
@@ -18,8 +13,5 @@ export function setStorageDefaultValues() {
         return
     }
 
-    storage.set(AppStorageKeys.CAMERA_FLASH, settingsCameraFlashDefault)
-    storage.set(AppStorageKeys.CAMERA_RATIO, settingsCameraRatioDefault)
-    storage.set(AppStorageKeys.CAMERA_TYPE, settingsCameraTypeDefault)
-    storage.set(AppStorageKeys.THEME, themeDefault)
+    storage.set(AppStorageKeys.SETTINGS, JSON.stringify(settingsDefault))
 }
