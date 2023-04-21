@@ -1,7 +1,8 @@
 import { Divider, Screen } from "@elementium/native"
 import { useNavigation } from "@react-navigation/core"
+import { FlashList } from "@shopify/flash-list"
 import { useEffect, useState } from "react"
-import { Alert, FlatList } from "react-native"
+import { Alert, View } from "react-native"
 import DocumentPicker from "react-native-document-picker"
 
 import { EmptyList, LoadingModal } from "../../components"
@@ -13,7 +14,7 @@ import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { DocumentForList, NavigationParamProps } from "../../types"
-import { DocumentItem } from "./DocumentItem"
+import { DocumentItem, DOCUMENT_ITEM_HEIGHT } from "./DocumentItem"
 import { HomeHeader } from "./Header"
 
 
@@ -243,12 +244,15 @@ export function Home() {
                 duplicateDocument={alertDuplicateDocument}
             />
 
-            <FlatList
-                data={documents}
-                renderItem={renderItem}
-                style={{ display: documents.length ? "flex" : "none" }}
-                ItemSeparatorComponent={() => <Divider wrapperStyle={{ paddingHorizontal: 16 }} />}
-            />
+            <View style={{ display: documents.length ? "flex" : "none", flex: 1 }}>
+                <FlashList
+                    data={documents}
+                    renderItem={renderItem}
+                    extraData={documentSelection.selectedData}
+                    estimatedItemSize={DOCUMENT_ITEM_HEIGHT}
+                    ItemSeparatorComponent={() => <Divider wrapperStyle={{ paddingHorizontal: 16 }} />}
+                />
+            </View>
 
             <EmptyList
                 imageSource={appIconOutline}
