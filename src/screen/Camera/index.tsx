@@ -23,6 +23,7 @@ import { FocusIndicator } from "./FocusIndicator"
 import { CameraHeader } from "./Header"
 import { CameraButtonWrapper, CameraTextWrapper, CameraWrapper, NoCameraAvailableText, NoCameraAvailableTitle } from "./style"
 import { useCameraOrientation } from "./useCameraOrientation"
+import { useControlActionEnabled } from "./useControlActionEnabled"
 import { useIsCameraActive } from "./useIsCameraActive"
 import { useIsCameraFlippable } from "./useIsCameraFlippable"
 import { useIsShowingCamera } from "./useIsShowingCamera"
@@ -260,13 +261,7 @@ export function Camera() {
 
     const requestCameraPermission = useRequestCameraPermission(setHasCameraPermission)
 
-    useEffect(() => {
-        if (!isCameraActive) {
-            cameraControlRef.current?.disableAction()
-            return
-        }
-        cameraControlRef.current?.enableAction()
-    }, [isCameraActive])
+    useControlActionEnabled({ isCameraActive, cameraControlRef })
 
     useEffect(() => {
         if (isCameraSettingsVisible) {
