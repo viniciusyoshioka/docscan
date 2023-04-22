@@ -361,7 +361,12 @@ export async function exportDocument(id: number[] = []) {
     const pathExportedDocument = `${fullPathExported}/DocScan - Documento exportado ${dateTime}.zip`
 
     // Run the service to export document
-    exportDocumentService(picturesToCopy, exportDatabaseFullPath, pathZipTo, pathExportedDocument)
+    exportDocumentService({
+        pictures: picturesToCopy,
+        databasePath: exportDatabaseFullPath,
+        pathZipTo,
+        pathExportedDocument,
+    })
 }
 
 
