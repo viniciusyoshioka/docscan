@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { createRef, PureComponent } from "react"
+import { createRef, PureComponent } from "react"
 import { findNodeHandle, NativeSyntheticEvent, requireNativeComponent, UIManager, ViewProps } from "react-native"
 
 
@@ -55,7 +56,6 @@ export class ImageCrop extends PureComponent<ImageCropProps> {
     }
 
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private imageCropRef = createRef<any>()
 
 
