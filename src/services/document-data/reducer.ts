@@ -3,9 +3,8 @@ import { Alert } from "react-native"
 
 import { DocumentDatabase } from "../../database"
 import { translate } from "../../locales"
-import { Document } from "../../types"
 import { getTimestamp } from "../date"
-import { getDocumentName } from "../document"
+import { Document, DocumentService } from "../document"
 import { log, stringfyError } from "../log"
 import { DocumentDataReducerAction } from "./types"
 
@@ -24,7 +23,7 @@ export function reducerDocumentData(
         case "create-new-if-empty":
             if (!state) return {
                 id: undefined,
-                name: getDocumentName(),
+                name: DocumentService.getNewName(),
                 pictureList: [],
                 lastModificationTimestamp: getTimestamp(),
                 hasChanges: true,
@@ -49,7 +48,7 @@ export function reducerDocumentData(
         case "add-picture":
             if (!state) return {
                 id: undefined,
-                name: getDocumentName(),
+                name: DocumentService.getNewName(),
                 pictureList: [...action.payload],
                 lastModificationTimestamp: getTimestamp(),
                 hasChanges: true,

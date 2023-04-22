@@ -9,12 +9,13 @@ import { Camera as RNCamera } from "react-native-vision-camera"
 import { EmptyList } from "../../components"
 import { useBackHandler, useCameraDevices, useIsForeground } from "../../hooks"
 import { translate } from "../../locales"
-import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
+import { DocumentPicture, DocumentService } from "../../services/document"
+import { useDocumentData } from "../../services/document-data"
 import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { getCameraRatioNumber, useSettings } from "../../services/settings"
-import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
+import { NavigationParamProps, RouteParamProps } from "../../types"
 import { CameraControl, CameraControlRef, CAMERA_CONTROL_HEIGHT } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
 import { FocusIndicator, FocusIndicatorRef } from "./FocusIndicator"
@@ -175,8 +176,8 @@ export function Camera() {
                 flash: settings.camera.flash,
             })
 
-            const picturePath = await getDocumentPicturePath(response.path)
-            const pictureName = getFullFileName(picturePath)
+            const picturePath = await DocumentService.getPicturePath(response.path)
+            const pictureName = DocumentService.getFileFullname(picturePath)
             await RNFS.moveFile(response.path, picturePath)
 
             if (params?.screenAction === "replace-picture") {

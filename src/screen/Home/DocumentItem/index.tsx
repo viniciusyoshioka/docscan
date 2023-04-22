@@ -6,8 +6,8 @@ import { LongPressGestureHandler } from "react-native-gesture-handler"
 
 import { SelectableItem, useSelectableItem } from "../../../hooks"
 import { getLocaleDateTime } from "../../../services/date"
+import { DocumentForList } from "../../../services/document"
 import { useAppTheme } from "../../../theme"
-import { DocumentForList } from "../../../types"
 import { DocumentItemBlock, DocumentItemButton } from "./style"
 
 

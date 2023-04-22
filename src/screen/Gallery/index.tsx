@@ -9,12 +9,13 @@ import RNFS from "react-native-fs"
 import { EmptyList, HEADER_HEIGHT } from "../../components"
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
-import { getDocumentPicturePath, getFullFileName, useDocumentData } from "../../services/document"
+import { DocumentPicture, DocumentService } from "../../services/document"
+import { useDocumentData } from "../../services/document-data"
 import { copyPicturesService } from "../../services/document-service"
 import { log, stringfyError } from "../../services/log"
 import { getReadMediaImagesPermission } from "../../services/permission"
 import { useAppTheme } from "../../theme"
-import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
+import { NavigationParamProps, RouteParamProps } from "../../types"
 import { GalleryHeader } from "./Header"
 import { getImageItemSize, HORIZONTAL_COLUMN_COUNT, ImageItem, VERTICAL_COLUMN_COUNT } from "./ImageItem"
 import { LoadingIndicator } from "./LoadingIndicator"
@@ -158,8 +159,8 @@ export function Gallery() {
             return
         }
 
-        const newImagePath = await getDocumentPicturePath(imagePath)
-        const newImageName = getFullFileName(newImagePath)
+        const newImagePath = await DocumentService.getPicturePath(imagePath)
+        const newImageName = DocumentService.getFileFullname(newImagePath)
         try {
             await RNFS.copyFile(imagePath, newImagePath)
         } catch (error) {
@@ -221,8 +222,8 @@ export function Gallery() {
         let nextIndex = documentDataState?.pictureList.length ?? 0
 
         for (let i = 0; i < gallerySelection.selectedData.length; i++) {
-            const newImagePath = await getDocumentPicturePath(gallerySelection.selectedData[i])
-            const newImageName = getFullFileName(newImagePath)
+            const newImagePath = await DocumentService.getPicturePath(gallerySelection.selectedData[i])
+            const newImageName = DocumentService.getFileFullname(newImagePath)
 
             imagesToCopy.push(gallerySelection.selectedData[i].replace("file://", ""))
             imagesToCopy.push(newImagePath)

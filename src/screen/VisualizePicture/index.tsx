@@ -11,10 +11,11 @@ import { DocumentDatabase } from "../../database"
 import { useBackHandler } from "../../hooks"
 import { translate } from "../../locales"
 import { fullPathPicture } from "../../services/constant"
-import { getDocumentPicturePath, getFileExtension, getFullFileName, useDocumentData } from "../../services/document"
+import { DocumentPicture, DocumentService } from "../../services/document"
+import { useDocumentData } from "../../services/document-data"
 import { ImageCrop, OnImageSavedResponse } from "../../services/image-crop"
 import { log, stringfyError } from "../../services/log"
-import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
+import { NavigationParamProps, RouteParamProps } from "../../types"
 import { VisualizePictureHeader } from "./Header"
 import { ImageRotation, ImageRotationRef } from "./ImageRotation"
 import { ImageVisualizationItem } from "./ImageVisualizationItem"
@@ -95,7 +96,7 @@ export function VisualizePicture() {
         setIsRotationProcessing(true)
 
         const pictureToRotatePath = documentDataState.pictureList[currentIndex].filePath
-        const rotatedPicturePath = await getDocumentPicturePath(pictureToRotatePath)
+        const rotatedPicturePath = await DocumentService.getPicturePath(pictureToRotatePath)
         try {
             await imageRotationRef.current?.save(rotatedPicturePath)
             dispatchDocumentData({
@@ -103,7 +104,7 @@ export function VisualizePicture() {
                 payload: {
                     indexToReplace: currentIndex,
                     newPicturePath: rotatedPicturePath,
-                    newPictureName: getFullFileName(rotatedPicturePath),
+                    newPictureName: DocumentService.getFileFullname(rotatedPicturePath),
                 },
             })
 
@@ -168,10 +169,10 @@ export function VisualizePicture() {
 
             do {
                 const uniqueFileName = uuid4()
-                const fileExtension = getFileExtension(response.uri)
+                const fileExtension = DocumentService.getFileExtension(response.uri)
 
                 newCroppedPictureUri = `${fullPathPicture}/${uniqueFileName}.${fileExtension}`
-                newCroppedPictureName = getFullFileName(newCroppedPictureUri)
+                newCroppedPictureName = DocumentService.getFileFullname(newCroppedPictureUri)
             } while (await DocumentDatabase.pictureNameExists(newCroppedPictureName))
 
             if (await RNFS.exists(currentPicturePath)) {

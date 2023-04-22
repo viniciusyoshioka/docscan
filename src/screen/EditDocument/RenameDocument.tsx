@@ -5,7 +5,7 @@ import { NativeSyntheticEvent, TextInput } from "react-native"
 import { Input } from "../../components"
 import { useKeyboard } from "../../hooks"
 import { translate } from "../../locales"
-import { useDocumentData } from "../../services/document"
+import { useDocumentData } from "../../services/document-data"
 
 
 export interface RenameDocumentProps extends ModalProps { }

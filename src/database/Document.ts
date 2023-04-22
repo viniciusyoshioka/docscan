@@ -7,10 +7,9 @@ import { v4 as uuid4 } from "uuid"
 import { globalAppDatabase, openTemporaryDatabase } from "."
 import { exportDatabaseFileName, exportDatabaseFullPath, fullPathExported, fullPathPicture, fullPathTemporaryExported, fullPathTemporaryImported } from "../services/constant"
 import { getDateTime } from "../services/date"
-import { getFileExtension } from "../services/document"
+import { DocumentForList, DocumentPicture, DocumentService, SimpleDocument } from "../services/document"
 import { exportDocumentService, movePicturesService } from "../services/document-service"
 import { createTemporaryImportedFolder } from "../services/folder-handler"
-import { DocumentForList, DocumentPicture, SimpleDocument } from "../types"
 
 
 /**
@@ -410,7 +409,7 @@ export async function importDocument(path: string) {
     for (let i = 0; i < pictureToRenameResultSet.rows.length; i++) {
         const pictureId: number = pictureToRenameResultSet.rows.item(i).id
         const pictureFileName: string = pictureToRenameResultSet.rows.item(i).fileName
-        const pictureFileExtension = getFileExtension(pictureFileName)
+        const pictureFileExtension = DocumentService.getFileExtension(pictureFileName)
 
         // eslint-disable-next-line no-constant-condition
         while (true) {

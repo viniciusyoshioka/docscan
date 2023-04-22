@@ -1,5 +1,5 @@
 import { Header, HeaderButton, HeaderTitle } from "../../components"
-import { useDocumentData } from "../../services/document"
+import { useDocumentData } from "../../services/document-data"
 import { EditDocumentMenu } from "./EditDocumentMenu"
 
 

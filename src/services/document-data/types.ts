@@ -1,6 +1,6 @@
 import { Dispatch } from "react"
 
-import { Document, DocumentForList, DocumentPicture } from "../../types"
+import { Document, DocumentForList, DocumentPicture } from "../document"
 
 
 type DocumentSetDocument = {

@@ -10,13 +10,14 @@ import { DocumentDatabase } from "../../database"
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
 import { fullPathPdf, fullPathTemporaryCompressedPicture } from "../../services/constant"
-import { useDocumentData } from "../../services/document"
+import { DocumentPicture, SimpleDocument } from "../../services/document"
+import { useDocumentData } from "../../services/document-data"
 import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { createPdf, PdfCreatorOptions, viewPdf } from "../../services/pdf-creator"
 import { getReadPermission, getWritePermission } from "../../services/permission"
-import { DocumentPicture, NavigationParamProps, RouteParamProps, SimpleDocument } from "../../types"
+import { NavigationParamProps, RouteParamProps } from "../../types"
 import { ConvertPdfOption } from "./ConvertPdfOption"
 import { EditDocumentHeader } from "./Header"
 import { getPictureItemSize, HORIZONTAL_COLUMN_COUNT, PictureItem, VERTICAL_COLUMN_COUNT } from "./Pictureitem"
@@ -56,7 +57,7 @@ export function EditDocument() {
             return
         }
 
-        let document: SimpleDocument | undefined = undefined
+        let document: SimpleDocument
         try {
             document = await DocumentDatabase.getDocument(params.documentId)
         } catch (error) {
@@ -68,7 +69,7 @@ export function EditDocument() {
             return
         }
 
-        let documentPicture: DocumentPicture[] | undefined = undefined
+        let documentPicture: DocumentPicture[]
         try {
             documentPicture = await DocumentDatabase.getDocumentPicture(params.documentId)
         } catch (error) {
