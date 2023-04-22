@@ -65,9 +65,3 @@ export interface DocumentDataProviderProps {
     value: DocumentDataContextType;
     children?: ReactNode;
 }
-
-
-/**
- * Compression level of document images during PDF conversion
- */
-export type DocumentPdfCompressionLevel = "low" | "high" | "custom"

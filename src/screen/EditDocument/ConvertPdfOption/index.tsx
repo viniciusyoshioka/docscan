@@ -5,8 +5,10 @@ import { NativeSyntheticEvent } from "react-native"
 
 import { translate } from "../../../locales"
 import { useAppTheme } from "../../../theme"
-import { DocumentPdfCompressionLevel } from "../../../types"
 import { CompressionText, ViewSlider } from "./style"
+
+
+export type DocumentPdfCompressionLevel = "low" | "high" | "custom"
 
 
 export interface ConvertPdfOptionProps extends ModalProps {
