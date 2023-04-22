@@ -159,10 +159,10 @@ export const pt_BR: TranslationObjectType = {
     VisualizePicture_alert_errorSavingCroppedImage_text: "Não foi possível salvar imagem cortada",
 
     // document-service service
-    documentService_notification_deletingImages_title: "Apagando imagens",
-    documentService_notification_copyingImages_title: "Copiando imagens",
-    documentService_notification_movingImages_title: "Movendo imagens",
-    documentService_notification_exportingDocuments_title: "Exportando documentos",
+    documentService_notification_deletingImages_title: "Apagando imagem(ns)",
+    documentService_notification_copyingImages_title: "Copiando imagem(ns)",
+    documentService_notification_movingImages_title: "Movendo imagem(ns)",
+    documentService_notification_exportingDocuments_title: "Exportando documento(s)",
     // document service
     document_newDocumentName: "Novo documento",
     document_alert_errorSavingDocument_text: "Erro salvando documento",
