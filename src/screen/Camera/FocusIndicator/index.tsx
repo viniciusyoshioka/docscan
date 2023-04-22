@@ -1,3 +1,4 @@
+import { ForwardedRef, forwardRef, useImperativeHandle, useState } from "react"
 import { ViewProps } from "react-native"
 
 import { FocusIndicatorBase } from "./style"
@@ -6,28 +7,48 @@ import { FocusIndicatorBase } from "./style"
 export const FOCUS_INDICATOR_SIZE = 56
 
 
-export interface FocusIndicatorProps extends ViewProps {
-    isFocusing: boolean;
-    focusPosX: number;
-    focusPosY: number;
+export interface FocusIndicatorProps extends ViewProps {}
+
+
+export type FocusIndicatorPos = {
+    x: number;
+    y: number;
 }
 
 
-export function FocusIndicator(props: FocusIndicatorProps) {
+export interface FocusIndicatorRef {
+    setFocusPos: (pos: FocusIndicatorPos) => void;
+    setIsFocusing: (isFocusing: boolean) => void;
+}
 
-    if (!props.isFocusing) {
+
+export const FocusIndicator = forwardRef((props: FocusIndicatorProps, ref: ForwardedRef<FocusIndicatorRef>) => {
+
+
+    const [pos, setPos] = useState<FocusIndicatorPos>({ x: 0, y: 0 })
+    const [isFocusing, setIsFocusing] = useState(false)
+
+
+    useImperativeHandle(ref, () => ({
+        setFocusPos: setPos,
+        setIsFocusing: setIsFocusing,
+    }))
+
+
+    if (!isFocusing) {
         return null
     }
+
 
     return (
         <FocusIndicatorBase
             {...props}
             style={[ {
                 transform: [
-                    { translateX: props.focusPosX - (FOCUS_INDICATOR_SIZE / 2) },
-                    { translateY: props.focusPosY - (FOCUS_INDICATOR_SIZE / 2) }
-                ]
+                    { translateX: pos.x - (FOCUS_INDICATOR_SIZE / 2) },
+                    { translateY: pos.y - (FOCUS_INDICATOR_SIZE / 2) },
+                ],
             }, props.style]}
         />
     )
-}
+})

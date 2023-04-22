@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { Alert, Linking, StatusBar, StyleProp, useWindowDimensions, ViewStyle } from "react-native"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
-import { useSharedValue } from "react-native-reanimated"
 import { Camera as RNCamera } from "react-native-vision-camera"
 
 import { EmptyList } from "../../components"
@@ -18,7 +17,7 @@ import { getCameraRatioNumber, useSettings } from "../../services/settings"
 import { DocumentPicture, NavigationParamProps, RouteParamProps } from "../../types"
 import { CameraControl, CameraControlRef, CAMERA_CONTROL_HEIGHT } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
-import { FocusIndicator } from "./FocusIndicator"
+import { FocusIndicator, FocusIndicatorRef } from "./FocusIndicator"
 import { CameraHeader } from "./Header"
 import { CameraButtonWrapper, CameraTextWrapper, CameraWrapper, NoCameraAvailableText, NoCameraAvailableTitle } from "./style"
 import { useCameraOrientation } from "./useCameraOrientation"
@@ -33,7 +32,6 @@ import { useRequestCameraPermission } from "./useRequestCameraPermission"
 // TODO add support to multiple back cameras
 // TODO add zoom indicator
 // TODO fix camera control overlapping camera
-// TODO fix focus indicator showing in its last position
 export function Camera() {
 
 
@@ -49,6 +47,7 @@ export function Camera() {
 
     const cameraRef = useRef<RNCamera>(null)
     const cameraControlRef = useRef<CameraControlRef>(null)
+    const focusIndicatorRef = useRef<FocusIndicatorRef>(null)
 
     const [hasChanges, setHasChanges] = useState(false)
     const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
@@ -60,11 +59,8 @@ export function Camera() {
     const isCameraActive = useIsCameraActive({ isFocused, isForeground, hasPermission: hasCameraPermission })
     const isCameraFlippable = useIsCameraFlippable({ cameraDevices })
     const isShowingCamera = useIsShowingCamera({ hasPermission: hasCameraPermission, cameraDevice })
-    const [resetingCamera, setResetingCamera] = useState(false)
-    const [isFocusEnable, setIsFocusEnable] = useState(true)
-    const [isFocusing, setIsFocusing] = useState(false)
-    const focusPosX = useSharedValue(0)
-    const focusPosY = useSharedValue(0)
+    const [isResetingCamera, setIsResetingCamera] = useState(false)
+    const [isFocusEnabled, setIsFocusEnabled] = useState(true)
 
 
     const screenStyle: StyleProp<ViewStyle> = useMemo(() => isShowingCamera ? { backgroundColor: "black" } : undefined, [isShowingCamera])
@@ -225,16 +221,18 @@ export function Camera() {
     }
 
     async function onTapStateChange(event: HandlerStateChangeEvent<TapGestureHandlerEventPayload>) {
-        if (!cameraDevice?.supportsFocus || !isFocusEnable) {
+        if (!cameraDevice?.supportsFocus || !isFocusEnabled) {
             return
         }
 
         if (event.nativeEvent.state === State.ACTIVE) {
-            focusPosX.value = parseInt(event.nativeEvent.absoluteX.toFixed())
-            focusPosY.value = parseInt(event.nativeEvent.absoluteY.toFixed())
+            setIsFocusEnabled(false)
 
-            setIsFocusEnable(false)
-            setIsFocusing(true)
+            focusIndicatorRef.current?.setFocusPos({
+                x: parseInt(event.nativeEvent.absoluteX.toFixed()),
+                y: parseInt(event.nativeEvent.absoluteY.toFixed()),
+            })
+            focusIndicatorRef.current?.setIsFocusing(true)
 
             try {
                 await cameraRef.current?.focus({
@@ -245,8 +243,8 @@ export function Camera() {
                 log.warn(`Error focusing camera ${stringfyError(error)}`)
             }
 
-            setIsFocusEnable(true)
-            setIsFocusing(false)
+            setIsFocusEnabled(true)
+            focusIndicatorRef.current?.setIsFocusing(false)
         }
     }
 
@@ -256,10 +254,10 @@ export function Camera() {
     useControlActionEnabled({ isCameraActive, cameraControlRef })
 
     useEffect(() => {
-        setResetingCamera(true)
+        setIsResetingCamera(true)
 
         setTimeout(() => {
-            setResetingCamera(false)
+            setIsResetingCamera(false)
         }, 100)
     }, [settings.camera.ratio])
 
@@ -319,11 +317,11 @@ export function Camera() {
                 visible={hasCameraPermission && !cameraDevice}
             />
 
-            {(hasCameraPermission && cameraDevice && !resetingCamera) && (
+            {(hasCameraPermission && cameraDevice && !isResetingCamera) && (
                 <CameraWrapper>
                     <TapGestureHandler
                         minPointers={1}
-                        enabled={isCameraActive && isFocusEnable}
+                        enabled={isCameraActive && isFocusEnabled}
                         onHandlerStateChange={onTapStateChange}
                     >
                         <RNCamera
@@ -343,11 +341,7 @@ export function Camera() {
                 </CameraWrapper>
             )}
 
-            <FocusIndicator
-                isFocusing={isFocusing}
-                focusPosX={focusPosX.value}
-                focusPosY={focusPosY.value}
-            />
+            <FocusIndicator ref={focusIndicatorRef} />
 
             <CameraControl
                 ref={cameraControlRef}
