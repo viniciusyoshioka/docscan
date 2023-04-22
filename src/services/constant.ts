@@ -47,8 +47,6 @@ export const relativePathTemporaryCompressedPicture = `${relativePathTemporary}/
 export const fullPathTemporaryCompressedPicture = `${fullPathTemporary}/${folderTemporaryCompressedPicture}`
 
 // Database
-// Version
-export const latestDbVersion = "1.0.0"
 // Database folder
 export const databaseFolder = `${RNFS.DocumentDirectoryPath}/databases`
 // App database
