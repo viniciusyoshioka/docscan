@@ -22,6 +22,7 @@ import { CameraHeader } from "./Header"
 import { CameraButtonWrapper, CameraTextWrapper, CameraWrapper, NoCameraAvailableText, NoCameraAvailableTitle } from "./style"
 import { useCameraOrientation } from "./useCameraOrientation"
 import { useControlActionEnabled } from "./useControlActionEnabled"
+import { useDisableFocusOnSettingsOpened } from "./useDisableFocusOnSettingsOpened"
 import { useIsCameraActive } from "./useIsCameraActive"
 import { useIsCameraFlippable } from "./useIsCameraFlippable"
 import { useIsShowingCamera } from "./useIsShowingCamera"
@@ -252,7 +253,7 @@ export function Camera() {
     const requestCameraPermission = useRequestCameraPermission(setHasCameraPermission)
 
     useControlActionEnabled({ isCameraActive, cameraControlRef })
-
+    useDisableFocusOnSettingsOpened({ isSettingsOpened: isCameraSettingsVisible, setIsFocusEnabled })
     useEffect(() => {
         setIsResetingCamera(true)
 
