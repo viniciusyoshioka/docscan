@@ -2,10 +2,12 @@ import { useEffect, useState } from "react"
 import { OrientationType } from "react-native-orientation-locker"
 
 import { useDeviceOrientation } from "../../hooks"
-import { CameraOrientationType } from "../../types"
 
 
-export function useCameraOrientation() {
+export type CameraOrientationType = "portrait" | "portraitUpsideDown" | "landscapeRight" | "landscapeLeft"
+
+
+export function useCameraOrientation(): CameraOrientationType {
 
 
     const deviceOrientation = useDeviceOrientation()
