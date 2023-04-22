@@ -1,6 +1,6 @@
 import { Button, Screen } from "@elementium/native"
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useMemo, useRef, useState } from "react"
 import { Alert, Linking, StatusBar, StyleProp, useWindowDimensions, ViewStyle } from "react-native"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
@@ -27,6 +27,7 @@ import { useIsCameraActive } from "./useIsCameraActive"
 import { useIsCameraFlippable } from "./useIsCameraFlippable"
 import { useIsShowingCamera } from "./useIsShowingCamera"
 import { useRequestCameraPermission } from "./useRequestCameraPermission"
+import { useResetCameraOnChangeRatio } from "./useResetCameraOnChangeRatio"
 
 
 // TODO goBack() function sometimes go back to Home instead of EditDocument
@@ -251,16 +252,9 @@ export function Camera() {
 
 
     const requestCameraPermission = useRequestCameraPermission(setHasCameraPermission)
-
     useControlActionEnabled({ isCameraActive, cameraControlRef })
     useDisableFocusOnSettingsOpened({ isSettingsOpened: isCameraSettingsVisible, setIsFocusEnabled })
-    useEffect(() => {
-        setIsResetingCamera(true)
-
-        setTimeout(() => {
-            setIsResetingCamera(false)
-        }, 100)
-    }, [settings.camera.ratio])
+    useResetCameraOnChangeRatio(setIsResetingCamera)
 
 
     return (
