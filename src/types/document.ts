@@ -1,7 +1,3 @@
-import { Dispatch, ReactNode } from "react"
-
-import { DocumentDataReducerAction } from "."
-
 
 /**
  * Contains all document's attributes needed for a list.
@@ -45,23 +41,4 @@ export type Document = {
     pictureList: DocumentPicture[];
     lastModificationTimestamp: string;
     hasChanges?: boolean;
-}
-
-
-/**
- * Type for the document data state and dispatch,
- * returned by the reducer hook
- */
-export type DocumentDataContextType = {
-    documentDataState: undefined | Document;
-    dispatchDocumentData: Dispatch<DocumentDataReducerAction>;
-}
-
-
-/**
- * Type for `DocumentDataProvider` props
- */
-export interface DocumentDataProviderProps {
-    value: DocumentDataContextType;
-    children?: ReactNode;
 }
