@@ -36,3 +36,8 @@ export async function getReadMediaImagesPermission(): Promise<boolean> {
 
     return await getPermission(permission)
 }
+
+
+export async function getNotificationPermission(): Promise<boolean> {
+    return await getPermission("android.permission.POST_NOTIFICATIONS")
+}
