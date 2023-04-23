@@ -2,7 +2,6 @@
 import { I18n } from "i18n-js"
 import { NativeModules, Platform } from "react-native"
 
-import { en_US } from "./en_US"
 import { pt_BR } from "./pt_BR"
 import { TranslationKeyType } from "./types"
 
@@ -23,7 +22,6 @@ const normalizedLanguageCode: LanguageCodeNormalization = {
 
 
 export const i18n = new I18n({
-    "en_US": en_US,
     "pt_BR": pt_BR,
 })
 
