@@ -15,7 +15,7 @@ import { useDocumentData } from "../../services/document-data"
 import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
-import { createPdf, PdfCreatorOptions, viewPdf } from "../../services/pdf-creator"
+import { PdfCreator, PdfCreatorOptions } from "../../services/pdf-creator"
 import { getReadPermission, getWritePermission } from "../../services/permission"
 import { NavigationParamProps, RouteParamProps } from "../../types"
 import { ConvertPdfOption } from "./ConvertPdfOption"
@@ -161,7 +161,7 @@ export function EditDocument() {
         const pictureList: string[] = documentDataState.pictureList.map(item => item.filePath)
 
         await createAllFolderAsync()
-        createPdf(pictureList, documentPath, pdfOptions)
+        PdfCreator.createPdf(pictureList, documentPath, pdfOptions)
     }
 
     async function shareDocument() {
@@ -234,7 +234,7 @@ export function EditDocument() {
             return
         }
 
-        viewPdf(pdfFilePath)
+        PdfCreator.viewPdf(pdfFilePath)
     }
 
     async function deletePdf() {
