@@ -5,6 +5,9 @@ import { log, stringfyError } from "./log"
 import { getWritePermission } from "./permission"
 
 
+// TODO change paths according to Android's permission
+
+
 async function createRootFolder() {
     const hasWritePermission = await getWritePermission()
     if (!hasWritePermission) {
