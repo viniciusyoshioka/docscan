@@ -3,9 +3,10 @@ import { CameraDevices, LogicalCameraDeviceType, PhysicalCameraDeviceType, useCa
 import { log, stringfyError } from "../services/log"
 
 
-export function useCameraDevices(
-    deviceType?: PhysicalCameraDeviceType | LogicalCameraDeviceType
-): CameraDevices | undefined {
+export type CameraDeviceType = PhysicalCameraDeviceType | LogicalCameraDeviceType
+
+
+export function useCameraDevices(deviceType?: CameraDeviceType): CameraDevices | undefined {
     let cameraDevices: CameraDevices | undefined = undefined
 
     try {
