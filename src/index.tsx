@@ -9,7 +9,7 @@ import { useKeepAwakeOnDev } from "./hooks"
 import { Router } from "./router"
 import { DocumentDataProvider, reducerDocumentData } from "./services/document-data"
 import { logCriticalError, stringfyError } from "./services/log"
-import { Settings, SettingsProvider } from "./services/settings"
+import { Settings, settingsDefault, SettingsProvider } from "./services/settings"
 import { AppStorageKeys, setStorageDefaultValues, useMMKVObject } from "./services/storage"
 import { AppThemeProvider, themeDefault, ThemeType } from "./theme"
 
@@ -54,7 +54,8 @@ export function App() {
 
 
     useEffect(() => {
-        setStorageDefaultValues()
+        const wasDefaultValuesSet = setStorageDefaultValues()
+        if (wasDefaultValuesSet) setSettings(settingsDefault)
 
         openAppDatabase()
             .then(async database => {
