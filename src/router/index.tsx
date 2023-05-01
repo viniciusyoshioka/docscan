@@ -20,11 +20,7 @@ export function Router() {
         <NavigationContainer>
             <Stack.Navigator
                 initialRouteName={"Home"}
-                screenOptions={{
-                    headerShown: false,
-                    animationTypeForReplace: "push",
-                    animation: "fade",
-                }}
+                screenOptions={{ headerShown: false }}
             >
                 <Stack.Screen name={"Home"} component={Home} />
                 <Stack.Screen name={"Camera"} component={Camera} options={{ orientation: "portrait" }} />
