@@ -3,7 +3,7 @@ import { useColorScheme } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { MenuProvider } from "react-native-popup-menu"
 
-import { DocumentDatabase, LogDatabase, openAppDatabase, openLogDatabase, setGlobalAppDatabase, setGlobalLogDatabase } from "./database"
+import { RealmProvider } from "./database"
 import { useKeepAwakeOnDev } from "./hooks"
 import { Router } from "./router"
 import { DocumentDataProvider, reducerDocumentData } from "./services/document-data"
@@ -63,7 +63,9 @@ export function App() {
                 <MenuProvider backHandler={true}>
                     <SettingsProvider value={{ settings, setSettings }}>
                         <DocumentDataProvider value={{ documentDataState, dispatchDocumentData }}>
-                            <Router />
+                            <RealmProvider>
+                                <Router />
+                            </RealmProvider>
                         </DocumentDataProvider>
                     </SettingsProvider>
                 </MenuProvider>
