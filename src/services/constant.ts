@@ -48,7 +48,7 @@ export const fullPathTemporaryCompressedPicture = `${fullPathTemporary}/${folder
 
 // Database
 // Database folder
-export const databaseFolder = `${RNFS.DocumentDirectoryPath}/databases`
+export const databaseFolder = RNFS.DocumentDirectoryPath
 // App database
 export const appDatabaseFileName = "docscan_database.sqlite"
 export const appDatabaseFullPath = `${databaseFolder}/${appDatabaseFileName}`
