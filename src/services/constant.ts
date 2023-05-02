@@ -37,7 +37,7 @@ export const fullPathTemporary = `${fullPathRoot}/${folderTemporary}`
 export const folderTemporaryExported = "Exported"
 export const relativePathTemporaryExported = `${relativePathTemporary}/${folderTemporaryExported}`
 export const fullPathTemporaryExported = `${fullPathTemporary}/${folderTemporaryExported}`
-// Internal/Temporaary/Imported
+// Internal/Temporary/Imported
 export const folderTemporaryImported = "Imported"
 export const relativePathTemporaryImported = `${relativePathTemporary}/${folderTemporaryImported}`
 export const fullPathTemporaryImported = `${fullPathTemporary}/${folderTemporaryImported}`
