@@ -70,11 +70,3 @@ export function getLocaleDateTime(dateObject = new Date(), dateSeparator = "/", 
     const time = getLocaleTime(dateObject, timeSeparator, hasSeconds)
     return `${date} ${time}`
 }
-
-
-/**
- * Get the date and time, for timestamp, in ISO format
- */
-export function getTimestamp(dateObject = new Date()): string {
-    return dateObject.toISOString()
-}
