@@ -1,13 +1,13 @@
 import { createRealmContext } from "@realm/react"
 
-import { appRealmDatabaseFullPath } from "../../services/constant"
+import { appDatabaseFullPath } from "../../services/constant"
 import { DocumentPictureSchema, DocumentSchema } from "../schemas"
 
 
 const DocumentRealmContext = createRealmContext({
     schema: [DocumentSchema, DocumentPictureSchema],
     schemaVersion: 1,
-    path: appRealmDatabaseFullPath,
+    path: appDatabaseFullPath,
     deleteRealmIfMigrationNeeded: __DEV__,
 })
 
