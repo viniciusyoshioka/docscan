@@ -50,11 +50,11 @@ export const fullPathTemporaryCompressedPicture = `${fullPathTemporary}/${folder
 // Database folder
 export const databaseFolder = RNFS.DocumentDirectoryPath
 // App database
-export const appDatabaseFileName = "docscan_database.sqlite"
+export const appDatabaseFileName = "docscan_database.realm"
 export const appDatabaseFullPath = `${databaseFolder}/${appDatabaseFileName}`
 // Log database
-export const logDatabaseFileName = "docscan_log.sqlite"
+export const logDatabaseFileName = "docscan_log.realm"
 export const logDatabaseFullPath = `${databaseFolder}/${logDatabaseFileName}`
 // Export database
-export const exportDatabaseFileName = "docscan_export.sqlite"
+export const exportDatabaseFileName = "docscan_export.realm"
 export const exportDatabaseFullPath = `${databaseFolder}/${exportDatabaseFileName}`
