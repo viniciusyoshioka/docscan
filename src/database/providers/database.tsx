@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 
-import { DocumentRealmProvider, LogRealmProvider } from "./configs"
+import { DocumentRealmProvider, LogRealmProvider } from "../configs"
 
 
 export interface RealmProviderProps {

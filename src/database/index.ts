@@ -1,4 +1,4 @@
 export * from "./configs"
 export * from "./interfaces"
-export * from "./provider"
+export * from "./providers"
 export * from "./schemas"
