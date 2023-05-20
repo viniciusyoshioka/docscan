@@ -1,9 +1,8 @@
 import RNFS from "react-native-fs"
-import "react-native-get-random-values"
 import { v4 as uuid4 } from "uuid"
 
-import { translate } from "../../locales"
-import { fullPathPicture, fullPathTemporaryExported } from "../constant"
+import { translate } from "../locales"
+import { fullPathPicture, fullPathTemporaryExported } from "./constant"
 
 
 export class DocumentService {
@@ -18,19 +17,21 @@ export class DocumentService {
     }
 
     static getFileExtension(filePath: string): string {
+        if (filePath.startsWith("."))
+            return filePath
+
         const splittedFilePath = filePath.split(".")
         return splittedFilePath[splittedFilePath.length - 1]
     }
 
     static async getPicturePath(imagePath: string): Promise<string> {
-        const fileName = uuid4()
         const fileExtension = this.getFileExtension(imagePath)
 
-        let newPath = `${fullPathPicture}/${fileName}.${fileExtension}`
-        while (await RNFS.exists(newPath)) {
-            const newFileName = uuid4()
-            newPath = `${fullPathPicture}/${newFileName}.${fileExtension}`
-        }
+        let newPath: string
+        do {
+            const fileName = uuid4()
+            newPath = `${fullPathPicture}/${fileName}.${fileExtension}`
+        } while (await RNFS.exists(newPath))
         return newPath
     }
 
