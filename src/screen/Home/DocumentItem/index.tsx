@@ -4,9 +4,9 @@ import CheckBox from "@react-native-community/checkbox"
 import { useMemo } from "react"
 import { LongPressGestureHandler } from "react-native-gesture-handler"
 
+import { DocumentSchema } from "../../../database"
 import { SelectableItem, useSelectableItem } from "../../../hooks"
 import { getLocaleDateTime } from "../../../services/date"
-import { DocumentForList } from "../../../services/document"
 import { useAppTheme } from "../../../theme"
 import { DocumentItemBlock, DocumentItemButton } from "./style"
 
@@ -15,7 +15,7 @@ export { DOCUMENT_ITEM_HEIGHT } from "./style"
 
 
 export interface DocumentItemProps extends SelectableItem {
-    document: DocumentForList;
+    document: DocumentSchema;
 }
 
 
@@ -55,7 +55,7 @@ export function DocumentItem(props: DocumentItemProps) {
                         size={"small"}
                         numberOfLines={1}
                         style={{ color: color.onSurfaceVariant }}
-                        children={getLocaleDateTime(new Date(props.document.lastModificationTimestamp), "/", ":", false)}
+                        children={getLocaleDateTime(new Date(props.document.modifiedAt), "/", ":", false)}
                     />
                 </DocumentItemBlock>
 
