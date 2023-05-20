@@ -49,22 +49,30 @@ export function Home() {
         setShowDocumentDeletionModal(true)
 
         try {
+            const documentIdToDelete = documentSelection
+                .selectedData
+                .map(documentId => Realm.BSON.ObjectId.createFromHexString(documentId))
+
             const picturesToDelete = documentRealm
                 .objects<DocumentPictureSchema>("DocumentPictureSchema")
-                .filter(documentPicture => documentSelection
-                    .selectedData
-                    .includes(documentPicture.belongsToDocument.toHexString())
-                )
+                .filtered("belongsToDocument IN $0", documentIdToDelete)
 
-            documentRealm.write(() => {
-                documentRealm.delete(picturesToDelete)
-            })
+            const documentsToDelete = documentRealm
+                .objects<DocumentSchema>("DocumentSchema")
+                .filtered("id IN $0", documentIdToDelete)
 
-            const picturesPathToDelete = picturesToDelete
-                .map(documentPicture => documentPicture.filePath)
+            documentRealm.beginTransaction()
+            documentRealm.delete(picturesToDelete)
+            documentRealm.delete(documentsToDelete)
+            documentRealm.commitTransaction()
 
+            const picturesPathToDelete = picturesToDelete.map(documentPicture => documentPicture.filePath)
             deletePicturesService(picturesPathToDelete)
         } catch (error) {
+            if (documentRealm.isInTransaction) {
+                documentRealm.cancelTransaction()
+            }
+
             log.error(`Error deleting selected documents from database: "${stringfyError(error)}"`)
             Alert.alert(
                 translate("warn"),
