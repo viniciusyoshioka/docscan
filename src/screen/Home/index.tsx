@@ -89,8 +89,8 @@ export function Home() {
             translate("Home_alert_deleteDocuments_title"),
             translate("Home_alert_deleteDocuments_text"),
             [
-                { text: translate("cancel"), onPress: () => { } },
-                { text: translate("delete"), onPress: async () => await deleteSelectedDocument() }
+                { text: translate("cancel"), onPress: () => {} },
+                { text: translate("delete"), onPress: deleteSelectedDocument }
             ]
         )
     }
@@ -118,8 +118,8 @@ export function Home() {
             translate("Home_alert_exportDocuments_title"),
             translate(exportAlertText),
             [
-                { text: translate("cancel"), onPress: () => { } },
-                { text: translate("Home_export"), onPress: async () => await exportSelectedDocument() }
+                { text: translate("cancel"), onPress: () => {} },
+                { text: translate("Home_export"), onPress: exportSelectedDocument }
             ]
         )
     }
@@ -134,8 +134,8 @@ export function Home() {
             translate("Home_alert_mergeDocuments_title"),
             translate("Home_alert_mergeDocuments_text"),
             [
-                { text: translate("cancel"), onPress: () => { } },
-                { text: translate("Home_merge"), onPress: async () => await mergeSelectedDocument() }
+                { text: translate("cancel"), onPress: () => {} },
+                { text: translate("Home_merge"), onPress: mergeSelectedDocument }
             ]
         )
     }
@@ -150,8 +150,8 @@ export function Home() {
             translate("Home_alert_duplicateDocuments_title"),
             translate("Home_alert_duplicateDocuments_text"),
             [
-                { text: translate("cancel"), onPress: () => { } },
-                { text: translate("Home_duplicate"), onPress: async () => await duplicateSelectedDocument() }
+                { text: translate("cancel"), onPress: () => {} },
+                { text: translate("Home_duplicate"), onPress: duplicateSelectedDocument }
             ]
         )
     }
