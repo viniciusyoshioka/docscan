@@ -15,3 +15,11 @@ export interface Document {
     modifiedAt: number;
     name: string;
 }
+
+
+export interface DocumentInMemory {
+    id?: string;
+    createdAt: number;
+    modifiedAt: number;
+    name: string;
+}
