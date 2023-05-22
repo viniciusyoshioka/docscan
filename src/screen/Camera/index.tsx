@@ -1,22 +1,22 @@
 import { Button, Screen } from "@elementium/native"
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core"
 import { useMemo, useRef, useState } from "react"
-import { Alert, Linking, StatusBar, StyleProp, useWindowDimensions, ViewStyle } from "react-native"
+import { Alert, Linking, StatusBar, StyleProp, ViewStyle, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
 import { Camera as RNCamera } from "react-native-vision-camera"
 
 import { EmptyList } from "../../components"
+import { useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler, useCameraDevices, useIsForeground } from "../../hooks"
 import { translate } from "../../locales"
-import { DocumentPicture, DocumentService } from "../../services/document"
-import { useDocumentData } from "../../services/document-data"
+import { DocumentService } from "../../services/document"
 import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { getCameraRatioNumber, useSettings } from "../../services/settings"
 import { NavigationParamProps, RouteParamProps } from "../../types"
-import { CameraControl, CameraControlRef, CAMERA_CONTROL_HEIGHT } from "./CameraControl"
+import { CAMERA_CONTROL_HEIGHT, CameraControl, CameraControlRef } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
 import { FocusIndicator, FocusIndicatorRef } from "./FocusIndicator"
 import { CameraHeader } from "./Header"
@@ -45,14 +45,14 @@ export function Camera() {
     const { width } = useWindowDimensions()
     const isForeground = useIsForeground()
 
+    const documentRealm = useDocumentRealm()
     const { settings } = useSettings()
-    const { documentDataState, dispatchDocumentData } = useDocumentData()
+    const { documentModel, setDocumentModel } = useDocumentModel()
 
     const cameraRef = useRef<RNCamera>(null)
     const cameraControlRef = useRef<CameraControlRef>(null)
     const focusIndicatorRef = useRef<FocusIndicatorRef>(null)
 
-    const [hasChanges, setHasChanges] = useState(false)
     const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
 
     const cameraDevices = useCameraDevices()
@@ -75,34 +75,6 @@ export function Camera() {
     })
 
 
-    async function deleteUnsavedPictures() {
-        if (!documentDataState) {
-            navigation.navigate("Home")
-            return
-        }
-
-        const filePathToDelete = documentDataState.id
-            ? documentDataState.pictureList
-                .filter((item: DocumentPicture) => {
-                    if (!item.id) {
-                        return true
-                    }
-                    return false
-                })
-                .map((item: DocumentPicture) => item.filePath)
-            : documentDataState.pictureList
-                .map((item: DocumentPicture) => item.filePath)
-
-        deletePicturesService(filePathToDelete)
-        dispatchDocumentData({ type: "close-document" })
-        navigation.navigate("Home")
-    }
-
-    function saveChangesAndGoBack() {
-        dispatchDocumentData({ type: "save-and-close-document" })
-        navigation.reset({ routes: [ { name: "Home" } ] })
-    }
-
     function goBack() {
         if (isCameraSettingsVisible) {
             setIsCameraSettingsVisible(false)
@@ -116,22 +88,8 @@ export function Camera() {
             return
         }
 
-        if (!documentDataState || !hasChanges) {
-            navigation.navigate("Home")
-            return
-        }
-
-        if (!params && hasChanges) {
-            Alert.alert(
-                translate("warn"),
-                translate("Camera_alert_unsavedPictures_text"),
-                [
-                    { text: translate("cancel"), onPress: () => { } },
-                    { text: translate("dont_save"), onPress: async () => await deleteUnsavedPictures() },
-                    { text: translate("save"), onPress: () => saveChangesAndGoBack() }
-                ]
-            )
-        }
+        setDocumentModel({ type: "close", payload: undefined })
+        navigation.navigate("Home")
     }
 
     function addPictureFromGallery() {
@@ -177,18 +135,21 @@ export function Camera() {
             })
 
             const picturePath = await DocumentService.getPicturePath(response.path)
-            const pictureName = DocumentService.getFileFullname(picturePath)
             await RNFS.moveFile(response.path, picturePath)
 
             if (params?.screenAction === "replace-picture") {
-                dispatchDocumentData({
-                    type: "replace-picture",
+                if (!documentModel) throw new Error("Document model is undefined. This should not happen")
+
+                const oldPicturePath = documentModel.pictures[params.replaceIndex].filePath
+                setDocumentModel({
+                    type: "replacePicture",
                     payload: {
+                        realm: documentRealm,
                         indexToReplace: params.replaceIndex,
                         newPicturePath: picturePath,
-                        newPictureName: pictureName
-                    }
+                    },
                 })
+                deletePicturesService([oldPicturePath])
 
                 navigation.navigate("VisualizePicture", {
                     pictureIndex: params.replaceIndex,
@@ -196,16 +157,13 @@ export function Camera() {
                 return
             }
 
-            dispatchDocumentData({
-                type: "add-picture",
-                payload: [ {
-                    id: undefined,
-                    filePath: picturePath,
-                    fileName: pictureName,
-                    position: documentDataState?.pictureList.length || 0,
-                } ]
+            setDocumentModel({
+                type: "addPictures",
+                payload: {
+                    realm: documentRealm,
+                    picturesToAdd: [picturePath]
+                },
             })
-            setHasChanges(true)
         } catch (error) {
             log.error(`Error taking picture: "${stringfyError(error)}"`)
             Alert.alert(
@@ -216,7 +174,7 @@ export function Camera() {
     }
 
     function editDocument() {
-        dispatchDocumentData({ type: "create-new-if-empty" })
+        setDocumentModel({ type: "createNewIfEmpty", payload: undefined })
 
         navigation.reset({
             routes: [ { name: "EditDocument" } ]
@@ -346,7 +304,7 @@ export function Camera() {
                 addPictureFromGallery={addPictureFromGallery}
                 takePicture={takePicture}
                 editDocument={editDocument}
-                pictureListLength={documentDataState?.pictureList.length || 0}
+                pictureListLength={documentModel?.pictures.length ?? 0}
             />
 
             <CameraSettings
