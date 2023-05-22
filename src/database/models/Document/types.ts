@@ -11,7 +11,7 @@ export type DocumentModelState = DocumentInMemory & {
 
 
 export type DocumentModelActionPayload = {
-    createNewIfEmpty: never;
+    createNewIfEmpty: undefined;
     setData: {
         realm: Realm;
         document: Document | DocumentSchema;
@@ -37,7 +37,7 @@ export type DocumentModelActionPayload = {
     saveIfNotWritten: {
         realm: Realm;
     };
-    close: never;
+    close: undefined;
 }
 
 
