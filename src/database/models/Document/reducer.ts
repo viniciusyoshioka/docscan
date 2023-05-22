@@ -14,7 +14,7 @@ import {
 
 
 function createNewIfEmpty(previousState: DocumentModelState | undefined, payload: DocumentModelActionPayload["createNewIfEmpty"]): DocumentModelState | undefined {
-    if (previousState) return previousState
+    if (previousState !== undefined) return previousState
 
     const creationTime = Date.now()
     return {
@@ -65,7 +65,7 @@ function setData(previousState: DocumentModelState | undefined, payload: Documen
 
 
 function rename(previousState: DocumentModelState | undefined, payload: DocumentModelActionPayload["rename"]): DocumentModelState | undefined {
-    if (!previousState) return undefined
+    if (previousState === undefined) throw new Error("No document data to rename. This should not happen")
 
 
     const { realm, newName } = payload
@@ -74,7 +74,8 @@ function rename(previousState: DocumentModelState | undefined, payload: Document
     const modificationTime = Date.now()
 
     realm.write(() => {
-        if (!previousState.__documentFromRealm) return
+        if (previousState.__documentFromRealm === undefined)
+            throw new Error("No document data to rename. This should not happen")
 
         previousState.__documentFromRealm.name = newName
         previousState.__documentFromRealm.modifiedAt = modificationTime
@@ -89,25 +90,25 @@ function rename(previousState: DocumentModelState | undefined, payload: Document
 
 
 function addPictures(previousState: DocumentModelState | undefined, payload: DocumentModelActionPayload["addPictures"]): DocumentModelState | undefined {
-    createNewIfEmpty(previousState, undefined as never)
-    if (!previousState) throw new Error("No document data to add picture. This should not happen")
+    previousState = createNewIfEmpty(previousState, undefined)
+    if (previousState === undefined) throw new Error("No document data to add picture. This should not happen")
 
 
     const { realm, picturesToAdd } = payload
 
 
-    if (!previousState.__documentFromRealm)
-        saveIfNotWritten(previousState, { realm })
+    if (previousState.__documentFromRealm === undefined)
+        previousState = saveIfNotWritten(previousState, { realm }) as DocumentModelState
 
 
     const modificationTime = Date.now()
 
     const documentPictures: DocumentPicture[] = realm.write(() => {
-        if (!previousState || !previousState.__documentFromRealm)
+        if (previousState === undefined || previousState.__documentFromRealm === undefined)
             throw new Error("No document data to add picture. This should not happen")
 
         const documentPicturesJSON = picturesToAdd.map((picture, index) => {
-            if (!previousState || !previousState.__documentFromRealm)
+            if (previousState === undefined || previousState.__documentFromRealm === undefined)
                 throw new Error("No document data to add picture. This should not happen")
 
             const newPicture = realm.create<DocumentPictureSchema>("DocumentPictureSchema", {
@@ -132,7 +133,7 @@ function addPictures(previousState: DocumentModelState | undefined, payload: Doc
 
 
 function removePictures(previousState: DocumentModelState | undefined, payload: DocumentModelActionPayload["removePictures"]): DocumentModelState | undefined {
-    if (!previousState || !previousState.__documentFromRealm)
+    if (previousState === undefined || previousState.__documentFromRealm === undefined)
         throw new Error("No document data to remove picture. This should not happen")
 
 
@@ -143,11 +144,11 @@ function removePictures(previousState: DocumentModelState | undefined, payload: 
 
 
     realm.write(() => {
-        if (!previousState || !previousState.__documentFromRealm)
+        if (previousState === undefined || previousState.__documentFromRealm === undefined)
             throw new Error("No document data to remove picture. This should not happen")
 
         const picturesToRemoveFromDatabase = picturesToRemove.map(pictureIndex => {
-            if (!previousState || !previousState.__documentFromRealm)
+            if (previousState === undefined || previousState.__documentFromRealm === undefined)
                 throw new Error("No document data to remove picture. This should not happen")
 
             const pictureHexId = previousState.pictures[pictureIndex].id
@@ -169,7 +170,7 @@ function removePictures(previousState: DocumentModelState | undefined, payload: 
 
 
 function replacePicture(previousState: DocumentModelState | undefined, payload: DocumentModelActionPayload["replacePicture"]): DocumentModelState | undefined {
-    if (!previousState || !previousState.__documentFromRealm)
+    if (previousState === undefined || previousState.__documentFromRealm === undefined)
         throw new Error("No document data to replace picture. This should not happen")
 
 
@@ -185,7 +186,7 @@ function replacePicture(previousState: DocumentModelState | undefined, payload: 
     const modificationTime = Date.now()
 
     realm.write(() => {
-        if (!previousState || !previousState.__documentFromRealm)
+        if (previousState === undefined || previousState.__documentFromRealm === undefined)
             throw new Error("No document data to replace picture. This should not happen")
 
         previousState.__documentFromRealm.modifiedAt = modificationTime
@@ -201,15 +202,15 @@ function replacePicture(previousState: DocumentModelState | undefined, payload: 
 
 
 function saveIfNotWritten(previousState: DocumentModelState | undefined, payload: DocumentModelActionPayload["saveIfNotWritten"]): DocumentModelState | undefined {
-    if (!previousState) throw new Error("No document data to save. This should not happen")
-    if (previousState?.__documentFromRealm || previousState?.id) return previousState
+    if (previousState === undefined) throw new Error("No document data to save. This should not happen")
+    if (previousState.__documentFromRealm !== undefined || previousState.id !== undefined) return previousState
 
 
     const { realm } = payload
 
 
     const documentFromRealm: DocumentSchema = realm.write(() => {
-        if (!previousState) throw new Error("No document data to save. This should not happen")
+        if (previousState === undefined) throw new Error("No document data to save. This should not happen")
 
         return realm.create<DocumentSchema>("DocumentSchema", {
             createdAt: previousState.createdAt,
