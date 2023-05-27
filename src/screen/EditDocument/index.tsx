@@ -93,8 +93,16 @@ export function EditDocument() {
         )
     }
 
-    // TODO reimplement invertSelection
-    function invertSelection() {}
+    function invertSelection() {
+        pictureSelection.setSelectedData(current => {
+            const amountOfPictures = documentModel?.pictures.length ?? 0
+            const newSelectedData: number[] = []
+            for (let i = 0; i < amountOfPictures; i++) {
+                if (!current.includes(i)) newSelectedData.push(i)
+            }
+            return newSelectedData
+        })
+    }
 
     // TODO reimplement deleteSelectedPicture
     async function deleteSelectedPicture() {}
