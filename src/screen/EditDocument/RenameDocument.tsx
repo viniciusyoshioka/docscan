@@ -3,20 +3,21 @@ import { createRef, useEffect, useState } from "react"
 import { NativeSyntheticEvent, TextInput } from "react-native"
 
 import { Input } from "../../components"
+import { useDocumentModel, useDocumentRealm } from "../../database"
 import { useKeyboard } from "../../hooks"
 import { translate } from "../../locales"
-import { useDocumentData } from "../../services/document-data"
 
 
-export interface RenameDocumentProps extends ModalProps { }
+export interface RenameDocumentProps extends ModalProps {}
 
 
 export function RenameDocument(props: RenameDocumentProps) {
 
 
-    const inputRef = createRef<TextInput>()
+    const documentRealm = useDocumentRealm()
+    const { documentModel, setDocumentModel } = useDocumentModel()
 
-    const { documentDataState, dispatchDocumentData } = useDocumentData()
+    const inputRef = createRef<TextInput>()
 
     const [documentName, setDocumentName] = useState<string | undefined>(undefined)
 
@@ -27,34 +28,29 @@ export function RenameDocument(props: RenameDocumentProps) {
 
 
     function renameDocument() {
-        if (documentName === undefined) {
-            return
-        }
+        if (documentName === undefined) return
 
-        dispatchDocumentData({
-            type: "rename-document",
-            payload: documentName
+        setDocumentModel({
+            type: "rename",
+            payload: {
+                realm: documentRealm,
+                newName: documentName,
+            },
         })
     }
 
 
     useEffect(() => {
-        if (props.visible) {
-            setDocumentName(documentDataState?.name ?? "")
-        } else {
-            setDocumentName(undefined)
-        }
+        props.visible
+            ? setDocumentName(documentModel?.name)
+            : setDocumentName(undefined)
     }, [props.visible])
 
     useEffect(() => {
-        if (documentName === undefined) {
-            return
-        }
+        if (documentName === undefined) return
 
         if (!inputRef.current?.isFocused()) {
-            setTimeout(() => {
-                inputRef.current?.focus()
-            }, 100)
+            setTimeout(() => inputRef.current?.focus(), 100)
         }
     }, [documentName])
 

@@ -18,7 +18,7 @@ export const PictureButton = styled(RectButton)<StyledProps>`
 `
 
 
-export const PictureImage = styled(FastImage)`
+export const PictureImage = styled(FastImage)<StyledProps>`
     flex: 1;
     border-radius: ${props => props.theme.shape.small}px;
     resize-mode: cover;
@@ -26,13 +26,13 @@ export const PictureImage = styled(FastImage)`
 `
 
 
-export const SelectedSurface = styled.View`
+export const SelectedSurface = styled.View<StyledProps>`
     position: absolute;
     top: 0px;
     bottom: 0px;
     left: 0px;
     right: 0px;
     border-radius: ${props => props.theme.shape.small}px;
-    background-color: ${(props: StyledProps) => props.theme.color.primary};
+    background-color: ${props => props.theme.color.primary};
     opacity: 0.6;
 `

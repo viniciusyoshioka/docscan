@@ -1,5 +1,5 @@
 import { Header, HeaderButton, HeaderTitle } from "../../components"
-import { useDocumentData } from "../../services/document-data"
+import { useDocumentModel } from "../../database"
 import { EditDocumentMenu } from "./EditDocumentMenu"
 
 
@@ -23,12 +23,12 @@ export interface EditDocumentHeaderProps {
 export function EditDocumentHeader(props: EditDocumentHeaderProps) {
 
 
-    const { documentDataState } = useDocumentData()
+    const { documentModel } = useDocumentModel()
 
 
     function getTitle() {
         if (!props.isSelectionMode) {
-            return documentDataState?.name ?? ""
+            return documentModel?.name ?? ""
         }
         return props.selectedPicturesAmount.toString()
     }
