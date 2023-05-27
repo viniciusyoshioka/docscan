@@ -9,7 +9,6 @@ export const appType = __DEV__ ? "beta" : "release"
 
 // Icon
 export const appIcon = require("./../image/docscan.png")
-// TODO improve icon
 export const appIconOutline = require("./../image/docscan_outline.png")
 
 // Folder
