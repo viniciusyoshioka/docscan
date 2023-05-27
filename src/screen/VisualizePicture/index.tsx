@@ -2,17 +2,15 @@ import { Screen } from "@elementium/native"
 import { useNavigation, useRoute } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
 import { useRef, useState } from "react"
-import { Alert, useWindowDimensions, View } from "react-native"
+import { Alert, View, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
-import "react-native-get-random-values"
 import { v4 as uuid4 } from "uuid"
 
-import { DocumentDatabase } from "../../database"
+import { DocumentPicture, DocumentPictureSchema, useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler } from "../../hooks"
 import { translate } from "../../locales"
 import { fullPathPicture } from "../../services/constant"
-import { DocumentPicture, DocumentService } from "../../services/document"
-import { useDocumentData } from "../../services/document-data"
+import { DocumentService } from "../../services/document"
 import { ImageCrop, OnImageSavedResponse } from "../../services/image-crop"
 import { log, stringfyError } from "../../services/log"
 import { NavigationParamProps, RouteParamProps } from "../../types"
@@ -30,15 +28,16 @@ export function VisualizePicture() {
     const { params } = useRoute<RouteParamProps<"VisualizePicture">>()
     const { width } = useWindowDimensions()
 
-    const imageCropRef = useRef<ImageCrop>(null)
+    const documentRealm = useDocumentRealm()
+    const { documentModel, setDocumentModel } = useDocumentModel()
+
     const imageRotationRef = useRef<ImageRotationRef>(null)
+    const imageCropRef = useRef<ImageCrop>(null)
 
-    const { documentDataState, dispatchDocumentData } = useDocumentData()
-
-    const [isCropping, setIsCropping] = useState(false)
-    const [isCropProcessing, setIsCropProcessing] = useState(false)
     const [isRotating, setIsRotating] = useState(false)
     const [isRotationProcessing, setIsRotationProcessing] = useState(false)
+    const [isCropping, setIsCropping] = useState(false)
+    const [isCropProcessing, setIsCropProcessing] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(params.pictureIndex)
     const [isFlatListScrollEnable, setIsFlatListScrollEnable] = useState(true)
 
@@ -69,42 +68,36 @@ export function VisualizePicture() {
         })
     }
 
-    function exitCrop() {
-        if (!isCropProcessing) {
-            setIsCropping(false)
-        }
-    }
-
-    function saveCroppedPicture() {
-        if (!isCropProcessing) {
-            setIsCropProcessing(true)
-            imageCropRef.current?.saveImage()
-        }
-    }
-
     function exitRotation() {
-        if (!isRotationProcessing) {
+        if (!isRotationProcessing)
             setIsRotating(false)
-        }
+    }
+
+    function rotateLeft() {
+        if (!isRotationProcessing)
+            imageRotationRef.current?.rotateLeft()
+    }
+
+    function rotateRight() {
+        if (!isRotationProcessing)
+            imageRotationRef.current?.rotateRight()
     }
 
     async function saveRotatedPicture() {
-        if (isRotationProcessing || !documentDataState) {
-            return
-        }
+        if (isRotationProcessing || !documentModel) return
 
         setIsRotationProcessing(true)
 
-        const pictureToRotatePath = documentDataState.pictureList[currentIndex].filePath
-        const rotatedPicturePath = await DocumentService.getPicturePath(pictureToRotatePath)
+        const picturePathToRotate = documentModel.pictures[currentIndex].filePath
+        const picturePathRotated = await DocumentService.getPicturePath(picturePathToRotate)
         try {
-            await imageRotationRef.current?.save(rotatedPicturePath)
-            dispatchDocumentData({
-                type: "replace-picture",
+            await imageRotationRef.current?.save(picturePathRotated)
+            setDocumentModel({
+                type: "replacePicture",
                 payload: {
+                    realm: documentRealm,
                     indexToReplace: currentIndex,
-                    newPicturePath: rotatedPicturePath,
-                    newPictureName: DocumentService.getFileFullname(rotatedPicturePath),
+                    newPicturePath: picturePathRotated,
                 },
             })
 
@@ -123,21 +116,21 @@ export function VisualizePicture() {
         }
 
         try {
-            RNFS.unlink(pictureToRotatePath)
+            RNFS.unlink(picturePathToRotate)
         } catch (error) {
             log.warn(`Error deleting original image after rotate: "${stringfyError(error)}"`)
         }
     }
 
-    function rotateLeft() {
-        if (!isRotationProcessing) {
-            imageRotationRef.current?.rotateLeft()
-        }
+    function exitCrop() {
+        if (!isCropProcessing)
+            setIsCropping(false)
     }
 
-    function rotateRight() {
-        if (!isRotationProcessing) {
-            imageRotationRef.current?.rotateRight()
+    function saveCroppedPicture() {
+        if (!isCropProcessing) {
+            setIsCropProcessing(true)
+            imageCropRef.current?.saveImage()
         }
     }
 
@@ -152,40 +145,33 @@ export function VisualizePicture() {
     }
 
     async function onCroppedImageSaved(response: OnImageSavedResponse) {
-        const currentPicturePath = documentDataState?.pictureList[currentIndex].filePath
+        if (!documentModel) return
 
-        if (!currentPicturePath) {
-            log.warn("Current image to be replaced does not exists")
-            Alert.alert(
-                translate("warn"),
-                translate("VisualizePicture_alert_warnCurrentPicture_text")
-            )
-            return
-        }
+        const picturePath = documentModel.pictures[currentIndex].filePath
+        const fileExtension = DocumentService.getFileExtension(response.uri)
 
         try {
             let newCroppedPictureUri: string
-            let newCroppedPictureName: string
+            let isPicturePathDuplicated = false
 
             do {
                 const uniqueFileName = uuid4()
-                const fileExtension = DocumentService.getFileExtension(response.uri)
-
                 newCroppedPictureUri = `${fullPathPicture}/${uniqueFileName}.${fileExtension}`
-                newCroppedPictureName = DocumentService.getFileFullname(newCroppedPictureUri)
-            } while (await DocumentDatabase.pictureNameExists(newCroppedPictureName))
 
-            if (await RNFS.exists(currentPicturePath)) {
-                await RNFS.unlink(currentPicturePath)
-            }
+                isPicturePathDuplicated = documentRealm
+                    .objects<DocumentPictureSchema>("DocumentPictureSchema")
+                    .filtered("filePath = $0", newCroppedPictureUri)
+                    .length > 0
+            } while (isPicturePathDuplicated)
+
             await RNFS.moveFile(response.uri, newCroppedPictureUri)
 
-            dispatchDocumentData({
-                type: "replace-picture",
+            setDocumentModel({
+                type: "replacePicture",
                 payload: {
+                    realm: documentRealm,
                     indexToReplace: currentIndex,
                     newPicturePath: newCroppedPictureUri,
-                    newPictureName: newCroppedPictureName,
                 }
             })
         } catch (error) {
@@ -198,9 +184,17 @@ export function VisualizePicture() {
                 translate("warn"),
                 translate("VisualizePicture_alert_errorSavingCroppedImage_text")
             )
+        } finally {
+            setIsCropping(false)
+            setIsCropProcessing(false)
         }
-        setIsCropping(false)
-        setIsCropProcessing(false)
+
+        try {
+            if (await RNFS.exists(picturePath))
+                RNFS.unlink(picturePath)
+        } catch (error) {
+            log.warn(`Error deleting original image after crop: "${stringfyError(error)}"`)
+        }
     }
 
     function onCropError(response: string) {
@@ -238,7 +232,7 @@ export function VisualizePicture() {
             {!isRotating && !isCropping && (
                 <View style={{ flex: 1, flexDirection: "row" }}>
                     <FlashList
-                        data={documentDataState?.pictureList}
+                        data={documentModel?.pictures}
                         renderItem={renderItem}
                         estimatedItemSize={width}
                         horizontal={true}
@@ -259,7 +253,7 @@ export function VisualizePicture() {
             {isRotating && (
                 <ImageRotation
                     ref={imageRotationRef}
-                    source={`file://${documentDataState?.pictureList[currentIndex].filePath}`}
+                    source={`file://${documentModel?.pictures[currentIndex].filePath}`}
                     style={{ flex: 1 }}
                 />
             )}
@@ -268,7 +262,7 @@ export function VisualizePicture() {
                 <ImageCrop
                     ref={imageCropRef}
                     style={{ flex: 1, margin: 16 }}
-                    sourceUrl={`file://${documentDataState?.pictureList[currentIndex].filePath}`}
+                    sourceUrl={`file://${documentModel?.pictures[currentIndex].filePath}`}
                     onSaveImage={onCroppedImageSaved}
                     onCropError={onCropError}
                 />
