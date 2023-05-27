@@ -155,15 +155,14 @@ export type TranslationKeyType =
     | "VisualizePicture_alert_warnCurrentPicture_text"
     | "VisualizePicture_alert_errorSavingCroppedImage_text"
 
-    // document-service service
-    | "documentService_notification_deletingImages_title"
-    | "documentService_notification_copyingImages_title"
-    | "documentService_notification_movingImages_title"
-    | "documentService_notification_exportingDocuments_title"
     // document service
     | "document_newDocumentName"
     | "document_alert_errorSavingDocument_text"
     | "document_alert_errorSavingDocumentChanges_text"
+    | "document_notification_deletingImages_title"
+    | "document_notification_copyingImages_title"
+    | "document_notification_movingImages_title"
+    | "document_notification_exportingDocuments_title"
     // Log service
     | "log_alert_errorRegisteringLog_text"
 

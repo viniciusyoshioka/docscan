@@ -9,7 +9,7 @@ import { DocumentPictureSchema, DocumentSchema, useDocumentList, useDocumentReal
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { TranslationKeyType, translate } from "../../locales"
 import { appIconOutline } from "../../services/constant"
-import { deletePicturesService } from "../../services/document-service"
+import { DocumentService } from "../../services/document"
 import { log, stringfyError } from "../../services/log"
 import { NavigationParamProps } from "../../types"
 import { DOCUMENT_ITEM_HEIGHT, DocumentItem } from "./DocumentItem"
@@ -67,7 +67,7 @@ export function Home() {
             documentRealm.commitTransaction()
 
             const picturesPathToDelete = picturesToDelete.map(documentPicture => documentPicture.filePath)
-            deletePicturesService(picturesPathToDelete)
+            DocumentService.deletePicturesService(picturesPathToDelete)
         } catch (error) {
             if (documentRealm.isInTransaction) {
                 documentRealm.cancelTransaction()

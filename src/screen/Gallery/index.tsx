@@ -11,7 +11,6 @@ import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
 import { DocumentPicture, DocumentService } from "../../services/document"
 import { useDocumentData } from "../../services/document-data"
-import { copyPicturesService } from "../../services/document-service"
 import { log, stringfyError } from "../../services/log"
 import { getReadMediaImagesPermission } from "../../services/permission"
 import { useAppTheme } from "../../theme"
@@ -238,7 +237,7 @@ export function Gallery() {
             nextIndex += 1
         }
 
-        copyPicturesService(imagesToCopy)
+        DocumentService.copyPicturesService(imagesToCopy)
         dispatchDocumentData({
             type: "add-picture",
             payload: imagesToImport

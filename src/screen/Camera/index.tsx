@@ -11,7 +11,6 @@ import { useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler, useCameraDevices, useIsForeground } from "../../hooks"
 import { translate } from "../../locales"
 import { DocumentService } from "../../services/document"
-import { deletePicturesService } from "../../services/document-service"
 import { createAllFolderAsync } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { getCameraRatioNumber, useSettings } from "../../services/settings"
@@ -149,7 +148,7 @@ export function Camera() {
                         newPicturePath: picturePath,
                     },
                 })
-                deletePicturesService([oldPicturePath])
+                DocumentService.deletePicturesService([oldPicturePath])
 
                 navigation.navigate("VisualizePicture", {
                     pictureIndex: params.replaceIndex,

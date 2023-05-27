@@ -158,15 +158,15 @@ export const pt_BR: TranslationObjectType = {
     VisualizePicture_alert_warnCurrentPicture_text: "A imagem atual a ser substituída não existe",
     VisualizePicture_alert_errorSavingCroppedImage_text: "Não foi possível salvar imagem cortada",
 
-    // document-service service
-    documentService_notification_deletingImages_title: "Apagando imagem(ns)",
-    documentService_notification_copyingImages_title: "Copiando imagem(ns)",
-    documentService_notification_movingImages_title: "Movendo imagem(ns)",
-    documentService_notification_exportingDocuments_title: "Exportando documento(s)",
     // document service
     document_newDocumentName: "Novo documento",
     document_alert_errorSavingDocument_text: "Erro salvando documento",
     document_alert_errorSavingDocumentChanges_text: "Erro ao salvar alterações do documento",
+    document_notification_deletingImages_title: "Apagando imagem(ns)",
+    document_notification_copyingImages_title: "Copiando imagem(ns)",
+    document_notification_movingImages_title: "Movendo imagem(ns)",
+    document_notification_exportingDocuments_title: "Exportando documento(s)",
+
     // Log service
     log_alert_errorRegisteringLog_text: "Erro registrando log.",
 }
