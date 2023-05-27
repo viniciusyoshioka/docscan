@@ -21,6 +21,7 @@ import { ImageVisualizationItem } from "./ImageVisualizationItem"
 
 // TODO improve screen design
 // TODO fix scroll not centralized when rotating screen
+// TODO fix image not updating after replacing it
 export function VisualizePicture() {
 
 
