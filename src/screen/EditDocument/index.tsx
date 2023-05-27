@@ -289,8 +289,8 @@ export function EditDocument() {
             translate("EditDocument_alert_deletePdf_title"),
             translate("EditDocument_alert_deletePdf_text"),
             [
-                { text: translate("cancel"), onPress: () => { } },
-                { text: translate("ok"), onPress: async () => await deletePdf() },
+                { text: translate("cancel"), onPress: () => {} },
+                { text: translate("ok"), onPress: deletePdf },
             ]
         )
     }
@@ -327,8 +327,8 @@ export function EditDocument() {
             translate("EditDocument_alert_deleteDocument_title"),
             translate("EditDocument_alert_deleteDocument_text"),
             [
-                { text: translate("cancel"), onPress: () => { } },
-                { text: translate("ok"), onPress: async () => await deleteCurrentDocument() },
+                { text: translate("cancel"), onPress: () => {} },
+                { text: translate("ok"), onPress: deleteCurrentDocument },
             ]
         )
     }
@@ -390,8 +390,8 @@ export function EditDocument() {
             translate("EditDocument_alert_deletePicture_title"),
             translate("EditDocument_alert_deletePicture_text"),
             [
-                { text: translate("cancel"), onPress: () => { } },
-                { text: translate("ok"), onPress: async () => await deleteSelectedPicture() },
+                { text: translate("cancel"), onPress: () => {} },
+                { text: translate("ok"), onPress: deleteSelectedPicture },
             ]
         )
     }
