@@ -49,8 +49,8 @@ function setData(previousState: DocumentModelState | undefined, payload: Documen
 
     if (pictures.length === 0) {
         modelPictures = []
-    } else if (pictures[0] instanceof DocumentPictureSchema) {
-        modelPictures = DocumentModelConversor.fromDocumentPicturesRealmToJson(pictures as DocumentPictureSchema[])
+    } else if (pictures instanceof Realm.Results) {
+        modelPictures = DocumentModelConversor.fromDocumentPicturesRealmToJson(pictures)
     } else {
         modelPictures = pictures as DocumentPicture[]
     }

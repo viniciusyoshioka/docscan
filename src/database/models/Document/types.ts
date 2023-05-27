@@ -15,7 +15,7 @@ export type DocumentModelActionPayload = {
     setData: {
         realm: Realm;
         document: Document | DocumentSchema;
-        pictures: DocumentPicture[] | DocumentPictureSchema[];
+        pictures: DocumentPicture[] | Realm.Results<DocumentPictureSchema>;
     };
     rename: {
         realm: Realm;

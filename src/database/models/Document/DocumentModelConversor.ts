@@ -1,3 +1,5 @@
+import { Realm } from "@realm/react"
+
 import { Document, DocumentPicture } from "../../interfaces"
 import { DocumentPictureSchema, DocumentSchema } from "../../schemas"
 
@@ -16,7 +18,7 @@ export class DocumentModelConversor {
         return pictureJSON
     }
 
-    static fromDocumentPicturesRealmToJson(pictures: DocumentPictureSchema[]): DocumentPicture[] {
+    static fromDocumentPicturesRealmToJson(pictures: Realm.Results<DocumentPictureSchema>): DocumentPicture[] {
         return pictures.map(picture => {
             const pictureJSON = picture.toJSON() as unknown as DocumentPicture
             pictureJSON.id = picture.id.toHexString()
