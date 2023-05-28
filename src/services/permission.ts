@@ -20,17 +20,19 @@ export async function getCameraPermission(): Promise<boolean> {
 
 
 export async function getReadPermission(): Promise<boolean> {
+    if (Platform.OS === "android" && Platform.Version >= 33) return true
     return await getPermission("android.permission.READ_EXTERNAL_STORAGE")
 }
 
 
 export async function getWritePermission(): Promise<boolean> {
+    if (Platform.OS === "android" && Platform.Version >= 33) return true
     return await getPermission("android.permission.WRITE_EXTERNAL_STORAGE")
 }
 
 
 export async function getReadMediaImagesPermission(): Promise<boolean> {
-    const permission: Permission = Platform.Version >= 33
+    const permission: Permission = Platform.OS === "android" && Platform.Version >= 33
         ? "android.permission.READ_MEDIA_IMAGES"
         : "android.permission.READ_EXTERNAL_STORAGE"
 
@@ -39,5 +41,6 @@ export async function getReadMediaImagesPermission(): Promise<boolean> {
 
 
 export async function getNotificationPermission(): Promise<boolean> {
+    if (Platform.OS === "android" && Platform.Version < 33) return true
     return await getPermission("android.permission.POST_NOTIFICATIONS")
 }
