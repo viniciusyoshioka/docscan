@@ -3,20 +3,20 @@ import { CameraRoll, PhotoIdentifier } from "@react-native-camera-roll/camera-ro
 import { useNavigation, useRoute } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
 import { useCallback, useEffect, useMemo, useState } from "react"
-import { ActivityIndicator, Alert, useWindowDimensions, View } from "react-native"
+import { ActivityIndicator, Alert, View, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 
 import { EmptyList, HEADER_HEIGHT } from "../../components"
+import { useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
-import { DocumentPicture, DocumentService } from "../../services/document"
-import { useDocumentData } from "../../services/document-data"
+import { DocumentService } from "../../services/document"
 import { log, stringfyError } from "../../services/log"
 import { getReadMediaImagesPermission } from "../../services/permission"
 import { useAppTheme } from "../../theme"
 import { NavigationParamProps, RouteParamProps } from "../../types"
 import { GalleryHeader } from "./Header"
-import { getImageItemSize, HORIZONTAL_COLUMN_COUNT, ImageItem, VERTICAL_COLUMN_COUNT } from "./ImageItem"
+import { HORIZONTAL_COLUMN_COUNT, ImageItem, VERTICAL_COLUMN_COUNT, getImageItemSize } from "./ImageItem"
 import { LoadingIndicator } from "./LoadingIndicator"
 
 
@@ -27,12 +27,12 @@ export function Gallery() {
 
     const navigation = useNavigation<NavigationParamProps<"Gallery">>()
     const { params } = useRoute<RouteParamProps<"Gallery">>()
-
     const { width: windowWidth, height: windowHeight } = useWindowDimensions()
 
-    const { color } = useAppTheme()
+    const documentRealm = useDocumentRealm()
+    const { documentModel, setDocumentModel } = useDocumentModel()
 
-    const { documentDataState, dispatchDocumentData } = useDocumentData()
+    const { color } = useAppTheme()
 
     const gallerySelection = useSelectionMode<string>()
     const [isLoading, setIsLoading] = useState(false)
@@ -62,9 +62,7 @@ export function Gallery() {
 
 
     async function getImage(refreshing?: boolean) {
-        if (isLoading) {
-            return
-        }
+        if (isLoading) return
 
         setIsLoading(true)
 
@@ -159,7 +157,6 @@ export function Gallery() {
         }
 
         const newImagePath = await DocumentService.getPicturePath(imagePath)
-        const newImageName = DocumentService.getFileFullname(newImagePath)
         try {
             await RNFS.copyFile(imagePath, newImagePath)
         } catch (error) {
@@ -172,13 +169,13 @@ export function Gallery() {
         }
 
         if (params?.screenAction === "replace-picture") {
-            dispatchDocumentData({
-                type: "replace-picture",
+            setDocumentModel({
+                type: "replacePicture",
                 payload: {
+                    realm: documentRealm,
                     indexToReplace: params.replaceIndex,
                     newPicturePath: newImagePath,
-                    newPictureName: newImageName,
-                }
+                },
             })
 
             navigation.navigate("VisualizePicture", {
@@ -187,14 +184,12 @@ export function Gallery() {
             return
         }
 
-        dispatchDocumentData({
-            type: "add-picture",
-            payload: [ {
-                id: undefined,
-                filePath: newImagePath,
-                fileName: newImageName,
-                position: documentDataState?.pictureList.length || 0
-            } ]
+        setDocumentModel({
+            type: "addPictures",
+            payload: {
+                realm: documentRealm,
+                picturesToAdd: [newImagePath],
+            },
         })
 
         navigation.reset({
@@ -206,6 +201,8 @@ export function Gallery() {
     }
 
     async function importMultipleImage() {
+        if (!documentModel) return
+
         const hasReadMediaImagesPermission = await getReadMediaImagesPermission()
         if (!hasReadMediaImagesPermission) {
             log.warn("No permission to import multiple images")
@@ -216,31 +213,25 @@ export function Gallery() {
             return
         }
 
-        const imagesToCopy: string[] = []
-        const imagesToImport: DocumentPicture[] = []
-        let nextIndex = documentDataState?.pictureList.length ?? 0
+        const imageFilesToCopy: string[] = []
+        const imageFilesToAdd: string[] = []
 
         for (let i = 0; i < gallerySelection.selectedData.length; i++) {
             const newImagePath = await DocumentService.getPicturePath(gallerySelection.selectedData[i])
-            const newImageName = DocumentService.getFileFullname(newImagePath)
 
-            imagesToCopy.push(gallerySelection.selectedData[i].replace("file://", ""))
-            imagesToCopy.push(newImagePath)
+            imageFilesToCopy.push(gallerySelection.selectedData[i].replace("file://", ""))
+            imageFilesToCopy.push(newImagePath)
 
-            imagesToImport.push({
-                id: undefined,
-                filePath: newImagePath,
-                fileName: newImageName,
-                position: nextIndex
-            } as DocumentPicture)
-
-            nextIndex += 1
+            imageFilesToAdd.push(newImagePath)
         }
 
-        DocumentService.copyPicturesService(imagesToCopy)
-        dispatchDocumentData({
-            type: "add-picture",
-            payload: imagesToImport
+        DocumentService.copyPicturesService(imageFilesToCopy)
+        setDocumentModel({
+            type: "addPictures",
+            payload: {
+                realm: documentRealm,
+                picturesToAdd: imageFilesToAdd,
+            },
         })
 
         navigation.reset({
