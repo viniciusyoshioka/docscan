@@ -27,7 +27,6 @@
         "react-native-fs": "^2.20.0",
         "react-native-gesture-handler": "^2.9.0",
         "react-native-get-random-values": "^1.8.0",
-        "react-native-logs": "^5.0.1",
         "react-native-mmkv": "^2.8.0",
         "react-native-orientation-locker": "^1.5.0",
         "react-native-popup-menu": "^0.16.1",
