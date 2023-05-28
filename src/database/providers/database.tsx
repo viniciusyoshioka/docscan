@@ -1,6 +1,19 @@
-import { ReactNode } from "react"
+import { ReactNode, useEffect } from "react"
 
-import { DocumentRealmProvider, LogRealmProvider } from "../configs"
+import { log } from "../../services/log"
+import { DocumentRealmProvider, LogRealmProvider, useLogRealm } from "../configs"
+
+
+function DatabaseConsumer(props: { children?: ReactNode }) {
+
+    const logRealm = useLogRealm()
+
+    useEffect(() => {
+        log.setRealm(logRealm)
+    }, [])
+
+    return <>{props.children}</>
+}
 
 
 export interface RealmProviderProps {
@@ -12,7 +25,9 @@ export function RealmProvider(props: RealmProviderProps) {
     return (
         <LogRealmProvider>
             <DocumentRealmProvider>
-                {props.children}
+                <DatabaseConsumer>
+                    {props.children}
+                </DatabaseConsumer>
             </DocumentRealmProvider>
         </LogRealmProvider>
     )
