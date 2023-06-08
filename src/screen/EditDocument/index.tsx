@@ -12,7 +12,7 @@ import { fullPathPdf, fullPathTemporaryCompressedPicture } from "../../services/
 import { createAllFolderAsync } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { PdfCreator, PdfCreatorOptions } from "../../services/pdf-creator"
-import { getWritePermission } from "../../services/permission"
+import { getReadPermission, getWritePermission } from "../../services/permission"
 import { NavigationParamProps, RouteParamProps } from "../../types"
 import { ConvertPdfOption } from "./ConvertPdfOption"
 import { EditDocumentHeader } from "./Header"
@@ -110,8 +110,34 @@ export function EditDocument() {
     // TODO reimplement shareDocument
     async function shareDocument() {}
 
-    // TODO reimplement visualizePdf
-    async function visualizePdf() {}
+    async function visualizePdf() {
+        if (!documentModel)
+            throw new Error("No documentModel, this should not happen")
+
+        const hasPermission = await getReadPermission()
+        if (!hasPermission) {
+            log.warn("Can not visualize PDF because the permission was not granted")
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_noPermissionToVisualizePdf_text")
+            )
+            return
+        }
+
+        const pdfFilePath = `${fullPathPdf}/${documentModel.name}.pdf`
+
+        const pdfFileExists = await RNFS.exists(pdfFilePath)
+        if (!pdfFileExists) {
+            log.warn("Can not visualize PDF because it doesn't exists")
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_convertNotExistentPdfToVisualize_text")
+            )
+            return
+        }
+
+        PdfCreator.viewPdf(pdfFilePath)
+    }
 
     // TODO reimplement deletePdf
     async function deletePdf() {}
