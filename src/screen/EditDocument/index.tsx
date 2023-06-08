@@ -4,6 +4,7 @@ import { FlashList } from "@shopify/flash-list"
 import { useCallback, useMemo, useState } from "react"
 import { Alert, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
+import Share from "react-native-share"
 
 import { DocumentPicture, useDocumentModel } from "../../database"
 import { useBackHandler, useSelectionMode } from "../../hooks"
@@ -107,8 +108,37 @@ export function EditDocument() {
         PdfCreator.createPdf(pictureList, documentPath, pdfOptions)
     }
 
-    // TODO reimplement shareDocument
-    async function shareDocument() {}
+    async function shareDocument() {
+        if (!documentModel)
+            throw new Error("No documentModel, this should not happen")
+
+        const documentPath = `file://${fullPathPdf}/${documentModel.name}.pdf`
+
+        const pdfFileExists = await RNFS.exists(documentPath)
+        if (!pdfFileExists) {
+            log.warn("Can not shared PDF file because it doesn't exists")
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_convertNotExistentPdfToShare_text")
+            )
+            return
+        }
+
+        try {
+            await Share.open({
+                title: translate("EditDocument_shareDocument"),
+                type: "pdf/application",
+                url: documentPath,
+                failOnCancel: false
+            })
+        } catch (error) {
+            log.error(`Error sharing PDF file: "${stringfyError(error)}"`)
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_errorSharingPdf_text")
+            )
+        }
+    }
 
     async function visualizePdf() {
         if (!documentModel)
