@@ -1,11 +1,11 @@
 import { Divider, Screen } from "@elementium/native"
-import { useNavigation } from "@react-navigation/native"
+import { useIsFocused, useNavigation } from "@react-navigation/native"
 import { FlashList } from "@shopify/flash-list"
 import { useState } from "react"
 import { Alert, View } from "react-native"
 
 import { EmptyList, LoadingModal } from "../../components"
-import { DocumentPictureSchema, DocumentSchema, useDocumentList, useDocumentRealm } from "../../database"
+import { DocumentPictureSchema, DocumentSchema, useDocumentRealm } from "../../database"
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { TranslationKeyType, translate } from "../../locales"
 import { appIconOutline } from "../../services/constant"
@@ -22,9 +22,10 @@ export function Home() {
 
 
     const navigation = useNavigation<NavigationParamProps<"Home">>()
+    const isFocused = useIsFocused()
 
     const documentRealm = useDocumentRealm()
-    const documents = useDocumentList()
+    const documents = documentRealm.objects(DocumentSchema).sorted("modifiedAt", true)
     const documentSelection = useSelectionMode<string>()
     const [showDocumentDeletionModal, setShowDocumentDeletionModal] = useState(false)
 
@@ -192,7 +193,7 @@ export function Home() {
                 <FlashList
                     data={documents}
                     renderItem={renderItem}
-                    extraData={documentSelection.selectedData}
+                    extraData={[documentSelection.selectedData, isFocused]}
                     estimatedItemSize={DOCUMENT_ITEM_HEIGHT}
                     ItemSeparatorComponent={() => <Divider wrapperStyle={{ paddingHorizontal: 16 }} />}
                 />
