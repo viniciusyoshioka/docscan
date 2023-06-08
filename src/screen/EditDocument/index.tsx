@@ -3,10 +3,16 @@ import { useNavigation, useRoute } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
 import { useCallback, useMemo, useState } from "react"
 import { Alert, useWindowDimensions } from "react-native"
+import RNFS from "react-native-fs"
 
 import { DocumentPicture, useDocumentModel } from "../../database"
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
+import { fullPathPdf, fullPathTemporaryCompressedPicture } from "../../services/constant"
+import { createAllFolderAsync } from "../../services/folder-handler"
+import { log, stringfyError } from "../../services/log"
+import { PdfCreator, PdfCreatorOptions } from "../../services/pdf-creator"
+import { getWritePermission } from "../../services/permission"
 import { NavigationParamProps, RouteParamProps } from "../../types"
 import { ConvertPdfOption } from "./ConvertPdfOption"
 import { EditDocumentHeader } from "./Header"
@@ -56,8 +62,50 @@ export function EditDocument() {
         navigation.reset({ routes: [ { name: "Home" } ] })
     }
 
-    // TODO reimplement convertDocumentToPdf
-    async function convertDocumentToPdf(quality: number) {}
+    async function convertDocumentToPdf(quality: number) {
+        if (!documentModel)
+            throw new Error("No documentModel, this should not happen")
+
+        if (documentModel.pictures.length === 0) {
+            log.warn("There is no pictures in the document to be converted to PDF")
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_documentWithoutPictures_text")
+            )
+            return
+        }
+
+        const hasPermission = await getWritePermission()
+        if (!hasPermission) {
+            log.warn("Can not convert document to PDF because the permission was not granted")
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_noPermissionToConvertToPdf_text")
+            )
+            return
+        }
+
+        const documentPath = `${fullPathPdf}/${documentModel.name}.pdf`
+
+        const pdfFileExists = await RNFS.exists(documentPath)
+        if (pdfFileExists) {
+            try {
+                await RNFS.unlink(documentPath)
+            } catch (error) {
+                log.error(`Error deleting PDF file with the same name of the document to be converted: "${stringfyError(error)}"`)
+            }
+        }
+
+        const pdfOptions: PdfCreatorOptions = {
+            imageCompressQuality: quality,
+            temporaryPath: fullPathTemporaryCompressedPicture,
+        }
+
+        const pictureList: string[] = documentModel.pictures.map(item => item.filePath)
+
+        await createAllFolderAsync()
+        PdfCreator.createPdf(pictureList, documentPath, pdfOptions)
+    }
 
     // TODO reimplement shareDocument
     async function shareDocument() {}
