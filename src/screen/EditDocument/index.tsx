@@ -169,8 +169,46 @@ export function EditDocument() {
         PdfCreator.viewPdf(pdfFilePath)
     }
 
-    // TODO reimplement deletePdf
-    async function deletePdf() {}
+    async function deletePdf() {
+        if (!documentModel)
+            throw new Error("No documentModel, this should not happen")
+
+        const hasPermission = await getWritePermission()
+        if (!hasPermission) {
+            log.warn("Can not delete PDF because the permission was not granted")
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_noPermissionToDeletePdf_text")
+            )
+            return
+        }
+
+        const pdfFilePath = `${fullPathPdf}/${documentModel.name}.pdf`
+
+        const pdfFileExists = await RNFS.exists(pdfFilePath)
+        if (!pdfFileExists) {
+            log.warn("Can not delete PDF because it doesn't exists")
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_pdfFileDoesNotExists_text")
+            )
+            return
+        }
+
+        try {
+            await RNFS.unlink(pdfFilePath)
+            Alert.alert(
+                translate("success"),
+                translate("EditDocument_alert_pdfFileDeletedSuccessfully_text")
+            )
+        } catch (error) {
+            log.error(`Error deleting PDF file "${stringfyError(error)}"`)
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_errorDeletingPdfFile_text")
+            )
+        }
+    }
 
     function alertDeletePdf() {
         Alert.alert(
