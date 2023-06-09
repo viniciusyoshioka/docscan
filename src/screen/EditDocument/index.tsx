@@ -6,10 +6,11 @@ import { Alert, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import Share from "react-native-share"
 
-import { DocumentPicture, useDocumentModel } from "../../database"
+import { DocumentPicture, DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
 import { fullPathPdf, fullPathTemporaryCompressedPicture } from "../../services/constant"
+import { DocumentService } from "../../services/document"
 import { createAllFolderAsync } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { PdfCreator, PdfCreatorOptions } from "../../services/pdf-creator"
@@ -31,6 +32,7 @@ export function EditDocument() {
     const { params } = useRoute<RouteParamProps<"EditDocument">>()
     const { width: windowWidth, height: windowHeight } = useWindowDimensions()
 
+    const documentRealm = useDocumentRealm()
     const { documentModel, setDocumentModel } = useDocumentModel()
 
     const columnCount = useMemo(() => (windowWidth < windowHeight)
@@ -221,8 +223,39 @@ export function EditDocument() {
         )
     }
 
-    // TODO reimplement deleteCurrentDocument
-    async function deleteCurrentDocument() {}
+    async function deleteCurrentDocument() {
+        if (!documentModel)
+            throw new Error("No documentModel, this should not happen")
+        if (!documentModel.id)
+            throw new Error("Document is not written into database, this should not happen")
+
+        const picturePathsToDelete = documentModel.pictures.map(item => item.filePath)
+
+        try {
+            const documentIdToDelete = Realm.BSON.ObjectId.createFromHexString(documentModel.id)
+
+            const documentToDelete = documentRealm.objectForPrimaryKey<DocumentSchema>("DocumentSchema", documentIdToDelete)
+            const picturesToDelete = documentRealm
+                .objects<DocumentPictureSchema>("DocumentPictureSchema")
+                .filtered("belongsToDocument IN $0", documentIdToDelete)
+
+            documentRealm.beginTransaction()
+            documentRealm.delete(picturesToDelete)
+            documentRealm.delete(documentToDelete)
+            documentRealm.commitTransaction()
+
+            DocumentService.deletePicturesService(picturePathsToDelete)
+        } catch (error) {
+            log.error(`Error deleting current document from database: "${stringfyError(error)}"`)
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_errorDeletingCurrentDocument_text")
+            )
+        }
+
+        setDocumentModel({ type: "close", payload: undefined })
+        navigation.reset({ routes: [ { name: "Home" } ] })
+    }
 
     function alertDeleteCurrentDocument() {
         Alert.alert(
