@@ -6,7 +6,7 @@ import { Alert, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import Share from "react-native-share"
 
-import { DocumentPicture, DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
+import { DocumentPictureSchema, DocumentSchema, useDocumentRealm } from "../../database"
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
 import { fullPathPdf, fullPathTemporaryCompressedPicture } from "../../services/constant"
@@ -20,7 +20,6 @@ import { ConvertPdfOption } from "./ConvertPdfOption"
 import { EditDocumentHeader } from "./Header"
 import { HORIZONTAL_COLUMN_COUNT, PictureItem, VERTICAL_COLUMN_COUNT, getPictureItemSize } from "./Pictureitem"
 import { RenameDocument } from "./RenameDocument"
-import { useLoadDocument } from "./useLoadDocument"
 
 
 // TODO implement drag and drop to reorder list
@@ -30,10 +29,20 @@ export function EditDocument() {
 
     const navigation = useNavigation<NavigationParamProps<"EditDocument">>()
     const { params } = useRoute<RouteParamProps<"EditDocument">>()
+
     const { width: windowWidth, height: windowHeight } = useWindowDimensions()
 
     const documentRealm = useDocumentRealm()
-    const { documentModel, setDocumentModel } = useDocumentModel()
+    const documentId = params
+        ? Realm.BSON.ObjectID.createFromHexString(params?.documentId)
+        : null
+    const document = documentId
+        ? documentRealm.objectForPrimaryKey<DocumentSchema>("DocumentSchema", documentId)
+        : null
+    const pictures = documentRealm
+        .objects<DocumentPictureSchema>("DocumentPictureSchema")
+        .filtered("belongsToDocument = $0", documentId)
+        .sorted("position")
 
     const columnCount = useMemo(() => (windowWidth < windowHeight)
         ? VERTICAL_COLUMN_COUNT
@@ -44,9 +53,6 @@ export function EditDocument() {
     const pictureSelection = useSelectionMode<number>()
     const [renameDocumentVisible, setRenameDocumentVisible] = useState(false)
     const [convertPdfOptionVisible, setConvertPdfOptionVisible] = useState(false)
-
-
-    useLoadDocument(params?.documentId)
 
 
     useBackHandler(() => {
@@ -61,15 +67,17 @@ export function EditDocument() {
             return
         }
 
-        setDocumentModel({ type: "close", payload: undefined })
         navigation.reset({ routes: [ { name: "Home" } ] })
     }
 
     async function convertDocumentToPdf(quality: number) {
-        if (!documentModel)
-            throw new Error("No documentModel, this should not happen")
+        if (!document) {
+            log.warn("There is no document to be converted to PDF")
+            // TODO alert
+            return
+        }
 
-        if (documentModel.pictures.length === 0) {
+        if (pictures.length === 0) {
             log.warn("There is no pictures in the document to be converted to PDF")
             Alert.alert(
                 translate("warn"),
@@ -88,7 +96,7 @@ export function EditDocument() {
             return
         }
 
-        const documentPath = `${fullPathPdf}/${documentModel.name}.pdf`
+        const documentPath = `${fullPathPdf}/${document.name}.pdf`
 
         const pdfFileExists = await RNFS.exists(documentPath)
         if (pdfFileExists) {
@@ -104,17 +112,20 @@ export function EditDocument() {
             temporaryPath: fullPathTemporaryCompressedPicture,
         }
 
-        const pictureList: string[] = documentModel.pictures.map(item => item.filePath)
+        const pictureList: string[] = pictures.map(item => item.filePath)
 
         await createAllFolderAsync()
         PdfCreator.createPdf(pictureList, documentPath, pdfOptions)
     }
 
     async function shareDocument() {
-        if (!documentModel)
-            throw new Error("No documentModel, this should not happen")
+        if (!document) {
+            log.warn("There is no document to be shared")
+            // TODO alert
+            return
+        }
 
-        const documentPath = `file://${fullPathPdf}/${documentModel.name}.pdf`
+        const documentPath = `file://${fullPathPdf}/${document.name}.pdf`
 
         const pdfFileExists = await RNFS.exists(documentPath)
         if (!pdfFileExists) {
@@ -143,8 +154,11 @@ export function EditDocument() {
     }
 
     async function visualizePdf() {
-        if (!documentModel)
-            throw new Error("No documentModel, this should not happen")
+        if (!document) {
+            log.warn("There is no document to visualize the PDF")
+            // TODO alert
+            return
+        }
 
         const hasPermission = await getReadPermission()
         if (!hasPermission) {
@@ -156,7 +170,7 @@ export function EditDocument() {
             return
         }
 
-        const pdfFilePath = `${fullPathPdf}/${documentModel.name}.pdf`
+        const pdfFilePath = `${fullPathPdf}/${document.name}.pdf`
 
         const pdfFileExists = await RNFS.exists(pdfFilePath)
         if (!pdfFileExists) {
@@ -172,8 +186,7 @@ export function EditDocument() {
     }
 
     async function deletePdf() {
-        if (!documentModel)
-            throw new Error("No documentModel, this should not happen")
+        if (!document) throw new Error("There is no document to delete the PDF, this should not happen")
 
         const hasPermission = await getWritePermission()
         if (!hasPermission) {
@@ -185,7 +198,7 @@ export function EditDocument() {
             return
         }
 
-        const pdfFilePath = `${fullPathPdf}/${documentModel.name}.pdf`
+        const pdfFilePath = `${fullPathPdf}/${document.name}.pdf`
 
         const pdfFileExists = await RNFS.exists(pdfFilePath)
         if (!pdfFileExists) {
@@ -213,6 +226,12 @@ export function EditDocument() {
     }
 
     function alertDeletePdf() {
+        if (!document) {
+            log.warn("There is no document to delete the PDF")
+            // TODO alert
+            return
+        }
+
         Alert.alert(
             translate("EditDocument_alert_deletePdf_title"),
             translate("EditDocument_alert_deletePdf_text"),
@@ -224,24 +243,14 @@ export function EditDocument() {
     }
 
     async function deleteCurrentDocument() {
-        if (!documentModel)
-            throw new Error("No documentModel, this should not happen")
-        if (!documentModel.id)
-            throw new Error("Document is not written into database, this should not happen")
+        if (!document) throw new Error("No document, this should not happen")
 
-        const picturePathsToDelete = documentModel.pictures.map(item => item.filePath)
+        const picturePathsToDelete = pictures.map(item => item.filePath)
 
         try {
-            const documentIdToDelete = Realm.BSON.ObjectId.createFromHexString(documentModel.id)
-
-            const documentToDelete = documentRealm.objectForPrimaryKey<DocumentSchema>("DocumentSchema", documentIdToDelete)
-            const picturesToDelete = documentRealm
-                .objects<DocumentPictureSchema>("DocumentPictureSchema")
-                .filtered("belongsToDocument IN $0", documentIdToDelete)
-
             documentRealm.beginTransaction()
-            documentRealm.delete(picturesToDelete)
-            documentRealm.delete(documentToDelete)
+            documentRealm.delete(pictures)
+            documentRealm.delete(document)
             documentRealm.commitTransaction()
 
             DocumentService.deletePicturesService(picturePathsToDelete)
@@ -253,11 +262,16 @@ export function EditDocument() {
             )
         }
 
-        setDocumentModel({ type: "close", payload: undefined })
         navigation.reset({ routes: [ { name: "Home" } ] })
     }
 
     function alertDeleteCurrentDocument() {
+        if (!document) {
+            log.warn("There is no document to delete")
+            // TODO alert
+            return
+        }
+
         Alert.alert(
             translate("EditDocument_alert_deleteDocument_title"),
             translate("EditDocument_alert_deleteDocument_text"),
@@ -270,19 +284,44 @@ export function EditDocument() {
 
     function invertSelection() {
         pictureSelection.setSelectedData(current => {
-            const amountOfPictures = documentModel?.pictures.length ?? 0
             const newSelectedData: number[] = []
-            for (let i = 0; i < amountOfPictures; i++) {
+            for (let i = 0; i < pictures.length; i++) {
                 if (!current.includes(i)) newSelectedData.push(i)
             }
             return newSelectedData
         })
     }
 
-    // TODO reimplement deleteSelectedPicture
-    async function deleteSelectedPicture() {}
+    async function deleteSelectedPicture() {
+        if (!document) throw new Error("There is no document to delete its pictures, this should not happen")
+
+        const picturePathsToDelete = pictureSelection.selectedData.map(index => pictures[index].filePath)
+
+        try {
+            documentRealm.write(() => {
+                documentRealm.delete(pictures.filter((_, index) => pictureSelection.selectedData.includes(index)))
+                document.modifiedAt = Date.now()
+            })
+
+            DocumentService.deletePicturesService(picturePathsToDelete)
+        } catch (error) {
+            log.error(`Error deleting selected pictures from database: "${stringfyError(error)}"`)
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_errorDeletingSelectedPictures_text")
+            )
+        }
+
+        pictureSelection.exitSelection()
+    }
 
     function alertDeletePicture() {
+        if (!document) {
+            log.warn("There is no document to delete its pictures")
+            // TODO alert
+            return
+        }
+
         Alert.alert(
             translate("EditDocument_alert_deletePicture_title"),
             translate("EditDocument_alert_deletePicture_text"),
@@ -293,7 +332,7 @@ export function EditDocument() {
         )
     }
 
-    function renderItem({ item, index }: { item: DocumentPicture, index: number }) {
+    function renderItem({ item, index }: { item: DocumentPictureSchema, index: number }) {
         return (
             <PictureItem
                 onClick={() => navigation.navigate("VisualizePicture", { pictureIndex: index })}
@@ -307,7 +346,7 @@ export function EditDocument() {
         )
     }
 
-    const keyExtractor = useCallback((_: DocumentPicture, index: number) => index.toString(), [])
+    const keyExtractor = useCallback((_: DocumentPictureSchema, index: number) => index.toString(), [])
 
 
     return (
@@ -329,7 +368,7 @@ export function EditDocument() {
             />
 
             <FlashList
-                data={documentModel?.pictures}
+                data={pictures}
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
                 extraData={[pictureSelection.isSelectionMode]}
