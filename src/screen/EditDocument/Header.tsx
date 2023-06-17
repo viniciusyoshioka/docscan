@@ -1,5 +1,10 @@
+import { useRoute } from "@react-navigation/native"
+import { Realm } from "@realm/react"
+
 import { Header, HeaderButton, HeaderTitle } from "../../components"
-import { useDocumentModel } from "../../database"
+import { DocumentSchema, useDocumentRealm } from "../../database"
+import { DocumentService } from "../../services/document"
+import { RouteParamProps } from "../../types"
 import { EditDocumentMenu } from "./EditDocumentMenu"
 
 
@@ -23,12 +28,20 @@ export interface EditDocumentHeaderProps {
 export function EditDocumentHeader(props: EditDocumentHeaderProps) {
 
 
-    const { documentModel } = useDocumentModel()
+    const { params } = useRoute<RouteParamProps<"EditDocument">>()
+
+    const documentRealm = useDocumentRealm()
+    const documentId = params
+        ? Realm.BSON.ObjectID.createFromHexString(params.documentId)
+        : null
+    const document = documentId
+        ? documentRealm.objectForPrimaryKey<DocumentSchema>("DocumentSchema", documentId)
+        : null
 
 
     function getTitle() {
         if (!props.isSelectionMode) {
-            return documentModel?.name ?? ""
+            return document?.name ?? DocumentService.getNewName()
         }
         return props.selectedPicturesAmount.toString()
     }
