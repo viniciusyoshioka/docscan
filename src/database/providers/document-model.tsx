@@ -1,11 +1,15 @@
-import { Dispatch, ReactNode, createContext, useContext, useReducer } from "react"
+import { Realm } from "@realm/react"
+import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from "react"
 
-import { DocumentModelAction, DocumentModelActionType, DocumentModelState, documentModelReducer } from "../models"
+
+export interface DocumentModelValue {
+    id: Realm.BSON.ObjectId;
+}
 
 
 export interface DocumentModelContextValue {
-    documentModel: DocumentModelState | undefined;
-    setDocumentModel: Dispatch<DocumentModelAction<DocumentModelActionType>>;
+    documentModel: DocumentModelValue | undefined;
+    setDocumentModel: Dispatch<SetStateAction<DocumentModelValue | undefined>>;
 }
 
 
@@ -22,7 +26,7 @@ export interface DocumentModelProviderProps {
 
 export function DocumentModelProvider(props: DocumentModelProviderProps) {
 
-    const [documentModel, setDocumentModel] = useReducer(documentModelReducer, undefined)
+    const [documentModel, setDocumentModel] = useState<DocumentModelValue | undefined>(undefined)
 
     return (
         <DocumentModelContext.Provider
