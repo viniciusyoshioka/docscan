@@ -8,9 +8,7 @@ export type ScreenParams = {
         screenAction: "replace-picture";
         replaceIndex: number;
     } | undefined;
-    EditDocument: {
-        documentId: string;
-    } | undefined;
+    EditDocument: undefined;
     Settings: undefined;
     Gallery: {
         screenAction: "replace-picture";
