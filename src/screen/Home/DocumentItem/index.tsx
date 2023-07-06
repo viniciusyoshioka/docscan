@@ -55,7 +55,7 @@ export function DocumentItem(props: DocumentItemProps) {
                         size={"small"}
                         numberOfLines={1}
                         style={{ color: color.onSurfaceVariant }}
-                        children={getLocaleDateTime(new Date(props.document.modifiedAt), "/", ":", false)}
+                        children={getLocaleDateTime(new Date(props.document.modifiedAt), false)}
                     />
                 </DocumentItemBlock>
 
