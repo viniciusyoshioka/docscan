@@ -1,9 +1,12 @@
 import { Realm } from "@realm/react"
 import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from "react"
 
+import { DocumentPictureSchema, DocumentSchema } from "../schemas"
+
 
 export interface DocumentModelValue {
-    id: Realm.BSON.ObjectId;
+    document: DocumentSchema;
+    pictures: Realm.Results<DocumentPictureSchema>;
 }
 
 
