@@ -39,6 +39,10 @@ export class DocumentService {
     }
 
 
+    static getPicturePath(fileName: string): string {
+        return `${fullPathPicture}/${fileName}`
+    }
+
     static async getNewPicturePath(filePath: string): Promise<string> {
         const fileExtension = this.getFileExtension(filePath)
 
