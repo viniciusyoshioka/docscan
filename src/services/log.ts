@@ -11,6 +11,10 @@ export function stringfyError(error: unknown): string {
         return error
     }
 
+    if (error instanceof Error) {
+        return `${error.name}: ${error.message}`
+    }
+
     const stringifiedObject = JSON.stringify(error)
     if (stringifiedObject === "{}") {
         return error as string
