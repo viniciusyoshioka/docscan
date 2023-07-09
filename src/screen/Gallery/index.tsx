@@ -157,7 +157,7 @@ export function Gallery() {
             return
         }
 
-        const newImagePath = await DocumentService.getPicturePath(imagePath)
+        const newImagePath = await DocumentService.getNewPicturePath(imagePath)
         try {
             await RNFS.copyFile(imagePath, newImagePath)
         } catch (error) {
@@ -203,7 +203,7 @@ export function Gallery() {
         const imageFilesToAdd: string[] = []
 
         for (let i = 0; i < gallerySelection.selectedData.length; i++) {
-            const newImagePath = await DocumentService.getPicturePath(gallerySelection.selectedData[i])
+            const newImagePath = await DocumentService.getNewPicturePath(gallerySelection.selectedData[i])
 
             imageFilesToCopy.push(gallerySelection.selectedData[i].replace("file://", ""))
             imageFilesToCopy.push(newImagePath)
@@ -222,16 +222,17 @@ export function Gallery() {
         })
     }
 
-    function replaceImage(image: string) {
+    function replaceImage(filePath: string) {
         if (params?.screenAction !== "replace-picture")
             throw new Error("Screen action is different of 'replace-picture'. This should not happen")
         if (!documentModel)
             throw new Error("Document model is undefined. This should not happen")
 
-        const oldPicturePath = documentModel.pictures[params.replaceIndex].filePath
+        const oldPictureName = documentModel.pictures[params.replaceIndex].fileName
+        const newPictureName = DocumentService.getFileFullname(filePath)
         documentRealm.write(() => {
             documentModel.document.modifiedAt = Date.now()
-            documentModel.pictures[params.replaceIndex].filePath = image
+            documentModel.pictures[params.replaceIndex].fileName = newPictureName
         })
 
         const document = documentRealm.objectForPrimaryKey(DocumentSchema, documentModel.document.id)
@@ -239,20 +240,21 @@ export function Gallery() {
             .objects(DocumentPictureSchema)
             .filtered("belongsToDocument = $0", documentModel.document.id)
             .sorted("position")
-
         if (!document) throw new Error("Document is undefined, this should not happen")
         setDocumentModel({ document, pictures })
 
-        DocumentService.deletePicturesService([oldPicturePath])
+        DocumentService.deletePicturesService([
+            DocumentService.getPicturePath(oldPictureName)
+        ])
     }
 
-    function addImages(images: string[]) {
+    function addImages(filePaths: string[]) {
         let modifiedDocumentId: Realm.BSON.ObjectId
         if (documentModel) {
             documentRealm.write(() => {
                 let position = documentModel.pictures.length
-                images.forEach(image => documentRealm.create(DocumentPictureSchema, {
-                    filePath: image,
+                filePaths.forEach(filePath => documentRealm.create(DocumentPictureSchema, {
+                    fileName: DocumentService.getFileFullname(filePath),
                     position: position++,
                     belongsToDocument: documentModel.document.id,
                 }))
@@ -271,8 +273,8 @@ export function Gallery() {
                 })
 
                 let position = 0
-                images.forEach(image => documentRealm.create(DocumentPictureSchema, {
-                    filePath: image,
+                filePaths.forEach(filePath => documentRealm.create(DocumentPictureSchema, {
+                    fileName: DocumentService.getFileFullname(filePath),
                     position: position++,
                     belongsToDocument: createdDocument.id,
                 }))
@@ -286,7 +288,6 @@ export function Gallery() {
             .objects(DocumentPictureSchema)
             .filtered("belongsToDocument = $0", modifiedDocumentId)
             .sorted("position")
-
         if (!document) throw new Error("Document is undefined, this should not happen")
         setDocumentModel({ document, pictures })
     }
