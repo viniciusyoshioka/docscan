@@ -6,7 +6,7 @@ import { translate } from "../../locales"
 import { useAppTheme } from "../../theme"
 
 
-export interface ChangeThemeProps extends ModalProps { }
+export interface ChangeThemeProps extends ModalProps {}
 
 
 export function ChangeTheme(props: ChangeThemeProps) {
