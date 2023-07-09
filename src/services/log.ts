@@ -51,13 +51,7 @@ class Logger {
     }
 
 
-    debug(message: string) {
-        const timestamp = Date.now()
-        const logDateTime = getDateTime(new Date(timestamp))
-        const code = "DEBUG".padEnd(5)
-
-        console.log(`[${logDateTime}] ${code} - ${message}`)
-
+    private writeLog(code: string, message: string, timestamp: number) {
         if (!this.realm) {
             console.warn("Realm not set to Logger. Log not registered.")
             return
@@ -66,11 +60,22 @@ class Logger {
         try {
             this.realm.write(() => {
                 if (!this.realm) return
-                this.realm.create<LogSchema>("LogSchema", { code, message, timestamp })
+                this.realm.create(LogSchema, { code, message, timestamp })
             })
         } catch (error) {
             logCriticalError(error)
         }
+    }
+
+
+    debug(message: string) {
+        const timestamp = Date.now()
+        const logDateTime = getDateTime(new Date(timestamp))
+        const code = "DEBUG".padEnd(5)
+
+        console.log(`[${logDateTime}] ${code} - ${message}`)
+
+        this.writeLog(code, message, timestamp)
     }
 
     info(message: string) {
@@ -80,19 +85,7 @@ class Logger {
 
         console.log(`${this.consoleInfoColor}[${logDateTime}] ${code} - ${message}${this.consoleResetColor}`)
 
-        if (!this.realm) {
-            console.warn("Realm not set to Logger. Log not registered.")
-            return
-        }
-
-        try {
-            this.realm.write(() => {
-                if (!this.realm) return
-                this.realm.create<LogSchema>("LogSchema", { code, message, timestamp })
-            })
-        } catch (error) {
-            logCriticalError(error)
-        }
+        this.writeLog(code, message, timestamp)
     }
 
     warn(message: string) {
@@ -102,19 +95,7 @@ class Logger {
 
         console.log(`${this.consoleWarnColor}[${logDateTime}] ${code} - ${message}${this.consoleResetColor}`)
 
-        if (!this.realm) {
-            console.warn("Realm not set to Logger. Log not registered.")
-            return
-        }
-
-        try {
-            this.realm.write(() => {
-                if (!this.realm) return
-                this.realm.create<LogSchema>("LogSchema", { code, message, timestamp })
-            })
-        } catch (error) {
-            logCriticalError(error)
-        }
+        this.writeLog(code, message, timestamp)
     }
 
     error(message: string) {
@@ -124,19 +105,7 @@ class Logger {
 
         console.log(`${this.consoleErrorColor}[${logDateTime}] ${code} - ${message}${this.consoleResetColor}`)
 
-        if (!this.realm) {
-            console.warn("Realm not set to Logger. Log not registered.")
-            return
-        }
-
-        try {
-            this.realm.write(() => {
-                if (!this.realm) return
-                this.realm.create<LogSchema>("LogSchema", { code, message, timestamp })
-            })
-        } catch (error) {
-            logCriticalError(error)
-        }
+        this.writeLog(code, message, timestamp)
     }
 }
 
