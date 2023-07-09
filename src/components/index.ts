@@ -1,6 +1,5 @@
 export * from "./EmptyList"
 export * from "./Header"
 export * from "./Input"
-export * from "./InputPassword"
 export * from "./LoadingModal"
 export * from "./MenuItem"
