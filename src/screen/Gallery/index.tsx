@@ -1,13 +1,14 @@
 import { Screen } from "@elementium/native"
 import { CameraRoll, PhotoIdentifier } from "@react-native-camera-roll/camera-roll"
 import { useNavigation, useRoute } from "@react-navigation/core"
+import { Realm } from "@realm/react"
 import { FlashList } from "@shopify/flash-list"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { ActivityIndicator, Alert, View, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 
 import { EmptyList, HEADER_HEIGHT } from "../../components"
-import { useDocumentModel, useDocumentRealm } from "../../database"
+import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
 import { DocumentService } from "../../services/document"
@@ -169,14 +170,7 @@ export function Gallery() {
         }
 
         if (params?.screenAction === "replace-picture") {
-            setDocumentModel({
-                type: "replacePicture",
-                payload: {
-                    realm: documentRealm,
-                    indexToReplace: params.replaceIndex,
-                    newPicturePath: newImagePath,
-                },
-            })
+            replaceImage(newImagePath)
 
             navigation.navigate("VisualizePicture", {
                 pictureIndex: params.replaceIndex,
@@ -184,13 +178,7 @@ export function Gallery() {
             return
         }
 
-        setDocumentModel({
-            type: "addPictures",
-            payload: {
-                realm: documentRealm,
-                picturesToAdd: [newImagePath],
-            },
-        })
+        addImages([newImagePath])
 
         navigation.reset({
             routes: [
@@ -201,8 +189,6 @@ export function Gallery() {
     }
 
     async function importMultipleImage() {
-        if (!documentModel) return
-
         const hasReadMediaImagesPermission = await getReadMediaImagesPermission()
         if (!hasReadMediaImagesPermission) {
             log.warn("No permission to import multiple images")
@@ -226,13 +212,7 @@ export function Gallery() {
         }
 
         DocumentService.copyPicturesService(imageFilesToCopy)
-        setDocumentModel({
-            type: "addPictures",
-            payload: {
-                realm: documentRealm,
-                picturesToAdd: imageFilesToAdd,
-            },
-        })
+        addImages(imageFilesToAdd)
 
         navigation.reset({
             routes: [
@@ -240,6 +220,75 @@ export function Gallery() {
                 { name: "Camera" }
             ]
         })
+    }
+
+    function replaceImage(image: string) {
+        if (params?.screenAction !== "replace-picture")
+            throw new Error("Screen action is different of 'replace-picture'. This should not happen")
+        if (!documentModel)
+            throw new Error("Document model is undefined. This should not happen")
+
+        const oldPicturePath = documentModel.pictures[params.replaceIndex].filePath
+        documentRealm.write(() => {
+            documentModel.document.modifiedAt = Date.now()
+            documentModel.pictures[params.replaceIndex].filePath = image
+        })
+
+        const document = documentRealm.objectForPrimaryKey(DocumentSchema, documentModel.document.id)
+        const pictures = documentRealm
+            .objects(DocumentPictureSchema)
+            .filtered("belongsToDocument = $0", documentModel.document.id)
+            .sorted("position")
+
+        if (!document) throw new Error("Document is undefined, this should not happen")
+        setDocumentModel({ document, pictures })
+
+        DocumentService.deletePicturesService([oldPicturePath])
+    }
+
+    function addImages(images: string[]) {
+        let modifiedDocumentId: Realm.BSON.ObjectId
+        if (documentModel) {
+            documentRealm.write(() => {
+                let position = documentModel.pictures.length
+                images.forEach(image => documentRealm.create(DocumentPictureSchema, {
+                    filePath: image,
+                    position: position++,
+                    belongsToDocument: documentModel.document.id,
+                }))
+
+                documentModel.document.modifiedAt = Date.now()
+            })
+
+            modifiedDocumentId = documentModel.document.id
+        } else {
+            modifiedDocumentId = documentRealm.write(() => {
+                const now = Date.now()
+                const createdDocument = documentRealm.create(DocumentSchema, {
+                    createdAt: now,
+                    modifiedAt: now,
+                    name: DocumentService.getNewName(),
+                })
+
+                let position = 0
+                images.forEach(image => documentRealm.create(DocumentPictureSchema, {
+                    filePath: image,
+                    position: position++,
+                    belongsToDocument: createdDocument.id,
+                }))
+
+                return createdDocument.id
+            })
+        }
+
+        const document = documentRealm.objectForPrimaryKey(DocumentSchema, modifiedDocumentId)
+        const pictures = documentRealm
+            .objects(DocumentPictureSchema)
+            .filtered("belongsToDocument = $0", modifiedDocumentId)
+            .sorted("position")
+
+        if (!document) throw new Error("Document is undefined, this should not happen")
+        setDocumentModel({ document, pictures })
     }
 
     function renderItem({ item }: { item: PhotoIdentifier }) {

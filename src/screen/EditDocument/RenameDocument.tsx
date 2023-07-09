@@ -1,14 +1,13 @@
 import { Button, Modal, ModalActions, ModalProps, ModalTitle } from "@elementium/native"
-import { useRoute } from "@react-navigation/native"
+import { Realm } from "@realm/react"
 import { createRef, useEffect, useState } from "react"
 import { NativeSyntheticEvent, TextInput } from "react-native"
 
 import { Input } from "../../components"
-import { DocumentSchema, useDocumentRealm } from "../../database"
+import { DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
 import { useKeyboard } from "../../hooks"
 import { translate } from "../../locales"
 import { DocumentService } from "../../services/document"
-import { RouteParamProps } from "../../types"
 
 
 export interface RenameDocumentProps extends ModalProps {}
@@ -17,15 +16,9 @@ export interface RenameDocumentProps extends ModalProps {}
 export function RenameDocument(props: RenameDocumentProps) {
 
 
-    const { params } = useRoute<RouteParamProps<"EditDocument">>()
-
+    const { documentModel, setDocumentModel } = useDocumentModel()
     const documentRealm = useDocumentRealm()
-    const documentId = params
-        ? Realm.BSON.ObjectID.createFromHexString(params.documentId)
-        : null
-    const document = documentId
-        ? documentRealm.objectForPrimaryKey<DocumentSchema>("DocumentSchema", documentId)
-        : null
+    const document = documentModel?.document ?? null
 
     const inputRef = createRef<TextInput>()
 
@@ -38,16 +31,26 @@ export function RenameDocument(props: RenameDocumentProps) {
 
 
     function getDocumentName() {
-        return document ? document.name : DocumentService.getNewName()
+        return document?.name ?? DocumentService.getNewName()
     }
 
     function renameDocument() {
         if (documentName === undefined) return
 
         documentRealm.write(() => {
-            if (document === null) return
-            // TODO create document if not exists and its renamed
-            document.name = documentName
+            const now = Date.now()
+            if (document === null) {
+                const createdDocument = documentRealm.create(DocumentSchema, {
+                    createdAt: now,
+                    modifiedAt: now,
+                    name: documentName,
+                })
+
+                setDocumentModel({ document: createdDocument, pictures: new Realm.Results() })
+            } else {
+                document.name = documentName
+                document.modifiedAt = now
+            }
         })
     }
 

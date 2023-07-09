@@ -1,12 +1,12 @@
 import { Screen } from "@elementium/native"
-import { useNavigation, useRoute } from "@react-navigation/core"
+import { useNavigation } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
 import { useCallback, useMemo, useState } from "react"
 import { Alert, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import Share from "react-native-share"
 
-import { DocumentPictureSchema, DocumentSchema, useDocumentRealm } from "../../database"
+import { DocumentPictureSchema, useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
 import { fullPathPdf, fullPathTemporaryCompressedPicture } from "../../services/constant"
@@ -15,7 +15,7 @@ import { createAllFolderAsync } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { PdfCreator, PdfCreatorOptions } from "../../services/pdf-creator"
 import { getReadPermission, getWritePermission } from "../../services/permission"
-import { NavigationParamProps, RouteParamProps } from "../../types"
+import { NavigationParamProps } from "../../types"
 import { ConvertPdfOption } from "./ConvertPdfOption"
 import { EditDocumentHeader } from "./Header"
 import { HORIZONTAL_COLUMN_COUNT, PictureItem, VERTICAL_COLUMN_COUNT, getPictureItemSize } from "./Pictureitem"
@@ -28,21 +28,13 @@ export function EditDocument() {
 
 
     const navigation = useNavigation<NavigationParamProps<"EditDocument">>()
-    const { params } = useRoute<RouteParamProps<"EditDocument">>()
 
     const { width: windowWidth, height: windowHeight } = useWindowDimensions()
 
+    const { documentModel, setDocumentModel } = useDocumentModel()
     const documentRealm = useDocumentRealm()
-    const documentId = params
-        ? Realm.BSON.ObjectID.createFromHexString(params?.documentId)
-        : null
-    const document = documentId
-        ? documentRealm.objectForPrimaryKey<DocumentSchema>("DocumentSchema", documentId)
-        : null
-    const pictures = documentRealm
-        .objects<DocumentPictureSchema>("DocumentPictureSchema")
-        .filtered("belongsToDocument = $0", documentId)
-        .sorted("position")
+    const document = documentModel?.document ?? null
+    const pictures = documentModel?.pictures ?? []
 
     const columnCount = useMemo(() => (windowWidth < windowHeight)
         ? VERTICAL_COLUMN_COUNT
@@ -67,6 +59,7 @@ export function EditDocument() {
             return
         }
 
+        setDocumentModel(undefined)
         navigation.reset({ routes: [ { name: "Home" } ] })
     }
 

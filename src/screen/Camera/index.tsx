@@ -6,8 +6,9 @@ import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
 import { Camera as RNCamera } from "react-native-vision-camera"
 
+import { Realm } from "@realm/react"
 import { EmptyList } from "../../components"
-import { useDocumentModel, useDocumentRealm } from "../../database"
+import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler, useCameraDevices, useIsForeground } from "../../hooks"
 import { translate } from "../../locales"
 import { DocumentService } from "../../services/document"
@@ -87,7 +88,7 @@ export function Camera() {
             return
         }
 
-        setDocumentModel({ type: "close", payload: undefined })
+        setDocumentModel(undefined)
         navigation.navigate("Home")
     }
 
@@ -125,9 +126,7 @@ export function Camera() {
         await createAllFolderAsync()
 
         try {
-            if (!cameraRef.current) {
-                throw new Error("Camera ref is undefined")
-            }
+            if (!cameraRef.current) throw new Error("Camera ref is undefined")
 
             const response = await cameraRef.current.takePhoto({
                 flash: settings.camera.flash,
@@ -137,32 +136,10 @@ export function Camera() {
             await RNFS.moveFile(response.path, picturePath)
 
             if (params?.screenAction === "replace-picture") {
-                if (!documentModel) throw new Error("Document model is undefined. This should not happen")
-
-                const oldPicturePath = documentModel.pictures[params.replaceIndex].filePath
-                setDocumentModel({
-                    type: "replacePicture",
-                    payload: {
-                        realm: documentRealm,
-                        indexToReplace: params.replaceIndex,
-                        newPicturePath: picturePath,
-                    },
-                })
-                DocumentService.deletePicturesService([oldPicturePath])
-
-                navigation.navigate("VisualizePicture", {
-                    pictureIndex: params.replaceIndex,
-                })
-                return
+                replacePicture(picturePath)
+            } else {
+                addPicture(picturePath)
             }
-
-            setDocumentModel({
-                type: "addPictures",
-                payload: {
-                    realm: documentRealm,
-                    picturesToAdd: [picturePath]
-                },
-            })
         } catch (error) {
             log.error(`Error taking picture: "${stringfyError(error)}"`)
             Alert.alert(
@@ -172,9 +149,79 @@ export function Camera() {
         }
     }
 
-    function editDocument() {
-        setDocumentModel({ type: "createNewIfEmpty", payload: undefined })
+    function replacePicture(newPicturePath: string) {
+        if (params?.screenAction !== "replace-picture")
+            throw new Error("Screen action is different of 'replace-picture'. This should not happen")
+        if (!documentModel)
+            throw new Error("Document model is undefined. This should not happen")
 
+        const oldPicturePath = documentModel.pictures[params.replaceIndex].filePath
+        documentRealm.write(() => {
+            documentModel.document.modifiedAt = Date.now()
+            documentModel.pictures[params.replaceIndex].filePath = newPicturePath
+        })
+
+        const document = documentRealm.objectForPrimaryKey(DocumentSchema, documentModel.document.id)
+        const pictures = documentRealm
+            .objects(DocumentPictureSchema)
+            .filtered("belongsToDocument = $0", documentModel.document.id)
+            .sorted("position")
+
+        if (!document) throw new Error("Document is undefined, this should not happen")
+        setDocumentModel({ document, pictures })
+
+        DocumentService.deletePicturesService([oldPicturePath])
+
+        navigation.navigate("VisualizePicture", {
+            pictureIndex: params.replaceIndex,
+        })
+    }
+
+    function addPicture(newPicturePath: string) {
+        let modifiedDocumentId: Realm.BSON.ObjectId
+
+        if (documentModel) {
+            documentRealm.write(() => {
+                documentRealm.create(DocumentPictureSchema, {
+                    filePath: newPicturePath,
+                    belongsToDocument: documentModel.document.id,
+                    position: documentModel.pictures.length,
+                })
+
+                documentModel.document.modifiedAt = Date.now()
+            })
+
+            modifiedDocumentId = documentModel.document.id
+        } else {
+            modifiedDocumentId = documentRealm.write(() => {
+                const now = Date.now()
+                const createdDocument = documentRealm.create(DocumentSchema, {
+                    createdAt: now,
+                    modifiedAt: now,
+                    name: DocumentService.getNewName(),
+                })
+
+                documentRealm.create(DocumentPictureSchema, {
+                    filePath: newPicturePath,
+                    belongsToDocument: createdDocument.id,
+                    position: 0,
+                })
+
+                return createdDocument.id
+            })
+        }
+
+        const document = documentRealm.objectForPrimaryKey(DocumentSchema, modifiedDocumentId)
+        const pictures = documentRealm
+            .objects(DocumentPictureSchema)
+            .filtered("belongsToDocument = $0", modifiedDocumentId)
+            .sorted("position")
+
+        if (!document) throw new Error("Document is undefined, this should not happen")
+        setDocumentModel({ document, pictures })
+    }
+
+    function editDocument() {
         navigation.reset({
             routes: [ { name: "EditDocument" } ]
         })

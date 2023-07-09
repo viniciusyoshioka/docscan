@@ -5,7 +5,7 @@ import { useState } from "react"
 import { Alert, View } from "react-native"
 
 import { EmptyList, LoadingModal } from "../../components"
-import { DocumentPictureSchema, DocumentSchema, useDocumentRealm } from "../../database"
+import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { TranslationKeyType, translate } from "../../locales"
 import { appIconOutline } from "../../services/constant"
@@ -24,6 +24,7 @@ export function Home() {
     const navigation = useNavigation<NavigationParamProps<"Home">>()
     const isFocused = useIsFocused()
 
+    const { setDocumentModel } = useDocumentModel()
     const documentRealm = useDocumentRealm()
     const documents = documentRealm.objects(DocumentSchema).sorted("modifiedAt", true)
     const documentSelection = useSelectionMode<string>()
@@ -162,7 +163,14 @@ export function Home() {
 
         return (
             <DocumentItem
-                onClick={() => navigation.navigate("EditDocument", { documentId })}
+                onClick={() => {
+                    const pictures = documentRealm
+                        .objects<DocumentPictureSchema>("DocumentPictureSchema")
+                        .filtered("belongsToDocument = $0", item.id)
+                        .sorted("position")
+                    setDocumentModel({ document: item, pictures })
+                    navigation.navigate("EditDocument")
+                }}
                 onSelect={() => documentSelection.selectItem(documentId)}
                 onDeselect={() => documentSelection.deselectItem(documentId)}
                 isSelectionMode={documentSelection.isSelectionMode}

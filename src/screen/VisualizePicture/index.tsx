@@ -6,7 +6,7 @@ import { Alert, View, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import { v4 as uuid4 } from "uuid"
 
-import { DocumentPicture, DocumentPictureSchema, useDocumentModel, useDocumentRealm } from "../../database"
+import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler } from "../../hooks"
 import { translate } from "../../locales"
 import { fullPathPicture } from "../../services/constant"
@@ -93,14 +93,7 @@ export function VisualizePicture() {
         const picturePathRotated = await DocumentService.getPicturePath(picturePathToRotate)
         try {
             await imageRotationRef.current?.save(picturePathRotated)
-            setDocumentModel({
-                type: "replacePicture",
-                payload: {
-                    realm: documentRealm,
-                    indexToReplace: currentIndex,
-                    newPicturePath: picturePathRotated,
-                },
-            })
+            replaceImage(picturePathRotated)
 
             setIsRotating(false)
             setIsRotationProcessing(false)
@@ -135,7 +128,7 @@ export function VisualizePicture() {
         }
     }
 
-    function renderItem({ item }: { item: DocumentPicture }) {
+    function renderItem({ item }: { item: DocumentPictureSchema }) {
         return (
             <ImageVisualizationItem
                 source={{ uri: `file://${item.filePath}` }}
@@ -167,14 +160,7 @@ export function VisualizePicture() {
 
             await RNFS.moveFile(response.uri, newCroppedPictureUri)
 
-            setDocumentModel({
-                type: "replacePicture",
-                payload: {
-                    realm: documentRealm,
-                    indexToReplace: currentIndex,
-                    newPicturePath: newCroppedPictureUri,
-                }
-            })
+            replaceImage(newCroppedPictureUri)
         } catch (error) {
             if (await RNFS.exists(response.uri)) {
                 await RNFS.unlink(response.uri)
@@ -206,6 +192,24 @@ export function VisualizePicture() {
         )
         setIsCropping(false)
         setIsCropProcessing(false)
+    }
+
+    function replaceImage(image: string) {
+        if (!documentModel) throw new Error("Document model is undefined. This should not happen")
+
+        documentRealm.write(() => {
+            documentModel.document.modifiedAt = Date.now()
+            documentModel.pictures[params.pictureIndex].filePath = image
+        })
+
+        const document = documentRealm.objectForPrimaryKey(DocumentSchema, documentModel.document.id)
+        const pictures = documentRealm
+            .objects(DocumentPictureSchema)
+            .filtered("belongsToDocument = $0", documentModel.document.id)
+            .sorted("position")
+
+        if (!document) throw new Error("Document is undefined, this should not happen")
+        setDocumentModel({ document, pictures })
     }
 
 

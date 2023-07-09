@@ -1,10 +1,6 @@
-import { useRoute } from "@react-navigation/native"
-import { Realm } from "@realm/react"
-
 import { Header, HeaderButton, HeaderTitle } from "../../components"
-import { DocumentSchema, useDocumentRealm } from "../../database"
+import { useDocumentModel } from "../../database"
 import { DocumentService } from "../../services/document"
-import { RouteParamProps } from "../../types"
 import { EditDocumentMenu } from "./EditDocumentMenu"
 
 
@@ -28,15 +24,8 @@ export interface EditDocumentHeaderProps {
 export function EditDocumentHeader(props: EditDocumentHeaderProps) {
 
 
-    const { params } = useRoute<RouteParamProps<"EditDocument">>()
-
-    const documentRealm = useDocumentRealm()
-    const documentId = params
-        ? Realm.BSON.ObjectID.createFromHexString(params.documentId)
-        : null
-    const document = documentId
-        ? documentRealm.objectForPrimaryKey<DocumentSchema>("DocumentSchema", documentId)
-        : null
+    const { documentModel } = useDocumentModel()
+    const document = documentModel?.document ?? null
 
 
     function getTitle() {
