@@ -39,8 +39,8 @@ export class DocumentService {
     }
 
 
-    static async getPicturePath(imagePath: string): Promise<string> {
-        const fileExtension = this.getFileExtension(imagePath)
+    static async getNewPicturePath(filePath: string): Promise<string> {
+        const fileExtension = this.getFileExtension(filePath)
 
         let newPath: string
         do {
