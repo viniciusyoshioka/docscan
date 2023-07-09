@@ -1,5 +1,5 @@
 import { Divider, Screen } from "@elementium/native"
-import { useIsFocused, useNavigation } from "@react-navigation/native"
+import { useNavigation } from "@react-navigation/native"
 import { FlashList } from "@shopify/flash-list"
 import { useState } from "react"
 import { Alert, View } from "react-native"
@@ -22,7 +22,6 @@ export function Home() {
 
 
     const navigation = useNavigation<NavigationParamProps<"Home">>()
-    const isFocused = useIsFocused()
 
     const { setDocumentModel } = useDocumentModel()
     const documentRealm = useDocumentRealm()
@@ -56,11 +55,11 @@ export function Home() {
                 .map(documentId => Realm.BSON.ObjectId.createFromHexString(documentId))
 
             const picturesToDelete = documentRealm
-                .objects<DocumentPictureSchema>("DocumentPictureSchema")
+                .objects(DocumentPictureSchema)
                 .filtered("belongsToDocument IN $0", documentIdToDelete)
 
             const documentsToDelete = documentRealm
-                .objects<DocumentSchema>("DocumentSchema")
+                .objects(DocumentSchema)
                 .filtered("id IN $0", documentIdToDelete)
 
             documentRealm.beginTransaction()
@@ -165,7 +164,7 @@ export function Home() {
             <DocumentItem
                 onClick={() => {
                     const pictures = documentRealm
-                        .objects<DocumentPictureSchema>("DocumentPictureSchema")
+                        .objects(DocumentPictureSchema)
                         .filtered("belongsToDocument = $0", item.id)
                         .sorted("position")
                     setDocumentModel({ document: item, pictures })
@@ -201,7 +200,7 @@ export function Home() {
                 <FlashList
                     data={documents}
                     renderItem={renderItem}
-                    extraData={[documentSelection.selectedData, isFocused]}
+                    extraData={documentSelection.selectedData}
                     estimatedItemSize={DOCUMENT_ITEM_HEIGHT}
                     ItemSeparatorComponent={() => <Divider wrapperStyle={{ paddingHorizontal: 16 }} />}
                 />
