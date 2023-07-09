@@ -105,7 +105,7 @@ export function EditDocument() {
             temporaryPath: fullPathTemporaryCompressedPicture,
         }
 
-        const pictureList: string[] = pictures.map(item => item.filePath)
+        const pictureList: string[] = pictures.map(item => DocumentService.getPicturePath(item.fileName))
 
         await createAllFolderAsync()
         PdfCreator.createPdf(pictureList, documentPath, pdfOptions)
@@ -238,7 +238,7 @@ export function EditDocument() {
     async function deleteCurrentDocument() {
         if (!document) throw new Error("No document, this should not happen")
 
-        const picturePathsToDelete = pictures.map(item => item.filePath)
+        const picturePathsToDelete = pictures.map(item => DocumentService.getPicturePath(item.fileName))
 
         try {
             documentRealm.beginTransaction()
@@ -288,7 +288,9 @@ export function EditDocument() {
     async function deleteSelectedPicture() {
         if (!document) throw new Error("There is no document to delete its pictures, this should not happen")
 
-        const picturePathsToDelete = pictureSelection.selectedData.map(index => pictures[index].filePath)
+        const picturePathsToDelete = pictureSelection.selectedData.map(index =>
+            DocumentService.getPicturePath(pictures[index].fileName)
+        )
 
         try {
             documentRealm.write(() => {
@@ -333,7 +335,7 @@ export function EditDocument() {
                 onDeselect={() => pictureSelection.deselectItem(index)}
                 isSelectionMode={pictureSelection.isSelectionMode}
                 isSelected={pictureSelection.selectedData.includes(index)}
-                picturePath={item.filePath}
+                picturePath={DocumentService.getPicturePath(item.fileName)}
                 columnCount={columnCount}
             />
         )
