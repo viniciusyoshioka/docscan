@@ -8,10 +8,16 @@ export interface MenuItemProps extends RectButtonProps {
 }
 
 
-export const MenuItem = (props: MenuItemProps) => (
-    <MenuItemBase {...props}>
-        <MenuItemText numberOfLines={1}>
-            {props.text}
-        </MenuItemText>
-    </MenuItemBase>
-)
+export function MenuItem(props: MenuItemProps) {
+    return (
+        <MenuItemBase {...props}>
+            <MenuItemText
+                numberOfLines={1}
+                variant={"label"}
+                size={"large"}
+            >
+                {props.text}
+            </MenuItemText>
+        </MenuItemBase>
+    )
+}
