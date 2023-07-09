@@ -67,7 +67,9 @@ export function Home() {
             documentRealm.delete(documentsToDelete)
             documentRealm.commitTransaction()
 
-            const picturesPathToDelete = picturesToDelete.map(documentPicture => documentPicture.filePath)
+            const picturesPathToDelete = picturesToDelete.map(picture =>
+                DocumentService.getPicturePath(picture.fileName)
+            )
             DocumentService.deletePicturesService(picturesPathToDelete)
         } catch (error) {
             if (documentRealm.isInTransaction) {
