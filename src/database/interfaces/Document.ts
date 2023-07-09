@@ -7,11 +7,3 @@ export interface DocumentRealm {
     modifiedAt: number;
     name: string;
 }
-
-
-export interface Document {
-    id: string;
-    createdAt: number;
-    modifiedAt: number;
-    name: string;
-}
