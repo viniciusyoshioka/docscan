@@ -7,11 +7,3 @@ export interface LogRealm {
     message: string;
     timestamp: number;
 }
-
-
-export interface Log {
-    id: string;
-    code: string;
-    message: string;
-    timestamp: number;
-}
