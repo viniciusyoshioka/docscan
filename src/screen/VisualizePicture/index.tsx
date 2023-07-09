@@ -1,15 +1,13 @@
 import { Screen } from "@elementium/native"
 import { useNavigation, useRoute } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
-import { useRef, useState } from "react"
+import { useMemo, useRef, useState } from "react"
 import { Alert, View, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
-import { v4 as uuid4 } from "uuid"
 
 import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler } from "../../hooks"
 import { translate } from "../../locales"
-import { fullPathPicture } from "../../services/constant"
 import { DocumentService } from "../../services/document"
 import { ImageCrop, OnImageSavedResponse } from "../../services/image-crop"
 import { log, stringfyError } from "../../services/log"
@@ -39,8 +37,13 @@ export function VisualizePicture() {
     const [isRotationProcessing, setIsRotationProcessing] = useState(false)
     const [isCropping, setIsCropping] = useState(false)
     const [isCropProcessing, setIsCropProcessing] = useState(false)
-    const [currentIndex, setCurrentIndex] = useState(params.pictureIndex)
     const [isFlatListScrollEnable, setIsFlatListScrollEnable] = useState(true)
+    const [currentIndex, setCurrentIndex] = useState(params.pictureIndex)
+    const currentPicturePath = useMemo(() => {
+        if (!documentModel) throw new Error("Document model is undefined. This should not happen")
+        const fileName = documentModel.pictures[currentIndex].fileName
+        return DocumentService.getPicturePath(fileName)
+    }, [documentModel, currentIndex])
 
 
     useBackHandler(() => {
@@ -85,15 +88,16 @@ export function VisualizePicture() {
     }
 
     async function saveRotatedPicture() {
-        if (isRotationProcessing || !documentModel) return
+        if (isRotationProcessing) return
+        if (!documentModel) throw new Error("Document model is undefined. This should not happen")
 
         setIsRotationProcessing(true)
 
-        const picturePathToRotate = documentModel.pictures[currentIndex].filePath
-        const picturePathRotated = await DocumentService.getPicturePath(picturePathToRotate)
+        const pictureNameToRotate = documentModel.pictures[currentIndex].fileName
+        const picturePathRotated = await DocumentService.getNewPicturePath(pictureNameToRotate)
         try {
             await imageRotationRef.current?.save(picturePathRotated)
-            replaceImage(picturePathRotated)
+            replacePictureInDatabase(picturePathRotated)
 
             setIsRotating(false)
             setIsRotationProcessing(false)
@@ -110,7 +114,8 @@ export function VisualizePicture() {
         }
 
         try {
-            RNFS.unlink(picturePathToRotate)
+            const picturePathToDelete = DocumentService.getPicturePath(pictureNameToRotate)
+            RNFS.unlink(picturePathToDelete)
         } catch (error) {
             log.warn(`Error deleting original image after rotate: "${stringfyError(error)}"`)
         }
@@ -129,9 +134,10 @@ export function VisualizePicture() {
     }
 
     function renderItem({ item }: { item: DocumentPictureSchema }) {
+        const picturePath = DocumentService.getPicturePath(item.fileName)
         return (
             <ImageVisualizationItem
-                source={{ uri: `file://${item.filePath}` }}
+                source={{ uri: `file://${picturePath}` }}
                 onZoomActivated={() => setIsFlatListScrollEnable(false)}
                 onZoomDeactivated={() => setIsFlatListScrollEnable(true)}
             />
@@ -139,28 +145,15 @@ export function VisualizePicture() {
     }
 
     async function onCroppedImageSaved(response: OnImageSavedResponse) {
-        if (!documentModel) return
+        if (!documentModel) throw new Error("Document model is undefined. This should not happen")
 
-        const picturePath = documentModel.pictures[currentIndex].filePath
-        const fileExtension = DocumentService.getFileExtension(response.uri)
+        const pictureName = documentModel.pictures[currentIndex].fileName
+        const picturePath = DocumentService.getPicturePath(pictureName)
 
         try {
-            let newCroppedPictureUri: string
-            let isPicturePathDuplicated = false
-
-            do {
-                const uniqueFileName = uuid4()
-                newCroppedPictureUri = `${fullPathPicture}/${uniqueFileName}.${fileExtension}`
-
-                isPicturePathDuplicated = documentRealm
-                    .objects<DocumentPictureSchema>("DocumentPictureSchema")
-                    .filtered("filePath = $0", newCroppedPictureUri)
-                    .length > 0
-            } while (isPicturePathDuplicated)
-
-            await RNFS.moveFile(response.uri, newCroppedPictureUri)
-
-            replaceImage(newCroppedPictureUri)
+            const croppedPicturePath = await DocumentService.getNewPicturePath(response.uri)
+            await RNFS.moveFile(response.uri, croppedPicturePath)
+            replacePictureInDatabase(croppedPicturePath)
         } catch (error) {
             if (await RNFS.exists(response.uri)) {
                 await RNFS.unlink(response.uri)
@@ -171,9 +164,10 @@ export function VisualizePicture() {
                 translate("warn"),
                 translate("VisualizePicture_alert_errorSavingCroppedImage_text")
             )
-        } finally {
+
             setIsCropping(false)
             setIsCropProcessing(false)
+            return
         }
 
         try {
@@ -194,12 +188,12 @@ export function VisualizePicture() {
         setIsCropProcessing(false)
     }
 
-    function replaceImage(image: string) {
+    function replacePictureInDatabase(filePath: string) {
         if (!documentModel) throw new Error("Document model is undefined. This should not happen")
 
         documentRealm.write(() => {
             documentModel.document.modifiedAt = Date.now()
-            documentModel.pictures[params.pictureIndex].filePath = image
+            documentModel.pictures[params.pictureIndex].fileName = DocumentService.getFileFullname(filePath)
         })
 
         const document = documentRealm.objectForPrimaryKey(DocumentSchema, documentModel.document.id)
@@ -207,7 +201,6 @@ export function VisualizePicture() {
             .objects(DocumentPictureSchema)
             .filtered("belongsToDocument = $0", documentModel.document.id)
             .sorted("position")
-
         if (!document) throw new Error("Document is undefined, this should not happen")
         setDocumentModel({ document, pictures })
     }
@@ -258,7 +251,7 @@ export function VisualizePicture() {
             {isRotating && (
                 <ImageRotation
                     ref={imageRotationRef}
-                    source={`file://${documentModel?.pictures[currentIndex].filePath}`}
+                    source={`file://${currentPicturePath}`}
                     style={{ flex: 1 }}
                 />
             )}
@@ -267,7 +260,7 @@ export function VisualizePicture() {
                 <ImageCrop
                     ref={imageCropRef}
                     style={{ flex: 1, margin: 16 }}
-                    sourceUrl={`file://${documentModel?.pictures[currentIndex].filePath}`}
+                    sourceUrl={`file://${currentPicturePath}`}
                     onSaveImage={onCroppedImageSaved}
                     onCropError={onCropError}
                 />
