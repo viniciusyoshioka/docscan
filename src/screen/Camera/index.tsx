@@ -1,12 +1,12 @@
 import { Button, Screen } from "@elementium/native"
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core"
+import { Realm } from "@realm/react"
 import { useMemo, useRef, useState } from "react"
 import { Alert, Linking, StatusBar, StyleProp, ViewStyle, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
 import { Camera as RNCamera } from "react-native-vision-camera"
 
-import { Realm } from "@realm/react"
 import { EmptyList } from "../../components"
 import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler, useCameraDevices, useIsForeground } from "../../hooks"
@@ -132,7 +132,7 @@ export function Camera() {
                 flash: settings.camera.flash,
             })
 
-            const picturePath = await DocumentService.getPicturePath(response.path)
+            const picturePath = await DocumentService.getNewPicturePath(response.path)
             await RNFS.moveFile(response.path, picturePath)
 
             if (params?.screenAction === "replace-picture") {
@@ -155,10 +155,10 @@ export function Camera() {
         if (!documentModel)
             throw new Error("Document model is undefined. This should not happen")
 
-        const oldPicturePath = documentModel.pictures[params.replaceIndex].filePath
+        const oldPictureName = documentModel.pictures[params.replaceIndex].fileName
         documentRealm.write(() => {
             documentModel.document.modifiedAt = Date.now()
-            documentModel.pictures[params.replaceIndex].filePath = newPicturePath
+            documentModel.pictures[params.replaceIndex].fileName = DocumentService.getFileFullname(newPicturePath)
         })
 
         const document = documentRealm.objectForPrimaryKey(DocumentSchema, documentModel.document.id)
@@ -166,11 +166,12 @@ export function Camera() {
             .objects(DocumentPictureSchema)
             .filtered("belongsToDocument = $0", documentModel.document.id)
             .sorted("position")
-
         if (!document) throw new Error("Document is undefined, this should not happen")
         setDocumentModel({ document, pictures })
 
-        DocumentService.deletePicturesService([oldPicturePath])
+        DocumentService.deletePicturesService([
+            DocumentService.getPicturePath(oldPictureName)
+        ])
 
         navigation.navigate("VisualizePicture", {
             pictureIndex: params.replaceIndex,
@@ -183,7 +184,7 @@ export function Camera() {
         if (documentModel) {
             documentRealm.write(() => {
                 documentRealm.create(DocumentPictureSchema, {
-                    filePath: newPicturePath,
+                    fileName: DocumentService.getFileFullname(newPicturePath),
                     belongsToDocument: documentModel.document.id,
                     position: documentModel.pictures.length,
                 })
@@ -202,7 +203,7 @@ export function Camera() {
                 })
 
                 documentRealm.create(DocumentPictureSchema, {
-                    filePath: newPicturePath,
+                    fileName: DocumentService.getFileFullname(newPicturePath),
                     belongsToDocument: createdDocument.id,
                     position: 0,
                 })
@@ -216,7 +217,6 @@ export function Camera() {
             .objects(DocumentPictureSchema)
             .filtered("belongsToDocument = $0", modifiedDocumentId)
             .sorted("position")
-
         if (!document) throw new Error("Document is undefined, this should not happen")
         setDocumentModel({ document, pictures })
     }
