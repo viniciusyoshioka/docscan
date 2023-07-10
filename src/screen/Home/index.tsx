@@ -16,6 +16,7 @@ import { DOCUMENT_ITEM_HEIGHT, DocumentItem } from "./DocumentItem"
 import { HomeHeader } from "./Header"
 
 
+// TODO fix FlashList alert when all documents are deleted
 // TODO add comunication with background service to alert when export is done
 // TODO add comunication with background service to alert when import is done
 export function Home() {
