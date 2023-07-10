@@ -96,6 +96,7 @@ export type TranslationKeyType =
     | "Gallery_header_title"
     // Gallery screen
     | "Gallery_emptyGallery"
+    | "Gallery_importingPictures"
 
     // Home alert
     | "Home_alert_errorLoadingDocuments_text"

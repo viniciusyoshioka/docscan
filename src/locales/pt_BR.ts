@@ -99,6 +99,7 @@ export const pt_BR: TranslationObjectType = {
     Gallery_header_title: "Importar imagem",
     // Gallery screen
     Gallery_emptyGallery: "Galeria vazia",
+    Gallery_importingPictures: "Importando imagens...",
 
     // Home alert
     Home_alert_errorLoadingDocuments_text: "Erro ao carregar documentos",

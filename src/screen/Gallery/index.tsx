@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 import { ActivityIndicator, Alert, View, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 
-import { EmptyList, HEADER_HEIGHT } from "../../components"
+import { EmptyList, HEADER_HEIGHT, LoadingModal } from "../../components"
 import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
@@ -41,6 +41,7 @@ export function Gallery() {
     const [imageGallery, setImageGallery] = useState<PhotoIdentifier[] | null>(null)
     const currentAmountOfImages = useMemo(() => imageGallery?.length ?? 0, [imageGallery])
     const [isGalleryFullLoaded, setIsGalleryFullLoaded] = useState(false)
+    const [isImportingImages, setIsImportingImages] = useState(false)
 
     const columnCount = useMemo(() => (windowWidth < windowHeight)
         ? VERTICAL_COLUMN_COUNT
@@ -116,40 +117,37 @@ export function Gallery() {
         }
 
         if (params?.screenAction === "replace-picture") {
-            navigation.reset({
-                routes: [
-                    { name: "Home" },
-                    { name: "EditDocument" },
-                    {
-                        name: "VisualizePicture",
-                        params: {
-                            pictureIndex: params.replaceIndex,
-                        }
+            navigation.reset({ routes: [
+                { name: "Home" },
+                { name: "EditDocument" },
+                {
+                    name: "VisualizePicture",
+                    params: { pictureIndex: params.replaceIndex },
+                },
+                {
+                    name: "Camera",
+                    params: {
+                        screenAction: params.screenAction,
+                        replaceIndex: params.replaceIndex,
                     },
-                    {
-                        name: "Camera",
-                        params: {
-                            screenAction: params.screenAction,
-                            replaceIndex: params.replaceIndex,
-                        }
-                    }
-                ]
-            })
+                },
+            ] })
             return
         }
 
-        navigation.reset({
-            routes: [
-                { name: "Home" },
-                { name: "Camera" }
-            ]
-        })
+        navigation.reset({ routes: [
+            { name: "Home" },
+            { name: "Camera" },
+        ] })
     }
 
     async function importSingleImage(imagePath: string) {
+        setIsImportingImages(true)
+
         const hasReadMediaImagesPermission = await getReadMediaImagesPermission()
         if (!hasReadMediaImagesPermission) {
             log.warn("No permission to import image")
+            setIsImportingImages(false)
             Alert.alert(
                 translate("warn"),
                 translate("Gallery_alert_noPermissionToImportSingle_text")
@@ -162,6 +160,7 @@ export function Gallery() {
             await RNFS.copyFile(imagePath, newImagePath)
         } catch (error) {
             log.error(`Error importing a single image from gallery: "${stringfyError(error)}"`)
+            setIsImportingImages(false)
             Alert.alert(
                 translate("warn"),
                 translate("Gallery_alert_unknownErrorImportingSingle_text")
@@ -171,27 +170,26 @@ export function Gallery() {
 
         if (params?.screenAction === "replace-picture") {
             replaceImage(newImagePath)
-
-            navigation.navigate("VisualizePicture", {
-                pictureIndex: params.replaceIndex,
-            })
+            setIsImportingImages(false)
+            navigation.navigate("VisualizePicture", { pictureIndex: params.replaceIndex })
             return
         }
 
         addImages([newImagePath])
-
-        navigation.reset({
-            routes: [
-                { name: "Home" },
-                { name: "Camera" }
-            ]
-        })
+        setIsImportingImages(false)
+        navigation.reset({ routes: [
+            { name: "Home" },
+            { name: "Camera" },
+        ] })
     }
 
     async function importMultipleImage() {
+        setIsImportingImages(true)
+
         const hasReadMediaImagesPermission = await getReadMediaImagesPermission()
         if (!hasReadMediaImagesPermission) {
             log.warn("No permission to import multiple images")
+            setIsImportingImages(false)
             Alert.alert(
                 translate("warn"),
                 translate("Gallery_alert_noPermissionToImportMultiple_text")
@@ -213,13 +211,11 @@ export function Gallery() {
 
         DocumentService.copyPicturesService(imageFilesToCopy)
         addImages(imageFilesToAdd)
-
-        navigation.reset({
-            routes: [
-                { name: "Home" },
-                { name: "Camera" }
-            ]
-        })
+        setIsImportingImages(false)
+        navigation.reset({ routes: [
+            { name: "Home" },
+            { name: "Camera" }
+        ] })
     }
 
     function replaceImage(filePath: string) {
@@ -387,6 +383,11 @@ export function Gallery() {
                 iconSize={56}
                 message={translate("Gallery_emptyGallery")}
                 visible={imageGallery?.length === 0}
+            />
+
+            <LoadingModal
+                message={translate("Gallery_importingPictures")}
+                visible={isImportingImages}
             />
         </Screen>
     )
