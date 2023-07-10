@@ -240,7 +240,7 @@ export function EditDocument() {
     }
 
     async function deleteCurrentDocument() {
-        if (!document) throw new Error("No document, this should not happen")
+        if (!document) throw new Error("No document to be deleted, this should not happen")
 
         const picturePathsToDelete = pictures.map(item => DocumentService.getPicturePath(item.fileName))
 
@@ -264,8 +264,7 @@ export function EditDocument() {
 
     function alertDeleteCurrentDocument() {
         if (!document) {
-            log.warn("There is no document to delete")
-            // TODO alert
+            goBack()
             return
         }
 
@@ -315,11 +314,7 @@ export function EditDocument() {
     }
 
     function alertDeletePicture() {
-        if (!document) {
-            log.warn("There is no document to delete its pictures")
-            // TODO alert
-            return
-        }
+        if (!document) throw new Error("There is no document to delete its pictures, this should not happen")
 
         Alert.alert(
             translate("EditDocument_alert_deletePicture_title"),
