@@ -22,6 +22,9 @@ import { HORIZONTAL_COLUMN_COUNT, PictureItem, VERTICAL_COLUMN_COUNT, getPicture
 import { RenameDocument } from "./RenameDocument"
 
 
+// TODO add LoadingModal while deleting pictures
+// TODO add LoadingModal while deleting document
+// TODO update document model after deleting pictures
 // TODO implement drag and drop to reorder list
 // TODO implement split selected images to new document
 export function EditDocument() {
