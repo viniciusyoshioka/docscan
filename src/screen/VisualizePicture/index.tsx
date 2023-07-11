@@ -154,6 +154,8 @@ export function VisualizePicture() {
             const croppedPicturePath = await DocumentService.getNewPicturePath(response.uri)
             await RNFS.moveFile(response.uri, croppedPicturePath)
             replacePictureInDatabase(croppedPicturePath)
+            setIsCropping(false)
+            setIsCropProcessing(false)
         } catch (error) {
             if (await RNFS.exists(response.uri)) {
                 await RNFS.unlink(response.uri)
