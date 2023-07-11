@@ -41,7 +41,9 @@ export function VisualizePicture() {
     const [currentIndex, setCurrentIndex] = useState(params.pictureIndex)
     const currentPicturePath = useMemo(() => {
         if (!documentModel) throw new Error("Document model is undefined. This should not happen")
-        const fileName = documentModel.pictures[currentIndex].fileName
+
+        const index = Math.round(currentIndex)
+        const fileName = documentModel.pictures[index].fileName
         return DocumentService.getPicturePath(fileName)
     }, [documentModel, currentIndex])
 
