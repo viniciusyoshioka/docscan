@@ -120,6 +120,8 @@ export const pt_BR: TranslationObjectType = {
     Home_alert_mergeDocuments_text: "Os documento selecionados serão unidos em um único documento",
     Home_alert_duplicateDocuments_title: "Duplicar",
     Home_alert_duplicateDocuments_text: "Os documentos selecionados serão duplicados",
+    Home_alert_notificationPermissionDenied_title: "Permisão negada para notificação",
+    Home_alert_notificationPermissionDenied_text: "Notificação são necessárias para o funcionamento do aplicativo. Você pode permitir mais tarde nas configurações do aplicativo",
     // Home header
     Home_header_title: "DocScan",
     // Home screen

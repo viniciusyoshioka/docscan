@@ -1,7 +1,7 @@
 import { Divider, Screen } from "@elementium/native"
 import { useNavigation } from "@react-navigation/native"
 import { FlashList } from "@shopify/flash-list"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Alert, View } from "react-native"
 
 import { EmptyList, LoadingModal } from "../../components"
@@ -11,6 +11,7 @@ import { TranslationKeyType, translate } from "../../locales"
 import { appIconOutline } from "../../services/constant"
 import { DocumentService } from "../../services/document"
 import { log, stringfyError } from "../../services/log"
+import { getNotificationPermission } from "../../services/permission"
 import { NavigationParamProps } from "../../types"
 import { DOCUMENT_ITEM_HEIGHT, DocumentItem } from "./DocumentItem"
 import { HomeHeader } from "./Header"
@@ -181,6 +182,21 @@ export function Home() {
             />
         )
     }
+
+
+    useEffect(() => {
+        async function requestPermissions() {
+            const hasPermission = await getNotificationPermission()
+            if (!hasPermission) {
+                Alert.alert(
+                    translate("Home_alert_notificationPermissionDenied_title"),
+                    translate("Home_alert_notificationPermissionDenied_text")
+                )
+            }
+        }
+
+        requestPermissions()
+    }, [])
 
 
     return (

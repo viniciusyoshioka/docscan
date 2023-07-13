@@ -117,6 +117,8 @@ export type TranslationKeyType =
     | "Home_alert_mergeDocuments_text"
     | "Home_alert_duplicateDocuments_title"
     | "Home_alert_duplicateDocuments_text"
+    | "Home_alert_notificationPermissionDenied_title"
+    | "Home_alert_notificationPermissionDenied_text"
     // Home header
     | "Home_header_title"
     // Home screen
