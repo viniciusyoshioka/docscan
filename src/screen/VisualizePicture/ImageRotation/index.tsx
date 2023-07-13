@@ -21,6 +21,7 @@ export interface ImageRotationProps {
 
 
 export interface ImageRotationRef {
+    getRotationDegree: () => number;
     rotateLeft: () => void;
     rotateRight: () => void;
     save: (pathToSave: string) => Promise<void>;
@@ -46,6 +47,7 @@ export const ImageRotation = forwardRef((props: ImageRotationProps, ref: Forward
 
 
     useImperativeHandle(ref, () => ({
+        getRotationDegree: getRotationDegree,
         rotateLeft: () => rotate(-90),
         rotateRight: () => rotate(90),
         save: saveImage,
@@ -72,6 +74,10 @@ export const ImageRotation = forwardRef((props: ImageRotationProps, ref: Forward
         }
     }
 
+
+    function getRotationDegree() {
+        return degree.value
+    }
 
     function rotate(degreeToRotate: number) {
         const newDegree = degree.value + degreeToRotate
