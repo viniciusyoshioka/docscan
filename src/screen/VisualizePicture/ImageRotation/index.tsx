@@ -54,6 +54,8 @@ export const ImageRotation = forwardRef((props: ImageRotationProps, ref: Forward
     function rotate(degreeToRotate: number) {
         const newDegree = degree.value + degreeToRotate
         let newScale = 1
+        let newImageWidth = imageWidth
+        let newImageHeight = imageHeight
 
         if (!perpendicularAngles.includes(Math.abs(newDegree))) {
             return
@@ -64,21 +66,19 @@ export const ImageRotation = forwardRef((props: ImageRotationProps, ref: Forward
             const rotatedImageHeight = imageWidth
 
             newScale = windowWidth / rotatedImageWidth
-            let newImageWidth = rotatedImageWidth * newScale
-            let newImageHeight = rotatedImageHeight * newScale
+            newImageWidth = rotatedImageWidth * newScale
+            newImageHeight = rotatedImageHeight * newScale
             if (newImageHeight > windowHeight) {
                 newScale = windowHeight / rotatedImageHeight
                 newImageWidth = rotatedImageWidth * newScale
                 newImageHeight = rotatedImageHeight * newScale
             }
-
-            overlayLeft.value = (windowWidth - newImageWidth) / 2
-            overlayTop.value = (windowHeight - newImageHeight) / 2
-            overlayWidth.value = newImageWidth
-            overlayHeight.value = newImageHeight
-        } else {
-            newScale = 1
         }
+
+        overlayLeft.value = (windowWidth - newImageWidth) / 2
+        overlayTop.value = (windowHeight - newImageHeight) / 2
+        overlayWidth.value = newImageWidth
+        overlayHeight.value = newImageHeight
 
         degree.value = withTiming(newDegree, { duration: 150 })
         scale.value = withTiming(newScale, { duration: 150 })
