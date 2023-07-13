@@ -23,7 +23,6 @@ import { HORIZONTAL_COLUMN_COUNT, PictureItem, VERTICAL_COLUMN_COUNT, getPicture
 import { RenameDocument } from "./RenameDocument"
 
 
-// TODO add LoadingModal while deleting document
 // TODO update document model after deleting pictures
 // TODO implement drag and drop to reorder list
 // TODO implement split selected images to new document
@@ -36,12 +35,13 @@ export function EditDocument() {
 
     const { documentModel, setDocumentModel } = useDocumentModel()
     const documentRealm = useDocumentRealm()
-    const document = documentModel?.document ?? null
-    const pictures = documentModel?.document
+    const document = documentModel?.document ?? undefined
+    const pictures = useMemo(() => (document
         ? documentRealm.objects(DocumentPictureSchema)
-            .filtered("belongsToDocument = $0", documentModel.document.id)
+            .filtered("belongsToDocument = $0", document.id)
             .sorted("position")
-        : []
+        : new Realm.List()
+    ), [document])
 
     const columnCount = useMemo(() => (windowWidth < windowHeight)
         ? VERTICAL_COLUMN_COUNT
@@ -53,6 +53,7 @@ export function EditDocument() {
     const [renameDocumentVisible, setRenameDocumentVisible] = useState(false)
     const [convertPdfOptionVisible, setConvertPdfOptionVisible] = useState(false)
     const [isDeletingPictures, setIsDeletingPictures] = useState(false)
+    const [isDeletingDocument, setIsDeletingDocument] = useState(false)
 
 
     useBackHandler(() => {
@@ -246,6 +247,8 @@ export function EditDocument() {
     async function deleteCurrentDocument() {
         if (!document) throw new Error("No document to be deleted, this should not happen")
 
+        setIsDeletingDocument(true)
+
         const picturePathsToDelete = pictures.map(item => DocumentService.getPicturePath(item.fileName))
 
         try {
@@ -263,6 +266,7 @@ export function EditDocument() {
             )
         }
 
+        setIsDeletingDocument(false)
         navigation.reset({ routes: [ { name: "Home" } ] })
     }
 
@@ -392,6 +396,11 @@ export function EditDocument() {
             <LoadingModal
                 message={translate("EditDocument_deletingPictures")}
                 visible={isDeletingPictures}
+            />
+
+            <LoadingModal
+                message={translate("EditDocument_deletingDocument")}
+                visible={isDeletingDocument}
             />
         </Screen>
     )

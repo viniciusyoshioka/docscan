@@ -73,6 +73,7 @@ export const pt_BR: TranslationObjectType = {
     // EditDocument screen
     EditDocument_shareDocument: "Compartilhar documento",
     EditDocument_deletingPictures: "Apagando imagens...",
+    EditDocument_deletingDocument: "Apagando documento...",
     // EditDocument menu
     EditDocument_menu_convertToPdf: "Converter para PDF",
     EditDocument_menu_sharePdf: "Compartilhar PDF",
