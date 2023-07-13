@@ -93,6 +93,12 @@ export function VisualizePicture() {
         if (isRotationProcessing) return
         if (!documentModel) throw new Error("Document model is undefined. This should not happen")
 
+        const rotatedDegrees = imageRotationRef.current?.getRotationDegree()
+        if (rotatedDegrees && (rotatedDegrees % 360) === 0) {
+            setIsRotating(false)
+            return
+        }
+
         setIsRotationProcessing(true)
 
         const pictureNameToRotate = documentModel.pictures[currentIndex].fileName
@@ -100,9 +106,6 @@ export function VisualizePicture() {
         try {
             await imageRotationRef.current?.save(picturePathRotated)
             replacePictureInDatabase(picturePathRotated)
-
-            setIsRotating(false)
-            setIsRotationProcessing(false)
         } catch (error) {
             log.error(`Error saving rotated picture: "${stringfyError(error)}"`)
             Alert.alert(
@@ -117,10 +120,13 @@ export function VisualizePicture() {
 
         try {
             const picturePathToDelete = DocumentService.getPicturePath(pictureNameToRotate)
-            RNFS.unlink(picturePathToDelete)
+            await RNFS.unlink(picturePathToDelete)
         } catch (error) {
             log.warn(`Error deleting original image after rotate: "${stringfyError(error)}"`)
         }
+
+        setIsRotating(false)
+        setIsRotationProcessing(false)
     }
 
     function exitCrop() {
