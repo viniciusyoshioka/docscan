@@ -162,8 +162,6 @@ export function VisualizePicture() {
             const croppedPicturePath = await DocumentService.getNewPicturePath(response.uri)
             await RNFS.moveFile(response.uri, croppedPicturePath)
             replacePictureInDatabase(croppedPicturePath)
-            setIsCropping(false)
-            setIsCropProcessing(false)
         } catch (error) {
             if (await RNFS.exists(response.uri)) {
                 await RNFS.unlink(response.uri)
@@ -181,11 +179,15 @@ export function VisualizePicture() {
         }
 
         try {
-            if (await RNFS.exists(picturePath))
-                RNFS.unlink(picturePath)
+            if (await RNFS.exists(picturePath)) {
+                await RNFS.unlink(picturePath)
+            }
         } catch (error) {
             log.warn(`Error deleting original image after crop: "${stringfyError(error)}"`)
         }
+
+        setIsCropping(false)
+        setIsCropProcessing(false)
     }
 
     function onCropError(response: string) {
