@@ -114,7 +114,7 @@ export const ImageRotation = forwardRef((props: ImageRotationProps, ref: Forward
             : props.source
 
         if (degree.value % 360 === 0) {
-            await RNFS.copyFile(imageUri, pathToSave)
+            await RNFS.moveFile(imageUri, pathToSave)
             isSaving.value = false
             return
         }
