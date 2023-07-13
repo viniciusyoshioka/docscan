@@ -69,6 +69,7 @@ export type TranslationKeyType =
     | "EditDocument_alert_deletePicture_text"
     // EditDocument screen
     | "EditDocument_shareDocument"
+    | "EditDocument_deletingPictures"
     // EditDocument menu
     | "EditDocument_menu_convertToPdf"
     | "EditDocument_menu_sharePdf"

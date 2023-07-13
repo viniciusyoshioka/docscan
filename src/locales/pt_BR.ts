@@ -72,6 +72,7 @@ export const pt_BR: TranslationObjectType = {
     EditDocument_alert_deletePicture_text: "Esta foto será apagada permanentemente",
     // EditDocument screen
     EditDocument_shareDocument: "Compartilhar documento",
+    EditDocument_deletingPictures: "Apagando imagens...",
     // EditDocument menu
     EditDocument_menu_convertToPdf: "Converter para PDF",
     EditDocument_menu_sharePdf: "Compartilhar PDF",

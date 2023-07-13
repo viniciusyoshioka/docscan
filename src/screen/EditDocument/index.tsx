@@ -6,6 +6,7 @@ import { Alert, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import Share from "react-native-share"
 
+import { LoadingModal } from "../../components"
 import { DocumentPictureSchema, useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
@@ -22,7 +23,6 @@ import { HORIZONTAL_COLUMN_COUNT, PictureItem, VERTICAL_COLUMN_COUNT, getPicture
 import { RenameDocument } from "./RenameDocument"
 
 
-// TODO add LoadingModal while deleting pictures
 // TODO add LoadingModal while deleting document
 // TODO update document model after deleting pictures
 // TODO implement drag and drop to reorder list
@@ -52,6 +52,7 @@ export function EditDocument() {
     const pictureSelection = useSelectionMode<number>()
     const [renameDocumentVisible, setRenameDocumentVisible] = useState(false)
     const [convertPdfOptionVisible, setConvertPdfOptionVisible] = useState(false)
+    const [isDeletingPictures, setIsDeletingPictures] = useState(false)
 
 
     useBackHandler(() => {
@@ -294,6 +295,8 @@ export function EditDocument() {
     async function deleteSelectedPicture() {
         if (!document) throw new Error("There is no document to delete its pictures, this should not happen")
 
+        setIsDeletingPictures(true)
+
         const picturePathsToDelete = pictureSelection.selectedData.map(index =>
             DocumentService.getPicturePath(pictures[index].fileName)
         )
@@ -314,6 +317,7 @@ export function EditDocument() {
         }
 
         pictureSelection.exitSelection()
+        setIsDeletingPictures(false)
     }
 
     function alertDeletePicture() {
@@ -383,6 +387,11 @@ export function EditDocument() {
                 visible={convertPdfOptionVisible}
                 onRequestClose={() => setConvertPdfOptionVisible(false)}
                 convertToPdf={convertDocumentToPdf}
+            />
+
+            <LoadingModal
+                message={translate("EditDocument_deletingPictures")}
+                visible={isDeletingPictures}
             />
         </Screen>
     )
