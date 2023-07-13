@@ -1,6 +1,7 @@
 import { ComponentClass, ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from "react"
 import { Image, StyleProp, View, ViewStyle } from "react-native"
 import FastImage, { FastImageProps } from "react-native-fast-image"
+import RNFS from "react-native-fs"
 import Reanimated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 
 import { ImageTools } from "../../../services/image-tools"
@@ -90,6 +91,13 @@ export const ImageRotation = forwardRef((props: ImageRotationProps, ref: Forward
         const imageUri = props.source.startsWith("file://")
             ? props.source.replace("file://", "")
             : props.source
+
+        if (degree.value % 360 === 0) {
+            await RNFS.copyFile(imageUri, pathToSave)
+            isSaving.value = false
+            return
+        }
+
         await ImageTools.rotateDegree(imageUri, {
             angle: degree.value,
             pathToSave: pathToSave,
