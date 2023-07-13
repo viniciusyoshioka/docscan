@@ -1,5 +1,5 @@
 import { ComponentClass, ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from "react"
-import { StyleProp, View, ViewStyle } from "react-native"
+import { Image, StyleProp, View, ViewStyle } from "react-native"
 import FastImage, { FastImageProps } from "react-native-fast-image"
 import RNFS from "react-native-fs"
 import Reanimated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
@@ -52,27 +52,6 @@ export const ImageRotation = forwardRef((props: ImageRotationProps, ref: Forward
         rotateRight: () => rotate(90),
         save: saveImage,
     }))
-
-
-    async function getImageSize() {
-        try {
-            const imageSize = await ImageTools.getSize(props.source)
-
-            const imageRatio = imageSize.width / imageSize.height
-
-            let newImageWidth = windowWidth
-            let newImageHeight = windowWidth / imageRatio
-            if (newImageHeight > windowHeight) {
-                newImageWidth = windowHeight * imageRatio
-                newImageHeight = windowHeight
-            }
-
-            setImageWidth(newImageWidth)
-            setImageHeight(newImageHeight)
-        } catch (error) {
-            if (props.onError) props.onError(error)
-        }
-    }
 
 
     function getRotationDegree() {
@@ -152,8 +131,22 @@ export const ImageRotation = forwardRef((props: ImageRotationProps, ref: Forward
 
 
     useEffect(() => {
+        function onSuccess(widthSize: number, heightSize: number) {
+            const imageRatio = widthSize / heightSize
+
+            let newImageWidth = windowWidth
+            let newImageHeight = windowWidth / imageRatio
+            if (newImageHeight > windowHeight) {
+                newImageWidth = windowHeight * imageRatio
+                newImageHeight = windowHeight
+            }
+
+            setImageWidth(newImageWidth)
+            setImageHeight(newImageHeight)
+        }
+
         if (windowWidth !== 0 && windowHeight !== 0) {
-            getImageSize()
+            Image.getSize(props.source, onSuccess, props.onError)
         }
     }, [windowWidth, windowHeight])
 
