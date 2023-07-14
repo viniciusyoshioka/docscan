@@ -48,6 +48,7 @@ export type TranslationKeyType =
     | "EditDocument_alert_errorLoadingDocumentPicture_text"
     | "EditDocument_alert_emptyDocument_text"
     | "EditDocument_alert_documentWithoutName_text"
+    | "EditDocument_alert_noDocumentOpened_text"
     | "EditDocument_alert_documentWithoutPictures_text"
     | "EditDocument_alert_noPermissionToConvertToPdf_text"
     | "EditDocument_alert_convertNotExistentPdfToShare_text"

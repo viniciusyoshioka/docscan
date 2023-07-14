@@ -74,7 +74,10 @@ export function EditDocument() {
     async function convertDocumentToPdf(quality: number) {
         if (!document) {
             log.warn("There is no document to be converted to PDF")
-            // TODO alert
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_noDocumentOpened_text")
+            )
             return
         }
 
@@ -122,7 +125,10 @@ export function EditDocument() {
     async function shareDocument() {
         if (!document) {
             log.warn("There is no document to be shared")
-            // TODO alert
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_noDocumentOpened_text")
+            )
             return
         }
 
@@ -157,7 +163,10 @@ export function EditDocument() {
     async function visualizePdf() {
         if (!document) {
             log.warn("There is no document to visualize the PDF")
-            // TODO alert
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_noDocumentOpened_text")
+            )
             return
         }
 
@@ -229,7 +238,10 @@ export function EditDocument() {
     function alertDeletePdf() {
         if (!document) {
             log.warn("There is no document to delete the PDF")
-            // TODO alert
+            Alert.alert(
+                translate("warn"),
+                translate("EditDocument_alert_noDocumentOpened_text")
+            )
             return
         }
 

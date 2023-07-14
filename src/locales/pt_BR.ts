@@ -51,6 +51,7 @@ export const pt_BR: TranslationObjectType = {
     EditDocument_alert_errorLoadingDocumentPicture_text: "Erro ao carregar imagens do documento",
     EditDocument_alert_emptyDocument_text: "O documento está vazio",
     EditDocument_alert_documentWithoutName_text: "Não é possível converter um documento sem nome para PDF",
+    EditDocument_alert_noDocumentOpened_text: "Não há documento aberto",
     EditDocument_alert_documentWithoutPictures_text: "Não é possível converter um documento sem fotos para PDF",
     EditDocument_alert_noPermissionToConvertToPdf_text: "Sem permissão para converter documento para PDF",
     EditDocument_alert_convertNotExistentPdfToShare_text: "Arquivo PDF não existe, converta o documento para compartilhá-lo",
