@@ -257,6 +257,8 @@ export function EditDocument() {
             documentRealm.delete(document)
             documentRealm.commitTransaction()
 
+            setDocumentModel(undefined)
+
             DocumentService.deletePicturesService(picturePathsToDelete)
         } catch (error) {
             log.error(`Error deleting current document from database: "${stringfyError(error)}"`)
