@@ -7,7 +7,7 @@ import RNFS from "react-native-fs"
 import Share from "react-native-share"
 
 import { LoadingModal } from "../../components"
-import { DocumentPictureSchema, useDocumentModel, useDocumentRealm } from "../../database"
+import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
 import { fullPathPdf, fullPathTemporaryCompressedPicture } from "../../services/constant"
@@ -23,7 +23,6 @@ import { HORIZONTAL_COLUMN_COUNT, PictureItem, VERTICAL_COLUMN_COUNT, getPicture
 import { RenameDocument } from "./RenameDocument"
 
 
-// TODO update document model after deleting pictures
 // TODO implement drag and drop to reorder list
 // TODO implement split selected images to new document
 export function EditDocument() {
@@ -312,6 +311,14 @@ export function EditDocument() {
                 documentRealm.delete(pictures.filter((_, index) => pictureSelection.selectedData.includes(index)))
                 document.modifiedAt = Date.now()
             })
+
+            const updatedDocument = documentRealm.objectForPrimaryKey(DocumentSchema, document.id)
+            const updatedPictures = documentRealm
+                .objects(DocumentPictureSchema)
+                .filtered("belongsToDocument = $0", document.id)
+                .sorted("position")
+            if (!updatedDocument) throw new Error("Document is undefined, this should not happen")
+            setDocumentModel({ document: updatedDocument, pictures: updatedPictures })
 
             DocumentService.deletePicturesService(picturePathsToDelete)
         } catch (error) {
