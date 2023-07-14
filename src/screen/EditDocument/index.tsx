@@ -40,7 +40,7 @@ export function EditDocument() {
         ? documentRealm.objects(DocumentPictureSchema)
             .filtered("belongsToDocument = $0", document.id)
             .sorted("position")
-        : new Realm.List()
+        : []
     ), [document])
 
     const columnCount = useMemo(() => (windowWidth < windowHeight)
