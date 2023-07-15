@@ -1,4 +1,4 @@
-import { Divider, Screen } from "@elementium/native"
+import { Divider, Screen, StatusBar } from "@elementium/native"
 import { useNavigation } from "@react-navigation/native"
 import { FlashList } from "@shopify/flash-list"
 import { useEffect, useState } from "react"
@@ -201,6 +201,8 @@ export function Home() {
 
     return (
         <Screen>
+            <StatusBar />
+
             <HomeHeader
                 isSelectionMode={documentSelection.isSelectionMode}
                 selectedDocumentsAmount={documentSelection.selectedData.length}

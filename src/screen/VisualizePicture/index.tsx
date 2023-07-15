@@ -1,4 +1,4 @@
-import { Screen } from "@elementium/native"
+import { Screen, StatusBar } from "@elementium/native"
 import { useNavigation, useRoute } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
 import { useMemo, useRef, useState } from "react"
@@ -219,6 +219,8 @@ export function VisualizePicture() {
 
     return (
         <Screen>
+            <StatusBar />
+
             <VisualizePictureHeader
                 goBack={goBack}
                 replacePicture={replacePicture}

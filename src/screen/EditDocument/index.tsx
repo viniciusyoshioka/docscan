@@ -1,4 +1,4 @@
-import { Screen } from "@elementium/native"
+import { Screen, StatusBar } from "@elementium/native"
 import { useNavigation } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
 import { useCallback, useMemo, useState } from "react"
@@ -377,6 +377,8 @@ export function EditDocument() {
 
     return (
         <Screen>
+            <StatusBar />
+
             <EditDocumentHeader
                 goBack={goBack}
                 exitSelectionMode={pictureSelection.exitSelection}

@@ -1,4 +1,4 @@
-import { Screen } from "@elementium/native"
+import { Screen, StatusBar } from "@elementium/native"
 import { CameraRoll, PhotoIdentifier } from "@react-native-camera-roll/camera-roll"
 import { useNavigation, useRoute } from "@react-navigation/core"
 import { Realm } from "@realm/react"
@@ -314,6 +314,8 @@ export function Gallery() {
 
     return (
         <Screen>
+            <StatusBar />
+
             <GalleryHeader
                 goBack={goBack}
                 exitSelectionMode={gallerySelection.exitSelection}

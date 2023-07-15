@@ -1,4 +1,4 @@
-import { ListItem, Screen, Text } from "@elementium/native"
+import { ListItem, Screen, StatusBar, Text } from "@elementium/native"
 import { useNavigation } from "@react-navigation/core"
 import { useState } from "react"
 import { Alert } from "react-native"
@@ -69,6 +69,8 @@ export function Settings() {
 
     return (
         <Screen>
+            <StatusBar />
+
             <SettingsHeader
                 goBack={goBack}
             />
