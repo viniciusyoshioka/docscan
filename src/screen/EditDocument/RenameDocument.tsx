@@ -1,10 +1,9 @@
 import { Button, Modal, ModalActions, ModalProps, ModalTitle } from "@elementium/native"
-import { Realm } from "@realm/react"
 import { createRef, useEffect, useState } from "react"
 import { NativeSyntheticEvent, TextInput } from "react-native"
 
 import { Input } from "../../components"
-import { DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
+import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
 import { useKeyboard } from "../../hooks"
 import { translate } from "../../locales"
 import { DocumentService } from "../../services/document"
@@ -45,8 +44,11 @@ export function RenameDocument(props: RenameDocumentProps) {
                     modifiedAt: now,
                     name: documentName,
                 })
-
-                setDocumentModel({ document: createdDocument, pictures: new Realm.Results() })
+                const pictures = documentRealm
+                    .objects(DocumentPictureSchema)
+                    .filtered("belongsToDocument = $0", createdDocument.id)
+                    .sorted("position")
+                setDocumentModel({ document: createdDocument, pictures })
             } else {
                 document.name = documentName
                 document.modifiedAt = now
