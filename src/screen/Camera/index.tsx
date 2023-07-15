@@ -206,21 +206,21 @@ export function Camera() {
     }
 
     async function onTapStateChange(event: HandlerStateChangeEvent<TapGestureHandlerEventPayload>) {
-        if (!cameraDevice?.supportsFocus || !isFocusEnabled) {
+        if (!cameraDevice?.supportsFocus || !isFocusEnabled || !focusIndicatorRef.current || !cameraRef.current) {
             return
         }
 
         if (event.nativeEvent.state === State.ACTIVE) {
             setIsFocusEnabled(false)
 
-            focusIndicatorRef.current?.setFocusPos({
+            focusIndicatorRef.current.setFocusPos({
                 x: parseInt(event.nativeEvent.absoluteX.toFixed()),
                 y: parseInt(event.nativeEvent.absoluteY.toFixed()),
             })
-            focusIndicatorRef.current?.setIsFocusing(true)
+            focusIndicatorRef.current.setIsFocusing(true)
 
             try {
-                await cameraRef.current?.focus({
+                await cameraRef.current.focus({
                     x: parseInt(event.nativeEvent.x.toFixed()),
                     y: parseInt(event.nativeEvent.y.toFixed()),
                 })
@@ -229,7 +229,7 @@ export function Camera() {
             }
 
             setIsFocusEnabled(true)
-            focusIndicatorRef.current?.setIsFocusing(false)
+            focusIndicatorRef.current.setIsFocusing(false)
         }
     }
 
