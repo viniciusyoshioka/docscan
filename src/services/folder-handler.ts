@@ -143,19 +143,6 @@ export async function createTemporaryCompressedPictureFolder() {
 }
 
 
-export function createAllFolder() {
-    // createRootFolder()
-    // createRootFolderExternal()
-    createPdfFolder()
-    createExportedFolder()
-    createPictureFolder()
-    // createTemporaryFolder()
-    createTemporaryExportedFolder()
-    createTemporaryImportedFolder()
-    createTemporaryCompressedPictureFolder()
-}
-
-
 export async function createAllFolderAsync() {
     // await createRootFolder()
     // await createRootFolderExternal()
