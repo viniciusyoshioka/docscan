@@ -27,7 +27,7 @@ export function AppThemeProvider(props: AppThemeProviderProps) {
     const isDarkTheme = (settings?.theme === "auto" && deviceTheme === "dark") || settings?.theme === "dark"
 
 
-    function getAppTheme() {
+    function getAppTheme(): AppThemeType {
         const switchTheme = (newTheme: ThemeType) => {
             if (settings) setSettings({ ...settings, theme: newTheme })
         }
