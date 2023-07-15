@@ -74,25 +74,25 @@ export function VisualizePicture() {
     }
 
     function exitRotation() {
-        if (!isRotationProcessing)
-            setIsRotating(false)
+        if (!isRotationProcessing) setIsRotating(false)
     }
 
     function rotateLeft() {
-        if (!isRotationProcessing)
-            imageRotationRef.current?.rotateLeft()
+        if (!isRotationProcessing && imageRotationRef.current)
+            imageRotationRef.current.rotateLeft()
     }
 
     function rotateRight() {
-        if (!isRotationProcessing)
-            imageRotationRef.current?.rotateRight()
+        if (!isRotationProcessing && imageRotationRef.current)
+            imageRotationRef.current.rotateRight()
     }
 
     async function saveRotatedPicture() {
         if (isRotationProcessing) return
         if (!documentModel) throw new Error("Document model is undefined. This should not happen")
+        if (!imageRotationRef.current) return
 
-        const rotatedDegrees = imageRotationRef.current?.getRotationDegree()
+        const rotatedDegrees = imageRotationRef.current.getRotationDegree()
         if (rotatedDegrees && (rotatedDegrees % 360) === 0) {
             setIsRotating(false)
             return
@@ -103,7 +103,7 @@ export function VisualizePicture() {
         const pictureNameToRotate = documentModel.pictures[currentIndex].fileName
         const picturePathRotated = await DocumentService.getNewPicturePath(pictureNameToRotate)
         try {
-            await imageRotationRef.current?.save(picturePathRotated)
+            await imageRotationRef.current.save(picturePathRotated)
             replacePictureInDatabase(picturePathRotated)
         } catch (error) {
             log.error(`Error saving rotated picture: "${stringfyError(error)}"`)
@@ -129,14 +129,13 @@ export function VisualizePicture() {
     }
 
     function exitCrop() {
-        if (!isCropProcessing)
-            setIsCropping(false)
+        if (!isCropProcessing) setIsCropping(false)
     }
 
     function saveCroppedPicture() {
-        if (!isCropProcessing) {
+        if (!isCropProcessing && imageCropRef.current) {
             setIsCropProcessing(true)
-            imageCropRef.current?.saveImage()
+            imageCropRef.current.saveImage()
         }
     }
 
