@@ -8,7 +8,7 @@ import { getWritePermission } from "./permission"
 // TODO change paths according to Android's permission
 
 
-async function createPdfFolder() {
+export async function createPdfFolder() {
     const hasWritePermission = await getWritePermission()
     if (!hasWritePermission) {
         log.warn("Can't create pdf folder without write external storage permission")
