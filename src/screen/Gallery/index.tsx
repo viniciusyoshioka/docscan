@@ -155,7 +155,7 @@ export function Gallery() {
 
         addImages([newImagePath])
         setIsImportingImages(false)
-        goBack()
+        navigation.goBack()
     }
 
     async function importMultipleImage() {
@@ -187,7 +187,7 @@ export function Gallery() {
         DocumentService.copyPicturesService(imageFilesToCopy)
         addImages(imageFilesToAdd)
         setIsImportingImages(false)
-        goBack()
+        navigation.goBack()
     }
 
     function replaceImage(filePath: string) {
