@@ -68,7 +68,7 @@ export function EditDocument() {
         }
 
         setDocumentModel(undefined)
-        navigation.reset({ routes: [ { name: "Home" } ] })
+        navigation.goBack()
     }
 
     async function convertDocumentToPdf(quality: number) {
@@ -384,7 +384,7 @@ export function EditDocument() {
                 selectedPicturesAmount={pictureSelection.selectedData.length}
                 invertSelection={invertSelection}
                 deletePicture={alertDeletePicture}
-                openCamera={() => navigation.navigate("Camera")}
+                openCamera={() => navigation.navigate("Camera", { screenAction: "add-picture" })}
                 convertToPdf={() => setConvertPdfOptionVisible(true)}
                 shareDocument={shareDocument}
                 visualizePdf={visualizePdf}

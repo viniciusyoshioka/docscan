@@ -3,9 +3,10 @@ import { OrientationType } from "react-native-orientation-locker"
 import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
 
 import { useDeviceOrientation } from "../../../hooks"
-import { ControlAction, CONTROL_ACTION_SIZE } from "./ControlAction"
-import { ControlButton, CONTROL_BUTTON_HEIGHT } from "./ControlButton"
-import { ControlView, CONTROL_VIEW_MIN_HEIGHT, CONTROL_VIEW_PADDING_VERTIVAL } from "./ControlView"
+import { ScreenAction } from "../../../types"
+import { CONTROL_ACTION_SIZE, ControlAction } from "./ControlAction"
+import { CONTROL_BUTTON_HEIGHT, ControlButton } from "./ControlButton"
+import { CONTROL_VIEW_MIN_HEIGHT, CONTROL_VIEW_PADDING_VERTIVAL, ControlView } from "./ControlView"
 
 
 export const CAMERA_CONTROL_HEIGHT = Math.max(
@@ -16,7 +17,7 @@ export const CAMERA_CONTROL_HEIGHT = Math.max(
 
 
 export interface CameraControlProps {
-    screenAction?: "replace-picture";
+    screenAction: ScreenAction;
     isShowingCamera: boolean;
     addPictureFromGallery: () => void;
     takePicture: () => void;
@@ -116,7 +117,7 @@ export const CameraControl = forwardRef((props: CameraControlProps, ref: Forward
             />
 
 
-            {props?.screenAction !== "replace-picture" && (
+            {props.screenAction !== "replace-picture" && (
                 <Reanimated.View style={orientationStyle}>
                     <ControlButton
                         iconName={"description"}
@@ -127,7 +128,7 @@ export const CameraControl = forwardRef((props: CameraControlProps, ref: Forward
                 </Reanimated.View>
             )}
 
-            {props?.screenAction === "replace-picture" && (
+            {props.screenAction === "replace-picture" && (
                 <ControlButton />
             )}
         </ControlView>

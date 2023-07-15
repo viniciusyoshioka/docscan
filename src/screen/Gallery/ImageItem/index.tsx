@@ -6,6 +6,7 @@ import { HandlerStateChangeEventPayload, LongPressGestureHandler, LongPressGestu
 
 import { SelectableItem, useSelectableItem } from "../../../hooks"
 import { useAppTheme } from "../../../theme"
+import { ScreenAction } from "../../../types"
 import { Button, SelectionSurface } from "./style"
 
 
@@ -23,7 +24,7 @@ export function getImageItemSize(windowWidth: number, columnCount: number): numb
 
 export interface ImageItemProps extends SelectableItem {
     imagePath: string;
-    screenAction: "replace-picture" | undefined;
+    screenAction: ScreenAction;
     columnCount: number;
 }
 

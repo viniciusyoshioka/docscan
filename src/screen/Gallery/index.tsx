@@ -116,29 +116,7 @@ export function Gallery() {
             return
         }
 
-        if (params?.screenAction === "replace-picture") {
-            navigation.reset({ routes: [
-                { name: "Home" },
-                { name: "EditDocument" },
-                {
-                    name: "VisualizePicture",
-                    params: { pictureIndex: params.replaceIndex },
-                },
-                {
-                    name: "Camera",
-                    params: {
-                        screenAction: params.screenAction,
-                        replaceIndex: params.replaceIndex,
-                    },
-                },
-            ] })
-            return
-        }
-
-        navigation.reset({ routes: [
-            { name: "Home" },
-            { name: "Camera" },
-        ] })
+        navigation.goBack()
     }
 
     async function importSingleImage(imagePath: string) {
@@ -168,7 +146,7 @@ export function Gallery() {
             return
         }
 
-        if (params?.screenAction === "replace-picture") {
+        if (params.screenAction === "replace-picture") {
             replaceImage(newImagePath)
             setIsImportingImages(false)
             navigation.navigate("VisualizePicture", { pictureIndex: params.replaceIndex })
@@ -177,10 +155,7 @@ export function Gallery() {
 
         addImages([newImagePath])
         setIsImportingImages(false)
-        navigation.reset({ routes: [
-            { name: "Home" },
-            { name: "Camera" },
-        ] })
+        goBack()
     }
 
     async function importMultipleImage() {
@@ -212,14 +187,11 @@ export function Gallery() {
         DocumentService.copyPicturesService(imageFilesToCopy)
         addImages(imageFilesToAdd)
         setIsImportingImages(false)
-        navigation.reset({ routes: [
-            { name: "Home" },
-            { name: "Camera" }
-        ] })
+        goBack()
     }
 
     function replaceImage(filePath: string) {
-        if (params?.screenAction !== "replace-picture")
+        if (params.screenAction !== "replace-picture")
             throw new Error("Screen action is different of 'replace-picture'. This should not happen")
         if (!documentModel)
             throw new Error("Document model is undefined. This should not happen")
@@ -297,7 +269,7 @@ export function Gallery() {
                 isSelectionMode={gallerySelection.isSelectionMode}
                 isSelected={gallerySelection.selectedData.includes(item.node.image.uri)}
                 imagePath={item.node.image.uri}
-                screenAction={params?.screenAction}
+                screenAction={params.screenAction}
                 columnCount={columnCount}
             />
         )

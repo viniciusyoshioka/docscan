@@ -31,7 +31,6 @@ import { useRequestCameraPermission } from "./useRequestCameraPermission"
 import { useResetCameraOnChangeRatio } from "./useResetCameraOnChangeRatio"
 
 
-// TODO goBack() function sometimes go back to Home instead of EditDocument
 // TODO add support to multiple back cameras
 // TODO add zoom indicator
 // TODO fix camera control overlapping camera
@@ -82,44 +81,21 @@ export function Camera() {
         }
 
         if (params?.screenAction === "replace-picture") {
-            navigation.navigate("VisualizePicture", {
-                pictureIndex: params.replaceIndex,
-            })
-            return
+            navigation.navigate("VisualizePicture", { pictureIndex: params.replaceIndex })
+        } else if (params?.screenAction === "add-picture") {
+            navigation.navigate("EditDocument")
+        } else {
+            setDocumentModel(undefined)
+            navigation.goBack()
         }
-
-        setDocumentModel(undefined)
-        navigation.navigate("Home")
     }
 
     function addPictureFromGallery() {
         if (params?.screenAction === "replace-picture") {
-            navigation.reset({
-                routes: [
-                    { name: "Home" },
-                    { name: "EditDocument" },
-                    {
-                        name: "VisualizePicture",
-                        params: { pictureIndex: params.replaceIndex }
-                    },
-                    {
-                        name: "Gallery",
-                        params: {
-                            screenAction: params.screenAction,
-                            replaceIndex: params.replaceIndex
-                        }
-                    }
-                ]
-            })
-            return
+            navigation.navigate("Gallery", params)
+        } else {
+            navigation.navigate("Gallery", { screenAction: "add-picture" })
         }
-
-        navigation.reset({
-            routes: [
-                { name: "Home" },
-                { name: "Gallery" }
-            ]
-        })
     }
 
     async function takePicture() {
@@ -222,9 +198,11 @@ export function Camera() {
     }
 
     function editDocument() {
-        navigation.reset({
-            routes: [ { name: "EditDocument" } ]
-        })
+        if (params?.screenAction === "add-picture") {
+            navigation.goBack()
+        } else {
+            navigation.replace("EditDocument")
+        }
     }
 
     async function onTapStateChange(event: HandlerStateChangeEvent<TapGestureHandlerEventPayload>) {
