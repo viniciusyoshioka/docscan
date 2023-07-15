@@ -1,41 +1,11 @@
 import RNFS from "react-native-fs"
 
-import { fullPathExported, fullPathPdf, fullPathPicture, fullPathRoot, fullPathRootExternal, fullPathTemporary, fullPathTemporaryCompressedPicture, fullPathTemporaryExported, fullPathTemporaryImported } from "./constant"
+import { fullPathExported, fullPathPdf, fullPathPicture, fullPathTemporaryCompressedPicture, fullPathTemporaryExported, fullPathTemporaryImported } from "./constant"
 import { log, stringfyError } from "./log"
 import { getWritePermission } from "./permission"
 
 
 // TODO change paths according to Android's permission
-
-
-async function createRootFolder() {
-    const hasWritePermission = await getWritePermission()
-    if (!hasWritePermission) {
-        log.warn("Can't create root folder without write external storage permission")
-        return
-    }
-
-    try {
-        await RNFS.mkdir(fullPathRoot)
-    } catch (error) {
-        log.error(`Error creating root folder: "${stringfyError(error)}"`)
-    }
-}
-
-
-async function createRootFolderExternal() {
-    const hasWritePermission = await getWritePermission()
-    if (!hasWritePermission) {
-        log.warn("Can't create external root folder without write external storage permission")
-        return
-    }
-
-    try {
-        await RNFS.mkdir(fullPathRootExternal)
-    } catch (error) {
-        log.error(`Error creating external root folder: "${stringfyError(error)}"`)
-    }
-}
 
 
 async function createPdfFolder() {
@@ -79,21 +49,6 @@ export async function createPictureFolder() {
         await RNFS.mkdir(fullPathPicture)
     } catch (error) {
         log.error(`Error creating picture folder: "${stringfyError(error)}"`)
-    }
-}
-
-
-export async function createTemporaryFolder() {
-    const hasWritePermission = await getWritePermission()
-    if (!hasWritePermission) {
-        log.warn("Can't create temporary folder without write external storage permission")
-        return
-    }
-
-    try {
-        await RNFS.mkdir(fullPathTemporary)
-    } catch (error) {
-        log.error(`Error creating temporary folder: "${stringfyError(error)}"`)
     }
 }
 
@@ -144,12 +99,9 @@ export async function createTemporaryCompressedPictureFolder() {
 
 
 export async function createAllFolders() {
-    // await createRootFolder()
-    // await createRootFolderExternal()
     await createPdfFolder()
     await createExportedFolder()
     await createPictureFolder()
-    // await createTemporaryFolder()
     await createTemporaryExportedFolder()
     await createTemporaryImportedFolder()
     await createTemporaryCompressedPictureFolder()
