@@ -1,6 +1,6 @@
 import { ThemeProvider as ElementiumThemeProvider } from "@elementium/native"
-import { createContext, ReactNode, useContext, useEffect } from "react"
-import { StatusBar, StatusBarStyle, useColorScheme } from "react-native"
+import { createContext, ReactNode, useContext } from "react"
+import { useColorScheme } from "react-native"
 import { ThemeProvider as StyledThemeProvider } from "styled-components/native"
 
 import { Settings } from "../services/settings"
@@ -47,13 +47,6 @@ export function AppThemeProvider(props: AppThemeProviderProps) {
 
 
     const appTheme = getAppTheme()
-
-
-    useEffect(() => {
-        const statusBarStyle: StatusBarStyle = appTheme.isDark ? "light-content" : "dark-content"
-        StatusBar.setBarStyle(statusBarStyle)
-        StatusBar.setBackgroundColor(appTheme.color.background)
-    }, [appTheme.isDark, appTheme.color.background])
 
 
     return (
