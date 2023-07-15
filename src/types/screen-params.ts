@@ -2,21 +2,30 @@ import { RouteProp } from "@react-navigation/native"
 import { NativeStackNavigationProp } from "@react-navigation/native-stack"
 
 
+export type ScreenAction = "add-picture" | "replace-picture" | undefined
+
+
+export type AddPictureParam = {
+    screenAction: "add-picture";
+}
+
+export type ReplacePictureParam = {
+    screenAction: "replace-picture";
+    replaceIndex: number;
+}
+
+export type VisualizePictureParam = {
+    pictureIndex: number;
+}
+
+
 export type ScreenParams = {
     Home: undefined;
-    Camera: {
-        screenAction: "replace-picture";
-        replaceIndex: number;
-    } | undefined;
+    Camera: AddPictureParam | ReplacePictureParam | undefined;
     EditDocument: undefined;
     Settings: undefined;
-    Gallery: {
-        screenAction: "replace-picture";
-        replaceIndex: number;
-    } | undefined;
-    VisualizePicture: {
-        pictureIndex: number;
-    };
+    Gallery: AddPictureParam | ReplacePictureParam;
+    VisualizePicture: VisualizePictureParam;
 }
 
 
