@@ -13,7 +13,7 @@ import { useBackHandler, useCameraDevices, useIsForeground } from "../../hooks"
 import { translate } from "../../locales"
 import { NavigationParamProps, RouteParamProps } from "../../router"
 import { DocumentService } from "../../services/document"
-import { createAllFolderAsync } from "../../services/folder-handler"
+import { createAllFolders } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { getCameraRatioNumber, useSettings } from "../../services/settings"
 import { CAMERA_CONTROL_HEIGHT, CameraControl, CameraControlRef } from "./CameraControl"
@@ -99,7 +99,7 @@ export function Camera() {
     }
 
     async function takePicture() {
-        await createAllFolderAsync()
+        await createAllFolders()
 
         try {
             if (!cameraRef.current) throw new Error("Camera ref is undefined")

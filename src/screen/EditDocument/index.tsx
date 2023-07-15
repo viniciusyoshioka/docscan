@@ -13,7 +13,7 @@ import { translate } from "../../locales"
 import { NavigationParamProps } from "../../router"
 import { fullPathPdf, fullPathTemporaryCompressedPicture } from "../../services/constant"
 import { DocumentService } from "../../services/document"
-import { createAllFolderAsync } from "../../services/folder-handler"
+import { createAllFolders } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { PdfCreator, PdfCreatorOptions } from "../../services/pdf-creator"
 import { getReadPermission, getWritePermission } from "../../services/permission"
@@ -118,7 +118,7 @@ export function EditDocument() {
 
         const pictureList: string[] = pictures.map(item => DocumentService.getPicturePath(item.fileName))
 
-        await createAllFolderAsync()
+        await createAllFolders()
         PdfCreator.createPdf(pictureList, documentPath, pdfOptions)
     }
 
