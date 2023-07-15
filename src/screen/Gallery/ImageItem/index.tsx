@@ -5,8 +5,8 @@ import FastImage from "react-native-fast-image"
 import { HandlerStateChangeEventPayload, LongPressGestureHandler, LongPressGestureHandlerEventPayload } from "react-native-gesture-handler"
 
 import { SelectableItem, useSelectableItem } from "../../../hooks"
+import { ScreenAction } from "../../../router"
 import { useAppTheme } from "../../../theme"
-import { ScreenAction } from "../../../types"
 import { Button, SelectionSurface } from "./style"
 
 

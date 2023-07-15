@@ -3,7 +3,7 @@ import { OrientationType } from "react-native-orientation-locker"
 import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
 
 import { useDeviceOrientation } from "../../../hooks"
-import { ScreenAction } from "../../../types"
+import { ScreenAction } from "../../../router"
 import { CONTROL_ACTION_SIZE, ControlAction } from "./ControlAction"
 import { CONTROL_BUTTON_HEIGHT, ControlButton } from "./ControlButton"
 import { CONTROL_VIEW_MIN_HEIGHT, CONTROL_VIEW_PADDING_VERTIVAL, ControlView } from "./ControlView"

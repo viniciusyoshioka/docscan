@@ -8,7 +8,10 @@ import { Gallery } from "../screen/Gallery"
 import { Home } from "../screen/Home"
 import { Settings } from "../screen/Settings"
 import { VisualizePicture } from "../screen/VisualizePicture"
-import { ScreenParams } from "../types"
+import { ScreenParams } from "./types"
+
+
+export * from "./types"
 
 
 enableScreens()
