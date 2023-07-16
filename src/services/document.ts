@@ -54,7 +54,7 @@ export class DocumentService {
         return newPath
     }
 
-    static async getPictureTemporaryExportPath(imagePath: string): Promise<string> {
+    static getPictureTemporaryExportPath(imagePath: string): string {
         const fileName = this.getFileFullname(imagePath)
         return `${fullPathTemporaryExported}/${fileName}`
     }
