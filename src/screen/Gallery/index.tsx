@@ -13,6 +13,7 @@ import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
 import { NavigationParamProps, RouteParamProps } from "../../router"
 import { DocumentService } from "../../services/document"
+import { createAllFolders } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { getReadMediaImagesPermission } from "../../services/permission"
 import { useAppTheme } from "../../theme"
@@ -133,6 +134,8 @@ export function Gallery() {
             return
         }
 
+        await createAllFolders()
+
         const newImagePath = await DocumentService.getNewPicturePath(imagePath)
         try {
             await RNFS.copyFile(imagePath, newImagePath)
@@ -183,6 +186,8 @@ export function Gallery() {
 
             imageFilesToAdd.push(newImagePath)
         }
+
+        await createAllFolders()
 
         DocumentService.copyPicturesService(imageFilesToCopy)
         addImages(imageFilesToAdd)
