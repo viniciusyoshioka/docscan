@@ -298,7 +298,8 @@ public class DocumentServiceService extends Service {
 
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL, NOTIFICATION_CHANNEL, NotificationManager.IMPORTANCE_DEFAULT);
+            // TODO add internationalization
+            notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL, "Serviço de documento", NotificationManager.IMPORTANCE_DEFAULT);
 
             if (notificationManager != null) {
                 notificationManager.createNotificationChannel(notificationChannel);

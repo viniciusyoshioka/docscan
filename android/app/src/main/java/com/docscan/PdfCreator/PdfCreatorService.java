@@ -121,7 +121,8 @@ public class PdfCreatorService extends Service {
 
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL, NOTIFICATION_CHANNEL, NotificationManager.IMPORTANCE_DEFAULT);
+            // TODO add internationalization
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL, "Serviço de conversão de PDF", NotificationManager.IMPORTANCE_DEFAULT);
 
             if (notificationManager != null) {
                 notificationManager.createNotificationChannel(notificationChannel);
