@@ -3,7 +3,7 @@ import RNFS from "react-native-fs"
 import { v4 as uuid4 } from "uuid"
 
 import { translate } from "../locales"
-import { fullPathPicture, fullPathTemporaryExported } from "./constant"
+import { fullPathPicture } from "./constant"
 
 
 const NativeDocumentService = NativeModules.DocumentService
@@ -52,11 +52,6 @@ export class DocumentService {
             newPath = `${fullPathPicture}/${fileName}.${fileExtension}`
         } while (await RNFS.exists(newPath))
         return newPath
-    }
-
-    static getPictureTemporaryExportPath(imagePath: string): string {
-        const fileName = this.getFileFullname(imagePath)
-        return `${fullPathTemporaryExported}/${fileName}`
     }
 
 
