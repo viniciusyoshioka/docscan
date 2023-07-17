@@ -166,6 +166,7 @@ export const pt_BR: TranslationObjectType = {
 
     // document service
     document_newDocumentName: "Novo documento",
+    document_exportedDocumentName: "DocScan Exportado",
     document_alert_errorSavingDocument_text: "Erro salvando documento",
     document_alert_errorSavingDocumentChanges_text: "Erro ao salvar alterações do documento",
     document_notification_deletingImages_title: "Apagando imagem(ns)",

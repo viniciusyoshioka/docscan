@@ -3,7 +3,8 @@ import RNFS from "react-native-fs"
 import { v4 as uuid4 } from "uuid"
 
 import { translate } from "../locales"
-import { fullPathPicture } from "./constant"
+import { fullPathExported, fullPathPicture, fullPathTemporaryExported } from "./constant"
+import { getDate, getTime } from "./date"
 
 
 const NativeDocumentService = NativeModules.DocumentService
@@ -19,6 +20,7 @@ export interface DocumentDataToExport {
 
 
 export class DocumentService {
+
 
     static getNewName(): string {
         return translate("document_newDocumentName")
@@ -52,6 +54,18 @@ export class DocumentService {
             newPath = `${fullPathPicture}/${fileName}.${fileExtension}`
         } while (await RNFS.exists(newPath))
         return newPath
+    }
+
+
+    static getTemporaryExportedDocumentPath(): string {
+        return `${fullPathTemporaryExported}/temporary_exported_document.zip`
+    }
+
+    static getExportedDocumentPath(): string {
+        const name = translate("document_exportedDocumentName")
+        const date = getDate().replaceAll("-", "")
+        const time = getTime().replaceAll("-", "")
+        return `${fullPathExported}/${name} ${date}_${time}.zip`
     }
 
 

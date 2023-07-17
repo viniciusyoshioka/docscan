@@ -163,6 +163,7 @@ export type TranslationKeyType =
 
     // document service
     | "document_newDocumentName"
+    | "document_exportedDocumentName"
     | "document_alert_errorSavingDocument_text"
     | "document_alert_errorSavingDocumentChanges_text"
     | "document_notification_deletingImages_title"
