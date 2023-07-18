@@ -5,7 +5,7 @@ import RNFS from "react-native-fs"
 export const appId = "com.docscan"
 export const appName = "DocScan"
 export const appVersion = "1.18.0"
-export const appType = __DEV__ ? "beta" : "release"
+export const appType = __DEV__ ? "dev" : "release"
 
 // Icons
 export const appIcon = require("./../image/docscan.png")
