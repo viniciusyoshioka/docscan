@@ -41,10 +41,16 @@ export class DocumentService {
     }
 
 
+    static getExportedDocumentPath(): string {
+        const name = translate("document_exportedDocumentName")
+        const date = getDate().replaceAll("-", "")
+        const time = getTime().replaceAll("-", "")
+        return `${fullPathExported}/${name} ${date}_${time}.zip`
+    }
+
     static getPdfPath(documentName: string): string {
         return `${fullPathPdf}/${documentName}.pdf`
     }
-
 
     static getPicturePath(fileName: string): string {
         return `${fullPathPicture}/${fileName}`
@@ -61,16 +67,8 @@ export class DocumentService {
         return newPath
     }
 
-
     static getTemporaryExportedDocumentPath(): string {
         return `${fullPathTemporaryExported}/temporary_exported_document.zip`
-    }
-
-    static getExportedDocumentPath(): string {
-        const name = translate("document_exportedDocumentName")
-        const date = getDate().replaceAll("-", "")
-        const time = getTime().replaceAll("-", "")
-        return `${fullPathExported}/${name} ${date}_${time}.zip`
     }
 
 
