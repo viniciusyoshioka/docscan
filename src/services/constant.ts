@@ -8,7 +8,6 @@ export const appVersion = "1.18.0"
 export const appType = __DEV__ ? "dev" : "release"
 
 // Icons
-export const appIcon = require("./../image/docscan.png")
 export const appIconOutline = require("./../image/docscan_outline.png")
 
 // Folder
