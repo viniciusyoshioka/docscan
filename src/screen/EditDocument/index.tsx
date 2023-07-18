@@ -100,7 +100,7 @@ export function EditDocument() {
             return
         }
 
-        const documentPath = `${Constants.fullPathPdf}/${document.name}.pdf`
+        const documentPath = DocumentService.getPdfPath(document.name)
 
         const pdfFileExists = await RNFS.exists(documentPath)
         if (pdfFileExists) {
@@ -132,7 +132,7 @@ export function EditDocument() {
             return
         }
 
-        const documentPath = `file://${Constants.fullPathPdf}/${document.name}.pdf`
+        const documentPath = DocumentService.getPdfPath(document.name)
 
         const pdfFileExists = await RNFS.exists(documentPath)
         if (!pdfFileExists) {
@@ -148,7 +148,7 @@ export function EditDocument() {
             await Share.open({
                 title: translate("EditDocument_shareDocument"),
                 type: "pdf/application",
-                url: documentPath,
+                url: `file://${documentPath}`,
                 failOnCancel: false
             })
         } catch (error) {
@@ -180,7 +180,7 @@ export function EditDocument() {
             return
         }
 
-        const pdfFilePath = `${Constants.fullPathPdf}/${document.name}.pdf`
+        const pdfFilePath = DocumentService.getPdfPath(document.name)
 
         const pdfFileExists = await RNFS.exists(pdfFilePath)
         if (!pdfFileExists) {
@@ -208,7 +208,7 @@ export function EditDocument() {
             return
         }
 
-        const pdfFilePath = `${Constants.fullPathPdf}/${document.name}.pdf`
+        const pdfFilePath = DocumentService.getPdfPath(document.name)
 
         const pdfFileExists = await RNFS.exists(pdfFilePath)
         if (!pdfFileExists) {
