@@ -1,3 +1,5 @@
 export * from "./Document"
 export * from "./DocumentPicture"
+export * from "./ExportedDocument"
+export * from "./ExportedDocumentPicture"
 export * from "./Log"
