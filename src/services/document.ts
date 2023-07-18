@@ -3,7 +3,7 @@ import RNFS from "react-native-fs"
 import { v4 as uuid4 } from "uuid"
 
 import { translate } from "../locales"
-import { fullPathExported, fullPathPicture, fullPathTemporaryExported } from "./constant"
+import { fullPathExported, fullPathPdf, fullPathPicture, fullPathTemporaryExported } from "./constant"
 import { getDate, getTime } from "./date"
 
 
@@ -38,6 +38,11 @@ export class DocumentService {
 
         const splittedFilePath = filePath.split(".")
         return splittedFilePath[splittedFilePath.length - 1]
+    }
+
+
+    static getPdfPath(documentName: string): string {
+        return `${fullPathPdf}/${documentName}.pdf`
     }
 
 
