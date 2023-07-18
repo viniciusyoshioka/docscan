@@ -1,30 +1,33 @@
 import RNFS from "react-native-fs"
 
 
-// App
-export const appId = "com.docscan"
-export const appName = "DocScan"
-export const appVersion = "1.18.0"
-export const appType = __DEV__ ? "dev" : "release"
+export class Constants {
 
-// Icons
-export const appIconOutline = require("./../image/docscan_outline.png")
+    // App
+    static appId = "com.docscan"
+    static appName = "DocScan"
+    static appVersion = "1.18.0"
+    static appType = __DEV__ ? "dev" : "release"
 
-// Folder
-// Root folders
-export const fullPathRootInternal = `${RNFS.DocumentDirectoryPath}/${appName}`
-export const fullPathRootExternal = `${RNFS.ExternalStorageDirectoryPath}/Android/media/${appId}/${appName}`
-// External folders
-export const fullPathExported = `${fullPathRootExternal}/Exported`
-export const fullPathPdf = `${fullPathRootExternal}/PDF`
-// Internal folders
-export const fullPathPicture = `${fullPathRootInternal}/Picture`
-export const fullPathTemporaryExported = `${fullPathRootInternal}/TemporaryExported`
-export const fullPathTemporaryImported = `${fullPathRootInternal}/TemporaryImported`
-export const fullPathTemporaryCompressedPicture = `${fullPathRootInternal}/TemporaryCompressedPicture`
+    // Icons
+    static appIconOutline = require("./../image/docscan_outline.png")
 
-// Database folders
-export const databaseFolder = RNFS.DocumentDirectoryPath
-export const appDatabaseFullPath = `${databaseFolder}/docscan_database.realm`
-export const logDatabaseFullPath = `${databaseFolder}/docscan_log.realm`
-export const exportDatabaseFullPath = `${databaseFolder}/docscan_export.realm`
+    // Folder
+    // Root folders
+    static fullPathRootExternal = `${RNFS.ExternalStorageDirectoryPath}/Android/media/${this.appId}/${this.appName}`
+    static fullPathRootInternal = `${RNFS.DocumentDirectoryPath}/${this.appName}`
+    // External folders
+    static fullPathExported = `${this.fullPathRootExternal}/Exported`
+    static fullPathPdf = `${this.fullPathRootExternal}/PDF`
+    // Internal folders
+    static fullPathPicture = `${this.fullPathRootInternal}/Picture`
+    static fullPathTemporaryExported = `${this.fullPathRootInternal}/TemporaryExported`
+    static fullPathTemporaryImported = `${this.fullPathRootInternal}/TemporaryImported`
+    static fullPathTemporaryCompressedPicture = `${this.fullPathRootInternal}/TemporaryCompressedPicture`
+
+    // Database folders
+    static databaseFolder = RNFS.DocumentDirectoryPath
+    static appDatabaseFullPath = `${this.databaseFolder}/docscan_database.realm`
+    static logDatabaseFullPath = `${this.databaseFolder}/docscan_log.realm`
+    static exportDatabaseFullPath = `${this.databaseFolder}/docscan_export.realm`
+}

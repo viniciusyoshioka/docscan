@@ -10,7 +10,7 @@ import { DocumentPictureSchema, DocumentSchema, ExportedDocumentPictureRealm, Ex
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { TranslationKeyType, translate } from "../../locales"
 import { NavigationParamProps } from "../../router"
-import { appIconOutline, exportDatabaseFullPath } from "../../services/constant"
+import { Constants } from "../../services/constant"
 import { DocumentService } from "../../services/document"
 import { createAllFolders } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
@@ -151,7 +151,7 @@ export function Home() {
 
             DocumentService.exportDocumentService({
                 pictures: filesToCopy,
-                databasePath: exportDatabaseFullPath,
+                databasePath: Constants.exportDatabaseFullPath,
                 pathZipTo: DocumentService.getTemporaryExportedDocumentPath(),
                 pathExportedDocument: DocumentService.getExportedDocumentPath(),
             })
@@ -290,7 +290,7 @@ export function Home() {
             </View>
 
             <EmptyList
-                imageSource={appIconOutline}
+                imageSource={Constants.appIconOutline}
                 message={translate("Home_emptyDocumentList")}
                 visible={documents.length === 0}
             />

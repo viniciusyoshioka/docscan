@@ -11,7 +11,7 @@ import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRea
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
 import { NavigationParamProps } from "../../router"
-import { fullPathPdf, fullPathTemporaryCompressedPicture } from "../../services/constant"
+import { Constants } from "../../services/constant"
 import { DocumentService } from "../../services/document"
 import { createAllFolders } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
@@ -100,7 +100,7 @@ export function EditDocument() {
             return
         }
 
-        const documentPath = `${fullPathPdf}/${document.name}.pdf`
+        const documentPath = `${Constants.fullPathPdf}/${document.name}.pdf`
 
         const pdfFileExists = await RNFS.exists(documentPath)
         if (pdfFileExists) {
@@ -113,7 +113,7 @@ export function EditDocument() {
 
         const pdfOptions: PdfCreatorOptions = {
             imageCompressQuality: quality,
-            temporaryPath: fullPathTemporaryCompressedPicture,
+            temporaryPath: Constants.fullPathTemporaryCompressedPicture,
         }
 
         const pictureList: string[] = pictures.map(item => DocumentService.getPicturePath(item.fileName))
@@ -132,7 +132,7 @@ export function EditDocument() {
             return
         }
 
-        const documentPath = `file://${fullPathPdf}/${document.name}.pdf`
+        const documentPath = `file://${Constants.fullPathPdf}/${document.name}.pdf`
 
         const pdfFileExists = await RNFS.exists(documentPath)
         if (!pdfFileExists) {
@@ -180,7 +180,7 @@ export function EditDocument() {
             return
         }
 
-        const pdfFilePath = `${fullPathPdf}/${document.name}.pdf`
+        const pdfFilePath = `${Constants.fullPathPdf}/${document.name}.pdf`
 
         const pdfFileExists = await RNFS.exists(pdfFilePath)
         if (!pdfFileExists) {
@@ -208,7 +208,7 @@ export function EditDocument() {
             return
         }
 
-        const pdfFilePath = `${fullPathPdf}/${document.name}.pdf`
+        const pdfFilePath = `${Constants.fullPathPdf}/${document.name}.pdf`
 
         const pdfFileExists = await RNFS.exists(pdfFilePath)
         if (!pdfFileExists) {

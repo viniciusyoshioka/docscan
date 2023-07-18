@@ -3,7 +3,7 @@ import RNFS from "react-native-fs"
 import { v4 as uuid4 } from "uuid"
 
 import { translate } from "../locales"
-import { fullPathExported, fullPathPdf, fullPathPicture, fullPathTemporaryExported } from "./constant"
+import { Constants } from "./constant"
 import { getDate, getTime } from "./date"
 
 
@@ -45,15 +45,15 @@ export class DocumentService {
         const name = translate("document_exportedDocumentName")
         const date = getDate().replaceAll("-", "")
         const time = getTime().replaceAll("-", "")
-        return `${fullPathExported}/${name} ${date}_${time}.zip`
+        return `${Constants.fullPathExported}/${name} ${date}_${time}.zip`
     }
 
     static getPdfPath(documentName: string): string {
-        return `${fullPathPdf}/${documentName}.pdf`
+        return `${Constants.fullPathPdf}/${documentName}.pdf`
     }
 
     static getPicturePath(fileName: string): string {
-        return `${fullPathPicture}/${fileName}`
+        return `${Constants.fullPathPicture}/${fileName}`
     }
 
     static async getNewPicturePath(filePath: string): Promise<string> {
@@ -62,13 +62,13 @@ export class DocumentService {
         let newPath: string
         do {
             const fileName = uuid4()
-            newPath = `${fullPathPicture}/${fileName}.${fileExtension}`
+            newPath = `${Constants.fullPathPicture}/${fileName}.${fileExtension}`
         } while (await RNFS.exists(newPath))
         return newPath
     }
 
     static getTemporaryExportedDocumentPath(): string {
-        return `${fullPathTemporaryExported}/temporary_exported_document.zip`
+        return `${Constants.fullPathTemporaryExported}/temporary_exported_document.zip`
     }
 
 

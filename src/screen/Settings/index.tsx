@@ -7,7 +7,7 @@ import Share from "react-native-share"
 import { useBackHandler } from "../../hooks"
 import { translate } from "../../locales"
 import { NavigationParamProps } from "../../router"
-import { appDatabaseFullPath, appName, appType, appVersion, logDatabaseFullPath } from "../../services/constant"
+import { Constants } from "../../services/constant"
 import { log, stringfyError } from "../../services/log"
 import { useAppTheme } from "../../theme"
 import { ChangeTheme } from "./ChangeTheme"
@@ -38,7 +38,7 @@ export function Settings() {
         try {
             await Share.open({
                 type: "application/x-sqlite3",
-                url: `file://${logDatabaseFullPath}`,
+                url: `file://${Constants.logDatabaseFullPath}`,
                 failOnCancel: false,
             })
         } catch (error) {
@@ -54,7 +54,7 @@ export function Settings() {
         try {
             await Share.open({
                 type: "application/x-sqlite3",
-                url: `file://${appDatabaseFullPath}`,
+                url: `file://${Constants.appDatabaseFullPath}`,
                 failOnCancel: false,
             })
         } catch (error) {
@@ -103,7 +103,7 @@ export function Settings() {
                     variant={"body"}
                     size={"medium"}
                     style={{ color: color.onBackground }}
-                    children={`${appName} ${appVersion} - ${appType}`}
+                    children={`${Constants.appName} ${Constants.appVersion} - ${Constants.appType}`}
                 />
             </ViewVersion>
 

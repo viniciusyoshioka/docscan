@@ -1,6 +1,6 @@
 import RNFS from "react-native-fs"
 
-import { fullPathExported, fullPathPdf, fullPathPicture, fullPathTemporaryCompressedPicture, fullPathTemporaryExported, fullPathTemporaryImported } from "./constant"
+import { Constants } from "./constant"
 import { log, stringfyError } from "./log"
 import { getWritePermission } from "./permission"
 
@@ -16,7 +16,7 @@ export async function createPdfFolder() {
     }
 
     try {
-        await RNFS.mkdir(fullPathPdf)
+        await RNFS.mkdir(Constants.fullPathPdf)
     } catch (error) {
         log.error(`Error creating pdf folder: "${stringfyError(error)}"`)
     }
@@ -31,7 +31,7 @@ export async function createExportedFolder() {
     }
 
     try {
-        await RNFS.mkdir(fullPathExported)
+        await RNFS.mkdir(Constants.fullPathExported)
     } catch (error) {
         log.error(`Error creating exported folder: "${stringfyError(error)}"`)
     }
@@ -46,7 +46,7 @@ export async function createPictureFolder() {
     }
 
     try {
-        await RNFS.mkdir(fullPathPicture)
+        await RNFS.mkdir(Constants.fullPathPicture)
     } catch (error) {
         log.error(`Error creating picture folder: "${stringfyError(error)}"`)
     }
@@ -61,7 +61,7 @@ export async function createTemporaryExportedFolder() {
     }
 
     try {
-        await RNFS.mkdir(fullPathTemporaryExported)
+        await RNFS.mkdir(Constants.fullPathTemporaryExported)
     } catch (error) {
         log.error(`Error creating temporary exported folder: "${stringfyError(error)}"`)
     }
@@ -76,7 +76,7 @@ export async function createTemporaryImportedFolder() {
     }
 
     try {
-        await RNFS.mkdir(fullPathTemporaryImported)
+        await RNFS.mkdir(Constants.fullPathTemporaryImported)
     } catch (error) {
         log.error(`Error creating temporary imported folder: "${stringfyError(error)}"`)
     }
@@ -91,7 +91,7 @@ export async function createTemporaryCompressedPictureFolder() {
     }
 
     try {
-        await RNFS.mkdir(fullPathTemporaryCompressedPicture)
+        await RNFS.mkdir(Constants.fullPathTemporaryCompressedPicture)
     } catch (error) {
         log.error(`Error creating temporary compressed folder: "${stringfyError(error)}"`)
     }
