@@ -113,7 +113,7 @@ export const pt_BR: TranslationObjectType = {
     Home_alert_importDocuments_text: "A importação de documentos pode demorar um pouco",
     Home_alert_errorImportingDocuments_text: "Erro importando documentos",
     Home_alert_exportingDocuments_title: "Aguarde",
-    Home_alert_exportingDocuments_text: "A exportação de documentos pode demorar um pouco",
+    Home_alert_exportingDocuments_text: "A exportação de documentos pode demorar um pouco. Não feche o aplicativo",
     Home_alert_errorExportingDocuments_text: "Erro exportando documentos",
     Home_alert_noDocumentsToExport_text: "Nenhum documento existente para ser exportado",
     Home_alert_exportDocuments_title: "Exportar",
