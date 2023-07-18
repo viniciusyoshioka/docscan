@@ -13,9 +13,8 @@ export const appIconOutline = require("./../image/docscan_outline.png")
 
 // Folder
 // Root folders
-export const folderRoot = appName
-export const fullPathRootInternal = `${RNFS.DocumentDirectoryPath}/${folderRoot}`
-export const fullPathRootExternal = `${RNFS.ExternalStorageDirectoryPath}/Android/media/${appId}/${folderRoot}`
+export const fullPathRootInternal = `${RNFS.DocumentDirectoryPath}/${appName}`
+export const fullPathRootExternal = `${RNFS.ExternalStorageDirectoryPath}/Android/media/${appId}/${appName}`
 // External folders
 export const fullPathExported = `${fullPathRootExternal}/Exported`
 export const fullPathPdf = `${fullPathRootExternal}/PDF`
