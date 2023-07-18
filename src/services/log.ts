@@ -3,7 +3,7 @@ import { Alert } from "react-native"
 
 import { LogSchema } from "../database"
 import { translate } from "../locales"
-import { getDateTime } from "./date"
+import { DateService } from "./date"
 
 
 export function stringfyError(error: unknown): string {
@@ -77,7 +77,7 @@ class Logger {
 
     debug(message: string) {
         const timestamp = Date.now()
-        const logDateTime = getDateTime(new Date(timestamp))
+        const logDateTime = DateService.getDateTime(new Date(timestamp))
         const code = "DEBUG".padEnd(5)
 
         console.log(`[${logDateTime}] ${code} - ${message}`)
@@ -87,7 +87,7 @@ class Logger {
 
     info(message: string) {
         const timestamp = Date.now()
-        const logDateTime = getDateTime(new Date(timestamp))
+        const logDateTime = DateService.getDateTime(new Date(timestamp))
         const code = "INFO".padEnd(5)
 
         console.log(`${this.consoleInfoColor}[${logDateTime}] ${code} - ${message}${this.consoleResetColor}`)
@@ -97,7 +97,7 @@ class Logger {
 
     warn(message: string) {
         const timestamp = Date.now()
-        const logDateTime = getDateTime(new Date(timestamp))
+        const logDateTime = DateService.getDateTime(new Date(timestamp))
         const code = "WARN".padEnd(5)
 
         console.log(`${this.consoleWarnColor}[${logDateTime}] ${code} - ${message}${this.consoleResetColor}`)
@@ -107,7 +107,7 @@ class Logger {
 
     error(message: string) {
         const timestamp = Date.now()
-        const logDateTime = getDateTime(new Date(timestamp))
+        const logDateTime = DateService.getDateTime(new Date(timestamp))
         const code = "ERROR".padEnd(5)
 
         console.log(`${this.consoleErrorColor}[${logDateTime}] ${code} - ${message}${this.consoleResetColor}`)

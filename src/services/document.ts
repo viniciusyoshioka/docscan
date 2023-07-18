@@ -4,7 +4,7 @@ import { v4 as uuid4 } from "uuid"
 
 import { translate } from "../locales"
 import { Constants } from "./constant"
-import { getDate, getTime } from "./date"
+import { DateService } from "./date"
 
 
 const NativeDocumentService = NativeModules.DocumentService
@@ -43,8 +43,8 @@ export class DocumentService {
 
     static getExportedDocumentPath(): string {
         const name = translate("document_exportedDocumentName")
-        const date = getDate().replaceAll("-", "")
-        const time = getTime().replaceAll("-", "")
+        const date = DateService.getDate().replaceAll("-", "")
+        const time = DateService.getTime().replaceAll("-", "")
         return `${Constants.fullPathExported}/${name} ${date}_${time}.zip`
     }
 

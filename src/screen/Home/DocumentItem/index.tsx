@@ -6,7 +6,7 @@ import { LongPressGestureHandler } from "react-native-gesture-handler"
 
 import { DocumentSchema } from "../../../database"
 import { SelectableItem, useSelectableItem } from "../../../hooks"
-import { getLocaleDateTime } from "../../../services/date"
+import { DateService } from "../../../services/date"
 import { useAppTheme } from "../../../theme"
 import { DocumentItemBlock, DocumentItemButton } from "./style"
 
@@ -55,7 +55,7 @@ export function DocumentItem(props: DocumentItemProps) {
                         size={"small"}
                         numberOfLines={1}
                         style={{ color: color.onSurfaceVariant }}
-                        children={getLocaleDateTime(new Date(props.document.modifiedAt), false)}
+                        children={DateService.getLocaleDateTime(new Date(props.document.modifiedAt), false)}
                     />
                 </DocumentItemBlock>
 
