@@ -175,5 +175,5 @@ export const pt_BR: TranslationObjectType = {
     document_notification_exportingDocuments_title: "Exportando documento(s)",
 
     // Log service
-    log_alert_errorRegisteringLog_text: "Erro registrando log.",
+    log_alert_reportCriticalError_text: "Um erro crítico ocorreu, reporte os log para o desenvolvedor",
 }

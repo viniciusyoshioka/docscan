@@ -24,24 +24,6 @@ export function stringfyError(error: unknown): string {
 }
 
 
-export function logCriticalError(error: unknown) {
-    const stringifiedError = stringfyError(error)
-
-    console.log(`CRITICAL ERROR - Error registering log. "${stringifiedError}"`)
-    if (__DEV__) {
-        Alert.alert(
-            translate("criticalError"),
-            stringifiedError
-        )
-    } else {
-        Alert.alert(
-            translate("criticalError"),
-            translate("log_alert_errorRegisteringLog_text")
-        )
-    }
-}
-
-
 class Logger {
 
 
@@ -58,6 +40,24 @@ class Logger {
     }
 
 
+    critical(error: unknown) {
+        const stringifiedError = stringfyError(error)
+
+        console.error(`CRITICAL ERROR: "${stringifiedError}"`)
+        if (__DEV__) {
+            Alert.alert(
+                translate("criticalError"),
+                stringifiedError
+            )
+        } else {
+            Alert.alert(
+                translate("criticalError"),
+                translate("log_alert_reportCriticalError_text")
+            )
+        }
+    }
+
+
     private writeLog(code: string, message: string, timestamp: number) {
         if (!this.realm) {
             console.warn("Realm not set to Logger. Log not registered.")
@@ -70,7 +70,7 @@ class Logger {
                 this.realm.create(LogSchema, { code, message, timestamp })
             })
         } catch (error) {
-            logCriticalError(error)
+            this.critical(error)
         }
     }
 

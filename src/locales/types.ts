@@ -171,7 +171,7 @@ export type TranslationKeyType =
     | "document_notification_movingImages_title"
     | "document_notification_exportingDocuments_title"
     // Log service
-    | "log_alert_errorRegisteringLog_text"
+    | "log_alert_reportCriticalError_text"
 
 
 export type TranslationObjectType = {
