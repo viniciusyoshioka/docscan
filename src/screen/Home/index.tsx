@@ -1,16 +1,18 @@
 import { Divider, Screen, StatusBar } from "@elementium/native"
 import { useNavigation } from "@react-navigation/native"
+import { Realm } from "@realm/react"
 import { FlashList } from "@shopify/flash-list"
 import { useEffect, useState } from "react"
 import { Alert, View } from "react-native"
 
 import { EmptyList, LoadingModal } from "../../components"
-import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
+import { DocumentPictureSchema, DocumentSchema, ExportedDocumentPictureRealm, ExportedDocumentRealm, openExportedDatabase, useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { TranslationKeyType, translate } from "../../locales"
 import { NavigationParamProps } from "../../router"
-import { appIconOutline } from "../../services/constant"
+import { appIconOutline, exportDatabaseFullPath } from "../../services/constant"
 import { DocumentService } from "../../services/document"
+import { createAllFolders } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { getNotificationPermission } from "../../services/permission"
 import { DOCUMENT_ITEM_HEIGHT, DocumentItem } from "./DocumentItem"
@@ -103,8 +105,68 @@ export function Home() {
     // TODO reimplement importDocument
     async function importDocument() {}
 
-    // TODO reimplement exportSelectedDocument
-    async function exportSelectedDocument() {}
+    async function exportSelectedDocument() {
+        Alert.alert(
+            translate("Home_alert_exportingDocuments_title"),
+            translate("Home_alert_exportingDocuments_text")
+        )
+
+        await createAllFolders()
+        try {
+            const exportedDatabase = await openExportedDatabase()
+
+            const selectedDocumentsObjectId = documentSelection
+                .selectedData
+                .map(Realm.BSON.ObjectId.createFromHexString)
+            const documentsToExport = documentSelection.isSelectionMode
+                ? documents.filtered("id IN $0", selectedDocumentsObjectId)
+                : documents
+
+            const filesToCopy: string[] = []
+
+            exportedDatabase.write(() => {
+                documentsToExport.forEach(documentToExport => {
+                    const exportedDocument = exportedDatabase.create<ExportedDocumentRealm>("ExportedDocumentSchema", {
+                        createdAt: documentToExport.createdAt,
+                        modifiedAt: documentToExport.modifiedAt,
+                        name: documentToExport.name,
+                    })
+
+                    documentRealm
+                        .objects(DocumentPictureSchema)
+                        .filtered("belongsToDocument = $0", documentToExport.id)
+                        .forEach(pictureToExport => {
+                            filesToCopy.push(DocumentService.getPicturePath(pictureToExport.fileName))
+
+                            exportedDatabase.create<ExportedDocumentPictureRealm>("ExportedDocumentPictureSchema", {
+                                fileName: pictureToExport.fileName,
+                                position: pictureToExport.position,
+                                belongsToDocument: exportedDocument.id,
+                            })
+                        })
+                })
+            })
+
+            exportedDatabase.close()
+
+            DocumentService.exportDocumentService({
+                pictures: filesToCopy,
+                databasePath: exportDatabaseFullPath,
+                pathZipTo: DocumentService.getTemporaryExportedDocumentPath(),
+                pathExportedDocument: DocumentService.getExportedDocumentPath(),
+            })
+        } catch (error) {
+            log.error(`Error exporting documents before invoking the background service: "${stringfyError(error)}"`)
+            Alert.alert(
+                translate("warn"),
+                translate("Home_alert_errorExportingDocuments_text")
+            )
+        }
+
+        if (documentSelection.isSelectionMode) {
+            documentSelection.exitSelection()
+        }
+    }
 
     function alertExportDocument() {
         if (documents.length === 0) {
