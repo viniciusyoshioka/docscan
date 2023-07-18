@@ -2,21 +2,14 @@ import { NativeModules } from "react-native"
 import RNFS from "react-native-fs"
 import { v4 as uuid4 } from "uuid"
 
-import { translate } from "../locales"
-import { Constants } from "./constant"
-import { DateService } from "./date"
+import { translate } from "../../locales"
+import { Constants } from "../constant"
+import { DateService } from "../date"
+import { DocumentServiceType } from "./native-types"
+import { DocumentDataToExport, PictureDataToCopy, PictureDataToDelete, PictureDataToMove } from "./types"
 
 
-const NativeDocumentService = NativeModules.DocumentService
-
-
-export interface DocumentDataToExport {
-    pictures: string[];
-    databasePath: string;
-    pathZipTo: string;
-    pathExportedDocument: string;
-    notificationTitle?: string;
-}
+const NativeDocumentService = NativeModules.DocumentService as DocumentServiceType
 
 
 export class DocumentService {
@@ -72,34 +65,34 @@ export class DocumentService {
     }
 
 
-    static deletePicturesService(pictures: string[], notificationTitle?: string) {
-        NativeDocumentService.deletePictures(
-            pictures,
-            notificationTitle ?? translate("document_notification_deletingImages_title")
-        )
+    static deletePicturesService(data: PictureDataToDelete) {
+        NativeDocumentService.deletePictures({
+            pictures: data.pictures,
+            notificationTitle: data.notificationTitle ?? translate("document_notification_deletingImages_title"),
+        })
     }
 
-    static copyPicturesService(pictures: string[], notificationTitle?: string) {
-        NativeDocumentService.copyPictures(
-            pictures,
-            notificationTitle ?? translate("document_notification_copyingImages_title")
-        )
+    static copyPicturesService(data: PictureDataToCopy) {
+        NativeDocumentService.copyPictures({
+            pictures: data.pictures,
+            notificationTitle: data.notificationTitle ?? translate("document_notification_copyingImages_title"),
+        })
     }
 
-    static movePicturesService(pictures: string[], notificationTitle?: string) {
-        NativeDocumentService.movePictures(
-            pictures,
-            notificationTitle ?? translate("document_notification_movingImages_title")
-        )
+    static movePicturesService(data: PictureDataToMove) {
+        NativeDocumentService.movePictures({
+            pictures: data.pictures,
+            notificationTitle: data.notificationTitle ?? translate("document_notification_movingImages_title"),
+        })
     }
 
     static exportDocumentService(data: DocumentDataToExport) {
-        NativeDocumentService.exportDocument(
-            data.pictures,
-            data.databasePath,
-            data.pathZipTo,
-            data.pathExportedDocument,
-            data.notificationTitle ?? translate("document_notification_exportingDocuments_title")
-        )
+        NativeDocumentService.exportDocument({
+            pictures: data.pictures,
+            databasePath: data.databasePath,
+            pathZipTo: data.pathZipTo,
+            pathExportedDocument: data.pathExportedDocument,
+            notificationTitle: data.notificationTitle ?? translate("document_notification_exportingDocuments_title"),
+        })
     }
 }

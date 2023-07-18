@@ -6,6 +6,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 
 
 public class DocumentServiceModule extends ReactContextBaseJavaModule {
@@ -28,7 +29,12 @@ public class DocumentServiceModule extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    public void deletePictures(ReadableArray pictures, String notificationTitle) {
+    public void deletePictures(ReadableMap params) {
+        ReadableArray pictures = params.getArray("pictures");
+        String notificationTitle = params.getString("notificationTitle");
+
+        if (pictures == null) return;
+
         Intent intent = new Intent(mReactApplicationContext, DocumentServiceService.class);
         intent.setAction(DocumentServiceService.ACTION_DELETE);
         intent.putExtra(DocumentServiceService.EXTRA_PICTURES_ARRAY, pictures.toArrayList());
@@ -38,7 +44,12 @@ public class DocumentServiceModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void copyPictures(ReadableArray pictures, String notificationTitle) {
+    public void copyPictures(ReadableMap params) {
+        ReadableArray pictures = params.getArray("pictures");
+        String notificationTitle = params.getString("notificationTitle");
+
+        if (pictures == null) return;
+
         Intent intent = new Intent(mReactApplicationContext, DocumentServiceService.class);
         intent.setAction(DocumentServiceService.ACTION_COPY);
         intent.putExtra(DocumentServiceService.EXTRA_PICTURES_ARRAY, pictures.toArrayList());
@@ -48,7 +59,12 @@ public class DocumentServiceModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void movePictures(ReadableArray pictures, String notificationTitle) {
+    public void movePictures(ReadableMap params) {
+        ReadableArray pictures = params.getArray("pictures");
+        String notificationTitle = params.getString("notificationTitle");
+
+        if (pictures == null) return;
+
         Intent intent = new Intent(mReactApplicationContext, DocumentServiceService.class);
         intent.setAction(DocumentServiceService.ACTION_MOVE);
         intent.putExtra(DocumentServiceService.EXTRA_PICTURES_ARRAY, pictures.toArrayList());
@@ -57,9 +73,16 @@ public class DocumentServiceModule extends ReactContextBaseJavaModule {
         mReactApplicationContext.startService(intent);
     }
 
-
     @ReactMethod
-    public void exportDocument(ReadableArray pictures, String databasePath, String pathZipTo, String pathExportedDocument, String notificationTitle) {
+    public void exportDocument(ReadableMap params) {
+        ReadableArray pictures = params.getArray("pictures");
+        String databasePath = params.getString("databasePath");
+        String pathZipTo = params.getString("pathZipTo");
+        String pathExportedDocument = params.getString("pathExportedDocument");
+        String notificationTitle = params.getString("notificationTitle");
+
+        if (pictures == null) return;
+
         Intent intent = new Intent(mReactApplicationContext, DocumentServiceService.class);
         intent.setAction(DocumentServiceService.ACTION_EXPORT);
         intent.putExtra(DocumentServiceService.EXTRA_PICTURES_ARRAY, pictures.toArrayList());

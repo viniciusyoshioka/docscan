@@ -270,7 +270,7 @@ export function EditDocument() {
 
             setDocumentModel(undefined)
 
-            DocumentService.deletePicturesService(picturePathsToDelete)
+            DocumentService.deletePicturesService({ pictures: picturePathsToDelete })
         } catch (error) {
             log.error(`Error deleting current document from database: "${stringfyError(error)}"`)
             Alert.alert(
@@ -332,7 +332,7 @@ export function EditDocument() {
             if (!updatedDocument) throw new Error("Document is undefined, this should not happen")
             setDocumentModel({ document: updatedDocument, pictures: updatedPictures })
 
-            DocumentService.deletePicturesService(picturePathsToDelete)
+            DocumentService.deletePicturesService({ pictures: picturePathsToDelete })
         } catch (error) {
             log.error(`Error deleting selected pictures from database: "${stringfyError(error)}"`)
             Alert.alert(

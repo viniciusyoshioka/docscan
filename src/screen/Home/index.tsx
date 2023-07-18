@@ -74,7 +74,7 @@ export function Home() {
             const picturesPathToDelete = picturesToDelete.map(picture =>
                 DocumentService.getPicturePath(picture.fileName)
             )
-            DocumentService.deletePicturesService(picturesPathToDelete)
+            DocumentService.deletePicturesService({ pictures: picturesPathToDelete })
         } catch (error) {
             if (documentRealm.isInTransaction) {
                 documentRealm.cancelTransaction()

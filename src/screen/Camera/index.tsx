@@ -145,9 +145,9 @@ export function Camera() {
         if (!document) throw new Error("Document is undefined, this should not happen")
         setDocumentModel({ document, pictures })
 
-        DocumentService.deletePicturesService([
-            DocumentService.getPicturePath(oldPictureName)
-        ])
+        DocumentService.deletePicturesService({
+            pictures: [DocumentService.getPicturePath(oldPictureName)]
+        })
 
         navigation.navigate("VisualizePicture", {
             pictureIndex: params.replaceIndex,

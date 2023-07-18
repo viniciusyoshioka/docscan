@@ -189,7 +189,7 @@ export function Gallery() {
 
         await createAllFolders()
 
-        DocumentService.copyPicturesService(imageFilesToCopy)
+        DocumentService.copyPicturesService({ pictures: imageFilesToCopy })
         addImages(imageFilesToAdd)
         setIsImportingImages(false)
         navigation.goBack()
@@ -216,9 +216,9 @@ export function Gallery() {
         if (!document) throw new Error("Document is undefined, this should not happen")
         setDocumentModel({ document, pictures })
 
-        DocumentService.deletePicturesService([
-            DocumentService.getPicturePath(oldPictureName)
-        ])
+        DocumentService.deletePicturesService({
+            pictures: [DocumentService.getPicturePath(oldPictureName)]
+        })
     }
 
     function addImages(filePaths: string[]) {
