@@ -20,10 +20,15 @@ export interface VisualizePictureHeaderProps {
         exit: () => void;
         save: () => void;
     };
+    isShowingOverlay: boolean;
 }
 
 
 export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
+
+
+    if (!props.isShowingOverlay) return null
+
 
     if (props.rotation.isActive) return (
         <Header style={styles.absolute}>

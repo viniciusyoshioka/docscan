@@ -35,6 +35,7 @@ export function VisualizePicture() {
     const [isRotationProcessing, setIsRotationProcessing] = useState(false)
     const [isCropping, setIsCropping] = useState(false)
     const [isCropProcessing, setIsCropProcessing] = useState(false)
+    const [isShowingOverlay, setIsShowingOverlay] = useState(true)
     const [isFlatListScrollEnable, setIsFlatListScrollEnable] = useState(true)
     const [currentIndex, setCurrentIndex] = useState(params.pictureIndex)
     const currentPicturePath = useMemo(() => {
@@ -145,6 +146,7 @@ export function VisualizePicture() {
                 source={{ uri: `file://${picturePath}` }}
                 onZoomActivated={() => setIsFlatListScrollEnable(false)}
                 onZoomDeactivated={() => setIsFlatListScrollEnable(true)}
+                onSingleTap={() => setIsShowingOverlay(!isShowingOverlay)}
             />
         )
     }
@@ -236,6 +238,7 @@ export function VisualizePicture() {
                     exit: exitCrop,
                     save: saveCroppedPicture,
                 }}
+                isShowingOverlay={isShowingOverlay}
             />
 
             {!isRotating && !isCropping && (
