@@ -26,9 +26,10 @@ export interface VisualizePictureHeaderProps {
 export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
 
     if (props.rotation.isActive) return (
-        <Header>
+        <Header style={styles.absolute}>
             <HeaderButton
                 iconName={"close"}
+                iconColor={"white"}
                 onPress={props.rotation.exit}
             />
 
@@ -36,25 +37,29 @@ export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
 
             <HeaderButton
                 iconName={"rotate-left"}
+                iconColor={"white"}
                 onPress={props.rotation.rotateLeft}
             />
 
             <HeaderButton
                 iconName={"rotate-right"}
+                iconColor={"white"}
                 onPress={props.rotation.rotateRight}
             />
 
             <HeaderButton
                 iconName={"done"}
+                iconColor={"white"}
                 onPress={props.rotation.save}
             />
         </Header>
     )
 
     if (props.crop.isActive) return (
-        <Header>
+        <Header style={styles.absolute}>
             <HeaderButton
                 iconName={"close"}
+                iconColor={"white"}
                 onPress={props.crop.exit}
             />
 
@@ -62,6 +67,7 @@ export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
 
             <HeaderButton
                 iconName={"done"}
+                iconColor={"white"}
                 onPress={props.crop.save}
             />
         </Header>
@@ -71,6 +77,7 @@ export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
         <Header style={styles.absolute}>
             <HeaderButton
                 iconName={"arrow-back"}
+                iconColor={"white"}
                 onPress={props.goBack}
             />
 
@@ -79,17 +86,20 @@ export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
             <HeaderButton
                 iconName={"image-edit-outline"}
                 iconGroup={"material-community"}
+                iconColor={"white"}
                 onPress={props.replacePicture}
             />
 
             <HeaderButton
                 iconName={"refresh"}
+                iconColor={"white"}
                 onPress={props.rotation.open}
                 style={{ transform: [ { rotateY: "180deg" } ] }}
             />
 
             <HeaderButton
                 iconName={"crop"}
+                iconColor={"white"}
                 onPress={props.crop.open}
             />
         </Header>

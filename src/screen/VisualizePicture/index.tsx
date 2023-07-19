@@ -17,7 +17,6 @@ import { ImageRotation, ImageRotationRef } from "./ImageRotation"
 import { ImageVisualizationItem } from "./ImageVisualizationItem"
 
 
-// TODO improve screen design
 // TODO fix scroll not centralized when rotating screen
 export function VisualizePicture() {
 
@@ -217,8 +216,8 @@ export function VisualizePicture() {
 
 
     return (
-        <Screen>
-            <StatusBar />
+        <Screen style={{ backgroundColor: "black" }}>
+            <StatusBar barStyle={"light-content"} backgroundColor={"black"} />
 
             <VisualizePictureHeader
                 goBack={goBack}
