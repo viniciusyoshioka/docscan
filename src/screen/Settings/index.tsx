@@ -1,6 +1,5 @@
 import { ListItem, Screen, StatusBar, Text } from "@elementium/native"
 import { useNavigation } from "@react-navigation/core"
-import { useState } from "react"
 import { Alert } from "react-native"
 import Share from "react-native-share"
 
@@ -10,9 +9,11 @@ import { NavigationParamProps } from "../../router"
 import { Constants } from "../../services/constant"
 import { log, stringfyError } from "../../services/log"
 import { useAppTheme } from "../../theme"
-import { ChangeTheme } from "./ChangeTheme"
 import { SettingsHeader } from "./Header"
 import { ViewVersion } from "./style"
+
+
+export { ChangeTheme } from "./ChangeTheme"
 
 
 export function Settings() {
@@ -20,8 +21,6 @@ export function Settings() {
 
     const navigation = useNavigation<NavigationParamProps<"Settings">>()
     const { color } = useAppTheme()
-
-    const [changeThemeVisible, setChangeThemeVisible] = useState(false)
 
 
     useBackHandler(() => {
@@ -79,7 +78,7 @@ export function Settings() {
                 leadingIcon={{ iconName: "brightness-medium" }}
                 title={translate("Settings_theme_title")}
                 description={translate("Settings_theme_text")}
-                onPress={() => setChangeThemeVisible(true)}
+                onPress={() => navigation.navigate("ChangeTheme")}
             />
 
             <ListItem
@@ -106,11 +105,6 @@ export function Settings() {
                     children={`${Constants.appName} ${Constants.appVersion} - ${Constants.appType}`}
                 />
             </ViewVersion>
-
-            <ChangeTheme
-                visible={changeThemeVisible}
-                onRequestClose={() => setChangeThemeVisible(false)}
-            />
         </Screen>
     )
 }

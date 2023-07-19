@@ -6,7 +6,7 @@ import { Camera } from "../screen/Camera"
 import { EditDocument } from "../screen/EditDocument"
 import { Gallery } from "../screen/Gallery"
 import { Home } from "../screen/Home"
-import { Settings } from "../screen/Settings"
+import { ChangeTheme, Settings } from "../screen/Settings"
 import { VisualizePicture } from "../screen/VisualizePicture"
 import { ScreenParams } from "./types"
 
@@ -28,6 +28,7 @@ export function Router() {
                 <Stack.Screen name={"Home"} component={Home} />
                 <Stack.Screen name={"Camera"} component={Camera} options={{ orientation: "portrait" }} />
                 <Stack.Screen name={"Settings"} component={Settings} />
+                <Stack.Screen name={"ChangeTheme"} component={ChangeTheme} options={{ presentation: "transparentModal" }} />
                 <Stack.Screen name={"EditDocument"} component={EditDocument} />
                 <Stack.Screen name={"VisualizePicture"} component={VisualizePicture} />
                 <Stack.Screen name={"Gallery"} component={Gallery} />

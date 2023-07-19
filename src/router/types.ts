@@ -24,6 +24,7 @@ export type ScreenParams = {
     Camera: AddPictureParam | ReplacePictureParam | undefined;
     EditDocument: undefined;
     Settings: undefined;
+    ChangeTheme: undefined;
     Gallery: AddPictureParam | ReplacePictureParam;
     VisualizePicture: VisualizePictureParam;
 }
