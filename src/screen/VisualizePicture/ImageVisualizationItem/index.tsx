@@ -1,7 +1,12 @@
 import { ComponentClass, useEffect, useMemo, useState } from "react"
-import { Image, StyleProp, useWindowDimensions, View, ViewStyle } from "react-native"
+import { Image, StyleProp, View, ViewStyle, useWindowDimensions } from "react-native"
 import FastImage, { FastImageProps, Source } from "react-native-fast-image"
-import { Gesture, GestureDetector } from "react-native-gesture-handler"
+import {
+    Gesture,
+    GestureDetector,
+    GestureStateChangeEvent,
+    TapGestureHandlerEventPayload
+} from "react-native-gesture-handler"
 import Reanimated, {
     cancelAnimation,
     runOnJS,
@@ -34,6 +39,7 @@ export interface ImageVisualizationItemProps {
     allowZoomOut?: boolean;
     onZoomActivated?: () => void;
     onZoomDeactivated?: () => void;
+    onSingleTap?: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>) => void;
     onError?: (error?: unknown) => void;
     style?: StyleProp<ViewStyle>;
 }
@@ -125,6 +131,20 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
             runOnJS(setIsPanGestureEnabled)(true)
         })
 
+    const singleTapGesture = Gesture.Tap()
+        .numberOfTaps(1)
+        .maxDistance(20)
+        .maxDuration(200)
+        .onStart(event => {
+            if (event.numberOfPointers !== 1) {
+                return
+            }
+
+            if (props.onSingleTap) {
+                runOnJS(props.onSingleTap)(event)
+            }
+        })
+
     const doubleTapGesture = Gesture.Tap()
         .numberOfTaps(2)
         .maxDistance(20)
@@ -200,7 +220,8 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
         })
 
 
-    const raceComposedGestures = Gesture.Race(pinchGesture, doubleTapGesture)
+    const tapComposedGestures = Gesture.Exclusive(doubleTapGesture, singleTapGesture)
+    const raceComposedGestures = Gesture.Race(pinchGesture, tapComposedGestures)
     const simultaneousComposedGestures = Gesture.Simultaneous(raceComposedGestures, panGesture)
 
 
