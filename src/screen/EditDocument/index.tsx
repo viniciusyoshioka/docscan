@@ -11,17 +11,15 @@ import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRea
 import { useBackHandler, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
 import { NavigationParamProps } from "../../router"
-import { Constants } from "../../services/constant"
 import { DocumentService } from "../../services/document"
-import { createAllFolders } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
-import { PdfCreator, PdfCreatorOptions } from "../../services/pdf-creator"
+import { PdfCreator } from "../../services/pdf-creator"
 import { getReadPermission, getWritePermission } from "../../services/permission"
-import { ConvertPdfOption } from "./ConvertPdfOption"
 import { EditDocumentHeader } from "./Header"
 import { HORIZONTAL_COLUMN_COUNT, PictureItem, VERTICAL_COLUMN_COUNT, getPictureItemSize } from "./Pictureitem"
 
 
+export { ConvertPdfOption } from "./ConvertPdfOption"
 export { RenameDocument } from "./RenameDocument"
 
 
@@ -51,7 +49,6 @@ export function EditDocument() {
     const estimatedItemSize = useMemo(() => getPictureItemSize(windowWidth, columnCount), [windowWidth, columnCount])
 
     const pictureSelection = useSelectionMode<number>()
-    const [convertPdfOptionVisible, setConvertPdfOptionVisible] = useState(false)
     const [isDeletingPictures, setIsDeletingPictures] = useState(false)
     const [isDeletingDocument, setIsDeletingDocument] = useState(false)
 
@@ -70,57 +67,6 @@ export function EditDocument() {
 
         setDocumentModel(undefined)
         navigation.goBack()
-    }
-
-    async function convertDocumentToPdf(quality: number) {
-        if (!document) {
-            log.warn("There is no document to be converted to PDF")
-            Alert.alert(
-                translate("warn"),
-                translate("EditDocument_alert_noDocumentOpened_text")
-            )
-            return
-        }
-
-        if (pictures.length === 0) {
-            log.warn("There is no pictures in the document to be converted to PDF")
-            Alert.alert(
-                translate("warn"),
-                translate("EditDocument_alert_documentWithoutPictures_text")
-            )
-            return
-        }
-
-        const hasPermission = await getWritePermission()
-        if (!hasPermission) {
-            log.warn("Can not convert document to PDF because the permission was not granted")
-            Alert.alert(
-                translate("warn"),
-                translate("EditDocument_alert_noPermissionToConvertToPdf_text")
-            )
-            return
-        }
-
-        const documentPath = DocumentService.getPdfPath(document.name)
-
-        const pdfFileExists = await RNFS.exists(documentPath)
-        if (pdfFileExists) {
-            try {
-                await RNFS.unlink(documentPath)
-            } catch (error) {
-                log.error(`Error deleting PDF file with the same name of the document to be converted: "${stringfyError(error)}"`)
-            }
-        }
-
-        const pdfOptions: PdfCreatorOptions = {
-            imageCompressQuality: quality,
-            temporaryPath: Constants.fullPathTemporaryCompressedPicture,
-        }
-
-        const pictureList: string[] = pictures.map(item => DocumentService.getPicturePath(item.fileName))
-
-        await createAllFolders()
-        PdfCreator.createPdf(pictureList, documentPath, pdfOptions)
     }
 
     async function shareDocument() {
@@ -388,7 +334,7 @@ export function EditDocument() {
                 invertSelection={invertSelection}
                 deletePicture={alertDeletePicture}
                 openCamera={() => navigation.navigate("Camera", { screenAction: "add-picture" })}
-                convertToPdf={() => setConvertPdfOptionVisible(true)}
+                convertToPdf={() => navigation.navigate("ConvertPdfOption")}
                 shareDocument={shareDocument}
                 visualizePdf={visualizePdf}
                 renameDocument={() => navigation.navigate("RenameDocument")}
@@ -404,12 +350,6 @@ export function EditDocument() {
                 estimatedItemSize={estimatedItemSize}
                 numColumns={columnCount}
                 contentContainerStyle={{ padding: 4 }}
-            />
-
-            <ConvertPdfOption
-                visible={convertPdfOptionVisible}
-                onRequestClose={() => setConvertPdfOptionVisible(false)}
-                convertToPdf={convertDocumentToPdf}
             />
 
             <LoadingModal

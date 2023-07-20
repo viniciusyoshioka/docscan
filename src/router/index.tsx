@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { enableScreens } from "react-native-screens"
 
 import { Camera } from "../screen/Camera"
-import { EditDocument, RenameDocument } from "../screen/EditDocument"
+import { ConvertPdfOption, EditDocument, RenameDocument } from "../screen/EditDocument"
 import { Gallery } from "../screen/Gallery"
 import { Home } from "../screen/Home"
 import { ChangeTheme, Settings } from "../screen/Settings"
@@ -30,6 +30,7 @@ export function Router() {
                 <Stack.Screen name={"Settings"} component={Settings} />
                 <Stack.Screen name={"ChangeTheme"} component={ChangeTheme} options={{ presentation: "transparentModal" }} />
                 <Stack.Screen name={"EditDocument"} component={EditDocument} />
+                <Stack.Screen name={"ConvertPdfOption"} component={ConvertPdfOption} options={{ presentation: "transparentModal" }} />
                 <Stack.Screen name={"RenameDocument"} component={RenameDocument} options={{ presentation: "transparentModal" }} />
                 <Stack.Screen name={"VisualizePicture"} component={VisualizePicture} />
                 <Stack.Screen name={"Gallery"} component={Gallery} />

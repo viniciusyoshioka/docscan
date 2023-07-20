@@ -23,6 +23,7 @@ export type ScreenParams = {
     Home: undefined;
     Camera: AddPictureParam | ReplacePictureParam | undefined;
     EditDocument: undefined;
+    ConvertPdfOption: undefined;
     RenameDocument: undefined;
     Settings: undefined;
     ChangeTheme: undefined;

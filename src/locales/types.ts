@@ -49,8 +49,6 @@ export type TranslationKeyType =
     | "EditDocument_alert_emptyDocument_text"
     | "EditDocument_alert_documentWithoutName_text"
     | "EditDocument_alert_noDocumentOpened_text"
-    | "EditDocument_alert_documentWithoutPictures_text"
-    | "EditDocument_alert_noPermissionToConvertToPdf_text"
     | "EditDocument_alert_convertNotExistentPdfToShare_text"
     | "EditDocument_alert_errorSharingPdf_text"
     | "EditDocument_alert_noPermissionToVisualizePdf_text"
@@ -79,6 +77,10 @@ export type TranslationKeyType =
     | "EditDocument_menu_rename"
     | "EditDocument_menu_deletePdf"
     | "EditDocument_menu_deleteDocument"
+    // EditDocument ConvertPdfOption alert
+    | "ConvertPdfOption_alert_noDocumentOpened_text"
+    | "ConvertPdfOption_alert_documentWithoutPictures_text"
+    | "ConvertPdfOption_alert_noPermissionToConvertToPdf_text"
     // EditDocument ConvertPdfOption
     | "ConvertPdfOption_title"
     | "ConvertPdfOption_description"

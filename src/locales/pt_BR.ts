@@ -52,8 +52,6 @@ export const pt_BR: TranslationObjectType = {
     EditDocument_alert_emptyDocument_text: "O documento está vazio",
     EditDocument_alert_documentWithoutName_text: "Não é possível converter um documento sem nome para PDF",
     EditDocument_alert_noDocumentOpened_text: "Não há documento aberto",
-    EditDocument_alert_documentWithoutPictures_text: "Não é possível converter um documento sem fotos para PDF",
-    EditDocument_alert_noPermissionToConvertToPdf_text: "Sem permissão para converter documento para PDF",
     EditDocument_alert_convertNotExistentPdfToShare_text: "Arquivo PDF não existe, converta o documento para compartilhá-lo",
     EditDocument_alert_errorSharingPdf_text: "Erro compartilhando PDF",
     EditDocument_alert_noPermissionToVisualizePdf_text: "Sem permissão para visualizar PDF",
@@ -82,6 +80,10 @@ export const pt_BR: TranslationObjectType = {
     EditDocument_menu_rename: "Renomear",
     EditDocument_menu_deletePdf: "Apagar PDF",
     EditDocument_menu_deleteDocument: "Apagar documento",
+    // EditDocument ConvertPdfOption alert
+    ConvertPdfOption_alert_noDocumentOpened_text: "Não há documento aberto",
+    ConvertPdfOption_alert_documentWithoutPictures_text: "Não é possível converter um documento sem fotos para PDF",
+    ConvertPdfOption_alert_noPermissionToConvertToPdf_text: "Sem permissão para converter documento para PDF",
     // EditDocument ConvertPdfOption
     ConvertPdfOption_title: "Converter para PDF",
     ConvertPdfOption_description: "Escolha a taxa compressão das imagens do documento",
