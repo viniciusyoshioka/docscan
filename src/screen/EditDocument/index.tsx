@@ -334,10 +334,8 @@ export function EditDocument() {
                 invertSelection={invertSelection}
                 deletePicture={alertDeletePicture}
                 openCamera={() => navigation.navigate("Camera", { screenAction: "add-picture" })}
-                convertToPdf={() => navigation.navigate("ConvertPdfOption")}
                 shareDocument={shareDocument}
                 visualizePdf={visualizePdf}
-                renameDocument={() => navigation.navigate("RenameDocument")}
                 deletePdf={alertDeletePdf}
                 deleteDocument={alertDeleteCurrentDocument}
             />

@@ -1,5 +1,8 @@
+import { useNavigation } from "@react-navigation/native"
+
 import { Header, HeaderButton, HeaderTitle } from "../../components"
 import { useDocumentModel } from "../../database"
+import { NavigationParamProps } from "../../router"
 import { DocumentService } from "../../services/document"
 import { EditDocumentMenu } from "./EditDocumentMenu"
 
@@ -12,10 +15,8 @@ export interface EditDocumentHeaderProps {
     invertSelection: () => void;
     deletePicture: () => void;
     openCamera: () => void;
-    convertToPdf: () => void;
     shareDocument: () => void;
     visualizePdf: () => void;
-    renameDocument: () => void;
     deletePdf: () => void;
     deleteDocument: () => void;
 }
@@ -23,6 +24,8 @@ export interface EditDocumentHeaderProps {
 
 export function EditDocumentHeader(props: EditDocumentHeaderProps) {
 
+
+    const navigation = useNavigation<NavigationParamProps<"EditDocument">>()
 
     const { documentModel } = useDocumentModel()
     const document = documentModel?.document ?? null
@@ -61,10 +64,10 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
                 />
 
                 <EditDocumentMenu
-                    convertToPdf={props.convertToPdf}
+                    convertToPdf={() => navigation.navigate("ConvertPdfOption")}
                     shareDocument={props.shareDocument}
                     visualizePdf={props.visualizePdf}
-                    renameDocument={props.renameDocument}
+                    renameDocument={() => navigation.navigate("RenameDocument")}
                     deletePdf={props.deletePdf}
                     deleteDocument={props.deleteDocument}
                 />
