@@ -1,110 +1,103 @@
-import { Button, Modal, ModalActions, ModalProps, ModalTitle } from "@elementium/native"
+import { Button, ModalActions, ModalContainer, ModalScrim, ModalTitle } from "@elementium/native"
+import { useNavigation } from "@react-navigation/native"
 import { createRef, useEffect, useState } from "react"
-import { NativeSyntheticEvent, TextInput } from "react-native"
+import { TextInput } from "react-native"
 
 import { Input } from "../../components"
 import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
-import { useKeyboard } from "../../hooks"
+import { useBackHandler, useKeyboard } from "../../hooks"
 import { translate } from "../../locales"
+import { NavigationParamProps } from "../../router"
 import { DocumentService } from "../../services/document"
 
 
-export interface RenameDocumentProps extends ModalProps {}
+export function RenameDocument() {
 
 
-export function RenameDocument(props: RenameDocumentProps) {
+    const navigation = useNavigation<NavigationParamProps<"RenameDocument">>()
 
-
-    const { documentModel, setDocumentModel } = useDocumentModel()
     const documentRealm = useDocumentRealm()
+    const { documentModel, setDocumentModel } = useDocumentModel()
     const document = documentModel?.document ?? null
+    const initialDocumentName = document?.name ?? DocumentService.getNewName()
 
     const inputRef = createRef<TextInput>()
 
-    const [documentName, setDocumentName] = useState<string | undefined>(getDocumentName())
+    const [documentName, setDocumentName] = useState(initialDocumentName)
 
 
-    useKeyboard("keyboardDidHide", () => {
-        inputRef.current?.blur()
-    })
+    useKeyboard("keyboardDidHide", () => inputRef.current?.blur())
 
 
-    function getDocumentName() {
-        return document?.name ?? DocumentService.getNewName()
+    useBackHandler(goBack)
+
+
+    function goBack() {
+        navigation.goBack()
+        return true
     }
 
     function renameDocument() {
-        if (documentName === undefined) return
-
-        documentRealm.write(() => {
-            const now = Date.now()
-            if (document === null) {
-                const createdDocument = documentRealm.create(DocumentSchema, {
-                    createdAt: now,
-                    modifiedAt: now,
-                    name: documentName,
-                })
-                const pictures = documentRealm
-                    .objects(DocumentPictureSchema)
-                    .filtered("belongsToDocument = $0", createdDocument.id)
-                    .sorted("position")
-                setDocumentModel({ document: createdDocument, pictures })
-            } else {
+        const renamedDocument = documentRealm.write(() => {
+            if (document) {
                 document.name = documentName
-                document.modifiedAt = now
+                document.modifiedAt = Date.now()
+                return document
             }
+
+            const createdDocument = documentRealm.create(DocumentSchema, { name: documentName })
+            return createdDocument
         })
+
+        const pictures = documentRealm
+            .objects(DocumentPictureSchema)
+            .filtered("belongsToDocument = $0", renamedDocument.id)
+            .sorted("position")
+        setDocumentModel({ document: renamedDocument, pictures })
     }
 
 
     useEffect(() => {
-        props.visible
-            ? setDocumentName(getDocumentName())
-            : setDocumentName(undefined)
-    }, [props.visible])
-
-    useEffect(() => {
-        if (documentName === undefined) return
-
-        if (!inputRef.current?.isFocused()) {
-            setTimeout(() => inputRef.current?.focus(), 100)
-        }
-    }, [documentName])
+        setTimeout(() => {
+            if (!inputRef.current) return
+            inputRef.current.focus()
+        }, 100)
+    }, [])
 
 
     return (
-        <Modal {...props}>
-            <ModalTitle>
-                {translate("RenameDocument_title")}
-            </ModalTitle>
+        <ModalScrim onPress={goBack}>
+            <ModalContainer>
+                <ModalTitle>
+                    {translate("RenameDocument_title")}
+                </ModalTitle>
 
-            <Input
-                ref={inputRef}
-                placeholder={translate("RenameDocument_documentName_placeholder")}
-                value={documentName}
-                onChangeText={text => setDocumentName(text)}
-                selectTextOnFocus={true}
-                style={{ width: "100%", marginTop: 16 }}
-            />
-
-            <ModalActions>
-                <Button
-                    variant={"text"}
-                    text={translate("cancel")}
-                    onPress={props.onRequestClose}
+                <Input
+                    ref={inputRef}
+                    placeholder={translate("RenameDocument_documentName_placeholder")}
+                    value={documentName}
+                    onChangeText={setDocumentName}
+                    selectTextOnFocus={true}
+                    style={{ width: "100%", marginTop: 16 }}
                 />
 
-                <Button
-                    variant={"text"}
-                    text={translate("ok")}
-                    onPress={() => {
-                        renameDocument()
-                        if (props.onRequestClose) {
-                            props.onRequestClose({} as NativeSyntheticEvent<unknown>)
-                        }
-                    }}
-                />
-            </ModalActions>
-        </Modal>
+                <ModalActions>
+                    <Button
+                        variant={"text"}
+                        text={translate("cancel")}
+                        onPress={goBack}
+                    />
+
+                    <Button
+                        variant={"text"}
+                        text={translate("ok")}
+                        onPress={() => {
+                            renameDocument()
+                            goBack()
+                        }}
+                    />
+                </ModalActions>
+            </ModalContainer>
+        </ModalScrim>
     )
 }

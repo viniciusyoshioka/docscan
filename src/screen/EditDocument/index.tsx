@@ -20,7 +20,9 @@ import { getReadPermission, getWritePermission } from "../../services/permission
 import { ConvertPdfOption } from "./ConvertPdfOption"
 import { EditDocumentHeader } from "./Header"
 import { HORIZONTAL_COLUMN_COUNT, PictureItem, VERTICAL_COLUMN_COUNT, getPictureItemSize } from "./Pictureitem"
-import { RenameDocument } from "./RenameDocument"
+
+
+export { RenameDocument } from "./RenameDocument"
 
 
 // TODO implement drag and drop to reorder list
@@ -49,7 +51,6 @@ export function EditDocument() {
     const estimatedItemSize = useMemo(() => getPictureItemSize(windowWidth, columnCount), [windowWidth, columnCount])
 
     const pictureSelection = useSelectionMode<number>()
-    const [renameDocumentVisible, setRenameDocumentVisible] = useState(false)
     const [convertPdfOptionVisible, setConvertPdfOptionVisible] = useState(false)
     const [isDeletingPictures, setIsDeletingPictures] = useState(false)
     const [isDeletingDocument, setIsDeletingDocument] = useState(false)
@@ -390,7 +391,7 @@ export function EditDocument() {
                 convertToPdf={() => setConvertPdfOptionVisible(true)}
                 shareDocument={shareDocument}
                 visualizePdf={visualizePdf}
-                renameDocument={() => setRenameDocumentVisible(true)}
+                renameDocument={() => navigation.navigate("RenameDocument")}
                 deletePdf={alertDeletePdf}
                 deleteDocument={alertDeleteCurrentDocument}
             />
@@ -403,11 +404,6 @@ export function EditDocument() {
                 estimatedItemSize={estimatedItemSize}
                 numColumns={columnCount}
                 contentContainerStyle={{ padding: 4 }}
-            />
-
-            <RenameDocument
-                visible={renameDocumentVisible}
-                onRequestClose={() => setRenameDocumentVisible(false)}
             />
 
             <ConvertPdfOption
