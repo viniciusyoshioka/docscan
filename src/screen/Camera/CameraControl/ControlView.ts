@@ -9,7 +9,7 @@ const { width, height } = Dimensions.get("window")
 const cameraSize = getCameraSize({ width, height }, "3:4")
 
 
-export const CONTROL_VIEW_PADDING_VERTICAL = 16
+export const CONTROL_VIEW_PADDING_VERTICAL = 32
 export const CONTROL_VIEW_MIN_HEIGHT = cameraSize
     ? height - HEADER_HEIGHT - cameraSize.height
     : 2 * CONTROL_VIEW_PADDING_VERTICAL
