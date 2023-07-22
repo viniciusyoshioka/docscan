@@ -6,7 +6,7 @@ import { StyleProp, StyleSheet, ViewStyle } from "react-native"
 import { useAppTheme } from "../../../theme"
 
 
-export const CONTROL_BUTTON_HEIGHT = 48
+export const CONTROL_BUTTON_HEIGHT = 56
 export const CONTROL_BUTTON_RADIUS = CONTROL_BUTTON_HEIGHT / 2
 
 
