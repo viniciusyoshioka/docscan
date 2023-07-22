@@ -5,7 +5,7 @@ import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from "react-nativ
 import { useAppTheme } from "../../../theme"
 
 
-export const CONTROL_ACTION_SIZE = 56
+export const CONTROL_ACTION_SIZE = 64
 
 
 export interface ControlActionProps extends TouchableOpacityProps {
