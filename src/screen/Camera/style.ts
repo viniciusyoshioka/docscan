@@ -21,11 +21,7 @@ export const CameraButtonWrapper = styled(View)`
 `
 
 
-export const CameraWrapper = styled(View)`
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-`
+export const CameraWrapper = View
 
 
 export const NoCameraAvailableTitle = styled(Text)<StyledProps>`
