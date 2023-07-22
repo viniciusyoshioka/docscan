@@ -58,6 +58,15 @@ export function Camera() {
     const cameraSize = useMemo(() => (
         getCameraSize({ width, height }, settings.camera.ratio)
     ), [width, height, settings.camera.ratio])
+    const cameraMargin = useMemo(() => {
+        const defaultCameraSize = getCameraSize({ width, height }, "3:4")
+        if (!defaultCameraSize) return { top: 0 }
+
+        if ((defaultCameraSize.height + HEADER_HEIGHT) < height) {
+            return { top: HEADER_HEIGHT }
+        }
+        return { top: 0 }
+    }, [width, height, HEADER_HEIGHT])
     const cameraDevices = useCameraDevices()
     const cameraDevice = cameraDevices ? cameraDevices[settings.camera.type] : undefined
     const cameraOrientation = useCameraOrientation()
@@ -299,8 +308,8 @@ export function Camera() {
                 visible={hasCameraPermission && !cameraDevice}
             />
 
-            {(hasCameraPermission && cameraDevice && !isResetingCamera) && (
-                <CameraWrapper>
+            {(hasCameraPermission && cameraDevice && !isResetingCamera && cameraSize) && (
+                <CameraWrapper style={{ marginTop: cameraMargin.top }}>
                     <TapGestureHandler
                         minPointers={1}
                         enabled={isCameraActive && isFocusEnabled}
