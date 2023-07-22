@@ -1,14 +1,14 @@
 import styled from "styled-components/native"
 
 import { StyledProps } from "../../../../theme"
-import { CAMERA_CONTROL_HEIGHT } from "../../CameraControl"
+import { CAMERA_CONTROL_HEIGHT_WITH_CAMERA } from "../../CameraControl"
 import { CAMERA_SETTINGS_BUTTON_HEIGHT } from "../CameraSettingsButton"
 
 
 export const PseudoModal = styled.TouchableOpacity`
     position: absolute;
     top: 0px;
-    bottom: ${CAMERA_CONTROL_HEIGHT}px;
+    bottom: ${CAMERA_CONTROL_HEIGHT_WITH_CAMERA}px;
     left: 0px;
     right: 0px;
     align-items: center;
