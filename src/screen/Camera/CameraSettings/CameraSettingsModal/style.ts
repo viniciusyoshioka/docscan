@@ -28,5 +28,5 @@ export const ModalBackground = styled.TouchableOpacity<StyledProps>`
 
 
 export const ModalContent = styled.ScrollView`
-    max-height: ${3.3 * CAMERA_SETTINGS_BUTTON_HEIGHT}px;
+    max-height: ${1.5 * CAMERA_SETTINGS_BUTTON_HEIGHT}px;
 `
