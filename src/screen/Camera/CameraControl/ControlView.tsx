@@ -3,6 +3,7 @@ import { Dimensions, StyleProp, StyleSheet, View, ViewProps, ViewStyle } from "r
 
 import { HEADER_HEIGHT } from "../../../components"
 import { getCameraSize } from "../utils"
+import { CONTROL_ACTION_SIZE } from "./ControlAction"
 
 
 const { width, height } = Dimensions.get("window")
@@ -13,6 +14,7 @@ export const CONTROL_VIEW_PADDING_VERTICAL = 32
 export const CONTROL_VIEW_MIN_HEIGHT = cameraSize
     ? height - HEADER_HEIGHT - cameraSize.height
     : 2 * CONTROL_VIEW_PADDING_VERTICAL
+export const CONTROL_VIEW_MAX_HEIGHT_WITHOUT_CAMERA = (2 * CONTROL_VIEW_PADDING_VERTICAL) + CONTROL_ACTION_SIZE
 
 
 export interface ControlViewProps extends ViewProps {
@@ -25,6 +27,8 @@ export function ControlView(props: ControlViewProps) {
 
     const wrapperStyle = useMemo((): StyleProp<ViewStyle> => {
         const newWrapperStyle: ViewStyle = {
+            minHeight: props.isShowingCamera ? CONTROL_VIEW_MIN_HEIGHT : undefined,
+            maxHeight: !props.isShowingCamera ? CONTROL_VIEW_MAX_HEIGHT_WITHOUT_CAMERA : undefined,
             backgroundColor: props.isShowingCamera ? "rgba(0, 0, 0, 0.4)" : "transparent",
         }
 
