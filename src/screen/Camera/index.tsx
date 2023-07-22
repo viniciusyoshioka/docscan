@@ -239,7 +239,7 @@ export function Camera() {
 
 
     const requestCameraPermission = useRequestCameraPermission(setHasCameraPermission)
-    useControlActionEnabled({ isCameraActive, cameraControlRef })
+    useControlActionEnabled({ isCameraActive, cameraControlRef, isCameraSizeCompatible: !!cameraSize })
     useDisableFocusOnSettingsOpened({ isSettingsOpened: isCameraSettingsVisible, setIsFocusEnabled })
     useResetCameraOnChangeRatio(setIsResetingCamera)
 
