@@ -15,7 +15,7 @@ import { NavigationParamProps, RouteParamProps } from "../../router"
 import { DocumentService } from "../../services/document"
 import { createAllFolders } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
-import { getCameraRatioNumber, useSettings } from "../../services/settings"
+import { useSettings } from "../../services/settings"
 import { CAMERA_CONTROL_HEIGHT, CameraControl, CameraControlRef } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
 import { FocusIndicator, FocusIndicatorRef } from "./FocusIndicator"
@@ -29,6 +29,7 @@ import { useIsCameraFlippable } from "./useIsCameraFlippable"
 import { useIsShowingCamera } from "./useIsShowingCamera"
 import { useRequestCameraPermission } from "./useRequestCameraPermission"
 import { useResetCameraOnChangeRatio } from "./useResetCameraOnChangeRatio"
+import { getCameraSize } from "./utils"
 
 
 // TODO add support to multiple back cameras
@@ -41,7 +42,7 @@ export function Camera() {
     const { params } = useRoute<RouteParamProps<"Camera">>()
     const isFocused = useIsFocused()
 
-    const { width } = useWindowDimensions()
+    const { width, height } = useWindowDimensions()
     const isForeground = useIsForeground()
 
     const documentRealm = useDocumentRealm()
@@ -54,6 +55,9 @@ export function Camera() {
 
     const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
 
+    const cameraSize = useMemo(() => (
+        getCameraSize({ width, height }, settings.camera.ratio)
+    ), [width, height, settings.camera.ratio])
     const cameraDevices = useCameraDevices()
     const cameraDevice = cameraDevices ? cameraDevices[settings.camera.type] : undefined
     const cameraOrientation = useCameraOrientation()
@@ -311,8 +315,8 @@ export function Camera() {
                             enableZoomGesture={true}
                             orientation={cameraOrientation}
                             style={{
-                                width: width,
-                                height: width * getCameraRatioNumber(settings.camera.ratio),
+                                width: cameraSize.width,
+                                height: cameraSize.height,
                             }}
                         />
                     </TapGestureHandler>
