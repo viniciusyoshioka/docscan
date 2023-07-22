@@ -1,4 +1,4 @@
-import { Button, Screen, StatusBar } from "@elementium/native"
+import { Screen, StatusBar } from "@elementium/native"
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core"
 import { Realm } from "@realm/react"
 import { useMemo, useRef, useState } from "react"
@@ -16,11 +16,12 @@ import { DocumentService } from "../../services/document"
 import { createAllFolders } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { useSettings } from "../../services/settings"
-import { CAMERA_CONTROL_HEIGHT_WITHOUT_CAMERA, CAMERA_CONTROL_HEIGHT_WITH_CAMERA, CameraControl, CameraControlRef } from "./CameraControl"
+import { CameraControl, CameraControlRef } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
 import { FocusIndicator, FocusIndicatorRef } from "./FocusIndicator"
 import { CameraHeader } from "./Header"
-import { CameraButtonWrapper, CameraTextWrapper, CameraWrapper, NoCameraAvailableText, NoCameraAvailableTitle } from "./style"
+import { NoPermissionMessage } from "./NoPermissionMessage"
+import { CameraWrapper } from "./style"
 import { useCameraOrientation } from "./useCameraOrientation"
 import { useControlActionEnabled } from "./useControlActionEnabled"
 import { useDisableFocusOnSettingsOpened } from "./useDisableFocusOnSettingsOpened"
@@ -263,46 +264,11 @@ export function Camera() {
                 isShowingCamera={isShowingCamera}
             />
 
-            {(hasCameraPermission === undefined || hasCameraPermission === false) && (
-                <>
-                    <CameraTextWrapper>
-                        <NoCameraAvailableTitle variant={"title"} size={"large"}>
-                            {translate("Camera_noPermission")}
-                        </NoCameraAvailableTitle>
-
-                        <NoCameraAvailableText variant={"body"} size={"large"}>
-                            &bull; {translate("Camera_allowCameraWithGrantPermission")}
-                        </NoCameraAvailableText>
-
-                        <NoCameraAvailableText variant={"body"} size={"large"}>
-                            &bull; {translate("Camera_allowCameraThroughSettings")}
-                        </NoCameraAvailableText>
-
-                        <NoCameraAvailableText variant={"body"} size={"large"}>
-                            &bull; {translate("Camera_enableCamera")}
-                        </NoCameraAvailableText>
-                    </CameraTextWrapper>
-
-                    <CameraButtonWrapper style={{
-                        paddingBottom: isShowingCamera
-                            ? CAMERA_CONTROL_HEIGHT_WITH_CAMERA
-                            : CAMERA_CONTROL_HEIGHT_WITHOUT_CAMERA,
-                    }}>
-                        <Button
-                            variant={"outline"}
-                            text={translate("Camera_openSettings")}
-                            onPress={() => Linking.openSettings()}
-                            style={{ width: "100%" }}
-                        />
-
-                        <Button
-                            text={translate("Camera_grantPermission")}
-                            onPress={requestCameraPermission}
-                            style={{ width: "100%" }}
-                        />
-                    </CameraButtonWrapper>
-                </>
-            )}
+            <NoPermissionMessage
+                isVisible={hasCameraPermission === undefined || hasCameraPermission === false}
+                isShowingCamera={isShowingCamera}
+                requestCameraPermission={requestCameraPermission}
+            />
 
             <EmptyList
                 iconName={"camera-off-outline"}

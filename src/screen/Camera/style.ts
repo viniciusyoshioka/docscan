@@ -2,14 +2,14 @@ import { Text } from "@elementium/native"
 import { View } from "react-native"
 import styled from "styled-components/native"
 
+import { HEADER_HEIGHT } from "../../components"
 import { StyledProps } from "../../theme"
 
 
 export const CameraTextWrapper = styled(View)`
     flex: 1;
-    align-items: flex-start;
-    justify-content: center;
     padding: 16px;
+    margin-top: ${HEADER_HEIGHT}px;
 `
 
 
@@ -24,7 +24,7 @@ export const CameraButtonWrapper = styled(View)`
 export const CameraWrapper = View
 
 
-export const NoCameraAvailableTitle = styled(Text)<StyledProps>`
+export const CameraMessageTitle = styled(Text)<StyledProps>`
     width: 100%;
     margin-bottom: 16px;
     font-weight: bold;
@@ -33,7 +33,7 @@ export const NoCameraAvailableTitle = styled(Text)<StyledProps>`
 `
 
 
-export const NoCameraAvailableText = styled(Text)<StyledProps>`
+export const CameraMessageText = styled(Text)<StyledProps>`
     margin-bottom: 4px;
     color: ${props => props.theme.color.onBackground};
 `
