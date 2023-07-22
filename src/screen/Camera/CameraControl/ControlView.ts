@@ -25,7 +25,6 @@ export const ControlView = styled.View<ControlViewProps>`
     left: 0px;
     right: 0px;
     bottom: 0px;
-    align-items: center;
     justify-content: space-around;
     flex-direction: row;
     width: 100%;
