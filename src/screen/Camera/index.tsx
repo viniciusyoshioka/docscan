@@ -7,7 +7,7 @@ import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
 import { Camera as RNCamera } from "react-native-vision-camera"
 
-import { EmptyList } from "../../components"
+import { EmptyList, HEADER_HEIGHT } from "../../components"
 import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler, useCameraDevices, useIsForeground } from "../../hooks"
 import { translate } from "../../locales"
@@ -16,7 +16,7 @@ import { DocumentService } from "../../services/document"
 import { createAllFolders } from "../../services/folder-handler"
 import { log, stringfyError } from "../../services/log"
 import { useSettings } from "../../services/settings"
-import { CAMERA_CONTROL_HEIGHT, CameraControl, CameraControlRef } from "./CameraControl"
+import { CAMERA_CONTROL_HEIGHT_WITHOUT_CAMERA, CAMERA_CONTROL_HEIGHT_WITH_CAMERA, CameraControl, CameraControlRef } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
 import { FocusIndicator, FocusIndicatorRef } from "./FocusIndicator"
 import { CameraHeader } from "./Header"
@@ -283,7 +283,11 @@ export function Camera() {
                         </NoCameraAvailableText>
                     </CameraTextWrapper>
 
-                    <CameraButtonWrapper style={{ paddingBottom: CAMERA_CONTROL_HEIGHT }}>
+                    <CameraButtonWrapper style={{
+                        paddingBottom: isShowingCamera
+                            ? CAMERA_CONTROL_HEIGHT_WITH_CAMERA
+                            : CAMERA_CONTROL_HEIGHT_WITHOUT_CAMERA,
+                    }}>
                         <Button
                             variant={"outline"}
                             text={translate("Camera_openSettings")}
