@@ -9,10 +9,10 @@ const { width, height } = Dimensions.get("window")
 const cameraSize = getCameraSize({ width, height }, "3:4")
 
 
-export const CONTROL_VIEW_PADDING_VERTIVAL = 16
+export const CONTROL_VIEW_PADDING_VERTICAL = 16
 export const CONTROL_VIEW_MIN_HEIGHT = cameraSize
     ? height - HEADER_HEIGHT - cameraSize.height
-    : 2 * CONTROL_VIEW_PADDING_VERTIVAL
+    : 2 * CONTROL_VIEW_PADDING_VERTICAL
 
 
 export interface ControlViewProps {
@@ -30,7 +30,7 @@ export const ControlView = styled.View<ControlViewProps>`
     flex-direction: row;
     width: 100%;
     min-height: ${CONTROL_VIEW_MIN_HEIGHT}px;
-    padding-vertical: ${CONTROL_VIEW_PADDING_VERTIVAL}px;
+    padding-vertical: ${CONTROL_VIEW_PADDING_VERTICAL}px;
     background-color: ${props => props.isShowingCamera ? "rgba(0, 0, 0, 0.4)" : "transparent"};
     z-index: 1;
 `
