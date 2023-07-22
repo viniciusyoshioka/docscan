@@ -6,14 +6,17 @@ import { useDeviceOrientation } from "../../../hooks"
 import { ScreenAction } from "../../../router"
 import { CONTROL_ACTION_SIZE, ControlAction } from "./ControlAction"
 import { CONTROL_BUTTON_HEIGHT, ControlButton } from "./ControlButton"
-import { CONTROL_VIEW_MIN_HEIGHT, CONTROL_VIEW_PADDING_VERTICAL, ControlView } from "./ControlView"
+import { CONTROL_VIEW_MAX_HEIGHT_WITHOUT_CAMERA, CONTROL_VIEW_MIN_HEIGHT, CONTROL_VIEW_PADDING_VERTICAL, ControlView } from "./ControlView"
 
 
-export const CAMERA_CONTROL_HEIGHT = Math.max(
+export const CAMERA_CONTROL_HEIGHT_WITH_CAMERA = Math.max(
     CONTROL_VIEW_MIN_HEIGHT,
     CONTROL_ACTION_SIZE + (2 * CONTROL_VIEW_PADDING_VERTICAL),
     CONTROL_BUTTON_HEIGHT + (2 * CONTROL_VIEW_PADDING_VERTICAL)
 )
+
+
+export const CAMERA_CONTROL_HEIGHT_WITHOUT_CAMERA = CONTROL_VIEW_MAX_HEIGHT_WITHOUT_CAMERA
 
 
 export interface CameraControlProps {
