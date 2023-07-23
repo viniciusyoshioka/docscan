@@ -113,7 +113,7 @@ export function Home() {
 
         await createAllFolders()
         try {
-            const exportedDatabase = await openExportedDatabase()
+            const exportedDatabase = await openExportedDatabase(Constants.exportDatabaseFullPath)
 
             const selectedDocumentsObjectId = documentSelection
                 .selectedData
