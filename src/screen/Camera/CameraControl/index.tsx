@@ -3,6 +3,7 @@ import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } fr
 import { OrientationType } from "react-native-orientation-locker"
 import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
 
+import { useDocumentModel } from "../../../database"
 import { useDeviceOrientation } from "../../../hooks"
 import { RouteParamProps } from "../../../router"
 import { CONTROL_ACTION_SIZE, ControlAction } from "./ControlAction"
@@ -25,7 +26,6 @@ export interface CameraControlProps {
     addPictureFromGallery: () => void;
     takePicture: () => void;
     editDocument: () => void;
-    pictureListLength: number;
 }
 
 
@@ -42,8 +42,11 @@ export const CameraControl = forwardRef((props: CameraControlProps, ref: Forward
 
     const deviceOrientation = useDeviceOrientation()
 
+    const { documentModel } = useDocumentModel()
+
     const [isActionEnabled, setIsActionEnabled] = useState(false)
     const rotationDegree = useSharedValue(0)
+    const picturesCount = (documentModel?.pictures.length ?? 0).toString()
 
 
     useImperativeHandle(ref, () => ({
@@ -126,7 +129,7 @@ export const CameraControl = forwardRef((props: CameraControlProps, ref: Forward
                 <Reanimated.View style={orientationStyle}>
                     <ControlButton
                         iconName={"description"}
-                        indexCount={props.pictureListLength.toString()}
+                        indexCount={picturesCount}
                         onPress={props.editDocument}
                         isShowingCamera={props.isShowingCamera}
                     />

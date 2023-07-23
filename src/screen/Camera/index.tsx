@@ -315,7 +315,6 @@ export function Camera() {
                 addPictureFromGallery={addPictureFromGallery}
                 takePicture={takePicture}
                 editDocument={editDocument}
-                pictureListLength={documentModel?.pictures.length ?? 0}
             />
 
             <CameraSettings
