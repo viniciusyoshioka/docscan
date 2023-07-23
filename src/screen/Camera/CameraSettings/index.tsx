@@ -10,7 +10,7 @@ import { CameraSettingsModal, CameraSettingsModalProps } from "./CameraSettingsM
 
 
 export interface CameraSettingsProps extends CameraSettingsModalProps {
-    isFlippable: boolean;
+    isCameraFlippable: boolean;
 }
 
 
@@ -173,7 +173,7 @@ export function CameraSettings(props: CameraSettingsProps) {
                 />
             </Reanimated.View>
 
-            {props.isFlippable && (
+            {props.isCameraFlippable && (
                 <Reanimated.View style={orientationStyle}>
                     <CameraSettingsButton
                         optionName={switchCameraButtonText}
