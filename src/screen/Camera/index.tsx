@@ -21,6 +21,7 @@ import { CameraSettings } from "./CameraSettings"
 import { FocusIndicator, FocusIndicatorRef } from "./FocusIndicator"
 import { CameraHeader } from "./Header"
 import { NoPermissionMessage } from "./NoPermissionMessage"
+import { RatioNotSupported } from "./RatioNotSupported"
 import { CameraWrapper } from "./style"
 import { useCameraOrientation } from "./useCameraOrientation"
 import { useControlActionEnabled } from "./useControlActionEnabled"
@@ -276,6 +277,10 @@ export function Camera() {
                 iconSize={56}
                 message={translate("Camera_cameraNotAvailable")}
                 visible={hasCameraPermission && !cameraDevice}
+            />
+
+            <RatioNotSupported
+                isVisible={!!hasCameraPermission && !!cameraDevice && !isResetingCamera && !cameraSize}
             />
 
             {(hasCameraPermission && cameraDevice && !isResetingCamera && cameraSize) && (
