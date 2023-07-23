@@ -1,9 +1,10 @@
+import { useRoute } from "@react-navigation/native"
 import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from "react"
 import { OrientationType } from "react-native-orientation-locker"
 import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
 
 import { useDeviceOrientation } from "../../../hooks"
-import { ScreenAction } from "../../../router"
+import { RouteParamProps } from "../../../router"
 import { CONTROL_ACTION_SIZE, ControlAction } from "./ControlAction"
 import { CONTROL_BUTTON_HEIGHT, ControlButton } from "./ControlButton"
 import { CONTROL_VIEW_MAX_HEIGHT_WITHOUT_CAMERA, CONTROL_VIEW_MIN_HEIGHT, CONTROL_VIEW_PADDING_VERTICAL, ControlView } from "./ControlView"
@@ -20,7 +21,6 @@ export const CAMERA_CONTROL_HEIGHT_WITHOUT_CAMERA = CONTROL_VIEW_MAX_HEIGHT_WITH
 
 
 export interface CameraControlProps {
-    screenAction: ScreenAction;
     isShowingCamera: boolean;
     addPictureFromGallery: () => void;
     takePicture: () => void;
@@ -37,6 +37,8 @@ export interface CameraControlRef {
 
 export const CameraControl = forwardRef((props: CameraControlProps, ref: ForwardedRef<CameraControlRef>) => {
 
+
+    const { params } = useRoute<RouteParamProps<"Camera">>()
 
     const deviceOrientation = useDeviceOrientation()
 
@@ -120,7 +122,7 @@ export const CameraControl = forwardRef((props: CameraControlProps, ref: Forward
             />
 
 
-            {props.screenAction !== "replace-picture" && (
+            {params?.screenAction !== "replace-picture" && (
                 <Reanimated.View style={orientationStyle}>
                     <ControlButton
                         iconName={"description"}
@@ -131,7 +133,7 @@ export const CameraControl = forwardRef((props: CameraControlProps, ref: Forward
                 </Reanimated.View>
             )}
 
-            {props.screenAction === "replace-picture" && (
+            {params?.screenAction === "replace-picture" && (
                 <ControlButton />
             )}
         </ControlView>

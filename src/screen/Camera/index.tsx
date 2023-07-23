@@ -311,7 +311,6 @@ export function Camera() {
 
             <CameraControl
                 ref={cameraControlRef}
-                screenAction={params?.screenAction}
                 isShowingCamera={isShowingCamera}
                 addPictureFromGallery={addPictureFromGallery}
                 takePicture={takePicture}
