@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 
-import { ModalBackground, ModalContent, PseudoModal } from "./style"
+import { ModalBackground, ModalContent, ModalContentWrapper, PseudoModal } from "./style"
 
 
 export interface CameraSettingsModalProps {
@@ -24,14 +24,11 @@ export function CameraSettingsModal(props: CameraSettingsModalProps) {
                 <ModalContent
                     fadingEdgeLength={32}
                     showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{
-                        flexWrap: "wrap",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}
-                    children={props.children}
-                />
+                >
+                    <ModalContentWrapper activeOpacity={1}>
+                        {props.children}
+                    </ModalContentWrapper>
+                </ModalContent>
             </ModalBackground>
         </PseudoModal>
     )

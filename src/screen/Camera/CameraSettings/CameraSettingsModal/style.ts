@@ -30,3 +30,11 @@ export const ModalBackground = styled.TouchableOpacity<StyledProps>`
 export const ModalContent = styled.ScrollView`
     max-height: ${1.5 * CAMERA_SETTINGS_BUTTON_HEIGHT}px;
 `
+
+
+export const ModalContentWrapper = styled.TouchableOpacity`
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+`
