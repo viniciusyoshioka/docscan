@@ -1,4 +1,4 @@
-import { ListItem, Screen, StatusBar, Text } from "@elementium/native"
+import { ListItem, Screen, StatusBar } from "@elementium/native"
 import { useNavigation } from "@react-navigation/core"
 import { Alert } from "react-native"
 import Share from "react-native-share"
@@ -10,7 +10,6 @@ import { Constants } from "../../services/constant"
 import { log, stringfyError } from "../../services/log"
 import { useAppTheme } from "../../theme"
 import { SettingsHeader } from "./Header"
-import { ViewVersion } from "./style"
 
 
 export { ChangeTheme } from "./ChangeTheme"
@@ -97,14 +96,11 @@ export function Settings() {
                 />
             )}
 
-            <ViewVersion>
-                <Text
-                    variant={"body"}
-                    size={"medium"}
-                    style={{ color: color.onBackground }}
-                    children={`${Constants.appName} ${Constants.appVersion} - ${Constants.appType}`}
-                />
-            </ViewVersion>
+            <ListItem
+                leadingIcon={{ iconName: "information-circle-outline", iconGroup: "ionicons" }}
+                title={translate("Settings_appVersionInfo_title")}
+                description={`${Constants.appName} ${Constants.appVersion} - ${Constants.appType}`}
+            />
         </Screen>
     )
 }

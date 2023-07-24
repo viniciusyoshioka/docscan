@@ -153,6 +153,7 @@ export type TranslationKeyType =
     | "Settings_shareLogDatabase_text"
     | "Settings_shareAppDatabase_title"
     | "Settings_shareAppDatabase_text"
+    | "Settings_appVersionInfo_title"
     // Settings ChangeTheme
     | "ChangeTheme_title"
     | "ChangeTheme_auto"

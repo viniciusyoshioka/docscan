@@ -156,6 +156,7 @@ export const pt_BR: TranslationObjectType = {
     Settings_shareLogDatabase_text: "Enviar registro de erros",
     Settings_shareAppDatabase_title: "Compartilhar banco de dados",
     Settings_shareAppDatabase_text: "Enviar banco de dados dos documentos",
+    Settings_appVersionInfo_title: "Versão do aplicativo",
     // Settings ChangeTheme
     ChangeTheme_title: "Mudar tema",
     ChangeTheme_auto: "Automático",
