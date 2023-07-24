@@ -114,7 +114,7 @@ export const pt_BR: TranslationObjectType = {
     Home_alert_deleteDocuments_title: "Apagar",
     Home_alert_deleteDocuments_text: "Estes documentos serão apagados permanentemente",
     Home_alert_importDocuments_title: "Importar",
-    Home_alert_importDocuments_text: "A importação de documentos pode demorar um pouco",
+    Home_alert_importDocuments_text: "A importação de documentos pode demorar um pouco. Não feche o aplicativo",
     Home_alert_errorImportingDocuments_text: "Erro importando documentos",
     Home_alert_exportingDocuments_title: "Aguarde",
     Home_alert_exportingDocuments_text: "A exportação de documentos pode demorar um pouco. Não feche o aplicativo",

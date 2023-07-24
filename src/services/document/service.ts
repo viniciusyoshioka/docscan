@@ -34,11 +34,19 @@ export class DocumentService {
     }
 
 
+    static getTemporaryExportedDocumentPath(): string {
+        return `${Constants.fullPathTemporaryExported}/temporary_exported_document.zip`
+    }
+
     static getExportedDocumentPath(): string {
         const name = translate("document_exportedDocumentName")
         const date = DateService.getDate().replaceAll("-", "")
         const time = DateService.getTime().replaceAll("-", "")
         return `${Constants.fullPathExported}/${name} ${date}_${time}.zip`
+    }
+
+    static getTemporaryImportedPicturePath(fileName: string): string {
+        return `${Constants.fullPathTemporaryImported}/${fileName}`
     }
 
     static getPdfPath(documentName: string): string {
@@ -58,10 +66,6 @@ export class DocumentService {
             newPath = `${Constants.fullPathPicture}/${fileName}.${fileExtension}`
         } while (await RNFS.exists(newPath))
         return newPath
-    }
-
-    static getTemporaryExportedDocumentPath(): string {
-        return `${Constants.fullPathTemporaryExported}/temporary_exported_document.zip`
     }
 
 

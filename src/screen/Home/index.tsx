@@ -4,6 +4,9 @@ import { Realm } from "@realm/react"
 import { FlashList } from "@shopify/flash-list"
 import { useEffect, useState } from "react"
 import { Alert, View } from "react-native"
+import DocumentPicker from "react-native-document-picker"
+import RNFS from "react-native-fs"
+import { unzip } from "react-native-zip-archive"
 
 import { EmptyList, LoadingModal } from "../../components"
 import { DocumentPictureSchema, DocumentSchema, ExportedDocumentPictureRealm, ExportedDocumentRealm, openExportedDatabase, useDocumentModel, useDocumentRealm } from "../../database"
@@ -102,8 +105,89 @@ export function Home() {
         )
     }
 
-    // TODO reimplement importDocument
-    async function importDocument() {}
+    async function importDocument() {
+        try {
+            const pickedFile = await DocumentPicker.pickSingle({
+                copyTo: "cachesDirectory",
+                type: DocumentPicker.types.zip,
+            })
+
+            if (pickedFile.copyError)
+                throw new Error(`Error copying picked file to import document: "${stringfyError(pickedFile.copyError)}"`)
+            if (!pickedFile.fileCopyUri)
+                throw new Error("Copying document to import did not returned a valid path")
+
+            Alert.alert(
+                translate("Home_alert_importDocuments_title"),
+                translate("Home_alert_importDocuments_text")
+            )
+            await createAllFolders()
+
+            const fileUri = pickedFile.fileCopyUri.replaceAll("%20", " ").replace("file://", "")
+            await unzip(fileUri, Constants.fullPathTemporaryImported)
+            await RNFS.unlink(fileUri)
+
+            const pictureToMove: string[] = []
+            const exportedDatabase = await openExportedDatabase(Constants.importDatabaseFullPath)
+            const exportedDocuments = exportedDatabase.objects<ExportedDocumentRealm>("ExportedDocumentSchema").sorted("modifiedAt")
+
+            documentRealm.beginTransaction()
+            for (let i = 0; i < exportedDocuments.length; i++) {
+                const exportedDocument = exportedDocuments[i]
+                const importedDocument = documentRealm.create(DocumentSchema, {
+                    createdAt: exportedDocument.createdAt,
+                    modifiedAt: Date.now(),
+                    name: exportedDocument.name,
+                })
+
+                const exportedPictures = exportedDatabase
+                    .objects<ExportedDocumentPictureRealm>("ExportedDocumentPictureSchema")
+                    .filtered("belongsToDocument = $0", exportedDocument.id)
+                for (let j = 0; j < exportedPictures.length; j++) {
+                    const exportedPicture = exportedPictures[j]
+                    const newPicturePath = await DocumentService.getNewPicturePath(exportedPicture.fileName)
+                    const newPictureName = DocumentService.getFileFullname(newPicturePath)
+
+                    documentRealm.create(DocumentPictureSchema, {
+                        fileName: newPictureName,
+                        position: exportedPicture.position,
+                        belongsToDocument: importedDocument.id,
+                    })
+
+                    pictureToMove.push(DocumentService.getTemporaryImportedPicturePath(exportedPicture.fileName))
+                    pictureToMove.push(newPicturePath)
+                }
+            }
+            documentRealm.commitTransaction()
+
+            exportedDatabase.close()
+            await RNFS.unlink(Constants.importDatabaseFullPath)
+
+            documentSelection.exitSelection()
+
+            DocumentService.movePicturesService({ pictures: pictureToMove })
+        } catch (error) {
+            if (DocumentPicker.isCancel(error)) return
+
+            if (documentRealm.isInTransaction) {
+                documentRealm.cancelTransaction()
+            }
+
+            try {
+                if (await RNFS.exists(Constants.fullPathTemporaryImported)) {
+                    await RNFS.unlink(Constants.fullPathTemporaryImported)
+                }
+            } catch (error) {
+                log.error(`Error deleting temporary imported files after error in document import: "${stringfyError(error)}"`)
+            }
+
+            log.error(`Error importing document: "${stringfyError(error)}"`)
+            Alert.alert(
+                translate("warn"),
+                translate("Home_alert_errorImportingDocuments_text")
+            )
+        }
+    }
 
     async function exportSelectedDocument() {
         Alert.alert(

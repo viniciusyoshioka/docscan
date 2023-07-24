@@ -30,4 +30,5 @@ export class Constants {
     static appDatabaseFullPath = `${this.databaseFolder}/docscan_database.realm`
     static logDatabaseFullPath = `${this.databaseFolder}/docscan_log.realm`
     static exportDatabaseFullPath = `${this.databaseFolder}/docscan_export.realm`
+    static importDatabaseFullPath = `${this.fullPathTemporaryImported}/docscan_export.realm`
 }
