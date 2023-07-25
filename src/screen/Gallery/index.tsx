@@ -22,6 +22,7 @@ import { HORIZONTAL_COLUMN_COUNT, ImageItem, VERTICAL_COLUMN_COUNT, getImageItem
 import { LoadingIndicator } from "./LoadingIndicator"
 
 
+// TODO increse ImageItem size when app window is small
 // TODO move the loading of images to a hook
 // TODO optimize performance of ImageItem when in selection mode
 export function Gallery() {

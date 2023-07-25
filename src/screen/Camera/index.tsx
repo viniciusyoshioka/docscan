@@ -34,6 +34,8 @@ import { useResetCameraOnChangeRatio } from "./useResetCameraOnChangeRatio"
 import { getCameraSize } from "./utils"
 
 
+// TODO update NoPermissionMessage to adapt multiple screen dimensions
+// TODO update RatioNotSupported to adapt multiple screen dimensions
 // TODO add support to multiple back cameras
 // TODO add zoom indicator
 export function Camera() {
