@@ -56,9 +56,7 @@ export function Camera() {
 
     const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
 
-    const cameraSize = useMemo(() => (
-        getCameraSize({ width, height }, settings.camera.ratio)
-    ), [width, height, settings.camera.ratio])
+    const cameraSize = getCameraSize({ width, height }, settings.camera.ratio)
     const cameraMargin = useCameraMargin()
     const cameraDevices = useCameraDevices()
     const cameraDevice = cameraDevices ? cameraDevices[settings.camera.type] : undefined
