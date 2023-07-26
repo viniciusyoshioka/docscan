@@ -1,14 +1,14 @@
-import { Button } from "@elementium/native"
-import { Linking } from "react-native"
+import { Button, ScrollScreen } from "@elementium/native"
+import { Linking, ViewStyle, useWindowDimensions } from "react-native"
 
+import { HEADER_HEIGHT } from "../../components"
 import { translate } from "../../locales"
-import { CAMERA_CONTROL_HEIGHT_WITHOUT_CAMERA, CAMERA_CONTROL_HEIGHT_WITH_CAMERA } from "./CameraControl"
+import { CAMERA_CONTROL_HEIGHT_WITHOUT_CAMERA } from "./CameraControl"
 import { CameraButtonWrapper, CameraMessageText, CameraMessageTitle, CameraTextWrapper } from "./style"
 
 
 export interface NoPermissionMessageProps {
     isVisible: boolean;
-    isShowingCamera: boolean;
     requestCameraPermission: () => void;
 }
 
@@ -16,47 +16,57 @@ export interface NoPermissionMessageProps {
 export function NoPermissionMessage(props: NoPermissionMessageProps) {
 
 
+    const { height } = useWindowDimensions()
+
+    const scrollScreenStyle: ViewStyle = {
+        marginTop: HEADER_HEIGHT,
+        marginBottom: CAMERA_CONTROL_HEIGHT_WITHOUT_CAMERA,
+    }
+    const scrollScreenContentContainerStyle: ViewStyle = {
+        minHeight: height - HEADER_HEIGHT - CAMERA_CONTROL_HEIGHT_WITHOUT_CAMERA,
+    }
+
+
     if (!props.isVisible) return null
 
 
-    return <>
-        <CameraTextWrapper>
-            <CameraMessageTitle variant={"title"} size={"large"}>
-                {translate("Camera_noPermission")}
-            </CameraMessageTitle>
-
-            <CameraMessageText variant={"body"} size={"large"}>
-                &bull; {translate("Camera_allowCameraWithGrantPermission")}
-            </CameraMessageText>
-
-            <CameraMessageText variant={"body"} size={"large"}>
-                &bull; {translate("Camera_allowCameraThroughSettings")}
-            </CameraMessageText>
-
-            <CameraMessageText variant={"body"} size={"large"}>
-                &bull; {translate("Camera_enableCamera")}
-            </CameraMessageText>
-        </CameraTextWrapper>
-
-        <CameraButtonWrapper
-            style={{
-                paddingBottom: props.isShowingCamera
-                    ? CAMERA_CONTROL_HEIGHT_WITH_CAMERA
-                    : CAMERA_CONTROL_HEIGHT_WITHOUT_CAMERA,
-            }}
+    return (
+        <ScrollScreen
+            style={scrollScreenStyle}
+            contentContainerStyle={scrollScreenContentContainerStyle}
         >
-            <Button
-                variant={"outline"}
-                text={translate("Camera_openSettings")}
-                onPress={Linking.openSettings}
-                style={{ width: "100%" }}
-            />
+            <CameraTextWrapper>
+                <CameraMessageTitle variant={"title"} size={"large"}>
+                    {translate("Camera_noPermission")}
+                </CameraMessageTitle>
 
-            <Button
-                text={translate("Camera_grantPermission")}
-                onPress={props.requestCameraPermission}
-                style={{ width: "100%" }}
-            />
-        </CameraButtonWrapper>
-    </>
+                <CameraMessageText variant={"body"} size={"large"}>
+                    &bull; {translate("Camera_allowCameraWithGrantPermission")}
+                </CameraMessageText>
+
+                <CameraMessageText variant={"body"} size={"large"}>
+                    &bull; {translate("Camera_allowCameraThroughSettings")}
+                </CameraMessageText>
+
+                <CameraMessageText variant={"body"} size={"large"}>
+                    &bull; {translate("Camera_enableCamera")}
+                </CameraMessageText>
+            </CameraTextWrapper>
+
+            <CameraButtonWrapper>
+                <Button
+                    variant={"outline"}
+                    text={translate("Camera_openSettings")}
+                    onPress={Linking.openSettings}
+                    style={{ width: "100%" }}
+                />
+
+                <Button
+                    text={translate("Camera_grantPermission")}
+                    onPress={props.requestCameraPermission}
+                    style={{ width: "100%" }}
+                />
+            </CameraButtonWrapper>
+        </ScrollScreen>
+    )
 }
