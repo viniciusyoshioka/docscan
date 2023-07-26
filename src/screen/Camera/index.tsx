@@ -75,7 +75,7 @@ export function Camera() {
     const [hasCameraPermission, setHasCameraPermission] = useState<boolean>()
     const isCameraActive = useIsCameraActive({ isFocused, isForeground, hasPermission: hasCameraPermission })
     const isCameraFlippable = useIsCameraFlippable({ cameraDevices })
-    const isShowingCamera = useIsShowingCamera({ hasPermission: hasCameraPermission, cameraDevice })
+    const isShowingCamera = useIsShowingCamera({ hasPermission: hasCameraPermission, cameraDevice, cameraSize })
     const [isResetingCamera, setIsResetingCamera] = useState(false)
     const [isFocusEnabled, setIsFocusEnabled] = useState(true)
 
