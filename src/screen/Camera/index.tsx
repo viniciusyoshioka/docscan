@@ -56,12 +56,12 @@ export function Camera() {
 
     const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
 
-    const cameraSize = getCameraSize({ width, height }, settings.camera.ratio)
-    const cameraMargin = useCameraMargin()
     const cameraDevices = useCameraDevices()
     const cameraDevice = cameraDevices ? cameraDevices[settings.camera.type] : undefined
+    const cameraSize = getCameraSize({ width, height }, settings.camera.ratio)
+    const cameraMargin = useCameraMargin()
     const cameraOrientation = useCameraOrientation()
-    const [hasCameraPermission, setHasCameraPermission] = useState<boolean>()
+    const [hasCameraPermission, requestCameraPermission] = useRequestCameraPermission()
     const isCameraActive = useIsCameraActive({ isFocused, isForeground, hasPermission: hasCameraPermission })
     const isShowingCamera = useIsShowingCamera({ hasPermission: hasCameraPermission, cameraDevice, cameraSize })
     const [isResetingCamera, setIsResetingCamera] = useState(false)
@@ -237,7 +237,6 @@ export function Camera() {
     }
 
 
-    const requestCameraPermission = useRequestCameraPermission(setHasCameraPermission)
     useControlActionEnabled({ isCameraActive, cameraControlRef, isCameraSizeCompatible: !!cameraSize })
     useDisableFocusOnSettingsOpened({ isSettingsOpened: isCameraSettingsVisible, setIsFocusEnabled })
     useResetCameraOnChangeRatio(setIsResetingCamera)
