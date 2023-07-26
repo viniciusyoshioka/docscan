@@ -28,7 +28,6 @@ import { useCameraOrientation } from "./useCameraOrientation"
 import { useControlActionEnabled } from "./useControlActionEnabled"
 import { useDisableFocusOnSettingsOpened } from "./useDisableFocusOnSettingsOpened"
 import { useIsCameraActive } from "./useIsCameraActive"
-import { useIsCameraFlippable } from "./useIsCameraFlippable"
 import { useIsShowingCamera } from "./useIsShowingCamera"
 import { useRequestCameraPermission } from "./useRequestCameraPermission"
 import { useResetCameraOnChangeRatio } from "./useResetCameraOnChangeRatio"
@@ -66,7 +65,6 @@ export function Camera() {
     const cameraOrientation = useCameraOrientation()
     const [hasCameraPermission, setHasCameraPermission] = useState<boolean>()
     const isCameraActive = useIsCameraActive({ isFocused, isForeground, hasPermission: hasCameraPermission })
-    const isCameraFlippable = useIsCameraFlippable({ cameraDevices })
     const isShowingCamera = useIsShowingCamera({ hasPermission: hasCameraPermission, cameraDevice, cameraSize })
     const [isResetingCamera, setIsResetingCamera] = useState(false)
     const [isFocusEnabled, setIsFocusEnabled] = useState(true)
@@ -311,7 +309,6 @@ export function Camera() {
             <CameraSettings
                 visible={isCameraSettingsVisible}
                 onRequestClose={() => setIsCameraSettingsVisible(false)}
-                isCameraFlippable={isCameraFlippable}
             />
         </Screen>
     )

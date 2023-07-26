@@ -2,22 +2,24 @@ import { useEffect, useMemo } from "react"
 import { OrientationType } from "react-native-orientation-locker"
 import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
 
-import { useDeviceOrientation } from "../../../hooks"
+import { useCameraDevices, useDeviceOrientation } from "../../../hooks"
 import { translate } from "../../../locales"
 import { settingsCameraFlashDefault, settingsCameraRatioDefault, settingsCameraTypeDefault, useSettings } from "../../../services/settings"
+import { useIsCameraFlippable } from "../useIsCameraFlippable"
 import { CameraSettingsButton } from "./CameraSettingsButton"
 import { CameraSettingsModal, CameraSettingsModalProps } from "./CameraSettingsModal"
 
 
-export interface CameraSettingsProps extends CameraSettingsModalProps {
-    isCameraFlippable: boolean;
-}
+export interface CameraSettingsProps extends CameraSettingsModalProps {}
 
 
 export function CameraSettings(props: CameraSettingsProps) {
 
 
     const deviceOrientation = useDeviceOrientation()
+
+    const cameraDevices = useCameraDevices()
+    const isCameraFlippable = useIsCameraFlippable({ cameraDevices })
 
     const { settings, setSettings } = useSettings()
 
@@ -173,7 +175,7 @@ export function CameraSettings(props: CameraSettingsProps) {
                 />
             </Reanimated.View>
 
-            {props.isCameraFlippable && (
+            {isCameraFlippable && (
                 <Reanimated.View style={orientationStyle}>
                     <CameraSettingsButton
                         optionName={switchCameraButtonText}
