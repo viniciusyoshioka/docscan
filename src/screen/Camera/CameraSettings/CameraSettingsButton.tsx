@@ -1,10 +1,8 @@
 import { ExtendableIconProps, Icon, Text } from "@elementium/native"
-import { TouchableOpacityProps } from "react-native"
-
-import { CameraSettingsButtonBase } from "./style"
+import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from "react-native"
 
 
-export { CAMERA_SETTINGS_BUTTON_HEIGHT } from "./style"
+export const CAMERA_SETTINGS_BUTTON_HEIGHT = 80
 
 
 export interface CameraSettingsButtonProps extends TouchableOpacityProps, Omit<ExtendableIconProps, "style"> {
@@ -19,7 +17,11 @@ export function CameraSettingsButton(props: CameraSettingsButtonProps) {
 
 
     return (
-        <CameraSettingsButtonBase activeOpacity={0.6} {...props}>
+        <TouchableOpacity
+            activeOpacity={0.6}
+            {...props}
+            style={[styles.container, props.style]}
+        >
             <Icon
                 name={props.iconName}
                 group={props.iconGroup}
@@ -35,6 +37,17 @@ export function CameraSettingsButton(props: CameraSettingsButtonProps) {
                 style={{ flex: 1, color: contentColor, textAlign: "center" }}
                 children={props.optionName}
             />
-        </CameraSettingsButtonBase>
+        </TouchableOpacity>
     )
 }
+
+
+const styles = StyleSheet.create({
+    container: {
+        alignItems: "center",
+        justifyContent: "center",
+        width: CAMERA_SETTINGS_BUTTON_HEIGHT,
+        height: CAMERA_SETTINGS_BUTTON_HEIGHT,
+        padding: 8,
+    },
+})
