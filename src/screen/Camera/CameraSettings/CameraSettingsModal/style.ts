@@ -8,7 +8,7 @@ import { CAMERA_SETTINGS_BUTTON_HEIGHT } from "../CameraSettingsButton"
 export const PseudoModal = styled.TouchableOpacity`
     position: absolute;
     top: 0px;
-    bottom: ${CAMERA_CONTROL_HEIGHT_WITH_CAMERA}px;
+    bottom: 0px;
     left: 0px;
     right: 0px;
     align-items: center;
@@ -22,6 +22,7 @@ export const ModalBackground = styled.TouchableOpacity<StyledProps>`
     align-items: center;
     justify-content: center;
     flex-direction: row;
+    margin-bottom: ${CAMERA_CONTROL_HEIGHT_WITH_CAMERA}px;
     border-radius: ${props => props.theme.shape.medium}px;
     background-color: rgba(0, 0, 0, 0.5);
 `
