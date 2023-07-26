@@ -7,7 +7,7 @@ import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
 import { Camera as RNCamera } from "react-native-vision-camera"
 
-import { EmptyList, HEADER_HEIGHT } from "../../components"
+import { EmptyList } from "../../components"
 import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler, useCameraDevices, useIsForeground } from "../../hooks"
 import { translate } from "../../locales"
@@ -23,6 +23,7 @@ import { CameraHeader } from "./Header"
 import { NoPermissionMessage } from "./NoPermissionMessage"
 import { RatioNotSupported } from "./RatioNotSupported"
 import { CameraWrapper } from "./style"
+import { useCameraMargin } from "./useCameraMargin"
 import { useCameraOrientation } from "./useCameraOrientation"
 import { useControlActionEnabled } from "./useControlActionEnabled"
 import { useDisableFocusOnSettingsOpened } from "./useDisableFocusOnSettingsOpened"
@@ -60,15 +61,7 @@ export function Camera() {
     const cameraSize = useMemo(() => (
         getCameraSize({ width, height }, settings.camera.ratio)
     ), [width, height, settings.camera.ratio])
-    const cameraMargin = useMemo(() => {
-        const defaultCameraSize = getCameraSize({ width, height }, "3:4")
-        if (!defaultCameraSize) return { top: 0 }
-
-        if ((defaultCameraSize.height + HEADER_HEIGHT) < height) {
-            return { top: HEADER_HEIGHT }
-        }
-        return { top: 0 }
-    }, [width, height, HEADER_HEIGHT])
+    const cameraMargin = useCameraMargin()
     const cameraDevices = useCameraDevices()
     const cameraDevice = cameraDevices ? cameraDevices[settings.camera.type] : undefined
     const cameraOrientation = useCameraOrientation()
