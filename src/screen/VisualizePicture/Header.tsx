@@ -31,7 +31,7 @@ export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
 
 
     if (props.rotation.isActive) return (
-        <Header style={styles.absolute}>
+        <Header style={styles.relative}>
             <HeaderButton
                 iconName={"close"}
                 iconColor={"white"}
@@ -61,7 +61,7 @@ export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
     )
 
     if (props.crop.isActive) return (
-        <Header style={styles.absolute}>
+        <Header style={styles.relative}>
             <HeaderButton
                 iconName={"close"}
                 iconColor={"white"}
@@ -115,6 +115,14 @@ export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
 const styles = StyleSheet.create({
     absolute: {
         position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: "rgba(0, 0, 0, 0.4)",
+        elevation: 0,
+        zIndex: 1,
+    },
+    relative: {
         top: 0,
         left: 0,
         right: 0,
