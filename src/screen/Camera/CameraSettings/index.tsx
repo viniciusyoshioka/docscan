@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react"
+import { useEffect } from "react"
 import { OrientationType } from "react-native-orientation-locker"
 import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
 
@@ -8,6 +8,7 @@ import { settingsCameraFlashDefault, settingsCameraRatioDefault, settingsCameraT
 import { useIsCameraFlippable } from "../useIsCameraFlippable"
 import { CameraSettingsButton } from "./CameraSettingsButton"
 import { CameraSettingsModal, CameraSettingsModalProps } from "./CameraSettingsModal"
+import { getChangeRatioButtonText, getFlashIcon, getSwitchCameraButtonText, nextCameraTypeSetting, nextFlashSetting, nextRatioSetting } from "./utils"
 
 
 export interface CameraSettingsProps extends CameraSettingsModalProps {}
@@ -26,81 +27,26 @@ export function CameraSettings(props: CameraSettingsProps) {
     const rotationDegree = useSharedValue(0)
 
 
-    const flashIcon = useMemo((): string => {
-        switch (settings.camera.flash) {
-            case "auto":
-                return "flash-auto"
-            case "on":
-                return "flash-on"
-            case "off":
-                return "flash-off"
-            default:
-                return "flash-auto"
-        }
-    }, [settings.camera.flash])
-
-    const switchCameraButtonText = useMemo((): string => {
-        switch (settings.camera.type) {
-            case "back":
-                return translate("CameraSettings_frontalCamera")
-            case "front":
-                return translate("CameraSettings_backCamera")
-            default:
-                return translate("CameraSettings_flip")
-        }
-    }, [settings.camera.type])
-
-    const changeRatioButtonText = useMemo((): string => {
-        switch (settings.camera.ratio) {
-            case "3:4":
-                return `${translate("CameraSettings_ratio")} 3:4`
-            case "9:16":
-                return `${translate("CameraSettings_ratio")} 9:16`
-            default:
-                return translate("CameraSettings_ratio")
-        }
-    }, [settings.camera.ratio])
+    const flashIcon = getFlashIcon(settings.camera.flash)
+    const switchCameraButtonText = getSwitchCameraButtonText(settings.camera.type)
+    const changeRatioButtonText = getChangeRatioButtonText(settings.camera.ratio)
 
 
     async function changeFlash() {
         const newSettings = { ...settings }
-        switch (settings.camera.flash) {
-            case "auto":
-                newSettings.camera.flash = "on"
-                break
-            case "on":
-                newSettings.camera.flash = "off"
-                break
-            case "off":
-                newSettings.camera.flash = "auto"
-                break
-        }
+        newSettings.camera.flash = nextFlashSetting[settings.camera.flash]
         setSettings(newSettings)
     }
 
     async function switchCameraType() {
         const newSettings = { ...settings }
-        switch (settings.camera.type) {
-            case "back":
-                newSettings.camera.type = "front"
-                break
-            case "front":
-                newSettings.camera.type = "back"
-                break
-        }
+        newSettings.camera.type = nextCameraTypeSetting[settings.camera.type]
         setSettings(newSettings)
     }
 
     async function changeCameraRatio() {
         const newSettings = { ...settings }
-        switch (settings.camera.ratio) {
-            case "3:4":
-                newSettings.camera.ratio = "9:16"
-                break
-            case "9:16":
-                newSettings.camera.ratio = "3:4"
-                break
-        }
+        newSettings.camera.ratio = nextRatioSetting[settings.camera.ratio]
         setSettings(newSettings)
     }
 
