@@ -1,7 +1,5 @@
 import { ForwardedRef, forwardRef, useImperativeHandle, useState } from "react"
-import { ViewProps } from "react-native"
-
-import { FocusIndicatorBase } from "./style"
+import { StyleSheet, View, ViewProps } from "react-native"
 
 
 export const FOCUS_INDICATOR_SIZE = 56
@@ -35,20 +33,36 @@ export const FocusIndicator = forwardRef((props: FocusIndicatorProps, ref: Forwa
     }))
 
 
-    if (!isFocusing) {
-        return null
-    }
+    if (!isFocusing) return null
 
 
     return (
-        <FocusIndicatorBase
+        <View
             {...props}
-            style={[ {
-                transform: [
-                    { translateX: pos.x - (FOCUS_INDICATOR_SIZE / 2) },
-                    { translateY: pos.y - (FOCUS_INDICATOR_SIZE / 2) },
-                ],
-            }, props.style]}
+            style={[
+                styles.indicator,
+                {
+                    transform: [
+                        { translateX: pos.x - (FOCUS_INDICATOR_SIZE / 2) },
+                        { translateY: pos.y - (FOCUS_INDICATOR_SIZE / 2) },
+                    ],
+                },
+                props.style
+            ]}
         />
     )
+})
+
+
+const styles = StyleSheet.create({
+    indicator: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: FOCUS_INDICATOR_SIZE,
+        height: FOCUS_INDICATOR_SIZE,
+        borderRadius: FOCUS_INDICATOR_SIZE,
+        borderWidth: 1,
+        borderColor: "white",
+    },
 })
