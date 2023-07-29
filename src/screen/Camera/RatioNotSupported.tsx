@@ -1,10 +1,11 @@
-import { ScrollScreen } from "@elementium/native"
-import { ViewStyle, useWindowDimensions } from "react-native"
+import { Button, ScrollScreen } from "@elementium/native"
+import { FlatList, ListRenderItem, ViewStyle, useWindowDimensions } from "react-native"
 
 import { HEADER_HEIGHT } from "../../components"
 import { translate } from "../../locales"
+import { CameraRatio, settingsCameraRatioOptions, useSettings } from "../../services/settings"
 import { useCameraControlDimensions } from "./CameraControl"
-import { CameraMessageText, CameraMessageTitle, CameraTextWrapper } from "./style"
+import { CameraButtonWrapper, CameraMessageText, CameraMessageTitle, CameraTextWrapper } from "./style"
 
 
 export interface RatioNotSupportedProps {
@@ -12,7 +13,6 @@ export interface RatioNotSupportedProps {
 }
 
 
-// TODO add button to change camera ratio
 export function RatioNotSupported(props: RatioNotSupportedProps) {
 
 
@@ -28,6 +28,23 @@ export function RatioNotSupported(props: RatioNotSupportedProps) {
     const scrollScreenContentContainerStyle: ViewStyle = {
         minHeight: height - HEADER_HEIGHT - cameraControlSize.HEIGHT_WITHOUT_CAMERA,
     }
+
+    const { settings, setSettings } = useSettings()
+
+
+    function changeRatioSettings(ratio: CameraRatio) {
+        setSettings({
+            ...settings,
+            camera: {
+                ...settings.camera,
+                ratio: ratio,
+            },
+        })
+    }
+
+    const renderItem: ListRenderItem<CameraRatio> = ({ item }) => (
+        <Button text={item} variant={"outline"} onPress={() => changeRatioSettings(item)} />
+    )
 
 
     if (!props.isVisible) return null
@@ -47,6 +64,17 @@ export function RatioNotSupported(props: RatioNotSupportedProps) {
                     {translate("Camera_ratioNotSupported_text")}
                 </CameraMessageText>
             </CameraTextWrapper>
+
+            <CameraButtonWrapper>
+                <FlatList
+                    data={settingsCameraRatioOptions}
+                    renderItem={renderItem}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    style={{ width: "100%" }}
+                    contentContainerStyle={{ gap: 8 }}
+                />
+            </CameraButtonWrapper>
         </ScrollScreen>
     )
 }

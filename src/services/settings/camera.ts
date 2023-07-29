@@ -9,6 +9,11 @@ export const settingsCameraTypeDefault: CameraType = "back"
 export const settingsCameraRatioDefault: CameraRatio = "3:4"
 
 
+export const settingsCameraFlashOptions: CameraFlash[] = ["auto", "on", "off"]
+export const settingsCameraTypeOptions: CameraType[] = ["front", "back"]
+export const settingsCameraRatioOptions: CameraRatio[] = ["3:4", "9:16"]
+
+
 export function getCameraRatioNumber(ratio: CameraRatio): number {
     switch (ratio) {
         case "3:4":
