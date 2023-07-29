@@ -3,7 +3,7 @@ import { ViewStyle, useWindowDimensions } from "react-native"
 
 import { HEADER_HEIGHT } from "../../components"
 import { translate } from "../../locales"
-import { CAMERA_CONTROL_HEIGHT_WITHOUT_CAMERA } from "./CameraControl"
+import { useCameraControlDimensions } from "./CameraControl"
 import { CameraMessageText, CameraMessageTitle, CameraTextWrapper } from "./style"
 
 
@@ -18,12 +18,15 @@ export function RatioNotSupported(props: RatioNotSupportedProps) {
 
     const { height } = useWindowDimensions()
 
+    const cameraControlDimensions = useCameraControlDimensions()
+    const { size: cameraControlSize } = cameraControlDimensions
+
     const scrollScreenStyle: ViewStyle = {
         marginTop: HEADER_HEIGHT,
-        marginBottom: CAMERA_CONTROL_HEIGHT_WITHOUT_CAMERA,
+        marginBottom: cameraControlSize.HEIGHT_WITHOUT_CAMERA,
     }
     const scrollScreenContentContainerStyle: ViewStyle = {
-        minHeight: height - HEADER_HEIGHT - CAMERA_CONTROL_HEIGHT_WITHOUT_CAMERA,
+        minHeight: height - HEADER_HEIGHT - cameraControlSize.HEIGHT_WITHOUT_CAMERA,
     }
 
 

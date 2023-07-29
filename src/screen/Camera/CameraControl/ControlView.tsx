@@ -1,25 +1,6 @@
-import { useMemo } from "react"
-import { Dimensions, StyleProp, StyleSheet, View, ViewProps, ViewStyle } from "react-native"
+import { StyleSheet, View, ViewProps } from "react-native"
 
-import { HEADER_HEIGHT } from "../../../components"
-import { getCameraSize } from "../utils"
-import { CONTROL_ACTION_SIZE } from "./ControlAction"
-
-
-const { width, height } = Dimensions.get("window")
-const cameraSize = getCameraSize({ width, height }, "3:4")
-
-
-export const CONTROL_VIEW_PADDING_VERTICAL_WITH_CAMERA = 32
-export const CONTROL_VIEW_PADDING_VERTICAL_WITHOUT_CAMERA = 16
-
-export const CONTROL_VIEW_MIN_HEIGHT = cameraSize
-    ? height - HEADER_HEIGHT - cameraSize.height
-    : 2 * CONTROL_VIEW_PADDING_VERTICAL_WITHOUT_CAMERA
-
-export const CONTROL_VIEW_MAX_HEIGHT_WITHOUT_CAMERA = (
-    (2 * CONTROL_VIEW_PADDING_VERTICAL_WITHOUT_CAMERA) + CONTROL_ACTION_SIZE
-)
+import { useCameraControlDimensions } from "./useCameraControlDimensions"
 
 
 export interface ControlViewProps extends ViewProps {
@@ -30,23 +11,19 @@ export interface ControlViewProps extends ViewProps {
 export function ControlView(props: ControlViewProps) {
 
 
-    const wrapperStyle = useMemo((): StyleProp<ViewStyle> => {
-        const newWrapperStyle: ViewStyle = {
-            minHeight: undefined,
-            maxHeight: CONTROL_VIEW_MAX_HEIGHT_WITHOUT_CAMERA,
-            paddingVertical: CONTROL_VIEW_PADDING_VERTICAL_WITHOUT_CAMERA,
-            backgroundColor: "transparent",
-        }
+    const cameraControlDimensions = useCameraControlDimensions()
+    const { styleWithCamera, styleWithouCamera, shouldUseWithoutCameraStyle } = cameraControlDimensions
 
-        if (props.isShowingCamera) {
-            newWrapperStyle.minHeight = CONTROL_VIEW_MIN_HEIGHT
-            newWrapperStyle.maxHeight = undefined
-            newWrapperStyle.paddingVertical = CONTROL_VIEW_PADDING_VERTICAL_WITH_CAMERA
-            newWrapperStyle.backgroundColor = "rgba(0, 0, 0, 0.4)"
-        }
+    const cameraControlStyle = shouldUseWithoutCameraStyle
+        ? styleWithouCamera
+        : props.isShowingCamera
+            ? styleWithCamera
+            : styleWithouCamera
 
-        return StyleSheet.flatten([styles.wrapper, newWrapperStyle, props.style])
-    }, [props.isShowingCamera, props.style])
+    const wrapperStyle = StyleSheet.flatten([styles.wrapper, {
+        backgroundColor: props.isShowingCamera ? "rgba(0, 0, 0, 0.4)" : "transparent",
+        ...cameraControlStyle,
+    }, props.style])
 
 
     return (
