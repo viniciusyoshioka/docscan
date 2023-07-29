@@ -5,6 +5,7 @@ import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTimi
 import { useCameraDevices, useDeviceOrientation } from "../../../hooks"
 import { translate } from "../../../locales"
 import { settingsCameraFlashDefault, settingsCameraRatioDefault, settingsCameraTypeDefault, useSettings } from "../../../services/settings"
+import { CAMERA_CONTROL_HEIGHT_WITH_CAMERA } from "../CameraControl"
 import { useIsCameraFlippable } from "../useIsCameraFlippable"
 import { CameraSettingsButton } from "./CameraSettingsButton"
 import { CameraSettingsModal, CameraSettingsModalProps } from "./CameraSettingsModal"
@@ -112,7 +113,7 @@ export function CameraSettings(props: CameraSettingsProps) {
 
 
     return (
-        <CameraSettingsModal {...props}>
+        <CameraSettingsModal {...props} containerStyle={{ marginBottom: CAMERA_CONTROL_HEIGHT_WITH_CAMERA }}>
             <Reanimated.View style={orientationStyle}>
                 <CameraSettingsButton
                     optionName={translate("CameraSettings_flash")}

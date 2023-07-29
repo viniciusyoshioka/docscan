@@ -1,8 +1,7 @@
 import { ReactNode } from "react"
-import { ScrollView, StyleSheet, TouchableOpacity } from "react-native"
+import { ScrollView, StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from "react-native"
 
 import { useAppTheme } from "../../../theme"
-import { CAMERA_CONTROL_HEIGHT_WITH_CAMERA } from "../CameraControl"
 import { CAMERA_SETTINGS_BUTTON_HEIGHT } from "./CameraSettingsButton"
 
 
@@ -10,6 +9,10 @@ export interface CameraSettingsModalProps {
     visible?: boolean;
     onRequestClose?: () => void;
     children?: ReactNode;
+    scrimStyle?: StyleProp<ViewStyle>;
+    containerStyle?: StyleProp<ViewStyle>;
+    contentStyle?: StyleProp<ViewStyle>;
+    contentWrapperStyle?: StyleProp<ViewStyle>;
 }
 
 
@@ -26,20 +29,20 @@ export function CameraSettingsModal(props: CameraSettingsModalProps) {
         <TouchableOpacity
             activeOpacity={1}
             onPress={props.onRequestClose}
-            style={styles.pseudoModal}
+            style={[styles.scrim, props.scrimStyle]}
         >
             <TouchableOpacity
                 activeOpacity={1}
-                style={[styles.modalBackground, { borderRadius: shape.medium } ]}
+                style={[styles.container, { borderRadius: shape.medium }, props.containerStyle]}
             >
                 <ScrollView
                     fadingEdgeLength={32}
                     showsVerticalScrollIndicator={false}
-                    style={styles.modalContent}
+                    style={[styles.content, props.contentStyle]}
                 >
                     <TouchableOpacity
                         activeOpacity={1}
-                        style={styles.modalContentWrapper}
+                        style={[styles.contentWrapper, props.contentWrapperStyle]}
                         children={props.children}
                     />
                 </ScrollView>
@@ -50,7 +53,7 @@ export function CameraSettingsModal(props: CameraSettingsModalProps) {
 
 
 const styles = StyleSheet.create({
-    pseudoModal: {
+    scrim: {
         position: "absolute",
         top: 0,
         bottom: 0,
@@ -61,17 +64,16 @@ const styles = StyleSheet.create({
         padding: 16,
         zIndex: 1,
     },
-    modalBackground: {
+    container: {
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "row",
-        marginBottom: CAMERA_CONTROL_HEIGHT_WITH_CAMERA,
         backgroundColor: "rgba(0, 0, 0, 0.5)",
     },
-    modalContent: {
+    content: {
         maxHeight: 1.5 * CAMERA_SETTINGS_BUTTON_HEIGHT,
     },
-    modalContentWrapper: {
+    contentWrapper: {
         flexWrap: "wrap",
         flexDirection: "row",
         alignItems: "center",
