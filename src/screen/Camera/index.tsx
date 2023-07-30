@@ -1,7 +1,7 @@
 import { Screen, StatusBar } from "@elementium/native"
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core"
 import { Realm } from "@realm/react"
-import { useMemo, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { Alert, StyleProp, ViewStyle, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
@@ -68,7 +68,7 @@ export function Camera() {
     const [isFocusEnabled, setIsFocusEnabled] = useState(true)
 
 
-    const screenStyle: StyleProp<ViewStyle> = useMemo(() => isShowingCamera ? { backgroundColor: "black" } : undefined, [isShowingCamera])
+    const screenStyle: StyleProp<ViewStyle> = isShowingCamera ? { backgroundColor: "black" } : undefined
 
 
     useBackHandler(() => {
