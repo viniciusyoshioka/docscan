@@ -21,6 +21,7 @@ import { CameraSettings } from "./CameraSettings"
 import { FocusIndicator, FocusIndicatorRef } from "./FocusIndicator"
 import { CameraHeader } from "./Header"
 import { NoPermissionMessage } from "./NoPermissionMessage"
+import { PictureTakenFeedback, PictureTakenFeedbackRef } from "./PictureTakenFeedback"
 import { RatioNotSupported } from "./RatioNotSupported"
 import { CameraWrapper } from "./style"
 import { useCameraMargin } from "./useCameraMargin"
@@ -51,6 +52,7 @@ export function Camera() {
     const { documentModel, setDocumentModel } = useDocumentModel()
 
     const cameraRef = useRef<RNCamera>(null)
+    const pictureTakenFeedbackRef = useRef<PictureTakenFeedbackRef>(null)
     const cameraControlRef = useRef<CameraControlRef>(null)
     const focusIndicatorRef = useRef<FocusIndicatorRef>(null)
 
@@ -107,6 +109,7 @@ export function Camera() {
         try {
             if (!cameraRef.current) throw new Error("Camera ref is undefined")
 
+            pictureTakenFeedbackRef.current?.showFeedback()
             const response = await cameraRef.current.takePhoto({
                 flash: settings.camera.flash,
             })
@@ -290,6 +293,8 @@ export function Camera() {
                             }}
                         />
                     </TapGestureHandler>
+
+                    <PictureTakenFeedback ref={pictureTakenFeedbackRef} />
                 </CameraWrapper>
             )}
 
