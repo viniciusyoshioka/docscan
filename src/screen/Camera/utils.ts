@@ -13,7 +13,7 @@ export type CameraSize = {
 
 export function getCameraSize(screenSize: ScreenSize, cameraRatio: CameraRatio): CameraSize | undefined {
     const cameraWidth = screenSize.width
-    const cameraHeight = screenSize.width * getCameraRatioNumber(cameraRatio)
+    const cameraHeight = screenSize.width / getCameraRatioNumber(cameraRatio)
     if (cameraHeight > screenSize.height) {
         return undefined
     }

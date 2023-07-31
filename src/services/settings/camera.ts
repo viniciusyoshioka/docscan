@@ -17,9 +17,9 @@ export const settingsCameraRatioOptions: CameraRatio[] = ["3:4", "9:16"]
 export function getCameraRatioNumber(ratio: CameraRatio): number {
     switch (ratio) {
         case "3:4":
-            return (4 / 3)
+            return (3 / 4)
         case "9:16":
-            return (16 / 9)
+            return (9 / 16)
         default:
             throw new Error(`Invalid ratio provided to get the number "${ratio}"`)
     }
