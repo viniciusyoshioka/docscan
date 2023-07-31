@@ -14,6 +14,6 @@ export function useResetCameraOnChangeRatio(setIsResetingCamera: (isReseting: bo
 
         setTimeout(() => {
             setIsResetingCamera(false)
-        }, 100)
+        }, 0)
     }, [settings.camera.ratio])
 }
