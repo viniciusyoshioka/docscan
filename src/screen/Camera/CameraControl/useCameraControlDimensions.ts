@@ -1,7 +1,6 @@
 import { Dimensions, StatusBar, useWindowDimensions } from "react-native"
 
 import { HEADER_HEIGHT } from "../../../components"
-import { useSettings } from "../../../services/settings"
 import { getCameraSize } from "../utils"
 import { CONTROL_ACTION_SIZE } from "./ControlAction"
 import { CONTROL_BUTTON_HEIGHT } from "./ControlButton"
@@ -39,9 +38,7 @@ export type CameraControlStyle = {
 export function useCameraControlDimensions(): CameraControlDimensions {
 
 
-    const { width, height } = useWindowDimensions()
-    const { settings } = useSettings()
-    const cameraSize = getCameraSize({ width, height }, settings.camera.ratio)
+    const { height } = useWindowDimensions()
 
 
     const PADDING_VERTICAL_WITHOUT_CAMERA = 16
@@ -52,7 +49,7 @@ export function useCameraControlDimensions(): CameraControlDimensions {
         CONTROL_BUTTON_HEIGHT + (2 * PADDING_VERTICAL_WITHOUT_CAMERA)
     )
     const HEIGHT_WITH_CAMERA = Math.max(
-        SCREEN_HEIGHT - HEADER_HEIGHT - (DEFAULT_CAMERA_SIZE?.height ?? 0),
+        SCREEN_HEIGHT - HEADER_HEIGHT - DEFAULT_CAMERA_SIZE.height,
         CONTROL_ACTION_SIZE + (2 * PADDING_VERTICAL_WITH_CAMERA),
         CONTROL_BUTTON_HEIGHT + (2 * PADDING_VERTICAL_WITH_CAMERA)
     )
@@ -77,7 +74,7 @@ export function useCameraControlDimensions(): CameraControlDimensions {
         maxHeight: undefined,
     }
 
-    const shouldUseWithoutCameraStyle = (!cameraSize || (HEIGHT_WITH_CAMERA >= (height / 2)))
+    const shouldUseWithoutCameraStyle = (HEIGHT_WITH_CAMERA >= (height / 2))
 
 
     return { size, styleWithouCamera, styleWithCamera, shouldUseWithoutCameraStyle }

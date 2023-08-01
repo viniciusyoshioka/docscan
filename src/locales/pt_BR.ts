@@ -27,8 +27,6 @@ export const pt_BR: TranslationObjectType = {
     Camera_openSettings: "Abrir configurações",
     Camera_grantPermission: "Conceder permissão",
     Camera_cameraNotAvailable: "Câmera indisponível",
-    Camera_ratioNotSupported_title: "Proporção da câmera não suportada",
-    Camera_ratioNotSupported_text: "A proporção da câmera selecionada não é suportada, selecione outra ou tente mudar o tamanho da janela do aplicativo",
     // Camera CameraSettings alert
     CameraSettings_alert_errorSavingNewFlashSetting_text: "Erro salvando nova configuração de flash",
     CameraSettings_alert_errorSavingNewWhiteBalanceSetting_text: "Erro salvando nova configuração de balanço de branco",

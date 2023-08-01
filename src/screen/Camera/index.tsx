@@ -22,7 +22,6 @@ import { FocusIndicator, FocusIndicatorRef } from "./FocusIndicator"
 import { CameraHeader } from "./Header"
 import { NoPermissionMessage } from "./NoPermissionMessage"
 import { PictureTakenFeedback, PictureTakenFeedbackRef } from "./PictureTakenFeedback"
-import { RatioNotSupported } from "./RatioNotSupported"
 import { CameraWrapper } from "./style"
 import { useCameraMargin } from "./useCameraMargin"
 import { useCameraOrientation } from "./useCameraOrientation"
@@ -65,7 +64,7 @@ export function Camera() {
     const cameraOrientation = useCameraOrientation()
     const [hasCameraPermission, requestCameraPermission] = useRequestCameraPermission()
     const isCameraActive = useIsCameraActive({ isFocused, isForeground, hasPermission: hasCameraPermission })
-    const isShowingCamera = useIsShowingCamera({ hasPermission: hasCameraPermission, cameraDevice, cameraSize })
+    const isShowingCamera = useIsShowingCamera({ hasPermission: hasCameraPermission, cameraDevice })
     const [isResetingCamera, setIsResetingCamera] = useState(false)
     const [isFocusEnabled, setIsFocusEnabled] = useState(true)
 
@@ -240,7 +239,7 @@ export function Camera() {
     }
 
 
-    useControlActionEnabled({ isCameraActive, cameraControlRef, isCameraSizeCompatible: !!cameraSize })
+    useControlActionEnabled({ isCameraActive, cameraControlRef })
     useDisableFocusOnSettingsOpened({ isSettingsOpened: isCameraSettingsVisible, setIsFocusEnabled })
     useResetCameraOnChangeRatio(setIsResetingCamera)
 
@@ -268,11 +267,7 @@ export function Camera() {
                 visible={hasCameraPermission && !cameraDevice}
             />
 
-            <RatioNotSupported
-                isVisible={!!hasCameraPermission && !!cameraDevice && !isResetingCamera && !cameraSize}
-            />
-
-            {(hasCameraPermission && cameraDevice && !isResetingCamera && cameraSize) && (
+            {(hasCameraPermission && cameraDevice && !isResetingCamera) && (
                 <CameraWrapper style={{ marginTop: cameraMargin.top }}>
                     <TapGestureHandler
                         minPointers={1}

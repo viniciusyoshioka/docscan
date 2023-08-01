@@ -20,7 +20,10 @@ export const CameraButtonWrapper = styled(View)`
 `
 
 
-export const CameraWrapper = View
+export const CameraWrapper = styled(View)`
+    align-items: center;
+    justify-content: center;
+`
 
 
 export const CameraMessageTitle = styled(Text)<StyledProps>`

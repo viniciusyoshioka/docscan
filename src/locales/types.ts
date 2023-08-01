@@ -24,8 +24,6 @@ export type TranslationKeyType =
     | "Camera_openSettings"
     | "Camera_grantPermission"
     | "Camera_cameraNotAvailable"
-    | "Camera_ratioNotSupported_title"
-    | "Camera_ratioNotSupported_text"
     // Camera CameraSettings alert
     | "CameraSettings_alert_errorSavingNewFlashSetting_text"
     | "CameraSettings_alert_errorSavingNewWhiteBalanceSetting_text"

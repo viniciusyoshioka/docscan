@@ -18,8 +18,6 @@ export function useCameraMargin(): CameraMargin {
 
 
     const defaultCameraSize = getCameraSize({ width, height }, settings.camera.ratio)
-    if (!defaultCameraSize) return { top: 0 }
-
     if ((defaultCameraSize.height + HEADER_HEIGHT) < height) {
         return { top: HEADER_HEIGHT }
     }
