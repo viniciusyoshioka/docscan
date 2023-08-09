@@ -6,6 +6,7 @@ import android.graphics.Matrix;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.exifinterface.media.ExifInterface;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -87,36 +88,67 @@ public class ImageToolsModule extends ReactContextBaseJavaModule {
         }
     }
 
+    private int getRotationAngle(int orientation) {
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_90 || orientation == ExifInterface.ORIENTATION_TRANSVERSE) {
+            return 90;
+        }
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_180 || orientation == ExifInterface.ORIENTATION_FLIP_VERTICAL) {
+            return 180;
+        }
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_270 || orientation == ExifInterface.ORIENTATION_TRANSPOSE) {
+            return 270;
+        }
+        return 0;
+    }
+
     @ReactMethod
-    public void rotateDegree(String path, ReadableMap options, Promise promise) {
+    public void rotate(ReadableMap options, Promise promise) {
+        String sourcePath = options.getString("sourcePath");
+        String destinationPath = options.getString("destinationPath");
         int angle = options.getInt("angle");
-        String pathToSave = options.getString("pathToSave");
 
-        Matrix matrix = new Matrix();
-        matrix.setRotate(angle);
-
-        Bitmap originalFile = BitmapFactory.decodeFile(path);
-        Bitmap rotatedImage = Bitmap.createBitmap(
-                originalFile,
-                0, 0,
-                originalFile.getWidth(), originalFile.getHeight(),
-                matrix, true);
-        originalFile.recycle();
-
-        String fileExtension = getFileExtension(path);
-        Bitmap.CompressFormat imageFormat = getImageFormat(fileExtension);
+        if (sourcePath == null) {
+            promise.reject("ImageTools", "Param sourcePath of rotate method should not be null");
+            return;
+        }
+        if (destinationPath == null) {
+            promise.reject("ImageTools", "Param destinationPath of rotate method should not be null");
+            return;
+        }
 
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream(pathToSave);
-            boolean successCompress = rotatedImage.compress(imageFormat, 100, fileOutputStream);
+            ExifInterface exifInterface = new ExifInterface(sourcePath);
+
+            int currentOrientationAttribute = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+            int currentRotationAngle = getRotationAngle(currentOrientationAttribute);
+            int newRotationAngle = (currentRotationAngle + angle) % 360;
+
+            Matrix matrix = new Matrix();
+            matrix.setRotate(newRotationAngle);
+
+            Bitmap originalFile = BitmapFactory.decodeFile(sourcePath);
+            Bitmap rotatedImage = Bitmap.createBitmap(
+                    originalFile,
+                    0, 0,
+                    originalFile.getWidth(), originalFile.getHeight(),
+                    matrix, true);
+
+            String fileExtension = getFileExtension(sourcePath);
+            Bitmap.CompressFormat imageFormat = getImageFormat(fileExtension);
+
+            FileOutputStream fileOutputStream = new FileOutputStream(destinationPath);
+            boolean isSavedSuccessfully = rotatedImage.compress(imageFormat, 100, fileOutputStream);
             fileOutputStream.close();
 
-            if (successCompress) {
+            originalFile.recycle();
+            rotatedImage.recycle();
+
+            if (isSavedSuccessfully) {
                 promise.resolve(null);
                 return;
             }
 
-            promise.reject(new Exception("Rotated image was not compressed (saved) successfully"));
+            promise.reject(new Exception("Rotated image was not saved successfully"));
         } catch (Exception e) {
             e.printStackTrace();
             promise.reject(e);

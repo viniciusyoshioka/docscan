@@ -104,9 +104,10 @@ export const ImageRotation = forwardRef((props: ImageRotationProps, ref: Forward
             return
         }
 
-        await ImageTools.rotateDegree(imageUri, {
+        await ImageTools.rotate({
+            sourcePath: imageUri,
+            destinationPath: pathToSave,
             angle: degree.value,
-            pathToSave: pathToSave,
         })
 
         isSaving.value = false

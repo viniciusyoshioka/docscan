@@ -7,14 +7,15 @@ export type ImageSize = {
 }
 
 export type RotationOptions = {
+    sourcePath: string
+    destinationPath: string;
     angle: number;
-    pathToSave: string;
 }
 
 
 export interface ImageToolsType {
     getSize: (path: string) => Promise<ImageSize>;
-    rotateDegree: (path: string, options: RotationOptions) => Promise<void>;
+    rotate: (options: RotationOptions) => Promise<void>;
 }
 
 
