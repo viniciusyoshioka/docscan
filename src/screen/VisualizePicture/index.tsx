@@ -17,7 +17,6 @@ import { ImageRotation, ImageRotationRef } from "./ImageRotation"
 import { ImageVisualizationItem } from "./ImageVisualizationItem"
 
 
-// TODO image rotation still causes error and does not rotate the image
 // TODO fix scroll not centralized when rotating screen
 export function VisualizePicture() {
 
