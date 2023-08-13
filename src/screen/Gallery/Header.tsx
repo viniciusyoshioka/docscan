@@ -1,4 +1,7 @@
-import { Header, HeaderButton, HeaderTitle } from "../../components"
+import { AnimatedHeader, AnimatedHeaderRef, HeaderButton, HeaderTitle } from "@elementium/native"
+import { ForwardedRef, forwardRef } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+
 import { translate } from "../../locales"
 
 
@@ -11,7 +14,10 @@ export interface GalleryHeaderProps {
 }
 
 
-export function GalleryHeader(props: GalleryHeaderProps) {
+export const GalleryHeader = forwardRef((props: GalleryHeaderProps, ref: ForwardedRef<AnimatedHeaderRef>) => {
+
+
+    const safeAreaInsets = useSafeAreaInsets()
 
 
     function getTitle(): string {
@@ -23,7 +29,7 @@ export function GalleryHeader(props: GalleryHeaderProps) {
 
 
     return (
-        <Header>
+        <AnimatedHeader ref={ref} overrideStatusBar={safeAreaInsets.top !== 0}>
             {props.isSelectionMode && (
                 <HeaderButton
                     iconName={"close"}
@@ -46,6 +52,6 @@ export function GalleryHeader(props: GalleryHeaderProps) {
                     onPress={props.importImage}
                 />
             )}
-        </Header>
+        </AnimatedHeader>
     )
-}
+})
