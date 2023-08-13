@@ -1,7 +1,8 @@
+import { Header, HeaderButton, HeaderTitle } from "@elementium/native"
 import { useMemo } from "react"
 import { StyleProp, StyleSheet, ViewStyle } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-import { Header, HeaderButton, HeaderTitle } from "../../components"
 import { useAppTheme } from "../../theme"
 
 
@@ -14,6 +15,8 @@ export interface CameraHeaderProps {
 
 export function CameraHeader(props: CameraHeaderProps) {
 
+
+    const safeAreaInsets = useSafeAreaInsets()
 
     const { isDark } = useAppTheme()
 
@@ -34,7 +37,7 @@ export function CameraHeader(props: CameraHeaderProps) {
 
 
     return (
-        <Header style={headerStyle}>
+        <Header style={headerStyle} overrideStatusBar={safeAreaInsets.top !== 0}>
             <HeaderButton
                 iconName={"arrow-back"}
                 iconColor={getIconColor()}
