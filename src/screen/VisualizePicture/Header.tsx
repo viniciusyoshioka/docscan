@@ -1,6 +1,6 @@
+import { Header, HeaderButton, HeaderTitle } from "@elementium/native"
 import { StyleSheet } from "react-native"
-
-import { Header, HeaderButton, HeaderTitle } from "../../components"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 
 export interface VisualizePictureHeaderProps {
@@ -25,6 +25,9 @@ export interface VisualizePictureHeaderProps {
 
 
 export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
+
+
+    const safeAreaInsets = useSafeAreaInsets()
 
 
     if (!props.isShowingOverlay) return null
@@ -79,7 +82,7 @@ export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
     )
 
     return (
-        <Header style={styles.absolute}>
+        <Header style={styles.absolute} overrideStatusBar={safeAreaInsets.top !== 0}>
             <HeaderButton
                 iconName={"arrow-back"}
                 iconColor={"white"}
