@@ -5,16 +5,16 @@ import { useAppTheme } from "../theme"
 
 
 export type HeaderColorOnScrollOptions = {
-    inputRange?: number[],
-    outputRange?: string[],
-    onInterpolate?: (color: string) => void
+    inputRange?: number[];
+    outputRange?: string[];
+    onInterpolate?: (color: string) => void;
 }
 
 
 export function useHeaderColorOnScroll(options?: HeaderColorOnScrollOptions) {
 
 
-    const { color } = useAppTheme()
+    const { appTheme, color, isDark } = useAppTheme()
     const scrollY = useSharedValue(0)
 
 
@@ -35,7 +35,7 @@ export function useHeaderColorOnScroll(options?: HeaderColorOnScrollOptions) {
     useAnimatedReaction(
         () => scrollY.value,
         current => runOnJS(updateHeaderColor)(current),
-        [scrollY.value]
+        [scrollY.value, appTheme, isDark]
     )
 
 
