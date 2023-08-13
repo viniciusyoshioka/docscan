@@ -10,8 +10,8 @@
         "typecheck": "tsc --noEmit"
     },
     "dependencies": {
-        "@elementium/color": "file:..\\elementium\\packages\\color",
-        "@elementium/native": "file:..\\elementium\\packages\\native",
+        "@elementium/color": "file:../elementium/packages/color",
+        "@elementium/native": "file:../elementium/packages/native",
         "@react-native-camera-roll/camera-roll": "^5.7.2",
         "@react-native-community/checkbox": "^0.5.16",
         "@react-native-community/slider": "^4.4.2",
