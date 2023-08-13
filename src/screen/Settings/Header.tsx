@@ -1,4 +1,7 @@
-import { Header, HeaderButton, HeaderTitle } from "../../components"
+import { AnimatedHeader, AnimatedHeaderRef, HeaderButton, HeaderTitle } from "@elementium/native"
+import { ForwardedRef, forwardRef } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+
 import { translate } from "../../locales"
 
 
@@ -7,15 +10,20 @@ export interface SettingsHeaderProps {
 }
 
 
-export function SettingsHeader(props: SettingsHeaderProps) {
+export const SettingsHeader = forwardRef((props: SettingsHeaderProps, ref: ForwardedRef<AnimatedHeaderRef>) => {
+
+
+    const safeAreaInsets = useSafeAreaInsets()
+
+
     return (
-        <Header>
+        <AnimatedHeader ref={ref} overrideStatusBar={safeAreaInsets.top !== 0}>
             <HeaderButton
                 iconName={"arrow-back"}
                 onPress={props.goBack}
             />
 
             <HeaderTitle title={translate("Settings_header_title")} />
-        </Header>
+        </AnimatedHeader>
     )
-}
+})
