@@ -1,4 +1,7 @@
-import { Header, HeaderButton, HeaderTitle } from "../../components"
+import { AnimatedHeader, AnimatedHeaderRef, HeaderButton, HeaderTitle } from "@elementium/native"
+import { ForwardedRef, forwardRef } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+
 import { translate } from "../../locales"
 import { HomeMenu } from "./HomeMenu"
 
@@ -18,7 +21,10 @@ export interface HomeHeaderProps {
 }
 
 
-export function HomeHeader(props: HomeHeaderProps) {
+export const HomeHeader = forwardRef((props: HomeHeaderProps, ref: ForwardedRef<AnimatedHeaderRef>) => {
+
+
+    const safeAreaInsets = useSafeAreaInsets()
 
 
     function getTitle(): string {
@@ -30,7 +36,7 @@ export function HomeHeader(props: HomeHeaderProps) {
 
 
     return (
-        <Header>
+        <AnimatedHeader ref={ref} overrideStatusBar={safeAreaInsets.top !== 0}>
             {props.isSelectionMode && (
                 <HeaderButton
                     iconName={"close"}
@@ -67,6 +73,6 @@ export function HomeHeader(props: HomeHeaderProps) {
                 mergeDocument={props.mergeDocument}
                 duplicateDocument={props.duplicateDocument}
             />
-        </Header>
+        </AnimatedHeader>
     )
-}
+})
