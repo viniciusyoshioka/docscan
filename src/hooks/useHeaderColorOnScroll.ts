@@ -19,7 +19,7 @@ export function useHeaderColorOnScroll(options?: HeaderColorOnScrollOptions) {
 
 
     const inputRange = options?.inputRange ?? [0, 56]
-    const outputRange = options?.outputRange ?? [color.surface, color.surfaceContainerHigh]
+    const outputRange = options?.outputRange ?? [color.surface, color.surfaceContainer]
 
 
     function updateHeaderColor(scrollY: number) {
