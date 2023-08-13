@@ -1,8 +1,8 @@
-import { Divider, Screen, StatusBar } from "@elementium/native"
+import { AnimatedHeaderRef, Divider, Screen, StatusBar } from "@elementium/native"
 import { useNavigation } from "@react-navigation/native"
 import { Realm } from "@realm/react"
 import { FlashList } from "@shopify/flash-list"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Alert, View } from "react-native"
 import DocumentPicker from "react-native-document-picker"
 import RNFS from "react-native-fs"
@@ -10,7 +10,7 @@ import { unzip } from "react-native-zip-archive"
 
 import { EmptyList, LoadingModal } from "../../components"
 import { DocumentPictureSchema, DocumentSchema, ExportedDocumentPictureRealm, ExportedDocumentRealm, openExportedDatabase, useDocumentModel, useDocumentRealm } from "../../database"
-import { useBackHandler, useSelectionMode } from "../../hooks"
+import { useBackHandler, useHeaderColorOnScroll, useSelectionMode } from "../../hooks"
 import { TranslationKeyType, translate } from "../../locales"
 import { NavigationParamProps } from "../../router"
 import { Constants } from "../../services/constant"
@@ -30,6 +30,8 @@ export function Home() {
 
     const navigation = useNavigation<NavigationParamProps<"Home">>()
 
+    const homeHeaderRef = useRef<AnimatedHeaderRef>(null)
+
     const { setDocumentModel } = useDocumentModel()
     const documentRealm = useDocumentRealm()
     const documents = documentRealm.objects(DocumentSchema).sorted("modifiedAt", true)
@@ -43,6 +45,11 @@ export function Home() {
             return true
         }
         return false
+    })
+
+
+    const onScroll = useHeaderColorOnScroll({
+        onInterpolate: color => homeHeaderRef.current?.setBackgroundColor(color),
     })
 
 
@@ -350,6 +357,7 @@ export function Home() {
             <StatusBar />
 
             <HomeHeader
+                ref={homeHeaderRef}
                 isSelectionMode={documentSelection.isSelectionMode}
                 selectedDocumentsAmount={documentSelection.selectedData.length}
                 exitSelectionMode={documentSelection.exitSelection}
@@ -370,6 +378,7 @@ export function Home() {
                     extraData={documentSelection.selectedData}
                     estimatedItemSize={DOCUMENT_ITEM_HEIGHT}
                     ItemSeparatorComponent={() => <Divider wrapperStyle={{ paddingHorizontal: 16 }} />}
+                    onScroll={onScroll}
                 />
             </View>
 
