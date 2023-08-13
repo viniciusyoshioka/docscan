@@ -1,9 +1,10 @@
-import { ListItem, Screen, ScrollScreen, StatusBar } from "@elementium/native"
+import { AnimatedHeaderRef, ListItem, Screen, ScrollScreen, StatusBar } from "@elementium/native"
 import { useNavigation } from "@react-navigation/core"
+import { useRef } from "react"
 import { Alert } from "react-native"
 import Share from "react-native-share"
 
-import { useBackHandler } from "../../hooks"
+import { useBackHandler, useHeaderColorOnScroll } from "../../hooks"
 import { translate } from "../../locales"
 import { NavigationParamProps } from "../../router"
 import { Constants } from "../../services/constant"
@@ -19,10 +20,17 @@ export function Settings() {
 
     const navigation = useNavigation<NavigationParamProps<"Settings">>()
 
+    const settingsHeaderRef = useRef<AnimatedHeaderRef>(null)
+
 
     useBackHandler(() => {
         goBack()
         return true
+    })
+
+
+    const onScroll = useHeaderColorOnScroll({
+        onInterpolate: color => settingsHeaderRef.current?.setBackgroundColor(color),
     })
 
 
@@ -67,11 +75,9 @@ export function Settings() {
         <Screen>
             <StatusBar />
 
-            <SettingsHeader
-                goBack={goBack}
-            />
+            <SettingsHeader ref={settingsHeaderRef} goBack={goBack} />
 
-            <ScrollScreen>
+            <ScrollScreen onScroll={onScroll}>
                 <ListItem
                     leadingIcon={{ iconName: "brightness-medium" }}
                     title={translate("Settings_theme_title")}
