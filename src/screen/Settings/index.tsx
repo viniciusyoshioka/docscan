@@ -1,4 +1,4 @@
-import { AnimatedHeaderRef, ListItem, Screen, ScrollScreen, StatusBar } from "@elementium/native"
+import { AnimatedHeaderRef, ListItem, Screen, ScrollScreen } from "@elementium/native"
 import { useNavigation } from "@react-navigation/core"
 import { useRef } from "react"
 import { Alert } from "react-native"
@@ -73,8 +73,6 @@ export function Settings() {
 
     return (
         <Screen>
-            <StatusBar />
-
             <SettingsHeader ref={settingsHeaderRef} goBack={goBack} />
 
             <ScrollScreen onScroll={onScroll}>
