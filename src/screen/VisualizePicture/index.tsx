@@ -4,6 +4,7 @@ import { FlashList } from "@shopify/flash-list"
 import { useMemo, useRef, useState } from "react"
 import { Alert, View, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
 import { useBackHandler } from "../../hooks"
@@ -24,6 +25,7 @@ export function VisualizePicture() {
     const navigation = useNavigation<NavigationParamProps<"VisualizePicture">>()
     const { params } = useRoute<RouteParamProps<"VisualizePicture">>()
     const { width } = useWindowDimensions()
+    const safeAreaInsets = useSafeAreaInsets()
 
     const documentRealm = useDocumentRealm()
     const { documentModel, setDocumentModel } = useDocumentModel()
@@ -218,7 +220,7 @@ export function VisualizePicture() {
 
 
     return (
-        <Screen style={{ backgroundColor: "black" }}>
+        <Screen style={{ backgroundColor: "black", paddingTop: safeAreaInsets.top }}>
             <StatusBar barStyle={"light-content"} backgroundColor={"black"} />
 
             <VisualizePictureHeader
