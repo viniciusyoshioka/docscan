@@ -1,8 +1,7 @@
-import { Button, ScrollScreen } from "@elementium/native"
+import { Button, HEADER_HEIGHT, ScrollScreen } from "@elementium/native"
 import { Linking, StatusBar, ViewStyle, useWindowDimensions } from "react-native"
-import { useSafeAreaFrame } from "react-native-safe-area-context"
+import { useSafeAreaFrame, useSafeAreaInsets } from "react-native-safe-area-context"
 
-import { HEADER_HEIGHT } from "../../components"
 import { translate } from "../../locales"
 import { useCameraControlDimensions } from "./CameraControl"
 import { CameraButtonWrapper, CameraMessageText, CameraMessageTitle, CameraTextWrapper } from "./style"
@@ -22,13 +21,14 @@ export function NoPermissionMessage(props: NoPermissionMessageProps) {
 
     const { height } = useWindowDimensions()
     const safeAreaFrame = useSafeAreaFrame()
+    const safeAreaInsets = useSafeAreaInsets()
 
     const cameraControlDimensions = useCameraControlDimensions()
     const { size: cameraControlSize } = cameraControlDimensions
 
     const heightToDiscount = Math.round(safeAreaFrame.y) === Math.round(STATUS_BAR_HEIGHT) ? 0 : safeAreaFrame.y
     const scrollScreenStyle: ViewStyle = {
-        marginTop: HEADER_HEIGHT,
+        marginTop: HEADER_HEIGHT + safeAreaInsets.top,
         marginBottom: cameraControlSize.HEIGHT_WITHOUT_CAMERA,
     }
     const scrollScreenContentContainerStyle: ViewStyle = {

@@ -1,6 +1,6 @@
+import { HEADER_HEIGHT } from "@elementium/native"
 import { Dimensions, StatusBar, useWindowDimensions } from "react-native"
 
-import { HEADER_HEIGHT } from "../../../components"
 import { getCameraSize } from "../utils"
 import { CONTROL_ACTION_SIZE } from "./ControlAction"
 import { CONTROL_BUTTON_HEIGHT } from "./ControlButton"
