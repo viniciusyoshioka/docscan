@@ -1,15 +1,15 @@
-import { Screen, StatusBar } from "@elementium/native"
+import { AnimatedHeaderRef, HEADER_HEIGHT, Screen, StatusBar } from "@elementium/native"
 import { CameraRoll, PhotoIdentifier } from "@react-native-camera-roll/camera-roll"
 import { useNavigation, useRoute } from "@react-navigation/core"
 import { Realm } from "@realm/react"
 import { FlashList } from "@shopify/flash-list"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { ActivityIndicator, Alert, View, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 
-import { EmptyList, HEADER_HEIGHT, LoadingModal } from "../../components"
+import { EmptyList, LoadingModal } from "../../components"
 import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
-import { useBackHandler, useSelectionMode } from "../../hooks"
+import { useBackHandler, useHeaderColorOnScroll, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
 import { NavigationParamProps, RouteParamProps } from "../../router"
 import { DocumentService } from "../../services/document"
@@ -31,6 +31,8 @@ export function Gallery() {
     const navigation = useNavigation<NavigationParamProps<"Gallery">>()
     const { params } = useRoute<RouteParamProps<"Gallery">>()
     const { width: windowWidth, height: windowHeight } = useWindowDimensions()
+
+    const galleryHeaderRef = useRef<AnimatedHeaderRef>(null)
 
     const documentRealm = useDocumentRealm()
     const { documentModel, setDocumentModel } = useDocumentModel()
@@ -62,6 +64,11 @@ export function Gallery() {
     useBackHandler(() => {
         goBack()
         return true
+    })
+
+
+    const onScroll = useHeaderColorOnScroll({
+        onInterpolate: color => galleryHeaderRef.current?.setBackgroundColor(color),
     })
 
 
@@ -323,6 +330,7 @@ export function Gallery() {
             <StatusBar />
 
             <GalleryHeader
+                ref={galleryHeaderRef}
                 goBack={goBack}
                 exitSelectionMode={gallerySelection.exitSelection}
                 importImage={importMultipleImage}
@@ -347,6 +355,7 @@ export function Gallery() {
                     ListFooterComponent={ListFooterComponent}
                     onRefresh={imageGallery?.length ? onRefresh : undefined}
                     refreshing={isRefreshing}
+                    onScroll={onScroll}
                 />
             </View>
 
