@@ -1,4 +1,4 @@
-import { AnimatedHeaderRef, Screen, StatusBar } from "@elementium/native"
+import { AnimatedHeaderRef, Screen } from "@elementium/native"
 import { useNavigation } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
 import { useCallback, useMemo, useRef, useState } from "react"
@@ -331,8 +331,6 @@ export function EditDocument() {
 
     return (
         <Screen>
-            <StatusBar />
-
             <EditDocumentHeader
                 ref={editDocumentHeaderRef}
                 goBack={goBack}

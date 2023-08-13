@@ -1,4 +1,4 @@
-import { AnimatedHeaderRef, Divider, Screen, StatusBar } from "@elementium/native"
+import { AnimatedHeaderRef, Divider, Screen } from "@elementium/native"
 import { useNavigation } from "@react-navigation/native"
 import { Realm } from "@realm/react"
 import { FlashList } from "@shopify/flash-list"
@@ -354,8 +354,6 @@ export function Home() {
 
     return (
         <Screen>
-            <StatusBar />
-
             <HomeHeader
                 ref={homeHeaderRef}
                 isSelectionMode={documentSelection.isSelectionMode}
