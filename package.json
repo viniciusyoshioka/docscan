@@ -4,8 +4,8 @@
     "private": true,
     "scripts": {
         "start": "react-native start",
-        "android": "react-native run-android --active-arch-only",
-        "android-release": "react-native run-android --variant=release --active-arch-only",
+        "android": "react-native run-android",
+        "android-release": "react-native run-android --variant=release",
         "lint": "eslint . --ext .js --ext .jsx --ext .ts --ext .tsx",
         "typecheck": "tsc --noEmit"
     },
