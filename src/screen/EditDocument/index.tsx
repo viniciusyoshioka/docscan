@@ -1,14 +1,14 @@
-import { Screen, StatusBar } from "@elementium/native"
+import { AnimatedHeaderRef, Screen, StatusBar } from "@elementium/native"
 import { useNavigation } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo, useRef, useState } from "react"
 import { Alert, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import Share from "react-native-share"
 
 import { LoadingModal } from "../../components"
 import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
-import { useBackHandler, useSelectionMode } from "../../hooks"
+import { useBackHandler, useHeaderColorOnScroll, useSelectionMode } from "../../hooks"
 import { translate } from "../../locales"
 import { NavigationParamProps } from "../../router"
 import { DocumentService } from "../../services/document"
@@ -29,6 +29,8 @@ export function EditDocument() {
 
 
     const navigation = useNavigation<NavigationParamProps<"EditDocument">>()
+
+    const editDocumentHeaderRef = useRef<AnimatedHeaderRef>(null)
 
     const { width: windowWidth, height: windowHeight } = useWindowDimensions()
 
@@ -56,6 +58,11 @@ export function EditDocument() {
     useBackHandler(() => {
         goBack()
         return true
+    })
+
+
+    const onScroll = useHeaderColorOnScroll({
+        onInterpolate: color => editDocumentHeaderRef.current?.setBackgroundColor(color),
     })
 
 
@@ -327,6 +334,7 @@ export function EditDocument() {
             <StatusBar />
 
             <EditDocumentHeader
+                ref={editDocumentHeaderRef}
                 goBack={goBack}
                 exitSelectionMode={pictureSelection.exitSelection}
                 isSelectionMode={pictureSelection.isSelectionMode}
@@ -348,6 +356,7 @@ export function EditDocument() {
                 estimatedItemSize={estimatedItemSize}
                 numColumns={columnCount}
                 contentContainerStyle={{ padding: 4 }}
+                onScroll={onScroll}
             />
 
             <LoadingModal
