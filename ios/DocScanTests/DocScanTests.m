@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface DocScanTests : XCTestCase
+@interface docscanTests : XCTestCase
 
 @end
 
-@implementation DocScanTests
+@implementation docscanTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {
@@ -35,11 +35,11 @@
   __block NSString *redboxError = nil;
 #ifdef DEBUG
   RCTSetLogFunction(
-    ^(RCTLogLevel level, RCTLogSource source, NSString *fileName, NSNumber *lineNumber, NSString *message) {
-      if (level >= RCTLogLevelError) {
-        redboxError = message;
-      }
-    });
+      ^(RCTLogLevel level, RCTLogSource source, NSString *fileName, NSNumber *lineNumber, NSString *message) {
+        if (level >= RCTLogLevelError) {
+          redboxError = message;
+        }
+      });
 #endif
 
   while ([date timeIntervalSinceNow] > 0 && !foundElement && !redboxError) {

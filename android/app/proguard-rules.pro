@@ -8,12 +8,8 @@
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
 # Add any project specific keep options here:
--keep class com.facebook.hermes.unicode.** { *; }
--keep class com.facebook.jni.** { *; }
--keep class androidx.appcompat.widget.** { *; }
--keep class com.facebook.react.turbomodule.** { *; }
--keep class com.swmansion.reanimated.** { *; }
 
+# react-native-fast-image
 -keep public class com.dylanvann.fastimage.* {*;}
 -keep public class com.dylanvann.fastimage.** {*;}
 -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -23,5 +19,5 @@
   public *;
 }
 
-# [realm], [@realm/react]
+# realm, @realm/react
 -keep class io.realm.react.**
