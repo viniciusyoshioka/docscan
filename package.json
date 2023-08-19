@@ -5,7 +5,7 @@
     "scripts": {
         "start": "react-native start",
         "android": "react-native run-android",
-        "android-release": "react-native run-android --variant=release",
+        "android:release": "react-native run-android --mode=release",
         "lint": "eslint . --ext .js --ext .jsx --ext .ts --ext .tsx",
         "typecheck": "tsc --noEmit"
     },
