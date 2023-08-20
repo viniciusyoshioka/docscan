@@ -3,9 +3,9 @@ import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } fr
 import { OrientationType } from "react-native-orientation-locker"
 import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
 
-import { useDocumentModel } from "../../../database"
-import { useDeviceOrientation } from "../../../hooks"
-import { RouteParamProps } from "../../../router"
+import { useDocumentModel } from "@database"
+import { useDeviceOrientation } from "@hooks"
+import { RouteParamProps } from "@router"
 import { ControlAction } from "./ControlAction"
 import { ControlButton } from "./ControlButton"
 import { ControlView } from "./ControlView"

@@ -1,5 +1,5 @@
-import { translate } from "../../../locales"
-import { CameraFlash, CameraRatio, CameraType } from "../../../services/settings"
+import { translate } from "@locales"
+import { CameraFlash, CameraRatio, CameraType } from "@services/settings"
 
 
 export function getFlashIcon(cameraFlash: CameraFlash): string {

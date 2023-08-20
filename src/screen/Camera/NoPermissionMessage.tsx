@@ -2,7 +2,7 @@ import { Button, HEADER_HEIGHT, ScrollScreen } from "@elementium/native"
 import { Linking, StatusBar, ViewStyle, useWindowDimensions } from "react-native"
 import { useSafeAreaFrame, useSafeAreaInsets } from "react-native-safe-area-context"
 
-import { translate } from "../../locales"
+import { translate } from "@locales"
 import { useCameraControlDimensions } from "./CameraControl"
 import { CameraButtonWrapper, CameraMessageText, CameraMessageTitle, CameraTextWrapper } from "./style"
 

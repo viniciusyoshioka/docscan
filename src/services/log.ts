@@ -1,8 +1,8 @@
 import { Realm } from "@realm/react"
 import { Alert } from "react-native"
 
-import { LogSchema } from "../database"
-import { translate } from "../locales"
+import { LogSchema } from "@database"
+import { translate } from "@locales"
 import { DateService } from "./date"
 
 

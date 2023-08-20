@@ -1,6 +1,6 @@
 import { createRealmContext } from "@realm/react"
 
-import { Constants } from "../../services/constant"
+import { Constants } from "@services/constant"
 import { LogSchema } from "../schemas"
 
 

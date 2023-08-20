@@ -1,4 +1,4 @@
-import { ThemeType } from "../../theme"
+import { ThemeType } from "@theme"
 import { CameraFlash, CameraRatio, CameraType } from "./camera"
 
 

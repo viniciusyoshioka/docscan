@@ -1,6 +1,6 @@
 import styled from "styled-components/native"
 
-import { StyledProps } from "../../theme"
+import { StyledProps } from "@theme"
 
 
 export interface InputBaseProps {

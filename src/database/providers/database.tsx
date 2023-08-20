@@ -1,6 +1,6 @@
 import { ReactNode, useEffect } from "react"
 
-import { log } from "../../services/log"
+import { log } from "@services/log"
 import { DocumentRealmProvider, LogRealmProvider, useLogRealm } from "../configs"
 
 

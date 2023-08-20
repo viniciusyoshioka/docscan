@@ -3,7 +3,7 @@ import { ExtendableOptionalIconProps, Icon, Pressable, PressableProps, Text } fr
 import { useMemo } from "react"
 import { StyleProp, StyleSheet, ViewStyle } from "react-native"
 
-import { useAppTheme } from "../../../theme"
+import { useAppTheme } from "@theme"
 
 
 export const CONTROL_BUTTON_HEIGHT = 56

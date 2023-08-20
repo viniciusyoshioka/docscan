@@ -2,10 +2,10 @@ import { Button, ModalActions, ModalContainer, ModalContent, ModalScrim, ModalTi
 import { useNavigation } from "@react-navigation/native"
 import { useState } from "react"
 
-import { useBackHandler } from "../../hooks"
-import { translate } from "../../locales"
-import { NavigationParamProps } from "../../router"
-import { useAppTheme } from "../../theme"
+import { useBackHandler } from "@hooks"
+import { translate } from "@locales"
+import { NavigationParamProps } from "@router"
+import { useAppTheme } from "@theme"
 
 
 export function ChangeTheme() {

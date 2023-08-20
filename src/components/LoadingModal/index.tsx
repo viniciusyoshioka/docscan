@@ -1,7 +1,7 @@
 import { ModalContainer, ModalScrim, Text } from "@elementium/native"
 import { ActivityIndicator } from "react-native"
 
-import { useAppTheme } from "../../theme"
+import { useAppTheme } from "@theme"
 
 
 export interface LoadingModalProps {

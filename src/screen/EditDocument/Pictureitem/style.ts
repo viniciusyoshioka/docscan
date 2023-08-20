@@ -2,7 +2,7 @@ import FastImage from "react-native-fast-image"
 import { RectButton } from "react-native-gesture-handler"
 import styled from "styled-components/native"
 
-import { StyledProps } from "../../../theme"
+import { StyledProps } from "@theme"
 
 
 export const PICTURE_BUTTON_MARGIN = 4

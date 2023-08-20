@@ -4,11 +4,11 @@ import { useRef } from "react"
 import { Alert } from "react-native"
 import Share from "react-native-share"
 
-import { useBackHandler, useHeaderColorOnScroll } from "../../hooks"
-import { translate } from "../../locales"
-import { NavigationParamProps } from "../../router"
-import { Constants } from "../../services/constant"
-import { log, stringfyError } from "../../services/log"
+import { useBackHandler, useHeaderColorOnScroll } from "@hooks"
+import { translate } from "@locales"
+import { NavigationParamProps } from "@router"
+import { Constants } from "@services/constant"
+import { log, stringfyError } from "@services/log"
 import { SettingsHeader } from "./Header"
 
 

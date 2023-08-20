@@ -4,7 +4,7 @@ import FastImage, { FastImageProps } from "react-native-fast-image"
 import RNFS from "react-native-fs"
 import Reanimated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 
-import { ImageTools } from "../../../services/image-tools"
+import { ImageTools } from "@services/image-tools"
 import { LoadingOverlay } from "./LoadingOverlay"
 
 

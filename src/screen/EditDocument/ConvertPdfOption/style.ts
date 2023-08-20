@@ -1,7 +1,7 @@
 import { Text } from "@elementium/native"
 import styled from "styled-components/native"
 
-import { StyledProps } from "../../../theme"
+import { StyledProps } from "@theme"
 
 
 export const CompressionText = styled(Text)<StyledProps>`

@@ -2,7 +2,7 @@ import { Text } from "@elementium/native"
 import { RectButton } from "react-native-gesture-handler"
 import styled from "styled-components/native"
 
-import { StyledProps } from "../../theme"
+import { StyledProps } from "@theme"
 
 
 export const MenuItemBase = styled(RectButton)`

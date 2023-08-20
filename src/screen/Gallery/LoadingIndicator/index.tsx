@@ -1,6 +1,6 @@
 import { ActivityIndicator } from "react-native"
 
-import { useAppTheme } from "../../../theme"
+import { useAppTheme } from "@theme"
 import { LoadingIndicatorView } from "./style"
 
 

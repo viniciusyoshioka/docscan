@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 import { ScrollView, StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from "react-native"
 
-import { useAppTheme } from "../../../theme"
+import { useAppTheme } from "@theme"
 import { CAMERA_SETTINGS_BUTTON_HEIGHT } from "./CameraSettingsButton"
 
 

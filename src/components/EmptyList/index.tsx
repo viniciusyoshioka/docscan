@@ -2,7 +2,7 @@ import { ExtendableOptionalIconProps, Icon, Text } from "@elementium/native"
 import { ReactNode } from "react"
 import { Image, ImageSourcePropType, StyleSheet, View, ViewProps } from "react-native"
 
-import { useAppTheme } from "../../theme"
+import { useAppTheme } from "@theme"
 
 
 export interface EmptyListProps extends ViewProps, Omit<ExtendableOptionalIconProps, "style"> {

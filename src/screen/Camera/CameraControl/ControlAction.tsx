@@ -3,7 +3,7 @@ import { useMemo } from "react"
 import { GestureResponderEvent, StyleSheet, TouchableOpacity, TouchableOpacityProps } from "react-native"
 import Reanimated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 
-import { useAppTheme } from "../../../theme"
+import { useAppTheme } from "@theme"
 
 
 const ReanimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpacity)

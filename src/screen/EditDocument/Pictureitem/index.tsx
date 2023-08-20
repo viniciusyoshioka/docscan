@@ -3,9 +3,9 @@ import { useMemo } from "react"
 import { useWindowDimensions } from "react-native"
 import { LongPressGestureHandler } from "react-native-gesture-handler"
 
-import { SelectableItem, useSelectableItem } from "../../../hooks"
-import { useAppTheme } from "../../../theme"
-import { PictureButton, PictureImage, PICTURE_BUTTON_MARGIN, SelectedSurface } from "./style"
+import { SelectableItem, useSelectableItem } from "@hooks"
+import { useAppTheme } from "@theme"
+import { PICTURE_BUTTON_MARGIN, PictureButton, PictureImage, SelectedSurface } from "./style"
 
 
 export const VERTICAL_COLUMN_COUNT = 2

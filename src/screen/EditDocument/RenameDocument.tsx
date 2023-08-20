@@ -3,12 +3,12 @@ import { useNavigation } from "@react-navigation/native"
 import { createRef, useEffect, useState } from "react"
 import { TextInput } from "react-native"
 
-import { Input } from "../../components"
-import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "../../database"
-import { useBackHandler, useKeyboard } from "../../hooks"
-import { translate } from "../../locales"
-import { NavigationParamProps } from "../../router"
-import { DocumentService } from "../../services/document"
+import { Input } from "@components"
+import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "@database"
+import { useBackHandler, useKeyboard } from "@hooks"
+import { translate } from "@locales"
+import { NavigationParamProps } from "@router"
+import { DocumentService } from "@services/document"
 
 
 export function RenameDocument() {

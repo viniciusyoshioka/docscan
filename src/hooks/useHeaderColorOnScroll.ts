@@ -1,7 +1,7 @@
 import { NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { interpolateColor, runOnJS, useAnimatedReaction, useSharedValue } from "react-native-reanimated"
 
-import { useAppTheme } from "../theme"
+import { useAppTheme } from "@theme"
 
 
 export type HeaderColorOnScrollOptions = {

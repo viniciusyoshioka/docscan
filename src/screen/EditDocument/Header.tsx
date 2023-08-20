@@ -3,9 +3,9 @@ import { useNavigation } from "@react-navigation/native"
 import { ForwardedRef, forwardRef } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-import { useDocumentModel } from "../../database"
-import { NavigationParamProps } from "../../router"
-import { DocumentService } from "../../services/document"
+import { useDocumentModel } from "@database"
+import { NavigationParamProps } from "@router"
+import { DocumentService } from "@services/document"
 import { EditDocumentMenu } from "./EditDocumentMenu"
 
 

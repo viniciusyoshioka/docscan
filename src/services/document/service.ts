@@ -2,7 +2,7 @@ import { NativeModules } from "react-native"
 import RNFS from "react-native-fs"
 import { v4 as uuid4 } from "uuid"
 
-import { translate } from "../../locales"
+import { translate } from "@locales"
 import { Constants } from "../constant"
 import { DateService } from "../date"
 import { DocumentServiceType } from "./native-types"

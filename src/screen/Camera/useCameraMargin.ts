@@ -2,7 +2,7 @@ import { HEADER_HEIGHT } from "@elementium/native"
 import { useWindowDimensions } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-import { useSettings } from "../../services/settings"
+import { useSettings } from "@services/settings"
 import { getCameraSize } from "./utils"
 
 

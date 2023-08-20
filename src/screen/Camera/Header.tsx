@@ -3,7 +3,7 @@ import { useMemo } from "react"
 import { StyleProp, StyleSheet, ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-import { useAppTheme } from "../../theme"
+import { useAppTheme } from "@theme"
 
 
 export interface CameraHeaderProps {

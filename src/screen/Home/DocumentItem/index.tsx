@@ -4,10 +4,10 @@ import CheckBox from "@react-native-community/checkbox"
 import { useMemo } from "react"
 import { LongPressGestureHandler } from "react-native-gesture-handler"
 
-import { DocumentSchema } from "../../../database"
-import { SelectableItem, useSelectableItem } from "../../../hooks"
-import { DateService } from "../../../services/date"
-import { useAppTheme } from "../../../theme"
+import { DocumentSchema } from "@database"
+import { SelectableItem, useSelectableItem } from "@hooks"
+import { DateService } from "@services/date"
+import { useAppTheme } from "@theme"
 import { DocumentItemBlock, DocumentItemButton } from "./style"
 
 

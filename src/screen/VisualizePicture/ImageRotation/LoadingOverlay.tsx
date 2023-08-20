@@ -1,7 +1,7 @@
 import { ActivityIndicator, StyleProp, StyleSheet, ViewStyle } from "react-native"
 import Reanimated from "react-native-reanimated"
 
-import { useAppTheme } from "../../../theme"
+import { useAppTheme } from "@theme"
 
 
 export interface LoadingOverlayProps {

@@ -1,6 +1,6 @@
 import { CameraDevices, LogicalCameraDeviceType, PhysicalCameraDeviceType, useCameraDevices as useVisionCameraDevices } from "react-native-vision-camera"
 
-import { log, stringfyError } from "../services/log"
+import { log, stringfyError } from "@services/log"
 
 
 export type CameraDeviceType = PhysicalCameraDeviceType | LogicalCameraDeviceType

@@ -2,7 +2,7 @@ import { AnimatedHeader, AnimatedHeaderRef, HeaderButton, HeaderTitle } from "@e
 import { ForwardedRef, forwardRef } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-import { translate } from "../../locales"
+import { translate } from "@locales"
 import { HomeMenu } from "./HomeMenu"
 
 

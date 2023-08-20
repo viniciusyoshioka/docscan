@@ -2,7 +2,7 @@ import { Text } from "@elementium/native"
 import { View } from "react-native"
 import styled from "styled-components/native"
 
-import { StyledProps } from "../../theme"
+import { StyledProps } from "@theme"
 
 
 export const CameraTextWrapper = styled(View)`

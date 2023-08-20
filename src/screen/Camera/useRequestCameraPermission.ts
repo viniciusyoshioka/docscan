@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-import { getCameraPermission } from "../../services/permission"
+import { getCameraPermission } from "@services/permission"
 
 
 export type RequestCameraPermissionType = [boolean | undefined, () => Promise<void>]

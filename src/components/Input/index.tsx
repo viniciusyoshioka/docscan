@@ -1,7 +1,7 @@
 import { forwardRef, Ref, useState } from "react"
 import { NativeSyntheticEvent, TextInput, TextInputFocusEventData, TextInputProps } from "react-native"
 
-import { useAppTheme } from "../../theme"
+import { useAppTheme } from "@theme"
 import { InputBase, InputBaseProps } from "./style"
 
 
