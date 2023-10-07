@@ -1,6 +1,7 @@
 package com.docscan;
 
 import android.app.Application;
+import cl.json.ShareApplication;
 import com.docscan.DocumentService.DocumentServicePackage;
 import com.docscan.ImageCrop.ImageCropPackage;
 import com.docscan.ImageTools.ImageToolsPackage;
@@ -14,7 +15,7 @@ import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
 import java.util.List;
 
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends Application implements ReactApplication, ShareApplication {
 
   private final ReactNativeHost mReactNativeHost =
       new DefaultReactNativeHost(this) {
@@ -66,5 +67,10 @@ public class MainApplication extends Application implements ReactApplication {
       DefaultNewArchitectureEntryPoint.load();
     }
     ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+  }
+
+  @Override
+  public String getFileProviderAuthority() {
+    return BuildConfig.APPLICATION_ID + ".provider";
   }
 }
