@@ -7,7 +7,7 @@ buildscript {
         compileSdkVersion = 33
         targetSdkVersion = 33
 
-        kotlinVersion = "1.6.20" // TODO remove after update react-native-vision-camera
+        kotlinVersion = "1.6.20"
 
         // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
         ndkVersion = "23.1.7779620"
