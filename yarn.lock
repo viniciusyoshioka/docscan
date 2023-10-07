@@ -5292,8 +5292,8 @@ react-native-share@^9.2.3:
   integrity sha512-y6ju4HS6ydJoPVoacZ/Hp3i47AfI9W4e76Jv00r01dVbr6SCCcuqk37kIbn+kYivdTxOW77UGEbhtBHHtXnhzg==
 
 "react-native-vector-icons@https://github.com/viniciusyoshioka/react-native-vector-icons":
-  version "9.2.0"
-  resolved "https://github.com/viniciusyoshioka/react-native-vector-icons#abe6ff057228cf1e5b353e3107379546deab5b35"
+  version "10.0.0"
+  resolved "https://github.com/viniciusyoshioka/react-native-vector-icons#155523f6df0338e0ba9b0cdb05b0825530dcc076"
   dependencies:
     prop-types "^15.7.2"
     yargs "^16.1.1"
