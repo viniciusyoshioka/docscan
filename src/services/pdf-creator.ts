@@ -9,7 +9,7 @@ export type PdfCreatorOptions = {
 
 export type PdfCreatorType = {
     createPdf: (pictureList: string[], documentPath: string, options: PdfCreatorOptions) => void;
-    viewPdf: (filePath: string) => void;
+    viewPdf: (filePath: string) => Promise<void>;
 }
 
 

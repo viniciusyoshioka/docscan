@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
+
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -45,16 +47,22 @@ public class PdfCreatorModule extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    public void viewPdf(String filePath) {
-        File file = new File(filePath);
-        Uri fileUri = FileProvider.getUriForFile(mReactApplicationContext, mReactApplicationContext.getPackageName() + ".provider", file);
+    public void viewPdf(String filePath, Promise promise) {
+        try {
+            File file = new File(filePath);
+            Uri fileUri = FileProvider.getUriForFile(mReactApplicationContext, mReactApplicationContext.getPackageName() + ".provider", file);
 
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(fileUri, "application/pdf");
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(fileUri, "application/pdf");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-        mReactApplicationContext.startActivity(intent);
+            mReactApplicationContext.startActivity(intent);
+            promise.resolve(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            promise.reject(e);
+        }
     }
 }
