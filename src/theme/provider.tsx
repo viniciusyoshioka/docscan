@@ -1,6 +1,7 @@
 import { ThemeProvider as ElementiumThemeProvider } from "@elementium/native"
 import { createContext, ReactNode, useContext } from "react"
 import { useColorScheme } from "react-native"
+import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper"
 import { ThemeProvider as StyledThemeProvider } from "styled-components/native"
 
 import { Settings } from "@services/settings"
@@ -53,7 +54,9 @@ export function AppThemeProvider(props: AppThemeProviderProps) {
         <AppThemeContext.Provider value={appTheme}>
             <ElementiumThemeProvider value={appTheme}>
                 <StyledThemeProvider theme={appTheme}>
-                    {props.children}
+                    <PaperProvider theme={isDarkTheme ? MD3DarkTheme : MD3LightTheme}>
+                        {props.children}
+                    </PaperProvider>
                 </StyledThemeProvider>
             </ElementiumThemeProvider>
         </AppThemeContext.Provider>
