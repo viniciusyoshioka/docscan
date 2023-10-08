@@ -1,9 +1,9 @@
 import { Color, Prisma } from "@elementium/color"
-import { Text } from "@elementium/native"
 import CheckBox from "@react-native-community/checkbox"
 import { useMemo } from "react"
 import { Pressable, StyleSheet, View } from "react-native"
 import { LongPressGestureHandler } from "react-native-gesture-handler"
+import { Text } from "react-native-paper"
 
 import { DocumentSchema } from "@database"
 import { SelectableItem, useSelectableItem } from "@hooks"
@@ -47,16 +47,14 @@ export function DocumentItem(props: DocumentItemProps) {
             >
                 <View style={styles.block}>
                     <Text
-                        variant={"body"}
-                        size={"large"}
+                        variant={"bodyLarge"}
                         numberOfLines={1}
                         style={{ color: color.onSurface, flex: 1, textAlignVertical: "center" }}
                         children={props.document.name}
                     />
 
                     <Text
-                        variant={"body"}
-                        size={"small"}
+                        variant={"bodySmall"}
                         numberOfLines={1}
                         style={{ color: color.onSurfaceVariant, flex: 1, textAlignVertical: "center" }}
                         children={DateService.getLocaleDateTime(new Date(props.document.modifiedAt), false)}
