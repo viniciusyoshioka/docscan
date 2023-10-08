@@ -1,5 +1,4 @@
-import { AnimatedHeader, AnimatedHeaderRef, HeaderButton, HeaderTitle } from "@elementium/native"
-import { ForwardedRef, forwardRef } from "react"
+import { Appbar } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { translate } from "@locales"
@@ -14,7 +13,7 @@ export interface GalleryHeaderProps {
 }
 
 
-export const GalleryHeader = forwardRef((props: GalleryHeaderProps, ref: ForwardedRef<AnimatedHeaderRef>) => {
+export function GalleryHeader(props: GalleryHeaderProps) {
 
 
     const safeAreaInsets = useSafeAreaInsets()
@@ -29,29 +28,20 @@ export const GalleryHeader = forwardRef((props: GalleryHeaderProps, ref: Forward
 
 
     return (
-        <AnimatedHeader ref={ref} overrideStatusBar={safeAreaInsets.top !== 0}>
+        <Appbar.Header elevated={true} statusBarHeight={safeAreaInsets.top}>
             {props.isSelectionMode && (
-                <HeaderButton
-                    iconName={"close"}
-                    onPress={props.exitSelectionMode}
-                />
+                <Appbar.Action icon={"close"} onPress={props.exitSelectionMode} />
             )}
 
             {!props.isSelectionMode && (
-                <HeaderButton
-                    iconName={"arrow-back"}
-                    onPress={props.goBack}
-                />
+                <Appbar.BackAction onPress={props.goBack} />
             )}
 
-            <HeaderTitle title={getTitle()} />
+            <Appbar.Content title={getTitle()} />
 
             {props.isSelectionMode && (
-                <HeaderButton
-                    iconName={"done"}
-                    onPress={props.importImage}
-                />
+                <Appbar.Action icon={"check"} onPress={props.importImage} />
             )}
-        </AnimatedHeader>
+        </Appbar.Header>
     )
-})
+}
