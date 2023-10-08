@@ -41,7 +41,7 @@ export function Router() {
                 <Stack.Screen name={"Camera"} component={Camera} options={{ orientation: "portrait" }} />
                 <Stack.Screen name={"Settings"} component={Settings} />
                 <Stack.Screen name={"EditDocument"} component={EditDocument} />
-                <Stack.Screen name={"VisualizePicture"} component={VisualizePicture} options={{ statusBarStyle: "light" }} />
+                <Stack.Screen name={"VisualizePicture"} component={VisualizePicture} />
                 <Stack.Screen name={"Gallery"} component={Gallery} />
 
                 <Stack.Group screenOptions={{ presentation: "transparentModal" }}>

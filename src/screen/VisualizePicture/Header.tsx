@@ -1,6 +1,7 @@
-import { Header, HeaderButton, HeaderTitle } from "@elementium/native"
 import { StyleSheet } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { Appbar } from "react-native-paper"
+
+import { useAppTheme } from "@theme"
 
 
 export interface VisualizePictureHeaderProps {
@@ -27,90 +28,100 @@ export interface VisualizePictureHeaderProps {
 export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
 
 
-    const safeAreaInsets = useSafeAreaInsets()
+    const { isDark } = useAppTheme()
+
+    const headerColor = isDark ? "rgba(0, 0, 0, 0.4)" : "rgba(255, 255, 255, 0.4)"
+    const iconColor = isDark ? "white" : "black"
 
 
     if (!props.isShowingOverlay) return null
 
 
     if (props.rotation.isActive) return (
-        <Header style={styles.relative}>
-            <HeaderButton
-                iconName={"close"}
-                iconColor={"white"}
+        <Appbar.Header style={styles.relative} statusBarHeight={0}>
+            <Appbar.Action
+                icon={"close"}
+                iconColor={iconColor}
                 onPress={props.rotation.exit}
+                animated={false}
             />
 
-            <HeaderTitle />
+            <Appbar.Content title={""} />
 
-            <HeaderButton
-                iconName={"rotate-left"}
-                iconColor={"white"}
+            <Appbar.Action
+                icon={"rotate-left"}
+                iconColor={iconColor}
                 onPress={props.rotation.rotateLeft}
+                animated={false}
             />
 
-            <HeaderButton
-                iconName={"rotate-right"}
-                iconColor={"white"}
+            <Appbar.Action
+                icon={"rotate-right"}
+                iconColor={iconColor}
                 onPress={props.rotation.rotateRight}
+                animated={false}
             />
 
-            <HeaderButton
-                iconName={"done"}
-                iconColor={"white"}
+            <Appbar.Action
+                icon={"check"}
+                iconColor={iconColor}
                 onPress={props.rotation.save}
+                animated={false}
             />
-        </Header>
+        </Appbar.Header>
     )
 
     if (props.crop.isActive) return (
-        <Header style={styles.relative}>
-            <HeaderButton
-                iconName={"close"}
-                iconColor={"white"}
+        <Appbar.Header style={styles.relative} statusBarHeight={0}>
+            <Appbar.Action
+                icon={"close"}
+                iconColor={iconColor}
                 onPress={props.crop.exit}
+                animated={false}
             />
 
-            <HeaderTitle />
+            <Appbar.Content title={""} />
 
-            <HeaderButton
-                iconName={"done"}
-                iconColor={"white"}
+            <Appbar.Action
+                icon={"check"}
+                iconColor={iconColor}
                 onPress={props.crop.save}
+                animated={false}
             />
-        </Header>
+        </Appbar.Header>
     )
 
     return (
-        <Header style={styles.absolute} overrideStatusBar={safeAreaInsets.top !== 0}>
-            <HeaderButton
-                iconName={"arrow-back"}
-                iconColor={"white"}
+        <Appbar.Header style={[styles.absolute, { backgroundColor: headerColor } ]} statusBarHeight={0}>
+            <Appbar.BackAction
+                iconColor={iconColor}
                 onPress={props.goBack}
+                animated={false}
             />
 
-            <HeaderTitle />
+            <Appbar.Content title={""} />
 
-            <HeaderButton
-                iconName={"image-edit-outline"}
-                iconGroup={"material-community"}
-                iconColor={"white"}
+            <Appbar.Action
+                icon={"image-edit-outline"}
+                iconColor={iconColor}
                 onPress={props.replacePicture}
+                animated={false}
             />
 
-            <HeaderButton
-                iconName={"refresh"}
-                iconColor={"white"}
+            <Appbar.Action
+                icon={"refresh"}
+                iconColor={iconColor}
                 onPress={props.rotation.open}
-                style={{ transform: [ { rotateY: "180deg" } ] }}
+                animated={false}
             />
 
-            <HeaderButton
-                iconName={"crop"}
-                iconColor={"white"}
+            <Appbar.Action
+                icon={"crop"}
+                iconColor={iconColor}
                 onPress={props.crop.open}
+                animated={false}
             />
-        </Header>
+        </Appbar.Header>
     )
 }
 
@@ -121,7 +132,7 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         right: 0,
-        backgroundColor: "rgba(0, 0, 0, 0.4)",
+        backgroundColor: "transparent",
         elevation: 0,
         zIndex: 1,
     },
@@ -129,7 +140,7 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         right: 0,
-        backgroundColor: "rgba(0, 0, 0, 0.4)",
+        backgroundColor: "transparent",
         elevation: 0,
         zIndex: 1,
     },

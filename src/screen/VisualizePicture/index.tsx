@@ -13,6 +13,7 @@ import { NavigationParamProps, RouteParamProps } from "@router"
 import { DocumentService } from "@services/document"
 import { ImageCrop, OnImageSavedResponse } from "@services/image-crop"
 import { log, stringfyError } from "@services/log"
+import { useAppTheme } from "@theme"
 import { VisualizePictureHeader } from "./Header"
 import { ImageRotation, ImageRotationRef } from "./ImageRotation"
 import { ImageVisualizationItem } from "./ImageVisualizationItem"
@@ -28,6 +29,7 @@ export function VisualizePicture() {
     const { width } = useWindowDimensions()
     const safeAreaInsets = useSafeAreaInsets()
 
+    const { isDark } = useAppTheme()
     const documentRealm = useDocumentRealm()
     const { documentModel, setDocumentModel } = useDocumentModel()
 
@@ -221,7 +223,7 @@ export function VisualizePicture() {
 
 
     return (
-        <Screen style={{ backgroundColor: "black", paddingTop: safeAreaInsets.top }}>
+        <Screen style={{ backgroundColor: isDark ? "black" : "white", paddingTop: safeAreaInsets.top }}>
             <VisualizePictureHeader
                 goBack={goBack}
                 replacePicture={replacePicture}
