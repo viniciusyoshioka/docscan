@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native"
 import { Realm } from "@realm/react"
 import { FlashList } from "@shopify/flash-list"
 import { useEffect, useRef, useState } from "react"
-import { Alert, View } from "react-native"
+import { Alert } from "react-native"
 import DocumentPicker from "react-native-document-picker"
 import RNFS from "react-native-fs"
 import { FAB } from "react-native-paper"
@@ -26,7 +26,6 @@ import { HomeHeader } from "./Header"
 // TODO improve database operations in deleteSelectedDocument
 // TODO improve database operations in importDocument
 // TODO improve database operations in exportSelectedDocument
-// TODO fix FlashList alert when all documents are deleted
 // TODO add comunication with background service to alert when export is done
 // TODO add comunication with background service to alert when import is done
 export function Home() {
@@ -370,7 +369,7 @@ export function Home() {
                 duplicateDocument={alertDuplicateDocument}
             />
 
-            <View style={{ display: documents.length ? "flex" : "none", flex: 1 }}>
+            {documents.length > 0 && (
                 <FlashList
                     data={documents}
                     renderItem={renderItem}
@@ -379,7 +378,7 @@ export function Home() {
                     ItemSeparatorComponent={() => <Divider wrapperStyle={{ paddingHorizontal: 16 }} />}
                     onScroll={onScroll}
                 />
-            </View>
+            )}
 
             <FAB
                 icon={"plus"}
