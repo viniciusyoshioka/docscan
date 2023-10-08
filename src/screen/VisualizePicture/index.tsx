@@ -19,6 +19,8 @@ import { ImageRotation, ImageRotationRef } from "./ImageRotation"
 import { ImageVisualizationItem } from "./ImageVisualizationItem"
 
 
+// TODO Add animation when entering and leaving rotate mode
+// TODO Add animation when entering and leaving crop mode
 // TODO fix documentModel === undefined when device theme is toggle while in this screen
 // TODO fix scroll not centralized when rotating screen
 export function VisualizePicture() {
