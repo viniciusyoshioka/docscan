@@ -1,10 +1,10 @@
-import { AnimatedHeaderRef, ListItem, Screen, ScrollScreen } from "@elementium/native"
+import { Screen, ScrollScreen } from "@elementium/native"
 import { useNavigation } from "@react-navigation/core"
-import { useRef } from "react"
 import { Alert } from "react-native"
+import { List } from "react-native-paper"
 import Share from "react-native-share"
 
-import { useBackHandler, useHeaderColorOnScroll } from "@hooks"
+import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
 import { NavigationParamProps } from "@router"
 import { Constants } from "@services/constant"
@@ -20,23 +20,12 @@ export function Settings() {
 
     const navigation = useNavigation<NavigationParamProps<"Settings">>()
 
-    const settingsHeaderRef = useRef<AnimatedHeaderRef>(null)
-
 
     useBackHandler(() => {
-        goBack()
+        navigation.navigate("Home")
         return true
     })
 
-
-    const onScroll = useHeaderColorOnScroll({
-        onInterpolate: color => settingsHeaderRef.current?.setBackgroundColor(color),
-    })
-
-
-    function goBack() {
-        navigation.navigate("Home")
-    }
 
     async function shareLogDatabaseFile() {
         try {
@@ -73,36 +62,40 @@ export function Settings() {
 
     return (
         <Screen>
-            <SettingsHeader ref={settingsHeaderRef} goBack={goBack} />
+            <SettingsHeader />
 
-            <ScrollScreen onScroll={onScroll}>
-                <ListItem
-                    leadingIcon={{ iconName: "brightness-medium" }}
+            <ScrollScreen>
+                <List.Item
+                    left={() => <List.Icon icon={"brightness-6"} />}
                     title={translate("Settings_theme_title")}
                     description={translate("Settings_theme_text")}
                     onPress={() => navigation.navigate("ChangeTheme")}
+                    style={{ paddingLeft: 16 }}
                 />
 
-                <ListItem
-                    leadingIcon={{ iconName: "receipt-long" }}
+                <List.Item
+                    left={() => <List.Icon icon={"receipt-text-clock-outline"} />}
                     title={translate("Settings_shareLogDatabase_title")}
                     description={translate("Settings_shareLogDatabase_text")}
                     onPress={shareLogDatabaseFile}
+                    style={{ paddingLeft: 16 }}
                 />
 
                 {__DEV__ && (
-                    <ListItem
-                        leadingIcon={{ iconName: "receipt-long" }}
+                    <List.Item
+                        left={() => <List.Icon icon={"receipt-text-clock-outline"} />}
                         title={translate("Settings_shareAppDatabase_title")}
                         description={translate("Settings_shareAppDatabase_text")}
                         onPress={shareAppDatabaseFile}
+                        style={{ paddingLeft: 16 }}
                     />
                 )}
 
-                <ListItem
-                    leadingIcon={{ iconName: "information-circle-outline", iconGroup: "ionicons" }}
+                <List.Item
+                    left={() => <List.Icon icon={"information-outline"} />}
                     title={translate("Settings_appVersionInfo_title")}
                     description={`${Constants.appName} ${Constants.appVersion} - ${Constants.appType}`}
+                    style={{ paddingLeft: 16 }}
                 />
             </ScrollScreen>
         </Screen>
