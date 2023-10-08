@@ -7,6 +7,7 @@ import { Alert } from "react-native"
 import DocumentPicker from "react-native-document-picker"
 import RNFS from "react-native-fs"
 import { Divider, FAB } from "react-native-paper"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { unzip } from "react-native-zip-archive"
 
 import { EmptyList, LoadingModal } from "@components"
@@ -31,6 +32,7 @@ import { HomeHeader } from "./Header"
 export function Home() {
 
 
+    const safeAreaInsets = useSafeAreaInsets()
     const navigation = useNavigation<NavigationParamProps<"Home">>()
 
     const { setDocumentModel } = useDocumentModel()
@@ -369,6 +371,7 @@ export function Home() {
                     extraData={documentSelection.selectedData}
                     estimatedItemSize={DOCUMENT_ITEM_HEIGHT}
                     ItemSeparatorComponent={() => <Divider style={{ marginHorizontal: 16 }} />}
+                    contentContainerStyle={{ paddingBottom: (16 * 2) + 56 + safeAreaInsets.bottom }}
                 />
             )}
 
@@ -381,7 +384,7 @@ export function Home() {
             <FAB
                 icon={"plus"}
                 mode={"flat"}
-                style={{ position: "absolute", right: 0, bottom: 0, margin: 16 }}
+                style={{ position: "absolute", right: safeAreaInsets.right, bottom: safeAreaInsets.bottom, margin: 16 }}
                 onPress={() => navigation.navigate("Camera")}
             />
 
