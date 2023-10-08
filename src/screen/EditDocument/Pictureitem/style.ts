@@ -1,5 +1,4 @@
 import FastImage from "react-native-fast-image"
-import { RectButton } from "react-native-gesture-handler"
 import styled from "styled-components/native"
 
 import { StyledProps } from "@theme"
@@ -8,13 +7,14 @@ import { StyledProps } from "@theme"
 export const PICTURE_BUTTON_MARGIN = 4
 
 
-export const PictureButton = styled(RectButton)<StyledProps>`
+export const PictureButton = styled.Pressable<StyledProps>`
     flex: 1;
     align-items: center;
     justify-content: center;
     margin: ${PICTURE_BUTTON_MARGIN}px;
     border-radius: ${props => props.theme.shape.small}px;
     aspect-ratio: 1;
+    overflow: hidden;
 `
 
 
@@ -34,5 +34,5 @@ export const SelectedSurface = styled.View<StyledProps>`
     right: 0px;
     border-radius: ${props => props.theme.shape.small}px;
     background-color: ${props => props.theme.color.primary};
-    opacity: 0.6;
+    opacity: 0.5;
 `

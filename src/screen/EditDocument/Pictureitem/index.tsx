@@ -1,3 +1,4 @@
+import { Color } from "@elementium/color"
 import { Icon } from "@elementium/native"
 import { useMemo } from "react"
 import { useWindowDimensions } from "react-native"
@@ -35,6 +36,8 @@ export function PictureItem(props: PictureItemProps) {
 
     const pictureItemSize = useMemo(() => getPictureItemSize(width, props.columnCount), [width, props.columnCount])
 
+    const rippleColor = new Color(color.primary).setA(0.5).toRgba()
+
 
     return (
         <LongPressGestureHandler
@@ -42,7 +45,11 @@ export function PictureItem(props: PictureItemProps) {
             minDurationMs={400}
             onHandlerStateChange={({ nativeEvent }) => onLongPress(nativeEvent)}
         >
-            <PictureButton style={{ maxWidth: pictureItemSize }} onPress={onPress}>
+            <PictureButton
+                style={{ maxWidth: pictureItemSize }}
+                onPress={onPress}
+                android_ripple={{ color: rippleColor, foreground: true }}
+            >
                 <PictureImage source={{ uri: `file://${props.picturePath}` }} />
 
                 {props.isSelectionMode && props.isSelected && <>
