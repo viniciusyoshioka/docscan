@@ -2,16 +2,16 @@ import { Color, Prisma } from "@elementium/color"
 import { Text } from "@elementium/native"
 import CheckBox from "@react-native-community/checkbox"
 import { useMemo } from "react"
+import { Pressable, StyleSheet, View } from "react-native"
 import { LongPressGestureHandler } from "react-native-gesture-handler"
 
 import { DocumentSchema } from "@database"
 import { SelectableItem, useSelectableItem } from "@hooks"
 import { DateService } from "@services/date"
 import { useAppTheme } from "@theme"
-import { DocumentItemBlock, DocumentItemButton } from "./style"
 
 
-export { DOCUMENT_ITEM_HEIGHT } from "./style"
+export const DOCUMENT_ITEM_HEIGHT = 60
 
 
 export interface DocumentItemProps extends SelectableItem {
@@ -40,8 +40,12 @@ export function DocumentItem(props: DocumentItemProps) {
             minDurationMs={400}
             onHandlerStateChange={({ nativeEvent }) => onLongPress(nativeEvent)}
         >
-            <DocumentItemButton onPress={onPress} rippleColor={rippleColor}>
-                <DocumentItemBlock>
+            <Pressable
+                onPress={onPress}
+                android_ripple={{ color: rippleColor }}
+                style={[styles.button, { backgroundColor: color.surface } ]}
+            >
+                <View style={styles.block}>
                     <Text
                         variant={"body"}
                         size={"large"}
@@ -57,7 +61,7 @@ export function DocumentItem(props: DocumentItemProps) {
                         style={{ color: color.onSurfaceVariant }}
                         children={DateService.getLocaleDateTime(new Date(props.document.modifiedAt), false)}
                     />
-                </DocumentItemBlock>
+                </View>
 
                 {props.isSelectionMode && (
                     <CheckBox
@@ -70,7 +74,23 @@ export function DocumentItem(props: DocumentItemProps) {
                         style={{ marginLeft: 16 }}
                     />
                 )}
-            </DocumentItemButton>
+            </Pressable>
         </LongPressGestureHandler>
     )
 }
+
+
+const styles = StyleSheet.create({
+    button: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        height: DOCUMENT_ITEM_HEIGHT,
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+    },
+    block: {
+        flex: 1,
+        justifyContent: "center",
+    }
+})
