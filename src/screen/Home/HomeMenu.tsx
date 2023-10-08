@@ -1,17 +1,16 @@
-import { HeaderButton } from "@elementium/native"
-import { useRef } from "react"
-import { RectButton } from "react-native-gesture-handler"
-import { Menu, MenuOptions, MenuTrigger } from "react-native-popup-menu"
+import { useNavigation } from "@react-navigation/native"
+import { useState } from "react"
+import { StatusBar } from "react-native"
+import { Appbar, Menu } from "react-native-paper"
 
-import { MenuItem } from "@components"
 import { translate } from "@locales"
+import { NavigationParamProps } from "@router"
 
 
 export interface HomeMenuProps {
     isSelectionMode: boolean;
     importDocument: () => void;
     exportDocument: () => void;
-    openSettings: () => void;
     mergeDocument: () => void;
     duplicateDocument: () => void;
 }
@@ -20,67 +19,79 @@ export interface HomeMenuProps {
 export function HomeMenu(props: HomeMenuProps) {
 
 
-    const menuRef = useRef<Menu>(null)
+    const navigation = useNavigation<NavigationParamProps<"Settings">>()
+
+    const [isOpen, setIsOpen] = useState(false)
+
+
+    function MenuAnchor() {
+        return (
+            <Appbar.Action
+                icon={"dots-vertical"}
+                onPress={() => setIsOpen(true)}
+            />
+        )
+    }
 
 
     return (
-        <Menu ref={menuRef}>
-            <MenuTrigger customStyles={{ TriggerTouchableComponent: RectButton }}>
-                <HeaderButton
-                    iconName={"more-vert"}
-                    onPress={() => menuRef.current?.open()}
-                />
-            </MenuTrigger>
-
-            <MenuOptions>
-                {!props.isSelectionMode && (
-                    <MenuItem
-                        text={translate("Home_menu_importDocument")}
-                        onPress={() => {
-                            menuRef.current?.close()
-                            props.importDocument()
-                        }}
-                    />
-                )}
-
-                <MenuItem
-                    text={translate("Home_menu_exportDocument")}
+        <Menu
+            anchor={<MenuAnchor />}
+            visible={isOpen}
+            onDismiss={() => setIsOpen(false)}
+            statusBarHeight={StatusBar.currentHeight}
+        >
+            {!props.isSelectionMode && <>
+                <Menu.Item
+                    title={translate("Home_menu_importDocument")}
                     onPress={() => {
-                        menuRef.current?.close()
+                        setIsOpen(false)
+                        props.importDocument()
+                    }}
+                />
+
+                <Menu.Item
+                    title={translate("Home_menu_exportDocument")}
+                    onPress={() => {
+                        setIsOpen(false)
                         props.exportDocument()
                     }}
                 />
 
-                {!props.isSelectionMode && (
-                    <MenuItem
-                        text={translate("Home_menu_settings")}
-                        onPress={() => {
-                            menuRef.current?.close()
-                            props.openSettings()
-                        }}
-                    />
-                )}
+                <Menu.Item
+                    title={translate("Home_menu_settings")}
+                    onPress={() => {
+                        setIsOpen(false)
+                        navigation.navigate("Settings")
+                    }}
+                />
+            </>}
 
-                {props.isSelectionMode && (
-                    <MenuItem
-                        text={translate("Home_menu_mergeDocument")}
-                        onPress={() => {
-                            menuRef.current?.close()
-                            props.mergeDocument()
-                        }}
-                    />
-                )}
+            {props.isSelectionMode && <>
+                <Menu.Item
+                    title={translate("Home_menu_exportDocument")}
+                    onPress={() => {
+                        setIsOpen(false)
+                        props.exportDocument()
+                    }}
+                />
 
-                {props.isSelectionMode && (
-                    <MenuItem
-                        text={translate("Home_menu_duplicateDocument")}
-                        onPress={() => {
-                            menuRef.current?.close()
-                            props.duplicateDocument()
-                        }}
-                    />
-                )}
-            </MenuOptions>
+                <Menu.Item
+                    title={translate("Home_menu_mergeDocument")}
+                    onPress={() => {
+                        setIsOpen(false)
+                        props.mergeDocument()
+                    }}
+                />
+
+                <Menu.Item
+                    title={translate("Home_menu_duplicateDocument")}
+                    onPress={() => {
+                        setIsOpen(false)
+                        props.duplicateDocument()
+                    }}
+                />
+            </>}
         </Menu>
     )
 }

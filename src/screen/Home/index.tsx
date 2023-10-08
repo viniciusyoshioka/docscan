@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react"
 import { Alert, View } from "react-native"
 import DocumentPicker from "react-native-document-picker"
 import RNFS from "react-native-fs"
+import { FAB } from "react-native-paper"
 import { unzip } from "react-native-zip-archive"
 
 import { EmptyList, LoadingModal } from "@components"
@@ -358,16 +359,13 @@ export function Home() {
     return (
         <Screen>
             <HomeHeader
-                ref={homeHeaderRef}
                 isSelectionMode={documentSelection.isSelectionMode}
                 selectedDocumentsAmount={documentSelection.selectedData.length}
                 exitSelectionMode={documentSelection.exitSelection}
                 invertSelection={invertSelection}
                 deleteSelectedDocuments={alertDeleteDocument}
-                scanNewDocument={() => navigation.navigate("Camera")}
                 importDocument={importDocument}
                 exportDocument={alertExportDocument}
-                openSettings={() => navigation.navigate("Settings")}
                 mergeDocument={alertMergeDocument}
                 duplicateDocument={alertDuplicateDocument}
             />
@@ -382,6 +380,13 @@ export function Home() {
                     onScroll={onScroll}
                 />
             </View>
+
+            <FAB
+                icon={"plus"}
+                mode={"flat"}
+                style={{ position: "absolute", right: 0, bottom: 0, margin: 16 }}
+                onPress={() => navigation.navigate("Camera")}
+            />
 
             <EmptyList
                 imageSource={Constants.appIconOutline}

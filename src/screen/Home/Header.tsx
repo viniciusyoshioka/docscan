@@ -1,6 +1,5 @@
-import { AnimatedHeader, AnimatedHeaderRef, HeaderButton, HeaderTitle } from "@elementium/native"
-import { ForwardedRef, forwardRef } from "react"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { StatusBar } from "react-native"
+import { Appbar } from "react-native-paper"
 
 import { translate } from "@locales"
 import { HomeMenu } from "./HomeMenu"
@@ -12,19 +11,14 @@ export interface HomeHeaderProps {
     exitSelectionMode: () => void;
     invertSelection: () => void;
     deleteSelectedDocuments: () => void;
-    scanNewDocument: () => void;
     importDocument: () => void;
     exportDocument: () => void;
-    openSettings: () => void;
     mergeDocument: () => void;
     duplicateDocument: () => void;
 }
 
 
-export const HomeHeader = forwardRef((props: HomeHeaderProps, ref: ForwardedRef<AnimatedHeaderRef>) => {
-
-
-    const safeAreaInsets = useSafeAreaInsets()
+export function HomeHeader(props: HomeHeaderProps) {
 
 
     function getTitle(): string {
@@ -36,43 +30,26 @@ export const HomeHeader = forwardRef((props: HomeHeaderProps, ref: ForwardedRef<
 
 
     return (
-        <AnimatedHeader ref={ref} overrideStatusBar={safeAreaInsets.top !== 0}>
+        <Appbar.Header elevated={true} statusBarHeight={StatusBar.currentHeight}>
             {props.isSelectionMode && (
-                <HeaderButton
-                    iconName={"close"}
-                    onPress={props.exitSelectionMode}
-                />
+                <Appbar.Action icon={"close"} onPress={props.exitSelectionMode} />
             )}
 
-            <HeaderTitle title={getTitle()} />
-
-            {!props.isSelectionMode && (
-                <HeaderButton
-                    iconName={"add"}
-                    onPress={props.scanNewDocument}
-                />
-            )}
+            <Appbar.Content title={getTitle()} />
 
             {props.isSelectionMode && <>
-                <HeaderButton
-                    iconName={"swap-horiz"}
-                    onPress={props.invertSelection}
-                />
+                <Appbar.Action icon={"swap-horizontal"} onPress={props.invertSelection} />
 
-                <HeaderButton
-                    iconName={"delete"}
-                    onPress={props.deleteSelectedDocuments}
-                />
+                <Appbar.Action icon={"delete"} onPress={props.deleteSelectedDocuments} />
             </>}
 
             <HomeMenu
                 isSelectionMode={props.isSelectionMode}
                 importDocument={props.importDocument}
                 exportDocument={props.exportDocument}
-                openSettings={props.openSettings}
                 mergeDocument={props.mergeDocument}
                 duplicateDocument={props.duplicateDocument}
             />
-        </AnimatedHeader>
+        </Appbar.Header>
     )
-})
+}
