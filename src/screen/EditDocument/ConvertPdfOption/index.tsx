@@ -1,9 +1,10 @@
-import { Button, ModalActions, ModalContainer, ModalContent, ModalDescription, ModalScrim, ModalTitle, RadioListItem } from "@elementium/native"
+import { ModalActions, ModalContainer, ModalContent, ModalDescription, ModalScrim, ModalTitle, RadioListItem } from "@elementium/native"
 import Slider from "@react-native-community/slider"
 import { useNavigation } from "@react-navigation/native"
 import { useState } from "react"
 import { Alert } from "react-native"
 import RNFS from "react-native-fs"
+import { Button } from "react-native-paper"
 
 import { useDocumentModel } from "@database"
 import { useBackHandler } from "@hooks"
@@ -165,14 +166,14 @@ export function ConvertPdfOption() {
 
                 <ModalActions>
                     <Button
-                        variant={"text"}
-                        text={translate("cancel")}
+                        mode={"text"}
+                        children={translate("cancel")}
                         onPress={goBack}
                     />
 
                     <Button
-                        variant={"text"}
-                        text={translate("ok")}
+                        mode={"text"}
+                        children={translate("ok")}
                         onPress={() => {
                             convertToPdf()
                             goBack()

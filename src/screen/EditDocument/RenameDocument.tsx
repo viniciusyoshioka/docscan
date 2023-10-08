@@ -1,7 +1,8 @@
-import { Button, ModalActions, ModalContainer, ModalScrim, ModalTitle } from "@elementium/native"
+import { ModalActions, ModalContainer, ModalScrim, ModalTitle } from "@elementium/native"
 import { useNavigation } from "@react-navigation/native"
 import { createRef, useEffect, useState } from "react"
 import { TextInput } from "react-native"
+import { Button } from "react-native-paper"
 
 import { Input } from "@components"
 import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "@database"
@@ -83,14 +84,14 @@ export function RenameDocument() {
 
                 <ModalActions>
                     <Button
-                        variant={"text"}
-                        text={translate("cancel")}
+                        mode={"text"}
+                        children={translate("cancel")}
                         onPress={goBack}
                     />
 
                     <Button
-                        variant={"text"}
-                        text={translate("ok")}
+                        mode={"text"}
+                        children={translate("ok")}
                         onPress={() => {
                             renameDocument()
                             goBack()

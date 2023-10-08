@@ -1,6 +1,5 @@
-import { AnimatedHeader, AnimatedHeaderRef, HeaderButton, HeaderTitle } from "@elementium/native"
 import { useNavigation } from "@react-navigation/native"
-import { ForwardedRef, forwardRef } from "react"
+import { Appbar } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { useDocumentModel } from "@database"
@@ -24,7 +23,7 @@ export interface EditDocumentHeaderProps {
 }
 
 
-export const EditDocumentHeader = forwardRef((props: EditDocumentHeaderProps, ref: ForwardedRef<AnimatedHeaderRef>) => {
+export function EditDocumentHeader(props: EditDocumentHeaderProps) {
 
 
     const navigation = useNavigation<NavigationParamProps<"EditDocument">>()
@@ -43,28 +42,19 @@ export const EditDocumentHeader = forwardRef((props: EditDocumentHeaderProps, re
 
 
     return (
-        <AnimatedHeader ref={ref} overrideStatusBar={safeAreaInsets.top !== 0}>
+        <Appbar.Header elevated={true} statusBarHeight={safeAreaInsets.top}>
             {!props.isSelectionMode && (
-                <HeaderButton
-                    iconName={"arrow-back"}
-                    onPress={props.goBack}
-                />
+                <Appbar.BackAction onPress={props.goBack} />
             )}
 
             {props.isSelectionMode && (
-                <HeaderButton
-                    iconName={"close"}
-                    onPress={props.exitSelectionMode}
-                />
+                <Appbar.Action icon={"close"} onPress={props.exitSelectionMode} />
             )}
 
-            <HeaderTitle title={getTitle()} />
+            <Appbar.Content title={getTitle()} />
 
             {!props.isSelectionMode && <>
-                <HeaderButton
-                    iconName={"add-a-photo"}
-                    onPress={props.openCamera}
-                />
+                <Appbar.Action icon={"camera-plus-outline"} onPress={props.openCamera} />
 
                 <EditDocumentMenu
                     convertToPdf={() => navigation.navigate("ConvertPdfOption")}
@@ -77,16 +67,10 @@ export const EditDocumentHeader = forwardRef((props: EditDocumentHeaderProps, re
             </>}
 
             {props.isSelectionMode && <>
-                <HeaderButton
-                    iconName={"swap-horiz"}
-                    onPress={props.invertSelection}
-                />
+                <Appbar.Action icon={"swap-horizontal"} onPress={props.invertSelection} />
 
-                <HeaderButton
-                    iconName={"delete"}
-                    onPress={props.deletePicture}
-                />
+                <Appbar.Action icon={"trash-can-outline"} onPress={props.deletePicture} />
             </>}
-        </AnimatedHeader>
+        </Appbar.Header>
     )
-})
+}

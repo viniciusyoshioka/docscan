@@ -1,9 +1,7 @@
-import { HeaderButton } from "@elementium/native"
-import { useRef } from "react"
-import { RectButton } from "react-native-gesture-handler"
-import { Menu, MenuOptions, MenuTrigger } from "react-native-popup-menu"
+import { useState } from "react"
+import { StatusBar } from "react-native"
+import { Appbar, Menu } from "react-native-paper"
 
-import { MenuItem } from "@components"
 import { translate } from "@locales"
 
 
@@ -20,67 +18,73 @@ export interface EditDocumentMenuProps {
 export function EditDocumentMenu(props: EditDocumentMenuProps) {
 
 
-    const menuRef = useRef<Menu>(null)
+    const [isOpen, setIsOpen] = useState(false)
+
+
+    function MenuAnchor() {
+        return (
+            <Appbar.Action
+                icon={"dots-vertical"}
+                onPress={() => setIsOpen(true)}
+            />
+        )
+    }
 
 
     return (
-        <Menu ref={menuRef}>
-            <MenuTrigger customStyles={{ TriggerTouchableComponent: RectButton }}>
-                <HeaderButton
-                    iconName={"more-vert"}
-                    onPress={() => menuRef.current?.open()}
-                />
-            </MenuTrigger>
+        <Menu
+            anchor={<MenuAnchor />}
+            visible={isOpen}
+            onDismiss={() => setIsOpen(false)}
+            statusBarHeight={StatusBar.currentHeight}
+        >
+            <Menu.Item
+                title={translate("EditDocument_menu_convertToPdf")}
+                onPress={() => {
+                    setIsOpen(false)
+                    props.convertToPdf()
+                }}
+            />
 
-            <MenuOptions>
-                <MenuItem
-                    text={translate("EditDocument_menu_convertToPdf")}
-                    onPress={() => {
-                        menuRef.current?.close()
-                        props.convertToPdf()
-                    }}
-                />
+            <Menu.Item
+                title={translate("EditDocument_menu_sharePdf")}
+                onPress={() => {
+                    setIsOpen(false)
+                    props.shareDocument()
+                }}
+            />
 
-                <MenuItem
-                    text={translate("EditDocument_menu_sharePdf")}
-                    onPress={() => {
-                        menuRef.current?.close()
-                        props.shareDocument()
-                    }}
-                />
+            <Menu.Item
+                title={translate("EditDocument_menu_visualizePdf")}
+                onPress={() => {
+                    setIsOpen(false)
+                    props.visualizePdf()
+                }}
+            />
 
-                <MenuItem
-                    text={translate("EditDocument_menu_visualizePdf")}
-                    onPress={() => {
-                        menuRef.current?.close()
-                        props.visualizePdf()
-                    }}
-                />
+            <Menu.Item
+                title={translate("EditDocument_menu_rename")}
+                onPress={() => {
+                    setIsOpen(false)
+                    props.renameDocument()
+                }}
+            />
 
-                <MenuItem
-                    text={translate("EditDocument_menu_rename")}
-                    onPress={() => {
-                        menuRef.current?.close()
-                        props.renameDocument()
-                    }}
-                />
+            <Menu.Item
+                title={translate("EditDocument_menu_deletePdf")}
+                onPress={() => {
+                    setIsOpen(false)
+                    props.deletePdf()
+                }}
+            />
 
-                <MenuItem
-                    text={translate("EditDocument_menu_deletePdf")}
-                    onPress={() => {
-                        menuRef.current?.close()
-                        props.deletePdf()
-                    }}
-                />
-
-                <MenuItem
-                    text={translate("EditDocument_menu_deleteDocument")}
-                    onPress={() => {
-                        menuRef.current?.close()
-                        props.deleteDocument()
-                    }}
-                />
-            </MenuOptions>
+            <Menu.Item
+                title={translate("EditDocument_menu_deleteDocument")}
+                onPress={() => {
+                    setIsOpen(false)
+                    props.deleteDocument()
+                }}
+            />
         </Menu>
     )
 }
