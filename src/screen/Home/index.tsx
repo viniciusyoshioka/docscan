@@ -375,7 +375,7 @@ export function Home() {
                     renderItem={renderItem}
                     extraData={documentSelection.selectedData}
                     estimatedItemSize={DOCUMENT_ITEM_HEIGHT}
-                    ItemSeparatorComponent={() => <Divider wrapperStyle={{ paddingHorizontal: 16 }} />}
+                    ItemSeparatorComponent={() => <Divider style={{ marginHorizontal: 16 }} />}
                     onScroll={onScroll}
                 />
             )}
