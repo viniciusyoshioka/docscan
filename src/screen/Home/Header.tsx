@@ -1,5 +1,5 @@
-import { StatusBar } from "react-native"
 import { Appbar } from "react-native-paper"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { translate } from "@locales"
 import { HomeMenu } from "./HomeMenu"
@@ -21,6 +21,9 @@ export interface HomeHeaderProps {
 export function HomeHeader(props: HomeHeaderProps) {
 
 
+    const safeAreaInsets = useSafeAreaInsets()
+
+
     function getTitle(): string {
         if (props.isSelectionMode) {
             return props.selectedDocumentsAmount.toString()
@@ -30,7 +33,7 @@ export function HomeHeader(props: HomeHeaderProps) {
 
 
     return (
-        <Appbar.Header elevated={true} statusBarHeight={StatusBar.currentHeight}>
+        <Appbar.Header elevated={true} statusBarHeight={safeAreaInsets.top}>
             {props.isSelectionMode && (
                 <Appbar.Action icon={"close"} onPress={props.exitSelectionMode} />
             )}
