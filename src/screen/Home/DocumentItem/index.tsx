@@ -11,7 +11,7 @@ import { DateService } from "@services/date"
 import { useAppTheme } from "@theme"
 
 
-export const DOCUMENT_ITEM_HEIGHT = 60
+export const DOCUMENT_ITEM_HEIGHT = 64
 
 
 export interface DocumentItemProps extends SelectableItem {
@@ -50,7 +50,7 @@ export function DocumentItem(props: DocumentItemProps) {
                         variant={"body"}
                         size={"large"}
                         numberOfLines={1}
-                        style={{ color: color.onSurface }}
+                        style={{ color: color.onSurface, flex: 1, textAlignVertical: "center" }}
                         children={props.document.name}
                     />
 
@@ -58,7 +58,7 @@ export function DocumentItem(props: DocumentItemProps) {
                         variant={"body"}
                         size={"small"}
                         numberOfLines={1}
-                        style={{ color: color.onSurfaceVariant }}
+                        style={{ color: color.onSurfaceVariant, flex: 1, textAlignVertical: "center" }}
                         children={DateService.getLocaleDateTime(new Date(props.document.modifiedAt), false)}
                     />
                 </View>
@@ -91,6 +91,5 @@ const styles = StyleSheet.create({
     },
     block: {
         flex: 1,
-        justifyContent: "center",
     }
 })
