@@ -123,7 +123,7 @@ export function CameraSettings(props: CameraSettingsProps) {
             <Reanimated.View style={orientationStyle}>
                 <CameraSettingsButton
                     optionName={translate("CameraSettings_flash")}
-                    iconName={flashIcon}
+                    icon={flashIcon}
                     onPress={changeFlash}
                 />
             </Reanimated.View>
@@ -132,7 +132,7 @@ export function CameraSettings(props: CameraSettingsProps) {
                 <Reanimated.View style={orientationStyle}>
                     <CameraSettingsButton
                         optionName={switchCameraButtonText}
-                        iconName={"flip-camera-android"}
+                        icon={"orbit-variant"}
                         onPress={switchCameraType}
                     />
                 </Reanimated.View>
@@ -141,7 +141,7 @@ export function CameraSettings(props: CameraSettingsProps) {
             <Reanimated.View style={orientationStyle}>
                 <CameraSettingsButton
                     optionName={changeRatioButtonText}
-                    iconName={"aspect-ratio"}
+                    icon={"aspect-ratio"}
                     onPress={changeCameraRatio}
                 />
             </Reanimated.View>
@@ -149,7 +149,7 @@ export function CameraSettings(props: CameraSettingsProps) {
             <Reanimated.View style={orientationStyle}>
                 <CameraSettingsButton
                     optionName={translate("CameraSettings_reset")}
-                    iconName={"restore"}
+                    icon={"restore"}
                     onPress={resetCameraSettings}
                 />
             </Reanimated.View>

@@ -1,6 +1,9 @@
 import { CameraRatio, getCameraRatioNumber } from "@services/settings"
 
 
+export const HEADER_HEIGHT = 64
+
+
 export type ScreenSize = {
     width: number;
     height: number;

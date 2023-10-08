@@ -104,7 +104,7 @@ export const CameraControl = forwardRef((props: CameraControlProps, ref: Forward
         <ControlView isShowingCamera={props.isShowingCamera}>
             <Reanimated.View style={orientationStyle}>
                 <ControlButton
-                    iconName={"collections"}
+                    icon={"image-multiple-outline"}
                     onPress={props.addPictureFromGallery}
                     isShowingCamera={props.isShowingCamera}
                 />
@@ -121,7 +121,7 @@ export const CameraControl = forwardRef((props: CameraControlProps, ref: Forward
             {params?.screenAction !== "replace-picture" && (
                 <Reanimated.View style={orientationStyle}>
                     <ControlButton
-                        iconName={"description"}
+                        icon={"file-document-outline"}
                         indexCount={picturesCount}
                         onPress={props.editDocument}
                         isShowingCamera={props.isShowingCamera}

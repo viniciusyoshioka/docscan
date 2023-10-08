@@ -1,13 +1,11 @@
-import { Button, HEADER_HEIGHT, ScrollScreen } from "@elementium/native"
-import { Linking, StatusBar, ViewStyle, useWindowDimensions } from "react-native"
-import { useSafeAreaFrame, useSafeAreaInsets } from "react-native-safe-area-context"
+import { ScrollScreen } from "@elementium/native"
+import { Linking, ViewStyle, useWindowDimensions } from "react-native"
+import { Button } from "react-native-paper"
 
 import { translate } from "@locales"
 import { useCameraControlDimensions } from "./CameraControl"
 import { CameraButtonWrapper, CameraMessageText, CameraMessageTitle, CameraTextWrapper } from "./style"
-
-
-const STATUS_BAR_HEIGHT = StatusBar.currentHeight ?? 0
+import { HEADER_HEIGHT } from "./utils"
 
 
 export interface NoPermissionMessageProps {
@@ -20,19 +18,15 @@ export function NoPermissionMessage(props: NoPermissionMessageProps) {
 
 
     const { height } = useWindowDimensions()
-    const safeAreaFrame = useSafeAreaFrame()
-    const safeAreaInsets = useSafeAreaInsets()
 
     const cameraControlDimensions = useCameraControlDimensions()
     const { size: cameraControlSize } = cameraControlDimensions
 
-    const heightToDiscount = Math.round(safeAreaFrame.y) === Math.round(STATUS_BAR_HEIGHT) ? 0 : safeAreaFrame.y
     const scrollScreenStyle: ViewStyle = {
-        marginTop: HEADER_HEIGHT + safeAreaInsets.top,
         marginBottom: cameraControlSize.HEIGHT_WITHOUT_CAMERA,
     }
     const scrollScreenContentContainerStyle: ViewStyle = {
-        minHeight: height - HEADER_HEIGHT - cameraControlSize.HEIGHT_WITHOUT_CAMERA - heightToDiscount,
+        minHeight: height - HEADER_HEIGHT - cameraControlSize.HEIGHT_WITHOUT_CAMERA,
     }
 
 
@@ -45,33 +39,34 @@ export function NoPermissionMessage(props: NoPermissionMessageProps) {
             contentContainerStyle={scrollScreenContentContainerStyle}
         >
             <CameraTextWrapper>
-                <CameraMessageTitle variant={"title"} size={"large"}>
+                <CameraMessageTitle variant={"titleLarge"}>
                     {translate("Camera_noPermission")}
                 </CameraMessageTitle>
 
-                <CameraMessageText variant={"body"} size={"large"}>
+                <CameraMessageText variant={"bodyLarge"}>
                     &bull; {translate("Camera_allowCameraWithGrantPermission")}
                 </CameraMessageText>
 
-                <CameraMessageText variant={"body"} size={"large"}>
+                <CameraMessageText variant={"bodyLarge"}>
                     &bull; {translate("Camera_allowCameraThroughSettings")}
                 </CameraMessageText>
 
-                <CameraMessageText variant={"body"} size={"large"}>
+                <CameraMessageText variant={"bodyLarge"}>
                     &bull; {translate("Camera_enableCamera")}
                 </CameraMessageText>
             </CameraTextWrapper>
 
             <CameraButtonWrapper>
                 <Button
-                    variant={"outline"}
-                    text={translate("Camera_openSettings")}
+                    mode={"outlined"}
+                    children={translate("Camera_openSettings")}
                     onPress={Linking.openSettings}
                     style={{ width: "100%" }}
                 />
 
                 <Button
-                    text={translate("Camera_grantPermission")}
+                    mode={"contained"}
+                    children={translate("Camera_grantPermission")}
                     onPress={props.requestCameraPermission}
                     style={{ width: "100%" }}
                 />

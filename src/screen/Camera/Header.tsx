@@ -1,6 +1,5 @@
-import { Header, HeaderButton, HeaderTitle } from "@elementium/native"
-import { useMemo } from "react"
-import { StyleProp, StyleSheet, ViewStyle } from "react-native"
+import { StyleSheet } from "react-native"
+import { Appbar } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { useAppTheme } from "@theme"
@@ -20,51 +19,35 @@ export function CameraHeader(props: CameraHeaderProps) {
 
     const { isDark } = useAppTheme()
 
-
-    const headerStyle = useMemo((): StyleProp<ViewStyle> => {
-        if (!props.isShowingCamera) {
-            return { ...styles.absolute, backgroundColor: "transparent" }
-        }
-        return styles.absolute
-    }, [props.isShowingCamera])
-
-    function getIconColor() {
-        if (props.isShowingCamera || isDark) {
-            return "white"
-        }
-        return "black"
-    }
+    const headerStyle = !props.isShowingCamera ? styles.headerWithoutCamera : styles.headerWithCamera
+    const iconColor = (props.isShowingCamera || isDark) ? "white" : "black"
 
 
     return (
-        <Header style={headerStyle} overrideStatusBar={safeAreaInsets.top !== 0}>
-            <HeaderButton
-                iconName={"arrow-back"}
-                iconColor={getIconColor()}
+        <Appbar.Header style={headerStyle} statusBarHeight={safeAreaInsets.top}>
+            <Appbar.BackAction
+                iconColor={iconColor}
                 onPress={props.goBack}
             />
 
-            <HeaderTitle />
+            <Appbar.Content title={""} />
 
-            <HeaderButton
-                iconName={"settings"}
-                iconColor={getIconColor()}
+            <Appbar.Action
+                icon={"cog"}
+                iconColor={iconColor}
                 onPress={props.openSettings}
                 disabled={!props.isShowingCamera}
             />
-        </Header>
+        </Appbar.Header>
     )
 }
 
 
 const styles = StyleSheet.create({
-    absolute: {
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        elevation: 0,
-        zIndex: 1,
+    headerWithCamera: {
         backgroundColor: "rgba(0, 0, 0, 0.4)",
+    },
+    headerWithoutCamera: {
+        backgroundColor: "transparent",
     },
 })

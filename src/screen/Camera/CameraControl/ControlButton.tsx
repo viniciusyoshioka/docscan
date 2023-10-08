@@ -1,7 +1,8 @@
 import { Color } from "@elementium/color"
-import { ExtendableOptionalIconProps, Icon, Pressable, PressableProps, Text } from "@elementium/native"
+import { Icon, Pressable, PressableProps } from "@elementium/native"
 import { useMemo } from "react"
 import { StyleProp, StyleSheet, ViewStyle } from "react-native"
+import { Text } from "react-native-paper"
 
 import { useAppTheme } from "@theme"
 
@@ -10,10 +11,8 @@ export const CONTROL_BUTTON_HEIGHT = 56
 export const CONTROL_BUTTON_RADIUS = CONTROL_BUTTON_HEIGHT / 2
 
 
-type PropsToOmit = "children" | "style" | "disabled" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut"
-
-
-export interface ControlButtonProps extends Omit<PressableProps, PropsToOmit>, Omit<ExtendableOptionalIconProps, "style"> {
+export interface ControlButtonProps extends PressableProps {
+    icon?: string;
     isShowingCamera?: boolean;
     indexCount?: string;
     style?: StyleProp<ViewStyle>;
@@ -27,9 +26,8 @@ export function ControlButton(props: ControlButtonProps) {
 
     const colorStyle = useMemo(() => {
         if (props.isShowingCamera) return "white"
-        if (props.iconColor) return props.iconColor
         return color.onBackground
-    }, [props.isShowingCamera, props.iconColor, color.onBackground])
+    }, [props.isShowingCamera, color.onBackground])
     const contentColor = useMemo(() => {
         if (props.disabled) {
             return new Color(colorStyle as string).setA(state.content.disabled).toRgba()
@@ -45,11 +43,10 @@ export function ControlButton(props: ControlButtonProps) {
             {...props}
             style={[style.container, props.style]}
         >
-            {props.iconName && (
+            {props.icon && (
                 <Icon
-                    name={props.iconName}
-                    group={props.iconGroup}
-                    size={props.iconSize}
+                    name={props.icon}
+                    group={"material-community"}
                     color={contentColor}
                 />
             )}

@@ -3,7 +3,7 @@ import { CameraFlash, CameraRatio, CameraType } from "@services/settings"
 
 
 export function getFlashIcon(cameraFlash: CameraFlash): string {
-    if (cameraFlash === "on") return "flash-on"
+    if (cameraFlash === "on") return "flash"
     if (cameraFlash === "off") return "flash-off"
     return "flash-auto"
 }

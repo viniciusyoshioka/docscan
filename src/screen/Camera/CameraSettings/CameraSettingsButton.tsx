@@ -1,21 +1,18 @@
-import { ExtendableIconProps, Icon, Text } from "@elementium/native"
+import { Icon } from "@elementium/native"
 import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from "react-native"
+import { Text } from "react-native-paper"
 
 
 export const CAMERA_SETTINGS_BUTTON_HEIGHT = 80
 
 
-export interface CameraSettingsButtonProps extends TouchableOpacityProps, Omit<ExtendableIconProps, "style"> {
+export interface CameraSettingsButtonProps extends TouchableOpacityProps {
+    icon: string;
     optionName: string;
 }
 
 
 export function CameraSettingsButton(props: CameraSettingsButtonProps) {
-
-
-    const contentColor = props.iconColor ?? "white"
-
-
     return (
         <TouchableOpacity
             activeOpacity={0.6}
@@ -23,18 +20,16 @@ export function CameraSettingsButton(props: CameraSettingsButtonProps) {
             style={[styles.container, props.style]}
         >
             <Icon
-                name={props.iconName}
-                group={props.iconGroup}
-                size={props.iconSize ?? 24}
-                color={contentColor}
+                name={props.icon}
+                group={"material-community"}
+                color={"white"}
                 style={{ flex: 1 }}
             />
 
             <Text
-                variant={"label"}
-                size={"medium"}
+                variant={"labelMedium"}
                 numberOfLines={2}
-                style={{ flex: 1, color: contentColor, textAlign: "center" }}
+                style={{ flex: 1, color: "white", textAlign: "center" }}
                 children={props.optionName}
             />
         </TouchableOpacity>

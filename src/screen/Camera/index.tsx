@@ -2,7 +2,7 @@ import { Screen } from "@elementium/native"
 import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core"
 import { Realm } from "@realm/react"
 import { useRef, useState } from "react"
-import { Alert, StatusBar, StyleProp, ViewStyle, useWindowDimensions } from "react-native"
+import { Alert, StyleProp, ViewStyle, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
 import { Camera as RNCamera } from "react-native-vision-camera"
@@ -16,7 +16,6 @@ import { DocumentService } from "@services/document"
 import { createAllFolders } from "@services/folder-handler"
 import { log, stringfyError } from "@services/log"
 import { useSettings } from "@services/settings"
-import { useAppTheme } from "@theme"
 import { CameraControl, CameraControlRef } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
 import { FocusIndicator, FocusIndicatorRef } from "./FocusIndicator"
@@ -45,8 +44,6 @@ export function Camera() {
     const isFocused = useIsFocused()
     const { width, height } = useWindowDimensions()
     const isForeground = useIsForeground()
-
-    const { color, isDark } = useAppTheme()
 
     const documentRealm = useDocumentRealm()
     const { settings } = useSettings()
@@ -248,8 +245,6 @@ export function Camera() {
 
     return (
         <Screen style={screenStyle}>
-            <StatusBar hidden={isShowingCamera} translucent={true} backgroundColor={"transparent"} barStyle={isDark ? "light-content" : "dark-content"} />
-
             <CameraHeader
                 goBack={goBack}
                 openSettings={() => setIsCameraSettingsVisible(true)}
