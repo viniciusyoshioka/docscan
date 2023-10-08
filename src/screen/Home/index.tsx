@@ -1,4 +1,4 @@
-import { AnimatedHeaderRef, Divider, Screen } from "@elementium/native"
+import { AnimatedHeaderRef, Screen } from "@elementium/native"
 import { useNavigation } from "@react-navigation/native"
 import { Realm } from "@realm/react"
 import { FlashList } from "@shopify/flash-list"
@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import DocumentPicker from "react-native-document-picker"
 import RNFS from "react-native-fs"
-import { FAB } from "react-native-paper"
+import { Divider, FAB } from "react-native-paper"
 import { unzip } from "react-native-zip-archive"
 
 import { EmptyList, LoadingModal } from "@components"
@@ -380,17 +380,17 @@ export function Home() {
                 />
             )}
 
+            <EmptyList
+                imageSource={Constants.appIconOutline}
+                message={translate("Home_emptyDocumentList")}
+                visible={documents.length === 0}
+            />
+
             <FAB
                 icon={"plus"}
                 mode={"flat"}
                 style={{ position: "absolute", right: 0, bottom: 0, margin: 16 }}
                 onPress={() => navigation.navigate("Camera")}
-            />
-
-            <EmptyList
-                imageSource={Constants.appIconOutline}
-                message={translate("Home_emptyDocumentList")}
-                visible={documents.length === 0}
             />
 
             <LoadingModal
