@@ -22,6 +22,7 @@ import { log, stringfyError } from "@services/log"
 import { getNotificationPermission } from "@services/permission"
 import { DOCUMENT_ITEM_HEIGHT, DocumentItem } from "./DocumentItem"
 import { HomeHeader } from "./Header"
+import { useDocuments } from "./useDocuments"
 
 
 // TODO improve database operations in deleteSelectedDocument
@@ -37,7 +38,7 @@ export function Home() {
 
     const { setDocumentModel } = useDocumentModel()
     const documentRealm = useDocumentRealm()
-    const documents = documentRealm.objects(DocumentSchema).sorted("modifiedAt", true)
+    const documents = useDocuments()
     const documentSelection = useSelectionMode<string>()
     const [showDocumentDeletionModal, setShowDocumentDeletionModal] = useState(false)
 
@@ -366,7 +367,7 @@ export function Home() {
 
             {documents.length > 0 && (
                 <FlashList
-                    data={documents}
+                    data={documents.toJSON() as unknown as DocumentSchema[]}
                     renderItem={renderItem}
                     extraData={documentSelection.selectedData}
                     estimatedItemSize={DOCUMENT_ITEM_HEIGHT}
