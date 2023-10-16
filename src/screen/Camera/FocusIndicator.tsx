@@ -9,14 +9,14 @@ export interface FocusIndicatorProps extends ViewProps {}
 
 
 export type FocusIndicatorPos = {
-    x: number;
-    y: number;
+    x: number
+    y: number
 }
 
 
 export interface FocusIndicatorRef {
-    setFocusPos: (pos: FocusIndicatorPos) => void;
-    setIsFocusing: (isFocusing: boolean) => void;
+    setFocusPos: (pos: FocusIndicatorPos) => void
+    setIsFocusing: (isFocusing: boolean) => void
 }
 
 
