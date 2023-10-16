@@ -1,37 +1,27 @@
-import { useEffect } from "react"
-import { OrientationType } from "react-native-orientation-locker"
-import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
-
-import { useCameraDevices, useDeviceOrientation } from "@hooks"
 import { translate } from "@locales"
 import { settingsCameraFlashDefault, settingsCameraRatioDefault, settingsCameraTypeDefault, useSettings } from "@services/settings"
 import { useCameraControlDimensions } from "../CameraControl"
 import { useIsCameraFlippable } from "../useIsCameraFlippable"
-import { CameraSettingsButton } from "./CameraSettingsButton"
-import { CameraSettingsModal, CameraSettingsModalProps } from "./CameraSettingsModal"
+import { SettingsButton } from "./SettingsButton"
+import { SettingsModal, SettingsModalProps } from "./SettingsModal"
 import { getChangeRatioButtonText, getFlashIcon, getSwitchCameraButtonText, nextCameraTypeSetting, nextFlashSetting, nextRatioSetting } from "./utils"
 
 
-export interface CameraSettingsProps extends CameraSettingsModalProps {}
+export interface CameraSettingsProps extends SettingsModalProps {}
 
 
 export function CameraSettings(props: CameraSettingsProps) {
 
 
-    const deviceOrientation = useDeviceOrientation()
-
-    const cameraDevices = useCameraDevices()
-    const isCameraFlippable = useIsCameraFlippable({ cameraDevices })
-
     const { settings, setSettings } = useSettings()
+
+    const isCameraFlippable = useIsCameraFlippable()
 
     const cameraControlDimensions = useCameraControlDimensions()
     const { size, shouldUseWithoutCameraStyle } = cameraControlDimensions
     const cameraControlheight = shouldUseWithoutCameraStyle
         ? size.HEIGHT_WITHOUT_CAMERA
         : size.HEIGHT_WITH_CAMERA
-
-    const rotationDegree = useSharedValue(0)
 
 
     const flashIcon = getFlashIcon(settings.camera.flash)
@@ -66,93 +56,33 @@ export function CameraSettings(props: CameraSettingsProps) {
     }
 
 
-    useEffect(() => {
-        switch (deviceOrientation) {
-            case OrientationType["PORTRAIT"]:
-                if (rotationDegree.value === 90) {
-                    rotationDegree.value -= 90
-                } else if (rotationDegree.value === 270) {
-                    rotationDegree.value += 90
-                } else {
-                    rotationDegree.value = 0
-                }
-                break
-            case OrientationType["PORTRAIT-UPSIDEDOWN"]:
-                if (rotationDegree.value === 90) {
-                    rotationDegree.value += 90
-                } else if (rotationDegree.value === 270) {
-                    rotationDegree.value -= 90
-                } else {
-                    rotationDegree.value = 180
-                }
-                break
-            case OrientationType["LANDSCAPE-LEFT"]:
-                if (rotationDegree.value === 0) {
-                    rotationDegree.value += 90
-                } else if (rotationDegree.value === 180) {
-                    rotationDegree.value -= 90
-                } else {
-                    rotationDegree.value = 90
-                }
-                break
-            case OrientationType["LANDSCAPE-RIGHT"]:
-                if (rotationDegree.value === 0) {
-                    rotationDegree.value -= 90
-                } else if (rotationDegree.value === 180) {
-                    rotationDegree.value += 90
-                } else {
-                    rotationDegree.value = 270
-                }
-                break
-        }
-    }, [deviceOrientation])
-
-    const animatedRotation = useDerivedValue(() => withTiming(rotationDegree.value, {
-        duration: 200,
-    }))
-
-    const orientationStyle = useAnimatedStyle(() => ({
-        transform: [
-            { rotate: `${animatedRotation.value}deg` },
-        ],
-    }))
-
-
     return (
-        <CameraSettingsModal {...props} containerStyle={{ marginBottom: cameraControlheight }}>
-            <Reanimated.View style={orientationStyle}>
-                <CameraSettingsButton
-                    optionName={translate("CameraSettings_flash")}
-                    icon={flashIcon}
-                    onPress={changeFlash}
-                />
-            </Reanimated.View>
+        <SettingsModal {...props} containerStyle={{ marginBottom: cameraControlheight }}>
+            <SettingsButton
+                icon={flashIcon}
+                optionName={translate("CameraSettings_flash")}
+                onPress={changeFlash}
+            />
 
             {isCameraFlippable && (
-                <Reanimated.View style={orientationStyle}>
-                    <CameraSettingsButton
-                        optionName={switchCameraButtonText}
-                        icon={"orbit-variant"}
-                        onPress={switchCameraType}
-                    />
-                </Reanimated.View>
+                <SettingsButton
+                    icon={"orbit-variant"}
+                    optionName={switchCameraButtonText}
+                    onPress={switchCameraType}
+                />
             )}
 
-            <Reanimated.View style={orientationStyle}>
-                <CameraSettingsButton
-                    optionName={changeRatioButtonText}
-                    icon={"aspect-ratio"}
-                    onPress={changeCameraRatio}
-                />
-            </Reanimated.View>
+            <SettingsButton
+                icon={"aspect-ratio"}
+                optionName={changeRatioButtonText}
+                onPress={changeCameraRatio}
+            />
 
-            <Reanimated.View style={orientationStyle}>
-                <CameraSettingsButton
-                    optionName={translate("CameraSettings_reset")}
-                    icon={"restore"}
-                    onPress={resetCameraSettings}
-                />
-            </Reanimated.View>
-        </CameraSettingsModal>
+            <SettingsButton
+                icon={"restore"}
+                optionName={translate("CameraSettings_reset")}
+                onPress={resetCameraSettings}
+            />
+        </SettingsModal>
     )
 }

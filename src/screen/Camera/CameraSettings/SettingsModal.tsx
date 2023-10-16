@@ -2,21 +2,21 @@ import { ReactNode } from "react"
 import { ScrollView, StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from "react-native"
 
 import { useAppTheme } from "@theme"
-import { CAMERA_SETTINGS_BUTTON_HEIGHT } from "./CameraSettingsButton"
+import { SETTINGS_BUTTON_SIZE } from "./SettingsButton"
 
 
-export interface CameraSettingsModalProps {
-    visible?: boolean;
-    onRequestClose?: () => void;
-    children?: ReactNode;
-    scrimStyle?: StyleProp<ViewStyle>;
-    containerStyle?: StyleProp<ViewStyle>;
-    contentStyle?: StyleProp<ViewStyle>;
-    contentWrapperStyle?: StyleProp<ViewStyle>;
+export interface SettingsModalProps {
+    visible?: boolean
+    onRequestClose?: () => void
+    children?: ReactNode
+    scrimStyle?: StyleProp<ViewStyle>
+    containerStyle?: StyleProp<ViewStyle>
+    contentStyle?: StyleProp<ViewStyle>
+    contentWrapperStyle?: StyleProp<ViewStyle>
 }
 
 
-export function CameraSettingsModal(props: CameraSettingsModalProps) {
+export function SettingsModal(props: SettingsModalProps) {
 
 
     const { shape } = useAppTheme()
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(0, 0, 0, 0.5)",
     },
     content: {
-        maxHeight: 1.5 * CAMERA_SETTINGS_BUTTON_HEIGHT,
+        maxHeight: 1.5 * SETTINGS_BUTTON_SIZE,
     },
     contentWrapper: {
         flexWrap: "wrap",

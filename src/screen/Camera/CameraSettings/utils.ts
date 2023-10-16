@@ -15,8 +15,8 @@ export function getSwitchCameraButtonText(cameraType: CameraType): string {
 }
 
 export function getChangeRatioButtonText(cameraRatio: CameraRatio): string {
-    if (cameraRatio === "3:4") return `${translate("CameraSettings_ratio")} 3:4`
-    if (cameraRatio === "9:16") return `${translate("CameraSettings_ratio")} 9:16`
+    if (cameraRatio === "4:3") return `${translate("CameraSettings_ratio")} 4:3`
+    if (cameraRatio === "16:9") return `${translate("CameraSettings_ratio")} 16:9`
     return translate("CameraSettings_ratio")
 }
 
@@ -47,6 +47,6 @@ type NextRatioSetting = {
 }
 
 export const nextRatioSetting: NextRatioSetting = {
-    "3:4": "9:16",
-    "9:16": "3:4",
+    "4:3": "16:9",
+    "16:9": "4:3",
 }
