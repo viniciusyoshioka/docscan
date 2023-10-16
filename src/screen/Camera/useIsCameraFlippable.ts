@@ -1,13 +1,12 @@
-import { CameraDevices } from "react-native-vision-camera"
+import { useCameraDevices } from "react-native-vision-camera"
 
 
-export interface IsCameraFlippable {
-    cameraDevices: CameraDevices | undefined;
-}
+export function useIsCameraFlippable(): boolean {
 
+    const cameraDevices = useCameraDevices()
 
-export function useIsCameraFlippable(attributes: IsCameraFlippable): boolean {
-    return attributes.cameraDevices !== undefined
-        && attributes.cameraDevices.back !== undefined
-        && attributes.cameraDevices.front !== undefined
+    const hasFrontal = !!cameraDevices.find(cameraDevice => cameraDevice.position === "front")
+    const hasBack = !!cameraDevices.find(cameraDevice => cameraDevice.position === "back")
+
+    return hasFrontal && hasBack
 }
