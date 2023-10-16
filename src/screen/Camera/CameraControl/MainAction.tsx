@@ -19,7 +19,7 @@ export interface MainActionProps extends TouchableOpacityProps {
 export function MainAction(props: MainActionProps) {
 
 
-    const { state } = useAppTheme()
+    const { color, state } = useAppTheme()
 
     const newScale = useSharedValue(1)
 
@@ -45,7 +45,9 @@ export function MainAction(props: MainActionProps) {
     const style = StyleSheet.flatten(props.style)
     const backgroundColorStyle = (style && style.backgroundColor)
         ? style.backgroundColor as string
-        : "white"
+        : props.isShowingCamera
+            ? "white"
+            : color.onBackground
     const backgroundColor = props.disabled
         ? new Color(backgroundColorStyle).setA(state.content.disabled).toRgba()
         : backgroundColorStyle
@@ -58,7 +60,7 @@ export function MainAction(props: MainActionProps) {
         transform: [
             { scale: newScale.value },
         ],
-    }), [newScale.value])
+    }), [style, backgroundColor, newScale.value])
 
 
     return (
