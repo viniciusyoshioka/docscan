@@ -6,7 +6,7 @@ export const settingsDefault: Settings = {
     camera: {
         flash: "off",
         type: "back",
-        ratio: "3:4",
+        ratio: "4:3",
     },
 }
 
