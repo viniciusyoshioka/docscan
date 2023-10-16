@@ -1,14 +1,19 @@
+import { useIsFocused } from "@react-navigation/native"
+
+import { useIsForeground } from "@hooks"
 
 
-export interface IsCameraActive {
-    hasPermission: boolean | undefined;
-    isForeground: boolean;
-    isFocused: boolean;
+export type CameraActiveOptions = {
+    hasCameraPermission: boolean
 }
 
 
-export function useIsCameraActive(attributes: IsCameraActive): boolean {
-    return (attributes.hasPermission === true)
-        && attributes.isForeground
-        && attributes.isFocused
+export function useIsCameraActive(options: CameraActiveOptions): boolean {
+
+    const { hasCameraPermission } = options
+
+    const isFocused = useIsFocused()
+    const isForeground = useIsForeground()
+
+    return hasCameraPermission && isFocused && isForeground
 }
