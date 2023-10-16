@@ -4,13 +4,13 @@ import { Button } from "react-native-paper"
 
 import { translate } from "@locales"
 import { useCameraControlDimensions } from "./CameraControl"
+import { HEADER_HEIGHT } from "./Header"
 import { CameraButtonWrapper, CameraMessageText, CameraMessageTitle, CameraTextWrapper } from "./style"
-import { HEADER_HEIGHT } from "./utils"
 
 
 export interface NoPermissionMessageProps {
-    isVisible: boolean;
-    requestCameraPermission: () => void;
+    hasCameraPermission: boolean
+    requestCameraPermission: () => Promise<void>
 }
 
 
@@ -19,10 +19,10 @@ export function NoPermissionMessage(props: NoPermissionMessageProps) {
 
     const { height } = useWindowDimensions()
 
-    const cameraControlDimensions = useCameraControlDimensions()
-    const { size: cameraControlSize } = cameraControlDimensions
+    const { size: cameraControlSize } = useCameraControlDimensions()
 
     const scrollScreenStyle: ViewStyle = {
+        marginTop: HEADER_HEIGHT,
         marginBottom: cameraControlSize.HEIGHT_WITHOUT_CAMERA,
     }
     const scrollScreenContentContainerStyle: ViewStyle = {
@@ -30,7 +30,7 @@ export function NoPermissionMessage(props: NoPermissionMessageProps) {
     }
 
 
-    if (!props.isVisible) return null
+    if (props.hasCameraPermission) return null
 
 
     return (
