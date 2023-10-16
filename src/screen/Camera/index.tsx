@@ -1,15 +1,15 @@
 import { Screen } from "@elementium/native"
-import { useIsFocused, useNavigation, useRoute } from "@react-navigation/core"
+import { useNavigation, useRoute } from "@react-navigation/native"
 import { Realm } from "@realm/react"
 import { useRef, useState } from "react"
 import { Alert, StyleProp, ViewStyle, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
-import { Camera as RNCamera } from "react-native-vision-camera"
+import { Camera as VisionCamera, useCameraDevice } from "react-native-vision-camera"
 
 import { EmptyList } from "@components"
 import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "@database"
-import { useBackHandler, useCameraDevices, useIsForeground } from "@hooks"
+import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
 import { NavigationParamProps, RouteParamProps } from "@router"
 import { DocumentService } from "@services/document"
@@ -41,30 +41,26 @@ export function Camera() {
 
     const navigation = useNavigation<NavigationParamProps<"Camera">>()
     const { params } = useRoute<RouteParamProps<"Camera">>()
-    const isFocused = useIsFocused()
     const { width, height } = useWindowDimensions()
-    const isForeground = useIsForeground()
 
     const documentRealm = useDocumentRealm()
     const { settings } = useSettings()
     const { documentModel, setDocumentModel } = useDocumentModel()
 
-    const cameraRef = useRef<RNCamera>(null)
+    const cameraRef = useRef<VisionCamera>(null)
     const pictureTakenFeedbackRef = useRef<PictureTakenFeedbackRef>(null)
     const cameraControlRef = useRef<CameraControlRef>(null)
     const focusIndicatorRef = useRef<FocusIndicatorRef>(null)
 
     const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
 
-    const cameraDevices = useCameraDevices()
-    const cameraDevice = cameraDevices ? cameraDevices[settings.camera.type] : undefined
+    const cameraDevice = useCameraDevice(settings.camera.type)
     const cameraSize = getCameraSize({ width, height }, settings.camera.ratio)
     const cameraMargin = useCameraMargin()
     const cameraOrientation = useCameraOrientation()
-    const [hasCameraPermission, requestCameraPermission] = useRequestCameraPermission()
-    const isCameraActive = useIsCameraActive({ isFocused, isForeground, hasPermission: hasCameraPermission })
-    const isShowingCamera = useIsShowingCamera({ hasPermission: hasCameraPermission, cameraDevice })
-    const [isResetingCamera, setIsResetingCamera] = useState(false)
+    const { hasCameraPermission, requestCameraPermission } = useRequestCameraPermission()
+    const isCameraActive = useIsCameraActive({ hasCameraPermission })
+    const isShowingCamera = useIsShowingCamera({ hasCameraPermission, cameraDevice })
     const [isFocusEnabled, setIsFocusEnabled] = useState(true)
 
 
@@ -110,6 +106,7 @@ export function Camera() {
             pictureTakenFeedbackRef.current?.showFeedback()
             const response = await cameraRef.current.takePhoto({
                 flash: settings.camera.flash,
+                enableShutterSound: false,
             })
 
             const picturePath = await DocumentService.getNewPicturePath(response.path)
@@ -252,7 +249,7 @@ export function Camera() {
             />
 
             <NoPermissionMessage
-                isVisible={hasCameraPermission === undefined || hasCameraPermission === false}
+                hasCameraPermission={hasCameraPermission}
                 requestCameraPermission={requestCameraPermission}
             />
 
@@ -271,7 +268,7 @@ export function Camera() {
                         enabled={isCameraActive && isFocusEnabled}
                         onHandlerStateChange={onTapStateChange}
                     >
-                        <RNCamera
+                        <VisionCamera
                             ref={cameraRef}
                             isActive={isCameraActive}
                             device={cameraDevice}
