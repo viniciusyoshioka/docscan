@@ -3,19 +3,19 @@ import { RefObject, useEffect } from "react"
 import { CameraControlRef } from "./CameraControl"
 
 
-export interface ControlActionEnabled {
-    isCameraActive: boolean;
-    cameraControlRef: RefObject<CameraControlRef>;
+export type ControlActionEnabledOptions = {
+    isCameraActive: boolean
+    cameraControlRef: RefObject<CameraControlRef>
 }
 
 
-export function useControlActionEnabled(attributes: ControlActionEnabled) {
+export function useControlActionEnabled(options: ControlActionEnabledOptions) {
     useEffect(() => {
-        if (attributes.isCameraActive) {
-            attributes.cameraControlRef.current?.enableAction()
+        if (options.isCameraActive) {
+            options.cameraControlRef.current?.enableAction()
             return
         }
 
-        attributes.cameraControlRef.current?.disableAction()
-    }, [attributes.isCameraActive, attributes.cameraControlRef.current])
+        options.cameraControlRef.current?.disableAction()
+    }, [options.isCameraActive, options.cameraControlRef.current])
 }
