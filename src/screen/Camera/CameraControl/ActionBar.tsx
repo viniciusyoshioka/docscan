@@ -1,29 +1,34 @@
-import { StyleSheet, View, ViewProps } from "react-native"
+import { ReactNode } from "react"
+import { StyleProp, StyleSheet, View, ViewStyle } from "react-native"
 
 import { useCameraControlDimensions } from "./useCameraControlDimensions"
 
 
-export interface ControlViewProps extends ViewProps {
-    isShowingCamera: boolean;
+export interface ActionBarProps {
+    isShowingCamera: boolean
+    style?: StyleProp<ViewStyle>
+    children?: ReactNode
 }
 
 
-export function ControlView(props: ControlViewProps) {
+export function ActionBar(props: ActionBarProps) {
 
 
     const cameraControlDimensions = useCameraControlDimensions()
     const { styleWithCamera, styleWithouCamera, shouldUseWithoutCameraStyle } = cameraControlDimensions
 
-    const cameraControlStyle = shouldUseWithoutCameraStyle
+
+    const actionBarStyle: ViewStyle = shouldUseWithoutCameraStyle
         ? styleWithouCamera
         : props.isShowingCamera
             ? styleWithCamera
             : styleWithouCamera
-
-    const wrapperStyle = StyleSheet.flatten([styles.wrapper, {
+    const actionBarBackgroundStyle: ViewStyle = {
         backgroundColor: props.isShowingCamera ? "rgba(0, 0, 0, 0.4)" : "transparent",
-        ...cameraControlStyle,
-    }, props.style])
+    }
+    const wrapperStyle: ViewStyle = StyleSheet.flatten([
+        styles.wrapper, actionBarBackgroundStyle, actionBarStyle, props.style
+    ])
 
 
     return (
