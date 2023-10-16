@@ -1,20 +1,12 @@
 import { CameraRatio, getCameraRatioNumber } from "@services/settings"
 
 
-export const HEADER_HEIGHT = 64
-
-
-export type ScreenSize = {
-    width: number;
-    height: number;
+export type Size = {
+    width: number
+    height: number
 }
 
-export type CameraSize = {
-    width: number;
-    height: number;
-}
-
-export function getCameraSize(screenSize: ScreenSize, cameraRatio: CameraRatio): CameraSize {
+export function getCameraSize(screenSize: Size, cameraRatio: CameraRatio): Size {
     const ratio = getCameraRatioNumber(cameraRatio)
     let cameraWidth = screenSize.width
     let cameraHeight = screenSize.width * ratio
