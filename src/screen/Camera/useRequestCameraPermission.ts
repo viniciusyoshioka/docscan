@@ -3,25 +3,28 @@ import { useEffect, useState } from "react"
 import { getCameraPermission } from "@services/permission"
 
 
-export type RequestCameraPermissionType = [boolean | undefined, () => Promise<void>]
+export type CameraPermission = {
+    hasCameraPermission: boolean
+    requestCameraPermission: () => Promise<void>
+}
 
 
-export function useRequestCameraPermission(): RequestCameraPermissionType {
+export function useRequestCameraPermission(): CameraPermission {
 
 
-    const [hasPermission, setHasPermission] = useState<boolean>()
+    const [hasCameraPermission, setHasCameraPermission] = useState(false)
 
 
-    async function requestPermission() {
+    async function requestCameraPermission() {
         const hasCameraPermission = await getCameraPermission()
-        setHasPermission(hasCameraPermission)
+        setHasCameraPermission(hasCameraPermission)
     }
 
 
     useEffect(() => {
-        requestPermission()
+        requestCameraPermission()
     }, [])
 
 
-    return [hasPermission, requestPermission]
+    return { hasCameraPermission, requestCameraPermission }
 }
