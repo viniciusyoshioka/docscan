@@ -3,7 +3,7 @@ import { StyleSheet, View, ViewProps } from "react-native"
 
 
 export interface PictureTakenFeedbackRef {
-    showFeedback: () => void;
+    showFeedback: () => void
 }
 
 
