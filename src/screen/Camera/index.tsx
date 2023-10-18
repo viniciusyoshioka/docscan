@@ -31,6 +31,7 @@ import { useIsCameraActive } from "./useIsCameraActive"
 import { useIsShowingCamera } from "./useIsShowingCamera"
 import { useRequestCameraPermission } from "./useRequestCameraPermission"
 import { useResetCameraOnChangeRatio } from "./useResetCameraOnChangeRatio"
+import { useStatusBarStyle } from "./useStatusBarStyle"
 import { getCameraSize } from "./utils"
 
 
@@ -243,6 +244,7 @@ export function Camera() {
     useControlActionEnabled({ isCameraActive, cameraControlRef })
     useDisableFocusOnSettingsOpened({ isSettingsOpened: isCameraSettingsVisible, setIsFocusEnabled })
     useResetCameraOnChangeRatio(setIsResetingCamera)
+    useStatusBarStyle(isShowingCamera)
 
 
     return (
