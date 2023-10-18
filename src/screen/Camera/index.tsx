@@ -61,11 +61,11 @@ export function Camera() {
         { photoResolution: "max" },
     ])
     const cameraSize = getCameraSize({ width, height }, settings.camera.ratio)
-    const cameraMargin = useCameraMargin()
     const cameraOrientation = useCameraOrientation()
     const { hasCameraPermission, requestCameraPermission } = useRequestCameraPermission()
     const isCameraActive = useIsCameraActive({ hasCameraPermission })
     const isShowingCamera = useIsShowingCamera({ hasCameraPermission, cameraDevice })
+    const cameraMargin = useCameraMargin({ isShowingCamera })
     const [isFocusEnabled, setIsFocusEnabled] = useState(true)
     const [isResetingCamera, setIsResetingCamera] = useState(false)
 
