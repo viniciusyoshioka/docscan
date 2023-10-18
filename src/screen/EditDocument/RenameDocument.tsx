@@ -1,7 +1,7 @@
 import { ModalActions, ModalContainer, ModalScrim, ModalTitle } from "@elementium/native"
 import { useNavigation } from "@react-navigation/native"
 import { createRef, useEffect, useState } from "react"
-import { TextInput } from "react-native"
+import { KeyboardAvoidingView, TextInput } from "react-native"
 import { Button } from "react-native-paper"
 
 import { Input } from "@components"
@@ -68,37 +68,39 @@ export function RenameDocument() {
 
     return (
         <ModalScrim onPress={goBack}>
-            <ModalContainer>
-                <ModalTitle>
-                    {translate("RenameDocument_title")}
-                </ModalTitle>
+            <KeyboardAvoidingView behavior={"position"}>
+                <ModalContainer>
+                    <ModalTitle>
+                        {translate("RenameDocument_title")}
+                    </ModalTitle>
 
-                <Input
-                    ref={inputRef}
-                    placeholder={translate("RenameDocument_documentName_placeholder")}
-                    value={documentName}
-                    onChangeText={setDocumentName}
-                    selectTextOnFocus={true}
-                    style={{ width: "100%", marginTop: 16 }}
-                />
-
-                <ModalActions>
-                    <Button
-                        mode={"text"}
-                        children={translate("cancel")}
-                        onPress={goBack}
+                    <Input
+                        ref={inputRef}
+                        placeholder={translate("RenameDocument_documentName_placeholder")}
+                        value={documentName}
+                        onChangeText={setDocumentName}
+                        selectTextOnFocus={true}
+                        style={{ width: "100%", marginTop: 16 }}
                     />
 
-                    <Button
-                        mode={"text"}
-                        children={translate("ok")}
-                        onPress={() => {
-                            renameDocument()
-                            goBack()
-                        }}
-                    />
-                </ModalActions>
-            </ModalContainer>
+                    <ModalActions>
+                        <Button
+                            mode={"text"}
+                            children={translate("cancel")}
+                            onPress={goBack}
+                        />
+
+                        <Button
+                            mode={"text"}
+                            children={translate("ok")}
+                            onPress={() => {
+                                renameDocument()
+                                goBack()
+                            }}
+                        />
+                    </ModalActions>
+                </ModalContainer>
+            </KeyboardAvoidingView>
         </ModalScrim>
     )
 }
