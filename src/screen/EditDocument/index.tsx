@@ -39,6 +39,7 @@ export function EditDocument() {
         ? documentRealm.objects(DocumentPictureSchema)
             .filtered("belongsToDocument = $0", document.id)
             .sorted("position")
+            .toJSON() as unknown as DocumentPictureSchema[]
         : []
     ), [document])
 
