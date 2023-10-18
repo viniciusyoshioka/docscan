@@ -2,7 +2,7 @@ import { Screen } from "@elementium/native"
 import { useNavigation, useRoute } from "@react-navigation/native"
 import { Realm } from "@realm/react"
 import { useRef, useState } from "react"
-import { Alert, StyleProp, ViewStyle, useWindowDimensions } from "react-native"
+import { Alert, StyleProp, StyleSheet, View, ViewStyle, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
 import { Camera as VisionCamera, useCameraDevice, useCameraFormat } from "react-native-vision-camera"
@@ -263,27 +263,26 @@ export function Camera() {
                 visible={hasCameraPermission && !cameraDevice}
             />
 
-            {(hasCameraPermission && cameraDevice && !isResetingCamera) && (
+            {(hasCameraPermission && cameraDevice) && (
                 <CameraWrapper style={{ marginTop: cameraMargin.top }}>
                     <TapGestureHandler
                         minPointers={1}
                         enabled={isCameraActive && isFocusEnabled}
                         onHandlerStateChange={onTapStateChange}
                     >
-                        <VisionCamera
-                            ref={cameraRef}
-                            isActive={isCameraActive}
-                            device={cameraDevice}
-                            format={cameraFormat}
-                            photo={true}
-                            audio={false}
-                            enableZoomGesture={true}
-                            orientation={cameraOrientation}
-                            style={{
-                                width: cameraSize.width,
-                                height: cameraSize.height,
-                            }}
-                        />
+                        <View style={cameraSize}>
+                            <VisionCamera
+                                ref={cameraRef}
+                                isActive={isCameraActive}
+                                device={cameraDevice}
+                                format={cameraFormat}
+                                photo={true}
+                                audio={false}
+                                enableZoomGesture={true}
+                                orientation={cameraOrientation}
+                                style={StyleSheet.absoluteFill}
+                            />
+                        </View>
                     </TapGestureHandler>
 
                     <PictureTakenFeedback ref={pictureTakenFeedbackRef} />
