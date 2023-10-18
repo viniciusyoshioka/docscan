@@ -285,10 +285,10 @@ export function Camera() {
                                 orientation={cameraOrientation}
                                 style={StyleSheet.absoluteFill}
                             />
+
+                            <PictureTakenFeedback ref={pictureTakenFeedbackRef} />
                         </View>
                     </TapGestureHandler>
-
-                    <PictureTakenFeedback ref={pictureTakenFeedbackRef} />
                 </CameraWrapper>
             )}
 
