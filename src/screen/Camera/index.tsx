@@ -220,8 +220,8 @@ export function Camera() {
             setIsFocusEnabled(false)
 
             focusIndicatorRef.current.setFocusPos({
-                x: parseInt(event.nativeEvent.absoluteX.toFixed()),
-                y: parseInt(event.nativeEvent.absoluteY.toFixed()),
+                x: parseInt(event.nativeEvent.x.toFixed()),
+                y: parseInt(event.nativeEvent.y.toFixed()),
             })
             focusIndicatorRef.current.setIsFocusing(true)
 
@@ -286,13 +286,13 @@ export function Camera() {
                                 style={StyleSheet.absoluteFill}
                             />
 
+                            <FocusIndicator ref={focusIndicatorRef} />
+
                             <PictureTakenFeedback ref={pictureTakenFeedbackRef} />
                         </View>
                     </TapGestureHandler>
                 </CameraWrapper>
             )}
-
-            <FocusIndicator ref={focusIndicatorRef} />
 
             <CameraControl
                 ref={cameraControlRef}
