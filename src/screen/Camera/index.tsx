@@ -5,7 +5,7 @@ import { useRef, useState } from "react"
 import { Alert, StyleProp, ViewStyle, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
-import { Camera as VisionCamera, useCameraDevice } from "react-native-vision-camera"
+import { Camera as VisionCamera, useCameraDevice, useCameraFormat } from "react-native-vision-camera"
 
 import { EmptyList } from "@components"
 import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "@database"
@@ -15,7 +15,7 @@ import { NavigationParamProps, RouteParamProps } from "@router"
 import { DocumentService } from "@services/document"
 import { createAllFolders } from "@services/folder-handler"
 import { log, stringfyError } from "@services/log"
-import { useSettings } from "@services/settings"
+import { getCameraRatioNumber, useSettings } from "@services/settings"
 import { CameraControl, CameraControlRef } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
 import { FocusIndicator, FocusIndicatorRef } from "./FocusIndicator"
@@ -54,6 +54,10 @@ export function Camera() {
     const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
 
     const cameraDevice = useCameraDevice(settings.camera.type)
+    const cameraFormat = useCameraFormat(cameraDevice, [
+        { photoAspectRatio: getCameraRatioNumber(settings.camera.ratio) },
+        { photoResolution: "max" },
+    ])
     const cameraSize = getCameraSize({ width, height }, settings.camera.ratio)
     const cameraMargin = useCameraMargin()
     const cameraOrientation = useCameraOrientation()
@@ -270,6 +274,7 @@ export function Camera() {
                             ref={cameraRef}
                             isActive={isCameraActive}
                             device={cameraDevice}
+                            format={cameraFormat}
                             photo={true}
                             audio={false}
                             enableZoomGesture={true}
