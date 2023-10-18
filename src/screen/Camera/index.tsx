@@ -30,6 +30,7 @@ import { useDisableFocusOnSettingsOpened } from "./useDisableFocusOnSettingsOpen
 import { useIsCameraActive } from "./useIsCameraActive"
 import { useIsShowingCamera } from "./useIsShowingCamera"
 import { useRequestCameraPermission } from "./useRequestCameraPermission"
+import { useResetCameraOnChangeRatio } from "./useResetCameraOnChangeRatio"
 import { getCameraSize } from "./utils"
 
 
@@ -65,6 +66,7 @@ export function Camera() {
     const isCameraActive = useIsCameraActive({ hasCameraPermission })
     const isShowingCamera = useIsShowingCamera({ hasCameraPermission, cameraDevice })
     const [isFocusEnabled, setIsFocusEnabled] = useState(true)
+    const [isResetingCamera, setIsResetingCamera] = useState(false)
 
 
     const screenStyle: StyleProp<ViewStyle> = isShowingCamera ? { backgroundColor: "black" } : undefined
@@ -240,6 +242,7 @@ export function Camera() {
 
     useControlActionEnabled({ isCameraActive, cameraControlRef })
     useDisableFocusOnSettingsOpened({ isSettingsOpened: isCameraSettingsVisible, setIsFocusEnabled })
+    useResetCameraOnChangeRatio(setIsResetingCamera)
 
 
     return (
@@ -263,7 +266,7 @@ export function Camera() {
                 visible={hasCameraPermission && !cameraDevice}
             />
 
-            {(hasCameraPermission && cameraDevice) && (
+            {(hasCameraPermission && cameraDevice && !isResetingCamera) && (
                 <CameraWrapper style={{ marginTop: cameraMargin.top }}>
                     <TapGestureHandler
                         minPointers={1}
