@@ -249,7 +249,7 @@ export function VisualizePicture() {
             {!isRotating && !isCropping && (
                 <View style={{ flex: 1, flexDirection: "row" }}>
                     <FlashList
-                        data={documentModel?.pictures}
+                        data={documentModel?.pictures.toJSON() as unknown as DocumentPictureSchema[]}
                         renderItem={renderItem}
                         estimatedItemSize={width}
                         horizontal={true}
