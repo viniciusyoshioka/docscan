@@ -4701,10 +4701,10 @@ react-native-share@^9.4.1:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
-react-native-vision-camera@^3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-vision-camera/-/react-native-vision-camera-3.3.1.tgz#9dc6a74560535d6ce6deb85046b6b327615a45e3"
-  integrity sha512-OeoHvDTR4wlfij17azxmr7fwDtZc3nzEUe8ZJ3EYJx4HSGaDtvt578VRXUdxLpPs3jqS3J8g/8bivH2IHUkxtg==
+react-native-vision-camera@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-vision-camera/-/react-native-vision-camera-3.4.0.tgz#2ddcb2cce559682223d80fd47e83636d6e216b0c"
+  integrity sha512-rXUu8ITjE2b0KOziJCesMQZUhUPl6oBq3sEfiKXMVz4O7VhrQ0Yilh/QDgdDO6Jh4R//E4LXnj/XA7r55XsS8Q==
 
 react-native-zip-archive@^6.1.0:
   version "6.1.0"
