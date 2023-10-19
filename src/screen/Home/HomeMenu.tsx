@@ -19,7 +19,7 @@ export interface HomeMenuProps {
 export function HomeMenu(props: HomeMenuProps) {
 
 
-    const navigation = useNavigation<NavigationParamProps<"Settings">>()
+    const navigation = useNavigation<NavigationParamProps<"Home">>()
 
     const [isOpen, setIsOpen] = useState(false)
 
