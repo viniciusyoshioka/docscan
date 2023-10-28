@@ -1,7 +1,8 @@
 import { Modal } from "@elementium/native"
 import { useNavigation } from "@react-navigation/native"
 import { createRef, useEffect, useState } from "react"
-import { KeyboardAvoidingView, TextInput } from "react-native"
+import { TextInput } from "react-native"
+import { KeyboardAvoidingView } from "react-native-keyboard-controller"
 import { Button } from "react-native-paper"
 
 import { Input } from "@components"
