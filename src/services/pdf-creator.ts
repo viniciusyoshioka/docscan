@@ -2,14 +2,14 @@ import { NativeModules } from "react-native"
 
 
 export type PdfCreatorOptions = {
-    imageCompressQuality: number;
-    temporaryPath: string;
+    imageCompressQuality: number
+    temporaryPath: string
 }
 
 
 export type PdfCreatorType = {
-    createPdf: (pictureList: string[], documentPath: string, options: PdfCreatorOptions) => void;
-    viewPdf: (filePath: string) => Promise<void>;
+    createPdf: (pictureList: string[], documentPath: string, options: PdfCreatorOptions) => void
+    viewPdf: (filePath: string) => Promise<void>
 }
 
 

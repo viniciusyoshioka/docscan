@@ -6,15 +6,15 @@ import { HomeMenu } from "./HomeMenu"
 
 
 export interface HomeHeaderProps {
-    isSelectionMode: boolean;
-    selectedDocumentsAmount: number;
-    exitSelectionMode: () => void;
-    invertSelection: () => void;
-    deleteSelectedDocuments: () => void;
-    importDocument: () => void;
-    exportDocument: () => void;
-    mergeDocument: () => void;
-    duplicateDocument: () => void;
+    isSelectionMode: boolean
+    selectedDocumentsAmount: number
+    exitSelectionMode: () => void
+    invertSelection: () => void
+    deleteSelectedDocuments: () => void
+    importDocument: () => void
+    exportDocument: () => void
+    mergeDocument: () => void
+    duplicateDocument: () => void
 }
 
 

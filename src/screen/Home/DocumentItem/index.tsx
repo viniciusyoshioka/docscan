@@ -15,7 +15,7 @@ export const DOCUMENT_ITEM_HEIGHT = 64
 
 
 export interface DocumentItemProps extends SelectableItem {
-    document: DocumentSchema;
+    document: DocumentSchema
 }
 
 

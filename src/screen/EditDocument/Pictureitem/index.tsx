@@ -21,8 +21,8 @@ export function getPictureItemSize(windowWidth: number, columnCount: number): nu
 
 
 export interface PictureItemProps extends SelectableItem {
-    picturePath: string;
-    columnCount: number;
+    picturePath: string
+    columnCount: number
 }
 
 

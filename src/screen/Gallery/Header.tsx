@@ -5,11 +5,11 @@ import { translate } from "@locales"
 
 
 export interface GalleryHeaderProps {
-    goBack: () => void;
-    exitSelectionMode: () => void;
-    importImage: () => void;
-    isSelectionMode: boolean;
-    selectedImagesAmount: number;
+    goBack: () => void
+    exitSelectionMode: () => void
+    importImage: () => void
+    isSelectionMode: boolean
+    selectedImagesAmount: number
 }
 
 

@@ -31,17 +31,17 @@ function clamp(value: number, lowerBound: number, upperBound: number): number {
 
 
 export interface ImageVisualizationItemProps {
-    source: Source;
-    minZoom?: number;
-    maxZoom?: number;
-    doubleTabZoom?: number;
-    zoomMargin?: number;
-    allowZoomOut?: boolean;
-    onZoomActivated?: () => void;
-    onZoomDeactivated?: () => void;
-    onSingleTap?: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>) => void;
-    onError?: (error?: unknown) => void;
-    style?: StyleProp<ViewStyle>;
+    source: Source
+    minZoom?: number
+    maxZoom?: number
+    doubleTabZoom?: number
+    zoomMargin?: number
+    allowZoomOut?: boolean
+    onZoomActivated?: () => void
+    onZoomDeactivated?: () => void
+    onSingleTap?: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>) => void
+    onError?: (error?: unknown) => void
+    style?: StyleProp<ViewStyle>
 }
 
 

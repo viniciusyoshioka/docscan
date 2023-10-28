@@ -5,14 +5,14 @@ import { DocumentPictureSchema, DocumentSchema } from "../schemas"
 
 
 export interface DocumentModelValue {
-    document: DocumentSchema;
-    pictures: Realm.Results<DocumentPictureSchema>;
+    document: DocumentSchema
+    pictures: Realm.Results<DocumentPictureSchema>
 }
 
 
 export interface DocumentModelContextValue {
-    documentModel: DocumentModelValue | undefined;
-    setDocumentModel: Dispatch<SetStateAction<DocumentModelValue | undefined>>;
+    documentModel: DocumentModelValue | undefined
+    setDocumentModel: Dispatch<SetStateAction<DocumentModelValue | undefined>>
 }
 
 
@@ -23,7 +23,7 @@ const DocumentModelContext = createContext<DocumentModelContextValue>({
 
 
 export interface DocumentModelProviderProps {
-    children?: ReactNode;
+    children?: ReactNode
 }
 
 

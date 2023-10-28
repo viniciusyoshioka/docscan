@@ -6,29 +6,29 @@ export type ScreenAction = "add-picture" | "replace-picture" | undefined
 
 
 export type AddPictureParam = {
-    screenAction: "add-picture";
+    screenAction: "add-picture"
 }
 
 export type ReplacePictureParam = {
-    screenAction: "replace-picture";
-    replaceIndex: number;
+    screenAction: "replace-picture"
+    replaceIndex: number
 }
 
 export type VisualizePictureParam = {
-    pictureIndex: number;
+    pictureIndex: number
 }
 
 
 export type ScreenParams = {
-    Home: undefined;
-    Camera: AddPictureParam | ReplacePictureParam | undefined;
-    EditDocument: undefined;
-    ConvertPdfOption: undefined;
-    RenameDocument: undefined;
-    Settings: undefined;
-    ChangeTheme: undefined;
-    Gallery: AddPictureParam | ReplacePictureParam;
-    VisualizePicture: VisualizePictureParam;
+    Home: undefined
+    Camera: AddPictureParam | ReplacePictureParam | undefined
+    EditDocument: undefined
+    ConvertPdfOption: undefined
+    RenameDocument: undefined
+    Settings: undefined
+    ChangeTheme: undefined
+    Gallery: AddPictureParam | ReplacePictureParam
+    VisualizePicture: VisualizePictureParam
 }
 
 

@@ -8,11 +8,11 @@ import { NavigationParamProps } from "@router"
 
 
 export interface HomeMenuProps {
-    isSelectionMode: boolean;
-    importDocument: () => void;
-    exportDocument: () => void;
-    mergeDocument: () => void;
-    duplicateDocument: () => void;
+    isSelectionMode: boolean
+    importDocument: () => void
+    exportDocument: () => void
+    mergeDocument: () => void
+    duplicateDocument: () => void
 }
 
 

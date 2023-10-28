@@ -5,23 +5,23 @@ import { useAppTheme } from "@theme"
 
 
 export interface VisualizePictureHeaderProps {
-    goBack: () => void;
-    replacePicture: () => void;
+    goBack: () => void
+    replacePicture: () => void
     rotation: {
-        isActive: boolean;
-        open: () => void;
-        exit: () => void;
-        save: () => void;
-        rotateLeft: () => void;
-        rotateRight: () => void;
-    };
+        isActive: boolean
+        open: () => void
+        exit: () => void
+        save: () => void
+        rotateLeft: () => void
+        rotateRight: () => void
+    }
     crop: {
-        isActive: boolean;
-        open: () => void;
-        exit: () => void;
-        save: () => void;
-    };
-    isShowingOverlay: boolean;
+        isActive: boolean
+        open: () => void
+        exit: () => void
+        save: () => void
+    }
+    isShowingOverlay: boolean
 }
 
 

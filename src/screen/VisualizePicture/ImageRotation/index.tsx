@@ -14,17 +14,17 @@ const perpendicularAngles = [0, 90, 180, 270, 360]
 
 
 export interface ImageRotationProps {
-    source: string;
-    style?: StyleProp<ViewStyle>;
-    onError?: (error?: unknown) => void;
+    source: string
+    style?: StyleProp<ViewStyle>
+    onError?: (error?: unknown) => void
 }
 
 
 export interface ImageRotationRef {
-    getRotationDegree: () => number;
-    rotateLeft: () => void;
-    rotateRight: () => void;
-    save: (pathToSave: string) => Promise<void>;
+    getRotationDegree: () => number
+    rotateLeft: () => void
+    rotateRight: () => void
+    save: (pathToSave: string) => Promise<void>
 }
 
 

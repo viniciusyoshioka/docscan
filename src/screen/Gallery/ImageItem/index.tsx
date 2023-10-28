@@ -23,9 +23,9 @@ export function getImageItemSize(windowWidth: number, columnCount: number): numb
 
 
 export interface ImageItemProps extends SelectableItem {
-    imagePath: string;
-    screenAction: ScreenAction;
-    columnCount: number;
+    imagePath: string
+    screenAction: ScreenAction
+    columnCount: number
 }
 
 

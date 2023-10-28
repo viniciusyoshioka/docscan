@@ -5,7 +5,7 @@ import { useAppTheme } from "@theme"
 
 
 export interface LoadingOverlayProps {
-    style?: StyleProp<AnimatedStyle<StyleProp<ViewStyle>>>;
+    style?: StyleProp<AnimatedStyle<StyleProp<ViewStyle>>>
 }
 
 

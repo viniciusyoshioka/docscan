@@ -9,17 +9,17 @@ import { EditDocumentMenu } from "./EditDocumentMenu"
 
 
 export interface EditDocumentHeaderProps {
-    goBack: () => void;
-    exitSelectionMode: () => void;
-    isSelectionMode: boolean;
-    selectedPicturesAmount: number;
-    invertSelection: () => void;
-    deletePicture: () => void;
-    openCamera: () => void;
-    shareDocument: () => void;
-    visualizePdf: () => void;
-    deletePdf: () => void;
-    deleteDocument: () => void;
+    goBack: () => void
+    exitSelectionMode: () => void
+    isSelectionMode: boolean
+    selectedPicturesAmount: number
+    invertSelection: () => void
+    deletePicture: () => void
+    openCamera: () => void
+    shareDocument: () => void
+    visualizePdf: () => void
+    deletePdf: () => void
+    deleteDocument: () => void
 }
 
 

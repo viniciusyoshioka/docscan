@@ -7,10 +7,10 @@ import { useAppTheme } from "@theme"
 
 
 export interface EmptyListProps extends ViewProps, Omit<OptionalIconProps, "style"> {
-    visible?: boolean;
-    imageSource?: ImageSourcePropType;
-    message?: string;
-    children?: ReactNode;
+    visible?: boolean
+    imageSource?: ImageSourcePropType
+    message?: string
+    children?: ReactNode
 }
 
 

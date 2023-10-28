@@ -5,38 +5,38 @@ import { findNodeHandle, NativeSyntheticEvent, requireNativeComponent, UIManager
 
 
 export type OnImageSavedResponse = {
-    uri: string;
-    width: number;
-    height: number;
+    uri: string
+    width: number
+    height: number
 }
 
 
 export type OnSaveImageErrorResponse = {
-    message: string;
+    message: string
 }
 
 
 export interface ImageCropProps extends ViewProps {
-    sourceUrl: string;
-    keepAspectRatio?: boolean;
+    sourceUrl: string
+    keepAspectRatio?: boolean
     aspectRatio?: {
-        width: number;
-        height: number;
-    };
-    onSaveImage?: (response: OnImageSavedResponse) => void;
-    onCropError?: (response: string) => void;
+        width: number
+        height: number
+    }
+    onSaveImage?: (response: OnImageSavedResponse) => void
+    onCropError?: (response: string) => void
 }
 
 
 interface ImageCropViewManagerProps extends ViewProps {
-    sourceUrl: string;
-    keepAspectRatio?: boolean;
+    sourceUrl: string
+    keepAspectRatio?: boolean
     aspectRatio?: {
-        width: number;
-        height: number;
-    };
-    onImageSaved?: (response: NativeSyntheticEvent<OnImageSavedResponse>) => void;
-    onSaveImageError?: (response: NativeSyntheticEvent<OnSaveImageErrorResponse>) => void;
+        width: number
+        height: number
+    }
+    onImageSaved?: (response: NativeSyntheticEvent<OnImageSavedResponse>) => void
+    onSaveImageError?: (response: NativeSyntheticEvent<OnSaveImageErrorResponse>) => void
 }
 
 

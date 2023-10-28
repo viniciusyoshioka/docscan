@@ -22,7 +22,7 @@ export function getChangeRatioButtonText(cameraRatio: CameraRatio): string {
 
 
 type NextFlashSetting = {
-    [key in CameraFlash]: CameraFlash;
+    [key in CameraFlash]: CameraFlash
 }
 
 export const nextFlashSetting: NextFlashSetting = {
@@ -33,7 +33,7 @@ export const nextFlashSetting: NextFlashSetting = {
 
 
 type NextCameraTypeSetting = {
-    [key in CameraType]: CameraType;
+    [key in CameraType]: CameraType
 }
 
 export const nextCameraTypeSetting: NextCameraTypeSetting = {
@@ -43,7 +43,7 @@ export const nextCameraTypeSetting: NextCameraTypeSetting = {
 
 
 type NextRatioSetting = {
-    [key in CameraRatio]: CameraRatio;
+    [key in CameraRatio]: CameraRatio
 }
 
 export const nextRatioSetting: NextRatioSetting = {

@@ -2,20 +2,20 @@ import { NativeModules } from "react-native"
 
 
 export type ImageSize = {
-    width: number;
-    height: number;
+    width: number
+    height: number
 }
 
 export type RotationOptions = {
     sourcePath: string
-    destinationPath: string;
-    angle: number;
+    destinationPath: string
+    angle: number
 }
 
 
 export interface ImageToolsType {
-    getSize: (path: string) => Promise<ImageSize>;
-    rotate: (options: RotationOptions) => Promise<void>;
+    getSize: (path: string) => Promise<ImageSize>
+    rotate: (options: RotationOptions) => Promise<void>
 }
 
 
