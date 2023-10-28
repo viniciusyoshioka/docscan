@@ -35,13 +35,14 @@ export function EditDocument() {
     const { documentModel, setDocumentModel } = useDocumentModel()
     const documentRealm = useDocumentRealm()
     const document = documentModel?.document ?? undefined
-    const pictures = useMemo(() => (document
-        ? documentRealm.objects(DocumentPictureSchema)
+    const pictures = useMemo(() => {
+        if (document === undefined) return []
+
+        return documentRealm.objects(DocumentPictureSchema)
             .filtered("belongsToDocument = $0", document.id)
             .sorted("position")
             .toJSON() as unknown as DocumentPictureSchema[]
-        : []
-    ), [document])
+    }, [document])
 
     const columnCount = useMemo(() => (windowWidth < windowHeight)
         ? VERTICAL_COLUMN_COUNT
