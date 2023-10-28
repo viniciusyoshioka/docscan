@@ -1,4 +1,4 @@
-import { Text } from "@elementium/native"
+import { Text } from "react-native-paper"
 import styled from "styled-components/native"
 
 import { StyledProps } from "@theme"
@@ -17,6 +17,6 @@ export const ViewSlider = styled.View`
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    width: 100%;
     height: 56px;
+    margin-horizontal: 24px;
 `

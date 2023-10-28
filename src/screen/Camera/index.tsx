@@ -262,9 +262,9 @@ export function Camera() {
             />
 
             <EmptyList
-                iconName={"camera-off-outline"}
-                iconGroup={"material-community"}
-                iconSize={56}
+                name={"camera-off-outline"}
+                group={"material-community"}
+                size={56}
                 message={translate("Camera_cameraNotAvailable")}
                 visible={hasCameraPermission && !cameraDevice}
             />

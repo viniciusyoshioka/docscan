@@ -355,9 +355,8 @@ export function Gallery() {
             </EmptyList>
 
             <EmptyList
-                iconName={"images-outline"}
-                iconGroup={"ionicons"}
-                iconSize={56}
+                name={"image-outline"}
+                size={56}
                 message={translate("Gallery_emptyGallery")}
                 visible={imageGallery?.length === 0}
             />

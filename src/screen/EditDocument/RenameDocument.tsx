@@ -1,4 +1,4 @@
-import { ModalActions, ModalContainer, ModalScrim, ModalTitle } from "@elementium/native"
+import { Modal } from "@elementium/native"
 import { useNavigation } from "@react-navigation/native"
 import { createRef, useEffect, useState } from "react"
 import { KeyboardAvoidingView, TextInput } from "react-native"
@@ -67,12 +67,12 @@ export function RenameDocument() {
 
 
     return (
-        <ModalScrim onPress={goBack}>
+        <Modal.Scrim onPress={goBack}>
             <KeyboardAvoidingView behavior={"position"}>
-                <ModalContainer>
-                    <ModalTitle>
+                <Modal.Container>
+                    <Modal.Title>
                         {translate("RenameDocument_title")}
-                    </ModalTitle>
+                    </Modal.Title>
 
                     <Input
                         ref={inputRef}
@@ -80,10 +80,10 @@ export function RenameDocument() {
                         value={documentName}
                         onChangeText={setDocumentName}
                         selectTextOnFocus={true}
-                        style={{ width: "100%", marginTop: 16 }}
+                        style={{ marginTop: 16, marginHorizontal: 24 }}
                     />
 
-                    <ModalActions>
+                    <Modal.Actions>
                         <Button
                             mode={"text"}
                             children={translate("cancel")}
@@ -98,9 +98,9 @@ export function RenameDocument() {
                                 goBack()
                             }}
                         />
-                    </ModalActions>
-                </ModalContainer>
+                    </Modal.Actions>
+                </Modal.Container>
             </KeyboardAvoidingView>
-        </ModalScrim>
+        </Modal.Scrim>
     )
 }
