@@ -59,9 +59,6 @@ export type TranslationKeyType =
     | "EditDocument_alert_errorDeletingPdfFile_text"
     | "EditDocument_alert_deletePdf_title"
     | "EditDocument_alert_deletePdf_text"
-    | "EditDocument_alert_errorDeletingCurrentDocument_text"
-    | "EditDocument_alert_deleteDocument_title"
-    | "EditDocument_alert_deleteDocument_text"
     | "EditDocument_alert_cantDeletePictureFromEmptyDocument_text"
     | "EditDocument_alert_errorDeletingSelectedPictures_text"
     | "EditDocument_alert_deletePicture_title"
@@ -69,14 +66,12 @@ export type TranslationKeyType =
     // EditDocument screen
     | "EditDocument_shareDocument"
     | "EditDocument_deletingPictures"
-    | "EditDocument_deletingDocument"
     // EditDocument menu
     | "EditDocument_menu_convertToPdf"
     | "EditDocument_menu_sharePdf"
     | "EditDocument_menu_visualizePdf"
     | "EditDocument_menu_rename"
     | "EditDocument_menu_deletePdf"
-    | "EditDocument_menu_deleteDocument"
     // EditDocument ConvertPdfOption alert
     | "ConvertPdfOption_alert_noDocumentOpened_text"
     | "ConvertPdfOption_alert_documentWithoutPictures_text"

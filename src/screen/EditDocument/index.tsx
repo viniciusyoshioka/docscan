@@ -52,7 +52,6 @@ export function EditDocument() {
 
     const pictureSelection = useSelectionMode<number>()
     const [isDeletingPictures, setIsDeletingPictures] = useState(false)
-    const [isDeletingDocument, setIsDeletingDocument] = useState(false)
 
 
     useBackHandler(() => {
@@ -204,50 +203,6 @@ export function EditDocument() {
         )
     }
 
-    async function deleteCurrentDocument() {
-        if (!document) throw new Error("No document to be deleted, this should not happen")
-
-        setIsDeletingDocument(true)
-
-        const picturePathsToDelete = pictures.map(item => DocumentService.getPicturePath(item.fileName))
-
-        try {
-            documentRealm.beginTransaction()
-            documentRealm.delete(pictures)
-            documentRealm.delete(document)
-            documentRealm.commitTransaction()
-
-            setDocumentModel(undefined)
-
-            DocumentService.deletePicturesService({ pictures: picturePathsToDelete })
-        } catch (error) {
-            log.error(`Error deleting current document from database: "${stringfyError(error)}"`)
-            Alert.alert(
-                translate("warn"),
-                translate("EditDocument_alert_errorDeletingCurrentDocument_text")
-            )
-        }
-
-        setIsDeletingDocument(false)
-        navigation.reset({ routes: [ { name: "Home" } ] })
-    }
-
-    function alertDeleteCurrentDocument() {
-        if (!document) {
-            goBack()
-            return
-        }
-
-        Alert.alert(
-            translate("EditDocument_alert_deleteDocument_title"),
-            translate("EditDocument_alert_deleteDocument_text"),
-            [
-                { text: translate("cancel"), onPress: () => {} },
-                { text: translate("ok"), onPress: deleteCurrentDocument },
-            ]
-        )
-    }
-
     function invertSelection() {
         pictureSelection.setSelectedData(current => {
             const newSelectedData: number[] = []
@@ -337,7 +292,6 @@ export function EditDocument() {
                 shareDocument={shareDocument}
                 visualizePdf={visualizePdf}
                 deletePdf={alertDeletePdf}
-                deleteDocument={alertDeleteCurrentDocument}
             />
 
             <FlashList
@@ -353,11 +307,6 @@ export function EditDocument() {
             <LoadingModal
                 message={translate("EditDocument_deletingPictures")}
                 visible={isDeletingPictures}
-            />
-
-            <LoadingModal
-                message={translate("EditDocument_deletingDocument")}
-                visible={isDeletingDocument}
             />
         </Screen>
     )

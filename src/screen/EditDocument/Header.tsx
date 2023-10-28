@@ -19,7 +19,6 @@ export interface EditDocumentHeaderProps {
     shareDocument: () => void
     visualizePdf: () => void
     deletePdf: () => void
-    deleteDocument: () => void
 }
 
 
@@ -62,7 +61,6 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
                     visualizePdf={props.visualizePdf}
                     renameDocument={() => navigation.navigate("RenameDocument")}
                     deletePdf={props.deletePdf}
-                    deleteDocument={props.deleteDocument}
                 />
             </>}
 

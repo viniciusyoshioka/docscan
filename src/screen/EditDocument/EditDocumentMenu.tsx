@@ -11,7 +11,6 @@ export interface EditDocumentMenuProps {
     visualizePdf: () => void
     renameDocument: () => void
     deletePdf: () => void
-    deleteDocument: () => void
 }
 
 
@@ -75,14 +74,6 @@ export function EditDocumentMenu(props: EditDocumentMenuProps) {
                 onPress={() => {
                     setIsOpen(false)
                     props.deletePdf()
-                }}
-            />
-
-            <Menu.Item
-                title={translate("EditDocument_menu_deleteDocument")}
-                onPress={() => {
-                    setIsOpen(false)
-                    props.deleteDocument()
                 }}
             />
         </Menu>

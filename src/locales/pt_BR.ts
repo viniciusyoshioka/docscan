@@ -62,9 +62,6 @@ export const pt_BR: TranslationObjectType = {
     EditDocument_alert_errorDeletingPdfFile_text: "Erro apagando arquivo PDF",
     EditDocument_alert_deletePdf_title: "Apagar PDF",
     EditDocument_alert_deletePdf_text: "O PDF deste documento será apagado permanentemente",
-    EditDocument_alert_errorDeletingCurrentDocument_text: "Erro apagando documento atual",
-    EditDocument_alert_deleteDocument_title: "Apagar documento",
-    EditDocument_alert_deleteDocument_text: "Este documento será apagado permanentemente",
     EditDocument_alert_cantDeletePictureFromEmptyDocument_text: "Não é possível apagar imagens selecionadas, o documento está vazio",
     EditDocument_alert_errorDeletingSelectedPictures_text: "Erro apagando imagens selecionadas",
     EditDocument_alert_deletePicture_title: "Apagar foto",
@@ -72,14 +69,12 @@ export const pt_BR: TranslationObjectType = {
     // EditDocument screen
     EditDocument_shareDocument: "Compartilhar documento",
     EditDocument_deletingPictures: "Apagando imagens...",
-    EditDocument_deletingDocument: "Apagando documento...",
     // EditDocument menu
     EditDocument_menu_convertToPdf: "Converter para PDF",
     EditDocument_menu_sharePdf: "Compartilhar PDF",
     EditDocument_menu_visualizePdf: "Visualizar PDF",
     EditDocument_menu_rename: "Renomear",
     EditDocument_menu_deletePdf: "Apagar PDF",
-    EditDocument_menu_deleteDocument: "Apagar documento",
     // EditDocument ConvertPdfOption alert
     ConvertPdfOption_alert_noDocumentOpened_text: "Não há documento aberto",
     ConvertPdfOption_alert_documentWithoutPictures_text: "Não é possível converter um documento sem fotos para PDF",
