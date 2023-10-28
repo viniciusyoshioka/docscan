@@ -56,7 +56,7 @@ export function PictureItem(props: PictureItemProps) {
                     <SelectedSurface />
 
                     <Icon
-                        name={"done"}
+                        name={"check"}
                         size={32}
                         color={color.onPrimary}
                         style={{ position: "absolute" }}

@@ -62,7 +62,7 @@ export function ImageItem(props: ImageItemProps) {
                     <SelectionSurface />
 
                     <Icon
-                        name={"done"}
+                        name={"check"}
                         size={32}
                         color={color.onPrimary}
                         style={{ position: "absolute" }}
