@@ -224,7 +224,12 @@ export function EditDocument() {
 
         try {
             documentRealm.write(() => {
-                documentRealm.delete(pictures.filter((_, index) => pictureSelection.selectedData.includes(index)))
+                const realmPicturesToDelete = documentRealm.objects(DocumentPictureSchema)
+                    .filtered("belongsToDocument = $0", document.id)
+                    .sorted("position")
+                    .filter((_, index) => pictureSelection.selectedData.includes(index))
+
+                documentRealm.delete(realmPicturesToDelete)
                 document.modifiedAt = Date.now()
             })
 
