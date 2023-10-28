@@ -4,7 +4,7 @@ import { StyledProps } from "@theme"
 
 
 export interface InputBaseProps {
-    isFocused?: boolean;
+    isFocused?: boolean
 }
 
 
