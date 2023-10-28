@@ -1,4 +1,5 @@
 import { GestureHandlerRootView } from "react-native-gesture-handler"
+import { KeyboardProvider } from "react-native-keyboard-controller"
 
 import { DocumentModelProvider, RealmProvider } from "@database"
 import { useKeepAwakeOnDev } from "@hooks"
@@ -19,7 +20,9 @@ export function App() {
                 <SettingsProvider>
                     <DocumentModelProvider>
                         <AppThemeProvider>
-                            <Router />
+                            <KeyboardProvider statusBarTranslucent={true}>
+                                <Router />
+                            </KeyboardProvider>
                         </AppThemeProvider>
                     </DocumentModelProvider>
                 </SettingsProvider>
