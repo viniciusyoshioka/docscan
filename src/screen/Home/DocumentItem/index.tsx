@@ -1,4 +1,4 @@
-import { Color, Prisma } from "@elementium/color"
+import { Color, Prism } from "@elementium/color"
 import CheckBox from "@react-native-community/checkbox"
 import { useMemo } from "react"
 import { Pressable, StyleSheet, View } from "react-native"
@@ -30,7 +30,7 @@ export function DocumentItem(props: DocumentItemProps) {
     const rippleColor = useMemo(() => {
         const backgroundColor = new Color(color.surface)
         const overlayColor = new Color(color.onSurface).setA(state.container.pressed)
-        return Prisma.addColors(backgroundColor, overlayColor).toRgba()
+        return Prism.addColors(backgroundColor, overlayColor).toRgba()
     }, [color.surface, color.onSurface, state.container.pressed])
 
 
