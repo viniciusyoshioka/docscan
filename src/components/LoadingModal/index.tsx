@@ -24,7 +24,7 @@ export function LoadingModal(props: LoadingModalProps) {
 
     return (
         <Modal.Scrim>
-            <Modal.Container style={{ flexDirection: "row", alignItems: "center" }}>
+            <Modal.Container style={{ padding: 24, flexDirection: "row", alignItems: "center" }}>
                 <ActivityIndicator
                     size={"large"}
                     color={color.onSurface}
