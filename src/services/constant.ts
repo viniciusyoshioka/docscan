@@ -6,7 +6,7 @@ export class Constants {
     // App
     static appId = "com.docscan"
     static appName = "DocScan"
-    static appVersion = "1.19.3"
+    static appVersion = "1.19.4"
     static appType = __DEV__ ? "dev" : "release"
 
     // Icons
