@@ -1412,10 +1412,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@react-native-camera-roll/camera-roll@^7.3.0":
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/@react-native-camera-roll/camera-roll/-/camera-roll-7.3.0.tgz#354765d61e9175e8708404c1bb3fb4d2e7c99071"
-  integrity sha512-OjLk+/fnYIKaBvPo85aMNkE9o1EsDsTodT29izy9U5gia66ETfQJV3MTWCrjCH7uhsMvfVDK1sAEeibHWJz/IQ==
+"@react-native-camera-roll/camera-roll@^7.4.0":
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/@react-native-camera-roll/camera-roll/-/camera-roll-7.4.0.tgz#931e25b076b40dc57ca6d380f0a85d494a120f06"
+  integrity sha512-y0bVpMJLaFphYvMMx1BsqgMA0kXq9CKxKYNnt4ocUvwJj5Rp4TZ233rzJoDqz1oxd56Tz5f1g+yhYN5RImKl8Q==
 
 "@react-native-community/checkbox@^0.5.17":
   version "0.5.17"
@@ -4609,10 +4609,10 @@ react-native-fs@^2.20.0:
     base-64 "^0.1.0"
     utf8 "^3.0.0"
 
-react-native-gesture-handler@^2.14.0:
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-2.14.0.tgz#d6aec0d8b2e55c67557fd6107e828c0a1a248be8"
-  integrity sha512-cOmdaqbpzjWrOLUpX3hdSjsMby5wq3PIEdMq7okJeg9DmCzanysHSrktw1cXWNc/B5MAgxAn9J7Km0/4UIqKAQ==
+react-native-gesture-handler@^2.14.1:
+  version "2.14.1"
+  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-2.14.1.tgz#930640231024b7921435ab476aa501dd4a6b2e01"
+  integrity sha512-YiM1BApV4aKeuwsM6O4C2ufwewYEKk6VMXOt0YqEZFMwABBFWhXLySFZYjBSNRU2USGppJbfHP1q1DfFQpKhdA==
   dependencies:
     "@egjs/hammerjs" "^2.0.17"
     hoist-non-react-statics "^3.3.0"
@@ -4627,10 +4627,10 @@ react-native-get-random-values@^1.10.0:
   dependencies:
     fast-base64-decode "^1.0.0"
 
-react-native-keyboard-controller@^1.10.1:
-  version "1.10.1"
-  resolved "https://registry.yarnpkg.com/react-native-keyboard-controller/-/react-native-keyboard-controller-1.10.1.tgz#cd7c1fd7b996751b7764de2cc9cf4b2cd2745c31"
-  integrity sha512-bnO5Xw+LW5S64ivUBlb1JyzKCgz4udk6ficeUrTaxGDELpvk3StRLO0t6hUEStjxTdJJZh3MazAzQJH0Pms/6Q==
+react-native-keyboard-controller@^1.10.3:
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-controller/-/react-native-keyboard-controller-1.10.3.tgz#1da4df08beb4ece24a1efbd5611e85ca53d33953"
+  integrity sha512-sHy8+aOr+YDiPcd4YL4O5iEGjq5mupQIlkuMSZEPhtC/wM/w6gBR87yQafA93yID6ZOoZH2CBh9Qyv5dKGdQ3g==
 
 react-native-mmkv@^2.11.0:
   version "2.11.0"
@@ -4642,10 +4642,10 @@ react-native-orientation-locker@^1.6.0:
   resolved "https://registry.yarnpkg.com/react-native-orientation-locker/-/react-native-orientation-locker-1.6.0.tgz#4ea60e7cb5f2864d595a85f3b9af634c8f7c5121"
   integrity sha512-D3IOtAcaAi6S2w0Y1EUnr16I47isosQbE7F67fAu9A+gE67NkyKaJ9HL5EsZ+Uc7+7m+NsuBjx3dxuANNy8rVA==
 
-react-native-paper@^5.12.0:
-  version "5.12.0"
-  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.12.0.tgz#a042752b26064c885b01e57473962c2bc829c8f7"
-  integrity sha512-yL69kB/NqLoVjieEQ/a6caPXOzegHz0CEex6VMRYOiGFzOiPlIrD8gNCwowj6kcCesxJ0vsKb0zmqSFeS2bErg==
+react-native-paper@^5.12.1:
+  version "5.12.1"
+  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.12.1.tgz#0c3211f78b4d29a110aa168e6541cfb0a2c6a071"
+  integrity sha512-6ZBBJBsHxXUG5mD22Q0tArTlk5GpGlhZDkRU1RRqPtTpxWCMc7Dbc04pU3+qG0peJQCAO6GnXqUbkZ0YLnMPNg==
   dependencies:
     "@callstack/react-theme-provider" "^3.0.9"
     color "^3.1.2"
@@ -4686,10 +4686,10 @@ react-native-share@^10.0.2:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
-react-native-vision-camera@^3.7.1:
-  version "3.7.1"
-  resolved "https://registry.yarnpkg.com/react-native-vision-camera/-/react-native-vision-camera-3.7.1.tgz#e8bdf5e6a61533fbf34be393acd9d8f5d24168a8"
-  integrity sha512-jhcLiDCOFaYEeu2UhZjK1Yft+eOC0uzrHkShWF0XOH3BioBYAxs1bec0RUItCGAvzbPePIC07KwB74PaJu0Zxw==
+react-native-vision-camera@^3.8.2:
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/react-native-vision-camera/-/react-native-vision-camera-3.8.2.tgz#f4f75f84c6a19e1c3474ddc0f7f785b5a526739b"
+  integrity sha512-MY39l2e3hNRPUefn2JPShOFExcw0PblbAcUGvJrIfS9pMzdIyceo0umRAx8lOGXzDUAdb+xy/tFWb8zGxKimCQ==
 
 react-native-zip-archive@^6.1.0:
   version "6.1.0"
