@@ -17,11 +17,10 @@ import Reanimated, {
     withTiming
 } from "react-native-reanimated"
 
+import { TIMING_CONFIG } from "./animation-config"
+
 
 const AnimatedFastImage = Reanimated.createAnimatedComponent(FastImage as ComponentClass<FastImageProps>)
-
-
-const ANIMATION_DURATION = 150
 
 
 export interface ImageVisualizationItemProps {
@@ -107,8 +106,8 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
             }
 
             if (!allowZoomOut && zoom.value < 1) {
-                zoom.value = withTiming(1, { duration: ANIMATION_DURATION })
-                savedZoom.value = withTiming(1, { duration: ANIMATION_DURATION })
+                zoom.value = withTiming(1, TIMING_CONFIG)
+                savedZoom.value = withTiming(1, TIMING_CONFIG)
 
                 initialTranslationX.value = 0
                 initialTranslationY.value = 0
@@ -150,12 +149,12 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
             }
 
             if (zoom.value !== 1) {
-                zoom.value = withTiming(1, { duration: ANIMATION_DURATION })
-                savedZoom.value = withTiming(1, { duration: ANIMATION_DURATION })
-                initialTranslationX.value = withTiming(0, { duration: ANIMATION_DURATION })
-                initialTranslationY.value = withTiming(0, { duration: ANIMATION_DURATION })
-                translateX.value = withTiming(0, { duration: ANIMATION_DURATION })
-                translateY.value = withTiming(0, { duration: ANIMATION_DURATION })
+                zoom.value = withTiming(1, TIMING_CONFIG)
+                savedZoom.value = withTiming(1, TIMING_CONFIG)
+                initialTranslationX.value = withTiming(0, TIMING_CONFIG)
+                initialTranslationY.value = withTiming(0, TIMING_CONFIG)
+                translateX.value = withTiming(0, TIMING_CONFIG)
+                translateY.value = withTiming(0, TIMING_CONFIG)
 
                 runOnJS(setIsPanGestureEnabled)(false)
                 if (props.onZoomDeactivated) {
@@ -164,8 +163,28 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
                 return
             }
 
-            zoom.value = withTiming(doubleTabZoom, { duration: ANIMATION_DURATION })
-            savedZoom.value = withTiming(doubleTabZoom, { duration: ANIMATION_DURATION })
+            zoom.value = withTiming(doubleTabZoom, TIMING_CONFIG)
+            savedZoom.value = withTiming(doubleTabZoom, TIMING_CONFIG)
+
+            const boundaries = getBoundaries(doubleTabZoom)
+            if (imageWidth * doubleTabZoom > windowWidth) {
+                const { x } = event
+                const halfWindowWidth = windowWidth / 2
+                const distanceFromCenterX = halfWindowWidth - x
+
+                let displacementDistanceX = (distanceFromCenterX * doubleTabZoom) - distanceFromCenterX
+                displacementDistanceX = clamp(displacementDistanceX, -boundaries.x, boundaries.x)
+                translateX.value = withTiming(displacementDistanceX, TIMING_CONFIG)
+            }
+            if (imageHeight * doubleTabZoom > windowHeight) {
+                const { y } = event
+                const halfWindowHeight = windowHeight / 2
+                const distanceFromCenterY = halfWindowHeight - y
+
+                let displacementDistanceY = (distanceFromCenterY * doubleTabZoom) - distanceFromCenterY
+                displacementDistanceY = clamp(displacementDistanceY, -boundaries.y, boundaries.y)
+                translateY.value = withTiming(displacementDistanceY, TIMING_CONFIG)
+            }
 
             runOnJS(setIsPanGestureEnabled)(true)
             if (props.onZoomActivated) {
@@ -190,14 +209,14 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
                 const newTranslateX = initialTranslationX.value + event.translationX
                 translateX.value = clamp(newTranslateX, -boundaries.x, boundaries.x)
             } else {
-                translateX.value = withTiming(0, { duration: ANIMATION_DURATION })
+                translateX.value = withTiming(0, TIMING_CONFIG)
             }
 
             if (imageHeight * zoom.value > windowHeight) {
                 const newTranslateY = initialTranslationY.value + event.translationY
                 translateY.value = clamp(newTranslateY, -boundaries.y, boundaries.y)
             } else {
-                translateY.value = withTiming(0, { duration: ANIMATION_DURATION })
+                translateY.value = withTiming(0, TIMING_CONFIG)
             }
         })
         .onEnd((event, success) => {
