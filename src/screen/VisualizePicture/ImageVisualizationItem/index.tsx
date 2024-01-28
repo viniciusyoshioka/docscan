@@ -9,6 +9,7 @@ import {
 } from "react-native-gesture-handler"
 import Reanimated, {
     cancelAnimation,
+    clamp,
     runOnJS,
     useAnimatedStyle,
     useSharedValue,
@@ -21,12 +22,6 @@ const AnimatedFastImage = Reanimated.createAnimatedComponent(FastImage as Compon
 
 
 const ANIMATION_DURATION = 150
-
-
-function clamp(value: number, lowerBound: number, upperBound: number): number {
-    "worklet"
-    return Math.max(lowerBound, Math.min(value, upperBound))
-}
 
 
 export interface ImageVisualizationItemProps {
@@ -73,9 +68,9 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
     function getBoundaries(newZoom: number) {
         "worklet"
-        const margin = (newZoom === 0) ? 0 : (zoomMargin / newZoom)
-        const limitX = (imageWidth * newZoom - windowWidth) / (2 * newZoom)
-        const limitY = (imageHeight * newZoom - windowHeight) / (2 * newZoom)
+        const margin = (newZoom === 0) ? 0 : zoomMargin
+        const limitX = (imageWidth * newZoom - windowWidth) / 2
+        const limitY = (imageHeight * newZoom - windowHeight) / 2
         return {
             x: limitX + margin,
             y: limitY + margin,
@@ -192,14 +187,14 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
             const boundaries = getBoundaries(zoom.value)
 
             if (imageWidth * zoom.value > windowWidth) {
-                const newTranslateX = initialTranslationX.value + (event.translationX / zoom.value)
+                const newTranslateX = initialTranslationX.value + event.translationX
                 translateX.value = clamp(newTranslateX, -boundaries.x, boundaries.x)
             } else {
                 translateX.value = withTiming(0, { duration: ANIMATION_DURATION })
             }
 
             if (imageHeight * zoom.value > windowHeight) {
-                const newTranslateY = initialTranslationY.value + (event.translationY / zoom.value)
+                const newTranslateY = initialTranslationY.value + event.translationY
                 translateY.value = clamp(newTranslateY, -boundaries.y, boundaries.y)
             } else {
                 translateY.value = withTiming(0, { duration: ANIMATION_DURATION })
@@ -210,14 +205,14 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
             if (Math.abs(event.velocityX) >= 200) {
                 translateX.value = withDecay({
-                    velocity: event.velocityX / zoom.value,
+                    velocity: event.velocityX,
                     clamp: [-boundaries.x, boundaries.x],
                 })
             }
 
             if (Math.abs(event.velocityY) >= 200) {
                 translateY.value = withDecay({
-                    velocity: event.velocityY / zoom.value,
+                    velocity: event.velocityY,
                     clamp: [-boundaries.y, boundaries.y],
                 })
             }
@@ -232,9 +227,9 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
     const imageStyle = useAnimatedStyle(() => ({
         flex: 1,
         transform: [
-            { scale: zoom.value },
             { translateX: translateX.value },
             { translateY: translateY.value },
+            { scale: zoom.value },
         ]
     }))
 
