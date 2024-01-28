@@ -11,7 +11,6 @@ import Reanimated, {
     cancelAnimation,
     runOnJS,
     useAnimatedStyle,
-    useDerivedValue,
     useSharedValue,
     withDecay,
     withTiming
@@ -72,15 +71,16 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
     const [isPanGestureEnabled, setIsPanGestureEnabled] = useState(false)
 
 
-    const boudaries = useDerivedValue(() => {
-        const margin = (zoom.value === 0) ? 0 : (zoomMargin / zoom.value)
-        const limitX = (imageWidth * zoom.value - windowWidth) / (2 * zoom.value)
-        const limitY = (imageHeight * zoom.value - windowHeight) / (2 * zoom.value)
+    function getBoundaries(newZoom: number) {
+        "worklet"
+        const margin = (newZoom === 0) ? 0 : (zoomMargin / newZoom)
+        const limitX = (imageWidth * newZoom - windowWidth) / (2 * newZoom)
+        const limitY = (imageHeight * newZoom - windowHeight) / (2 * newZoom)
         return {
             x: limitX + margin,
             y: limitY + margin,
         }
-    }, [zoomMargin, zoom.value, imageWidth, imageHeight, windowWidth, windowHeight])
+    }
 
 
     const pinchGesture = Gesture.Pinch()
@@ -189,32 +189,36 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
             initialTranslationY.value = translateY.value
         })
         .onChange(event => {
+            const boundaries = getBoundaries(zoom.value)
+
             if (imageWidth * zoom.value > windowWidth) {
                 const newTranslateX = initialTranslationX.value + (event.translationX / zoom.value)
-                translateX.value = clamp(newTranslateX, -boudaries.value.x, boudaries.value.x)
+                translateX.value = clamp(newTranslateX, -boundaries.x, boundaries.x)
             } else {
                 translateX.value = withTiming(0, { duration: ANIMATION_DURATION })
             }
 
             if (imageHeight * zoom.value > windowHeight) {
                 const newTranslateY = initialTranslationY.value + (event.translationY / zoom.value)
-                translateY.value = clamp(newTranslateY, -boudaries.value.y, boudaries.value.y)
+                translateY.value = clamp(newTranslateY, -boundaries.y, boundaries.y)
             } else {
                 translateY.value = withTiming(0, { duration: ANIMATION_DURATION })
             }
         })
         .onEnd((event, success) => {
+            const boundaries = getBoundaries(zoom.value)
+
             if (Math.abs(event.velocityX) >= 200) {
                 translateX.value = withDecay({
                     velocity: event.velocityX / zoom.value,
-                    clamp: [-boudaries.value.x, boudaries.value.x],
+                    clamp: [-boundaries.x, boundaries.x],
                 })
             }
 
             if (Math.abs(event.velocityY) >= 200) {
                 translateY.value = withDecay({
                     velocity: event.velocityY / zoom.value,
-                    clamp: [-boudaries.value.y, boudaries.value.y],
+                    clamp: [-boundaries.y, boundaries.y],
                 })
             }
         })
