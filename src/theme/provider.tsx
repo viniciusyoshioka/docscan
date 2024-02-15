@@ -2,6 +2,7 @@ import { ElementiumThemeProvider } from "@elementium/theme"
 import { createContext, ReactNode, useContext } from "react"
 import { useColorScheme } from "react-native"
 import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper"
+import { UnistylesRuntime } from "react-native-unistyles"
 import { ThemeProvider as StyledThemeProvider } from "styled-components/native"
 
 import { Settings } from "@services/settings"
@@ -34,12 +35,14 @@ export function AppThemeProvider(props: AppThemeProviderProps) {
         }
 
         if (isDarkTheme) {
+            UnistylesRuntime.setTheme("dark")
             const { AppDarkTheme } = require("./dark")
             AppDarkTheme.appTheme = settings?.theme
             AppDarkTheme.switchTheme = switchTheme
             return AppDarkTheme
         }
 
+        UnistylesRuntime.setTheme("light")
         const { AppLightTheme } = require("./light")
         AppLightTheme.appTheme = (settings?.theme ?? themeDefault) as ThemeType
         AppLightTheme.switchTheme = switchTheme
