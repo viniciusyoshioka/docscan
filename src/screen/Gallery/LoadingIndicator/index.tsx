@@ -1,21 +1,31 @@
-import { ActivityIndicator } from "react-native"
+import { ActivityIndicator, View } from "react-native"
+import { createStyleSheet, useStyles } from "react-native-unistyles"
 
 import { useAppTheme } from "@theme"
-import { LoadingIndicatorView } from "./style"
 
 
 export function LoadingIndicator() {
 
 
+    const { styles } = useStyles(stylesheet)
     const { color } = useAppTheme()
 
 
     return (
-        <LoadingIndicatorView>
+        <View style={styles.wrapper}>
             <ActivityIndicator
                 size={"small"}
                 color={color.onBackground}
             />
-        </LoadingIndicatorView>
+        </View>
     )
 }
+
+
+const stylesheet = createStyleSheet(theme => ({
+    wrapper: {
+        alignItems: "center",
+        justifyContent: "center",
+        paddingVertical: 16,
+    },
+}))

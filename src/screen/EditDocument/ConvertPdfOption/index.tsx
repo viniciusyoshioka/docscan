@@ -2,9 +2,10 @@ import { Modal } from "@elementium/native"
 import Slider from "@react-native-community/slider"
 import { useNavigation } from "@react-navigation/native"
 import { useState } from "react"
-import { Alert } from "react-native"
+import { Alert, View } from "react-native"
 import RNFS from "react-native-fs"
-import { Button, RadioButton } from "react-native-paper"
+import { Button, RadioButton, Text } from "react-native-paper"
+import { useStyles } from "react-native-unistyles"
 
 import { useDocumentModel } from "@database"
 import { useBackHandler } from "@hooks"
@@ -17,7 +18,7 @@ import { log, stringfyError } from "@services/log"
 import { PdfCreator } from "@services/pdf-creator"
 import { getWritePermission } from "@services/permission"
 import { useAppTheme } from "@theme"
-import { CompressionText, ViewSlider } from "./style"
+import { stylesheet } from "./style"
 
 
 type DocumentPdfCompressionLevel = "low" | "high" | "custom"
@@ -27,6 +28,7 @@ export function ConvertPdfOption() {
 
 
     const navigation = useNavigation<NavigationParamProps<"ConvertPdfOption">>()
+    const { styles } = useStyles(stylesheet)
 
     const { documentModel } = useDocumentModel()
     const document = documentModel?.document ?? null
@@ -37,6 +39,7 @@ export function ConvertPdfOption() {
     const [compressionVisualValue, setCompressionVisualValue] = useState(60)
     const [compressionValue, setCompressionValue] = useState(60)
     const [compressionLevel, setCompressionLevel] = useState<DocumentPdfCompressionLevel>("high")
+    const isSliderDisabled = compressionLevel !== "custom"
 
 
     useBackHandler(() => goBack())
@@ -153,13 +156,16 @@ export function ConvertPdfOption() {
                         />
                     </RadioButton.Group>
 
-                    <ViewSlider>
-                        <CompressionText disabled={!(compressionLevel === "custom")}>
+                    <View style={styles.viewSlider}>
+                        <Text
+                            disabled={isSliderDisabled}
+                            style={styles.compressionText(isSliderDisabled)}
+                        >
                             {compressionVisualValue}%
-                        </CompressionText>
+                        </Text>
 
                         <Slider
-                            disabled={compressionLevel !== "custom"}
+                            disabled={isSliderDisabled}
                             style={{ flex: 1 }}
                             minimumValue={0}
                             maximumValue={100}
@@ -171,7 +177,7 @@ export function ConvertPdfOption() {
                             maximumTrackTintColor={color.onBackground}
                             thumbTintColor={compressionLevel === "custom" ? color.primary : color.onSurface}
                         />
-                    </ViewSlider>
+                    </View>
                 </Modal.Content>
 
                 <Modal.Actions>

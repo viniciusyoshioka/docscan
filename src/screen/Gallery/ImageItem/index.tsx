@@ -1,13 +1,14 @@
 import { Icon } from "@elementium/native"
 import { useMemo } from "react"
-import { useWindowDimensions } from "react-native"
+import { Pressable, View, useWindowDimensions } from "react-native"
 import FastImage from "react-native-fast-image"
 import { HandlerStateChangeEventPayload, LongPressGestureHandler, LongPressGestureHandlerEventPayload } from "react-native-gesture-handler"
+import { useStyles } from "react-native-unistyles"
 
 import { SelectableItem, useSelectableItem } from "@hooks"
 import { ScreenAction } from "@router"
 import { useAppTheme } from "@theme"
-import { Button, SelectionSurface } from "./style"
+import { stylesheet } from "./style"
 
 
 type LongPressNativeEventType = Readonly<HandlerStateChangeEventPayload & LongPressGestureHandlerEventPayload>
@@ -33,6 +34,7 @@ export function ImageItem(props: ImageItemProps) {
 
 
     const { width } = useWindowDimensions()
+    const { styles } = useStyles(stylesheet)
 
     const { color } = useAppTheme()
     const { onPress, onLongPress } = useSelectableItem(props)
@@ -52,14 +54,17 @@ export function ImageItem(props: ImageItemProps) {
             minDurationMs={400}
             onHandlerStateChange={({ nativeEvent }) => onItemLongPress(nativeEvent)}
         >
-            <Button onPress={onPress} style={{ width: imageSize }}>
+            <Pressable
+                onPress={onPress}
+                style={[styles.imageItemButton, { width: imageSize } ]}
+            >
                 <FastImage
                     source={{ uri: `file://${props.imagePath}` }}
                     style={{ width: imageSize, aspectRatio: 1 }}
                 />
 
                 {props.isSelectionMode && props.isSelected && <>
-                    <SelectionSurface />
+                    <View style={styles.selectionSurface} />
 
                     <Icon
                         name={"check"}
@@ -68,7 +73,7 @@ export function ImageItem(props: ImageItemProps) {
                         style={{ position: "absolute" }}
                     />
                 </>}
-            </Button>
+            </Pressable>
         </LongPressGestureHandler>
     )
 }

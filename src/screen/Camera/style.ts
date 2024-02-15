@@ -1,41 +1,31 @@
-import { View } from "react-native"
-import { Text } from "react-native-paper"
-import styled from "styled-components/native"
-
-import { StyledProps } from "@theme"
+import { createStyleSheet } from "react-native-unistyles"
 
 
-export const CameraTextWrapper = styled(View)`
-    flex: 1;
-    padding: 16px;
-`
-
-
-export const CameraButtonWrapper = styled(View)`
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    padding-bottom: 0px;
-    gap: 8px;
-`
-
-
-export const CameraWrapper = styled(View)`
-    align-items: center;
-    justify-content: center;
-`
-
-
-export const CameraMessageTitle = styled(Text)<StyledProps>`
-    width: 100%;
-    margin-bottom: 16px;
-    font-weight: bold;
-    text-align: center;
-    color: ${props => props.theme.color.onBackground};
-`
-
-
-export const CameraMessageText = styled(Text)<StyledProps>`
-    margin-bottom: 4px;
-    color: ${props => props.theme.color.onBackground};
-`
+export const stylesheet = createStyleSheet(theme => ({
+    cameraTextWrapper: {
+        flex: 1,
+        padding: 16,
+    },
+    cameraButtonWrapper: {
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 16,
+        paddingBottom: 0,
+        gap: 8,
+    },
+    cameraWrapper: {
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    cameraMessageTitle: {
+        width: "100%",
+        marginBottom: 16,
+        fontWeight: "bold",
+        textAlign: "center",
+        color: theme.colors.onBackground,
+    },
+    cameraMessageText: {
+        marginBottom: 4,
+        color: theme.colors.onBackground,
+    },
+}))

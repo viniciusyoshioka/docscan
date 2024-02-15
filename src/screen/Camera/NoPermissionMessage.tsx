@@ -1,11 +1,12 @@
 import { ScrollScreen } from "@elementium/native"
-import { Linking, ViewStyle, useWindowDimensions } from "react-native"
-import { Button } from "react-native-paper"
+import { Linking, View, ViewStyle, useWindowDimensions } from "react-native"
+import { Button, Text } from "react-native-paper"
+import { useStyles } from "react-native-unistyles"
 
 import { translate } from "@locales"
 import { useCameraControlDimensions } from "./CameraControl"
 import { HEADER_HEIGHT } from "./Header"
-import { CameraButtonWrapper, CameraMessageText, CameraMessageTitle, CameraTextWrapper } from "./style"
+import { stylesheet } from "./style"
 
 
 export interface NoPermissionMessageProps {
@@ -18,6 +19,7 @@ export function NoPermissionMessage(props: NoPermissionMessageProps) {
 
 
     const { height } = useWindowDimensions()
+    const { styles } = useStyles(stylesheet)
 
     const { size: cameraControlSize } = useCameraControlDimensions()
 
@@ -38,25 +40,25 @@ export function NoPermissionMessage(props: NoPermissionMessageProps) {
             style={scrollScreenStyle}
             contentContainerStyle={scrollScreenContentContainerStyle}
         >
-            <CameraTextWrapper>
-                <CameraMessageTitle variant={"titleLarge"}>
+            <View style={styles.cameraTextWrapper}>
+                <Text variant={"titleLarge"} style={styles.cameraMessageTitle}>
                     {translate("Camera_noPermission")}
-                </CameraMessageTitle>
+                </Text>
 
-                <CameraMessageText variant={"bodyLarge"}>
+                <Text variant={"bodyLarge"} style={styles.cameraMessageText}>
                     &bull; {translate("Camera_allowCameraWithGrantPermission")}
-                </CameraMessageText>
+                </Text>
 
-                <CameraMessageText variant={"bodyLarge"}>
+                <Text variant={"bodyLarge"} style={styles.cameraMessageText}>
                     &bull; {translate("Camera_allowCameraThroughSettings")}
-                </CameraMessageText>
+                </Text>
 
-                <CameraMessageText variant={"bodyLarge"}>
+                <Text variant={"bodyLarge"} style={styles.cameraMessageText}>
                     &bull; {translate("Camera_enableCamera")}
-                </CameraMessageText>
-            </CameraTextWrapper>
+                </Text>
+            </View>
 
-            <CameraButtonWrapper>
+            <View style={styles.cameraButtonWrapper}>
                 <Button
                     mode={"outlined"}
                     children={translate("Camera_openSettings")}
@@ -70,7 +72,7 @@ export function NoPermissionMessage(props: NoPermissionMessageProps) {
                     onPress={props.requestCameraPermission}
                     style={{ width: "100%" }}
                 />
-            </CameraButtonWrapper>
+            </View>
         </ScrollScreen>
     )
 }

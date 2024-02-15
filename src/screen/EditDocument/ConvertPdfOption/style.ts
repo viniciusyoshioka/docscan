@@ -1,22 +1,19 @@
-import { Text } from "react-native-paper"
-import styled from "styled-components/native"
-
-import { StyledProps } from "@theme"
+import { createStyleSheet } from "react-native-unistyles"
 
 
-export const CompressionText = styled(Text)<StyledProps>`
-    width: 40px;
-    text-align: left;
-    text-align-vertical: center;
-    color: ${props => props.theme.color.onSurface};
-    opacity: ${props => props.disabled ? props.theme.state.content.disabled : 1};
-`
-
-
-export const ViewSlider = styled.View`
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    height: 56px;
-    margin-horizontal: 24px;
-`
+export const stylesheet = createStyleSheet(theme => ({
+    compressionText: (disabled: boolean) => ({
+        width: 40,
+        textAlign: "left",
+        textAlignVertical: "center",
+        color: theme.colors.onSurface,
+        opacity: disabled ? theme.state.content.disabled : 1,
+    }),
+    viewSlider: {
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "row",
+        height: 56,
+        marginHorizontal: 24,
+    },
+}))

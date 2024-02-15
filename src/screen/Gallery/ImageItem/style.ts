@@ -1,22 +1,19 @@
-import { RectButton } from "react-native-gesture-handler"
-import styled from "styled-components/native"
-
-import { StyledProps } from "@theme"
+import { createStyleSheet } from "react-native-unistyles"
 
 
-export const Button = styled(RectButton)`
-    align-items: center;
-    justify-content: center;
-    aspect-ratio: 1;
-`
-
-
-export const SelectionSurface = styled.View<StyledProps>`
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    background-color: ${props => props.theme.color.primary};
-    opacity: 0.6;
-`
+export const stylesheet = createStyleSheet(theme => ({
+    imageItemButton: {
+        alignItems: "center",
+        justifyContent: "center",
+        aspectRatio: 1,
+    },
+    selectionSurface: {
+        position: "absolute",
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: theme.colors.primary,
+        opacity: 0.6,
+    },
+}))

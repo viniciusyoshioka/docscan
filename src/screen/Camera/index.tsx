@@ -5,6 +5,7 @@ import { useRef, useState } from "react"
 import { Alert, StyleProp, StyleSheet, View, ViewStyle, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
+import { useStyles } from "react-native-unistyles"
 import { Camera as VisionCamera, useCameraDevice, useCameraFormat } from "react-native-vision-camera"
 
 import { EmptyList } from "@components"
@@ -22,7 +23,7 @@ import { FocusIndicator, FocusIndicatorRef } from "./FocusIndicator"
 import { CameraHeader } from "./Header"
 import { NoPermissionMessage } from "./NoPermissionMessage"
 import { PictureTakenFeedback, PictureTakenFeedbackRef } from "./PictureTakenFeedback"
-import { CameraWrapper } from "./style"
+import { stylesheet } from "./style"
 import { useCameraMargin } from "./useCameraMargin"
 import { useCameraOrientation } from "./useCameraOrientation"
 import { useControlActionEnabled } from "./useControlActionEnabled"
@@ -44,6 +45,7 @@ export function Camera() {
     const navigation = useNavigation<NavigationParamProps<"Camera">>()
     const { params } = useRoute<RouteParamProps<"Camera">>()
     const { width, height } = useWindowDimensions()
+    const { styles } = useStyles(stylesheet)
 
     const documentRealm = useDocumentRealm()
     const { settings } = useSettings()
@@ -270,7 +272,7 @@ export function Camera() {
             />
 
             {(hasCameraPermission && cameraDevice && !isResetingCamera) && (
-                <CameraWrapper style={{ marginTop: cameraMargin.top }}>
+                <View style={[styles.cameraWrapper, { marginTop: cameraMargin.top } ]}>
                     <TapGestureHandler
                         minPointers={1}
                         enabled={isCameraActive && isFocusEnabled}
@@ -294,7 +296,7 @@ export function Camera() {
                             <PictureTakenFeedback ref={pictureTakenFeedbackRef} />
                         </View>
                     </TapGestureHandler>
-                </CameraWrapper>
+                </View>
             )}
 
             <CameraControl

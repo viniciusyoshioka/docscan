@@ -1,38 +1,33 @@
-import FastImage from "react-native-fast-image"
-import styled from "styled-components/native"
-
-import { StyledProps } from "@theme"
+import { createStyleSheet } from "react-native-unistyles"
 
 
 export const PICTURE_BUTTON_MARGIN = 4
 
 
-export const PictureButton = styled.Pressable<StyledProps>`
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-    margin: ${PICTURE_BUTTON_MARGIN}px;
-    border-radius: ${props => props.theme.shape.small}px;
-    aspect-ratio: 1;
-    overflow: hidden;
-`
-
-
-export const PictureImage = styled(FastImage)<StyledProps>`
-    flex: 1;
-    border-radius: ${props => props.theme.shape.small}px;
-    resize-mode: cover;
-    aspect-ratio: 1;
-`
-
-
-export const SelectedSurface = styled.View<StyledProps>`
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    border-radius: ${props => props.theme.shape.small}px;
-    background-color: ${props => props.theme.color.primary};
-    opacity: 0.5;
-`
+export const stylesheet = createStyleSheet(theme => ({
+    pictureButton: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        margin: PICTURE_BUTTON_MARGIN,
+        borderRadius: theme.shape.small,
+        aspectRatio: 1,
+        overflow: "hidden",
+    },
+    pictureImage: {
+        flex: 1,
+        borderRadius: theme.shape.small,
+        resizeMode: "cover",
+        aspectRatio: 1,
+    },
+    selectedSurface: {
+        position: "absolute",
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        borderRadius: theme.shape.small,
+        backgroundColor: theme.colors.primary,
+        opacity: 0.5,
+    },
+}))

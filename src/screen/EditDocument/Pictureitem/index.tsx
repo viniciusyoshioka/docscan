@@ -1,12 +1,14 @@
 import { Color } from "@elementium/color"
 import { Icon } from "@elementium/native"
 import { useMemo } from "react"
-import { useWindowDimensions } from "react-native"
+import { Pressable, View, useWindowDimensions } from "react-native"
+import FastImage from "react-native-fast-image"
 import { LongPressGestureHandler } from "react-native-gesture-handler"
+import { useStyles } from "react-native-unistyles"
 
 import { SelectableItem, useSelectableItem } from "@hooks"
 import { useAppTheme } from "@theme"
-import { PICTURE_BUTTON_MARGIN, PictureButton, PictureImage, SelectedSurface } from "./style"
+import { PICTURE_BUTTON_MARGIN, stylesheet } from "./style"
 
 
 export const VERTICAL_COLUMN_COUNT = 2
@@ -30,6 +32,7 @@ export function PictureItem(props: PictureItemProps) {
 
 
     const { width } = useWindowDimensions()
+    const { styles } = useStyles(stylesheet)
 
     const { color } = useAppTheme()
     const { onPress, onLongPress } = useSelectableItem(props)
@@ -45,15 +48,18 @@ export function PictureItem(props: PictureItemProps) {
             minDurationMs={400}
             onHandlerStateChange={({ nativeEvent }) => onLongPress(nativeEvent)}
         >
-            <PictureButton
-                style={{ maxWidth: pictureItemSize }}
+            <Pressable
+                style={[styles.pictureButton, { maxWidth: pictureItemSize } ]}
                 onPress={onPress}
                 android_ripple={{ color: rippleColor, foreground: true }}
             >
-                <PictureImage source={{ uri: `file://${props.picturePath}` }} />
+                <FastImage
+                    source={{ uri: `file://${props.picturePath}` }}
+                    style={styles.pictureImage}
+                />
 
                 {props.isSelectionMode && props.isSelected && <>
-                    <SelectedSurface />
+                    <View style={styles.selectedSurface} />
 
                     <Icon
                         name={"check"}
@@ -62,7 +68,7 @@ export function PictureItem(props: PictureItemProps) {
                         style={{ position: "absolute" }}
                     />
                 </>}
-            </PictureButton>
+            </Pressable>
         </LongPressGestureHandler>
     )
 }
