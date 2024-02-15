@@ -53,6 +53,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
     const [windowHeight, setWindowHeight] = useState(0)
     const [imageWidth, setImageWidth] = useState(0)
     const [imageHeight, setImageHeight] = useState(0)
+    const [isPanGestureEnabled, setIsPanGestureEnabled] = useState(false)
 
     const zoom = useSharedValue(1)
     const savedZoom = useSharedValue(1)
@@ -60,12 +61,10 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
     const initialFocalY = useSharedValue(0)
     const focalX = useSharedValue(0)
     const focalY = useSharedValue(0)
-    const initialTranslationX = useSharedValue(0)
-    const initialTranslationY = useSharedValue(0)
+    const initialTranslateX = useSharedValue(0)
+    const initialTranslateY = useSharedValue(0)
     const translateX = useSharedValue(0)
     const translateY = useSharedValue(0)
-
-    const [isPanGestureEnabled, setIsPanGestureEnabled] = useState(false)
 
 
     function getBoundaries(newZoom: number) {
@@ -90,8 +89,8 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
             initialFocalY.value = event.focalY
             focalX.value = event.focalX
             focalY.value = event.focalY
-            initialTranslationX.value = translateX.value
-            initialTranslationY.value = translateY.value
+            initialTranslateX.value = translateX.value
+            initialTranslateY.value = translateY.value
 
             if (props.onZoomActivated) {
                 runOnJS(props.onZoomActivated)()
@@ -105,14 +104,14 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
             zoom.value = savedZoom.value * event.scale
             zoom.value = clamp(zoom.value, minZoom, maxZoom)
 
-            const diffScale = zoom.value / savedZoom.value
             focalX.value = event.focalX
             focalY.value = event.focalY
 
+            const diffScale = zoom.value / savedZoom.value
             const boundaries = getBoundaries(zoom.value)
             if (imageWidth * zoom.value > windowWidth) {
                 const previousWindowWidth = windowWidth * savedZoom.value
-                const previousWidthOffScreen = ((previousWindowWidth - windowWidth) / 2) - initialTranslationX.value
+                const previousWidthOffScreen = ((previousWindowWidth - windowWidth) / 2) - initialTranslateX.value
                 const previousFocalX = previousWidthOffScreen + initialFocalX.value
                 const previousHalfWindowWidth = previousWindowWidth / 2
 
@@ -120,7 +119,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
                 const distanceFromCurrentCenterX = distanceFromPreviousCenterX * diffScale
 
                 const displacementX = (
-                    (distanceFromCurrentCenterX - distanceFromPreviousCenterX + initialTranslationX.value)
+                    (distanceFromCurrentCenterX - distanceFromPreviousCenterX + initialTranslateX.value)
                     + (focalX.value - initialFocalX.value)
                 )
 
@@ -128,7 +127,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
             }
             if (imageHeight * zoom.value > windowHeight) {
                 const previousWindowHeight = windowHeight * savedZoom.value
-                const previousHeightOffScreen = ((previousWindowHeight - windowHeight) / 2) - initialTranslationY.value
+                const previousHeightOffScreen = ((previousWindowHeight - windowHeight) / 2) - initialTranslateY.value
                 const previousFocalY = previousHeightOffScreen + initialFocalY.value
                 const previousHalfWindowHeight = previousWindowHeight / 2
 
@@ -136,7 +135,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
                 const distanceFromCurrentCenterY = distanceFromPreviousCenterY * diffScale
 
                 const displacementY = (
-                    (distanceFromCurrentCenterY - distanceFromPreviousCenterY + initialTranslationY.value)
+                    (distanceFromCurrentCenterY - distanceFromPreviousCenterY + initialTranslateY.value)
                     + (focalY.value - initialFocalY.value)
                 )
 
@@ -156,8 +155,8 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
                 initialFocalY.value = 0
                 focalX.value = 0
                 focalY.value = 0
-                initialTranslationX.value = 0
-                initialTranslationY.value = 0
+                initialTranslateX.value = 0
+                initialTranslateY.value = 0
                 translateX.value = 0
                 translateY.value = 0
 
@@ -202,8 +201,8 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
                 initialFocalY.value = 0
                 focalX.value = 0
                 focalY.value = 0
-                initialTranslationX.value = withTiming(0, TIMING_CONFIG)
-                initialTranslationY.value = withTiming(0, TIMING_CONFIG)
+                initialTranslateX.value = withTiming(0, TIMING_CONFIG)
+                initialTranslateY.value = withTiming(0, TIMING_CONFIG)
                 translateX.value = withTiming(0, TIMING_CONFIG)
                 translateY.value = withTiming(0, TIMING_CONFIG)
 
@@ -256,21 +255,21 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
             cancelAnimation(translateY)
         })
         .onStart(event => {
-            initialTranslationX.value = translateX.value
-            initialTranslationY.value = translateY.value
+            initialTranslateX.value = translateX.value
+            initialTranslateY.value = translateY.value
         })
         .onChange(event => {
             const boundaries = getBoundaries(zoom.value)
 
             if (imageWidth * zoom.value > windowWidth) {
-                const newTranslateX = initialTranslationX.value + event.translationX
+                const newTranslateX = initialTranslateX.value + event.translationX
                 translateX.value = clamp(newTranslateX, -boundaries.x, boundaries.x)
             } else {
                 translateX.value = withTiming(0, TIMING_CONFIG)
             }
 
             if (imageHeight * zoom.value > windowHeight) {
-                const newTranslateY = initialTranslationY.value + event.translationY
+                const newTranslateY = initialTranslateY.value + event.translationY
                 translateY.value = clamp(newTranslateY, -boundaries.y, boundaries.y)
             } else {
                 translateY.value = withTiming(0, TIMING_CONFIG)
