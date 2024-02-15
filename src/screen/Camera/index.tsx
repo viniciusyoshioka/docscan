@@ -36,7 +36,6 @@ import { useStatusBarStyle } from "./useStatusBarStyle"
 import { getCameraSize } from "./utils"
 
 
-// TODO fix camera format decreasing camera preview resolution
 // TODO add support to multiple back cameras
 // TODO add zoom indicator
 export function Camera() {
