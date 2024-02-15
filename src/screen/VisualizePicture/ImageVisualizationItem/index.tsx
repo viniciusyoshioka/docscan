@@ -1,4 +1,4 @@
-import { ComponentClass, useEffect, useMemo, useState } from "react"
+import { ComponentClass, useEffect, useState } from "react"
 import { Image, StyleProp, View, ViewStyle, useWindowDimensions } from "react-native"
 import FastImage, { FastImageProps, Source } from "react-native-fast-image"
 import {
@@ -25,16 +25,18 @@ const AnimatedFastImage = Reanimated.createAnimatedComponent(FastImage as Compon
 
 export interface ImageVisualizationItemProps {
     source: Source
+    onError?: (error?: unknown) => void
+    style?: StyleProp<ViewStyle>
+
     minZoom?: number
     maxZoom?: number
     doubleTabZoom?: number
     zoomMargin?: number
     allowZoomOut?: boolean
+
     onZoomActivated?: () => void
     onZoomDeactivated?: () => void
     onSingleTap?: (event: GestureStateChangeEvent<TapGestureHandlerEventPayload>) => void
-    onError?: (error?: unknown) => void
-    style?: StyleProp<ViewStyle>
 }
 
 
