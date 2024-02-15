@@ -41,11 +41,11 @@ export interface ImageVisualizationItemProps {
 export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
 
-    const minZoom = useMemo(() => props.minZoom ?? 0.9, [props.minZoom])
-    const maxZoom = useMemo(() => props.maxZoom ?? 10, [props.maxZoom])
-    const doubleTabZoom = useMemo(() => props.doubleTabZoom ?? 2, [props.doubleTabZoom])
-    const zoomMargin = useMemo(() => props.zoomMargin ?? 0, [props.zoomMargin])
-    const allowZoomOut = useMemo(() => props.allowZoomOut ?? false, [props.allowZoomOut])
+    const minZoom = props.minZoom ?? 0.9
+    const maxZoom = props.maxZoom ?? 10
+    const doubleTabZoom = props.doubleTabZoom ?? 2
+    const zoomMargin = props.zoomMargin ?? 0
+    const allowZoomOut = props.allowZoomOut ?? false
 
     const { width } = useWindowDimensions()
 
