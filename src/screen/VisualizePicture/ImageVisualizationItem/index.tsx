@@ -86,16 +86,16 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
                 return
             }
 
-            if (props.onZoomActivated) {
-                runOnJS(props.onZoomActivated)()
-            }
-
             initialFocalX.value = event.focalX
             initialFocalY.value = event.focalY
             focalX.value = event.focalX
             focalY.value = event.focalY
             initialTranslationX.value = translateX.value
             initialTranslationY.value = translateY.value
+
+            if (props.onZoomActivated) {
+                runOnJS(props.onZoomActivated)()
+            }
         })
         .onChange(event => {
             if (event.numberOfPointers !== 2) {
