@@ -103,12 +103,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
             }
 
             zoom.value = savedZoom.value * event.scale
-            if (zoom.value < minZoom) {
-                zoom.value = minZoom
-            }
-            if (zoom.value > maxZoom) {
-                zoom.value = maxZoom
-            }
+            zoom.value = clamp(zoom.value, minZoom, maxZoom)
 
             const diffScale = zoom.value / savedZoom.value
             focalX.value = event.focalX
