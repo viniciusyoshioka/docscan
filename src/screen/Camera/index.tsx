@@ -215,28 +215,23 @@ export function Camera() {
     }
 
     async function onTapStateChange(event: HandlerStateChangeEvent<TapGestureHandlerEventPayload>) {
-        if (!cameraDevice?.supportsFocus || !isFocusEnabled || !focusIndicatorRef.current || !cameraRef.current) {
-            return
-        }
+        if (!cameraDevice?.supportsFocus || !isFocusEnabled) return
+        if (!cameraRef.current || !focusIndicatorRef.current) return
+        if (event.nativeEvent.state !== State.ACTIVE) return
 
-        if (event.nativeEvent.state === State.ACTIVE) {
+        try {
             setIsFocusEnabled(false)
 
-            focusIndicatorRef.current.setFocusPos({
-                x: parseInt(event.nativeEvent.x.toFixed()),
-                y: parseInt(event.nativeEvent.y.toFixed()),
-            })
+            const x = parseInt(event.nativeEvent.x.toFixed())
+            const y = parseInt(event.nativeEvent.y.toFixed())
+
+            focusIndicatorRef.current.setFocusPos({ x, y })
             focusIndicatorRef.current.setIsFocusing(true)
 
-            try {
-                await cameraRef.current.focus({
-                    x: parseInt(event.nativeEvent.x.toFixed()),
-                    y: parseInt(event.nativeEvent.y.toFixed()),
-                })
-            } catch (error) {
-                log.warn(`Error focusing camera ${stringfyError(error)}`)
-            }
-
+            await cameraRef.current.focus({ x, y })
+        } catch (error) {
+            log.warn(`Error focusing camera ${stringfyError(error)}`)
+        } finally {
             setIsFocusEnabled(true)
             focusIndicatorRef.current.setIsFocusing(false)
         }
