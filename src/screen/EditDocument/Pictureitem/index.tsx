@@ -3,10 +3,11 @@ import { Icon } from "@elementium/native"
 import { useMemo } from "react"
 import { Pressable, View, useWindowDimensions } from "react-native"
 import FastImage from "react-native-fast-image"
-import { LongPressGestureHandler } from "react-native-gesture-handler"
+import { Gesture, GestureDetector } from "react-native-gesture-handler"
+import { runOnJS } from "react-native-reanimated"
+import { SelectableItem, useSelectableItem } from "react-native-selection-mode"
 import { useStyles } from "react-native-unistyles"
 
-import { SelectableItem, useSelectableItem } from "@hooks"
 import { useAppTheme } from "@theme"
 import { PICTURE_BUTTON_MARGIN, stylesheet } from "./style"
 
@@ -42,12 +43,14 @@ export function PictureItem(props: PictureItemProps) {
     const rippleColor = new Color(color.primary).setA(0.5).toRgba()
 
 
+    const longPressGesture = Gesture.LongPress()
+        .maxDistance(30)
+        .minDuration(400)
+        .onStart(event => runOnJS(onLongPress)())
+
+
     return (
-        <LongPressGestureHandler
-            maxDist={30}
-            minDurationMs={400}
-            onHandlerStateChange={({ nativeEvent }) => onLongPress(nativeEvent)}
-        >
+        <GestureDetector gesture={longPressGesture}>
             <Pressable
                 style={[styles.pictureButton, { maxWidth: pictureItemSize } ]}
                 onPress={onPress}
@@ -69,6 +72,6 @@ export function PictureItem(props: PictureItemProps) {
                     />
                 </>}
             </Pressable>
-        </LongPressGestureHandler>
+        </GestureDetector>
     )
 }

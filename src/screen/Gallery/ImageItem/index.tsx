@@ -2,16 +2,14 @@ import { Icon } from "@elementium/native"
 import { useMemo } from "react"
 import { Pressable, View, useWindowDimensions } from "react-native"
 import FastImage from "react-native-fast-image"
-import { HandlerStateChangeEventPayload, LongPressGestureHandler, LongPressGestureHandlerEventPayload } from "react-native-gesture-handler"
+import { Gesture, GestureDetector } from "react-native-gesture-handler"
+import { runOnJS } from "react-native-reanimated"
+import { SelectableItem, useSelectableItem } from "react-native-selection-mode"
 import { useStyles } from "react-native-unistyles"
 
-import { SelectableItem, useSelectableItem } from "@hooks"
 import { ScreenAction } from "@router"
 import { useAppTheme } from "@theme"
 import { stylesheet } from "./style"
-
-
-type LongPressNativeEventType = Readonly<HandlerStateChangeEventPayload & LongPressGestureHandlerEventPayload>
 
 
 export const VERTICAL_COLUMN_COUNT = 4
@@ -42,18 +40,17 @@ export function ImageItem(props: ImageItemProps) {
     const imageSize = useMemo(() => getImageItemSize(width, props.columnCount), [width, props.columnCount])
 
 
-    function onItemLongPress(nativeEvent: LongPressNativeEventType) {
-        if (props.screenAction === "replace-picture") return
-        onLongPress(nativeEvent)
-    }
+    const longPressGesture = Gesture.LongPress()
+        .maxDistance(30)
+        .minDuration(400)
+        .onStart(event => {
+            if (props.screenAction === "replace-picture") return
+            runOnJS(onLongPress)()
+        })
 
 
     return (
-        <LongPressGestureHandler
-            maxDist={30}
-            minDurationMs={400}
-            onHandlerStateChange={({ nativeEvent }) => onItemLongPress(nativeEvent)}
-        >
+        <GestureDetector gesture={longPressGesture}>
             <Pressable
                 onPress={onPress}
                 style={[styles.imageItemButton, { width: imageSize } ]}
@@ -74,6 +71,6 @@ export function ImageItem(props: ImageItemProps) {
                     />
                 </>}
             </Pressable>
-        </LongPressGestureHandler>
+        </GestureDetector>
     )
 }

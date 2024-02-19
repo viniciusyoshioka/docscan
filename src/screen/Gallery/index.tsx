@@ -6,10 +6,11 @@ import { FlashList } from "@shopify/flash-list"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { ActivityIndicator, Alert, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
+import { useSelectionMode } from "react-native-selection-mode"
 
 import { EmptyList, LoadingModal } from "@components"
 import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "@database"
-import { useBackHandler, useSelectionMode } from "@hooks"
+import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
 import { NavigationParamProps, RouteParamProps } from "@router"
 import { DocumentService } from "@services/document"
@@ -273,8 +274,8 @@ export function Gallery() {
         return (
             <ImageItem
                 onClick={() => importSingleImage(item.node.image.uri)}
-                onSelect={() => gallerySelection.selectItem(item.node.image.uri)}
-                onDeselect={() => gallerySelection.deselectItem(item.node.image.uri)}
+                onSelect={() => gallerySelection.select(item.node.image.uri)}
+                onDeselect={() => gallerySelection.deselect(item.node.image.uri)}
                 isSelectionMode={gallerySelection.isSelectionMode}
                 isSelected={gallerySelection.selectedData.includes(item.node.image.uri)}
                 imagePath={item.node.image.uri}

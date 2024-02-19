@@ -2,11 +2,12 @@ import { Color, Prism } from "@elementium/color"
 import CheckBox from "@react-native-community/checkbox"
 import { useMemo } from "react"
 import { Pressable, StyleSheet, View } from "react-native"
-import { LongPressGestureHandler } from "react-native-gesture-handler"
+import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import { Text } from "react-native-paper"
+import { runOnJS } from "react-native-reanimated"
+import { SelectableItem, useSelectableItem } from "react-native-selection-mode"
 
 import { DocumentSchema } from "@database"
-import { SelectableItem, useSelectableItem } from "@hooks"
 import { DateService } from "@services/date"
 import { useAppTheme } from "@theme"
 
@@ -34,12 +35,14 @@ export function DocumentItem(props: DocumentItemProps) {
     }, [color.surface, color.onSurface, state.container.pressed])
 
 
+    const longPressGesture = Gesture.LongPress()
+        .maxDistance(30)
+        .minDuration(400)
+        .onStart(event => runOnJS(onLongPress)())
+
+
     return (
-        <LongPressGestureHandler
-            maxDist={30}
-            minDurationMs={400}
-            onHandlerStateChange={({ nativeEvent }) => onLongPress(nativeEvent)}
-        >
+        <GestureDetector gesture={longPressGesture}>
             <Pressable
                 onPress={onPress}
                 android_ripple={{ color: rippleColor }}
@@ -73,7 +76,7 @@ export function DocumentItem(props: DocumentItemProps) {
                     />
                 )}
             </Pressable>
-        </LongPressGestureHandler>
+        </GestureDetector>
     )
 }
 

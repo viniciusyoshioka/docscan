@@ -4,11 +4,12 @@ import { FlashList } from "@shopify/flash-list"
 import { useCallback, useMemo, useState } from "react"
 import { Alert, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
+import { useSelectionMode } from "react-native-selection-mode"
 import Share from "react-native-share"
 
 import { LoadingModal } from "@components"
 import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "@database"
-import { useBackHandler, useSelectionMode } from "@hooks"
+import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
 import { NavigationParamProps } from "@router"
 import { DocumentService } from "@services/document"
@@ -271,8 +272,8 @@ export function EditDocument() {
         return (
             <PictureItem
                 onClick={() => navigation.navigate("VisualizePicture", { pictureIndex: index })}
-                onSelect={() => pictureSelection.selectItem(index)}
-                onDeselect={() => pictureSelection.deselectItem(index)}
+                onSelect={() => pictureSelection.select(index)}
+                onDeselect={() => pictureSelection.deselect(index)}
                 isSelectionMode={pictureSelection.isSelectionMode}
                 isSelected={pictureSelection.selectedData.includes(index)}
                 picturePath={DocumentService.getPicturePath(item.fileName)}
