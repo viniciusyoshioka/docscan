@@ -4608,8 +4608,8 @@ react-native-unistyles@^2.3.0:
   integrity sha512-JvnSvVTovFhJh1eQ9yyDvmaQyeu0YkUOaNxhf8HS6t2UQuLhl8QoRQlAqTT6sRwaH+SjEaCR5GX9nD35chIhDg==
 
 "react-native-vector-icons@https://github.com/viniciusyoshioka/react-native-vector-icons":
-  version "10.0.0"
-  resolved "https://github.com/viniciusyoshioka/react-native-vector-icons#155523f6df0338e0ba9b0cdb05b0825530dcc076"
+  version "10.0.3"
+  resolved "https://github.com/viniciusyoshioka/react-native-vector-icons#4fb2e47e2ff3d6e8967936a7ae270a2002f258df"
   dependencies:
     prop-types "^15.7.2"
     yargs "^16.1.1"
