@@ -4607,9 +4607,9 @@ react-native-unistyles@^2.3.0:
   resolved "https://registry.yarnpkg.com/react-native-unistyles/-/react-native-unistyles-2.3.0.tgz#36d5f73512822f6fed3019f231ee85037a9bf867"
   integrity sha512-JvnSvVTovFhJh1eQ9yyDvmaQyeu0YkUOaNxhf8HS6t2UQuLhl8QoRQlAqTT6sRwaH+SjEaCR5GX9nD35chIhDg==
 
-"react-native-vector-icons@https://github.com/viniciusyoshioka/react-native-vector-icons":
+"react-native-vector-icons@https://github.com/viniciusyoshioka/react-native-vector-icons.git":
   version "10.0.3"
-  resolved "https://github.com/viniciusyoshioka/react-native-vector-icons#4fb2e47e2ff3d6e8967936a7ae270a2002f258df"
+  resolved "https://github.com/viniciusyoshioka/react-native-vector-icons.git#5cbd0e78615fbeface0e16f5f8b9b99c799040ba"
   dependencies:
     prop-types "^15.7.2"
     yargs "^16.1.1"
