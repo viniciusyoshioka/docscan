@@ -1,5 +1,4 @@
-import { ScrollScreen } from "@elementium/native"
-import { Linking, View, ViewStyle, useWindowDimensions } from "react-native"
+import { Linking, ScrollView, View, ViewStyle, useWindowDimensions } from "react-native"
 import { Button, Text } from "react-native-paper"
 import { useStyles } from "react-native-unistyles"
 
@@ -36,7 +35,7 @@ export function NoPermissionMessage(props: NoPermissionMessageProps) {
 
 
     return (
-        <ScrollScreen
+        <ScrollView
             style={scrollScreenStyle}
             contentContainerStyle={scrollScreenContentContainerStyle}
         >
@@ -73,6 +72,6 @@ export function NoPermissionMessage(props: NoPermissionMessageProps) {
                     style={{ width: "100%" }}
                 />
             </View>
-        </ScrollScreen>
+        </ScrollView>
     )
 }

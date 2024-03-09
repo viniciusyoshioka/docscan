@@ -1,8 +1,7 @@
-import { Screen } from "@elementium/native"
 import { useNavigation } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
 import { useCallback, useMemo, useState } from "react"
-import { Alert, useWindowDimensions } from "react-native"
+import { Alert, View, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import { useSelectionMode } from "react-native-selection-mode"
 import Share from "react-native-share"
@@ -286,7 +285,7 @@ export function EditDocument() {
 
 
     return (
-        <Screen>
+        <View style={{ flex: 1 }}>
             <EditDocumentHeader
                 goBack={goBack}
                 exitSelectionMode={pictureSelection.exitSelection}
@@ -314,6 +313,6 @@ export function EditDocument() {
                 message={translate("EditDocument_deletingPictures")}
                 visible={isDeletingPictures}
             />
-        </Screen>
+        </View>
     )
 }

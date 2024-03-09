@@ -1,9 +1,8 @@
-import { Screen } from "@elementium/native"
 import { useNavigation } from "@react-navigation/native"
 import { Realm } from "@realm/react"
 import { FlashList } from "@shopify/flash-list"
 import { useEffect, useState } from "react"
-import { Alert } from "react-native"
+import { Alert, View } from "react-native"
 import DocumentPicker from "react-native-document-picker"
 import RNFS from "react-native-fs"
 import { Divider, FAB } from "react-native-paper"
@@ -353,7 +352,7 @@ export function Home() {
 
 
     return (
-        <Screen>
+        <View style={{ flex: 1 }}>
             <HomeHeader
                 isSelectionMode={documentSelection.isSelectionMode}
                 selectedDocumentsAmount={documentSelection.selectedData.length}
@@ -394,6 +393,6 @@ export function Home() {
                 visible={showDocumentDeletionModal}
                 message={translate("Home_deletingDocuments")}
             />
-        </Screen>
+        </View>
     )
 }

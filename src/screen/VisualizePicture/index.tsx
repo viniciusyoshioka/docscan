@@ -1,4 +1,3 @@
-import { Screen } from "@elementium/native"
 import { useNavigation, useRoute } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
 import { useMemo, useRef, useState } from "react"
@@ -225,7 +224,7 @@ export function VisualizePicture() {
 
 
     return (
-        <Screen style={{ backgroundColor: isDark ? "black" : "white", paddingTop: safeAreaInsets.top }}>
+        <View style={{ flex: 1, backgroundColor: isDark ? "black" : "white", paddingTop: safeAreaInsets.top }}>
             <VisualizePictureHeader
                 goBack={goBack}
                 replacePicture={replacePicture}
@@ -284,6 +283,6 @@ export function VisualizePicture() {
                     onCropError={onCropError}
                 />
             )}
-        </Screen>
+        </View>
     )
 }

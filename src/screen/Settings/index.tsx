@@ -1,6 +1,5 @@
-import { Screen, ScrollScreen } from "@elementium/native"
 import { useNavigation } from "@react-navigation/core"
-import { Alert } from "react-native"
+import { Alert, ScrollView, View } from "react-native"
 import { List } from "react-native-paper"
 import Share from "react-native-share"
 
@@ -61,10 +60,10 @@ export function Settings() {
 
 
     return (
-        <Screen>
+        <View style={{ flex: 1 }}>
             <SettingsHeader />
 
-            <ScrollScreen>
+            <ScrollView>
                 <List.Item
                     left={() => <List.Icon icon={"brightness-6"} />}
                     title={translate("Settings_theme_title")}
@@ -97,7 +96,7 @@ export function Settings() {
                     description={`${Constants.appName} ${Constants.appVersion} - ${Constants.appType}`}
                     style={{ paddingLeft: 16 }}
                 />
-            </ScrollScreen>
-        </Screen>
+            </ScrollView>
+        </View>
     )
 }

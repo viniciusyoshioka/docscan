@@ -1,10 +1,9 @@
-import { Screen } from "@elementium/native"
 import { CameraRoll, PhotoIdentifier } from "@react-native-camera-roll/camera-roll"
 import { useNavigation, useRoute } from "@react-navigation/core"
 import { Realm } from "@realm/react"
 import { FlashList } from "@shopify/flash-list"
 import { useCallback, useEffect, useMemo, useState } from "react"
-import { ActivityIndicator, Alert, useWindowDimensions } from "react-native"
+import { ActivityIndicator, Alert, View, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import { useSelectionMode } from "react-native-selection-mode"
 
@@ -323,7 +322,7 @@ export function Gallery() {
 
 
     return (
-        <Screen>
+        <View style={{ flex: 1 }}>
             <GalleryHeader
                 goBack={goBack}
                 exitSelectionMode={gallerySelection.exitSelection}
@@ -366,6 +365,6 @@ export function Gallery() {
                 message={translate("Gallery_importingPictures")}
                 visible={isImportingImages}
             />
-        </Screen>
+        </View>
     )
 }

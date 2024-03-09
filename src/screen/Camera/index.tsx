@@ -1,8 +1,7 @@
-import { Screen } from "@elementium/native"
 import { useNavigation, useRoute } from "@react-navigation/native"
 import { Realm } from "@realm/react"
 import { useRef, useState } from "react"
-import { Alert, StyleProp, StyleSheet, View, ViewStyle, useWindowDimensions } from "react-native"
+import { Alert, StyleSheet, View, ViewStyle, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
 import { useStyles } from "react-native-unistyles"
@@ -72,7 +71,10 @@ export function Camera() {
     const [isResetingCamera, setIsResetingCamera] = useState(false)
 
 
-    const screenStyle: StyleProp<ViewStyle> = isShowingCamera ? { backgroundColor: "black" } : undefined
+    const screenStyle: ViewStyle = {
+        flex: 1,
+        backgroundColor: isShowingCamera ? "black" : undefined,
+    }
 
 
     useBackHandler(() => {
@@ -245,7 +247,7 @@ export function Camera() {
 
 
     return (
-        <Screen style={screenStyle}>
+        <View style={screenStyle}>
             <CameraHeader
                 goBack={goBack}
                 openSettings={() => setIsCameraSettingsVisible(true)}
@@ -305,6 +307,6 @@ export function Camera() {
                 visible={isCameraSettingsVisible}
                 onRequestClose={() => setIsCameraSettingsVisible(false)}
             />
-        </Screen>
+        </View>
     )
 }
