@@ -22,7 +22,7 @@ const Stack = createNativeStackNavigator<ScreenParams>()
 export function Router() {
 
 
-    const { isDark } = useAppTheme()
+    const { isDark, color } = useAppTheme()
 
 
     const stackNavigatorScreenOptions: NativeStackNavigationOptions = {
@@ -31,6 +31,16 @@ export function Router() {
         statusBarColor: "transparent",
         statusBarTranslucent: true,
         statusBarStyle: isDark ? "light" : "dark",
+        contentStyle: {
+            backgroundColor: color.background,
+        },
+    }
+
+    const modalScreenOptions: NativeStackNavigationOptions = {
+        presentation: "transparentModal",
+        contentStyle: {
+            backgroundColor: "transparent",
+        },
     }
 
 
@@ -44,7 +54,7 @@ export function Router() {
                 <Stack.Screen name={"VisualizePicture"} component={VisualizePicture} />
                 <Stack.Screen name={"Gallery"} component={Gallery} />
 
-                <Stack.Group screenOptions={{ presentation: "transparentModal" }}>
+                <Stack.Group screenOptions={modalScreenOptions}>
                     <Stack.Screen name={"ChangeTheme"} component={ChangeTheme} />
                     <Stack.Screen name={"ConvertPdfOption"} component={ConvertPdfOption} />
                     <Stack.Screen name={"RenameDocument"} component={RenameDocument} />
