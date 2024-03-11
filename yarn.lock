@@ -2472,7 +2472,7 @@ color-name@^1.0.0, color-name@~1.1.4:
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
 
-color-string@^1.6.0:
+color-string@^1.6.0, color-string@^1.9.0:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/color-string/-/color-string-1.9.1.tgz#4467f9146f036f855b764dfb5bf8582bf342c7a4"
   integrity sha512-shrVawQFojnZv6xM40anx4CkoDP+fZsw/ZerEMsW/pyzsRbElpsL/DBVW7q3ExxwusdNXI3lXpuhEZkzs8p5Eg==
@@ -2487,6 +2487,14 @@ color@^3.1.2:
   dependencies:
     color-convert "^1.9.3"
     color-string "^1.6.0"
+
+color@^4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/color/-/color-4.2.3.tgz#d781ecb5e57224ee43ea9627560107c0e0c6463a"
+  integrity sha512-1rXeuUUiGGrykh+CeBdu5Ie7OJwinCgQY0bc7GCRxy5xVHy+moaqkpL/jqQq0MtQOeYcrqEz4abc5f0KtU7W4A==
+  dependencies:
+    color-convert "^2.0.1"
+    color-string "^1.9.0"
 
 colorette@^1.0.7:
   version "1.4.0"
@@ -4507,6 +4515,13 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
+react-material-design-provider@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-material-design-provider/-/react-material-design-provider-1.0.0.tgz#cc451a0c0d19c4907f9cdced1bdfdd4c955ad753"
+  integrity sha512-EA3jO3XZ+izl4+FhiBFhf2Qulmha3xl65+NDcF992ATLzkL5tFgOzI2gzPPcAvOXfuuxmwTvFJ3h3JJwhjIWSg==
+  dependencies:
+    color "^4.2.3"
+
 react-native-document-picker@^9.1.1:
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/react-native-document-picker/-/react-native-document-picker-9.1.1.tgz#54390c500396b61ed697095ef8a6f9cbe0977bc9"
@@ -4559,6 +4574,11 @@ react-native-orientation-locker@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/react-native-orientation-locker/-/react-native-orientation-locker-1.6.0.tgz#4ea60e7cb5f2864d595a85f3b9af634c8f7c5121"
   integrity sha512-D3IOtAcaAi6S2w0Y1EUnr16I47isosQbE7F67fAu9A+gE67NkyKaJ9HL5EsZ+Uc7+7m+NsuBjx3dxuANNy8rVA==
+
+react-native-paper-towel@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-paper-towel/-/react-native-paper-towel-1.0.0.tgz#218a4daaad89c3463a001256e25bdb37f61aaec2"
+  integrity sha512-PJDUIlSUapxRAXwoEN0oFvUQkGtxL+OH1CMMPcKOZI6uPmTTGoRRau8caovJSnLAlChU129t84GwfuIEV6OVUQ==
 
 react-native-paper@^5.12.3:
   version "5.12.3"
