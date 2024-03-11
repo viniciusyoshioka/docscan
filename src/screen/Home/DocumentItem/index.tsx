@@ -1,15 +1,11 @@
-import { Color, Prism } from "@elementium/color"
-import CheckBox from "@react-native-community/checkbox"
-import { useMemo } from "react"
-import { Pressable, StyleSheet, View } from "react-native"
+import { useMaterialTheme } from "react-material-design-provider"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
-import { Text } from "react-native-paper"
+import { Checkbox, List } from "react-native-paper"
 import { runOnJS } from "react-native-reanimated"
 import { SelectableItem, useSelectableItem } from "react-native-selection-mode"
 
 import { DocumentSchema } from "@database"
 import { DateService } from "@services/date"
-import { useAppTheme } from "@theme"
 
 
 export const DOCUMENT_ITEM_HEIGHT = 64
@@ -23,16 +19,8 @@ export interface DocumentItemProps extends SelectableItem {
 export function DocumentItem(props: DocumentItemProps) {
 
 
-    const { color, state } = useAppTheme()
-
+    const { colors } = useMaterialTheme()
     const { onPress, onLongPress } = useSelectableItem(props)
-
-
-    const rippleColor = useMemo(() => {
-        const backgroundColor = new Color(color.surface)
-        const overlayColor = new Color(color.onSurface).setA(state.container.pressed)
-        return Prism.addColors(backgroundColor, overlayColor).toRgba()
-    }, [color.surface, color.onSurface, state.container.pressed])
 
 
     const longPressGesture = Gesture.LongPress()
@@ -41,56 +29,38 @@ export function DocumentItem(props: DocumentItemProps) {
         .onStart(event => runOnJS(onLongPress)())
 
 
+    const modifiedAt = new Date(props.document.modifiedAt)
+
+
+    function SelectionCheckbok() {
+        if (props.isSelectionMode) return (
+            <Checkbox
+                status={props.isSelected ? "checked" : "unchecked"}
+                color={colors.primary}
+                uncheckedColor={colors.onSurfaceVariant}
+                onPress={onPress}
+            />
+        )
+        return null
+    }
+
+
     return (
         <GestureDetector gesture={longPressGesture}>
-            <Pressable
+            <List.Item
+                title={props.document.name}
+                titleNumberOfLines={1}
+                description={DateService.getLocaleDateTime(modifiedAt, false)}
+                descriptionNumberOfLines={1}
                 onPress={onPress}
-                android_ripple={{ color: rippleColor }}
-                style={[styles.button, { backgroundColor: color.surface } ]}
-            >
-                <View style={styles.block}>
-                    <Text
-                        variant={"bodyLarge"}
-                        numberOfLines={1}
-                        style={{ color: color.onSurface, flex: 1, textAlignVertical: "center" }}
-                        children={props.document.name}
-                    />
-
-                    <Text
-                        variant={"bodySmall"}
-                        numberOfLines={1}
-                        style={{ color: color.onSurfaceVariant, flex: 1, textAlignVertical: "center" }}
-                        children={DateService.getLocaleDateTime(new Date(props.document.modifiedAt), false)}
-                    />
-                </View>
-
-                {props.isSelectionMode && (
-                    <CheckBox
-                        value={props.isSelected}
-                        onChange={onPress}
-                        tintColors={{
-                            true: color.primary,
-                            false: color.onSurfaceVariant,
-                        }}
-                        style={{ marginLeft: 16 }}
-                    />
-                )}
-            </Pressable>
+                right={() => <SelectionCheckbok />}
+                style={{
+                    paddingRight: props.isSelectionMode ? 8 : 16,
+                }}
+                titleStyle={{
+                    marginRight: props.isSelectionMode ? 8 : 0,
+                }}
+            />
         </GestureDetector>
     )
 }
-
-
-const styles = StyleSheet.create({
-    button: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "flex-start",
-        height: DOCUMENT_ITEM_HEIGHT,
-        paddingHorizontal: 16,
-        paddingVertical: 8,
-    },
-    block: {
-        flex: 1,
-    }
-})
