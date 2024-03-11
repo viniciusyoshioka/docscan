@@ -1,5 +1,6 @@
 import { ElementiumThemeProvider } from "@elementium/theme"
 import { createContext, ReactNode, useContext } from "react"
+import { MaterialDarkTheme, MaterialLightTheme, MaterialProvider } from "react-material-design-provider"
 import { useColorScheme } from "react-native"
 import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper"
 import { UnistylesRuntime } from "react-native-unistyles"
@@ -55,9 +56,11 @@ export function AppThemeProvider(props: AppThemeProviderProps) {
     return (
         <AppThemeContext.Provider value={appTheme}>
             <ElementiumThemeProvider value={appTheme}>
-                <PaperProvider theme={isDarkTheme ? MD3DarkTheme : MD3LightTheme}>
-                    {props.children}
-                </PaperProvider>
+                <MaterialProvider theme={isDarkTheme ? MaterialDarkTheme : MaterialLightTheme}>
+                    <PaperProvider theme={isDarkTheme ? MD3DarkTheme : MD3LightTheme}>
+                        {props.children}
+                    </PaperProvider>
+                </MaterialProvider>
             </ElementiumThemeProvider>
         </AppThemeContext.Provider>
     )
