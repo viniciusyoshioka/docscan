@@ -8,8 +8,8 @@ import { lightTheme } from "./theme-light"
 type Breakpoints = typeof breakpoints
 
 type Themes = {
-    light: typeof lightTheme,
-    dark: typeof darkTheme,
+    light: typeof lightTheme
+    dark: typeof darkTheme
 }
 
 declare module "react-native-unistyles" {

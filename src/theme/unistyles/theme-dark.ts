@@ -1,10 +1,10 @@
-import { AppDarkTheme } from "../dark"
+import { MaterialDarkTheme } from "react-material-design-provider"
 
 
 export const darkTheme = {
-    colors: AppDarkTheme.color,
-    elevation: AppDarkTheme.elevation,
-    shape: AppDarkTheme.shape,
-    state: AppDarkTheme.state,
-    typography: AppDarkTheme.typography,
+    colors: MaterialDarkTheme.colors,
+    elevation: MaterialDarkTheme.elevation,
+    shape: MaterialDarkTheme.shape,
+    state: MaterialDarkTheme.state,
+    typography: MaterialDarkTheme.typography,
 }

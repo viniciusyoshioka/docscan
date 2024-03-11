@@ -1,10 +1,10 @@
-import { AppLightTheme } from "../light"
+import { MaterialLightTheme } from "react-material-design-provider"
 
 
 export const lightTheme = {
-    colors: AppLightTheme.color,
-    elevation: AppLightTheme.elevation,
-    shape: AppLightTheme.shape,
-    state: AppLightTheme.state,
-    typography: AppLightTheme.typography,
+    colors: MaterialLightTheme.colors,
+    elevation: MaterialLightTheme.elevation,
+    shape: MaterialLightTheme.shape,
+    state: MaterialLightTheme.state,
+    typography: MaterialLightTheme.typography,
 }
