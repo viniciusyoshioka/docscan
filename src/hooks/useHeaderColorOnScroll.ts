@@ -1,6 +1,7 @@
 import { NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { interpolateColor, runOnJS, useAnimatedReaction, useSharedValue } from "react-native-reanimated"
 
+import { useSettings } from "@services/settings"
 import { useAppTheme } from "@theme"
 
 
@@ -14,12 +15,13 @@ export type HeaderColorOnScrollOptions = {
 export function useHeaderColorOnScroll(options?: HeaderColorOnScrollOptions) {
 
 
-    const { appTheme, color, isDark } = useAppTheme()
+    const { settings } = useSettings()
+    const { colors, isDark } = useAppTheme()
     const scrollY = useSharedValue(0)
 
 
     const inputRange = options?.inputRange ?? [0, 56]
-    const outputRange = options?.outputRange ?? [color.surface, color.surfaceContainer]
+    const outputRange = options?.outputRange ?? [colors.surface, colors.surfaceContainer]
 
 
     function updateHeaderColor(scrollY: number) {
@@ -35,7 +37,7 @@ export function useHeaderColorOnScroll(options?: HeaderColorOnScrollOptions) {
     useAnimatedReaction(
         () => scrollY.value,
         current => runOnJS(updateHeaderColor)(current),
-        [scrollY.value, appTheme, isDark]
+        [scrollY.value, settings.theme, isDark]
     )
 
 
