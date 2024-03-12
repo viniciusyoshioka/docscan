@@ -5,9 +5,9 @@ import { FlashList } from "@shopify/flash-list"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { ActivityIndicator, Alert, View, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
+import { EmptyScreen, LoadingModal } from "react-native-paper-towel"
 import { useSelectionMode } from "react-native-selection-mode"
 
-import { EmptyList, LoadingModal } from "@components"
 import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "@database"
 import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
@@ -347,19 +347,20 @@ export function Gallery() {
                 />
             )}
 
-            <EmptyList visible={!imageGallery && !isRefreshing}>
+            <EmptyScreen.Content visible={!imageGallery && !isRefreshing}>
                 <ActivityIndicator
                     color={color.onBackground}
                     size={"large"}
                 />
-            </EmptyList>
+            </EmptyScreen.Content>
 
-            <EmptyList
-                name={"image-outline"}
-                size={56}
-                message={translate("Gallery_emptyGallery")}
-                visible={imageGallery?.length === 0}
-            />
+            <EmptyScreen.Content visible={imageGallery?.length === 0}>
+                <EmptyScreen.Icon name={"image-outline"} size={56} />
+
+                <EmptyScreen.Message>
+                    {translate("Gallery_emptyGallery")}
+                </EmptyScreen.Message>
+            </EmptyScreen.Content>
 
             <LoadingModal
                 message={translate("Gallery_importingPictures")}
