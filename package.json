@@ -22,7 +22,7 @@
         "color": "^4.2.3",
         "i18n-js": "^4.4.2",
         "react": "18.2.0",
-        "react-material-design-provider": "^1.1.1",
+        "react-material-design-provider": "^1.2.0",
         "react-native": "0.73.4",
         "react-native-document-picker": "^9.1.1",
         "react-native-fast-image": "^8.6.3",

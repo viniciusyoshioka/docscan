@@ -4534,10 +4534,10 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-material-design-provider@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/react-material-design-provider/-/react-material-design-provider-1.1.1.tgz#abc6449c7a82e8b2c857ce8ecadba73f8ca87cef"
-  integrity sha512-LhpDjaQDSWPvqUsOCKzH6gFCk+ViqwTvtdBrMKvzA2YRyr01wGtb7da3WJhOVrx+fE620SUrTdnUHONi53+AQw==
+react-material-design-provider@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-material-design-provider/-/react-material-design-provider-1.2.0.tgz#61322de6b7c6a98979a0ddf9760f9430cea083f0"
+  integrity sha512-OwMdbe+LZIzD9VWOVy2GnCez2pURnHoVsFjepO7tLW9uZp5gXXBTXitgBmrypcoJ3IOs/1Nko1bs4l3yHsxd1w==
   dependencies:
     color "^4.2.3"
 
