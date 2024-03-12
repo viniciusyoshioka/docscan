@@ -7,13 +7,12 @@ export const stylesheet = createStyleSheet(theme => ({
         textAlign: "left",
         textAlignVertical: "center",
         color: theme.colors.onSurface,
-        opacity: disabled ? theme.state.content.disabled : 1,
+        opacity: disabled ? theme.state.disabled : 1,
     }),
     viewSlider: {
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "row",
         height: 56,
-        marginHorizontal: 24,
     },
 }))
