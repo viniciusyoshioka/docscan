@@ -1,10 +1,7 @@
-import { ElementiumThemeType } from "@elementium/theme"
+import { MaterialTheme } from "react-material-design-provider"
 
 
 export type ThemeType = "auto" | "light" | "dark"
 
 
-export interface AppThemeType extends ElementiumThemeType {
-    appTheme: ThemeType
-    switchTheme: (newTheme: ThemeType) => void
-}
+export interface AppTheme extends MaterialTheme {}
