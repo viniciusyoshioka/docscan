@@ -1,9 +1,9 @@
 import { useNavigation } from "@react-navigation/native"
-import { createRef, useEffect, useState } from "react"
-import { TextInput } from "react-native"
-import { Button, Dialog } from "react-native-paper"
+import { createRef, useState } from "react"
+import { TextInput as RNTextInput } from "react-native"
+import { Button, Dialog, TextInput } from "react-native-paper"
+import { Input } from "react-native-paper-towel"
 
-import { Input } from "@components"
 import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "@database"
 import { useBackHandler, useKeyboard } from "@hooks"
 import { translate } from "@locales"
@@ -21,7 +21,7 @@ export function RenameDocument() {
     const document = documentModel?.document ?? null
     const initialDocumentName = document?.name ?? DocumentService.getNewName()
 
-    const inputRef = createRef<TextInput>()
+    const inputRef = createRef<RNTextInput>()
 
     const [documentName, setDocumentName] = useState(initialDocumentName)
 
@@ -57,14 +57,6 @@ export function RenameDocument() {
     }
 
 
-    useEffect(() => {
-        setTimeout(() => {
-            if (!inputRef.current) return
-            inputRef.current.focus()
-        }, 100)
-    }, [])
-
-
     return (
         <Dialog visible onDismiss={goBack}>
             <Dialog.Title>
@@ -77,8 +69,14 @@ export function RenameDocument() {
                     placeholder={translate("RenameDocument_documentName_placeholder")}
                     value={documentName}
                     onChangeText={setDocumentName}
-                    selectTextOnFocus={true}
-                    style={{ marginTop: 16 }}
+                    autoFocus={true}
+                    right={(
+                        <TextInput.Icon
+                            icon={"close"}
+                            size={18}
+                            onPress={() => setDocumentName("")}
+                        />
+                    )}
                 />
             </Dialog.Content>
 
