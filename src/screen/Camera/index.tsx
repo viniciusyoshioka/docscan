@@ -4,10 +4,10 @@ import { useRef, useState } from "react"
 import { Alert, StyleSheet, View, ViewStyle, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
+import { EmptyScreen } from "react-native-paper-towel"
 import { useStyles } from "react-native-unistyles"
 import { Camera as VisionCamera, useCameraDevice, useCameraFormat } from "react-native-vision-camera"
 
-import { EmptyList } from "@components"
 import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "@database"
 import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
@@ -259,13 +259,17 @@ export function Camera() {
                 requestCameraPermission={requestCameraPermission}
             />
 
-            <EmptyList
-                name={"camera-off-outline"}
-                group={"material-community"}
-                size={56}
-                message={translate("Camera_cameraNotAvailable")}
-                visible={hasCameraPermission && !cameraDevice}
-            />
+            <EmptyScreen.Content visible={hasCameraPermission && !cameraDevice}>
+                <EmptyScreen.Icon
+                    name={"camera-off-outline"}
+                    group={"material-community"}
+                    size={56}
+                />
+
+                <EmptyScreen.Message>
+                    {translate("Camera_cameraNotAvailable")}
+                </EmptyScreen.Message>
+            </EmptyScreen.Content>
 
             {(hasCameraPermission && cameraDevice && !isResetingCamera) && (
                 <View style={[styles.cameraWrapper, { marginTop: cameraMargin.top } ]}>
