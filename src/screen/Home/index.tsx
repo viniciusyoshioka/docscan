@@ -6,11 +6,11 @@ import { Alert, View } from "react-native"
 import DocumentPicker from "react-native-document-picker"
 import RNFS from "react-native-fs"
 import { Divider, FAB } from "react-native-paper"
+import { EmptyScreen, LoadingModal } from "react-native-paper-towel"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useSelectionMode } from "react-native-selection-mode"
 import { unzip } from "react-native-zip-archive"
 
-import { EmptyList, LoadingModal } from "@components"
 import { DocumentPictureSchema, DocumentSchema, ExportedDocumentPictureRealm, ExportedDocumentRealm, openExportedDatabase, useDocumentModel, useDocumentRealm } from "@database"
 import { useBackHandler } from "@hooks"
 import { TranslationKeyType, translate } from "@locales"
@@ -376,11 +376,13 @@ export function Home() {
                 />
             )}
 
-            <EmptyList
-                imageSource={Constants.appIconOutline}
-                message={translate("Home_emptyDocumentList")}
-                visible={documents.length === 0}
-            />
+            <EmptyScreen.Content visible={documents.length === 0}>
+                <EmptyScreen.Image source={Constants.appIconOutline} />
+
+                <EmptyScreen.Message>
+                    {translate("Home_emptyDocumentList")}
+                </EmptyScreen.Message>
+            </EmptyScreen.Content>
 
             <FAB
                 icon={"plus"}
