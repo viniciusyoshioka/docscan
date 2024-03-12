@@ -12,7 +12,7 @@ export interface LoadingOverlayProps {
 export function LoadingOverlay(props: LoadingOverlayProps) {
 
 
-    const { color, isDark } = useAppTheme()
+    const { colors, isDark } = useAppTheme()
 
     const overlayColor = isDark ? "rgba(0, 0, 0, 0.4)" : "rgba(255, 255, 255, 0.4)"
 
@@ -21,7 +21,7 @@ export function LoadingOverlay(props: LoadingOverlayProps) {
         <Reanimated.View style={[styles.wrapper, { backgroundColor: overlayColor }, props.style]}>
             <ActivityIndicator
                 size={"large"}
-                color={color.onBackground}
+                color={colors.onBackground}
             />
         </Reanimated.View>
     )

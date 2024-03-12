@@ -1,4 +1,3 @@
-import { useMaterialTheme } from "react-material-design-provider"
 import { View, useWindowDimensions } from "react-native"
 import FastImage from "react-native-fast-image"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
@@ -7,6 +6,7 @@ import { runOnJS } from "react-native-reanimated"
 import { SelectableItem, useSelectableItem } from "react-native-selection-mode"
 import { useStyles } from "react-native-unistyles"
 
+import { useAppTheme } from "@theme"
 import { PICTURE_BUTTON_MARGIN, stylesheet } from "./style"
 
 
@@ -31,7 +31,7 @@ export function PictureItem(props: PictureItemProps) {
 
 
     const { width } = useWindowDimensions()
-    const { colors } = useMaterialTheme()
+    const { colors } = useAppTheme()
     const { styles } = useStyles(stylesheet)
     const { onPress, onLongPress } = useSelectableItem(props)
 

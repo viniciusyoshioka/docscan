@@ -33,7 +33,7 @@ export function ConvertPdfOption() {
     const document = documentModel?.document ?? null
     const pictures = documentModel?.pictures ?? []
 
-    const { color } = useAppTheme()
+    const { colors } = useAppTheme()
 
     const [compressionVisualValue, setCompressionVisualValue] = useState(60)
     const [compressionValue, setCompressionValue] = useState(60)
@@ -170,9 +170,9 @@ export function ConvertPdfOption() {
                         value={compressionValue}
                         onSlidingComplete={value => setCompressionValue(value)}
                         onValueChange={value => setCompressionVisualValue(value)}
-                        minimumTrackTintColor={color.primary}
-                        maximumTrackTintColor={color.onBackground}
-                        thumbTintColor={compressionLevel === "custom" ? color.primary : color.onSurface}
+                        minimumTrackTintColor={colors.primary}
+                        maximumTrackTintColor={colors.onBackground}
+                        thumbTintColor={compressionLevel === "custom" ? colors.primary : colors.onSurface}
                     />
                 </View>
             </Dialog.Content>

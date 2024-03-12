@@ -38,7 +38,7 @@ export function Gallery() {
     const documentRealm = useDocumentRealm()
     const { documentModel, setDocumentModel } = useDocumentModel()
 
-    const { color } = useAppTheme()
+    const { colors } = useAppTheme()
 
     const gallerySelection = useSelectionMode<string>()
     const [isLoading, setIsLoading] = useState(false)
@@ -349,7 +349,7 @@ export function Gallery() {
 
             <EmptyScreen.Content visible={!imageGallery && !isRefreshing}>
                 <ActivityIndicator
-                    color={color.onBackground}
+                    color={colors.onBackground}
                     size={"large"}
                 />
             </EmptyScreen.Content>

@@ -8,14 +8,14 @@ export function LoadingIndicator() {
 
 
     const { styles } = useStyles(stylesheet)
-    const { color } = useAppTheme()
+    const { colors } = useAppTheme()
 
 
     return (
         <View style={styles.wrapper}>
             <ActivityIndicator
                 size={"small"}
-                color={color.onBackground}
+                color={colors.onBackground}
             />
         </View>
     )

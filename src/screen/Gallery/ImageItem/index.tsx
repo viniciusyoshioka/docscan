@@ -34,7 +34,7 @@ export function ImageItem(props: ImageItemProps) {
     const { width } = useWindowDimensions()
     const { styles } = useStyles(stylesheet)
 
-    const { color } = useAppTheme()
+    const { colors } = useAppTheme()
     const { onPress, onLongPress } = useSelectableItem(props)
 
     const imageSize = useMemo(() => getImageItemSize(width, props.columnCount), [width, props.columnCount])
@@ -66,7 +66,7 @@ export function ImageItem(props: ImageItemProps) {
                     <Icon
                         name={"check"}
                         size={32}
-                        color={color.onPrimary}
+                        color={colors.onPrimary}
                         style={{ position: "absolute" }}
                     />
                 </>}
