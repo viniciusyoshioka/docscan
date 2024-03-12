@@ -9,9 +9,6 @@
         "android": "react-native run-android"
     },
     "dependencies": {
-        "@elementium/color": "file:../elementium/packages/color",
-        "@elementium/native": "file:../elementium/packages/native",
-        "@elementium/theme": "file:../elementium/packages/theme",
         "@react-native-camera-roll/camera-roll": "^7.4.1",
         "@react-native-community/checkbox": "^0.5.17",
         "@react-native-community/slider": "^4.5.0",
