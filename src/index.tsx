@@ -1,5 +1,6 @@
+import { StatusBar } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
-import { KeyboardProvider } from "react-native-keyboard-controller"
+import { KeyboardAvoidingView, KeyboardProvider } from "react-native-keyboard-controller"
 
 import { DocumentModelProvider, RealmProvider } from "@database"
 import { useKeepAwakeOnDev } from "@hooks"
@@ -21,7 +22,13 @@ export function App() {
                     <DocumentModelProvider>
                         <AppThemeProvider>
                             <KeyboardProvider statusBarTranslucent={true}>
-                                <Router />
+                                <KeyboardAvoidingView
+                                    style={{ flex: 1 }}
+                                    behavior={"padding"}
+                                    keyboardVerticalOffset={-(StatusBar.currentHeight ?? 0)}
+                                >
+                                    <Router />
+                                </KeyboardAvoidingView>
                             </KeyboardProvider>
                         </AppThemeProvider>
                     </DocumentModelProvider>
