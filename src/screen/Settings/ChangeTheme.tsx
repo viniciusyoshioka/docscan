@@ -4,16 +4,26 @@ import { Button, Dialog, RadioButton } from "react-native-paper"
 
 import { translate } from "@locales"
 import { NavigationParamProps } from "@router"
-import { ThemeType, useAppTheme } from "@theme"
+import { useSettings } from "@services/settings"
+import { ThemeType } from "@theme"
 
 
 export function ChangeTheme() {
 
 
     const navigation = useNavigation<NavigationParamProps<"ChangeTheme">>()
-    const { appTheme, switchTheme } = useAppTheme()
+    const { settings, setSettings } = useSettings()
 
-    const [selectedTheme, setSelectedTheme] = useState(appTheme)
+    const [selectedTheme, setSelectedTheme] = useState(settings.theme)
+
+
+    function updateTheme() {
+        setSettings({
+            ...settings,
+            theme: selectedTheme,
+        })
+        navigation.goBack()
+    }
 
 
     return (
@@ -55,10 +65,7 @@ export function ChangeTheme() {
 
                 <Button
                     children={translate("ok")}
-                    onPress={() => {
-                        switchTheme(selectedTheme)
-                        navigation.goBack()
-                    }}
+                    onPress={updateTheme}
                 />
             </Dialog.Actions>
         </Dialog>
