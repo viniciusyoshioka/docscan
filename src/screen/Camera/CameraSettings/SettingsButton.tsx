@@ -1,9 +1,9 @@
-import { Icon } from "@elementium/native"
 import { useDeviceOrientation } from "@hooks"
 import { useEffect } from "react"
 import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from "react-native"
 import { OrientationType } from "react-native-orientation-locker"
 import { Text } from "react-native-paper"
+import { Icon } from "react-native-paper-towel"
 import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
 
 
