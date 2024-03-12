@@ -5,15 +5,16 @@ export const PICTURE_BUTTON_MARGIN = 4
 
 
 export const stylesheet = createStyleSheet(theme => ({
-    pictureButton: {
+    pictureButton: (pictureItemSize: number) => ({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
+        maxWidth: pictureItemSize,
         margin: PICTURE_BUTTON_MARGIN,
         borderRadius: theme.shape.small,
         aspectRatio: 1,
         overflow: "hidden",
-    },
+    }),
     pictureImage: {
         flex: 1,
         borderRadius: theme.shape.small,
