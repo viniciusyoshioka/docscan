@@ -29,9 +29,6 @@ export function DocumentItem(props: DocumentItemProps) {
         .onStart(event => runOnJS(onLongPress)())
 
 
-    const modifiedAt = new Date(props.document.modifiedAt)
-
-
     function SelectionCheckbok() {
         if (props.isSelectionMode) return (
             <Checkbox
@@ -50,7 +47,7 @@ export function DocumentItem(props: DocumentItemProps) {
             <List.Item
                 title={props.document.name}
                 titleNumberOfLines={1}
-                description={DateService.getLocaleDateTime(modifiedAt, false)}
+                description={DateService.getLocaleDateTime(props.document.modifiedAt, false)}
                 descriptionNumberOfLines={1}
                 onPress={onPress}
                 right={() => <SelectionCheckbok />}
