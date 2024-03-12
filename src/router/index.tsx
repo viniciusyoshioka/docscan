@@ -22,7 +22,7 @@ const Stack = createNativeStackNavigator<ScreenParams>()
 export function Router() {
 
 
-    const { isDark, color } = useAppTheme()
+    const { isDark, colors } = useAppTheme()
 
 
     const stackNavigatorScreenOptions: NativeStackNavigationOptions = {
@@ -32,7 +32,7 @@ export function Router() {
         statusBarTranslucent: true,
         statusBarStyle: isDark ? "light" : "dark",
         contentStyle: {
-            backgroundColor: color.background,
+            backgroundColor: colors.background,
         },
     }
 
