@@ -4644,10 +4644,10 @@ react-native-unistyles@^2.3.0:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
-react-native-vision-camera@3.9.0-beta.2:
-  version "3.9.0-beta.2"
-  resolved "https://registry.yarnpkg.com/react-native-vision-camera/-/react-native-vision-camera-3.9.0-beta.2.tgz#7a2fad8ac74c3099d7a9b599b2fff941e44af2e7"
-  integrity sha512-NhGCtxCj95vxEiFaRSJtkbMSN/AEkXjB+m5xPaAImeFD/mZFKAqAgBHZKVMpU3uiYdIF7jatkTUdKsZhV3nc0Q==
+react-native-vision-camera@^4.0.0-beta.10:
+  version "4.0.0-beta.10"
+  resolved "https://registry.yarnpkg.com/react-native-vision-camera/-/react-native-vision-camera-4.0.0-beta.10.tgz#4f6564a8355a809d2dc9789fc5ebee5cf8f7e21d"
+  integrity sha512-PLXaFuBUmxeNCsFpzLmApj7OkcQ0vzJCVAEDCgNI8HQ7NSCuPnGyiUU8UHdtfPpXmILQjn+u5gnte99+a/qtKw==
 
 react-native-zip-archive@^6.1.0:
   version "6.1.0"
