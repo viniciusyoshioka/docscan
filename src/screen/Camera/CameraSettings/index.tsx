@@ -1,10 +1,22 @@
 import { translate } from "@locales"
-import { settingsCameraFlashDefault, settingsCameraRatioDefault, settingsCameraTypeDefault, useSettings } from "@services/settings"
+import {
+  settingsCameraFlashDefault,
+  settingsCameraRatioDefault,
+  settingsCameraTypeDefault,
+  useSettings,
+} from "@services/settings"
 import { useCameraControlDimensions } from "../CameraControl"
 import { useIsCameraFlippable } from "../useIsCameraFlippable"
 import { SettingsButton } from "./SettingsButton"
 import { SettingsModal, SettingsModalProps } from "./SettingsModal"
-import { getChangeRatioButtonText, getFlashIcon, getSwitchCameraButtonText, nextCameraTypeSetting, nextFlashSetting, nextRatioSetting } from "./utils"
+import {
+  getChangeRatioButtonText,
+  getFlashIcon,
+  getSwitchCameraButtonText,
+  nextCameraTypeSetting,
+  nextFlashSetting,
+  nextRatioSetting,
+} from "./utils"
 
 
 export interface CameraSettingsProps extends SettingsModalProps {}

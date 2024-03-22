@@ -3,7 +3,9 @@ import { useEffect } from "react"
 import { useSettings } from "@services/settings"
 
 
-export function useResetCameraOnChangeRatio(setIsResetingCamera: (isReseting: boolean) => void) {
+export function useResetCameraOnChangeRatio(
+  setIsResetingCamera: (isReseting: boolean) => void
+) {
 
 
   const { settings } = useSettings()

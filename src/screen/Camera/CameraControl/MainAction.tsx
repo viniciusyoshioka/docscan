@@ -1,7 +1,16 @@
 import Color from "color"
 import { useMaterialTheme } from "react-material-design-provider"
-import { GestureResponderEvent, StyleSheet, TouchableOpacity, TouchableOpacityProps } from "react-native"
-import Reanimated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
+import {
+  GestureResponderEvent,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableOpacityProps,
+} from "react-native"
+import Reanimated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated"
 
 
 const AnimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpacity)

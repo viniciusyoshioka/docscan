@@ -15,7 +15,9 @@ export function ActionBar(props: ActionBarProps) {
 
 
   const cameraControlDimensions = useCameraControlDimensions()
-  const { styleWithCamera, styleWithouCamera, shouldUseWithoutCameraStyle } = cameraControlDimensions
+  const {
+    styleWithCamera, styleWithouCamera, shouldUseWithoutCameraStyle,
+  } = cameraControlDimensions
 
 
   const actionBarStyle: ViewStyle = shouldUseWithoutCameraStyle

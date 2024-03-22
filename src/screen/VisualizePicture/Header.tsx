@@ -92,7 +92,10 @@ export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
   )
 
   return (
-    <Appbar.Header style={[styles.absolute, { backgroundColor: headerColor }]} statusBarHeight={0}>
+    <Appbar.Header
+      style={[styles.absolute, { backgroundColor: headerColor }]}
+      statusBarHeight={0}
+    >
       <Appbar.BackAction
         iconColor={iconColor}
         onPress={props.goBack}

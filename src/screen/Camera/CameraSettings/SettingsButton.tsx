@@ -4,7 +4,12 @@ import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from "react-nativ
 import { OrientationType } from "react-native-orientation-locker"
 import { Text } from "react-native-paper"
 import { Icon } from "react-native-paper-towel"
-import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
+import Reanimated, {
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated"
 
 
 const AnimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpacity)

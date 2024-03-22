@@ -20,7 +20,9 @@ import Reanimated, {
 import { TIMING_CONFIG } from "./animation-config"
 
 
-const AnimatedFastImage = Reanimated.createAnimatedComponent(FastImage as ComponentClass<FastImageProps>)
+const AnimatedFastImage = Reanimated.createAnimatedComponent(
+  FastImage as ComponentClass<FastImageProps>
+)
 
 
 export interface ImageVisualizationItemProps {
@@ -72,8 +74,8 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
   function getBoundaries(newZoom: number) {
     "worklet"
     const margin = (newZoom === 0) ? 0 : zoomMargin
-    const limitX = (imageWidth * newZoom - windowWidth) / 2
-    const limitY = (imageHeight * newZoom - windowHeight) / 2
+    const limitX = ((imageWidth * newZoom) - windowWidth) / 2
+    const limitY = ((imageHeight * newZoom) - windowHeight) / 2
     return {
       x: limitX + margin,
       y: limitY + margin,
@@ -113,7 +115,9 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
       const boundaries = getBoundaries(zoom.value)
       if (imageWidth * zoom.value > windowWidth) {
         const previousWindowWidth = windowWidth * savedZoom.value
-        const previousWidthOffScreen = ((previousWindowWidth - windowWidth) / 2) - initialTranslateX.value
+        const previousWidthOffScreen = (
+          ((previousWindowWidth - windowWidth) / 2) - initialTranslateX.value
+        )
         const previousFocalX = previousWidthOffScreen + initialFocalX.value
         const previousHalfWindowWidth = previousWindowWidth / 2
 
@@ -121,7 +125,11 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
         const distanceFromCurrentCenterX = distanceFromPreviousCenterX * diffScale
 
         const displacementX = (
-          (distanceFromCurrentCenterX - distanceFromPreviousCenterX + initialTranslateX.value)
+          (
+            distanceFromCurrentCenterX
+            - distanceFromPreviousCenterX
+            + initialTranslateX.value
+          )
           + (focalX.value - initialFocalX.value)
         )
 
@@ -129,7 +137,9 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
       }
       if (imageHeight * zoom.value > windowHeight) {
         const previousWindowHeight = windowHeight * savedZoom.value
-        const previousHeightOffScreen = ((previousWindowHeight - windowHeight) / 2) - initialTranslateY.value
+        const previousHeightOffScreen = (
+          ((previousWindowHeight - windowHeight) / 2) - initialTranslateY.value
+        )
         const previousFocalY = previousHeightOffScreen + initialFocalY.value
         const previousHalfWindowHeight = previousWindowHeight / 2
 
@@ -137,7 +147,11 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
         const distanceFromCurrentCenterY = distanceFromPreviousCenterY * diffScale
 
         const displacementY = (
-          (distanceFromCurrentCenterY - distanceFromPreviousCenterY + initialTranslateY.value)
+          (
+            distanceFromCurrentCenterY
+            - distanceFromPreviousCenterY
+            + initialTranslateY.value
+          )
           + (focalY.value - initialFocalY.value)
         )
 
@@ -229,7 +243,9 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
         const halfWindowWidth = windowWidth / 2
         const distanceFromCenterX = halfWindowWidth - x
 
-        let displacementDistanceX = (distanceFromCenterX * doubleTabZoom) - distanceFromCenterX
+        let displacementDistanceX = (
+          (distanceFromCenterX * doubleTabZoom) - distanceFromCenterX
+        )
         displacementDistanceX = clamp(displacementDistanceX, -boundaries.x, boundaries.x)
         translateX.value = withTiming(displacementDistanceX, TIMING_CONFIG)
       }
@@ -238,7 +254,9 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
         const halfWindowHeight = windowHeight / 2
         const distanceFromCenterY = halfWindowHeight - y
 
-        let displacementDistanceY = (distanceFromCenterY * doubleTabZoom) - distanceFromCenterY
+        let displacementDistanceY = (
+          (distanceFromCenterY * doubleTabZoom) - distanceFromCenterY
+        )
         displacementDistanceY = clamp(displacementDistanceY, -boundaries.y, boundaries.y)
         translateY.value = withTiming(displacementDistanceY, TIMING_CONFIG)
       }

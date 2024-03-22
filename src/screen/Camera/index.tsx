@@ -3,12 +3,26 @@ import { Realm } from "@realm/react"
 import { useRef, useState } from "react"
 import { Alert, StyleSheet, View, ViewStyle, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
-import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
+import {
+  HandlerStateChangeEvent,
+  State,
+  TapGestureHandler,
+  TapGestureHandlerEventPayload,
+} from "react-native-gesture-handler"
 import { EmptyScreen } from "react-native-paper-towel"
 import { useStyles } from "react-native-unistyles"
-import { Camera as VisionCamera, useCameraDevice, useCameraFormat } from "react-native-vision-camera"
+import {
+  Camera as VisionCamera,
+  useCameraDevice,
+  useCameraFormat,
+} from "react-native-vision-camera"
 
-import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "@database"
+import {
+  DocumentPictureSchema,
+  DocumentSchema,
+  useDocumentModel,
+  useDocumentRealm,
+} from "@database"
 import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
 import { NavigationParamProps, RouteParamProps } from "@router"
@@ -138,17 +152,23 @@ export function Camera() {
 
   function replacePicture(newPicturePath: string) {
     if (params?.screenAction !== "replace-picture")
-      throw new Error("Screen action is different of 'replace-picture'. This should not happen")
+      throw new Error(
+        "Screen action is different of 'replace-picture'. This should not happen"
+      )
     if (!documentModel)
       throw new Error("Document model is undefined. This should not happen")
 
     const oldPictureName = documentModel.pictures[params.replaceIndex].fileName
     documentRealm.write(() => {
       documentModel.document.modifiedAt = Date.now()
-      documentModel.pictures[params.replaceIndex].fileName = DocumentService.getFileFullname(newPicturePath)
+      documentModel.pictures[params.replaceIndex].fileName =
+        DocumentService.getFileFullname(newPicturePath)
     })
 
-    const document = documentRealm.objectForPrimaryKey(DocumentSchema, documentModel.document.id)
+    const document = documentRealm.objectForPrimaryKey(
+      DocumentSchema,
+      documentModel.document.id
+    )
     const pictures = documentRealm
       .objects(DocumentPictureSchema)
       .filtered("belongsToDocument = $0", documentModel.document.id)
@@ -216,7 +236,9 @@ export function Camera() {
     }
   }
 
-  async function onTapStateChange(event: HandlerStateChangeEvent<TapGestureHandlerEventPayload>) {
+  async function onTapStateChange(
+    event: HandlerStateChangeEvent<TapGestureHandlerEventPayload>
+  ) {
     if (!cameraDevice?.supportsFocus || !isFocusEnabled) return
     if (!cameraRef.current || !focusIndicatorRef.current) return
     if (event.nativeEvent.state !== State.ACTIVE) return
@@ -241,7 +263,10 @@ export function Camera() {
 
 
   useControlActionEnabled({ isCameraActive, cameraControlRef })
-  useDisableFocusOnSettingsOpened({ isSettingsOpened: isCameraSettingsVisible, setIsFocusEnabled })
+  useDisableFocusOnSettingsOpened({
+    isSettingsOpened: isCameraSettingsVisible,
+    setIsFocusEnabled,
+  })
   useResetCameraOnChangeRatio(setIsResetingCamera)
   useStatusBarStyle(isShowingCamera)
 

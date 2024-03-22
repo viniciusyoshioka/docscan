@@ -7,7 +7,12 @@ import { LoadingModal } from "react-native-paper-towel"
 import { useSelectionMode } from "react-native-selection-mode"
 import Share from "react-native-share"
 
-import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "@database"
+import {
+  DocumentPictureSchema,
+  DocumentSchema,
+  useDocumentModel,
+  useDocumentRealm,
+} from "@database"
 import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
 import { NavigationParamProps } from "@router"
@@ -16,7 +21,12 @@ import { log, stringfyError } from "@services/log"
 import { PdfCreator } from "@services/pdf-creator"
 import { getReadPermission, getWritePermission } from "@services/permission"
 import { EditDocumentHeader } from "./Header"
-import { HORIZONTAL_COLUMN_COUNT, PictureItem, VERTICAL_COLUMN_COUNT, getPictureItemSize } from "./Pictureitem"
+import {
+  HORIZONTAL_COLUMN_COUNT,
+  PictureItem,
+  VERTICAL_COLUMN_COUNT,
+  getPictureItemSize,
+} from "./Pictureitem"
 
 
 export { ConvertPdfOption } from "./ConvertPdfOption"
@@ -50,7 +60,7 @@ export function EditDocument() {
       : HORIZONTAL_COLUMN_COUNT
     , [windowWidth, windowHeight]
   )
-  const estimatedItemSize = useMemo(() => getPictureItemSize(windowWidth, columnCount), [windowWidth, columnCount])
+  const estimatedItemSize = getPictureItemSize(windowWidth, columnCount)
 
   const pictureSelection = useSelectionMode<number>()
   const [isDeletingPictures, setIsDeletingPictures] = useState(false)
@@ -146,7 +156,8 @@ export function EditDocument() {
   }
 
   async function deletePdf() {
-    if (!document) throw new Error("There is no document to delete the PDF, this should not happen")
+    if (!document)
+      throw new Error("There is no document to delete the PDF, this should not happen")
 
     const hasPermission = await getWritePermission()
     if (!hasPermission) {
@@ -216,11 +227,16 @@ export function EditDocument() {
   }
 
   async function deleteSelectedPicture() {
-    if (!document) throw new Error("There is no document to delete its pictures, this should not happen")
+    if (!document)
+      throw new Error(
+        "There is no document to delete its pictures, this should not happen"
+      )
 
     setIsDeletingPictures(true)
 
-    const picturePathsToDelete = pictureSelection.selectedData.map(index => DocumentService.getPicturePath(pictures[index].fileName))
+    const picturePathsToDelete = pictureSelection.selectedData.map(index => (
+      DocumentService.getPicturePath(pictures[index].fileName)
+    ))
 
     try {
       documentRealm.write(() => {
@@ -233,12 +249,16 @@ export function EditDocument() {
         document.modifiedAt = Date.now()
       })
 
-      const updatedDocument = documentRealm.objectForPrimaryKey(DocumentSchema, document.id)
+      const updatedDocument = documentRealm.objectForPrimaryKey(
+        DocumentSchema,
+        document.id
+      )
       const updatedPictures = documentRealm
         .objects(DocumentPictureSchema)
         .filtered("belongsToDocument = $0", document.id)
         .sorted("position")
-      if (!updatedDocument) throw new Error("Document is undefined, this should not happen")
+      if (!updatedDocument)
+        throw new Error("Document is undefined, this should not happen")
       setDocumentModel({ document: updatedDocument, pictures: updatedPictures })
 
       DocumentService.deletePicturesService({ pictures: picturePathsToDelete })
@@ -255,7 +275,10 @@ export function EditDocument() {
   }
 
   function alertDeletePicture() {
-    if (!document) throw new Error("There is no document to delete its pictures, this should not happen")
+    if (!document)
+      throw new Error(
+        "There is no document to delete its pictures, this should not happen"
+      )
 
     Alert.alert(
       translate("EditDocument_alert_deletePicture_title"),
@@ -281,7 +304,9 @@ export function EditDocument() {
     )
   }
 
-  const keyExtractor = useCallback((_: DocumentPictureSchema, index: number) => index.toString(), [])
+  const keyExtractor = useCallback((_: DocumentPictureSchema, index: number) => (
+    index.toString()
+  ), [])
 
 
   return (

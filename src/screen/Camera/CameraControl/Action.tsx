@@ -5,7 +5,12 @@ import { Pressable, PressableProps, StyleProp, StyleSheet, ViewStyle } from "rea
 import { OrientationType } from "react-native-orientation-locker"
 import { Text } from "react-native-paper"
 import { Icon } from "react-native-paper-towel"
-import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
+import Reanimated, {
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated"
 
 import { useDeviceOrientation } from "@hooks"
 

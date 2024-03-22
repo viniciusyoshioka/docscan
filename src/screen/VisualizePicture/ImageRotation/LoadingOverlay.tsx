@@ -18,7 +18,13 @@ export function LoadingOverlay(props: LoadingOverlayProps) {
 
 
   return (
-    <Reanimated.View style={[styles.wrapper, { backgroundColor: overlayColor }, props.style]}>
+    <Reanimated.View
+      style={[
+        styles.wrapper,
+        { backgroundColor: overlayColor },
+        props.style,
+      ]}
+    >
       <ActivityIndicator
         size={"large"}
         color={colors.onBackground}

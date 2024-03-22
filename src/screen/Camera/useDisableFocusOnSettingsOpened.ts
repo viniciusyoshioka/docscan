@@ -7,7 +7,9 @@ export interface DisableFocusOnSettingsOpened {
 }
 
 
-export function useDisableFocusOnSettingsOpened(attributes: DisableFocusOnSettingsOpened) {
+export function useDisableFocusOnSettingsOpened(
+  attributes: DisableFocusOnSettingsOpened
+) {
   useEffect(() => {
     if (attributes.isSettingsOpened) {
       attributes.setIsFocusEnabled(false)

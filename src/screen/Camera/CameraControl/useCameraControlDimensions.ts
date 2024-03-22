@@ -31,7 +31,10 @@ export function useCameraControlDimensions(): CameraControlDimensions {
   const SCREEN_DIMENSIONS = Dimensions.get("screen")
   const SCREEN_WIDTH = SCREEN_DIMENSIONS.width
   const SCREEN_HEIGHT = SCREEN_DIMENSIONS.height - STATUS_BAR_HEIGHT
-  const DEFAULT_CAMERA_SIZE = getCameraSize({ width: SCREEN_WIDTH, height: SCREEN_HEIGHT }, "4:3")
+  const DEFAULT_CAMERA_SIZE = getCameraSize(
+    { width: SCREEN_WIDTH, height: SCREEN_HEIGHT },
+    "4:3"
+  )
 
 
   const PADDING_VERTICAL_WITHOUT_CAMERA = 16

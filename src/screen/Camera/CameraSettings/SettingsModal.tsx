@@ -1,5 +1,11 @@
 import { ReactNode } from "react"
-import { ScrollView, StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from "react-native"
+import {
+  ScrollView,
+  StyleProp,
+  StyleSheet,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native"
 
 import { useAppTheme } from "@theme"
 import { SETTINGS_BUTTON_SIZE } from "./SettingsButton"

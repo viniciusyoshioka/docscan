@@ -1,5 +1,5 @@
 import { useRoute } from "@react-navigation/native"
-import { ForwardedRef, forwardRef, useImperativeHandle, useState } from "react"
+import { forwardRef, useImperativeHandle, useState } from "react"
 
 import { useDocumentModel } from "@database"
 import { RouteParamProps } from "@router"
@@ -25,7 +25,10 @@ export interface CameraControlRef {
 }
 
 
-export const CameraControl = forwardRef((props: CameraControlProps, ref: ForwardedRef<CameraControlRef>) => {
+export const CameraControl = forwardRef<CameraControlRef, CameraControlProps>((
+  props,
+  ref
+) => {
 
 
   const { params } = useRoute<RouteParamProps<"Camera">>()

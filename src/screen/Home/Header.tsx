@@ -44,7 +44,10 @@ export function HomeHeader(props: HomeHeaderProps) {
         <>
           <Appbar.Action icon={"swap-horizontal"} onPress={props.invertSelection} />
 
-          <Appbar.Action icon={"trash-can-outline"} onPress={props.deleteSelectedDocuments} />
+          <Appbar.Action
+            icon={"trash-can-outline"}
+            onPress={props.deleteSelectedDocuments}
+          />
         </>
       )}
 

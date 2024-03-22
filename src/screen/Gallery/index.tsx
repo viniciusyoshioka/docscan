@@ -8,7 +8,12 @@ import RNFS from "react-native-fs"
 import { EmptyScreen, LoadingModal } from "react-native-paper-towel"
 import { useSelectionMode } from "react-native-selection-mode"
 
-import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "@database"
+import {
+  DocumentPictureSchema,
+  DocumentSchema,
+  useDocumentModel,
+  useDocumentRealm,
+} from "@database"
 import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
 import { NavigationParamProps, RouteParamProps } from "@router"
@@ -18,7 +23,12 @@ import { log, stringfyError } from "@services/log"
 import { getReadMediaImagesPermission } from "@services/permission"
 import { useAppTheme } from "@theme"
 import { GalleryHeader } from "./Header"
-import { HORIZONTAL_COLUMN_COUNT, ImageItem, VERTICAL_COLUMN_COUNT, getImageItemSize } from "./ImageItem"
+import {
+  HORIZONTAL_COLUMN_COUNT,
+  ImageItem,
+  VERTICAL_COLUMN_COUNT,
+  getImageItemSize,
+} from "./ImageItem"
 import { LoadingIndicator } from "./LoadingIndicator"
 
 
@@ -54,7 +64,7 @@ export function Gallery() {
       : HORIZONTAL_COLUMN_COUNT
     , [windowWidth, windowHeight]
   )
-  const estimatedItemSize = useMemo(() => getImageItemSize(windowWidth, columnCount), [windowWidth, columnCount])
+  const estimatedItemSize = getImageItemSize(windowWidth, columnCount)
 
   const minimumRowAmountInScreen = useMemo(() => Math.ceil(
     (windowHeight - HEADER_HEIGHT) / estimatedItemSize
@@ -185,7 +195,9 @@ export function Gallery() {
     const imageFilesToAdd: string[] = []
 
     for (let i = 0; i < gallerySelection.selectedData.length; i++) {
-      const newImagePath = await DocumentService.getNewPicturePath(gallerySelection.selectedData[i])
+      const newImagePath = await DocumentService.getNewPicturePath(
+        gallerySelection.selectedData[i]
+      )
 
       imageFilesToCopy.push(gallerySelection.selectedData[i].replace("file://", ""))
       imageFilesToCopy.push(newImagePath)
@@ -203,7 +215,9 @@ export function Gallery() {
 
   function replaceImage(filePath: string) {
     if (params.screenAction !== "replace-picture")
-      throw new Error("Screen action is different of 'replace-picture'. This should not happen")
+      throw new Error(
+        "Screen action is different of 'replace-picture'. This should not happen"
+      )
     if (!documentModel)
       throw new Error("Document model is undefined. This should not happen")
 
@@ -214,7 +228,10 @@ export function Gallery() {
       documentModel.pictures[params.replaceIndex].fileName = newPictureName
     })
 
-    const document = documentRealm.objectForPrimaryKey(DocumentSchema, documentModel.document.id)
+    const document = documentRealm.objectForPrimaryKey(
+      DocumentSchema,
+      documentModel.document.id
+    )
     const pictures = documentRealm
       .objects(DocumentPictureSchema)
       .filtered("belongsToDocument = $0", documentModel.document.id)
@@ -286,7 +303,9 @@ export function Gallery() {
     )
   }
 
-  const keyExtractor = useCallback((_: PhotoIdentifier, index: number) => index.toString(), [])
+  const keyExtractor = useCallback((_: PhotoIdentifier, index: number) => (
+    index.toString()
+  ), [])
 
   async function onEndReached() {
     if (isGalleryFullLoaded) {

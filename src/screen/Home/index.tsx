@@ -11,7 +11,15 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useSelectionMode } from "react-native-selection-mode"
 import { unzip } from "react-native-zip-archive"
 
-import { DocumentPictureSchema, DocumentSchema, ExportedDocumentPictureRealm, ExportedDocumentRealm, openExportedDatabase, useDocumentModel, useDocumentRealm } from "@database"
+import {
+  DocumentPictureSchema,
+  DocumentSchema,
+  ExportedDocumentPictureRealm,
+  ExportedDocumentRealm,
+  openExportedDatabase,
+  useDocumentModel,
+  useDocumentRealm,
+} from "@database"
 import { useBackHandler } from "@hooks"
 import { TranslationKeyType, translate } from "@locales"
 import { NavigationParamProps } from "@router"
@@ -79,7 +87,9 @@ export function Home() {
       documentRealm.delete(documentsToDelete)
       documentRealm.commitTransaction()
 
-      const picturesPathToDelete = picturesToDelete.map(picture => DocumentService.getPicturePath(picture.fileName))
+      const picturesPathToDelete = picturesToDelete.map(picture => (
+        DocumentService.getPicturePath(picture.fileName)
+      ))
       DocumentService.deletePicturesService({ pictures: picturesPathToDelete })
     } catch (error) {
       if (documentRealm.isInTransaction) {
@@ -131,8 +141,12 @@ export function Home() {
       await RNFS.unlink(fileUri)
 
       const pictureToMove: string[] = []
-      const exportedDatabase = await openExportedDatabase(Constants.importDatabaseFullPath)
-      const exportedDocuments = exportedDatabase.objects<ExportedDocumentRealm>("ExportedDocumentSchema").sorted("modifiedAt")
+      const exportedDatabase = await openExportedDatabase(
+        Constants.importDatabaseFullPath
+      )
+      const exportedDocuments = exportedDatabase
+        .objects<ExportedDocumentRealm>("ExportedDocumentSchema")
+        .sorted("modifiedAt")
 
       documentRealm.beginTransaction()
       for (let i = 0; i < exportedDocuments.length; i++) {
@@ -148,7 +162,9 @@ export function Home() {
           .filtered("belongsToDocument = $0", exportedDocument.id)
         for (let j = 0; j < exportedPictures.length; j++) {
           const exportedPicture = exportedPictures[j]
-          const newPicturePath = await DocumentService.getNewPicturePath(exportedPicture.fileName)
+          const newPicturePath = await DocumentService.getNewPicturePath(
+            exportedPicture.fileName
+          )
           const newPictureName = DocumentService.getFileFullname(newPicturePath)
 
           documentRealm.create(DocumentPictureSchema, {
@@ -157,7 +173,9 @@ export function Home() {
             belongsToDocument: importedDocument.id,
           })
 
-          pictureToMove.push(DocumentService.getTemporaryImportedPicturePath(exportedPicture.fileName))
+          pictureToMove.push(
+            DocumentService.getTemporaryImportedPicturePath(exportedPicture.fileName)
+          )
           pictureToMove.push(newPicturePath)
         }
       }
@@ -200,7 +218,9 @@ export function Home() {
 
     await createAllFolders()
     try {
-      const exportedDatabase = await openExportedDatabase(Constants.exportDatabaseFullPath)
+      const exportedDatabase = await openExportedDatabase(
+        Constants.exportDatabaseFullPath
+      )
 
       const selectedDocumentsObjectId = documentSelection
         .selectedData
@@ -213,11 +233,14 @@ export function Home() {
 
       exportedDatabase.write(() => {
         documentsToExport.forEach(documentToExport => {
-          const exportedDocument = exportedDatabase.create<ExportedDocumentRealm>("ExportedDocumentSchema", {
-            createdAt: documentToExport.createdAt,
-            modifiedAt: documentToExport.modifiedAt,
-            name: documentToExport.name,
-          })
+          const exportedDocument = exportedDatabase.create<ExportedDocumentRealm>(
+            "ExportedDocumentSchema",
+            {
+              createdAt: documentToExport.createdAt,
+              modifiedAt: documentToExport.modifiedAt,
+              name: documentToExport.name,
+            }
+          )
 
           documentRealm
             .objects(DocumentPictureSchema)
@@ -225,11 +248,14 @@ export function Home() {
             .forEach(pictureToExport => {
               filesToCopy.push(DocumentService.getPicturePath(pictureToExport.fileName))
 
-              exportedDatabase.create<ExportedDocumentPictureRealm>("ExportedDocumentPictureSchema", {
-                fileName: pictureToExport.fileName,
-                position: pictureToExport.position,
-                belongsToDocument: exportedDocument.id,
-              })
+              exportedDatabase.create<ExportedDocumentPictureRealm>(
+                "ExportedDocumentPictureSchema",
+                {
+                  fileName: pictureToExport.fileName,
+                  position: pictureToExport.position,
+                  belongsToDocument: exportedDocument.id,
+                }
+              )
             })
         })
       })
@@ -384,7 +410,12 @@ export function Home() {
       <FAB
         icon={"plus"}
         mode={"flat"}
-        style={{ position: "absolute", right: safeAreaInsets.right, bottom: safeAreaInsets.bottom, margin: 16 }}
+        style={{
+          position: "absolute",
+          right: safeAreaInsets.right,
+          bottom: safeAreaInsets.bottom,
+          margin: 16,
+        }}
         onPress={() => navigation.navigate("Camera")}
       />
 

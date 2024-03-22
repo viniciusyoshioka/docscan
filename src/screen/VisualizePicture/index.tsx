@@ -5,7 +5,12 @@ import { Alert, View, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "@database"
+import {
+  DocumentPictureSchema,
+  DocumentSchema,
+  useDocumentModel,
+  useDocumentRealm,
+} from "@database"
 import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
 import { NavigationParamProps, RouteParamProps } from "@router"
@@ -45,7 +50,8 @@ export function VisualizePicture() {
   const [isFlatListScrollEnable, setIsFlatListScrollEnable] = useState(true)
   const [currentIndex, setCurrentIndex] = useState(params.pictureIndex)
   const currentPicturePath = useMemo(() => {
-    if (!documentModel) throw new Error("Document model is undefined. This should not happen")
+    if (!documentModel)
+      throw new Error("Document model is undefined. This should not happen")
 
     const index = Math.round(currentIndex)
     const fileName = documentModel.pictures[index].fileName
@@ -95,7 +101,8 @@ export function VisualizePicture() {
 
   async function saveRotatedPicture() {
     if (isRotationProcessing) return
-    if (!documentModel) throw new Error("Document model is undefined. This should not happen")
+    if (!documentModel)
+      throw new Error("Document model is undefined. This should not happen")
     if (!imageRotationRef.current) return
 
     const rotatedDegrees = imageRotationRef.current.getRotationDegree()
@@ -107,7 +114,9 @@ export function VisualizePicture() {
     setIsRotationProcessing(true)
 
     const pictureNameToRotate = documentModel.pictures[currentIndex].fileName
-    const picturePathRotated = await DocumentService.getNewPicturePath(pictureNameToRotate)
+    const picturePathRotated = await DocumentService.getNewPicturePath(
+      pictureNameToRotate
+    )
     try {
       await imageRotationRef.current.save(picturePathRotated)
       replacePictureInDatabase(picturePathRotated)
@@ -158,7 +167,8 @@ export function VisualizePicture() {
   }
 
   async function onCroppedImageSaved(response: OnImageSavedResponse) {
-    if (!documentModel) throw new Error("Document model is undefined. This should not happen")
+    if (!documentModel)
+      throw new Error("Document model is undefined. This should not happen")
 
     const pictureName = documentModel.pictures[currentIndex].fileName
     const picturePath = DocumentService.getPicturePath(pictureName)
@@ -206,14 +216,19 @@ export function VisualizePicture() {
   }
 
   function replacePictureInDatabase(filePath: string) {
-    if (!documentModel) throw new Error("Document model is undefined. This should not happen")
+    if (!documentModel)
+      throw new Error("Document model is undefined. This should not happen")
 
     documentRealm.write(() => {
       documentModel.document.modifiedAt = Date.now()
-      documentModel.pictures[params.pictureIndex].fileName = DocumentService.getFileFullname(filePath)
+      documentModel.pictures[params.pictureIndex].fileName =
+        DocumentService.getFileFullname(filePath)
     })
 
-    const document = documentRealm.objectForPrimaryKey(DocumentSchema, documentModel.document.id)
+    const document = documentRealm.objectForPrimaryKey(
+      DocumentSchema,
+      documentModel.document.id
+    )
     const pictures = documentRealm
       .objects(DocumentPictureSchema)
       .filtered("belongsToDocument = $0", documentModel.document.id)
@@ -224,7 +239,13 @@ export function VisualizePicture() {
 
 
   return (
-    <View style={{ flex: 1, backgroundColor: isDark ? "black" : "white", paddingTop: safeAreaInsets.top }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: isDark ? "black" : "white",
+        paddingTop: safeAreaInsets.top,
+      }}
+    >
       <VisualizePictureHeader
         goBack={goBack}
         replacePicture={replacePicture}

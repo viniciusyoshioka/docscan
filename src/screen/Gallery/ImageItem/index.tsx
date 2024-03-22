@@ -1,4 +1,3 @@
-import { useMemo } from "react"
 import { Pressable, View, useWindowDimensions } from "react-native"
 import FastImage from "react-native-fast-image"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
@@ -37,7 +36,7 @@ export function ImageItem(props: ImageItemProps) {
   const { colors } = useAppTheme()
   const { onPress, onLongPress } = useSelectableItem(props)
 
-  const imageSize = useMemo(() => getImageItemSize(width, props.columnCount), [width, props.columnCount])
+  const imageSize = getImageItemSize(width, props.columnCount)
 
 
   const longPressGesture = Gesture.LongPress()

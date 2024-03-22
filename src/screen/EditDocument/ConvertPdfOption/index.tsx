@@ -37,7 +37,9 @@ export function ConvertPdfOption() {
 
   const [compressionVisualValue, setCompressionVisualValue] = useState(60)
   const [compressionValue, setCompressionValue] = useState(60)
-  const [compressionLevel, setCompressionLevel] = useState<DocumentPdfCompressionLevel>("high")
+  const [compressionLevel, setCompressionLevel] = useState<DocumentPdfCompressionLevel>(
+    "high"
+  )
   const isSliderDisabled = compressionLevel !== "custom"
 
 
@@ -90,7 +92,9 @@ export function ConvertPdfOption() {
       }
     }
 
-    const pictureList: string[] = pictures.map(item => DocumentService.getPicturePath(item.fileName))
+    const pictureList: string[] = pictures.map(item => (
+      DocumentService.getPicturePath(item.fileName)
+    ))
 
     await createAllFolders()
     PdfCreator.createPdf(pictureList, documentPath, {
@@ -172,7 +176,9 @@ export function ConvertPdfOption() {
             onValueChange={value => setCompressionVisualValue(value)}
             minimumTrackTintColor={colors.primary}
             maximumTrackTintColor={colors.onBackground}
-            thumbTintColor={compressionLevel === "custom" ? colors.primary : colors.onSurface}
+            thumbTintColor={(
+              compressionLevel === "custom" ? colors.primary : colors.onSurface
+            )}
           />
         </View>
       </Dialog.Content>
