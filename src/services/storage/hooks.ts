@@ -12,7 +12,7 @@ export function useMMKVObject<T>(key: string, instance?: MMKV): MMKVHook<T> {
 
   function getInitialValue(): T | undefined {
     const object = currentInstance.getString(key)
-    return object ? JSON.parse(object) : undefined
+    return (object !== undefined) ? JSON.parse(object) : undefined
   }
 
 
