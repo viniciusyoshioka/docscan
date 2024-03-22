@@ -53,20 +53,21 @@
         "@react-native/metro-config": "0.73.5",
         "@realm/babel-plugin": "^0.2.0",
         "@sayem314/react-native-keep-awake": "^1.2.2",
+        "@stylistic/eslint-plugin": "^1.7.0",
         "@types/color": "^3.0.6",
         "@types/i18n-js": "^3.8.9",
         "@types/react": "^18.2.6",
         "@types/react-native-share": "^3.3.8",
         "@types/react-native-vector-icons": "^6.4.18",
         "@types/uuid": "^9.0.8",
-        "@typescript-eslint/eslint-plugin": "^7.0.1",
-        "@typescript-eslint/parser": "^7.0.1",
-        "@vinicius1313/eslint-config": "^1.0.0",
+        "@typescript-eslint/eslint-plugin": "^7.3.1",
+        "@typescript-eslint/parser": "^7.3.1",
+        "@vinicius1313/eslint-config": "^1.2.2",
         "@vinicius1313/tsconfig": "^1.0.0",
         "babel-plugin-module-resolver": "^5.0.0",
         "babel-plugin-transform-remove-console": "^6.9.4",
-        "eslint": "^8.56.0",
-        "typescript": "5.0.4"
+        "eslint": "^8.57.0",
+        "typescript": "^5.4.3"
     },
     "engines": {
         "node": ">=18"
