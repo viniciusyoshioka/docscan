@@ -6,14 +6,14 @@ import { useSettings } from "@services/settings"
 export function useResetCameraOnChangeRatio(setIsResetingCamera: (isReseting: boolean) => void) {
 
 
-    const { settings } = useSettings()
+  const { settings } = useSettings()
 
 
-    useEffect(() => {
-        setIsResetingCamera(true)
+  useEffect(() => {
+    setIsResetingCamera(true)
 
-        setTimeout(() => {
-            setIsResetingCamera(false)
-        }, 0)
-    }, [settings.camera.ratio])
+    setTimeout(() => {
+      setIsResetingCamera(false)
+    }, 0)
+  }, [settings.camera.ratio])
 }

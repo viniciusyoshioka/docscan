@@ -3,11 +3,11 @@ import { useEffect } from "react"
 
 
 export function useKeepAwakeOnDev() {
-    useEffect(() => {
-        if (__DEV__) activateKeepAwake()
+  useEffect(() => {
+    if (__DEV__) activateKeepAwake()
 
-        return () => {
-            if (__DEV__) deactivateKeepAwake()
-        }
-    }, [])
+    return () => {
+      if (__DEV__) deactivateKeepAwake()
+    }
+  }, [])
 }

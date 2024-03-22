@@ -17,60 +17,62 @@ export const HORIZONTAL_COLUMN_COUNT = 7
 
 
 export function getImageItemSize(windowWidth: number, columnCount: number): number {
-    return (windowWidth / columnCount)
+  return (windowWidth / columnCount)
 }
 
 
 export interface ImageItemProps extends SelectableItem {
-    imagePath: string
-    screenAction: ScreenAction
-    columnCount: number
+  imagePath: string
+  screenAction: ScreenAction
+  columnCount: number
 }
 
 
 export function ImageItem(props: ImageItemProps) {
 
 
-    const { width } = useWindowDimensions()
-    const { styles } = useStyles(stylesheet)
+  const { width } = useWindowDimensions()
+  const { styles } = useStyles(stylesheet)
 
-    const { colors } = useAppTheme()
-    const { onPress, onLongPress } = useSelectableItem(props)
+  const { colors } = useAppTheme()
+  const { onPress, onLongPress } = useSelectableItem(props)
 
-    const imageSize = useMemo(() => getImageItemSize(width, props.columnCount), [width, props.columnCount])
-
-
-    const longPressGesture = Gesture.LongPress()
-        .maxDistance(30)
-        .minDuration(400)
-        .onStart(event => {
-            if (props.screenAction === "replace-picture") return
-            runOnJS(onLongPress)()
-        })
+  const imageSize = useMemo(() => getImageItemSize(width, props.columnCount), [width, props.columnCount])
 
 
-    return (
-        <GestureDetector gesture={longPressGesture}>
-            <Pressable
-                onPress={onPress}
-                style={[styles.imageItemButton, { width: imageSize } ]}
-            >
-                <FastImage
-                    source={{ uri: `file://${props.imagePath}` }}
-                    style={{ width: imageSize, aspectRatio: 1 }}
-                />
+  const longPressGesture = Gesture.LongPress()
+    .maxDistance(30)
+    .minDuration(400)
+    .onStart(event => {
+      if (props.screenAction === "replace-picture") return
+      runOnJS(onLongPress)()
+    })
 
-                {props.isSelectionMode && props.isSelected && <>
-                    <View style={styles.selectionSurface} />
 
-                    <Icon
-                        name={"check"}
-                        size={32}
-                        color={colors.onPrimary}
-                        style={{ position: "absolute" }}
-                    />
-                </>}
-            </Pressable>
-        </GestureDetector>
-    )
+  return (
+    <GestureDetector gesture={longPressGesture}>
+      <Pressable
+        onPress={onPress}
+        style={[styles.imageItemButton, { width: imageSize }]}
+      >
+        <FastImage
+          source={{ uri: `file://${props.imagePath}` }}
+          style={{ width: imageSize, aspectRatio: 1 }}
+        />
+
+        {props.isSelectionMode && props.isSelected && (
+          <>
+            <View style={styles.selectionSurface} />
+
+            <Icon
+              name={"check"}
+              size={32}
+              color={colors.onPrimary}
+              style={{ position: "absolute" }}
+            />
+          </>
+        )}
+      </Pressable>
+    </GestureDetector>
+  )
 }

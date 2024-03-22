@@ -11,63 +11,63 @@ import { ThemeType } from "@theme"
 export function ChangeTheme() {
 
 
-    const navigation = useNavigation<NavigationParamProps<"ChangeTheme">>()
-    const { settings, setSettings } = useSettings()
+  const navigation = useNavigation<NavigationParamProps<"ChangeTheme">>()
+  const { settings, setSettings } = useSettings()
 
-    const [selectedTheme, setSelectedTheme] = useState(settings.theme)
-
-
-    function updateTheme() {
-        setSettings({
-            ...settings,
-            theme: selectedTheme,
-        })
-        navigation.goBack()
-    }
+  const [selectedTheme, setSelectedTheme] = useState(settings.theme)
 
 
-    return (
-        <Dialog visible={true} onDismiss={navigation.goBack}>
-            <Dialog.Title>
-                {translate("ChangeTheme_title")}
-            </Dialog.Title>
+  function updateTheme() {
+    setSettings({
+      ...settings,
+      theme: selectedTheme,
+    })
+    navigation.goBack()
+  }
 
-            <Dialog.Content>
-                <RadioButton.Group
-                    value={selectedTheme}
-                    onValueChange={newValue => setSelectedTheme(newValue as ThemeType)}
-                >
-                    <RadioButton.Item
-                        label={translate("ChangeTheme_auto")}
-                        value={"auto"}
-                        style={{ paddingHorizontal: 0 }}
-                    />
 
-                    <RadioButton.Item
-                        label={translate("ChangeTheme_light")}
-                        value={"light"}
-                        style={{ paddingHorizontal: 0 }}
-                    />
+  return (
+    <Dialog visible={true} onDismiss={navigation.goBack}>
+      <Dialog.Title>
+        {translate("ChangeTheme_title")}
+      </Dialog.Title>
 
-                    <RadioButton.Item
-                        label={translate("ChangeTheme_dark")}
-                        value={"dark"}
-                        style={{ paddingHorizontal: 0 }}
-                    />
-                </RadioButton.Group>
-            </Dialog.Content>
+      <Dialog.Content>
+        <RadioButton.Group
+          value={selectedTheme}
+          onValueChange={newValue => setSelectedTheme(newValue as ThemeType)}
+        >
+          <RadioButton.Item
+            label={translate("ChangeTheme_auto")}
+            value={"auto"}
+            style={{ paddingHorizontal: 0 }}
+          />
 
-            <Dialog.Actions>
-                <Button
-                    children={translate("cancel")}
-                    onPress={navigation.goBack}
-                />
+          <RadioButton.Item
+            label={translate("ChangeTheme_light")}
+            value={"light"}
+            style={{ paddingHorizontal: 0 }}
+          />
 
-                <Button
-                    children={translate("ok")}
-                    onPress={updateTheme}
-                />
-            </Dialog.Actions>
-        </Dialog>
-    )
+          <RadioButton.Item
+            label={translate("ChangeTheme_dark")}
+            value={"dark"}
+            style={{ paddingHorizontal: 0 }}
+          />
+        </RadioButton.Group>
+      </Dialog.Content>
+
+      <Dialog.Actions>
+        <Button
+          children={translate("cancel")}
+          onPress={navigation.goBack}
+        />
+
+        <Button
+          children={translate("ok")}
+          onPress={updateTheme}
+        />
+      </Dialog.Actions>
+    </Dialog>
+  )
 }

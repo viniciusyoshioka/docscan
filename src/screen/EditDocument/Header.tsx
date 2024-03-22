@@ -9,66 +9,70 @@ import { EditDocumentMenu } from "./EditDocumentMenu"
 
 
 export interface EditDocumentHeaderProps {
-    goBack: () => void
-    exitSelectionMode: () => void
-    isSelectionMode: boolean
-    selectedPicturesAmount: number
-    invertSelection: () => void
-    deletePicture: () => void
-    openCamera: () => void
-    shareDocument: () => void
-    visualizePdf: () => void
-    deletePdf: () => void
+  goBack: () => void
+  exitSelectionMode: () => void
+  isSelectionMode: boolean
+  selectedPicturesAmount: number
+  invertSelection: () => void
+  deletePicture: () => void
+  openCamera: () => void
+  shareDocument: () => void
+  visualizePdf: () => void
+  deletePdf: () => void
 }
 
 
 export function EditDocumentHeader(props: EditDocumentHeaderProps) {
 
 
-    const navigation = useNavigation<NavigationParamProps<"EditDocument">>()
-    const safeAreaInsets = useSafeAreaInsets()
+  const navigation = useNavigation<NavigationParamProps<"EditDocument">>()
+  const safeAreaInsets = useSafeAreaInsets()
 
-    const { documentModel } = useDocumentModel()
-    const document = documentModel?.document ?? null
+  const { documentModel } = useDocumentModel()
+  const document = documentModel?.document ?? null
 
 
-    function getTitle() {
-        if (!props.isSelectionMode) {
-            return document?.name ?? DocumentService.getNewName()
-        }
-        return props.selectedPicturesAmount.toString()
+  function getTitle() {
+    if (!props.isSelectionMode) {
+      return document?.name ?? DocumentService.getNewName()
     }
+    return props.selectedPicturesAmount.toString()
+  }
 
 
-    return (
-        <Appbar.Header elevated={true} statusBarHeight={safeAreaInsets.top}>
-            {!props.isSelectionMode && (
-                <Appbar.BackAction onPress={props.goBack} />
-            )}
+  return (
+    <Appbar.Header elevated={true} statusBarHeight={safeAreaInsets.top}>
+      {!props.isSelectionMode && (
+        <Appbar.BackAction onPress={props.goBack} />
+      )}
 
-            {props.isSelectionMode && (
-                <Appbar.Action icon={"close"} onPress={props.exitSelectionMode} />
-            )}
+      {props.isSelectionMode && (
+        <Appbar.Action icon={"close"} onPress={props.exitSelectionMode} />
+      )}
 
-            <Appbar.Content title={getTitle()} />
+      <Appbar.Content title={getTitle()} />
 
-            {!props.isSelectionMode && <>
-                <Appbar.Action icon={"camera-plus-outline"} onPress={props.openCamera} />
+      {!props.isSelectionMode && (
+        <>
+          <Appbar.Action icon={"camera-plus-outline"} onPress={props.openCamera} />
 
-                <EditDocumentMenu
-                    convertToPdf={() => navigation.navigate("ConvertPdfOption")}
-                    shareDocument={props.shareDocument}
-                    visualizePdf={props.visualizePdf}
-                    renameDocument={() => navigation.navigate("RenameDocument")}
-                    deletePdf={props.deletePdf}
-                />
-            </>}
+          <EditDocumentMenu
+            convertToPdf={() => navigation.navigate("ConvertPdfOption")}
+            shareDocument={props.shareDocument}
+            visualizePdf={props.visualizePdf}
+            renameDocument={() => navigation.navigate("RenameDocument")}
+            deletePdf={props.deletePdf}
+          />
+        </>
+      )}
 
-            {props.isSelectionMode && <>
-                <Appbar.Action icon={"swap-horizontal"} onPress={props.invertSelection} />
+      {props.isSelectionMode && (
+        <>
+          <Appbar.Action icon={"swap-horizontal"} onPress={props.invertSelection} />
 
-                <Appbar.Action icon={"trash-can-outline"} onPress={props.deletePicture} />
-            </>}
-        </Appbar.Header>
-    )
+          <Appbar.Action icon={"trash-can-outline"} onPress={props.deletePicture} />
+        </>
+      )}
+    </Appbar.Header>
+  )
 }

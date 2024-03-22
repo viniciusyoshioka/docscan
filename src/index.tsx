@@ -12,28 +12,28 @@ import { AppThemeProvider } from "@theme"
 export function App() {
 
 
-    useKeepAwakeOnDev()
+  useKeepAwakeOnDev()
 
 
-    return (
-        <GestureHandlerRootView style={{ flex: 1 }}>
-            <RealmProvider>
-                <SettingsProvider>
-                    <DocumentModelProvider>
-                        <AppThemeProvider>
-                            <KeyboardProvider statusBarTranslucent={true}>
-                                <KeyboardAvoidingView
-                                    style={{ flex: 1 }}
-                                    behavior={"padding"}
-                                    keyboardVerticalOffset={-(StatusBar.currentHeight ?? 0)}
-                                >
-                                    <Router />
-                                </KeyboardAvoidingView>
-                            </KeyboardProvider>
-                        </AppThemeProvider>
-                    </DocumentModelProvider>
-                </SettingsProvider>
-            </RealmProvider>
-        </GestureHandlerRootView>
-    )
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <RealmProvider>
+        <SettingsProvider>
+          <DocumentModelProvider>
+            <AppThemeProvider>
+              <KeyboardProvider statusBarTranslucent={true}>
+                <KeyboardAvoidingView
+                  style={{ flex: 1 }}
+                  behavior={"padding"}
+                  keyboardVerticalOffset={-(StatusBar.currentHeight ?? 0)}
+                >
+                  <Router />
+                </KeyboardAvoidingView>
+              </KeyboardProvider>
+            </AppThemeProvider>
+          </DocumentModelProvider>
+        </SettingsProvider>
+      </RealmProvider>
+    </GestureHandlerRootView>
+  )
 }

@@ -15,58 +15,60 @@ export const HORIZONTAL_COLUMN_COUNT = 4
 
 
 export function getPictureItemSize(windowWidth: number, columnCount: number): number {
-    const singlePictureItemMarginWidth = (2 * PICTURE_BUTTON_MARGIN)
-    const pictureItemRowWidth = windowWidth - singlePictureItemMarginWidth
-    return (pictureItemRowWidth / columnCount) - singlePictureItemMarginWidth
+  const singlePictureItemMarginWidth = (2 * PICTURE_BUTTON_MARGIN)
+  const pictureItemRowWidth = windowWidth - singlePictureItemMarginWidth
+  return (pictureItemRowWidth / columnCount) - singlePictureItemMarginWidth
 }
 
 
 export interface PictureItemProps extends SelectableItem {
-    picturePath: string
-    columnCount: number
+  picturePath: string
+  columnCount: number
 }
 
 
 export function PictureItem(props: PictureItemProps) {
 
 
-    const { width } = useWindowDimensions()
-    const { colors } = useAppTheme()
-    const { styles } = useStyles(stylesheet)
-    const { onPress, onLongPress } = useSelectableItem(props)
+  const { width } = useWindowDimensions()
+  const { colors } = useAppTheme()
+  const { styles } = useStyles(stylesheet)
+  const { onPress, onLongPress } = useSelectableItem(props)
 
-    const pictureItemSize = getPictureItemSize(width, props.columnCount)
-
-
-    const longPressGesture = Gesture.LongPress()
-        .maxDistance(30)
-        .minDuration(400)
-        .onStart(event => runOnJS(onLongPress)())
+  const pictureItemSize = getPictureItemSize(width, props.columnCount)
 
 
-    return (
-        <GestureDetector gesture={longPressGesture}>
-            <Pressable
-                style={styles.pictureButton(pictureItemSize)}
-                onPress={onPress}
-                android_ripple={{ color: colors.primary, foreground: true }}
-            >
-                <FastImage
-                    source={{ uri: `file://${props.picturePath}` }}
-                    style={styles.pictureImage}
-                />
+  const longPressGesture = Gesture.LongPress()
+    .maxDistance(30)
+    .minDuration(400)
+    .onStart(event => runOnJS(onLongPress)())
 
-                {props.isSelectionMode && props.isSelected && <>
-                    <View style={styles.selectedSurface} />
 
-                    <Icon
-                        name={"check"}
-                        size={32}
-                        color={colors.onPrimary}
-                        style={{ position: "absolute" }}
-                    />
-                </>}
-            </Pressable>
-        </GestureDetector>
-    )
+  return (
+    <GestureDetector gesture={longPressGesture}>
+      <Pressable
+        style={styles.pictureButton(pictureItemSize)}
+        onPress={onPress}
+        android_ripple={{ color: colors.primary, foreground: true }}
+      >
+        <FastImage
+          source={{ uri: `file://${props.picturePath}` }}
+          style={styles.pictureImage}
+        />
+
+        {props.isSelectionMode && props.isSelected && (
+          <>
+            <View style={styles.selectedSurface} />
+
+            <Icon
+              name={"check"}
+              size={32}
+              color={colors.onPrimary}
+              style={{ position: "absolute" }}
+            />
+          </>
+        )}
+      </Pressable>
+    </GestureDetector>
+  )
 }

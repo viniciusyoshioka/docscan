@@ -8,23 +8,23 @@ import { MMKVHook } from "./types"
 export function useMMKVObject<T>(key: string, instance?: MMKV): MMKVHook<T> {
 
 
-    const currentInstance = instance ?? storage
+  const currentInstance = instance ?? storage
 
-    function getInitialValue(): T | undefined {
-        const object = currentInstance.getString(key)
-        return object ? JSON.parse(object) : undefined
-    }
-
-
-    const [valueState, setValueState] = useState<T | undefined>(getInitialValue)
+  function getInitialValue(): T | undefined {
+    const object = currentInstance.getString(key)
+    return object ? JSON.parse(object) : undefined
+  }
 
 
-    function setValue(value?: T | ((prev?: T) => T | undefined)) {
-        const newValue: T | undefined = (value instanceof Function) ? value() : value
-        currentInstance.set(key, JSON.stringify(newValue))
-        setValueState(newValue)
-    }
+  const [valueState, setValueState] = useState<T | undefined>(getInitialValue)
 
 
-    return [valueState, setValue]
+  function setValue(value?: T | ((prev?: T) => T | undefined)) {
+    const newValue: T | undefined = (value instanceof Function) ? value() : value
+    currentInstance.set(key, JSON.stringify(newValue))
+    setValueState(newValue)
+  }
+
+
+  return [valueState, setValue]
 }

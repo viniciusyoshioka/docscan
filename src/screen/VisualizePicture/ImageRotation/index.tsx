@@ -14,157 +14,157 @@ const perpendicularAngles = [0, 90, 180, 270, 360]
 
 
 export interface ImageRotationProps {
-    source: string
-    style?: StyleProp<ViewStyle>
-    onError?: (error?: unknown) => void
+  source: string
+  style?: StyleProp<ViewStyle>
+  onError?: (error?: unknown) => void
 }
 
 
 export interface ImageRotationRef {
-    getRotationDegree: () => number
-    rotateLeft: () => void
-    rotateRight: () => void
-    save: (pathToSave: string) => Promise<void>
+  getRotationDegree: () => number
+  rotateLeft: () => void
+  rotateRight: () => void
+  save: (pathToSave: string) => Promise<void>
 }
 
 
 export const ImageRotation = forwardRef((props: ImageRotationProps, ref: ForwardedRef<ImageRotationRef>) => {
 
 
-    const [windowWidth, setWindowWidth] = useState(0)
-    const [windowHeight, setWindowHeight] = useState(0)
-    const [imageWidth, setImageWidth] = useState(0)
-    const [imageHeight, setImageHeight] = useState(0)
+  const [windowWidth, setWindowWidth] = useState(0)
+  const [windowHeight, setWindowHeight] = useState(0)
+  const [imageWidth, setImageWidth] = useState(0)
+  const [imageHeight, setImageHeight] = useState(0)
 
-    const isSaving = useSharedValue(false)
-    const degree = useSharedValue(0)
-    const scale = useSharedValue(1)
+  const isSaving = useSharedValue(false)
+  const degree = useSharedValue(0)
+  const scale = useSharedValue(1)
 
-    const overlayLeft = useSharedValue(0)
-    const overlayTop = useSharedValue(0)
-    const overlayWidth = useSharedValue(0)
-    const overlayHeight = useSharedValue(0)
-
-
-    useImperativeHandle(ref, () => ({
-        getRotationDegree: getRotationDegree,
-        rotateLeft: () => rotate(-90),
-        rotateRight: () => rotate(90),
-        save: saveImage,
-    }))
+  const overlayLeft = useSharedValue(0)
+  const overlayTop = useSharedValue(0)
+  const overlayWidth = useSharedValue(0)
+  const overlayHeight = useSharedValue(0)
 
 
-    function getRotationDegree() {
-        return degree.value
+  useImperativeHandle(ref, () => ({
+    getRotationDegree: getRotationDegree,
+    rotateLeft: () => rotate(-90),
+    rotateRight: () => rotate(90),
+    save: saveImage,
+  }))
+
+
+  function getRotationDegree() {
+    return degree.value
+  }
+
+  function rotate(degreeToRotate: number) {
+    const newDegree = degree.value + degreeToRotate
+    let newScale = 1
+    let newImageWidth = imageWidth
+    let newImageHeight = imageHeight
+
+    if (!perpendicularAngles.includes(Math.abs(newDegree))) {
+      return
     }
 
-    function rotate(degreeToRotate: number) {
-        const newDegree = degree.value + degreeToRotate
-        let newScale = 1
-        let newImageWidth = imageWidth
-        let newImageHeight = imageHeight
+    if (scale.value === 1) {
+      const rotatedImageWidth = imageHeight
+      const rotatedImageHeight = imageWidth
 
-        if (!perpendicularAngles.includes(Math.abs(newDegree))) {
-            return
-        }
-
-        if (scale.value === 1) {
-            const rotatedImageWidth = imageHeight
-            const rotatedImageHeight = imageWidth
-
-            newScale = windowWidth / rotatedImageWidth
-            newImageWidth = rotatedImageWidth * newScale
-            newImageHeight = rotatedImageHeight * newScale
-            if (newImageHeight > windowHeight) {
-                newScale = windowHeight / rotatedImageHeight
-                newImageWidth = rotatedImageWidth * newScale
-                newImageHeight = rotatedImageHeight * newScale
-            }
-        }
-
-        overlayLeft.value = (windowWidth - newImageWidth) / 2
-        overlayTop.value = (windowHeight - newImageHeight) / 2
-        overlayWidth.value = newImageWidth
-        overlayHeight.value = newImageHeight
-
-        degree.value = withTiming(newDegree, { duration: 150 })
-        scale.value = withTiming(newScale, { duration: 150 })
+      newScale = windowWidth / rotatedImageWidth
+      newImageWidth = rotatedImageWidth * newScale
+      newImageHeight = rotatedImageHeight * newScale
+      if (newImageHeight > windowHeight) {
+        newScale = windowHeight / rotatedImageHeight
+        newImageWidth = rotatedImageWidth * newScale
+        newImageHeight = rotatedImageHeight * newScale
+      }
     }
 
-    async function saveImage(pathToSave: string) {
-        isSaving.value = true
+    overlayLeft.value = (windowWidth - newImageWidth) / 2
+    overlayTop.value = (windowHeight - newImageHeight) / 2
+    overlayWidth.value = newImageWidth
+    overlayHeight.value = newImageHeight
 
-        const imageUri = props.source.startsWith("file://")
-            ? props.source.replace("file://", "")
-            : props.source
+    degree.value = withTiming(newDegree, { duration: 150 })
+    scale.value = withTiming(newScale, { duration: 150 })
+  }
 
-        if (degree.value % 360 === 0) {
-            await RNFS.moveFile(imageUri, pathToSave)
-            isSaving.value = false
-            return
-        }
+  async function saveImage(pathToSave: string) {
+    isSaving.value = true
 
-        await ImageTools.rotate({
-            sourcePath: imageUri,
-            destinationPath: pathToSave,
-            angle: degree.value,
-        })
+    const imageUri = props.source.startsWith("file://")
+      ? props.source.replace("file://", "")
+      : props.source
 
-        isSaving.value = false
+    if (degree.value % 360 === 0) {
+      await RNFS.moveFile(imageUri, pathToSave)
+      isSaving.value = false
+      return
     }
 
+    await ImageTools.rotate({
+      sourcePath: imageUri,
+      destinationPath: pathToSave,
+      angle: degree.value,
+    })
 
-    const imageStyle = useAnimatedStyle(() => ({
-        flex: 1,
-        transform: [
-            { rotate: `${degree.value}deg` },
-            { scale: scale.value },
-        ]
-    }))
-
-    const overlayStyle = useAnimatedStyle(() => ({
-        left: overlayLeft.value,
-        top: overlayTop.value,
-        width: overlayWidth.value,
-        height: overlayHeight.value,
-        opacity: isSaving.value ? 1 : 0,
-    }))
+    isSaving.value = false
+  }
 
 
-    useEffect(() => {
-        function onSuccess(widthSize: number, heightSize: number) {
-            const imageRatio = widthSize / heightSize
+  const imageStyle = useAnimatedStyle(() => ({
+    flex: 1,
+    transform: [
+      { rotate: `${degree.value}deg` },
+      { scale: scale.value },
+    ],
+  }))
 
-            let newImageWidth = windowWidth
-            let newImageHeight = windowWidth / imageRatio
-            if (newImageHeight > windowHeight) {
-                newImageWidth = windowHeight * imageRatio
-                newImageHeight = windowHeight
-            }
-
-            setImageWidth(newImageWidth)
-            setImageHeight(newImageHeight)
-        }
-
-        if (windowWidth !== 0 && windowHeight !== 0) {
-            Image.getSize(props.source, onSuccess, props.onError)
-        }
-    }, [windowWidth, windowHeight])
+  const overlayStyle = useAnimatedStyle(() => ({
+    left: overlayLeft.value,
+    top: overlayTop.value,
+    width: overlayWidth.value,
+    height: overlayHeight.value,
+    opacity: isSaving.value ? 1 : 0,
+  }))
 
 
-    return (
-        <View style={[ { overflow: "hidden" }, props.style]}>
-            <AnimatedFastImage
-                source={{ uri: props.source }}
-                resizeMode={"contain"}
-                onLayout={event => {
-                    setWindowWidth(event.nativeEvent.layout.width)
-                    setWindowHeight(event.nativeEvent.layout.height)
-                }}
-                style={imageStyle}
-            />
+  useEffect(() => {
+    function onSuccess(widthSize: number, heightSize: number) {
+      const imageRatio = widthSize / heightSize
 
-            <LoadingOverlay style={overlayStyle} />
-        </View>
-    )
+      let newImageWidth = windowWidth
+      let newImageHeight = windowWidth / imageRatio
+      if (newImageHeight > windowHeight) {
+        newImageWidth = windowHeight * imageRatio
+        newImageHeight = windowHeight
+      }
+
+      setImageWidth(newImageWidth)
+      setImageHeight(newImageHeight)
+    }
+
+    if (windowWidth !== 0 && windowHeight !== 0) {
+      Image.getSize(props.source, onSuccess, props.onError)
+    }
+  }, [windowWidth, windowHeight])
+
+
+  return (
+    <View style={[{ overflow: "hidden" }, props.style]}>
+      <AnimatedFastImage
+        source={{ uri: props.source }}
+        resizeMode={"contain"}
+        onLayout={event => {
+          setWindowWidth(event.nativeEvent.layout.width)
+          setWindowHeight(event.nativeEvent.layout.height)
+        }}
+        style={imageStyle}
+      />
+
+      <LoadingOverlay style={overlayStyle} />
+    </View>
+  )
 })

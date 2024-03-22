@@ -1,5 +1,9 @@
 import { createContext, PropsWithChildren, useContext, useEffect } from "react"
-import { MaterialDarkTheme, MaterialLightTheme, MaterialProvider } from "react-material-design-provider"
+import {
+  MaterialDarkTheme,
+  MaterialLightTheme,
+  MaterialProvider,
+} from "react-material-design-provider"
 import { useColorScheme } from "react-native"
 import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper"
 import { UnistylesRuntime } from "react-native-unistyles"
@@ -17,39 +21,39 @@ const AppThemeContext = createContext<AppTheme>(AppThemeLight)
 export function AppThemeProvider(props: PropsWithChildren) {
 
 
-    const deviceTheme = useColorScheme()
+  const deviceTheme = useColorScheme()
 
-    const [settings] = useMMKVObject<Settings>(AppStorageKeys.SETTINGS)
-    const isDarkTheme = (settings?.theme === "auto" && deviceTheme === "dark")
-        || settings?.theme === "dark"
-
-
-    const appTheme = isDarkTheme ? AppThemeDark : AppThemeLight
-    const materialTheme = isDarkTheme ? MaterialDarkTheme : MaterialLightTheme
-    const paperTheme = isDarkTheme ? MD3DarkTheme : MD3LightTheme
+  const [settings] = useMMKVObject<Settings>(AppStorageKeys.SETTINGS)
+  const isDarkTheme = (settings?.theme === "auto" && deviceTheme === "dark")
+    || settings?.theme === "dark"
 
 
-    useEffect(() => {
-        if (isDarkTheme) {
-            UnistylesRuntime.setTheme("dark")
-        } else {
-            UnistylesRuntime.setTheme("light")
-        }
-    }, [isDarkTheme])
+  const appTheme = isDarkTheme ? AppThemeDark : AppThemeLight
+  const materialTheme = isDarkTheme ? MaterialDarkTheme : MaterialLightTheme
+  const paperTheme = isDarkTheme ? MD3DarkTheme : MD3LightTheme
 
 
-    return (
-        <AppThemeContext.Provider value={appTheme}>
-            <MaterialProvider theme={materialTheme}>
-                <PaperProvider theme={paperTheme}>
-                    {props.children}
-                </PaperProvider>
-            </MaterialProvider>
-        </AppThemeContext.Provider>
-    )
+  useEffect(() => {
+    if (isDarkTheme) {
+      UnistylesRuntime.setTheme("dark")
+    } else {
+      UnistylesRuntime.setTheme("light")
+    }
+  }, [isDarkTheme])
+
+
+  return (
+    <AppThemeContext.Provider value={appTheme}>
+      <MaterialProvider theme={materialTheme}>
+        <PaperProvider theme={paperTheme}>
+          {props.children}
+        </PaperProvider>
+      </MaterialProvider>
+    </AppThemeContext.Provider>
+  )
 }
 
 
 export function useAppTheme() {
-    return useContext(AppThemeContext)
+  return useContext(AppThemeContext)
 }

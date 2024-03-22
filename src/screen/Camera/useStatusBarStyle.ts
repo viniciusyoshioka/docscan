@@ -7,14 +7,14 @@ import { useAppTheme } from "@theme"
 export function useStatusBarStyle(isShowingCamera: boolean) {
 
 
-    const { isDark } = useAppTheme()
+  const { isDark } = useAppTheme()
 
 
-    useEffect(() => {
-        if (isShowingCamera) {
-            StatusBar.setBarStyle("light-content")
-        } else {
-            StatusBar.setBarStyle(isDark ? "light-content" : "dark-content")
-        }
-    }, [isShowingCamera, isDark])
+  useEffect(() => {
+    if (isShowingCamera) {
+      StatusBar.setBarStyle("light-content")
+    } else {
+      StatusBar.setBarStyle(isDark ? "light-content" : "dark-content")
+    }
+  }, [isShowingCamera, isDark])
 }

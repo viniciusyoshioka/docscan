@@ -12,63 +12,63 @@ export * from "./useCameraControlDimensions"
 
 
 export interface CameraControlProps {
-    isShowingCamera: boolean
-    addPictureFromGallery: () => void
-    takePicture: () => void
-    editDocument: () => void
+  isShowingCamera: boolean
+  addPictureFromGallery: () => void
+  takePicture: () => void
+  editDocument: () => void
 }
 
 
 export interface CameraControlRef {
-    disableAction: () => void
-    enableAction: () => void
+  disableAction: () => void
+  enableAction: () => void
 }
 
 
 export const CameraControl = forwardRef((props: CameraControlProps, ref: ForwardedRef<CameraControlRef>) => {
 
 
-    const { params } = useRoute<RouteParamProps<"Camera">>()
+  const { params } = useRoute<RouteParamProps<"Camera">>()
 
-    const { documentModel } = useDocumentModel()
-    const picturesCount = (documentModel?.pictures.length ?? 0).toString()
-    const [isActionDisabled, setIsActionDisabled] = useState(false)
-
-
-    useImperativeHandle(ref, () => ({
-        disableAction: () => setIsActionDisabled(true),
-        enableAction: () => setIsActionDisabled(false),
-    }))
+  const { documentModel } = useDocumentModel()
+  const picturesCount = (documentModel?.pictures.length ?? 0).toString()
+  const [isActionDisabled, setIsActionDisabled] = useState(false)
 
 
-    return (
-        <ActionBar isShowingCamera={props.isShowingCamera}>
-            <Action
-                icon={"image-multiple-outline"}
-                onPress={props.addPictureFromGallery}
-                isShowingCamera={props.isShowingCamera}
-            />
+  useImperativeHandle(ref, () => ({
+    disableAction: () => setIsActionDisabled(true),
+    enableAction: () => setIsActionDisabled(false),
+  }))
 
 
-            <MainAction
-                disabled={isActionDisabled}
-                onPress={props.takePicture}
-                isShowingCamera={props.isShowingCamera}
-            />
+  return (
+    <ActionBar isShowingCamera={props.isShowingCamera}>
+      <Action
+        icon={"image-multiple-outline"}
+        onPress={props.addPictureFromGallery}
+        isShowingCamera={props.isShowingCamera}
+      />
 
 
-            {params?.screenAction !== "replace-picture" && (
-                <Action
-                    icon={"file-document-outline"}
-                    counter={picturesCount}
-                    onPress={props.editDocument}
-                    isShowingCamera={props.isShowingCamera}
-                />
-            )}
+      <MainAction
+        disabled={isActionDisabled}
+        onPress={props.takePicture}
+        isShowingCamera={props.isShowingCamera}
+      />
 
-            {params?.screenAction === "replace-picture" && (
-                <Action isShowingCamera={props.isShowingCamera} />
-            )}
-        </ActionBar>
-    )
+
+      {params?.screenAction !== "replace-picture" && (
+        <Action
+          icon={"file-document-outline"}
+          counter={picturesCount}
+          onPress={props.editDocument}
+          isShowingCamera={props.isShowingCamera}
+        />
+      )}
+
+      {params?.screenAction === "replace-picture" && (
+        <Action isShowingCamera={props.isShowingCamera} />
+      )}
+    </ActionBar>
+  )
 })

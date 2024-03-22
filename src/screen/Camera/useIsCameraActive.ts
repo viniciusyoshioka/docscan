@@ -4,16 +4,16 @@ import { useIsForeground } from "@hooks"
 
 
 export type CameraActiveOptions = {
-    hasCameraPermission: boolean
+  hasCameraPermission: boolean
 }
 
 
 export function useIsCameraActive(options: CameraActiveOptions): boolean {
 
-    const { hasCameraPermission } = options
+  const { hasCameraPermission } = options
 
-    const isFocused = useIsFocused()
-    const isForeground = useIsForeground()
+  const isFocused = useIsFocused()
+  const isForeground = useIsForeground()
 
-    return hasCameraPermission && isFocused && isForeground
+  return hasCameraPermission && isFocused && isForeground
 }

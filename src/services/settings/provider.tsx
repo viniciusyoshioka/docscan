@@ -9,35 +9,35 @@ const SettingsContext = createContext<SettingsContextValue>(settingsContextDefau
 
 
 export interface SettingsProviderProps {
-    children?: ReactNode
+  children?: ReactNode
 }
 
 
 export function SettingsProvider(props: SettingsProviderProps) {
 
 
-    const [settings, setSettings] = useMMKVObject<Settings>(AppStorageKeys.SETTINGS)
+  const [settings, setSettings] = useMMKVObject<Settings>(AppStorageKeys.SETTINGS)
 
 
-    useEffect(() => {
-        const allKeys = storage.getAllKeys()
-        if (allKeys.length === 0)
-            setSettings(settingsDefault)
-    }, [])
+  useEffect(() => {
+    const allKeys = storage.getAllKeys()
+    if (allKeys.length === 0)
+      setSettings(settingsDefault)
+  }, [])
 
 
-    if (!settings) return null
+  if (!settings) return null
 
 
-    return (
-        <SettingsContext.Provider
-            value={{ settings, setSettings }}
-            children={props.children}
-        />
-    )
+  return (
+    <SettingsContext.Provider
+      value={{ settings, setSettings }}
+      children={props.children}
+    />
+  )
 }
 
 
 export function useSettings() {
-    return useContext(SettingsContext)
+  return useContext(SettingsContext)
 }

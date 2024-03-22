@@ -4,10 +4,10 @@ import { ExportedDocumentPictureSchema, ExportedDocumentSchema } from "../schema
 
 
 export async function openExportedDatabase(path: string) {
-    return await Realm.open({
-        schema: [ExportedDocumentSchema, ExportedDocumentPictureSchema],
-        schemaVersion: 1,
-        path,
-        deleteRealmIfMigrationNeeded: __DEV__,
-    })
+  return await Realm.open({
+    schema: [ExportedDocumentSchema, ExportedDocumentPictureSchema],
+    schemaVersion: 1,
+    path,
+    deleteRealmIfMigrationNeeded: __DEV__,
+  })
 }

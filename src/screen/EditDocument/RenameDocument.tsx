@@ -14,86 +14,86 @@ import { DocumentService } from "@services/document"
 export function RenameDocument() {
 
 
-    const navigation = useNavigation<NavigationParamProps<"RenameDocument">>()
+  const navigation = useNavigation<NavigationParamProps<"RenameDocument">>()
 
-    const documentRealm = useDocumentRealm()
-    const { documentModel, setDocumentModel } = useDocumentModel()
-    const document = documentModel?.document ?? null
-    const initialDocumentName = document?.name ?? DocumentService.getNewName()
+  const documentRealm = useDocumentRealm()
+  const { documentModel, setDocumentModel } = useDocumentModel()
+  const document = documentModel?.document ?? null
+  const initialDocumentName = document?.name ?? DocumentService.getNewName()
 
-    const inputRef = createRef<RNTextInput>()
+  const inputRef = createRef<RNTextInput>()
 
-    const [documentName, setDocumentName] = useState(initialDocumentName)
-
-
-    useKeyboard("keyboardDidHide", () => inputRef.current?.blur())
+  const [documentName, setDocumentName] = useState(initialDocumentName)
 
 
-    useBackHandler(goBack)
+  useKeyboard("keyboardDidHide", () => inputRef.current?.blur())
 
 
-    function goBack() {
-        navigation.goBack()
-        return true
-    }
-
-    function renameDocument() {
-        const renamedDocument = documentRealm.write(() => {
-            if (document) {
-                document.name = documentName
-                document.modifiedAt = Date.now()
-                return document
-            }
-
-            const createdDocument = documentRealm.create(DocumentSchema, { name: documentName })
-            return createdDocument
-        })
-
-        const pictures = documentRealm
-            .objects(DocumentPictureSchema)
-            .filtered("belongsToDocument = $0", renamedDocument.id)
-            .sorted("position")
-        setDocumentModel({ document: renamedDocument, pictures })
-    }
+  useBackHandler(goBack)
 
 
-    return (
-        <Dialog visible onDismiss={goBack}>
-            <Dialog.Title>
-                {translate("RenameDocument_title")}
-            </Dialog.Title>
+  function goBack() {
+    navigation.goBack()
+    return true
+  }
 
-            <Dialog.Content>
-                <Input
-                    ref={inputRef}
-                    placeholder={translate("RenameDocument_documentName_placeholder")}
-                    value={documentName}
-                    onChangeText={setDocumentName}
-                    autoFocus={true}
-                    right={(
-                        <TextInput.Icon
-                            icon={"close"}
-                            size={18}
-                            onPress={() => setDocumentName("")}
-                        />
-                    )}
-                />
-            </Dialog.Content>
+  function renameDocument() {
+    const renamedDocument = documentRealm.write(() => {
+      if (document) {
+        document.name = documentName
+        document.modifiedAt = Date.now()
+        return document
+      }
 
-            <Dialog.Actions>
-                <Button
-                    children={translate("cancel")}
-                    onPress={goBack}
-                />
+      const createdDocument = documentRealm.create(DocumentSchema, { name: documentName })
+      return createdDocument
+    })
 
-                <Button
-                    children={translate("ok")}
-                    onPress={() => {
-                        renameDocument()
-                        goBack()
-                    }}
-                />
-            </Dialog.Actions>
-        </Dialog>
-    )
+    const pictures = documentRealm
+      .objects(DocumentPictureSchema)
+      .filtered("belongsToDocument = $0", renamedDocument.id)
+      .sorted("position")
+    setDocumentModel({ document: renamedDocument, pictures })
+  }
+
+
+  return (
+    <Dialog visible onDismiss={goBack}>
+      <Dialog.Title>
+        {translate("RenameDocument_title")}
+      </Dialog.Title>
+
+      <Dialog.Content>
+        <Input
+          ref={inputRef}
+          placeholder={translate("RenameDocument_documentName_placeholder")}
+          value={documentName}
+          onChangeText={setDocumentName}
+          autoFocus={true}
+          right={(
+            <TextInput.Icon
+              icon={"close"}
+              size={18}
+              onPress={() => setDocumentName("")}
+            />
+          )}
+        />
+      </Dialog.Content>
+
+      <Dialog.Actions>
+        <Button
+          children={translate("cancel")}
+          onPress={goBack}
+        />
+
+        <Button
+          children={translate("ok")}
+          onPress={() => {
+            renameDocument()
+            goBack()
+          }}
+        />
+      </Dialog.Actions>
+    </Dialog>
+  )
 }
