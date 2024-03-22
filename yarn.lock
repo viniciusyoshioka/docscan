@@ -4755,7 +4755,7 @@ react-native-unistyles@^2.3.0:
 
 "react-native-vector-icons@https://github.com/viniciusyoshioka/react-native-vector-icons.git":
   version "10.0.3"
-  resolved "https://github.com/viniciusyoshioka/react-native-vector-icons.git#5cbd0e78615fbeface0e16f5f8b9b99c799040ba"
+  resolved "https://github.com/viniciusyoshioka/react-native-vector-icons.git#be8cc42a9264288a37ca5683d73a20a21c52f06e"
   dependencies:
     prop-types "^15.7.2"
     yargs "^16.1.1"
