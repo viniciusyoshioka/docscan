@@ -4,8 +4,7 @@ import { DocumentPictureRealm } from "../interfaces"
 
 
 export class DocumentPictureSchema
-  extends Realm.Object<DocumentPictureSchema>
-  implements DocumentPictureRealm {
+  extends Realm.Object<DocumentPictureSchema> implements DocumentPictureRealm {
 
   id = new Realm.BSON.ObjectId()
   fileName!: string
