@@ -71,6 +71,7 @@
     "babel-plugin-module-resolver": "^5.0.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^8.57.0",
+    "type-fest": "^4.13.1",
     "typescript": "^5.4.3"
   },
   "engines": {
