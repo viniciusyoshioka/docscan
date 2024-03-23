@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react"
-import { AppState, AppStateStatus } from "react-native"
+import { AppState } from "react-native"
 
 
 export function useIsForeground(): boolean {
+
+
   const [isForeground, setIsForeground] = useState(AppState.currentState === "active")
 
-  useEffect(() => {
-    function onChangeAppState(state: AppStateStatus) {
-      setIsForeground(state === "active")
-    }
 
-    const subscription = AppState.addEventListener("change", onChangeAppState)
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", state => {
+      setIsForeground(state === "active")
+    })
+
     return () => subscription.remove()
   })
+
 
   return isForeground
 }
