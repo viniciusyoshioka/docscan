@@ -6,14 +6,14 @@ import RNFS from "react-native-fs"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import {
-  DocumentPictureSchema,
-  DocumentSchema,
-  useDocumentModel,
-  useDocumentRealm,
+    DocumentPictureSchema,
+    DocumentSchema,
+    useDocumentModel,
+    useDocumentRealm,
 } from "@database"
 import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
-import { NavigationParamProps, RouteParamProps } from "@router"
+import { NavigationProps, RouteParamProps } from "@router"
 import { DocumentService } from "@services/document"
 import { ImageCrop, OnImageSavedResponse } from "@services/image-crop"
 import { log, stringfyError } from "@services/log"
@@ -30,7 +30,7 @@ import { ImageVisualizationItem } from "./ImageVisualizationItem"
 export function VisualizePicture() {
 
 
-  const navigation = useNavigation<NavigationParamProps<"VisualizePicture">>()
+  const navigation = useNavigation<NavigationProps<"VisualizePicture">>()
   const { params } = useRoute<RouteParamProps<"VisualizePicture">>()
   const { width } = useWindowDimensions()
   const safeAreaInsets = useSafeAreaInsets()

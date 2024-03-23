@@ -5,21 +5,21 @@ import { Button, Dialog, TextInput } from "react-native-paper"
 import { Input } from "react-native-paper-towel"
 
 import {
-  DocumentPictureSchema,
-  DocumentSchema,
-  useDocumentModel,
-  useDocumentRealm,
+    DocumentPictureSchema,
+    DocumentSchema,
+    useDocumentModel,
+    useDocumentRealm,
 } from "@database"
 import { useBackHandler, useKeyboard } from "@hooks"
 import { translate } from "@locales"
-import { NavigationParamProps } from "@router"
+import { NavigationProps } from "@router"
 import { DocumentService } from "@services/document"
 
 
 export function RenameDocument() {
 
 
-  const navigation = useNavigation<NavigationParamProps<"RenameDocument">>()
+  const navigation = useNavigation<NavigationProps<"RenameDocument">>()
 
   const documentRealm = useDocumentRealm()
   const { documentModel, setDocumentModel } = useDocumentModel()

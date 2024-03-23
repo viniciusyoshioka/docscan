@@ -9,7 +9,7 @@ import { useStyles } from "react-native-unistyles"
 import { useDocumentModel } from "@database"
 import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
-import { NavigationParamProps } from "@router"
+import { NavigationProps } from "@router"
 import { Constants } from "@services/constant"
 import { DocumentService } from "@services/document"
 import { createAllFolders } from "@services/folder-handler"
@@ -26,7 +26,7 @@ type DocumentPdfCompressionLevel = "low" | "high" | "custom"
 export function ConvertPdfOption() {
 
 
-  const navigation = useNavigation<NavigationParamProps<"ConvertPdfOption">>()
+  const navigation = useNavigation<NavigationProps<"ConvertPdfOption">>()
   const { styles } = useStyles(stylesheet)
 
   const { documentModel } = useDocumentModel()

@@ -3,7 +3,7 @@ import { useState } from "react"
 import { Button, Dialog, RadioButton } from "react-native-paper"
 
 import { translate } from "@locales"
-import { NavigationParamProps } from "@router"
+import { NavigationProps } from "@router"
 import { useSettings } from "@services/settings"
 import { ThemeType } from "@theme"
 
@@ -11,7 +11,7 @@ import { ThemeType } from "@theme"
 export function ChangeTheme() {
 
 
-  const navigation = useNavigation<NavigationParamProps<"ChangeTheme">>()
+  const navigation = useNavigation<NavigationProps<"ChangeTheme">>()
   const { settings, setSettings } = useSettings()
 
   const [selectedTheme, setSelectedTheme] = useState(settings.theme)

@@ -34,7 +34,7 @@ export type ScreenParams = {
 export type ScreenName = keyof ScreenParams
 
 
-export type NavigationParamProps<T extends ScreenName> = NativeStackNavigationProp<
+export type NavigationProps<T extends ScreenName> = NativeStackNavigationProp<
   ScreenParams, T
 >
 

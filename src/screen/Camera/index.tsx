@@ -4,28 +4,28 @@ import { useRef, useState } from "react"
 import { Alert, StyleSheet, View, ViewStyle, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
 import {
-  HandlerStateChangeEvent,
-  State,
-  TapGestureHandler,
-  TapGestureHandlerEventPayload,
+    HandlerStateChangeEvent,
+    State,
+    TapGestureHandler,
+    TapGestureHandlerEventPayload,
 } from "react-native-gesture-handler"
 import { EmptyScreen } from "react-native-paper-towel"
 import { useStyles } from "react-native-unistyles"
 import {
-  Camera as VisionCamera,
-  useCameraDevice,
-  useCameraFormat,
+    Camera as VisionCamera,
+    useCameraDevice,
+    useCameraFormat,
 } from "react-native-vision-camera"
 
 import {
-  DocumentPictureSchema,
-  DocumentSchema,
-  useDocumentModel,
-  useDocumentRealm,
+    DocumentPictureSchema,
+    DocumentSchema,
+    useDocumentModel,
+    useDocumentRealm,
 } from "@database"
 import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
-import { NavigationParamProps, RouteParamProps } from "@router"
+import { NavigationProps, RouteParamProps } from "@router"
 import { DocumentService } from "@services/document"
 import { createAllFolders } from "@services/folder-handler"
 import { log, stringfyError } from "@services/log"
@@ -54,7 +54,7 @@ import { getCameraSize } from "./utils"
 export function Camera() {
 
 
-  const navigation = useNavigation<NavigationParamProps<"Camera">>()
+  const navigation = useNavigation<NavigationProps<"Camera">>()
   const { params } = useRoute<RouteParamProps<"Camera">>()
   const { width, height } = useWindowDimensions()
   const { styles } = useStyles(stylesheet)

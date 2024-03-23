@@ -12,17 +12,17 @@ import { useSelectionMode } from "react-native-selection-mode"
 import { unzip } from "react-native-zip-archive"
 
 import {
-  DocumentPictureSchema,
-  DocumentSchema,
-  ExportedDocumentPictureRealm,
-  ExportedDocumentRealm,
-  openExportedDatabase,
-  useDocumentModel,
-  useDocumentRealm,
+    DocumentPictureSchema,
+    DocumentSchema,
+    ExportedDocumentPictureRealm,
+    ExportedDocumentRealm,
+    openExportedDatabase,
+    useDocumentModel,
+    useDocumentRealm,
 } from "@database"
 import { useBackHandler } from "@hooks"
 import { TranslationKeyType, translate } from "@locales"
-import { NavigationParamProps } from "@router"
+import { NavigationProps } from "@router"
 import { Constants } from "@services/constant"
 import { DocumentService } from "@services/document"
 import { createAllFolders } from "@services/folder-handler"
@@ -42,7 +42,7 @@ export function Home() {
 
 
   const safeAreaInsets = useSafeAreaInsets()
-  const navigation = useNavigation<NavigationParamProps<"Home">>()
+  const navigation = useNavigation<NavigationProps<"Home">>()
 
   const { setDocumentModel } = useDocumentModel()
   const documentRealm = useDocumentRealm()

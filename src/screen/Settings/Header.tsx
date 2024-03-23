@@ -3,7 +3,7 @@ import { Appbar } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { translate } from "@locales"
-import { NavigationParamProps } from "@router"
+import { NavigationProps } from "@router"
 
 
 export interface SettingsHeaderProps {}
@@ -14,7 +14,7 @@ export function SettingsHeader(props: SettingsHeaderProps) {
 
   const safeAreaInsets = useSafeAreaInsets()
 
-  const navigation = useNavigation<NavigationParamProps<"Settings">>()
+  const navigation = useNavigation<NavigationProps<"Settings">>()
 
 
   return (

@@ -5,7 +5,7 @@ import Share from "react-native-share"
 
 import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
-import { NavigationParamProps } from "@router"
+import { NavigationProps } from "@router"
 import { Constants } from "@services/constant"
 import { log, stringfyError } from "@services/log"
 import { SettingsHeader } from "./Header"
@@ -17,7 +17,7 @@ export { ChangeTheme } from "./ChangeTheme"
 export function Settings() {
 
 
-  const navigation = useNavigation<NavigationParamProps<"Settings">>()
+  const navigation = useNavigation<NavigationProps<"Settings">>()
 
 
   useBackHandler(() => {

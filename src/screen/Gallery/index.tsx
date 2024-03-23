@@ -9,14 +9,14 @@ import { EmptyScreen, LoadingModal } from "react-native-paper-towel"
 import { useSelectionMode } from "react-native-selection-mode"
 
 import {
-  DocumentPictureSchema,
-  DocumentSchema,
-  useDocumentModel,
-  useDocumentRealm,
+    DocumentPictureSchema,
+    DocumentSchema,
+    useDocumentModel,
+    useDocumentRealm,
 } from "@database"
 import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
-import { NavigationParamProps, RouteParamProps } from "@router"
+import { NavigationProps, RouteParamProps } from "@router"
 import { DocumentService } from "@services/document"
 import { createAllFolders } from "@services/folder-handler"
 import { log, stringfyError } from "@services/log"
@@ -24,10 +24,10 @@ import { getReadMediaImagesPermission } from "@services/permission"
 import { useAppTheme } from "@theme"
 import { GalleryHeader } from "./Header"
 import {
-  HORIZONTAL_COLUMN_COUNT,
-  ImageItem,
-  VERTICAL_COLUMN_COUNT,
-  getImageItemSize,
+    HORIZONTAL_COLUMN_COUNT,
+    ImageItem,
+    VERTICAL_COLUMN_COUNT,
+    getImageItemSize,
 } from "./ImageItem"
 import { LoadingIndicator } from "./LoadingIndicator"
 
@@ -41,7 +41,7 @@ const HEADER_HEIGHT = 56
 export function Gallery() {
 
 
-  const navigation = useNavigation<NavigationParamProps<"Gallery">>()
+  const navigation = useNavigation<NavigationProps<"Gallery">>()
   const { params } = useRoute<RouteParamProps<"Gallery">>()
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
 
