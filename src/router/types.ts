@@ -39,4 +39,4 @@ export type NavigationProps<T extends ScreenName> = NativeStackNavigationProp<
 >
 
 
-export type RouteParamProps<T extends ScreenName> = RouteProp<ScreenParams, T>
+export type RouteProps<T extends ScreenName> = RouteProp<ScreenParams, T>

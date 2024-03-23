@@ -2,7 +2,7 @@ import { useRoute } from "@react-navigation/native"
 import { forwardRef, useImperativeHandle, useState } from "react"
 
 import { useDocumentModel } from "@database"
-import { RouteParamProps } from "@router"
+import { RouteProps } from "@router"
 import { Action } from "./Action"
 import { ActionBar } from "./ActionBar"
 import { MainAction } from "./MainAction"
@@ -31,7 +31,7 @@ export const CameraControl = forwardRef<CameraControlRef, CameraControlProps>((
 ) => {
 
 
-  const { params } = useRoute<RouteParamProps<"Camera">>()
+  const { params } = useRoute<RouteProps<"Camera">>()
 
   const { documentModel } = useDocumentModel()
   const picturesCount = (documentModel?.pictures.length ?? 0).toString()

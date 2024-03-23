@@ -13,7 +13,7 @@ import {
 } from "@database"
 import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
-import { NavigationProps, RouteParamProps } from "@router"
+import { NavigationProps, RouteProps } from "@router"
 import { DocumentService } from "@services/document"
 import { ImageCrop, OnImageSavedResponse } from "@services/image-crop"
 import { log, stringfyError } from "@services/log"
@@ -31,7 +31,7 @@ export function VisualizePicture() {
 
 
   const navigation = useNavigation<NavigationProps<"VisualizePicture">>()
-  const { params } = useRoute<RouteParamProps<"VisualizePicture">>()
+  const { params } = useRoute<RouteProps<"VisualizePicture">>()
   const { width } = useWindowDimensions()
   const safeAreaInsets = useSafeAreaInsets()
 

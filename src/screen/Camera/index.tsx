@@ -25,7 +25,7 @@ import {
 } from "@database"
 import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
-import { NavigationProps, RouteParamProps } from "@router"
+import { NavigationProps, RouteProps } from "@router"
 import { DocumentService } from "@services/document"
 import { createAllFolders } from "@services/folder-handler"
 import { log, stringfyError } from "@services/log"
@@ -55,7 +55,7 @@ export function Camera() {
 
 
   const navigation = useNavigation<NavigationProps<"Camera">>()
-  const { params } = useRoute<RouteParamProps<"Camera">>()
+  const { params } = useRoute<RouteProps<"Camera">>()
   const { width, height } = useWindowDimensions()
   const { styles } = useStyles(stylesheet)
 

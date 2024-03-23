@@ -16,7 +16,7 @@ import {
 } from "@database"
 import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
-import { NavigationProps, RouteParamProps } from "@router"
+import { NavigationProps, RouteProps } from "@router"
 import { DocumentService } from "@services/document"
 import { createAllFolders } from "@services/folder-handler"
 import { log, stringfyError } from "@services/log"
@@ -42,7 +42,7 @@ export function Gallery() {
 
 
   const navigation = useNavigation<NavigationProps<"Gallery">>()
-  const { params } = useRoute<RouteParamProps<"Gallery">>()
+  const { params } = useRoute<RouteProps<"Gallery">>()
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
 
   const documentRealm = useDocumentRealm()
