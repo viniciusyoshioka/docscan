@@ -13,7 +13,6 @@ export function SettingsHeader(props: SettingsHeaderProps) {
 
 
   const safeAreaInsets = useSafeAreaInsets()
-
   const navigation = useNavigation<NavigationProps<"Settings">>()
 
 
