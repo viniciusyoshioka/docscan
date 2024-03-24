@@ -3,12 +3,7 @@ import { Realm } from "@realm/react"
 import { useRef, useState } from "react"
 import { Alert, StyleSheet, View, ViewStyle, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
-import {
-  HandlerStateChangeEvent,
-  State,
-  TapGestureHandler,
-  TapGestureHandlerEventPayload,
-} from "react-native-gesture-handler"
+import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import { EmptyScreen, useModal } from "react-native-paper-towel"
 import { useStyles } from "react-native-unistyles"
 import {
@@ -237,32 +232,32 @@ export function Camera() {
     }
   }
 
-  async function onTapStateChange(
-    event: HandlerStateChangeEvent<TapGestureHandlerEventPayload>
-  ) {
-    if (cameraDevice?.supportsFocus === undefined) return
-    if (cameraDevice?.supportsFocus === false) return
-    if (!isFocusEnabled) return
-    if (!cameraRef.current || !focusIndicatorRef.current) return
-    if (event.nativeEvent.state !== State.ACTIVE) return
+  const tapGesture = Gesture.Tap()
+    .enabled(isCameraActive && isFocusEnabled)
+    .minPointers(1)
+    .onEnd(async event => {
+      if (cameraDevice?.supportsFocus === undefined) return
+      if (cameraDevice?.supportsFocus === false) return
+      if (!isFocusEnabled) return
+      if (!cameraRef.current || !focusIndicatorRef.current) return
 
-    try {
-      setIsFocusEnabled(false)
+      try {
+        setIsFocusEnabled(false)
 
-      const x = parseInt(event.nativeEvent.x.toFixed())
-      const y = parseInt(event.nativeEvent.y.toFixed())
+        const x = parseInt(event.x.toFixed())
+        const y = parseInt(event.y.toFixed())
 
-      focusIndicatorRef.current.setFocusPos({ x, y })
-      focusIndicatorRef.current.setIsFocusing(true)
+        focusIndicatorRef.current.setFocusPos({ x, y })
+        focusIndicatorRef.current.setIsFocusing(true)
 
-      await cameraRef.current.focus({ x, y })
-    } catch (error) {
-      log.warn(`Error focusing camera ${stringfyError(error)}`)
-    } finally {
-      setIsFocusEnabled(true)
-      focusIndicatorRef.current.setIsFocusing(false)
-    }
-  }
+        await cameraRef.current.focus({ x, y })
+      } catch (error) {
+        log.warn(`Error focusing camera ${stringfyError(error)}`)
+      } finally {
+        setIsFocusEnabled(true)
+        focusIndicatorRef.current.setIsFocusing(false)
+      }
+    })
 
 
   useControlActionEnabled({
@@ -304,11 +299,7 @@ export function Camera() {
 
       {(hasCameraPermission && cameraDevice && !isResetingCamera) && (
         <View style={[styles.cameraWrapper, { marginTop: cameraMargin.top }]}>
-          <TapGestureHandler
-            minPointers={1}
-            enabled={isCameraActive && isFocusEnabled}
-            onHandlerStateChange={onTapStateChange}
-          >
+          <GestureDetector gesture={tapGesture}>
             <View style={cameraSize}>
               <VisionCamera
                 ref={cameraRef}
@@ -326,7 +317,7 @@ export function Camera() {
 
               <PictureTakenFeedback ref={pictureTakenFeedbackRef} />
             </View>
-          </TapGestureHandler>
+          </GestureDetector>
         </View>
       )}
 
