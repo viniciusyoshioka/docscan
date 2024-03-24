@@ -39,7 +39,11 @@ export function SettingsModal(props: SettingsModalProps) {
     >
       <TouchableOpacity
         activeOpacity={1}
-        style={[styles.container, { borderRadius: shape.medium }, props.containerStyle]}
+        style={[
+          styles.container,
+          { borderRadius: shape.medium },
+          props.containerStyle,
+        ]}
       >
         <ScrollView
           fadingEdgeLength={32}
