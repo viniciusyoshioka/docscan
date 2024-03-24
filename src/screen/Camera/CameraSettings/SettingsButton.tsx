@@ -75,9 +75,10 @@ export function SettingsButton(props: SettingsButtonProps) {
     }
   }, [deviceOrientation])
 
-  const animatedRotation = useDerivedValue(() => withTiming(rotationDegree.value, {
-    duration: 200,
-  }))
+  const animatedRotation = useDerivedValue(() => withTiming(
+    rotationDegree.value,
+    { duration: 200 }
+  ))
 
   const orientationStyle = useAnimatedStyle(() => ({
     ...styles.container,
