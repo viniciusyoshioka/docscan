@@ -28,7 +28,7 @@ export function SettingsModal(props: SettingsModalProps) {
   const { shape } = useAppTheme()
 
 
-  if (!props.visible) return null
+  if (props.visible !== true) return null
 
 
   return (
