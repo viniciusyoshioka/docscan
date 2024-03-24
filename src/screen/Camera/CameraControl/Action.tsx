@@ -39,7 +39,7 @@ export function Action(props: ActionProps) {
 
 
   const colorStyle = props.isShowingCamera ? "white" : colors.onBackground
-  const contentColor = props.disabled
+  const contentColor = (props.disabled === true)
     ? Color(colorStyle).alpha(state.disabled)
       .rgb()
       .toString()
@@ -50,7 +50,7 @@ export function Action(props: ActionProps) {
 
 
   function ActionIcon() {
-    if (!props.icon) return null
+    if (props.icon === undefined) return null
 
     return (
       <Icon
@@ -62,7 +62,7 @@ export function Action(props: ActionProps) {
   }
 
   function CounterText() {
-    if (!props.counter) return null
+    if (props.counter === undefined) return null
 
     return (
       <Text
