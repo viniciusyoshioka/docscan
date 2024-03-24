@@ -6,7 +6,7 @@ import {
   useSharedValue,
 } from "react-native-reanimated"
 
-import { useSettings } from "@services/settings"
+import { useSettings } from "@lib/settings"
 import { useAppTheme } from "@theme"
 
 
