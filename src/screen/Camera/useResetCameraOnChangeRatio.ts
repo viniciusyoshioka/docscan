@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-import { useSettings } from "@services/settings"
+import { useSettings } from "@lib/settings"
 
 
 export function useResetCameraOnChangeRatio(

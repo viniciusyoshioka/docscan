@@ -24,12 +24,13 @@ import {
   useDocumentRealm,
 } from "@database"
 import { useBackHandler } from "@hooks"
+import { useSettings } from "@lib/settings"
+import { getCameraRatioNumber } from "@lib/settings/camera"
 import { translate } from "@locales"
 import { NavigationProps, RouteProps } from "@router"
 import { DocumentService } from "@services/document"
 import { createAllFolders } from "@services/folder-handler"
 import { log, stringfyError } from "@services/log"
-import { getCameraRatioNumber, useSettings } from "@services/settings"
 import { CameraControl, CameraControlRef } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
 import { FocusIndicator, FocusIndicatorRef } from "./FocusIndicator"
@@ -70,7 +71,7 @@ export function Camera() {
 
   const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
 
-  const cameraDevice = useCameraDevice(settings.camera.type)
+  const cameraDevice = useCameraDevice(settings.camera.position)
   const cameraFormat = useCameraFormat(cameraDevice, [
     { photoAspectRatio: getCameraRatioNumber(settings.camera.ratio) },
     { photoResolution: "max" },

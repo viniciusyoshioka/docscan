@@ -1,4 +1,4 @@
-import { CameraRatio, getCameraRatioNumber } from "@services/settings"
+import { CameraRatio, getCameraRatioNumber } from "@lib/settings/camera"
 
 
 export type Size = {

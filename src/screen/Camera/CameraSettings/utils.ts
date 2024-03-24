@@ -1,5 +1,5 @@
+import { CameraFlash, CameraPosition, CameraRatio } from "@lib/settings/camera"
 import { translate } from "@locales"
-import { CameraFlash, CameraRatio, CameraType } from "@services/settings"
 
 
 export function getFlashIcon(cameraFlash: CameraFlash): string {
@@ -8,9 +8,9 @@ export function getFlashIcon(cameraFlash: CameraFlash): string {
   return "flash-auto"
 }
 
-export function getSwitchCameraButtonText(cameraType: CameraType): string {
-  if (cameraType === "back") return translate("CameraSettings_frontalCamera")
-  if (cameraType === "front") return translate("CameraSettings_backCamera")
+export function getSwitchCameraButtonText(cameraPosition: CameraPosition): string {
+  if (cameraPosition === "back") return translate("CameraSettings_frontalCamera")
+  if (cameraPosition === "front") return translate("CameraSettings_backCamera")
   return translate("CameraSettings_flip")
 }
 
@@ -32,11 +32,11 @@ export const nextFlashSetting: NextFlashSetting = {
 }
 
 
-type NextCameraTypeSetting = {
-  [key in CameraType]: CameraType
+type NextCameraPositionSetting = {
+  [key in CameraPosition]: CameraPosition
 }
 
-export const nextCameraTypeSetting: NextCameraTypeSetting = {
+export const nextCameraPositionSetting: NextCameraPositionSetting = {
   back: "front",
   front: "back",
 }
