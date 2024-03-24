@@ -51,7 +51,8 @@ export function MainAction(props: MainActionProps) {
 
 
   const style = StyleSheet.flatten(props.style)
-  const backgroundColorStyle = (style && style.backgroundColor)
+  const hasBackgroundColor = (style !== undefined && style.backgroundColor !== undefined)
+  const backgroundColorStyle = hasBackgroundColor
     ? style.backgroundColor as string
     : props.isShowingCamera
       ? "white"
