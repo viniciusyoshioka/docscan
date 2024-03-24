@@ -2,10 +2,10 @@ import { useNavigation } from "@react-navigation/native"
 import { useState } from "react"
 import { Button, Dialog, RadioButton } from "react-native-paper"
 
+import { useSettings } from "@lib/settings"
+import { ThemeType } from "@lib/settings/theme"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
-import { useSettings } from "@services/settings"
-import { ThemeType } from "@theme"
 
 
 export function ChangeTheme() {
@@ -13,15 +13,11 @@ export function ChangeTheme() {
 
   const navigation = useNavigation<NavigationProps<"ChangeTheme">>()
   const { settings, setSettings } = useSettings()
-
-  const [selectedTheme, setSelectedTheme] = useState(settings.theme)
+  const [newTheme, setNewTheme] = useState(settings.theme)
 
 
   function updateTheme() {
-    setSettings({
-      ...settings,
-      theme: selectedTheme,
-    })
+    setSettings({ theme: newTheme })
     navigation.goBack()
   }
 
@@ -34,8 +30,8 @@ export function ChangeTheme() {
 
       <Dialog.Content>
         <RadioButton.Group
-          value={selectedTheme}
-          onValueChange={newValue => setSelectedTheme(newValue as ThemeType)}
+          value={newTheme}
+          onValueChange={newValue => setNewTheme(newValue as ThemeType)}
         >
           <RadioButton.Item
             label={translate("ChangeTheme_auto")}
