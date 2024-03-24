@@ -3,11 +3,15 @@ import { useEffect } from "react"
 import { useSettings } from "@lib/settings"
 
 
-export function useResetCameraOnChangeRatio(
+export interface ResetCameraOnChangeRatio {
   setIsResetingCamera: (isReseting: boolean) => void
-) {
+}
 
 
+export function useResetCameraOnChangeRatio(attrs: ResetCameraOnChangeRatio) {
+
+
+  const { setIsResetingCamera } = attrs
   const { settings } = useSettings()
 
 

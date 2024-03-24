@@ -268,7 +268,7 @@ export function Camera() {
     isSettingsOpen: isCameraSettingsVisible,
     setIsFocusEnabled,
   })
-  useResetCameraOnChangeRatio(setIsResetingCamera)
+  useResetCameraOnChangeRatio({ setIsResetingCamera })
   useStatusBarStyle(isShowingCamera)
 
 
