@@ -40,11 +40,13 @@ export function Action(props: ActionProps) {
 
   const colorStyle = props.isShowingCamera ? "white" : colors.onBackground
   const contentColor = (props.disabled === true)
-    ? Color(colorStyle).alpha(state.disabled)
+    ? Color(colorStyle)
+      .alpha(state.disabled)
       .rgb()
       .toString()
     : colorStyle
-  const rippleColor = Color(colorStyle).alpha(state.press)
+  const rippleColor = Color(colorStyle)
+    .alpha(state.press)
     .rgb()
     .toString()
 
@@ -114,9 +116,10 @@ export function Action(props: ActionProps) {
     }
   }, [deviceOrientation])
 
-  const animatedRotation = useDerivedValue(() => withTiming(rotationDegree.value, {
-    duration: 200,
-  }))
+  const animatedRotation = useDerivedValue(() => withTiming(
+    rotationDegree.value,
+    { duration: 200 }
+  ))
 
   const orientationStyle = useAnimatedStyle(() => ({
     transform: [
