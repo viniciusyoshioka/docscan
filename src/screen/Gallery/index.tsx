@@ -9,10 +9,10 @@ import { EmptyScreen, LoadingModal } from "react-native-paper-towel"
 import { useSelectionMode } from "react-native-selection-mode"
 
 import {
-    DocumentPictureSchema,
-    DocumentSchema,
-    useDocumentModel,
-    useDocumentRealm,
+  DocumentPictureSchema,
+  DocumentSchema,
+  useDocumentModel,
+  useDocumentRealm,
 } from "@database"
 import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
@@ -24,10 +24,10 @@ import { getReadMediaImagesPermission } from "@services/permission"
 import { useAppTheme } from "@theme"
 import { GalleryHeader } from "./Header"
 import {
-    HORIZONTAL_COLUMN_COUNT,
-    ImageItem,
-    VERTICAL_COLUMN_COUNT,
-    getImageItemSize,
+  HORIZONTAL_COLUMN_COUNT,
+  ImageItem,
+  VERTICAL_COLUMN_COUNT,
+  getImageItemSize,
 } from "./ImageItem"
 import { LoadingIndicator } from "./LoadingIndicator"
 

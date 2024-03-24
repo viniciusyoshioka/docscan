@@ -8,10 +8,10 @@ import { useSelectionMode } from "react-native-selection-mode"
 import Share from "react-native-share"
 
 import {
-    DocumentPictureSchema,
-    DocumentSchema,
-    useDocumentModel,
-    useDocumentRealm,
+  DocumentPictureSchema,
+  DocumentSchema,
+  useDocumentModel,
+  useDocumentRealm,
 } from "@database"
 import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
@@ -22,10 +22,10 @@ import { PdfCreator } from "@services/pdf-creator"
 import { getReadPermission, getWritePermission } from "@services/permission"
 import { EditDocumentHeader } from "./Header"
 import {
-    HORIZONTAL_COLUMN_COUNT,
-    PictureItem,
-    VERTICAL_COLUMN_COUNT,
-    getPictureItemSize,
+  HORIZONTAL_COLUMN_COUNT,
+  PictureItem,
+  VERTICAL_COLUMN_COUNT,
+  getPictureItemSize,
 } from "./Pictureitem"
 
 

@@ -5,10 +5,10 @@ import { Button, Dialog, TextInput } from "react-native-paper"
 import { Input } from "react-native-paper-towel"
 
 import {
-    DocumentPictureSchema,
-    DocumentSchema,
-    useDocumentModel,
-    useDocumentRealm,
+  DocumentPictureSchema,
+  DocumentSchema,
+  useDocumentModel,
+  useDocumentRealm,
 } from "@database"
 import { useBackHandler, useKeyboard } from "@hooks"
 import { translate } from "@locales"

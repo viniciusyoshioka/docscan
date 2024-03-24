@@ -12,13 +12,13 @@ import { useSelectionMode } from "react-native-selection-mode"
 import { unzip } from "react-native-zip-archive"
 
 import {
-    DocumentPictureSchema,
-    DocumentSchema,
-    ExportedDocumentPictureRealm,
-    ExportedDocumentRealm,
-    openExportedDatabase,
-    useDocumentModel,
-    useDocumentRealm,
+  DocumentPictureSchema,
+  DocumentSchema,
+  ExportedDocumentPictureRealm,
+  ExportedDocumentRealm,
+  openExportedDatabase,
+  useDocumentModel,
+  useDocumentRealm,
 } from "@database"
 import { useBackHandler } from "@hooks"
 import { TranslationKeyType, translate } from "@locales"

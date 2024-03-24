@@ -6,10 +6,10 @@ import RNFS from "react-native-fs"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import {
-    DocumentPictureSchema,
-    DocumentSchema,
-    useDocumentModel,
-    useDocumentRealm,
+  DocumentPictureSchema,
+  DocumentSchema,
+  useDocumentModel,
+  useDocumentRealm,
 } from "@database"
 import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
