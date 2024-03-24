@@ -8,14 +8,12 @@ import { useColorScheme } from "react-native"
 import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper"
 import { UnistylesRuntime } from "react-native-unistyles"
 
-import { Settings } from "@services/settings"
-import { AppStorageKeys, useMMKVObject } from "@services/storage"
+import { useSettings } from "@lib/settings"
 import { AppThemeDark } from "./theme-dark"
 import { AppThemeLight } from "./theme-light"
-import { AppTheme } from "./types"
 
 
-const AppThemeContext = createContext<AppTheme>(AppThemeLight)
+const AppThemeContext = createContext(AppThemeLight)
 
 
 export function AppThemeProvider(props: PropsWithChildren) {
@@ -23,9 +21,9 @@ export function AppThemeProvider(props: PropsWithChildren) {
 
   const deviceTheme = useColorScheme()
 
-  const [settings] = useMMKVObject<Settings>(AppStorageKeys.SETTINGS)
-  const isDarkTheme = (settings?.theme === "auto" && deviceTheme === "dark")
-    || settings?.theme === "dark"
+  const { settings } = useSettings()
+  const isDarkTheme = (settings.theme === "auto" && deviceTheme === "dark")
+    || settings.theme === "dark"
 
 
   const appTheme = isDarkTheme ? AppThemeDark : AppThemeLight
