@@ -265,7 +265,10 @@ export function Camera() {
   }
 
 
-  useControlActionEnabled({ isCameraActive, cameraControlRef })
+  useControlActionEnabled({
+    isCameraActive,
+    cameraControlRef,
+  })
   useDisableFocusOnSettingsOpen({
     isSettingsOpen: cameraSettings.isVisible,
     setIsFocusEnabled,
