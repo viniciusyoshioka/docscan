@@ -57,8 +57,9 @@ export function MainAction(props: MainActionProps) {
     : props.isShowingCamera
       ? "white"
       : colors.onBackground
-  const backgroundColor = props.disabled
-    ? Color(backgroundColorStyle).alpha(state.disabled)
+  const backgroundColor = (props.disabled === true)
+    ? Color(backgroundColorStyle)
+      .alpha(state.disabled)
       .rgb()
       .toString()
     : backgroundColorStyle
