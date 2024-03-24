@@ -41,7 +41,7 @@ import { stylesheet } from "./style"
 import { useCameraMargin } from "./useCameraMargin"
 import { useCameraOrientation } from "./useCameraOrientation"
 import { useControlActionEnabled } from "./useControlActionEnabled"
-import { useDisableFocusOnSettingsOpened } from "./useDisableFocusOnSettingsOpened"
+import { useDisableFocusOnSettingsOpen } from "./useDisableFocusOnSettingsOpened"
 import { useIsCameraActive } from "./useIsCameraActive"
 import { useIsShowingCamera } from "./useIsShowingCamera"
 import { useRequestCameraPermission } from "./useRequestCameraPermission"
@@ -264,8 +264,8 @@ export function Camera() {
 
 
   useControlActionEnabled({ isCameraActive, cameraControlRef })
-  useDisableFocusOnSettingsOpened({
-    isSettingsOpened: isCameraSettingsVisible,
+  useDisableFocusOnSettingsOpen({
+    isSettingsOpen: isCameraSettingsVisible,
     setIsFocusEnabled,
   })
   useResetCameraOnChangeRatio(setIsResetingCamera)

@@ -1,21 +1,18 @@
 import { useEffect } from "react"
 
 
-export interface DisableFocusOnSettingsOpened {
-  isSettingsOpened: boolean
+export interface DisableFocusOnSettingsOpen {
+  isSettingsOpen: boolean
   setIsFocusEnabled: (enabled: boolean) => void
 }
 
 
-export function useDisableFocusOnSettingsOpened(
-  attributes: DisableFocusOnSettingsOpened
-) {
+export function useDisableFocusOnSettingsOpen(attrs: DisableFocusOnSettingsOpen) {
   useEffect(() => {
-    if (attributes.isSettingsOpened) {
-      attributes.setIsFocusEnabled(false)
-      return
+    if (attrs.isSettingsOpen) {
+      attrs.setIsFocusEnabled(false)
+    } else {
+      attrs.setIsFocusEnabled(true)
     }
-
-    attributes.setIsFocusEnabled(true)
-  }, [attributes.isSettingsOpened])
+  }, [attrs.isSettingsOpen])
 }
