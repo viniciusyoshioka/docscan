@@ -9,7 +9,7 @@ import {
   TapGestureHandler,
   TapGestureHandlerEventPayload,
 } from "react-native-gesture-handler"
-import { EmptyScreen } from "react-native-paper-towel"
+import { EmptyScreen, useModal } from "react-native-paper-towel"
 import { useStyles } from "react-native-unistyles"
 import {
   Camera as VisionCamera,
@@ -69,7 +69,7 @@ export function Camera() {
   const cameraControlRef = useRef<CameraControlRef>(null)
   const focusIndicatorRef = useRef<FocusIndicatorRef>(null)
 
-  const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
+  const cameraSettings = useModal()
 
   const cameraDevice = useCameraDevice(settings.camera.position)
   const cameraFormat = useCameraFormat(cameraDevice, [
@@ -99,8 +99,8 @@ export function Camera() {
 
 
   function goBack() {
-    if (isCameraSettingsVisible) {
-      setIsCameraSettingsVisible(false)
+    if (cameraSettings.isVisible) {
+      cameraSettings.hide()
       return
     }
 
@@ -265,7 +265,7 @@ export function Camera() {
 
   useControlActionEnabled({ isCameraActive, cameraControlRef })
   useDisableFocusOnSettingsOpen({
-    isSettingsOpen: isCameraSettingsVisible,
+    isSettingsOpen: cameraSettings.isVisible,
     setIsFocusEnabled,
   })
   useResetCameraOnChangeRatio({ setIsResetingCamera })
@@ -276,7 +276,7 @@ export function Camera() {
     <View style={screenStyle}>
       <CameraHeader
         goBack={goBack}
-        openSettings={() => setIsCameraSettingsVisible(true)}
+        openSettings={() => cameraSettings.show()}
         isShowingCamera={isShowingCamera}
       />
 
@@ -334,8 +334,8 @@ export function Camera() {
       />
 
       <CameraSettings
-        visible={isCameraSettingsVisible}
-        onRequestClose={() => setIsCameraSettingsVisible(false)}
+        visible={cameraSettings.isVisible}
+        onRequestClose={() => cameraSettings.hide()}
       />
     </View>
   )
