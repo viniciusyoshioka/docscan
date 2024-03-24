@@ -240,7 +240,9 @@ export function Camera() {
   async function onTapStateChange(
     event: HandlerStateChangeEvent<TapGestureHandlerEventPayload>
   ) {
-    if (!cameraDevice?.supportsFocus || !isFocusEnabled) return
+    if (cameraDevice?.supportsFocus === undefined) return
+    if (cameraDevice?.supportsFocus === false) return
+    if (!isFocusEnabled) return
     if (!cameraRef.current || !focusIndicatorRef.current) return
     if (event.nativeEvent.state !== State.ACTIVE) return
 
