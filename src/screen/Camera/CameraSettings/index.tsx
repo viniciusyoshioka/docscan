@@ -23,7 +23,6 @@ export function CameraSettings(props: CameraSettingsProps) {
   const { settings, setSettings } = useSettings()
 
   const isCameraFlippable = useIsCameraFlippable()
-
   const cameraControlDimensions = useCameraControlDimensions()
   const { size, shouldUseWithoutCameraStyle } = cameraControlDimensions
   const cameraControlheight = shouldUseWithoutCameraStyle
@@ -68,7 +67,10 @@ export function CameraSettings(props: CameraSettingsProps) {
 
 
   return (
-    <SettingsModal {...props} containerStyle={{ marginBottom: cameraControlheight }}>
+    <SettingsModal
+      {...props}
+      containerStyle={{ marginBottom: cameraControlheight }}
+    >
       <SettingsButton
         icon={flashIcon}
         optionName={translate("CameraSettings_flash")}
