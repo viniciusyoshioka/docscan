@@ -14,8 +14,8 @@ import { unzip } from "react-native-zip-archive"
 import {
   DocumentPictureSchema,
   DocumentSchema,
-  ExportedDocumentPictureRealm,
-  ExportedDocumentRealm,
+  IDocumentPictureRealmSchema,
+  IDocumentRealmSchema,
   openExportedDatabase,
   useDocumentModel,
   useDocumentRealm,
@@ -145,7 +145,7 @@ export function Home() {
         Constants.importDatabaseFullPath
       )
       const exportedDocuments = exportedDatabase
-        .objects<ExportedDocumentRealm>("ExportedDocumentSchema")
+        .objects<IDocumentRealmSchema>("ExportedDocumentSchema")
         .sorted("modifiedAt")
 
       documentRealm.beginTransaction()
@@ -158,7 +158,7 @@ export function Home() {
         })
 
         const exportedPictures = exportedDatabase
-          .objects<ExportedDocumentPictureRealm>("ExportedDocumentPictureSchema")
+          .objects<IDocumentPictureRealmSchema>("ExportedDocumentPictureSchema")
           .filtered("belongsToDocument = $0", exportedDocument.id)
         for (let j = 0; j < exportedPictures.length; j++) {
           const exportedPicture = exportedPictures[j]
@@ -233,7 +233,7 @@ export function Home() {
 
       exportedDatabase.write(() => {
         documentsToExport.forEach(documentToExport => {
-          const exportedDocument = exportedDatabase.create<ExportedDocumentRealm>(
+          const exportedDocument = exportedDatabase.create<IDocumentRealmSchema>(
             "ExportedDocumentSchema",
             {
               createdAt: documentToExport.createdAt,
@@ -248,7 +248,7 @@ export function Home() {
             .forEach(pictureToExport => {
               filesToCopy.push(DocumentService.getPicturePath(pictureToExport.fileName))
 
-              exportedDatabase.create<ExportedDocumentPictureRealm>(
+              exportedDatabase.create<IDocumentPictureRealmSchema>(
                 "ExportedDocumentPictureSchema",
                 {
                   fileName: pictureToExport.fileName,
