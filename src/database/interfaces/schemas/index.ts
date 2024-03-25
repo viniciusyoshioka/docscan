@@ -1,3 +1,3 @@
-export * from "./DocumentPictureRealmSchema"
-export * from "./DocumentRealmSchema"
-export * from "./LogRealmSchema"
+export * from "./DocumentPictureRealm"
+export * from "./DocumentRealm"
+export * from "./LogRealm"
