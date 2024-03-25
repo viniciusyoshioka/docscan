@@ -1,7 +1,7 @@
 import { Realm } from "@realm/react"
 
 
-export interface DocumentRealm {
+export interface IDocumentRealmSchema {
   id: Realm.BSON.ObjectId
   createdAt: number
   modifiedAt: number

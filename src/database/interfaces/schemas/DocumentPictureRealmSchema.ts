@@ -1,7 +1,7 @@
 import { Realm } from "@realm/react"
 
 
-export interface DocumentPictureRealm {
+export interface IDocumentPictureRealmSchema {
   id: Realm.BSON.ObjectId
   fileName: string
   position: number

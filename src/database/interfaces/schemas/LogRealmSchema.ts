@@ -1,7 +1,7 @@
 import { Realm } from "@realm/react"
 
 
-export interface LogRealm {
+export interface ILogRealmSchema {
   id: Realm.BSON.ObjectId
   code: string
   message: string

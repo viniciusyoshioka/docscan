@@ -1,10 +1,10 @@
 import { Realm } from "@realm/react"
 
-import { DocumentPictureRealm } from "../interfaces"
+import { IDocumentPictureRealmSchema } from "../interfaces"
 
 
 export class DocumentPictureSchema
-  extends Realm.Object<DocumentPictureSchema> implements DocumentPictureRealm {
+  extends Realm.Object<DocumentPictureSchema> implements IDocumentPictureRealmSchema {
 
   id = new Realm.BSON.ObjectId()
   fileName!: string

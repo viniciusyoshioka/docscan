@@ -1,9 +1,9 @@
 import { Realm } from "@realm/react"
 
-import { LogRealm } from "../interfaces"
+import { ILogRealmSchema } from "../interfaces"
 
 
-export class LogSchema extends Realm.Object<LogSchema> implements LogRealm {
+export class LogSchema extends Realm.Object<LogSchema> implements ILogRealmSchema {
   id = new Realm.BSON.ObjectId()
   code!: string
   message!: string
