@@ -58,6 +58,23 @@ class Logger {
   }
 
 
+  private getCodeNumber(code: string) {
+    code = code.toLowerCase().trim()
+
+    switch (code) {
+      case "debug":
+        return 0
+      case "info":
+        return 1
+      case "warn":
+        return 2
+      case "error":
+        return 3
+      default:
+        throw new Error(`Invalid log code provided: ${code}`)
+    }
+  }
+
   private writeLog(code: string, message: string, timestamp: number) {
     if (!this.realm) {
       console.warn("Realm not set to Logger. Log not registered.")
@@ -67,7 +84,11 @@ class Logger {
     try {
       this.realm.write(() => {
         if (!this.realm) return
-        this.realm.create(LogRealmSchema, { code, message, timestamp })
+        this.realm.create(LogRealmSchema, {
+          code: this.getCodeNumber(code),
+          message,
+          timestamp,
+        })
       })
     } catch (error) {
       this.critical(error)
