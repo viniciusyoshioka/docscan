@@ -1,8 +1,8 @@
 import { Realm } from "@realm/react"
 
 
-export const ExportedDocumentPictureSchema: Realm.ObjectSchema = {
-  name: "ExportedDocumentPictureSchema",
+export const ExportedDocumentPictureRealmSchema: Realm.ObjectSchema = {
+  name: "ExportedDocumentPictureRealmSchema",
   properties: {
     id: {
       type: "objectId",

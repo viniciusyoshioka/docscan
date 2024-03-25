@@ -12,8 +12,8 @@ import { useSelectionMode } from "react-native-selection-mode"
 import { unzip } from "react-native-zip-archive"
 
 import {
-  DocumentPictureSchema,
-  DocumentSchema,
+  DocumentPictureRealmSchema,
+  DocumentRealmSchema,
   IDocumentPictureRealmSchema,
   IDocumentRealmSchema,
   openExportedDatabase,
@@ -75,11 +75,11 @@ export function Home() {
         .map(documentId => Realm.BSON.ObjectId.createFromHexString(documentId))
 
       const picturesToDelete = documentRealm
-        .objects(DocumentPictureSchema)
+        .objects(DocumentPictureRealmSchema)
         .filtered("belongsToDocument IN $0", documentIdToDelete)
 
       const documentsToDelete = documentRealm
-        .objects(DocumentSchema)
+        .objects(DocumentRealmSchema)
         .filtered("id IN $0", documentIdToDelete)
 
       documentRealm.beginTransaction()
@@ -151,7 +151,7 @@ export function Home() {
       documentRealm.beginTransaction()
       for (let i = 0; i < exportedDocuments.length; i++) {
         const exportedDocument = exportedDocuments[i]
-        const importedDocument = documentRealm.create(DocumentSchema, {
+        const importedDocument = documentRealm.create(DocumentRealmSchema, {
           createdAt: exportedDocument.createdAt,
           modifiedAt: Date.now(),
           name: exportedDocument.name,
@@ -167,7 +167,7 @@ export function Home() {
           )
           const newPictureName = DocumentService.getFileFullname(newPicturePath)
 
-          documentRealm.create(DocumentPictureSchema, {
+          documentRealm.create(DocumentPictureRealmSchema, {
             fileName: newPictureName,
             position: exportedPicture.position,
             belongsToDocument: importedDocument.id,
@@ -243,7 +243,7 @@ export function Home() {
           )
 
           documentRealm
-            .objects(DocumentPictureSchema)
+            .objects(DocumentPictureRealmSchema)
             .filtered("belongsToDocument = $0", documentToExport.id)
             .forEach(pictureToExport => {
               filesToCopy.push(DocumentService.getPicturePath(pictureToExport.fileName))
@@ -336,14 +336,14 @@ export function Home() {
     )
   }
 
-  function renderItem({ item }: { item: DocumentSchema }) {
+  function renderItem({ item }: { item: DocumentRealmSchema }) {
     const documentId = item.id.toHexString()
 
     return (
       <DocumentItem
         onClick={() => {
           const pictures = documentRealm
-            .objects(DocumentPictureSchema)
+            .objects(DocumentPictureRealmSchema)
             .filtered("belongsToDocument = $0", item.id)
             .sorted("position")
           setDocumentModel({ document: item, pictures })
@@ -390,7 +390,7 @@ export function Home() {
 
       {documents.length > 0 && (
         <FlashList
-          data={documents.toJSON() as unknown as DocumentSchema[]}
+          data={documents.toJSON() as unknown as DocumentRealmSchema[]}
           renderItem={renderItem}
           extraData={documentSelection.selectedData}
           estimatedItemSize={DOCUMENT_ITEM_HEIGHT}

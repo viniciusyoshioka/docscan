@@ -5,8 +5,8 @@ import { Button, Dialog, TextInput } from "react-native-paper"
 import { Input } from "react-native-paper-towel"
 
 import {
-  DocumentPictureSchema,
-  DocumentSchema,
+  DocumentPictureRealmSchema,
+  DocumentRealmSchema,
   useDocumentModel,
   useDocumentRealm,
 } from "@database"
@@ -50,12 +50,12 @@ export function RenameDocument() {
         return document
       }
 
-      const createdDocument = documentRealm.create(DocumentSchema, { name: documentName })
+      const createdDocument = documentRealm.create(DocumentRealmSchema, { name: documentName })
       return createdDocument
     })
 
     const pictures = documentRealm
-      .objects(DocumentPictureSchema)
+      .objects(DocumentPictureRealmSchema)
       .filtered("belongsToDocument = $0", renamedDocument.id)
       .sorted("position")
     setDocumentModel({ document: renamedDocument, pictures })

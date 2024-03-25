@@ -9,8 +9,8 @@ import { EmptyScreen, LoadingModal } from "react-native-paper-towel"
 import { useSelectionMode } from "react-native-selection-mode"
 
 import {
-  DocumentPictureSchema,
-  DocumentSchema,
+  DocumentPictureRealmSchema,
+  DocumentRealmSchema,
   useDocumentModel,
   useDocumentRealm,
 } from "@database"
@@ -229,11 +229,11 @@ export function Gallery() {
     })
 
     const document = documentRealm.objectForPrimaryKey(
-      DocumentSchema,
+      DocumentRealmSchema,
       documentModel.document.id
     )
     const pictures = documentRealm
-      .objects(DocumentPictureSchema)
+      .objects(DocumentPictureRealmSchema)
       .filtered("belongsToDocument = $0", documentModel.document.id)
       .sorted("position")
     if (!document) throw new Error("Document is undefined, this should not happen")
@@ -249,7 +249,7 @@ export function Gallery() {
     if (documentModel) {
       documentRealm.write(() => {
         let position = documentModel.pictures.length
-        filePaths.forEach(filePath => documentRealm.create(DocumentPictureSchema, {
+        filePaths.forEach(filePath => documentRealm.create(DocumentPictureRealmSchema, {
           fileName: DocumentService.getFileFullname(filePath),
           position: position++,
           belongsToDocument: documentModel.document.id,
@@ -262,14 +262,14 @@ export function Gallery() {
     } else {
       modifiedDocumentId = documentRealm.write(() => {
         const now = Date.now()
-        const createdDocument = documentRealm.create(DocumentSchema, {
+        const createdDocument = documentRealm.create(DocumentRealmSchema, {
           createdAt: now,
           modifiedAt: now,
           name: DocumentService.getNewName(),
         })
 
         let position = 0
-        filePaths.forEach(filePath => documentRealm.create(DocumentPictureSchema, {
+        filePaths.forEach(filePath => documentRealm.create(DocumentPictureRealmSchema, {
           fileName: DocumentService.getFileFullname(filePath),
           position: position++,
           belongsToDocument: createdDocument.id,
@@ -279,9 +279,9 @@ export function Gallery() {
       })
     }
 
-    const document = documentRealm.objectForPrimaryKey(DocumentSchema, modifiedDocumentId)
+    const document = documentRealm.objectForPrimaryKey(DocumentRealmSchema, modifiedDocumentId)
     const pictures = documentRealm
-      .objects(DocumentPictureSchema)
+      .objects(DocumentPictureRealmSchema)
       .filtered("belongsToDocument = $0", modifiedDocumentId)
       .sorted("position")
     if (!document) throw new Error("Document is undefined, this should not happen")

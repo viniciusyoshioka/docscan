@@ -1,11 +1,11 @@
 import { createRealmContext } from "@realm/react"
 
 import { Constants } from "@services/constant"
-import { LogSchema } from "../schemas"
+import { LogRealmSchema } from "../schemas"
 
 
 const LogRealmContext = createRealmContext({
-  schema: [LogSchema],
+  schema: [LogRealmSchema],
   schemaVersion: 1,
   path: Constants.logDatabaseFullPath,
   deleteRealmIfMigrationNeeded: __DEV__,

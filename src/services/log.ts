@@ -1,7 +1,7 @@
 import { Realm } from "@realm/react"
 import { Alert } from "react-native"
 
-import { LogSchema } from "@database"
+import { LogRealmSchema } from "@database"
 import { translate } from "@locales"
 import { DateService } from "./date"
 
@@ -67,7 +67,7 @@ class Logger {
     try {
       this.realm.write(() => {
         if (!this.realm) return
-        this.realm.create(LogSchema, { code, message, timestamp })
+        this.realm.create(LogRealmSchema, { code, message, timestamp })
       })
     } catch (error) {
       this.critical(error)

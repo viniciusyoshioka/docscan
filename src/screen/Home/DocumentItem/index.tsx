@@ -3,7 +3,7 @@ import { Checkbox, List } from "react-native-paper"
 import { runOnJS } from "react-native-reanimated"
 import { SelectableItem, useSelectableItem } from "react-native-selection-mode"
 
-import { DocumentSchema } from "@database"
+import { DocumentRealmSchema } from "@database"
 import { DateService } from "@services/date"
 import { useAppTheme } from "@theme"
 
@@ -12,7 +12,7 @@ export const DOCUMENT_ITEM_HEIGHT = 64
 
 
 export interface DocumentItemProps extends SelectableItem {
-  document: DocumentSchema
+  document: DocumentRealmSchema
 }
 
 

@@ -13,8 +13,8 @@ import {
 } from "react-native-vision-camera"
 
 import {
-  DocumentPictureSchema,
-  DocumentSchema,
+  DocumentPictureRealmSchema,
+  DocumentRealmSchema,
   useDocumentModel,
   useDocumentRealm,
 } from "@database"
@@ -162,11 +162,11 @@ export function Camera() {
     })
 
     const document = documentRealm.objectForPrimaryKey(
-      DocumentSchema,
+      DocumentRealmSchema,
       documentModel.document.id
     )
     const pictures = documentRealm
-      .objects(DocumentPictureSchema)
+      .objects(DocumentPictureRealmSchema)
       .filtered("belongsToDocument = $0", documentModel.document.id)
       .sorted("position")
     if (!document) throw new Error("Document is undefined, this should not happen")
@@ -186,7 +186,7 @@ export function Camera() {
 
     if (documentModel) {
       documentRealm.write(() => {
-        documentRealm.create(DocumentPictureSchema, {
+        documentRealm.create(DocumentPictureRealmSchema, {
           fileName: DocumentService.getFileFullname(newPicturePath),
           belongsToDocument: documentModel.document.id,
           position: documentModel.pictures.length,
@@ -199,13 +199,13 @@ export function Camera() {
     } else {
       modifiedDocumentId = documentRealm.write(() => {
         const now = Date.now()
-        const createdDocument = documentRealm.create(DocumentSchema, {
+        const createdDocument = documentRealm.create(DocumentRealmSchema, {
           createdAt: now,
           modifiedAt: now,
           name: DocumentService.getNewName(),
         })
 
-        documentRealm.create(DocumentPictureSchema, {
+        documentRealm.create(DocumentPictureRealmSchema, {
           fileName: DocumentService.getFileFullname(newPicturePath),
           belongsToDocument: createdDocument.id,
           position: 0,
@@ -215,9 +215,9 @@ export function Camera() {
       })
     }
 
-    const document = documentRealm.objectForPrimaryKey(DocumentSchema, modifiedDocumentId)
+    const document = documentRealm.objectForPrimaryKey(DocumentRealmSchema, modifiedDocumentId)
     const pictures = documentRealm
-      .objects(DocumentPictureSchema)
+      .objects(DocumentPictureRealmSchema)
       .filtered("belongsToDocument = $0", modifiedDocumentId)
       .sorted("position")
     if (!document) throw new Error("Document is undefined, this should not happen")

@@ -6,8 +6,8 @@ import RNFS from "react-native-fs"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import {
-  DocumentPictureSchema,
-  DocumentSchema,
+  DocumentPictureRealmSchema,
+  DocumentRealmSchema,
   useDocumentModel,
   useDocumentRealm,
 } from "@database"
@@ -154,7 +154,7 @@ export function VisualizePicture() {
     }
   }
 
-  function renderItem({ item }: { item: DocumentPictureSchema }) {
+  function renderItem({ item }: { item: DocumentPictureRealmSchema }) {
     const picturePath = DocumentService.getPicturePath(item.fileName)
     return (
       <ImageVisualizationItem
@@ -226,11 +226,11 @@ export function VisualizePicture() {
     })
 
     const document = documentRealm.objectForPrimaryKey(
-      DocumentSchema,
+      DocumentRealmSchema,
       documentModel.document.id
     )
     const pictures = documentRealm
-      .objects(DocumentPictureSchema)
+      .objects(DocumentPictureRealmSchema)
       .filtered("belongsToDocument = $0", documentModel.document.id)
       .sorted("position")
     if (!document) throw new Error("Document is undefined, this should not happen")
@@ -269,7 +269,7 @@ export function VisualizePicture() {
       {!isRotating && !isCropping && (
         <View style={{ flex: 1, flexDirection: "row" }}>
           <FlashList
-            data={documentModel?.pictures.toJSON() as unknown as DocumentPictureSchema[]}
+            data={documentModel?.pictures.toJSON() as unknown as DocumentPictureRealmSchema[]}
             renderItem={renderItem}
             estimatedItemSize={width}
             horizontal={true}

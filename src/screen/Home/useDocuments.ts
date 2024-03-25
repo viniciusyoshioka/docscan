@@ -2,17 +2,17 @@ import { Realm } from "@realm/react"
 import { useEffect, useState } from "react"
 import { CollectionChangeCallback } from "realm"
 
-import { DocumentSchema, useDocumentRealm } from "@database"
+import { DocumentRealmSchema, useDocumentRealm } from "@database"
 
 
-type DocumentsChanges = CollectionChangeCallback<DocumentSchema, [number, DocumentSchema]>
+type DocumentsChanges = CollectionChangeCallback<DocumentRealmSchema, [number, DocumentRealmSchema]>
 
 
-export function useDocuments(): Realm.Results<DocumentSchema> {
+export function useDocuments(): Realm.Results<DocumentRealmSchema> {
 
 
   const documentRealm = useDocumentRealm()
-  const documentSchemas = documentRealm.objects(DocumentSchema).sorted("modifiedAt", true)
+  const documentSchemas = documentRealm.objects(DocumentRealmSchema).sorted("modifiedAt", true)
 
   const [documents, setDocuments] = useState(documentSchemas)
 
@@ -25,7 +25,7 @@ export function useDocuments(): Realm.Results<DocumentSchema> {
 
     if (hasDeletion || hasInsertion || hasNewModifications || hasOldModifications) {
       const newDocuments = documentRealm
-        .objects(DocumentSchema)
+        .objects(DocumentRealmSchema)
         .sorted("modifiedAt", true)
       setDocuments(newDocuments)
     }

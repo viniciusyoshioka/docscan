@@ -8,8 +8,8 @@ import { useSelectionMode } from "react-native-selection-mode"
 import Share from "react-native-share"
 
 import {
-  DocumentPictureSchema,
-  DocumentSchema,
+  DocumentPictureRealmSchema,
+  DocumentRealmSchema,
   useDocumentModel,
   useDocumentRealm,
 } from "@database"
@@ -48,10 +48,10 @@ export function EditDocument() {
   const pictures = useMemo(() => {
     if (document === undefined) return []
 
-    return documentRealm.objects(DocumentPictureSchema)
+    return documentRealm.objects(DocumentPictureRealmSchema)
       .filtered("belongsToDocument = $0", document.id)
       .sorted("position")
-      .toJSON() as unknown as DocumentPictureSchema[]
+      .toJSON() as unknown as DocumentPictureRealmSchema[]
   }, [document])
 
   const columnCount = useMemo(
@@ -240,7 +240,7 @@ export function EditDocument() {
 
     try {
       documentRealm.write(() => {
-        const realmPicturesToDelete = documentRealm.objects(DocumentPictureSchema)
+        const realmPicturesToDelete = documentRealm.objects(DocumentPictureRealmSchema)
           .filtered("belongsToDocument = $0", document.id)
           .sorted("position")
           .filter((_, index) => pictureSelection.selectedData.includes(index))
@@ -250,11 +250,11 @@ export function EditDocument() {
       })
 
       const updatedDocument = documentRealm.objectForPrimaryKey(
-        DocumentSchema,
+        DocumentRealmSchema,
         document.id
       )
       const updatedPictures = documentRealm
-        .objects(DocumentPictureSchema)
+        .objects(DocumentPictureRealmSchema)
         .filtered("belongsToDocument = $0", document.id)
         .sorted("position")
       if (!updatedDocument)
@@ -290,7 +290,7 @@ export function EditDocument() {
     )
   }
 
-  function renderItem({ item, index }: { item: DocumentPictureSchema, index: number }) {
+  function renderItem({ item, index }: { item: DocumentPictureRealmSchema, index: number }) {
     return (
       <PictureItem
         onClick={() => navigation.navigate("VisualizePicture", { pictureIndex: index })}
@@ -304,7 +304,7 @@ export function EditDocument() {
     )
   }
 
-  const keyExtractor = useCallback((_: DocumentPictureSchema, index: number) => (
+  const keyExtractor = useCallback((_: DocumentPictureRealmSchema, index: number) => (
     index.toString()
   ), [])
 

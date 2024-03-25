@@ -8,12 +8,12 @@ import {
   useState,
 } from "react"
 
-import { DocumentPictureSchema, DocumentSchema } from "../schemas"
+import { DocumentPictureRealmSchema, DocumentRealmSchema } from "../schemas"
 
 
 export interface DocumentModelValue {
-  document: DocumentSchema
-  pictures: Realm.Results<DocumentPictureSchema>
+  document: DocumentRealmSchema
+  pictures: Realm.Results<DocumentPictureRealmSchema>
 }
 
 

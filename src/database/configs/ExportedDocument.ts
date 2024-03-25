@@ -1,11 +1,14 @@
 import { Realm } from "@realm/react"
 
-import { ExportedDocumentPictureSchema, ExportedDocumentSchema } from "../schemas"
+import {
+  ExportedDocumentPictureRealmSchema,
+  ExportedDocumentRealmSchema,
+} from "../schemas"
 
 
 export async function openExportedDatabase(path: string) {
   return await Realm.open({
-    schema: [ExportedDocumentSchema, ExportedDocumentPictureSchema],
+    schema: [ExportedDocumentRealmSchema, ExportedDocumentPictureRealmSchema],
     schemaVersion: 1,
     path,
     deleteRealmIfMigrationNeeded: __DEV__,
