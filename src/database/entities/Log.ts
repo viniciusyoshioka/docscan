@@ -6,8 +6,12 @@ export enum LogCode {
 }
 
 
-export interface Log {
+export interface LogWithoutId {
   code: LogCode
   message: string
   timestamp?: number
+}
+
+export interface LogWithId extends LogWithoutId {
+  id: string
 }
