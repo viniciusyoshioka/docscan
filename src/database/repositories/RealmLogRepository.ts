@@ -1,8 +1,8 @@
 import { Realm } from "realm"
 
 import { Log } from "../entities"
-import { ILogRepository } from "../interfaces"
 import { LogRealmSchema } from "../schemas"
+import { ILogRepository } from "./interfaces"
 
 
 export class RealmLogRepository implements ILogRepository {
