@@ -1,8 +1,9 @@
 import { Realm } from "realm"
 
-import { LogWithId, LogWithoutId } from "../entities"
+import { Log } from "../entities"
 import { LogMapper } from "../mappers"
 import { LogRealmSchema } from "../schemas"
+import { WithId } from "../types"
 import { ILogRepository } from "./interfaces"
 
 
@@ -17,7 +18,7 @@ export class RealmLogRepository implements ILogRepository {
   }
 
 
-  public insert(log: LogWithoutId): LogWithId {
+  public insert(log: Log): WithId<Log> {
     const newLog = this.realm.write(() => {
       return this.realm.create(LogRealmSchema, log)
     })

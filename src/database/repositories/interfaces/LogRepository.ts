@@ -1,6 +1,7 @@
-import { LogWithId, LogWithoutId } from "../../entities"
+import { Log } from "../../entities"
+import { WithId } from "../../types"
 
 
 export interface ILogRepository {
-  insert: (log: LogWithoutId) => LogWithId
+  insert: (log: Log) => WithId<Log>
 }
