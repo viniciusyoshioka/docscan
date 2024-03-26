@@ -1,6 +1,6 @@
 import { Realm } from "@realm/react"
 
-import { ILogRealmSchema } from "../interfaces"
+import { ILogRealmSchema } from "./interfaces"
 
 
 export class LogRealmSchema extends Realm.Object implements ILogRealmSchema {

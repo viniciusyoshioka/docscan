@@ -1,6 +1,6 @@
 import { Realm } from "@realm/react"
 
-import { IDocumentPictureRealmSchema } from "../interfaces"
+import { IDocumentPictureRealmSchema } from "./interfaces"
 
 
 export class DocumentPictureRealmSchema
