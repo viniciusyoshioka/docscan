@@ -1,15 +1,15 @@
 import { Document } from "../../entities"
-import { WithId } from "../../types"
+import { IdOf } from "../../types"
 
 
 export class DocumentNotFoundError extends Error {
 
 
-  private documentId: WithId<Document>["id"]
+  private documentId: IdOf<Document>
 
 
   constructor(
-    documentId: WithId<Document>["id"],
+    documentId: IdOf<Document>,
     message?: string,
     options?: ErrorOptions
   ) {
@@ -20,7 +20,7 @@ export class DocumentNotFoundError extends Error {
   }
 
 
-  public getDocumentId(): WithId<Document>["id"] {
+  public getDocumentId(): IdOf<Document> {
     return this.documentId
   }
 }

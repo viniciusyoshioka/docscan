@@ -4,7 +4,7 @@ import { SortDescriptor } from "realm"
 import { Document } from "../entities"
 import { IRealmDatabaseProvider } from "../providers"
 import { DocumentRealmSchema } from "../schemas"
-import { QueryOptions, WithId } from "../types"
+import { IdOf, QueryOptions, WithId } from "../types"
 import { stringifyError } from "../utils"
 import { DocumentNotFoundError, UnknownDatabaseError } from "./errors"
 import { IDocumentRepository } from "./interfaces"
@@ -21,7 +21,7 @@ export class RealmDocumentRepository implements IDocumentRepository {
   }
 
 
-  public select(id: WithId<Document>["id"]): WithId<Document> {
+  public select(id: IdOf<Document>): WithId<Document> {
     try {
       const object = this.getRealmObject(id)
       return this.toJson(object)
@@ -74,7 +74,7 @@ export class RealmDocumentRepository implements IDocumentRepository {
     }
   }
 
-  public delete(id: WithId<Document>["id"]): void {
+  public delete(id: IdOf<Document>): void {
     try {
       const object = this.getRealmObject(id)
       this.realm.delete(object)
@@ -95,7 +95,7 @@ export class RealmDocumentRepository implements IDocumentRepository {
     return this.getRealmObject(document.id)
   }
 
-  private getRealmObject(id: WithId<Document>["id"]): DocumentRealmSchema {
+  private getRealmObject(id: IdOf<Document>): DocumentRealmSchema {
     const realmId = Realm.BSON.ObjectId.createFromHexString(id)
     const object = this.realm.objectForPrimaryKey(DocumentRealmSchema, realmId)
     if (object === null) {
