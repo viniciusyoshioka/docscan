@@ -1,11 +1,11 @@
 import { Realm } from "@realm/react"
 import { SortDescriptor } from "realm"
 
+import { stringifyError } from "@utils"
 import { Document } from "../entities"
 import { IRealmDatabaseProvider } from "../providers"
 import { DocumentRealmSchema } from "../schemas"
 import { IdOf, QueryOptions, WithId } from "../types"
-import { stringifyError } from "../utils"
 import { DocumentNotFoundError, UnknownDatabaseError } from "./errors"
 import { IDocumentRepository } from "./interfaces"
 

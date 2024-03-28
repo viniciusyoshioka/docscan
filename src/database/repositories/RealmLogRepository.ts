@@ -1,9 +1,9 @@
 import { Realm } from "realm"
 
+import { stringifyError } from "@utils"
 import { Log } from "../entities"
 import { LogRealmSchema } from "../schemas"
 import { WithId } from "../types"
-import { stringifyError } from "../utils"
 import { UnknownDatabaseError } from "./errors"
 import { ILogRepository } from "./interfaces"
 
