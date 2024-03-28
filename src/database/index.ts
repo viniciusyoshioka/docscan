@@ -1,6 +1,5 @@
 export * from "./configs"
 export * from "./entities"
-export * from "./mappers"
 export * from "./providers"
 export * from "./repositories"
 export * from "./schemas"
