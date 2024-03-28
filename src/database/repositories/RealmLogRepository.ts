@@ -3,6 +3,8 @@ import { Realm } from "realm"
 import { Log } from "../entities"
 import { LogRealmSchema } from "../schemas"
 import { WithId } from "../types"
+import { stringifyError } from "../utils"
+import { UnknownDatabaseError } from "./errors"
 import { ILogRepository } from "./interfaces"
 
 
@@ -18,11 +20,16 @@ export class RealmLogRepository implements ILogRepository {
 
 
   public insert(log: Log): WithId<Log> {
-    const newLog = this.realm.write(() => {
-      return this.realm.create(LogRealmSchema, log)
-    })
+    try {
+      const newLog = this.realm.write(() => {
+        return this.realm.create(LogRealmSchema, log)
+      })
 
-    return this.toJson(newLog)
+      return this.toJson(newLog)
+    } catch (error) {
+      const errorMessage = stringifyError(error)
+      throw new UnknownDatabaseError(errorMessage)
+    }
   }
 
 
