@@ -22,11 +22,11 @@ export class RealmLogRepository implements ILogRepository {
       return this.realm.create(LogRealmSchema, log)
     })
 
-    return this.toObject(newLog)
+    return this.toJson(newLog)
   }
 
 
-  private toObject(log: LogRealmSchema): WithId<Log> {
+  private toJson(log: LogRealmSchema): WithId<Log> {
     const object = log.toJSON() as unknown as WithId<Log>
     object.id = log.id.toHexString()
     return object
