@@ -9,6 +9,7 @@ import { DocumentPictureNotFoundError, UnknownDatabaseError } from "./errors"
 import { IDocumentPictureRepository } from "./interfaces"
 
 
+// TODO implement pagination for selectAllForDocument
 export class RealmDocumentPictureRepository implements IDocumentPictureRepository {
 
 

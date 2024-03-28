@@ -10,6 +10,7 @@ import { DocumentNotFoundError, UnknownDatabaseError } from "./errors"
 import { IDocumentRepository } from "./interfaces"
 
 
+// TODO implement pagination for selectAll
 export class RealmDocumentRepository implements IDocumentRepository {
 
 
