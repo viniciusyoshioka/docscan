@@ -9,7 +9,7 @@ export class DocumentPictureRealmSchema
   id = new Realm.BSON.ObjectId()
   fileName!: string
   position!: number
-  belongsToDocument!: Realm.BSON.ObjectId
+  belongsTo!: Realm.BSON.ObjectId
 
   static primaryKey = "id"
 }

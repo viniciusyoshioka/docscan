@@ -167,7 +167,7 @@ export function Camera() {
     )
     const pictures = documentRealm
       .objects(DocumentPictureRealmSchema)
-      .filtered("belongsToDocument = $0", documentModel.document.id)
+      .filtered("belongsTo = $0", documentModel.document.id)
       .sorted("position")
     if (!document) throw new Error("Document is undefined, this should not happen")
     setDocumentModel({ document, pictures })
@@ -188,7 +188,7 @@ export function Camera() {
       documentRealm.write(() => {
         documentRealm.create(DocumentPictureRealmSchema, {
           fileName: DocumentService.getFileFullname(newPicturePath),
-          belongsToDocument: documentModel.document.id,
+          belongsTo: documentModel.document.id,
           position: documentModel.pictures.length,
         })
 
@@ -207,7 +207,7 @@ export function Camera() {
 
         documentRealm.create(DocumentPictureRealmSchema, {
           fileName: DocumentService.getFileFullname(newPicturePath),
-          belongsToDocument: createdDocument.id,
+          belongsTo: createdDocument.id,
           position: 0,
         })
 
@@ -218,7 +218,7 @@ export function Camera() {
     const document = documentRealm.objectForPrimaryKey(DocumentRealmSchema, modifiedDocumentId)
     const pictures = documentRealm
       .objects(DocumentPictureRealmSchema)
-      .filtered("belongsToDocument = $0", modifiedDocumentId)
+      .filtered("belongsTo = $0", modifiedDocumentId)
       .sorted("position")
     if (!document) throw new Error("Document is undefined, this should not happen")
     setDocumentModel({ document, pictures })

@@ -11,7 +11,7 @@ export const ExportedDocumentPictureRealmSchema: Realm.ObjectSchema = {
     },
     fileName: "string",
     position: "int",
-    belongsToDocument: "objectId",
+    belongsTo: "objectId",
   },
   primaryKey: "id",
 }

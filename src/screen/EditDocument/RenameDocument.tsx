@@ -56,7 +56,7 @@ export function RenameDocument() {
 
     const pictures = documentRealm
       .objects(DocumentPictureRealmSchema)
-      .filtered("belongsToDocument = $0", renamedDocument.id)
+      .filtered("belongsTo = $0", renamedDocument.id)
       .sorted("position")
     setDocumentModel({ document: renamedDocument, pictures })
   }

@@ -49,7 +49,7 @@ export function EditDocument() {
     if (document === undefined) return []
 
     return documentRealm.objects(DocumentPictureRealmSchema)
-      .filtered("belongsToDocument = $0", document.id)
+      .filtered("belongsTo = $0", document.id)
       .sorted("position")
       .toJSON() as unknown as DocumentPictureRealmSchema[]
   }, [document])
@@ -241,7 +241,7 @@ export function EditDocument() {
     try {
       documentRealm.write(() => {
         const realmPicturesToDelete = documentRealm.objects(DocumentPictureRealmSchema)
-          .filtered("belongsToDocument = $0", document.id)
+          .filtered("belongsTo = $0", document.id)
           .sorted("position")
           .filter((_, index) => pictureSelection.selectedData.includes(index))
 
@@ -255,7 +255,7 @@ export function EditDocument() {
       )
       const updatedPictures = documentRealm
         .objects(DocumentPictureRealmSchema)
-        .filtered("belongsToDocument = $0", document.id)
+        .filtered("belongsTo = $0", document.id)
         .sorted("position")
       if (!updatedDocument)
         throw new Error("Document is undefined, this should not happen")

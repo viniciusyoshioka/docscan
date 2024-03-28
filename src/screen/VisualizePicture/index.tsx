@@ -231,7 +231,7 @@ export function VisualizePicture() {
     )
     const pictures = documentRealm
       .objects(DocumentPictureRealmSchema)
-      .filtered("belongsToDocument = $0", documentModel.document.id)
+      .filtered("belongsTo = $0", documentModel.document.id)
       .sorted("position")
     if (!document) throw new Error("Document is undefined, this should not happen")
     setDocumentModel({ document, pictures })

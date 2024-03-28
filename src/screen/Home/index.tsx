@@ -76,7 +76,7 @@ export function Home() {
 
       const picturesToDelete = documentRealm
         .objects(DocumentPictureRealmSchema)
-        .filtered("belongsToDocument IN $0", documentIdToDelete)
+        .filtered("belongsTo IN $0", documentIdToDelete)
 
       const documentsToDelete = documentRealm
         .objects(DocumentRealmSchema)
@@ -159,7 +159,7 @@ export function Home() {
 
         const exportedPictures = exportedDatabase
           .objects<IDocumentPictureRealmSchema>("ExportedDocumentPictureSchema")
-          .filtered("belongsToDocument = $0", exportedDocument.id)
+          .filtered("belongsTo = $0", exportedDocument.id)
         for (let j = 0; j < exportedPictures.length; j++) {
           const exportedPicture = exportedPictures[j]
           const newPicturePath = await DocumentService.getNewPicturePath(
@@ -170,7 +170,7 @@ export function Home() {
           documentRealm.create(DocumentPictureRealmSchema, {
             fileName: newPictureName,
             position: exportedPicture.position,
-            belongsToDocument: importedDocument.id,
+            belongsTo: importedDocument.id,
           })
 
           pictureToMove.push(
@@ -244,7 +244,7 @@ export function Home() {
 
           documentRealm
             .objects(DocumentPictureRealmSchema)
-            .filtered("belongsToDocument = $0", documentToExport.id)
+            .filtered("belongsTo = $0", documentToExport.id)
             .forEach(pictureToExport => {
               filesToCopy.push(DocumentService.getPicturePath(pictureToExport.fileName))
 
@@ -253,7 +253,7 @@ export function Home() {
                 {
                   fileName: pictureToExport.fileName,
                   position: pictureToExport.position,
-                  belongsToDocument: exportedDocument.id,
+                  belongsTo: exportedDocument.id,
                 }
               )
             })
@@ -344,7 +344,7 @@ export function Home() {
         onClick={() => {
           const pictures = documentRealm
             .objects(DocumentPictureRealmSchema)
-            .filtered("belongsToDocument = $0", item.id)
+            .filtered("belongsTo = $0", item.id)
             .sorted("position")
           setDocumentModel({ document: item, pictures })
           navigation.navigate("EditDocument")
