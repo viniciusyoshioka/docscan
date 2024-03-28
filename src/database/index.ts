@@ -1,4 +1,5 @@
 export * from "./configs"
+export * from "./context"
 export * from "./entities"
 export * from "./providers"
 export * from "./repositories"
