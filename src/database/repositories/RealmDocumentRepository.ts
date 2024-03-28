@@ -34,10 +34,12 @@ export class RealmDocumentRepository implements IDocumentRepository {
   public selectAll(options?: QueryOptions<Document>): WithId<Document>[] {
     try {
       let objects = this.realm.objects(DocumentRealmSchema)
+
       if (options?.orderBy) {
         const sorted = this.createSorted(options.orderBy)
         objects = objects.sorted(sorted)
       }
+
       return objects.map(item => this.toJson(item))
     } catch (error) {
       const errorMessage = stringifyError(error)
@@ -50,6 +52,7 @@ export class RealmDocumentRepository implements IDocumentRepository {
       const newDocument = this.realm.write(() => {
         return this.realm.create(DocumentRealmSchema, document)
       })
+
       return this.toJson(newDocument)
     } catch (error) {
       const errorMessage = stringifyError(error)
