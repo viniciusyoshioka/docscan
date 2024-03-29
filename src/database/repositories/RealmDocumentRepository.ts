@@ -3,10 +3,10 @@ import { SortDescriptor } from "realm"
 
 import { stringifyError } from "@utils"
 import { Document } from "../entities"
+import { DocumentNotFoundError, UnknownDatabaseError } from "../errors"
 import { IRealmDatabaseProvider } from "../providers"
 import { DocumentRealmSchema } from "../schemas"
 import { IdOf, QueryOptions, WithId } from "../types"
-import { DocumentNotFoundError, UnknownDatabaseError } from "./errors"
 import { IDocumentRepository } from "./interfaces"
 
 

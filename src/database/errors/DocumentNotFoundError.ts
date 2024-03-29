@@ -1,5 +1,5 @@
-import { Document } from "../../entities"
-import { IdOf } from "../../types"
+import { Document } from "../entities"
+import { IdOf } from "../types"
 
 
 export class DocumentNotFoundError extends Error {

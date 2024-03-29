@@ -2,10 +2,10 @@ import { Realm } from "realm"
 
 import { stringifyError } from "@utils"
 import { Log } from "../entities"
+import { UnknownDatabaseError } from "../errors"
 import { IRealmDatabaseProvider } from "../providers"
 import { LogRealmSchema } from "../schemas"
 import { WithId } from "../types"
-import { UnknownDatabaseError } from "./errors"
 import { ILogRepository } from "./interfaces"
 
 

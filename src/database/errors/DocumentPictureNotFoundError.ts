@@ -1,5 +1,5 @@
-import { DocumentPicture } from "../../entities"
-import { IdOf } from "../../types"
+import { DocumentPicture } from "../entities"
+import { IdOf } from "../types"
 
 
 export class DocumentPictureNotFoundError extends Error {

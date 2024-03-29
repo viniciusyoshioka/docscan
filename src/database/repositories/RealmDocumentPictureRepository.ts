@@ -2,10 +2,10 @@ import { Realm, SortDescriptor } from "realm"
 
 import { stringifyError } from "@utils"
 import { DocumentPicture } from "../entities"
+import { DocumentPictureNotFoundError, UnknownDatabaseError } from "../errors"
 import { IRealmDatabaseProvider } from "../providers"
 import { DocumentPictureRealmSchema } from "../schemas"
 import { IdOf, QueryOptions, WithId } from "../types"
-import { DocumentPictureNotFoundError, UnknownDatabaseError } from "./errors"
 import { IDocumentPictureRepository } from "./interfaces"
 
 
