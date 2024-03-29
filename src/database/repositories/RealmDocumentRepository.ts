@@ -114,8 +114,8 @@ export class RealmDocumentRepository implements IDocumentRepository {
   ): SortDescriptor[] {
 
     const args: SortDescriptor[] = []
-    const orderByKeys = Object.entries(orderBy)
-    for (const [key, value] of orderByKeys) {
+    const orderByEntries = Object.entries(orderBy)
+    for (const [key, value] of orderByEntries) {
       if (typeof value === "undefined") {
         continue
       }
