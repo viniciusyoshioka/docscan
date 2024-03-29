@@ -2,6 +2,7 @@ import { Realm } from "realm"
 
 import { stringifyError } from "@utils"
 import { Log } from "../entities"
+import { IRealmDatabaseProvider } from "../providers"
 import { LogRealmSchema } from "../schemas"
 import { WithId } from "../types"
 import { UnknownDatabaseError } from "./errors"
@@ -14,8 +15,8 @@ export class RealmLogRepository implements ILogRepository {
   private realm: Realm
 
 
-  constructor(realm: Realm) {
-    this.realm = realm
+  constructor(realmDatabaseProvider: IRealmDatabaseProvider) {
+    this.realm = realmDatabaseProvider.getDatabase()
   }
 
 
