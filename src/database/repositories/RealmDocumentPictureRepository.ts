@@ -126,6 +126,10 @@ export class RealmDocumentPictureRepository implements IDocumentPictureRepositor
     const args: SortDescriptor[] = []
     const orderByEntries = Object.entries(orderBy)
     for (const [key, value] of orderByEntries) {
+      if (typeof value === "undefined") {
+        continue
+      }
+
       args.push([key, value === "desc"])
     }
     return args
