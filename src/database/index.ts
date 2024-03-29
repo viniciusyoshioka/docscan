@@ -1,6 +1,7 @@
 export * from "./configs"
 export * from "./context"
 export * from "./entities"
+export * from "./models"
 export * from "./providers"
 export * from "./repositories"
 export * from "./schemas"
