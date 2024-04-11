@@ -30,12 +30,12 @@ export class StandardDateFormatter implements IDateFormatter {
   private hasSeconds: boolean
 
 
-  constructor(options: StandardDateFormatterOptions) {
+  constructor(options?: StandardDateFormatterOptions) {
     const {
       locales = undefined,
       separators = defaultSeparators,
       hasSeconds = false,
-    } = options
+    } = options ?? {}
 
     this.locales = locales
     this.separators = separators
