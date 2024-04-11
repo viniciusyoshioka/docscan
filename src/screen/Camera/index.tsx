@@ -217,7 +217,10 @@ export function Camera() {
       })
     }
 
-    const document = documentRealm.objectForPrimaryKey(DocumentRealmSchema, modifiedDocumentId)
+    const document = documentRealm.objectForPrimaryKey(
+      DocumentRealmSchema,
+      modifiedDocumentId
+    )
     const pictures = documentRealm
       .objects(DocumentPictureRealmSchema)
       .filtered("belongsTo = $0", modifiedDocumentId)

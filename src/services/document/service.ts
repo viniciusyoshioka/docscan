@@ -77,21 +77,30 @@ export class DocumentService {
   static deletePicturesService(data: PictureDataToDelete) {
     NativeDocumentService.deletePictures({
       pictures: data.pictures,
-      notificationTitle: data.notificationTitle ?? translate("document_notification_deletingImages_title"),
+      notificationTitle: (
+        data.notificationTitle
+        ?? translate("document_notification_deletingImages_title")
+      ),
     })
   }
 
   static copyPicturesService(data: PictureDataToCopy) {
     NativeDocumentService.copyPictures({
       pictures: data.pictures,
-      notificationTitle: data.notificationTitle ?? translate("document_notification_copyingImages_title"),
+      notificationTitle: (
+        data.notificationTitle
+        ?? translate("document_notification_copyingImages_title")
+      ),
     })
   }
 
   static movePicturesService(data: PictureDataToMove) {
     NativeDocumentService.movePictures({
       pictures: data.pictures,
-      notificationTitle: data.notificationTitle ?? translate("document_notification_movingImages_title"),
+      notificationTitle: (
+        data.notificationTitle
+        ?? translate("document_notification_movingImages_title")
+      ),
     })
   }
 
@@ -101,7 +110,10 @@ export class DocumentService {
       databasePath: data.databasePath,
       pathZipTo: data.pathZipTo,
       pathExportedDocument: data.pathExportedDocument,
-      notificationTitle: data.notificationTitle ?? translate("document_notification_exportingDocuments_title"),
+      notificationTitle: (
+        data.notificationTitle
+        ?? translate("document_notification_exportingDocuments_title")
+      ),
     })
   }
 }

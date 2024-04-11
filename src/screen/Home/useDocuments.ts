@@ -5,14 +5,19 @@ import { CollectionChangeCallback } from "realm"
 import { DocumentRealmSchema, useDocumentRealm } from "@database"
 
 
-type DocumentsChanges = CollectionChangeCallback<DocumentRealmSchema, [number, DocumentRealmSchema]>
+type DocumentsChanges = CollectionChangeCallback<
+  DocumentRealmSchema,
+  [number, DocumentRealmSchema]
+>
 
 
 export function useDocuments(): Realm.Results<DocumentRealmSchema> {
 
 
   const documentRealm = useDocumentRealm()
-  const documentSchemas = documentRealm.objects(DocumentRealmSchema).sorted("modifiedAt", true)
+  const documentSchemas = documentRealm
+    .objects(DocumentRealmSchema)
+    .sorted("modifiedAt", true)
 
   const [documents, setDocuments] = useState(documentSchemas)
 

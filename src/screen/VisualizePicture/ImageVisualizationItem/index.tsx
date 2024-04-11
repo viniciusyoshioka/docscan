@@ -316,7 +316,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
   const tapComposedGestures = Gesture.Exclusive(doubleTapGesture, singleTapGesture)
   const raceComposedGestures = Gesture.Race(pinchGesture, tapComposedGestures)
-  const simultaneousComposedGestures = Gesture.Simultaneous(raceComposedGestures, panGesture)
+  const simultaneousGestures = Gesture.Simultaneous(raceComposedGestures, panGesture)
 
 
   const imageStyle = useAnimatedStyle(() => ({
@@ -351,7 +351,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
 
   return (
-    <GestureDetector gesture={simultaneousComposedGestures}>
+    <GestureDetector gesture={simultaneousGestures}>
       <View style={[{ flex: 1, width, overflow: "hidden" }, props.style]}>
         <AnimatedFastImage
           source={props.source}

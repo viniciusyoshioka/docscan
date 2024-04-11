@@ -50,7 +50,10 @@ export function RenameDocument() {
         return document
       }
 
-      const createdDocument = documentRealm.create(DocumentRealmSchema, { name: documentName })
+      const createdDocument = documentRealm.create(
+        DocumentRealmSchema,
+        { name: documentName }
+      )
       return createdDocument
     })
 

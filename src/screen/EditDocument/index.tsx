@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/core"
-import { FlashList } from "@shopify/flash-list"
+import { FlashList, ListRenderItem } from "@shopify/flash-list"
 import { useCallback, useMemo, useState } from "react"
 import { Alert, View, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
@@ -292,7 +292,7 @@ export function EditDocument() {
     )
   }
 
-  function renderItem({ item, index }: { item: DocumentPictureRealmSchema, index: number }) {
+  const renderItem: ListRenderItem<DocumentPictureRealmSchema> = ({ item, index }) => {
     return (
       <PictureItem
         onClick={() => navigation.navigate("VisualizePicture", { pictureIndex: index })}
