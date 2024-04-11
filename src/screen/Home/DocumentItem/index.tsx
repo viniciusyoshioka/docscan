@@ -4,7 +4,7 @@ import { runOnJS } from "react-native-reanimated"
 import { SelectableItem, useSelectableItem } from "react-native-selection-mode"
 
 import { DocumentRealmSchema } from "@database"
-import { DateService } from "@services/date"
+import { StandardDateFormatter } from "@lib/date-formatter"
 import { useAppTheme } from "@theme"
 
 
@@ -21,6 +21,7 @@ export function DocumentItem(props: DocumentItemProps) {
 
   const { colors } = useAppTheme()
   const { onPress, onLongPress } = useSelectableItem(props)
+  const dateFormatter = new StandardDateFormatter()
 
 
   const longPressGesture = Gesture.LongPress()
@@ -47,7 +48,7 @@ export function DocumentItem(props: DocumentItemProps) {
       <List.Item
         title={props.document.name}
         titleNumberOfLines={1}
-        description={DateService.getLocaleDateTime(props.document.modifiedAt, false)}
+        description={dateFormatter.getLocaleDateTime(props.document.modifiedAt)}
         descriptionNumberOfLines={1}
         onPress={onPress}
         right={() => <SelectionCheckbok />}

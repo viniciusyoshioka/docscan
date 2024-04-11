@@ -2,9 +2,9 @@ import { NativeModules } from "react-native"
 import RNFS from "react-native-fs"
 import { v4 as uuid4 } from "uuid"
 
+import { StandardDateFormatter } from "@lib/date-formatter"
 import { translate } from "@locales"
 import { Constants } from "../constant"
-import { DateService } from "../date"
 import { DocumentServiceType } from "./native-types"
 import {
   DocumentDataToExport,
@@ -18,6 +18,14 @@ const NativeDocumentService = NativeModules.DocumentService as DocumentServiceTy
 
 
 export class DocumentService {
+
+
+  private static dateFormatter = new StandardDateFormatter({
+    separators: {
+      date: "",
+      time: "",
+    },
+  })
 
 
   static getNewName(): string {
@@ -45,9 +53,8 @@ export class DocumentService {
 
   static getExportedDocumentPath(): string {
     const name = translate("document_exportedDocumentName")
-    const date = DateService.getDate().replaceAll("-", "")
-    const time = DateService.getTime().replaceAll("-", "")
-    return `${Constants.fullPathExported}/${name} ${date}_${time}.zip`
+    const dateTime = this.dateFormatter.formatDateTime().replaceAll(" ", "_")
+    return `${Constants.fullPathExported}/${name} ${dateTime}.zip`
   }
 
   static getTemporaryImportedPicturePath(fileName: string): string {
