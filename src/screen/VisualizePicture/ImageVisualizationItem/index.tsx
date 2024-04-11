@@ -344,7 +344,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
       setImageHeight(newImageHeight)
     }
 
-    if (props.source.uri && windowWidth !== 0 && windowHeight !== 0) {
+    if (props.source.uri !== undefined && windowWidth !== 0 && windowHeight !== 0) {
       Image.getSize(props.source.uri, onSuccess, props.onError)
     }
   }, [windowWidth, windowHeight])

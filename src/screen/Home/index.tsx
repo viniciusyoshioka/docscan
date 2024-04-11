@@ -127,9 +127,9 @@ export function Home() {
         type: DocumentPicker.types.zip,
       })
 
-      if (pickedFile.copyError)
+      if (pickedFile.copyError !== undefined)
         throw new Error(`Error copying picked file to import document: "${stringifyError(pickedFile.copyError)}"`)
-      if (!pickedFile.fileCopyUri)
+      if (pickedFile.fileCopyUri === null)
         throw new Error("Copying document to import did not returned a valid path")
 
       Alert.alert(

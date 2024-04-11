@@ -100,7 +100,7 @@ export function Gallery() {
     }
 
     let amoutToLoad = amountOfImageToLoadPerTime
-    if (!refreshing && imageGallery) {
+    if ((refreshing === false || refreshing === undefined) && imageGallery) {
       amoutToLoad += imageGallery.length
     }
 
@@ -110,7 +110,8 @@ export function Gallery() {
         assetType: "Photos",
       })
 
-      if (cameraRollPhotos.edges.length === currentAmountOfImages && !refreshing) {
+      if (cameraRollPhotos.edges.length === currentAmountOfImages
+        && (refreshing === false || refreshing === undefined)) {
         setIsGalleryFullLoaded(true)
         setIsLoading(false)
         return
@@ -357,7 +358,7 @@ export function Gallery() {
         selectedImagesAmount={gallerySelection.selectedData.length}
       />
 
-      {imageGallery?.length && imageGallery.length > 0 && (
+      {(imageGallery && imageGallery.length > 0) && (
         <FlashList
           data={imageGallery}
           renderItem={renderItem}
