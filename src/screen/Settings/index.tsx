@@ -4,10 +4,11 @@ import { List } from "react-native-paper"
 import Share from "react-native-share"
 
 import { useBackHandler } from "@hooks"
+import { useLogger } from "@lib/log"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
 import { Constants } from "@services/constant"
-import { log, stringfyError } from "@services/log"
+import { stringifyError } from "@utils"
 import { SettingsHeader } from "./Header"
 
 
@@ -18,6 +19,7 @@ export function Settings() {
 
 
   const navigation = useNavigation<NavigationProps<"Settings">>()
+  const log = useLogger()
 
 
   useBackHandler(() => {
@@ -34,7 +36,7 @@ export function Settings() {
         failOnCancel: false,
       })
     } catch (error) {
-      log.error(`Error sharing log file: "${stringfyError(error)}"`)
+      log.error(`Error sharing log file: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("Settings_alert_errorSharingLogDatabase_text")
@@ -50,7 +52,7 @@ export function Settings() {
         failOnCancel: false,
       })
     } catch (error) {
-      log.error(`Error sharing document database file: "${stringfyError(error)}"`)
+      log.error(`Error sharing document database file: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("Settings_alert_errorSharingAppDatabase_text")

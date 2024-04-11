@@ -14,12 +14,13 @@ import {
   useDocumentRealm,
 } from "@database"
 import { useBackHandler } from "@hooks"
+import { useLogger } from "@lib/log"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
 import { DocumentService } from "@services/document"
-import { log, stringfyError } from "@services/log"
 import { PdfCreator } from "@services/pdf-creator"
 import { getReadPermission, getWritePermission } from "@services/permission"
+import { stringifyError } from "@utils"
 import { EditDocumentHeader } from "./Header"
 import {
   HORIZONTAL_COLUMN_COUNT,
@@ -39,6 +40,7 @@ export function EditDocument() {
 
 
   const navigation = useNavigation<NavigationProps<"EditDocument">>()
+  const log = useLogger()
 
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
 
@@ -112,7 +114,7 @@ export function EditDocument() {
         failOnCancel: false,
       })
     } catch (error) {
-      log.error(`Error sharing PDF file: "${stringfyError(error)}"`)
+      log.error(`Error sharing PDF file: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("EditDocument_alert_errorSharingPdf_text")
@@ -188,7 +190,7 @@ export function EditDocument() {
         translate("EditDocument_alert_pdfFileDeletedSuccessfully_text")
       )
     } catch (error) {
-      log.error(`Error deleting PDF file "${stringfyError(error)}"`)
+      log.error(`Error deleting PDF file "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("EditDocument_alert_errorDeletingPdfFile_text")
@@ -263,7 +265,7 @@ export function EditDocument() {
 
       DocumentService.deletePicturesService({ pictures: picturePathsToDelete })
     } catch (error) {
-      log.error(`Error deleting selected pictures from database: "${stringfyError(error)}"`)
+      log.error(`Error deleting selected pictures from database: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("EditDocument_alert_errorDeletingSelectedPictures_text")

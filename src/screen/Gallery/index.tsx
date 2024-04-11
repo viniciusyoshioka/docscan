@@ -15,13 +15,14 @@ import {
   useDocumentRealm,
 } from "@database"
 import { useBackHandler } from "@hooks"
+import { useLogger } from "@lib/log"
 import { translate } from "@locales"
 import { NavigationProps, RouteProps } from "@router"
 import { DocumentService } from "@services/document"
 import { createAllFolders } from "@services/folder-handler"
-import { log, stringfyError } from "@services/log"
 import { getReadMediaImagesPermission } from "@services/permission"
 import { useAppTheme } from "@theme"
+import { stringifyError } from "@utils"
 import { GalleryHeader } from "./Header"
 import {
   HORIZONTAL_COLUMN_COUNT,
@@ -44,6 +45,7 @@ export function Gallery() {
   const navigation = useNavigation<NavigationProps<"Gallery">>()
   const { params } = useRoute<RouteProps<"Gallery">>()
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
+  const log = useLogger()
 
   const documentRealm = useDocumentRealm()
   const { documentModel, setDocumentModel } = useDocumentModel()
@@ -119,7 +121,7 @@ export function Gallery() {
     } catch (error) {
       setImageGallery([])
       setIsLoading(false)
-      log.error(`Error getting images from CameraRoll: "${stringfyError(error)}"`)
+      log.error(`Error getting images from CameraRoll: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("Gallery_alert_errorOpeningGallery_text")
@@ -156,7 +158,7 @@ export function Gallery() {
     try {
       await RNFS.copyFile(imagePath, newImagePath)
     } catch (error) {
-      log.error(`Error importing a single image from gallery: "${stringfyError(error)}"`)
+      log.error(`Error importing a single image from gallery: "${stringifyError(error)}"`)
       setIsImportingImages(false)
       Alert.alert(
         translate("warn"),

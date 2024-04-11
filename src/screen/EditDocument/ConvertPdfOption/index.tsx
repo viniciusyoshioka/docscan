@@ -8,15 +8,16 @@ import { useStyles } from "react-native-unistyles"
 
 import { useDocumentModel } from "@database"
 import { useBackHandler } from "@hooks"
+import { useLogger } from "@lib/log"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
 import { Constants } from "@services/constant"
 import { DocumentService } from "@services/document"
 import { createAllFolders } from "@services/folder-handler"
-import { log, stringfyError } from "@services/log"
 import { PdfCreator } from "@services/pdf-creator"
 import { getWritePermission } from "@services/permission"
 import { useAppTheme } from "@theme"
+import { stringifyError } from "@utils"
 import { stylesheet } from "./style"
 
 
@@ -28,6 +29,7 @@ export function ConvertPdfOption() {
 
   const navigation = useNavigation<NavigationProps<"ConvertPdfOption">>()
   const { styles } = useStyles(stylesheet)
+  const log = useLogger()
 
   const { documentModel } = useDocumentModel()
   const document = documentModel?.document ?? null
@@ -88,7 +90,7 @@ export function ConvertPdfOption() {
       try {
         await RNFS.unlink(documentPath)
       } catch (error) {
-        log.error(`Error deleting PDF file with the same name of the document to be converted: "${stringfyError(error)}"`)
+        log.error(`Error deleting PDF file with the same name of the document to be converted: "${stringifyError(error)}"`)
       }
     }
 

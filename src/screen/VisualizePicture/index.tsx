@@ -12,12 +12,13 @@ import {
   useDocumentRealm,
 } from "@database"
 import { useBackHandler } from "@hooks"
+import { useLogger } from "@lib/log"
 import { translate } from "@locales"
 import { NavigationProps, RouteProps } from "@router"
 import { DocumentService } from "@services/document"
 import { ImageCrop, OnImageSavedResponse } from "@services/image-crop"
-import { log, stringfyError } from "@services/log"
 import { useAppTheme } from "@theme"
+import { stringifyError } from "@utils"
 import { VisualizePictureHeader } from "./Header"
 import { ImageRotation, ImageRotationRef } from "./ImageRotation"
 import { ImageVisualizationItem } from "./ImageVisualizationItem"
@@ -34,6 +35,7 @@ export function VisualizePicture() {
   const { params } = useRoute<RouteProps<"VisualizePicture">>()
   const { width } = useWindowDimensions()
   const safeAreaInsets = useSafeAreaInsets()
+  const log = useLogger()
 
   const { isDark } = useAppTheme()
   const documentRealm = useDocumentRealm()
@@ -121,7 +123,7 @@ export function VisualizePicture() {
       await imageRotationRef.current.save(picturePathRotated)
       replacePictureInDatabase(picturePathRotated)
     } catch (error) {
-      log.error(`Error saving rotated picture: "${stringfyError(error)}"`)
+      log.error(`Error saving rotated picture: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("VisualizePicture_alert_errorSavingRotatedImage_text")
@@ -136,7 +138,7 @@ export function VisualizePicture() {
       const picturePathToDelete = DocumentService.getPicturePath(pictureNameToRotate)
       await RNFS.unlink(picturePathToDelete)
     } catch (error) {
-      log.warn(`Error deleting original image after rotate: "${stringfyError(error)}"`)
+      log.warn(`Error deleting original image after rotate: "${stringifyError(error)}"`)
     }
 
     setIsRotating(false)
@@ -182,7 +184,7 @@ export function VisualizePicture() {
         await RNFS.unlink(response.uri)
       }
 
-      log.error(`Error replacing image by cropped image: "${stringfyError(error)}"`)
+      log.error(`Error replacing image by cropped image: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("VisualizePicture_alert_errorSavingCroppedImage_text")
@@ -198,7 +200,7 @@ export function VisualizePicture() {
         await RNFS.unlink(picturePath)
       }
     } catch (error) {
-      log.warn(`Error deleting original image after crop: "${stringfyError(error)}"`)
+      log.warn(`Error deleting original image after crop: "${stringifyError(error)}"`)
     }
 
     setIsCropping(false)

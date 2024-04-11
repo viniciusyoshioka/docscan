@@ -19,13 +19,14 @@ import {
   useDocumentRealm,
 } from "@database"
 import { useBackHandler } from "@hooks"
+import { useLogger } from "@lib/log"
 import { useSettings } from "@lib/settings"
 import { getCameraRatioNumber } from "@lib/settings/camera"
 import { translate } from "@locales"
 import { NavigationProps, RouteProps } from "@router"
 import { DocumentService } from "@services/document"
 import { createAllFolders } from "@services/folder-handler"
-import { log, stringfyError } from "@services/log"
+import { stringifyError } from "@utils"
 import { CameraControl, CameraControlRef } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
 import { FocusIndicator, FocusIndicatorRef } from "./FocusIndicator"
@@ -54,6 +55,7 @@ export function Camera() {
   const { params } = useRoute<RouteProps<"Camera">>()
   const { width, height } = useWindowDimensions()
   const { styles } = useStyles(stylesheet)
+  const log = useLogger()
 
   const documentRealm = useDocumentRealm()
   const { settings } = useSettings()
@@ -138,7 +140,7 @@ export function Camera() {
         addPicture(picturePath)
       }
     } catch (error) {
-      log.error(`Error taking picture: "${stringfyError(error)}"`)
+      log.error(`Error taking picture: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("Camera_alert_unknownErrorTakingPicture_text")
@@ -252,7 +254,7 @@ export function Camera() {
 
         await cameraRef.current.focus({ x, y })
       } catch (error) {
-        log.warn(`Error focusing camera ${stringfyError(error)}`)
+        log.warn(`Error focusing camera ${stringifyError(error)}`)
       } finally {
         setIsFocusEnabled(true)
         focusIndicatorRef.current.setIsFocusing(false)

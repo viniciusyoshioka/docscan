@@ -21,13 +21,14 @@ import {
   useDocumentRealm,
 } from "@database"
 import { useBackHandler } from "@hooks"
+import { useLogger } from "@lib/log"
 import { TranslationKeyType, translate } from "@locales"
 import { NavigationProps } from "@router"
 import { Constants } from "@services/constant"
 import { DocumentService } from "@services/document"
 import { createAllFolders } from "@services/folder-handler"
-import { log, stringfyError } from "@services/log"
 import { getNotificationPermission } from "@services/permission"
+import { stringifyError } from "@utils"
 import { DOCUMENT_ITEM_HEIGHT, DocumentItem } from "./DocumentItem"
 import { HomeHeader } from "./Header"
 import { useDocuments } from "./useDocuments"
@@ -43,6 +44,7 @@ export function Home() {
 
   const safeAreaInsets = useSafeAreaInsets()
   const navigation = useNavigation<NavigationProps<"Home">>()
+  const log = useLogger()
 
   const { setDocumentModel } = useDocumentModel()
   const documentRealm = useDocumentRealm()
@@ -96,7 +98,7 @@ export function Home() {
         documentRealm.cancelTransaction()
       }
 
-      log.error(`Error deleting selected documents from database: "${stringfyError(error)}"`)
+      log.error(`Error deleting selected documents from database: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("Home_alert_errorDeletingSelectedDocuments_text")
@@ -126,7 +128,7 @@ export function Home() {
       })
 
       if (pickedFile.copyError)
-        throw new Error(`Error copying picked file to import document: "${stringfyError(pickedFile.copyError)}"`)
+        throw new Error(`Error copying picked file to import document: "${stringifyError(pickedFile.copyError)}"`)
       if (!pickedFile.fileCopyUri)
         throw new Error("Copying document to import did not returned a valid path")
 
@@ -199,10 +201,10 @@ export function Home() {
           await RNFS.unlink(Constants.fullPathTemporaryImported)
         }
       } catch (error) {
-        log.error(`Error deleting temporary imported files after error in document import: "${stringfyError(error)}"`)
+        log.error(`Error deleting temporary imported files after error in document import: "${stringifyError(error)}"`)
       }
 
-      log.error(`Error importing document: "${stringfyError(error)}"`)
+      log.error(`Error importing document: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("Home_alert_errorImportingDocuments_text")
@@ -269,7 +271,7 @@ export function Home() {
         pathExportedDocument: DocumentService.getExportedDocumentPath(),
       })
     } catch (error) {
-      log.error(`Error exporting documents before invoking the background service: "${stringfyError(error)}"`)
+      log.error(`Error exporting documents before invoking the background service: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("Home_alert_errorExportingDocuments_text")
