@@ -22,7 +22,7 @@
     "lodash": "^4.17.21",
     "react": "18.2.0",
     "react-material-design-provider": "^1.2.0",
-    "react-native": "0.73.6",
+    "react-native": "0.73.7",
     "react-native-document-picker": "^9.1.1",
     "react-native-fast-image": "^8.6.3",
     "react-native-fs": "^2.20.0",
