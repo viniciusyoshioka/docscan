@@ -1,32 +1,20 @@
 import { useNavigation } from "@react-navigation/native"
-import { Realm } from "@realm/react"
-import { FlashList } from "@shopify/flash-list"
-import { useEffect, useState } from "react"
+import { FlashList, ListRenderItem } from "@shopify/flash-list"
+import { useEffect } from "react"
 import { Alert, View } from "react-native"
-import DocumentPicker from "react-native-document-picker"
-import RNFS from "react-native-fs"
 import { Divider, FAB } from "react-native-paper"
-import { EmptyScreen, LoadingModal } from "react-native-paper-towel"
+import { EmptyScreen, LoadingModal, useModal } from "react-native-paper-towel"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useSelectionMode } from "react-native-selection-mode"
-import { unzip } from "react-native-zip-archive"
 
-import {
-  DocumentPictureRealmSchema,
-  DocumentRealmSchema,
-  IDocumentPictureRealmSchema,
-  IDocumentRealmSchema,
-  openExportedDatabase,
-  useDocumentModel,
-  useDocumentRealm,
-} from "@database"
+import { Document, IdOf, WithId, useDatabase } from "@database"
 import { useBackHandler } from "@hooks"
+import { useDocumentManager } from "@lib/document-state"
 import { useLogger } from "@lib/log"
 import { TranslationKeyType, translate } from "@locales"
 import { NavigationProps } from "@router"
 import { Constants } from "@services/constant"
 import { DocumentService } from "@services/document"
-import { createAllFolders } from "@services/folder-handler"
 import { getNotificationPermission } from "@services/permission"
 import { stringifyError } from "@utils"
 import { DOCUMENT_ITEM_HEIGHT, DocumentItem } from "./DocumentItem"
@@ -44,13 +32,13 @@ export function Home() {
 
   const safeAreaInsets = useSafeAreaInsets()
   const navigation = useNavigation<NavigationProps<"Home">>()
-  const log = useLogger()
 
-  const { setDocumentModel } = useDocumentModel()
-  const documentRealm = useDocumentRealm()
+  const log = useLogger()
   const documents = useDocuments()
-  const documentSelection = useSelectionMode<string>()
-  const [showDocumentDeletionModal, setShowDocumentDeletionModal] = useState(false)
+  const { documentModel, documentPictureModel } = useDatabase()
+  const documentManager = useDocumentManager()
+  const documentSelection = useSelectionMode<IdOf<Document>>()
+  const documentDeletionModal = useModal()
 
 
   useBackHandler(() => {
@@ -63,49 +51,49 @@ export function Home() {
 
 
   function invertSelection() {
-    documentSelection.setSelectedData(current => documents
-      .filter(documentItem => !current.includes(documentItem.id.toHexString()))
-      .map(documentItem => documentItem.id.toHexString()))
+    documentSelection.setNewSelectedData(current => {
+      const newSelectedData = new Set<IdOf<Document>>()
+
+      documents.forEach(documentItem => {
+        if (!current.has(documentItem.id)) {
+          newSelectedData.add(documentItem.id)
+        }
+      })
+
+      return newSelectedData
+    })
   }
 
   async function deleteSelectedDocument() {
-    setShowDocumentDeletionModal(true)
+    documentDeletionModal.show()
 
     try {
-      const documentIdToDelete = documentSelection
-        .selectedData
-        .map(documentId => Realm.BSON.ObjectId.createFromHexString(documentId))
+      const selectedDocuments = documentSelection.getSelectedData()
 
-      const picturesToDelete = documentRealm
-        .objects(DocumentPictureRealmSchema)
-        .filtered("belongsTo IN $0", documentIdToDelete)
+      for (const documentId of selectedDocuments) {
+        const pictures = documentPictureModel.selectAllForDocument(documentId)
+        const picturesId = pictures.map(picture => picture.id)
+        const picturesPath = pictures.map(picture => (
+          DocumentService.getPicturePath(picture.fileName)
+        ))
 
-      const documentsToDelete = documentRealm
-        .objects(DocumentRealmSchema)
-        .filtered("id IN $0", documentIdToDelete)
-
-      documentRealm.beginTransaction()
-      documentRealm.delete(picturesToDelete)
-      documentRealm.delete(documentsToDelete)
-      documentRealm.commitTransaction()
-
-      const picturesPathToDelete = picturesToDelete.map(picture => (
-        DocumentService.getPicturePath(picture.fileName)
-      ))
-      DocumentService.deletePicturesService({ pictures: picturesPathToDelete })
-    } catch (error) {
-      if (documentRealm.isInTransaction) {
-        documentRealm.cancelTransaction()
+        documentPictureModel.deleteMultiple(picturesId)
+        documentModel.deleteMultiple(selectedDocuments)
+        DocumentService.deletePicturesService({
+          pictures: picturesPath,
+        })
       }
 
-      log.error(`Error deleting selected documents from database: "${stringifyError(error)}"`)
+      documentSelection.exitSelection()
+    } catch (error) {
+      log.error(`Error deleting selected documents: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("Home_alert_errorDeletingSelectedDocuments_text")
       )
     } finally {
       documentSelection.exitSelection()
-      setShowDocumentDeletionModal(false)
+      documentDeletionModal.hide()
     }
   }
 
@@ -120,168 +108,11 @@ export function Home() {
     )
   }
 
-  async function importDocument() {
-    try {
-      const pickedFile = await DocumentPicker.pickSingle({
-        copyTo: "cachesDirectory",
-        type: DocumentPicker.types.zip,
-      })
+  // TODO implement importDocument using new database
+  async function importDocument() {}
 
-      if (pickedFile.copyError !== undefined)
-        throw new Error(`Error copying picked file to import document: "${stringifyError(pickedFile.copyError)}"`)
-      if (pickedFile.fileCopyUri === null)
-        throw new Error("Copying document to import did not returned a valid path")
-
-      Alert.alert(
-        translate("Home_alert_importDocuments_title"),
-        translate("Home_alert_importDocuments_text")
-      )
-      await createAllFolders()
-
-      const fileUri = pickedFile.fileCopyUri.replaceAll("%20", " ").replace("file://", "")
-      await unzip(fileUri, Constants.fullPathTemporaryImported)
-      await RNFS.unlink(fileUri)
-
-      const pictureToMove: string[] = []
-      const exportedDatabase = await openExportedDatabase(
-        Constants.importDatabaseFullPath
-      )
-      const exportedDocuments = exportedDatabase
-        .objects<IDocumentRealmSchema>("ExportedDocumentSchema")
-        .sorted("modifiedAt")
-
-      documentRealm.beginTransaction()
-      for (let i = 0; i < exportedDocuments.length; i++) {
-        const exportedDocument = exportedDocuments[i]
-        const importedDocument = documentRealm.create(DocumentRealmSchema, {
-          createdAt: exportedDocument.createdAt,
-          modifiedAt: Date.now(),
-          name: exportedDocument.name,
-        })
-
-        const exportedPictures = exportedDatabase
-          .objects<IDocumentPictureRealmSchema>("ExportedDocumentPictureSchema")
-          .filtered("belongsTo = $0", exportedDocument.id)
-        for (let j = 0; j < exportedPictures.length; j++) {
-          const exportedPicture = exportedPictures[j]
-          const newPicturePath = await DocumentService.getNewPicturePath(
-            exportedPicture.fileName
-          )
-          const newPictureName = DocumentService.getFileFullname(newPicturePath)
-
-          documentRealm.create(DocumentPictureRealmSchema, {
-            fileName: newPictureName,
-            position: exportedPicture.position,
-            belongsTo: importedDocument.id,
-          })
-
-          pictureToMove.push(
-            DocumentService.getTemporaryImportedPicturePath(exportedPicture.fileName)
-          )
-          pictureToMove.push(newPicturePath)
-        }
-      }
-      documentRealm.commitTransaction()
-
-      exportedDatabase.close()
-      await RNFS.unlink(Constants.importDatabaseFullPath)
-
-      documentSelection.exitSelection()
-
-      DocumentService.movePicturesService({ pictures: pictureToMove })
-    } catch (error) {
-      if (DocumentPicker.isCancel(error)) return
-
-      if (documentRealm.isInTransaction) {
-        documentRealm.cancelTransaction()
-      }
-
-      try {
-        if (await RNFS.exists(Constants.fullPathTemporaryImported)) {
-          await RNFS.unlink(Constants.fullPathTemporaryImported)
-        }
-      } catch (error) {
-        log.error(`Error deleting temporary imported files after error in document import: "${stringifyError(error)}"`)
-      }
-
-      log.error(`Error importing document: "${stringifyError(error)}"`)
-      Alert.alert(
-        translate("warn"),
-        translate("Home_alert_errorImportingDocuments_text")
-      )
-    }
-  }
-
-  async function exportSelectedDocument() {
-    Alert.alert(
-      translate("Home_alert_exportingDocuments_title"),
-      translate("Home_alert_exportingDocuments_text")
-    )
-
-    await createAllFolders()
-    try {
-      const exportedDatabase = await openExportedDatabase(
-        Constants.exportDatabaseFullPath
-      )
-
-      const selectedDocumentsObjectId = documentSelection
-        .selectedData
-        .map(Realm.BSON.ObjectId.createFromHexString)
-      const documentsToExport = documentSelection.isSelectionMode
-        ? documents.filtered("id IN $0", selectedDocumentsObjectId)
-        : documents
-
-      const filesToCopy: string[] = []
-
-      exportedDatabase.write(() => {
-        documentsToExport.forEach(documentToExport => {
-          const exportedDocument = exportedDatabase.create<IDocumentRealmSchema>(
-            "ExportedDocumentSchema",
-            {
-              createdAt: documentToExport.createdAt,
-              modifiedAt: documentToExport.modifiedAt,
-              name: documentToExport.name,
-            }
-          )
-
-          documentRealm
-            .objects(DocumentPictureRealmSchema)
-            .filtered("belongsTo = $0", documentToExport.id)
-            .forEach(pictureToExport => {
-              filesToCopy.push(DocumentService.getPicturePath(pictureToExport.fileName))
-
-              exportedDatabase.create<IDocumentPictureRealmSchema>(
-                "ExportedDocumentPictureSchema",
-                {
-                  fileName: pictureToExport.fileName,
-                  position: pictureToExport.position,
-                  belongsTo: exportedDocument.id,
-                }
-              )
-            })
-        })
-      })
-
-      exportedDatabase.close()
-
-      DocumentService.exportDocumentService({
-        pictures: filesToCopy,
-        databasePath: Constants.exportDatabaseFullPath,
-        pathZipTo: DocumentService.getTemporaryExportedDocumentPath(),
-        pathExportedDocument: DocumentService.getExportedDocumentPath(),
-      })
-    } catch (error) {
-      log.error(`Error exporting documents before invoking the background service: "${stringifyError(error)}"`)
-      Alert.alert(
-        translate("warn"),
-        translate("Home_alert_errorExportingDocuments_text")
-      )
-    }
-
-    if (documentSelection.isSelectionMode) {
-      documentSelection.exitSelection()
-    }
-  }
+  // TODO implement exportSelectedDocument using new database
+  async function exportSelectedDocument() {}
 
   function alertExportDocument() {
     if (documents.length === 0) {
@@ -338,23 +169,19 @@ export function Home() {
     )
   }
 
-  function renderItem({ item }: { item: DocumentRealmSchema }) {
-    const documentId = item.id.toHexString()
+  const renderItem: ListRenderItem<WithId<Document>> = ({ item }) => {
+    const documentId = item.id
 
     return (
       <DocumentItem
         onClick={() => {
-          const pictures = documentRealm
-            .objects(DocumentPictureRealmSchema)
-            .filtered("belongsTo = $0", item.id)
-            .sorted("position")
-          setDocumentModel({ document: item, pictures })
+          documentManager.open(documentId)
           navigation.navigate("EditDocument")
         }}
         onSelect={() => documentSelection.select(documentId)}
         onDeselect={() => documentSelection.deselect(documentId)}
         isSelectionMode={documentSelection.isSelectionMode}
-        isSelected={documentSelection.selectedData.includes(documentId)}
+        isSelected={documentSelection.isSelected(documentId)}
         document={item}
       />
     )
@@ -380,7 +207,7 @@ export function Home() {
     <View style={{ flex: 1 }}>
       <HomeHeader
         isSelectionMode={documentSelection.isSelectionMode}
-        selectedDocumentsAmount={documentSelection.selectedData.length}
+        selectedDocumentsAmount={documentSelection.length()}
         exitSelectionMode={documentSelection.exitSelection}
         invertSelection={invertSelection}
         deleteSelectedDocuments={alertDeleteDocument}
@@ -392,9 +219,9 @@ export function Home() {
 
       {documents.length > 0 && (
         <FlashList
-          data={documents.toJSON() as unknown as DocumentRealmSchema[]}
+          data={documents}
           renderItem={renderItem}
-          extraData={documentSelection.selectedData}
+          extraData={documentSelection.getSelectedData()}
           estimatedItemSize={DOCUMENT_ITEM_HEIGHT}
           ItemSeparatorComponent={() => <Divider style={{ marginHorizontal: 16 }} />}
           contentContainerStyle={{ paddingBottom: (16 * 2) + 56 + safeAreaInsets.bottom }}
@@ -422,7 +249,7 @@ export function Home() {
       />
 
       <LoadingModal
-        visible={showDocumentDeletionModal}
+        visible={documentDeletionModal.isVisible}
         message={translate("Home_deletingDocuments")}
       />
     </View>
