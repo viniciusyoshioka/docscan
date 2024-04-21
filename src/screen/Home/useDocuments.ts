@@ -1,47 +1,25 @@
-import { Realm } from "@realm/react"
-import { useEffect, useState } from "react"
-import { CollectionChangeCallback } from "realm"
+import { useState } from "react"
 
-import { DocumentRealmSchema, useDocumentRealm } from "@database"
+import { Document, WithId, useDatabase } from "@database"
 
 
-type DocumentsChanges = CollectionChangeCallback<
-  DocumentRealmSchema,
-  [number, DocumentRealmSchema]
->
+// TODO add listener to update documents when database changes
+export function useDocuments(): WithId<Document>[] {
 
 
-export function useDocuments(): Realm.Results<DocumentRealmSchema> {
+  const { documentModel } = useDatabase()
 
 
-  const documentRealm = useDocumentRealm()
-  const documentSchemas = documentRealm
-    .objects(DocumentRealmSchema)
-    .sorted("modifiedAt", true)
-
-  const [documents, setDocuments] = useState(documentSchemas)
+  const [documents, setDocuments] = useState(getAllDocuments)
 
 
-  const onChange: DocumentsChanges = (_, changes) => {
-    const hasDeletion = changes.deletions.length > 0
-    const hasInsertion = changes.insertions.length > 0
-    const hasNewModifications = changes.newModifications.length > 0
-    const hasOldModifications = changes.oldModifications.length > 0
-
-    if (hasDeletion || hasInsertion || hasNewModifications || hasOldModifications) {
-      const newDocuments = documentRealm
-        .objects(DocumentRealmSchema)
-        .sorted("modifiedAt", true)
-      setDocuments(newDocuments)
-    }
+  function getAllDocuments() {
+    return documentModel.selectAll({
+      orderBy: {
+        modifiedAt: "desc",
+      },
+    })
   }
-
-
-  useEffect(() => {
-    documentSchemas.addListener(onChange)
-
-    return () => documentSchemas.removeListener(onChange)
-  })
 
 
   return documents
