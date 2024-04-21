@@ -13,8 +13,6 @@ export interface HomeHeaderProps {
   deleteSelectedDocuments: () => void
   importDocument: () => void
   exportDocument: () => void
-  mergeDocument: () => void
-  duplicateDocument: () => void
 }
 
 
@@ -55,8 +53,6 @@ export function HomeHeader(props: HomeHeaderProps) {
         isSelectionMode={props.isSelectionMode}
         importDocument={props.importDocument}
         exportDocument={props.exportDocument}
-        mergeDocument={props.mergeDocument}
-        duplicateDocument={props.duplicateDocument}
       />
     </Appbar.Header>
   )

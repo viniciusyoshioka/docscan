@@ -11,8 +11,6 @@ export interface HomeMenuProps {
   isSelectionMode: boolean
   importDocument: () => void
   exportDocument: () => void
-  mergeDocument: () => void
-  duplicateDocument: () => void
 }
 
 
@@ -76,22 +74,6 @@ export function HomeMenu(props: HomeMenuProps) {
             onPress={() => {
               setIsOpen(false)
               props.exportDocument()
-            }}
-          />
-
-          <Menu.Item
-            title={translate("Home_menu_mergeDocument")}
-            onPress={() => {
-              setIsOpen(false)
-              props.mergeDocument()
-            }}
-          />
-
-          <Menu.Item
-            title={translate("Home_menu_duplicateDocument")}
-            onPress={() => {
-              setIsOpen(false)
-              props.duplicateDocument()
             }}
           />
         </>

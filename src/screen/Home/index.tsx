@@ -139,38 +139,6 @@ export function Home() {
     )
   }
 
-  // TODO merge selected documents
-  async function mergeSelectedDocument() {
-    documentSelection.exitSelection()
-  }
-
-  function alertMergeDocument() {
-    Alert.alert(
-      translate("Home_alert_mergeDocuments_title"),
-      translate("Home_alert_mergeDocuments_text"),
-      [
-        { text: translate("cancel"), onPress: () => {} },
-        { text: translate("Home_merge"), onPress: mergeSelectedDocument },
-      ]
-    )
-  }
-
-  // TODO duplicate selected documents
-  async function duplicateSelectedDocument() {
-    documentSelection.exitSelection()
-  }
-
-  function alertDuplicateDocument() {
-    Alert.alert(
-      translate("Home_alert_duplicateDocuments_title"),
-      translate("Home_alert_duplicateDocuments_text"),
-      [
-        { text: translate("cancel"), onPress: () => {} },
-        { text: translate("Home_duplicate"), onPress: duplicateSelectedDocument },
-      ]
-    )
-  }
-
   const renderItem: ListRenderItem<WithId<Document>> = ({ item }) => {
     const documentId = item.id
 
@@ -202,8 +170,6 @@ export function Home() {
         deleteSelectedDocuments={alertDeleteDocument}
         importDocument={importDocument}
         exportDocument={alertExportDocument}
-        mergeDocument={alertMergeDocument}
-        duplicateDocument={alertDuplicateDocument}
       />
 
       {documents.length > 0 && (
