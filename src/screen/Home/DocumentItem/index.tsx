@@ -1,25 +1,24 @@
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
-import { Checkbox, List } from "react-native-paper"
+import { List } from "react-native-paper"
 import { runOnJS } from "react-native-reanimated"
 import { SelectableItem, useSelectableItem } from "react-native-selection-mode"
 
-import { DocumentRealmSchema } from "@database"
+import { Document, WithId } from "@database"
 import { StandardDateFormatter } from "@lib/date-formatter"
-import { useAppTheme } from "@theme"
+import { SelectionCheckbok } from "./SelectionCheckbox"
 
 
 export const DOCUMENT_ITEM_HEIGHT = 64
 
 
 export interface DocumentItemProps extends SelectableItem {
-  document: DocumentRealmSchema
+  document: WithId<Document>
 }
 
 
 export function DocumentItem(props: DocumentItemProps) {
 
 
-  const { colors } = useAppTheme()
   const { onPress, onLongPress } = useSelectableItem(props)
   const dateFormatter = new StandardDateFormatter()
 
@@ -30,19 +29,6 @@ export function DocumentItem(props: DocumentItemProps) {
     .onStart(event => runOnJS(onLongPress)())
 
 
-  function SelectionCheckbok() {
-    if (props.isSelectionMode) return (
-      <Checkbox
-        status={props.isSelected ? "checked" : "unchecked"}
-        color={colors.primary}
-        uncheckedColor={colors.onSurfaceVariant}
-        onPress={onPress}
-      />
-    )
-    return null
-  }
-
-
   return (
     <GestureDetector gesture={longPressGesture}>
       <List.Item
@@ -51,7 +37,13 @@ export function DocumentItem(props: DocumentItemProps) {
         description={dateFormatter.getLocaleDateTime(props.document.modifiedAt)}
         descriptionNumberOfLines={1}
         onPress={onPress}
-        right={() => <SelectionCheckbok />}
+        right={() => (
+          <SelectionCheckbok
+            isSelected={props.isSelected}
+            isSelectionMode={props.isSelectionMode}
+            onPress={onPress}
+          />
+        )}
         style={{
           paddingRight: props.isSelectionMode ? 8 : 16,
         }}
