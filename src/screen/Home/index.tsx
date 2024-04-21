@@ -1,6 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
 import { FlashList, ListRenderItem } from "@shopify/flash-list"
-import { useEffect } from "react"
 import { Alert, View } from "react-native"
 import { Divider, FAB } from "react-native-paper"
 import { EmptyScreen, LoadingModal, useModal } from "react-native-paper-towel"
@@ -15,11 +14,11 @@ import { TranslationKeyType, translate } from "@locales"
 import { NavigationProps } from "@router"
 import { Constants } from "@services/constant"
 import { DocumentService } from "@services/document"
-import { getNotificationPermission } from "@services/permission"
 import { stringifyError } from "@utils"
 import { DOCUMENT_ITEM_HEIGHT, DocumentItem } from "./DocumentItem"
 import { HomeHeader } from "./Header"
 import { useDocuments } from "./useDocuments"
+import { useRequestNotificationPermission } from "./useRequestNotificationPermission"
 
 
 // TODO improve database operations in deleteSelectedDocument
@@ -28,6 +27,9 @@ import { useDocuments } from "./useDocuments"
 // TODO add comunication with background service to alert when export is done
 // TODO add comunication with background service to alert when import is done
 export function Home() {
+
+
+  useRequestNotificationPermission()
 
 
   const safeAreaInsets = useSafeAreaInsets()
@@ -186,21 +188,6 @@ export function Home() {
       />
     )
   }
-
-
-  useEffect(() => {
-    async function requestPermissions() {
-      const hasPermission = await getNotificationPermission()
-      if (!hasPermission) {
-        Alert.alert(
-          translate("Home_alert_notificationPermissionDenied_title"),
-          translate("Home_alert_notificationPermissionDenied_text")
-        )
-      }
-    }
-
-    requestPermissions()
-  }, [])
 
 
   return (
