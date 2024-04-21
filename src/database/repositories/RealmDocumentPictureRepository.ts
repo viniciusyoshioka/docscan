@@ -90,7 +90,9 @@ export class RealmDocumentPictureRepository implements IDocumentPictureRepositor
   public delete(id: IdOf<DocumentPicture>): void {
     try {
       const object = this.getRealmObject(id)
-      this.realm.delete(object)
+      this.realm.write(() => {
+        this.realm.delete(object)
+      })
     } catch (error) {
       const errorMessage = stringifyError(error)
       throw new UnknownDatabaseError(errorMessage)
