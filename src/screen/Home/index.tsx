@@ -189,6 +189,8 @@ export function Home() {
     )
   }
 
+  const keyExtractor = (item: WithId<Document>) => item.id
+
 
   return (
     <View style={{ flex: 1 }}>
@@ -208,6 +210,7 @@ export function Home() {
         <FlashList
           data={documents}
           renderItem={renderItem}
+          keyExtractor={keyExtractor}
           extraData={documentSelection.getSelectedData()}
           estimatedItemSize={DOCUMENT_ITEM_HEIGHT}
           ItemSeparatorComponent={() => <Divider style={{ marginHorizontal: 16 }} />}
