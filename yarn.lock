@@ -4780,10 +4780,10 @@ react-native-screens@^3.30.1:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
-react-native-selection-mode@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-selection-mode/-/react-native-selection-mode-2.0.0.tgz#21a2c0983b5d3b20ef19084049c82745bc5bfcbe"
-  integrity sha512-lmDJ35rNEhZnr5Y9W0Nk4j5CBf83ppl9OS+V+UlKL8KbKM0Qs/x7iAUTpiipdEw+DKokvaKDknd1ZUtJCoChhg==
+react-native-selection-mode@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-selection-mode/-/react-native-selection-mode-2.1.0.tgz#bb47d644c4e5877ed157b7eaf7a911a8cd5eb62e"
+  integrity sha512-v0vRfpkYIYyMQeDafi6GvrUibAYMlNAbHpbvs8Fqt0pCnC2iZckC5ZzYatjVUzTFOKTSOvKlepjIGWXdpZulZQ==
 
 react-native-share@^10.1.0:
   version "10.1.0"
