@@ -81,7 +81,9 @@ export class RealmDocumentRepository implements IDocumentRepository {
   public delete(id: IdOf<Document>): void {
     try {
       const object = this.getRealmObject(id)
-      this.realm.delete(object)
+      this.realm.write(() => {
+        this.realm.delete(object)
+      })
     } catch (error) {
       const errorMessage = stringifyError(error)
       throw new UnknownDatabaseError(errorMessage)
