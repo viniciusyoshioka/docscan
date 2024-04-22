@@ -36,14 +36,20 @@ export function HomeHeader(props: HomeHeaderProps) {
   return (
     <Appbar.Header elevated={true} statusBarHeight={safeAreaInsets.top}>
       {props.isSelectionMode && (
-        <Appbar.Action icon={"close"} onPress={props.exitSelectionMode} />
+        <Appbar.Action
+          icon={"close"}
+          onPress={props.exitSelectionMode}
+        />
       )}
 
       <Appbar.Content title={getTitle()} />
 
       {props.isSelectionMode && (
         <>
-          <Appbar.Action icon={"swap-horizontal"} onPress={props.invertSelection} />
+          <Appbar.Action
+            icon={"swap-horizontal"}
+            onPress={props.invertSelection}
+          />
 
           <Appbar.Action
             icon={"trash-can-outline"}
