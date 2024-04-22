@@ -6,15 +6,12 @@ import { EmptyScreen, LoadingModal, useModal } from "react-native-paper-towel"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useSelectionMode } from "react-native-selection-mode"
 
-import { Document, IdOf, WithId, useDatabase } from "@database"
+import { Document, IdOf, WithId } from "@database"
 import { useBackHandler } from "@hooks"
 import { useDocumentManager } from "@lib/document-state"
-import { useLogger } from "@lib/log"
 import { TranslationKeyType, translate } from "@locales"
 import { NavigationProps } from "@router"
 import { Constants } from "@services/constant"
-import { DocumentService } from "@services/document"
-import { stringifyError } from "@utils"
 import { DOCUMENT_ITEM_HEIGHT, DocumentItem } from "./DocumentItem"
 import { HomeHeader } from "./Header"
 import { useDocuments } from "./useDocuments"
@@ -35,9 +32,7 @@ export function Home() {
   const safeAreaInsets = useSafeAreaInsets()
   const navigation = useNavigation<NavigationProps<"Home">>()
 
-  const log = useLogger()
   const documents = useDocuments()
-  const { documentModel, documentPictureModel } = useDatabase()
   const documentManager = useDocumentManager()
   const documentSelection = useSelectionMode<IdOf<Document>>()
   const documentDeletionModal = useModal()
@@ -64,50 +59,6 @@ export function Home() {
 
       return newSelectedData
     })
-  }
-
-  async function deleteSelectedDocument() {
-    documentDeletionModal.show()
-
-    try {
-      const selectedDocuments = documentSelection.getSelectedData()
-
-      for (const documentId of selectedDocuments) {
-        const pictures = documentPictureModel.selectAllForDocument(documentId)
-        const picturesId = pictures.map(picture => picture.id)
-        const picturesPath = pictures.map(picture => (
-          DocumentService.getPicturePath(picture.fileName)
-        ))
-
-        documentPictureModel.deleteMultiple(picturesId)
-        documentModel.deleteMultiple(selectedDocuments)
-        DocumentService.deletePicturesService({
-          pictures: picturesPath,
-        })
-      }
-
-      documentSelection.exitSelection()
-    } catch (error) {
-      log.error(`Error deleting selected documents: "${stringifyError(error)}"`)
-      Alert.alert(
-        translate("warn"),
-        translate("Home_alert_errorDeletingSelectedDocuments_text")
-      )
-    } finally {
-      documentSelection.exitSelection()
-      documentDeletionModal.hide()
-    }
-  }
-
-  function alertDeleteDocument() {
-    Alert.alert(
-      translate("Home_alert_deleteDocuments_title"),
-      translate("Home_alert_deleteDocuments_text"),
-      [
-        { text: translate("cancel"), onPress: () => {} },
-        { text: translate("delete"), onPress: deleteSelectedDocument },
-      ]
-    )
   }
 
   // TODO implement importDocument using new database
@@ -164,10 +115,9 @@ export function Home() {
     <View style={{ flex: 1 }}>
       <HomeHeader
         isSelectionMode={documentSelection.isSelectionMode}
-        selectedDocumentsAmount={documentSelection.length()}
+        selectedDocuments={documentSelection.getSelectedData()}
         exitSelectionMode={documentSelection.exitSelection}
         invertSelection={invertSelection}
-        deleteSelectedDocuments={alertDeleteDocument}
         importDocument={importDocument}
         exportDocument={alertExportDocument}
       />

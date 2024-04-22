@@ -1,16 +1,17 @@
 import { Appbar } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
+import { Document, IdOf } from "@database"
 import { translate } from "@locales"
 import { HomeMenu } from "./HomeMenu"
+import { useDeleteSelectedDocuments } from "./useDeleteSelectedDocuments"
 
 
 export interface HomeHeaderProps {
   isSelectionMode: boolean
-  selectedDocumentsAmount: number
+  selectedDocuments: IdOf<Document>[]
   exitSelectionMode: () => void
   invertSelection: () => void
-  deleteSelectedDocuments: () => void
   importDocument: () => void
   exportDocument: () => void
 }
@@ -21,10 +22,12 @@ export function HomeHeader(props: HomeHeaderProps) {
 
   const safeAreaInsets = useSafeAreaInsets()
 
+  const deleteSelectedDocuments = useDeleteSelectedDocuments(props.selectedDocuments)
+
 
   function getTitle(): string {
     if (props.isSelectionMode) {
-      return props.selectedDocumentsAmount.toString()
+      return props.selectedDocuments.length.toString()
     }
     return translate("Home_header_title")
   }
@@ -44,7 +47,7 @@ export function HomeHeader(props: HomeHeaderProps) {
 
           <Appbar.Action
             icon={"trash-can-outline"}
-            onPress={props.deleteSelectedDocuments}
+            onPress={deleteSelectedDocuments}
           />
         </>
       )}
