@@ -12,6 +12,7 @@ export function ChangeTheme() {
 
 
   const navigation = useNavigation<NavigationProps<"ChangeTheme">>()
+
   const { settings, setSettings } = useSettings()
   const [newTheme, setNewTheme] = useState(settings.theme)
 
