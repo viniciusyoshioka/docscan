@@ -23,10 +23,9 @@ import { getReadPermission, getWritePermission } from "@services/permission"
 import { stringifyError } from "@utils"
 import { EditDocumentHeader } from "./Header"
 import {
-  HORIZONTAL_COLUMN_COUNT,
   PictureItem,
-  VERTICAL_COLUMN_COUNT,
   getPictureItemSize,
+  useColumnCount,
 } from "./Pictureitem"
 
 
@@ -56,12 +55,7 @@ export function EditDocument() {
       .toJSON() as unknown as DocumentPictureRealmSchema[]
   }, [document])
 
-  const columnCount = useMemo(
-    () => (windowWidth < windowHeight)
-      ? VERTICAL_COLUMN_COUNT
-      : HORIZONTAL_COLUMN_COUNT
-    , [windowWidth, windowHeight]
-  )
+  const columnCount = useColumnCount()
   const estimatedItemSize = getPictureItemSize(windowWidth, columnCount)
 
   const pictureSelection = useSelectionMode<number>()

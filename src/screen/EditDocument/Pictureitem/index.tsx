@@ -9,10 +9,10 @@ import { useStyles } from "react-native-unistyles"
 import { useAppTheme } from "@theme"
 import { SelectionLayer } from "./SelectionLayer"
 import { PICTURE_BUTTON_MARGIN, stylesheet } from "./style"
+import { useColumnCount } from "./useColumnCount"
 
 
-export const VERTICAL_COLUMN_COUNT = 2
-export const HORIZONTAL_COLUMN_COUNT = 4
+export { useColumnCount }
 
 
 export function getPictureItemSize(windowWidth: number, columnCount: number): number {
@@ -24,7 +24,6 @@ export function getPictureItemSize(windowWidth: number, columnCount: number): nu
 
 export interface PictureItemProps extends SelectableItem {
   picturePath: string
-  columnCount: number
 }
 
 
@@ -36,8 +35,9 @@ export function PictureItem(props: PictureItemProps) {
   const { onPress, onLongPress } = useSelectableItem(props)
 
   const { colors } = useAppTheme()
+  const columnCount = useColumnCount()
 
-  const pictureItemSize = getPictureItemSize(width, props.columnCount)
+  const pictureItemSize = getPictureItemSize(width, columnCount)
 
 
   const longPressGesture = Gesture.LongPress()
