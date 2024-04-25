@@ -32,9 +32,10 @@ export function PictureItem(props: PictureItemProps) {
 
 
   const { width } = useWindowDimensions()
-  const { colors } = useAppTheme()
   const { styles } = useStyles(stylesheet)
   const { onPress, onLongPress } = useSelectableItem(props)
+
+  const { colors } = useAppTheme()
 
   const pictureItemSize = getPictureItemSize(width, props.columnCount)
 
