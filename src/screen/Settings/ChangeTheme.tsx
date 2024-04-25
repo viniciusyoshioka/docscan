@@ -36,19 +36,19 @@ export function ChangeTheme() {
         >
           <RadioButton.Item
             label={translate("ChangeTheme_auto")}
-            value={"auto"}
+            value={"auto" as ThemeType}
             style={{ paddingHorizontal: 0 }}
           />
 
           <RadioButton.Item
             label={translate("ChangeTheme_light")}
-            value={"light"}
+            value={"light" as ThemeType}
             style={{ paddingHorizontal: 0 }}
           />
 
           <RadioButton.Item
             label={translate("ChangeTheme_dark")}
-            value={"dark"}
+            value={"dark" as ThemeType}
             style={{ paddingHorizontal: 0 }}
           />
         </RadioButton.Group>
