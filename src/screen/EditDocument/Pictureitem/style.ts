@@ -1,3 +1,4 @@
+import Color from "color"
 import { createStyleSheet } from "react-native-unistyles"
 
 
@@ -27,8 +28,12 @@ export const stylesheet = createStyleSheet(theme => ({
     bottom: 0,
     left: 0,
     right: 0,
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: theme.shape.small,
-    backgroundColor: theme.colors.primary,
-    opacity: 0.5,
+    backgroundColor: Color(theme.colors.primary)
+      .alpha(0.5)
+      .rgb()
+      .toString(),
   },
 }))

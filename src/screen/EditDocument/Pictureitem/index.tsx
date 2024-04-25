@@ -1,12 +1,13 @@
-import { View, useWindowDimensions } from "react-native"
+import { useWindowDimensions } from "react-native"
 import FastImage from "react-native-fast-image"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
-import { Icon, Pressable } from "react-native-paper-towel"
+import { Pressable } from "react-native-paper-towel"
 import { runOnJS } from "react-native-reanimated"
 import { SelectableItem, useSelectableItem } from "react-native-selection-mode"
 import { useStyles } from "react-native-unistyles"
 
 import { useAppTheme } from "@theme"
+import { SelectionLayer } from "./SelectionLayer"
 import { PICTURE_BUTTON_MARGIN, stylesheet } from "./style"
 
 
@@ -56,18 +57,9 @@ export function PictureItem(props: PictureItemProps) {
           style={styles.pictureImage}
         />
 
-        {props.isSelectionMode && props.isSelected && (
-          <>
-            <View style={styles.selectedSurface} />
-
-            <Icon
-              name={"check"}
-              size={32}
-              color={colors.onPrimary}
-              style={{ position: "absolute" }}
-            />
-          </>
-        )}
+        <SelectionLayer
+          isVisible={props.isSelectionMode && props.isSelected}
+        />
       </Pressable>
     </GestureDetector>
   )
