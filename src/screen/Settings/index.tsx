@@ -19,6 +19,7 @@ export function Settings() {
 
 
   const navigation = useNavigation<NavigationProps<"Settings">>()
+
   const log = useLogger()
 
 
