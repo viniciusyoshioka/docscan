@@ -21,7 +21,7 @@ import { stringifyError } from "@utils"
 import { stylesheet } from "./style"
 
 
-type DocumentPdfCompressionLevel = "low" | "high" | "custom"
+type CompressionLevel = "low" | "high" | "custom"
 
 
 export function ConvertPdfOption() {
@@ -39,9 +39,7 @@ export function ConvertPdfOption() {
 
   const [compressionVisualValue, setCompressionVisualValue] = useState(60)
   const [compressionValue, setCompressionValue] = useState(60)
-  const [compressionLevel, setCompressionLevel] = useState<DocumentPdfCompressionLevel>(
-    "high"
-  )
+  const [compressionLevel, setCompressionLevel] = useState<CompressionLevel>("high")
   const isSliderDisabled = compressionLevel !== "custom"
 
 
@@ -106,8 +104,8 @@ export function ConvertPdfOption() {
   }
 
 
-  function onOptionChange(newValue: DocumentPdfCompressionLevel) {
-    switch (newValue as DocumentPdfCompressionLevel) {
+  function onOptionChange(newValue: CompressionLevel) {
+    switch (newValue as CompressionLevel) {
       case "high":
         setCompressionVisualValue(60)
         setCompressionValue(60)
@@ -139,23 +137,23 @@ export function ConvertPdfOption() {
 
         <RadioButton.Group
           value={compressionLevel}
-          onValueChange={value => onOptionChange(value as DocumentPdfCompressionLevel)}
+          onValueChange={value => onOptionChange(value as CompressionLevel)}
         >
           <RadioButton.Item
             label={translate("ConvertPdfOption_highCompression")}
-            value={"high"}
+            value={"high" as CompressionLevel}
             style={{ paddingHorizontal: 0 }}
           />
 
           <RadioButton.Item
             label={translate("ConvertPdfOption_lowCompression")}
-            value={"low"}
+            value={"low" as CompressionLevel}
             style={{ paddingHorizontal: 0 }}
           />
 
           <RadioButton.Item
             label={translate("ConvertPdfOption_customCompression")}
-            value={"custom"}
+            value={"custom" as CompressionLevel}
             style={{ paddingHorizontal: 0 }}
           />
         </RadioButton.Group>
