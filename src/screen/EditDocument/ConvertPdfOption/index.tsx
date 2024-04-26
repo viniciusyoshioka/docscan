@@ -110,21 +110,16 @@ export function ConvertPdfOption() {
 
 
   function onOptionChange(newValue: CompressionLevel) {
-    switch (newValue as CompressionLevel) {
-      case "high":
-        setSliderValue(60)
-        setCompression(60)
-        break
-      case "low":
-        setSliderValue(20)
-        setCompression(20)
-        break
-      case "custom":
-      default:
-        setSliderValue(0)
-        setCompression(0)
-        break
+    let newCompression = 0
+
+    if (newValue === "low") {
+      newCompression = LOW_COMPRESSION
+    } else if (newValue === "high") {
+      newCompression = HIGHT_COMPRESSION
     }
+
+    setSliderValue(newCompression)
+    setCompression(newCompression)
     setCompressionLevel(newValue)
   }
 
