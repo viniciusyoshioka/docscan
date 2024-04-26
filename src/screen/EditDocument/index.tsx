@@ -6,7 +6,11 @@ import { useSelectionMode } from "react-native-selection-mode"
 
 import { DocumentPicture, IdOf, WithId } from "@database"
 import { useBackHandler } from "@hooks"
-import { DocumentStateData, useDocumentState } from "@lib/document-state"
+import {
+  DocumentStateData,
+  useDocumentManager,
+  useDocumentState,
+} from "@lib/document-state"
 import { useLogger } from "@lib/log"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
@@ -30,11 +34,11 @@ export function EditDocument() {
   const log = useLogger()
 
   const { documentState, updateDocumentState } = useDocumentState()
-  const { document, pictures } = documentState as DocumentStateData
-
+  const documentManager = useDocumentManager()
   const columnCount = useColumnCount()
   const estimatedItemSize = usePictureItemSize()
 
+  const { document, pictures } = documentState as DocumentStateData
   const pictureSelection = useSelectionMode<IdOf<DocumentPicture>>()
   const deletingPicturesModal = useModal()
   const deleteSelectedPictures = useDeleteSelectedPictures(
@@ -54,7 +58,7 @@ export function EditDocument() {
       return
     }
 
-    setDocumentModel(undefined)
+    documentManager.close()
     navigation.goBack()
   }
 
