@@ -169,11 +169,13 @@ export function EditDocument() {
   }
 
   function invertSelection() {
-    pictureSelection.setSelectedData(current => {
-      const newSelectedData: number[] = []
-      for (let i = 0; i < pictures.length; i++) {
-        if (!current.includes(i)) newSelectedData.push(i)
-      }
+    pictureSelection.setNewSelectedData(current => {
+      const newSelectedData = new Set<number>()
+      pictures.forEach((_, index) => {
+        if (!current.has(index)) {
+          newSelectedData.add(index)
+        }
+      })
       return newSelectedData
     })
   }
@@ -249,7 +251,7 @@ export function EditDocument() {
         onSelect={() => pictureSelection.select(index)}
         onDeselect={() => pictureSelection.deselect(index)}
         isSelectionMode={pictureSelection.isSelectionMode}
-        isSelected={pictureSelection.selectedData.includes(index)}
+        isSelected={pictureSelection.isSelected(index)}
         picturePath={DocumentService.getPicturePath(item.fileName)}
       />
     )
@@ -266,7 +268,7 @@ export function EditDocument() {
         goBack={goBack}
         exitSelectionMode={pictureSelection.exitSelection}
         isSelectionMode={pictureSelection.isSelectionMode}
-        selectedPicturesAmount={pictureSelection.selectedData.length}
+        selectedPicturesAmount={pictureSelection.length()}
         invertSelection={invertSelection}
         deletePicture={alertDeletePicture}
         openCamera={() => navigation.navigate("Camera", { screenAction: "add-picture" })}
