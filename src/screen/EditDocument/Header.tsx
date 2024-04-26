@@ -37,13 +37,10 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
 
   return (
     <Appbar.Header elevated={true} statusBarHeight={safeAreaInsets.top}>
-      {!props.isSelectionMode && (
-        <Appbar.BackAction onPress={props.goBack} />
-      )}
-
-      {props.isSelectionMode && (
-        <Appbar.Action icon={"close"} onPress={props.exitSelectionMode} />
-      )}
+      <Appbar.Action
+        icon={props.isSelectionMode ? "close" : "arrow-left"}
+        onPress={props.isSelectionMode ? props.exitSelectionMode : props.goBack}
+      />
 
       <Appbar.Content title={documentTitle} />
 
