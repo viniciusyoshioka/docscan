@@ -8,11 +8,7 @@ import { useStyles } from "react-native-unistyles"
 import { useAppTheme } from "@theme"
 import { SelectionLayer } from "./SelectionLayer"
 import { stylesheet } from "./style"
-import { useColumnCount } from "./useColumnCount"
 import { usePictureItemSize } from "./usePictureItemSize"
-
-
-export { useColumnCount, usePictureItemSize }
 
 
 export interface PictureItemProps extends SelectableItem {
