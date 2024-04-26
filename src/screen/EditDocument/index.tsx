@@ -22,11 +22,7 @@ import { PdfCreator } from "@services/pdf-creator"
 import { getReadPermission, getWritePermission } from "@services/permission"
 import { stringifyError } from "@utils"
 import { EditDocumentHeader } from "./Header"
-import {
-  PictureItem,
-  getPictureItemSize,
-  useColumnCount,
-} from "./Pictureitem"
+import { PictureItem, useColumnCount, usePictureItemSize } from "./Pictureitem"
 
 
 export { ConvertPdfOption } from "./ConvertPdfOption"
@@ -41,8 +37,6 @@ export function EditDocument() {
   const navigation = useNavigation<NavigationProps<"EditDocument">>()
   const log = useLogger()
 
-  const { width: windowWidth, height: windowHeight } = useWindowDimensions()
-
   const { documentModel, setDocumentModel } = useDocumentModel()
   const documentRealm = useDocumentRealm()
   const document = documentModel?.document ?? undefined
@@ -56,7 +50,7 @@ export function EditDocument() {
   }, [document])
 
   const columnCount = useColumnCount()
-  const estimatedItemSize = getPictureItemSize(windowWidth, columnCount)
+  const estimatedItemSize = usePictureItemSize()
 
   const pictureSelection = useSelectionMode<number>()
   const [isDeletingPictures, setIsDeletingPictures] = useState(false)
@@ -295,7 +289,6 @@ export function EditDocument() {
         isSelectionMode={pictureSelection.isSelectionMode}
         isSelected={pictureSelection.selectedData.includes(index)}
         picturePath={DocumentService.getPicturePath(item.fileName)}
-        columnCount={columnCount}
       />
     )
   }

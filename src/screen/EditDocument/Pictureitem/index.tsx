@@ -1,4 +1,3 @@
-import { useWindowDimensions } from "react-native"
 import FastImage from "react-native-fast-image"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import { Pressable } from "react-native-paper-towel"
@@ -8,18 +7,12 @@ import { useStyles } from "react-native-unistyles"
 
 import { useAppTheme } from "@theme"
 import { SelectionLayer } from "./SelectionLayer"
-import { PICTURE_BUTTON_MARGIN, stylesheet } from "./style"
+import { stylesheet } from "./style"
 import { useColumnCount } from "./useColumnCount"
+import { usePictureItemSize } from "./usePictureItemSize"
 
 
-export { useColumnCount }
-
-
-export function getPictureItemSize(windowWidth: number, columnCount: number): number {
-  const singlePictureItemMarginWidth = (2 * PICTURE_BUTTON_MARGIN)
-  const pictureItemRowWidth = windowWidth - singlePictureItemMarginWidth
-  return (pictureItemRowWidth / columnCount) - singlePictureItemMarginWidth
-}
+export { useColumnCount, usePictureItemSize }
 
 
 export interface PictureItemProps extends SelectableItem {
@@ -30,14 +23,11 @@ export interface PictureItemProps extends SelectableItem {
 export function PictureItem(props: PictureItemProps) {
 
 
-  const { width } = useWindowDimensions()
   const { styles } = useStyles(stylesheet)
   const { onPress, onLongPress } = useSelectableItem(props)
 
   const { colors } = useAppTheme()
-  const columnCount = useColumnCount()
-
-  const pictureItemSize = getPictureItemSize(width, columnCount)
+  const pictureItemSize = usePictureItemSize()
 
 
   const longPressGesture = Gesture.LongPress()
