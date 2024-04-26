@@ -6,7 +6,6 @@ import RNFS from "react-native-fs"
 import { Button, Dialog, RadioButton, Text } from "react-native-paper"
 import { useStyles } from "react-native-unistyles"
 
-import { useDocumentModel } from "@database"
 import { useBackHandler } from "@hooks"
 import { useLogger } from "@lib/log"
 import { translate } from "@locales"
@@ -34,12 +33,8 @@ export function ConvertPdfOption() {
 
   const navigation = useNavigation<NavigationProps<"ConvertPdfOption">>()
   const { styles } = useStyles(stylesheet)
+
   const log = useLogger()
-
-  const { documentModel } = useDocumentModel()
-  const document = documentModel?.document ?? null
-  const pictures = documentModel?.pictures ?? []
-
   const { colors } = useAppTheme()
 
   const [sliderValue, setSliderValue] = useState(DEFAULT_COMPRESSION)
