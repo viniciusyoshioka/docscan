@@ -23,6 +23,11 @@ import { stylesheet } from "./style"
 
 type CompressionLevel = "low" | "high" | "custom"
 
+const LOW_COMPRESSION = 20
+const HIGHT_COMPRESSION = 60
+const DEFAULT_COMPRESSION = HIGHT_COMPRESSION
+const DEFAULT_COMPRESSION_LEVEL: CompressionLevel = "high"
+
 
 export function ConvertPdfOption() {
 
@@ -38,7 +43,7 @@ export function ConvertPdfOption() {
   const { colors } = useAppTheme()
 
   const [compressionVisualValue, setCompressionVisualValue] = useState(60)
-  const [compressionValue, setCompressionValue] = useState(60)
+  const [compression, setCompression] = useState(DEFAULT_COMPRESSION)
   const [compressionLevel, setCompressionLevel] = useState<CompressionLevel>("high")
   const isSliderDisabled = compressionLevel !== "custom"
 
@@ -108,16 +113,16 @@ export function ConvertPdfOption() {
     switch (newValue as CompressionLevel) {
       case "high":
         setCompressionVisualValue(60)
-        setCompressionValue(60)
+        setCompression(60)
         break
       case "low":
         setCompressionVisualValue(20)
-        setCompressionValue(20)
+        setCompression(20)
         break
       case "custom":
       default:
         setCompressionVisualValue(0)
-        setCompressionValue(0)
+        setCompression(0)
         break
     }
     setCompressionLevel(newValue)
@@ -171,8 +176,8 @@ export function ConvertPdfOption() {
             minimumValue={0}
             maximumValue={100}
             step={1}
-            value={compressionValue}
-            onSlidingComplete={value => setCompressionValue(value)}
+            value={compression}
+            onSlidingComplete={value => setCompression(value)}
             onValueChange={value => setCompressionVisualValue(value)}
             minimumTrackTintColor={colors.primary}
             maximumTrackTintColor={colors.onBackground}
