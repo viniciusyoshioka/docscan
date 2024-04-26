@@ -1,14 +1,17 @@
 import { useState } from "react"
-import { StatusBar } from "react-native"
+import { Alert, StatusBar } from "react-native"
 import { Appbar, Menu } from "react-native-paper"
 
+import { useLogger } from "@lib/log"
 import { translate } from "@locales"
+import { stringifyError } from "@utils"
+import { FileNotExistsError, NoReadPermissionError } from "./errors"
+import { useVisualizePdf } from "./useVisualizePdf"
 
 
 export interface EditDocumentMenuProps {
   convertToPdf: () => void
   shareDocument: () => void
-  visualizePdf: () => void
   renameDocument: () => void
   deletePdf: () => void
 }
@@ -16,6 +19,9 @@ export interface EditDocumentMenuProps {
 
 export function EditDocumentMenu(props: EditDocumentMenuProps) {
 
+
+  const log = useLogger()
+  const visualizePdf = useVisualizePdf()
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -27,6 +33,33 @@ export function EditDocumentMenu(props: EditDocumentMenuProps) {
         onPress={() => setIsOpen(true)}
       />
     )
+  }
+
+  async function handleVisualizePdf() {
+    try {
+      setIsOpen(false)
+      await visualizePdf()
+    } catch (error) {
+      if (error instanceof NoReadPermissionError) {
+        log.error(`No read permission to access PDF file: ${stringifyError(error)}`)
+        Alert.alert(
+          translate("warn"),
+          translate("EditDocument_alert_noPermissionToVisualizePdf_text")
+        )
+      } else if (error instanceof FileNotExistsError) {
+        log.error(`PDF file to visualize doesn't exists: ${stringifyError(error)}`)
+        Alert.alert(
+          translate("warn"),
+          translate("EditDocument_alert_pdfFileDoesNotExists_text")
+        )
+      } else {
+        log.error(`Unexpected error visualizing pdf: ${stringifyError(error)}`)
+        Alert.alert(
+          translate("warn"),
+          translate("EditDocument_menu_unexpectedErrorVisualizingPdf_text")
+        )
+      }
+    }
   }
 
 
@@ -55,10 +88,7 @@ export function EditDocumentMenu(props: EditDocumentMenuProps) {
 
       <Menu.Item
         title={translate("EditDocument_menu_visualizePdf")}
-        onPress={() => {
-          setIsOpen(false)
-          props.visualizePdf()
-        }}
+        onPress={handleVisualizePdf}
       />
 
       <Menu.Item

@@ -69,6 +69,8 @@ export const pt_BR: TranslationObjectType = {
   // EditDocument screen
   EditDocument_shareDocument: "Compartilhar documento",
   EditDocument_deletingPictures: "Apagando imagens...",
+  // EditDocument menu alert
+  EditDocument_menu_unexpectedErrorVisualizingPdf_text: "Error inesperado ao visualizar PDF",
   // EditDocument menu
   EditDocument_menu_convertToPdf: "Converter para PDF",
   EditDocument_menu_sharePdf: "Compartilhar PDF",

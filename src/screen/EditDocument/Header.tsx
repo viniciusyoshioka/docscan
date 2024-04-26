@@ -16,7 +16,6 @@ export interface EditDocumentHeaderProps {
   deletePicture: () => void
   openCamera: () => void
   shareDocument: () => void
-  visualizePdf: () => void
   deletePdf: () => void
 }
 
@@ -54,7 +53,6 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
           <EditDocumentMenu
             convertToPdf={() => navigation.navigate("ConvertPdfOption")}
             shareDocument={props.shareDocument}
-            visualizePdf={props.visualizePdf}
             renameDocument={() => navigation.navigate("RenameDocument")}
             deletePdf={props.deletePdf}
           />

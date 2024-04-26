@@ -18,9 +18,6 @@ import { useLogger } from "@lib/log"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
 import { DocumentService } from "@services/document"
-import { PdfCreator } from "@services/pdf-creator"
-import { getReadPermission, getWritePermission } from "@services/permission"
-import { stringifyError } from "@utils"
 import { EditDocumentHeader } from "./Header"
 import { PictureItem, useColumnCount, usePictureItemSize } from "./Pictureitem"
 
@@ -108,41 +105,6 @@ export function EditDocument() {
         translate("EditDocument_alert_errorSharingPdf_text")
       )
     }
-  }
-
-  async function visualizePdf() {
-    if (!document) {
-      log.warn("There is no document to visualize the PDF")
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_noDocumentOpened_text")
-      )
-      return
-    }
-
-    const hasPermission = await getReadPermission()
-    if (!hasPermission) {
-      log.warn("Can not visualize PDF because the permission was not granted")
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_noPermissionToVisualizePdf_text")
-      )
-      return
-    }
-
-    const pdfFilePath = DocumentService.getPdfPath(document.name)
-
-    const pdfFileExists = await RNFS.exists(pdfFilePath)
-    if (!pdfFileExists) {
-      log.warn("Can not visualize PDF because it doesn't exists")
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_convertNotExistentPdfToVisualize_text")
-      )
-      return
-    }
-
-    PdfCreator.viewPdf(pdfFilePath)
   }
 
   async function deletePdf() {
@@ -309,7 +271,6 @@ export function EditDocument() {
         deletePicture={alertDeletePicture}
         openCamera={() => navigation.navigate("Camera", { screenAction: "add-picture" })}
         shareDocument={shareDocument}
-        visualizePdf={visualizePdf}
         deletePdf={alertDeletePdf}
       />
 
