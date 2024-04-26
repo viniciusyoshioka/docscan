@@ -1,21 +1,20 @@
 import { useNavigation } from "@react-navigation/core"
 import { FlashList, ListRenderItem } from "@shopify/flash-list"
-import { useCallback, useMemo, useState } from "react"
-import { Alert, View, useWindowDimensions } from "react-native"
-import RNFS from "react-native-fs"
-import { LoadingModal } from "react-native-paper-towel"
+import { Alert, View } from "react-native"
+import { LoadingModal, useModal } from "react-native-paper-towel"
 import { useSelectionMode } from "react-native-selection-mode"
-import Share from "react-native-share"
 
-import { DocumentPicture, WithId } from "@database"
+import { DocumentPicture, IdOf, WithId } from "@database"
 import { useBackHandler } from "@hooks"
 import { DocumentStateData, useDocumentState } from "@lib/document-state"
 import { useLogger } from "@lib/log"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
 import { DocumentService } from "@services/document"
+import { stringifyError } from "@utils"
 import { EditDocumentHeader } from "./Header"
 import { PictureItem, useColumnCount, usePictureItemSize } from "./Pictureitem"
+import { useDeleteSelectedPictures } from "./useDeleteSelectedPictures"
 
 
 export { ConvertPdfOption } from "./ConvertPdfOption"
@@ -36,8 +35,11 @@ export function EditDocument() {
   const columnCount = useColumnCount()
   const estimatedItemSize = usePictureItemSize()
 
-  const pictureSelection = useSelectionMode<number>()
-  const [isDeletingPictures, setIsDeletingPictures] = useState(false)
+  const pictureSelection = useSelectionMode<IdOf<DocumentPicture>>()
+  const deletingPicturesModal = useModal()
+  const deleteSelectedPictures = useDeleteSelectedPictures(
+    pictureSelection.getSelectedData()
+  )
 
 
   useBackHandler(() => {
@@ -119,10 +121,10 @@ export function EditDocument() {
 
   function invertSelection() {
     pictureSelection.setNewSelectedData(current => {
-      const newSelectedData = new Set<number>()
-      pictures.forEach((_, index) => {
-        if (!current.has(index)) {
-          newSelectedData.add(index)
+      const newSelectedData = new Set<IdOf<DocumentPicture>>()
+      pictures.forEach(item => {
+        if (!current.has(item.id)) {
+          newSelectedData.add(item.id)
         }
       })
       return newSelectedData
@@ -130,77 +132,43 @@ export function EditDocument() {
   }
 
   async function deleteSelectedPicture() {
-    if (!document)
-      throw new Error(
-        "There is no document to delete its pictures, this should not happen"
-      )
-
-    setIsDeletingPictures(true)
-
-    const picturePathsToDelete = pictureSelection.selectedData.map(index => (
-      DocumentService.getPicturePath(pictures[index].fileName)
-    ))
+    deletingPicturesModal.show()
 
     try {
-      documentRealm.write(() => {
-        const realmPicturesToDelete = documentRealm.objects(DocumentPictureRealmSchema)
-          .filtered("belongsTo = $0", document.id)
-          .sorted("position")
-          .filter((_, index) => pictureSelection.selectedData.includes(index))
-
-        documentRealm.delete(realmPicturesToDelete)
-        document.modifiedAt = Date.now()
-      })
-
-      const updatedDocument = documentRealm.objectForPrimaryKey(
-        DocumentRealmSchema,
-        document.id
-      )
-      const updatedPictures = documentRealm
-        .objects(DocumentPictureRealmSchema)
-        .filtered("belongsTo = $0", document.id)
-        .sorted("position")
-      if (!updatedDocument)
-        throw new Error("Document is undefined, this should not happen")
-      setDocumentModel({ document: updatedDocument, pictures: updatedPictures })
-
-      DocumentService.deletePicturesService({ pictures: picturePathsToDelete })
+      deleteSelectedPictures()
     } catch (error) {
-      log.error(`Error deleting selected pictures from database: "${stringifyError(error)}"`)
+      log.error(`Error deleting selected pictures: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("EditDocument_alert_errorDeletingSelectedPictures_text")
       )
+    } finally {
+      pictureSelection.exitSelection()
+      deletingPicturesModal.hide()
     }
-
-    pictureSelection.exitSelection()
-    setIsDeletingPictures(false)
   }
 
   function alertDeletePicture() {
-    if (!document)
-      throw new Error(
-        "There is no document to delete its pictures, this should not happen"
-      )
-
     Alert.alert(
       translate("EditDocument_alert_deletePicture_title"),
       translate("EditDocument_alert_deletePicture_text"),
       [
-        { text: translate("cancel"), onPress: () => {} },
+        { text: translate("cancel") },
         { text: translate("ok"), onPress: deleteSelectedPicture },
       ]
     )
   }
 
   const renderItem: ListRenderItem<WithId<DocumentPicture>> = ({ item, index }) => {
+    const pictureId = item.id
+
     return (
       <PictureItem
         onClick={() => navigation.navigate("VisualizePicture", { pictureIndex: index })}
-        onSelect={() => pictureSelection.select(index)}
-        onDeselect={() => pictureSelection.deselect(index)}
+        onSelect={() => pictureSelection.select(pictureId)}
+        onDeselect={() => pictureSelection.deselect(pictureId)}
         isSelectionMode={pictureSelection.isSelectionMode}
-        isSelected={pictureSelection.isSelected(index)}
+        isSelected={pictureSelection.isSelected(pictureId)}
         picturePath={DocumentService.getPicturePath(item.fileName)}
       />
     )
@@ -234,7 +202,7 @@ export function EditDocument() {
 
       <LoadingModal
         message={translate("EditDocument_deletingPictures")}
-        visible={isDeletingPictures}
+        visible={deletingPicturesModal.isVisible}
       />
     </View>
   )
