@@ -44,7 +44,9 @@ export function ConvertPdfOption() {
 
   const [sliderValue, setSliderValue] = useState(DEFAULT_COMPRESSION)
   const [compression, setCompression] = useState(DEFAULT_COMPRESSION)
-  const [compressionLevel, setCompressionLevel] = useState<CompressionLevel>("high")
+  const [compressionLevel, setCompressionLevel] = useState<CompressionLevel>(
+    DEFAULT_COMPRESSION_LEVEL
+  )
   const isSliderDisabled = compressionLevel !== "custom"
 
 
