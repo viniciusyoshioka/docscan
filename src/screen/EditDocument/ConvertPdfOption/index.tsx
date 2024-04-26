@@ -42,7 +42,7 @@ export function ConvertPdfOption() {
 
   const { colors } = useAppTheme()
 
-  const [compressionVisualValue, setCompressionVisualValue] = useState(60)
+  const [sliderValue, setSliderValue] = useState(DEFAULT_COMPRESSION)
   const [compression, setCompression] = useState(DEFAULT_COMPRESSION)
   const [compressionLevel, setCompressionLevel] = useState<CompressionLevel>("high")
   const isSliderDisabled = compressionLevel !== "custom"
@@ -112,16 +112,16 @@ export function ConvertPdfOption() {
   function onOptionChange(newValue: CompressionLevel) {
     switch (newValue as CompressionLevel) {
       case "high":
-        setCompressionVisualValue(60)
+        setSliderValue(60)
         setCompression(60)
         break
       case "low":
-        setCompressionVisualValue(20)
+        setSliderValue(20)
         setCompression(20)
         break
       case "custom":
       default:
-        setCompressionVisualValue(0)
+        setSliderValue(0)
         setCompression(0)
         break
     }
@@ -167,7 +167,7 @@ export function ConvertPdfOption() {
           <Text
             disabled={isSliderDisabled}
             style={styles.compressionText(isSliderDisabled)}
-            children={`${compressionVisualValue}%`}
+            children={`${sliderValue}%`}
           />
 
           <Slider
@@ -178,7 +178,7 @@ export function ConvertPdfOption() {
             step={1}
             value={compression}
             onSlidingComplete={value => setCompression(value)}
-            onValueChange={value => setCompressionVisualValue(value)}
+            onValueChange={value => setSliderValue(value)}
             minimumTrackTintColor={colors.primary}
             maximumTrackTintColor={colors.onBackground}
             thumbTintColor={(
