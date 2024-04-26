@@ -46,7 +46,10 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
 
       {!props.isSelectionMode && (
         <>
-          <Appbar.Action icon={"camera-plus-outline"} onPress={props.openCamera} />
+          <Appbar.Action
+            icon={"camera-plus-outline"}
+            onPress={props.openCamera}
+          />
 
           <EditDocumentMenu
             convertToPdf={() => navigation.navigate("ConvertPdfOption")}
@@ -60,9 +63,15 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
 
       {props.isSelectionMode && (
         <>
-          <Appbar.Action icon={"swap-horizontal"} onPress={props.invertSelection} />
+          <Appbar.Action
+            icon={"swap-horizontal"}
+            onPress={props.invertSelection}
+          />
 
-          <Appbar.Action icon={"trash-can-outline"} onPress={props.deletePicture} />
+          <Appbar.Action
+            icon={"trash-can-outline"}
+            onPress={props.deletePicture}
+          />
         </>
       )}
     </Appbar.Header>
