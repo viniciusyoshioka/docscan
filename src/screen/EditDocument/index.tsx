@@ -7,13 +7,9 @@ import { LoadingModal } from "react-native-paper-towel"
 import { useSelectionMode } from "react-native-selection-mode"
 import Share from "react-native-share"
 
-import {
-  DocumentPictureRealmSchema,
-  DocumentRealmSchema,
-  useDocumentModel,
-  useDocumentRealm,
-} from "@database"
+import { DocumentPicture, WithId } from "@database"
 import { useBackHandler } from "@hooks"
+import { DocumentStateData, useDocumentState } from "@lib/document-state"
 import { useLogger } from "@lib/log"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
@@ -34,17 +30,8 @@ export function EditDocument() {
   const navigation = useNavigation<NavigationProps<"EditDocument">>()
   const log = useLogger()
 
-  const { documentModel, setDocumentModel } = useDocumentModel()
-  const documentRealm = useDocumentRealm()
-  const document = documentModel?.document ?? undefined
-  const pictures = useMemo(() => {
-    if (document === undefined) return []
-
-    return documentRealm.objects(DocumentPictureRealmSchema)
-      .filtered("belongsTo = $0", document.id)
-      .sorted("position")
-      .toJSON() as unknown as DocumentPictureRealmSchema[]
-  }, [document])
+  const { documentState, updateDocumentState } = useDocumentState()
+  const { document, pictures } = documentState as DocumentStateData
 
   const columnCount = useColumnCount()
   const estimatedItemSize = usePictureItemSize()
@@ -244,7 +231,7 @@ export function EditDocument() {
     )
   }
 
-  const renderItem: ListRenderItem<DocumentPictureRealmSchema> = ({ item, index }) => {
+  const renderItem: ListRenderItem<WithId<DocumentPicture>> = ({ item, index }) => {
     return (
       <PictureItem
         onClick={() => navigation.navigate("VisualizePicture", { pictureIndex: index })}
@@ -257,9 +244,7 @@ export function EditDocument() {
     )
   }
 
-  const keyExtractor = useCallback((_: DocumentPictureRealmSchema, index: number) => (
-    index.toString()
-  ), [])
+  const keyExtractor = (item: WithId<DocumentPicture>) => item.id
 
 
   return (
