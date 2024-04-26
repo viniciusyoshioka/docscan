@@ -181,8 +181,9 @@ export function ConvertPdfOption() {
             onValueChange={value => setSliderValue(value)}
             minimumTrackTintColor={colors.primary}
             maximumTrackTintColor={colors.onBackground}
-            thumbTintColor={(
-              compressionLevel === "custom" ? colors.primary : colors.onSurface
+            thumbTintColor={(compressionLevel === "custom"
+              ? colors.primary
+              : colors.onSurface
             )}
           />
         </View>
