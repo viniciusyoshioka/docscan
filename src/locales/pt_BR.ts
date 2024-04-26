@@ -53,7 +53,7 @@ export const pt_BR: TranslationObjectType = {
   EditDocument_alert_documentWithoutName_text: "Não é possível converter um documento sem nome para PDF",
   EditDocument_alert_noDocumentOpened_text: "Não há documento aberto",
   EditDocument_alert_convertNotExistentPdfToShare_text: "Arquivo PDF não existe, converta o documento para compartilhá-lo",
-  EditDocument_alert_errorSharingPdf_text: "Erro compartilhando PDF",
+  EditDocument_alert_unexpectedErrorSharingPdf_text: "Erro inesperado compartilhando PDF",
   EditDocument_alert_noPermissionToVisualizePdf_text: "Sem permissão para visualizar PDF",
   EditDocument_alert_convertNotExistentPdfToVisualize_text: "Arquivo PDF não existe, converta o documento para visualizá-lo",
   EditDocument_alert_noPermissionToDeletePdf_text: "Sem permissão para apagar PDF",

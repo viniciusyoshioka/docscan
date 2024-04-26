@@ -50,7 +50,7 @@ export type TranslationKeyType =
   | "EditDocument_alert_documentWithoutName_text"
   | "EditDocument_alert_noDocumentOpened_text"
   | "EditDocument_alert_convertNotExistentPdfToShare_text"
-  | "EditDocument_alert_errorSharingPdf_text"
+  | "EditDocument_alert_unexpectedErrorSharingPdf_text"
   | "EditDocument_alert_noPermissionToVisualizePdf_text"
   | "EditDocument_alert_convertNotExistentPdfToVisualize_text"
   | "EditDocument_alert_noPermissionToDeletePdf_text"

@@ -56,44 +56,6 @@ export function EditDocument() {
     navigation.goBack()
   }
 
-  async function shareDocument() {
-    if (!document) {
-      log.warn("There is no document to be shared")
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_noDocumentOpened_text")
-      )
-      return
-    }
-
-    const documentPath = DocumentService.getPdfPath(document.name)
-
-    const pdfFileExists = await RNFS.exists(documentPath)
-    if (!pdfFileExists) {
-      log.warn("Can not shared PDF file because it doesn't exists")
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_convertNotExistentPdfToShare_text")
-      )
-      return
-    }
-
-    try {
-      await Share.open({
-        title: translate("EditDocument_shareDocument"),
-        type: "pdf/application",
-        url: `file://${documentPath}`,
-        failOnCancel: false,
-      })
-    } catch (error) {
-      log.error(`Error sharing PDF file: "${stringifyError(error)}"`)
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_errorSharingPdf_text")
-      )
-    }
-  }
-
   async function deletePdf() {
     if (!document)
       throw new Error("There is no document to delete the PDF, this should not happen")
@@ -257,7 +219,6 @@ export function EditDocument() {
         invertSelection={invertSelection}
         deletePicture={alertDeletePicture}
         openCamera={() => navigation.navigate("Camera", { screenAction: "add-picture" })}
-        shareDocument={shareDocument}
         deletePdf={alertDeletePdf}
       />
 

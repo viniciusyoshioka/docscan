@@ -6,12 +6,12 @@ import { useLogger } from "@lib/log"
 import { translate } from "@locales"
 import { stringifyError } from "@utils"
 import { FileNotExistsError, NoReadPermissionError } from "./errors"
+import { useShareDocumentPdf } from "./useShareDocumentPdf"
 import { useVisualizePdf } from "./useVisualizePdf"
 
 
 export interface EditDocumentMenuProps {
   convertToPdf: () => void
-  shareDocument: () => void
   renameDocument: () => void
   deletePdf: () => void
 }
@@ -22,6 +22,7 @@ export function EditDocumentMenu(props: EditDocumentMenuProps) {
 
   const log = useLogger()
   const visualizePdf = useVisualizePdf()
+  const shareDocumentPdf = useShareDocumentPdf()
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -33,6 +34,27 @@ export function EditDocumentMenu(props: EditDocumentMenuProps) {
         onPress={() => setIsOpen(true)}
       />
     )
+  }
+
+  async function handleSharePdf() {
+    try {
+      setIsOpen(false)
+      await shareDocumentPdf()
+    } catch (error) {
+      if (error instanceof FileNotExistsError) {
+        log.error(`PDF file to share doesn't exists: ${stringifyError(error)}`)
+        Alert.alert(
+          translate("warn"),
+          translate("EditDocument_alert_convertNotExistentPdfToShare_text")
+        )
+      } else {
+        log.error(`Unexpected error sharing PDF: ${stringifyError(error)}`)
+        Alert.alert(
+          translate("warn"),
+          translate("EditDocument_alert_unexpectedErrorSharingPdf_text")
+        )
+      }
+    }
   }
 
   async function handleVisualizePdf() {
@@ -80,10 +102,7 @@ export function EditDocumentMenu(props: EditDocumentMenuProps) {
 
       <Menu.Item
         title={translate("EditDocument_menu_sharePdf")}
-        onPress={() => {
-          setIsOpen(false)
-          props.shareDocument()
-        }}
+        onPress={handleSharePdf}
       />
 
       <Menu.Item
