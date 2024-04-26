@@ -2,9 +2,8 @@ import { useNavigation } from "@react-navigation/native"
 import { Appbar } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-import { useDocumentModel } from "@database"
+import { DocumentStateData, useDocumentState } from "@lib/document-state"
 import { NavigationProps } from "@router"
-import { DocumentService } from "@services/document"
 import { EditDocumentMenu } from "./EditDocumentMenu"
 
 
@@ -28,16 +27,12 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
   const navigation = useNavigation<NavigationProps<"EditDocument">>()
   const safeAreaInsets = useSafeAreaInsets()
 
-  const { documentModel } = useDocumentModel()
-  const document = documentModel?.document ?? null
+  const { documentState } = useDocumentState()
+  const { document } = documentState as DocumentStateData
 
-
-  function getTitle() {
-    if (!props.isSelectionMode) {
-      return document?.name ?? DocumentService.getNewName()
-    }
-    return props.selectedPicturesAmount.toString()
-  }
+  const documentTitle = props.isSelectionMode
+    ? props.selectedPicturesAmount.toString()
+    : document.name
 
 
   return (
@@ -50,7 +45,7 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
         <Appbar.Action icon={"close"} onPress={props.exitSelectionMode} />
       )}
 
-      <Appbar.Content title={getTitle()} />
+      <Appbar.Content title={documentTitle} />
 
       {!props.isSelectionMode && (
         <>
