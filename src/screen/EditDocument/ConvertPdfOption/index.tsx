@@ -2,7 +2,6 @@ import Slider from "@react-native-community/slider"
 import { useNavigation } from "@react-navigation/native"
 import { useState } from "react"
 import { Alert, View } from "react-native"
-import RNFS from "react-native-fs"
 import { Button, Dialog, RadioButton, Text } from "react-native-paper"
 import { useStyles } from "react-native-unistyles"
 
@@ -10,14 +9,11 @@ import { useBackHandler } from "@hooks"
 import { useLogger } from "@lib/log"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
-import { Constants } from "@services/constant"
-import { DocumentService } from "@services/document"
-import { createAllFolders } from "@services/folder-handler"
-import { PdfCreator } from "@services/pdf-creator"
-import { getWritePermission } from "@services/permission"
 import { useAppTheme } from "@theme"
 import { stringifyError } from "@utils"
+import { NoPicturesAvaialbleError, NoWritePermissionError } from "./errors"
 import { stylesheet } from "./style"
+import { useConvertToPdf } from "./useConvertToPdf"
 
 
 type CompressionLevel = "low" | "high" | "custom"
@@ -36,6 +32,7 @@ export function ConvertPdfOption() {
 
   const log = useLogger()
   const { colors } = useAppTheme()
+  const convertToPdf = useConvertToPdf()
 
   const [sliderValue, setSliderValue] = useState(DEFAULT_COMPRESSION)
   const [compression, setCompression] = useState(DEFAULT_COMPRESSION)
@@ -53,58 +50,32 @@ export function ConvertPdfOption() {
     return true
   }
 
-
-  async function convertToPdf() {
-    if (!document) {
-      log.warn("There is no document to be converted to PDF")
-      Alert.alert(
-        translate("warn"),
-        translate("ConvertPdfOption_alert_noDocumentOpened_text")
-      )
-      return
-    }
-
-    if (pictures.length === 0) {
-      log.warn("There is no pictures in the document to be converted to PDF")
-      Alert.alert(
-        translate("warn"),
-        translate("ConvertPdfOption_alert_documentWithoutPictures_text")
-      )
-      return
-    }
-
-    const hasPermission = await getWritePermission()
-    if (!hasPermission) {
-      log.warn("Can not convert document to PDF because the permission was not granted")
-      Alert.alert(
-        translate("warn"),
-        translate("ConvertPdfOption_alert_noPermissionToConvertToPdf_text")
-      )
-      return
-    }
-
-    const documentPath = DocumentService.getPdfPath(document.name)
-
-    const pdfFileExists = await RNFS.exists(documentPath)
-    if (pdfFileExists) {
-      try {
-        await RNFS.unlink(documentPath)
-      } catch (error) {
-        log.error(`Error deleting PDF file with the same name of the document to be converted: "${stringifyError(error)}"`)
+  async function handleConvertToPdf() {
+    try {
+      await convertToPdf(compression)
+      goBack()
+    } catch (error) {
+      if (error instanceof NoPicturesAvaialbleError) {
+        log.info(`No pictures available to convert to PDF: "${stringifyError(error)}"`)
+        Alert.alert(
+          translate("warn"),
+          translate("ConvertPdfOption_alert_documentWithoutPictures_text")
+        )
+      } else if (error instanceof NoWritePermissionError) {
+        log.error(`No write permission to convert to PDF: "${stringifyError(error)}"`)
+        Alert.alert(
+          translate("warn"),
+          translate("ConvertPdfOption_alert_noPermissionToConvertToPdf_text")
+        )
+      } else {
+        log.error(`Unexpected error converting document to PDF: "${stringifyError(error)}"`)
+        Alert.alert(
+          translate("warn"),
+          translate("ConvertPdfOption_alert_unexpectedErrorConvertingToPdf_text")
+        )
       }
     }
-
-    const pictureList: string[] = pictures.map(item => (
-      DocumentService.getPicturePath(item.fileName)
-    ))
-
-    await createAllFolders()
-    PdfCreator.createPdf(pictureList, documentPath, {
-      imageCompressQuality: 100 - compressionValue,
-      temporaryPath: Constants.fullPathTemporaryCompressedPicture,
-    })
   }
-
 
   function onOptionChange(newValue: CompressionLevel) {
     let newCompression = 0
@@ -189,10 +160,7 @@ export function ConvertPdfOption() {
 
         <Button
           children={translate("ok")}
-          onPress={() => {
-            convertToPdf()
-            goBack()
-          }}
+          onPress={handleConvertToPdf}
         />
       </Dialog.Actions>
     </Dialog>

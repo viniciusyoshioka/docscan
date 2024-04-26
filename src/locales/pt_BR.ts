@@ -79,6 +79,7 @@ export const pt_BR: TranslationObjectType = {
   ConvertPdfOption_alert_noDocumentOpened_text: "Não há documento aberto",
   ConvertPdfOption_alert_documentWithoutPictures_text: "Não é possível converter um documento sem fotos para PDF",
   ConvertPdfOption_alert_noPermissionToConvertToPdf_text: "Sem permissão para converter documento para PDF",
+  ConvertPdfOption_alert_unexpectedErrorConvertingToPdf_text: "Erro inesperado ao converter documento para PDF",
   // EditDocument ConvertPdfOption
   ConvertPdfOption_title: "Converter para PDF",
   ConvertPdfOption_description: "Escolha a taxa compressão das imagens do documento",

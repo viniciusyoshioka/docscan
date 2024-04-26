@@ -76,6 +76,7 @@ export type TranslationKeyType =
   | "ConvertPdfOption_alert_noDocumentOpened_text"
   | "ConvertPdfOption_alert_documentWithoutPictures_text"
   | "ConvertPdfOption_alert_noPermissionToConvertToPdf_text"
+  | "ConvertPdfOption_alert_unexpectedErrorConvertingToPdf_text"
     // EditDocument ConvertPdfOption
   | "ConvertPdfOption_title"
   | "ConvertPdfOption_description"
