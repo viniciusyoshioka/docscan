@@ -85,6 +85,8 @@ export type TranslationKeyType =
     // EditDocument RenameDocument
   | "RenameDocument_title"
   | "RenameDocument_documentName_placeholder"
+  // EditDocument RenameDocument alert
+  | "RenameDocument_alert_unexpectedErrorRenamingDocument_text"
 
     // Gallery alert
   | "Gallery_alert_noPermissionForGallery_text"

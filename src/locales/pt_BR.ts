@@ -88,6 +88,8 @@ export const pt_BR: TranslationObjectType = {
   // EditDocument RenameDocument
   RenameDocument_title: "Renomear",
   RenameDocument_documentName_placeholder: "Nome do documento",
+  // EditDocument RenameDocument alert
+  RenameDocument_alert_unexpectedErrorRenamingDocument_text: "Erro inesperado ao renomear documento",
 
   // Gallery alert
   Gallery_alert_noPermissionForGallery_text: "Sem permissão para abrir galeria",
