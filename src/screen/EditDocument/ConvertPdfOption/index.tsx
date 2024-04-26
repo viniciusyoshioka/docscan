@@ -43,7 +43,7 @@ export function ConvertPdfOption() {
   const isSliderDisabled = compressionLevel !== "custom"
 
 
-  useBackHandler(() => goBack())
+  useBackHandler(goBack)
 
 
   function goBack() {
