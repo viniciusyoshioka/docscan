@@ -16,8 +16,11 @@ import { translate } from "@locales"
 import { NavigationProps } from "@router"
 import { DocumentService } from "@services/document"
 import { stringifyError } from "@utils"
+import { NoWritePermissionError } from "./ConvertPdfOption/errors"
 import { EditDocumentHeader } from "./Header"
 import { PictureItem, useColumnCount, usePictureItemSize } from "./Pictureitem"
+import { FileNotExistsError } from "./errors"
+import { useDeletePdf } from "./useDeletePdf"
 import { useDeleteSelectedPictures } from "./useDeleteSelectedPictures"
 
 
@@ -44,6 +47,7 @@ export function EditDocument() {
   const deleteSelectedPictures = useDeleteSelectedPictures(
     pictureSelection.getSelectedData()
   )
+  const deletePdf = useDeletePdf()
 
 
   useBackHandler(() => {
@@ -62,63 +66,39 @@ export function EditDocument() {
     navigation.goBack()
   }
 
-  async function deletePdf() {
-    if (!document)
-      throw new Error("There is no document to delete the PDF, this should not happen")
-
-    const hasPermission = await getWritePermission()
-    if (!hasPermission) {
-      log.warn("Can not delete PDF because the permission was not granted")
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_noPermissionToDeletePdf_text")
-      )
-      return
-    }
-
-    const pdfFilePath = DocumentService.getPdfPath(document.name)
-
-    const pdfFileExists = await RNFS.exists(pdfFilePath)
-    if (!pdfFileExists) {
-      log.warn("Can not delete PDF because it doesn't exists")
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_pdfFileDoesNotExists_text")
-      )
-      return
-    }
-
+  async function handleDeletePdf() {
     try {
-      await RNFS.unlink(pdfFilePath)
-      Alert.alert(
-        translate("success"),
-        translate("EditDocument_alert_pdfFileDeletedSuccessfully_text")
-      )
+      await deletePdf()
     } catch (error) {
-      log.error(`Error deleting PDF file "${stringifyError(error)}"`)
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_errorDeletingPdfFile_text")
-      )
+      if (error instanceof NoWritePermissionError) {
+        log.error(`No write permission to delete PDF file: ${stringifyError(error)}`)
+        Alert.alert(
+          translate("warn"),
+          translate("EditDocument_alert_noPermissionToDeletePdf_text")
+        )
+      } else if (error instanceof FileNotExistsError) {
+        log.error(`PDF file to be delete doesn't exists: ${stringifyError(error)}`)
+        Alert.alert(
+          translate("warn"),
+          translate("EditDocument_alert_pdfFileDoesNotExists_text")
+        )
+      } else {
+        log.error(`Error deleting PDF file "${stringifyError(error)}"`)
+        Alert.alert(
+          translate("warn"),
+          translate("EditDocument_alert_unexpectedErrorDeletingPdfFile_text")
+        )
+      }
     }
   }
 
   function alertDeletePdf() {
-    if (!document) {
-      log.warn("There is no document to delete the PDF")
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_noDocumentOpened_text")
-      )
-      return
-    }
-
     Alert.alert(
       translate("EditDocument_alert_deletePdf_title"),
       translate("EditDocument_alert_deletePdf_text"),
       [
-        { text: translate("cancel"), onPress: () => {} },
-        { text: translate("ok"), onPress: deletePdf },
+        { text: translate("cancel") },
+        { text: translate("ok"), onPress: handleDeletePdf },
       ]
     )
   }

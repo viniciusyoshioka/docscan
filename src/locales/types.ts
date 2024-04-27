@@ -56,7 +56,7 @@ export type TranslationKeyType =
   | "EditDocument_alert_noPermissionToDeletePdf_text"
   | "EditDocument_alert_pdfFileDoesNotExists_text"
   | "EditDocument_alert_pdfFileDeletedSuccessfully_text"
-  | "EditDocument_alert_errorDeletingPdfFile_text"
+  | "EditDocument_alert_unexpectedErrorDeletingPdfFile_text"
   | "EditDocument_alert_deletePdf_title"
   | "EditDocument_alert_deletePdf_text"
   | "EditDocument_alert_cantDeletePictureFromEmptyDocument_text"

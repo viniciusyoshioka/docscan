@@ -59,7 +59,7 @@ export const pt_BR: TranslationObjectType = {
   EditDocument_alert_noPermissionToDeletePdf_text: "Sem permissão para apagar PDF",
   EditDocument_alert_pdfFileDoesNotExists_text: "Arquivo PDF não existe",
   EditDocument_alert_pdfFileDeletedSuccessfully_text: "Arquivo PDF apagado com sucesso",
-  EditDocument_alert_errorDeletingPdfFile_text: "Erro apagando arquivo PDF",
+  EditDocument_alert_unexpectedErrorDeletingPdfFile_text: "Erro apagando arquivo PDF",
   EditDocument_alert_deletePdf_title: "Apagar PDF",
   EditDocument_alert_deletePdf_text: "O PDF deste documento será apagado permanentemente",
   EditDocument_alert_cantDeletePictureFromEmptyDocument_text: "Não é possível apagar imagens selecionadas, o documento está vazio",
