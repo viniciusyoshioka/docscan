@@ -109,7 +109,7 @@ export class StandardDateFormatter implements IDateFormatter {
     }
 
     const dateTimeFormat = new Intl.DateTimeFormat(this.locales, options)
-    return dateTimeFormat.format(date)
+    return dateTimeFormat.format(date).replace(",", "")
   }
 
 
