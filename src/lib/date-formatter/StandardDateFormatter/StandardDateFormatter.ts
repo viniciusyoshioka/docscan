@@ -51,7 +51,7 @@ export class StandardDateFormatter implements IDateFormatter {
       .replace("YYYY", this.formatNumber(date.getFullYear()))
       .replace("mm", this.formatNumber(date.getMonth() + 1))
       .replace("dd", this.formatNumber(date.getDate()))
-      .replace("-", this.separators.date)
+      .replaceAll("-", this.separators.date)
   }
 
   public formatTime(date?: Date | number): string {
@@ -62,7 +62,7 @@ export class StandardDateFormatter implements IDateFormatter {
       .replace("HH", this.formatNumber(date.getHours()))
       .replace("MM", this.formatNumber(date.getMinutes()))
       .replace("SS", this.formatNumber(date.getSeconds()))
-      .replace(":", this.separators.time)
+      .replaceAll(":", this.separators.time)
   }
 
   public formatDateTime(date?: Date | number): string {
