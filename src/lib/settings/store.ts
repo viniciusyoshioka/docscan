@@ -1,9 +1,10 @@
 import { merge } from "lodash"
+import { MMKV } from "react-native-mmkv"
 import { create } from "zustand"
 import { createJSONStorage, persist } from "zustand/middleware"
 
+import { MMKVStorage } from "./MMKVStorage"
 import { defaultSettings } from "./default"
-import { storage } from "./storage"
 import { SettingsStore } from "./types"
 
 
@@ -19,6 +20,9 @@ export const useSettings = create<SettingsStore>()(persist(
   {
     name: "settings-storage",
     version: 1,
-    storage: createJSONStorage(() => storage),
+    storage: createJSONStorage(() => {
+      const settingsStorage = new MMKV({ id: "settings-storage" })
+      return new MMKVStorage(settingsStorage)
+    }),
   },
 ))
