@@ -58,6 +58,7 @@
     "@realm/babel-plugin": "^0.2.0",
     "@sayem314/react-native-keep-awake": "^1.2.2",
     "@stylistic/eslint-plugin": "^1.7.0",
+    "@testing-library/react-hooks": "^8.0.1",
     "@types/color": "^3.0.6",
     "@types/i18n-js": "^3.8.9",
     "@types/jest": "^29.5.12",
