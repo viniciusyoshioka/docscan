@@ -1,4 +1,5 @@
-import { CameraRatio, getCameraRatioNumber } from "@lib/settings"
+import { CameraRatio } from "@lib/settings"
+import { getCameraRatioNumber } from "../utils"
 
 
 describe("Test camera utils from settings module", () => {
