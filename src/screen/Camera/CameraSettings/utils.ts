@@ -1,4 +1,4 @@
-import { CameraFlash, CameraPosition, CameraRatio } from "@lib/settings/camera"
+import { CameraFlash, CameraPosition, CameraRatio } from "@lib/settings"
 import { translate } from "@locales"
 
 

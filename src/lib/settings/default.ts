@@ -1,5 +1,9 @@
-import { defaultCameraFlash, defaultCameraPosition, defaultCameraRatio } from "./camera"
-import { defaultTheme } from "./theme"
+import {
+  defaultCameraFlash,
+  defaultCameraPosition,
+  defaultCameraRatio,
+  defaultTheme,
+} from "./settings"
 import { Settings } from "./types"
 
 

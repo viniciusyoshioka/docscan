@@ -2,8 +2,7 @@ import { useNavigation } from "@react-navigation/native"
 import { useState } from "react"
 import { Button, Dialog, RadioButton } from "react-native-paper"
 
-import { useSettings } from "@lib/settings"
-import { ThemeType } from "@lib/settings/theme"
+import { ThemeType, useSettings } from "@lib/settings"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
 
