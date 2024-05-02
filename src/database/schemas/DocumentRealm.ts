@@ -1,11 +1,7 @@
 import { Realm } from "@realm/react"
 
-import { IDocumentRealmSchema } from "./interfaces"
 
-
-export class DocumentRealmSchema
-  extends Realm.Object implements IDocumentRealmSchema {
-
+export class DocumentRealmSchema extends Realm.Object {
   id = new Realm.BSON.ObjectId()
   createdAt: number = Date.now()
   modifiedAt: number = Date.now()
