@@ -8,16 +8,11 @@ export class DocumentPictureNotFoundError extends Error {
   private documentPictureId: IdOf<DocumentPicture>
 
 
-  constructor(
-    documentPictureId: IdOf<DocumentPicture>,
-    message?: string,
-    options?: ErrorOptions
-  ) {
-    const errorMessage = message
-      ?? `Document picture with id ${documentPictureId} not found`
+  constructor(id: IdOf<DocumentPicture>, message?: string, options?: ErrorOptions) {
+    const errorMessage = message ?? `Document picture with id ${id} not found`
     super(errorMessage, options)
     this.name = "DocumentPictureNotFoundError"
-    this.documentPictureId = documentPictureId
+    this.documentPictureId = id
   }
 
 
