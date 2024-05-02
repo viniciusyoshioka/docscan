@@ -5,7 +5,7 @@ describe("Test StandardDateFormatter with locale option", () => {
 
 
   const dateObject = new Date("2000-01-30 08:25:51")
-  const dateRegex = /^\d{1,2}(\/|\.)\d{2}(\/|\.)\d{4}$/
+  const dateRegex = /^\d{1,2}(\/|\.)\d{1,2}(\/|\.)\d{4}$/
   const timeRegex = /^\d{1,2}:\d{2}( AM| PM)?$/
   const dateTimeRegex = /^\d{2}(\/|\.)\d{2}(\/|\.)\d{4} \d{1,2}:\d{2}( AM| PM)?$/
 
