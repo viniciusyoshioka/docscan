@@ -11,7 +11,7 @@ import { DocumentRepository } from "./interfaces"
 
 
 // TODO implement pagination for selectAll
-export class RealmDocumentRepository implements DocumentRepository {
+export class DocumentRealmRepository implements DocumentRepository {
 
 
   private realm: Realm

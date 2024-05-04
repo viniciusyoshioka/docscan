@@ -10,7 +10,7 @@ import { DocumentPictureRepository } from "./interfaces"
 
 
 // TODO implement pagination for selectAllForDocument
-export class RealmDocumentPictureRepository implements DocumentPictureRepository {
+export class DocumentPictureRealmRepository implements DocumentPictureRepository {
 
 
   private realm: Realm

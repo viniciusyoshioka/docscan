@@ -9,7 +9,7 @@ import { WithId } from "../types"
 import { LogRepository } from "./interfaces"
 
 
-export class RealmLogRepository implements LogRepository {
+export class LogRealmRepository implements LogRepository {
 
 
   private realm: Realm

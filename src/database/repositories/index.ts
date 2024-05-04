@@ -1,4 +1,4 @@
-export * from "./RealmDocumentPictureRepository"
-export * from "./RealmDocumentRepository"
-export * from "./RealmLogRepository"
+export * from "./DocumentPictureRealmRepository"
+export * from "./DocumentRealmRepository"
+export * from "./LogRealmRepository"
 export * from "./interfaces"

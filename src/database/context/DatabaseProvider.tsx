@@ -9,9 +9,9 @@ import {
 import { DocumentModel, DocumentPictureModel, LogModel } from "../models"
 import { RealmDatabaseProvider } from "../providers"
 import {
-  RealmDocumentPictureRepository,
-  RealmDocumentRepository,
-  RealmLogRepository,
+  DocumentPictureRealmRepository,
+  DocumentRealmRepository,
+  LogRealmRepository,
 } from "../repositories"
 import { DatabaseContextType } from "./types"
 
@@ -44,11 +44,11 @@ function DatabaseConsumer(props: PropsWithChildren) {
     const realmDocumentDatabaseProvider = new RealmDatabaseProvider(documentRealm)
 
     const realmLogRepository =
-      new RealmLogRepository(realmLogDatabaseProvider)
+      new LogRealmRepository(realmLogDatabaseProvider)
     const realmDocumentRepository =
-      new RealmDocumentRepository(realmDocumentDatabaseProvider)
+      new DocumentRealmRepository(realmDocumentDatabaseProvider)
     const realmDocumentPictureRepository =
-      new RealmDocumentPictureRepository(realmDocumentDatabaseProvider)
+      new DocumentPictureRealmRepository(realmDocumentDatabaseProvider)
 
     const logModel = new LogModel(realmLogRepository)
     const documentModel = new DocumentModel(realmDocumentRepository)
