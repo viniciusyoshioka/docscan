@@ -219,10 +219,12 @@ export function EditDocument() {
   }
 
   function invertSelection() {
-    pictureSelection.setSelectedData(current => {
-      const newSelectedData: number[] = []
+    pictureSelection.setNewSelectedData(current => {
+      const newSelectedData = new Set<number>()
       for (let i = 0; i < pictures.length; i++) {
-        if (!current.includes(i)) newSelectedData.push(i)
+        if (!current.has(i)) {
+          newSelectedData.add(i)
+        }
       }
       return newSelectedData
     })
@@ -236,7 +238,9 @@ export function EditDocument() {
 
     setIsDeletingPictures(true)
 
-    const picturePathsToDelete = pictureSelection.selectedData.map(index => (
+    const selectedPicture = pictureSelection.getSelectedData()
+
+    const picturePathsToDelete = selectedPicture.map(index => (
       DocumentService.getPicturePath(pictures[index].fileName)
     ))
 
@@ -245,7 +249,7 @@ export function EditDocument() {
         const realmPicturesToDelete = documentRealm.objects(DocumentPictureRealmSchema)
           .filtered("belongsTo = $0", document.id)
           .sorted("position")
-          .filter((_, index) => pictureSelection.selectedData.includes(index))
+          .filter((_, index) => selectedPicture.includes(index))
 
         documentRealm.delete(realmPicturesToDelete)
         document.modifiedAt = Date.now()
@@ -299,7 +303,7 @@ export function EditDocument() {
         onSelect={() => pictureSelection.select(index)}
         onDeselect={() => pictureSelection.deselect(index)}
         isSelectionMode={pictureSelection.isSelectionMode}
-        isSelected={pictureSelection.selectedData.includes(index)}
+        isSelected={pictureSelection.isSelected(index)}
         picturePath={DocumentService.getPicturePath(item.fileName)}
         columnCount={columnCount}
       />
@@ -317,7 +321,7 @@ export function EditDocument() {
         goBack={goBack}
         exitSelectionMode={pictureSelection.exitSelection}
         isSelectionMode={pictureSelection.isSelectionMode}
-        selectedPicturesAmount={pictureSelection.selectedData.length}
+        selectedPicturesAmount={pictureSelection.length()}
         invertSelection={invertSelection}
         deletePicture={alertDeletePicture}
         openCamera={() => navigation.navigate("Camera", { screenAction: "add-picture" })}
