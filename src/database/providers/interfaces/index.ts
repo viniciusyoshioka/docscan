@@ -1,1 +1,1 @@
-export * from "./RealmDatabaseProvider"
+export * from "./IRealmDatabaseProvider"
