@@ -1,5 +1,5 @@
 import { Document, DocumentPicture } from "../entities"
-import { IDocumentPictureRepository } from "../repositories"
+import { DocumentPictureRepository } from "../repositories"
 import { IdOf, QueryOptions, WithId } from "../types"
 import { IDocumentPictureModel } from "./interface"
 
@@ -8,10 +8,10 @@ import { IDocumentPictureModel } from "./interface"
 export class DocumentPictureModel implements IDocumentPictureModel {
 
 
-  private documentPictureRepository: IDocumentPictureRepository
+  private documentPictureRepository: DocumentPictureRepository
 
 
-  constructor(documentPictureRepository: IDocumentPictureRepository) {
+  constructor(documentPictureRepository: DocumentPictureRepository) {
     this.documentPictureRepository = documentPictureRepository
   }
 

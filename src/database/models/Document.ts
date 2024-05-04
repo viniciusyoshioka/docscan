@@ -1,5 +1,5 @@
 import { Document } from "../entities"
-import { IDocumentRepository } from "../repositories"
+import { DocumentRepository } from "../repositories"
 import { IdOf, QueryOptions, WithId } from "../types"
 import { IDocumentModel } from "./interface"
 
@@ -9,10 +9,10 @@ import { IDocumentModel } from "./interface"
 export class DocumentModel implements IDocumentModel {
 
 
-  private documentRepository: IDocumentRepository
+  private documentRepository: DocumentRepository
 
 
-  constructor(documentRepository: IDocumentRepository) {
+  constructor(documentRepository: DocumentRepository) {
     this.documentRepository = documentRepository
   }
 

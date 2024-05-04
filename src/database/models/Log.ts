@@ -1,5 +1,5 @@
 import { Log } from "../entities"
-import { ILogRepository } from "../repositories"
+import { LogRepository } from "../repositories"
 import { WithId } from "../types"
 import { ILogModel } from "./interface"
 
@@ -7,10 +7,10 @@ import { ILogModel } from "./interface"
 export class LogModel implements ILogModel {
 
 
-  private logRepository: ILogRepository
+  private logRepository: LogRepository
 
 
-  constructor(logRepository: ILogRepository) {
+  constructor(logRepository: LogRepository) {
     this.logRepository = logRepository
   }
 

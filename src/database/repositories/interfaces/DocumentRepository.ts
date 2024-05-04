@@ -2,7 +2,7 @@ import { Document } from "../../entities"
 import { IdOf, QueryOptions, WithId } from "../../types"
 
 
-export interface IDocumentRepository {
+export interface DocumentRepository {
   select(id: IdOf<Document>): WithId<Document>
   selectAll(options?: QueryOptions<Document>): WithId<Document>[]
   insert(document: Document): WithId<Document>

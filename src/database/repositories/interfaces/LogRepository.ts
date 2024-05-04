@@ -2,6 +2,6 @@ import { Log } from "../../entities"
 import { WithId } from "../../types"
 
 
-export interface ILogRepository {
+export interface LogRepository {
   insert(log: Log): WithId<Log>
 }

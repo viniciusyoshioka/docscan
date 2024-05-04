@@ -7,11 +7,11 @@ import { DocumentNotFoundError, UnknownDatabaseError } from "../errors"
 import { IRealmDatabaseProvider } from "../providers"
 import { DocumentRealmSchema } from "../schemas"
 import { IdOf, QueryOptions, WithId } from "../types"
-import { IDocumentRepository } from "./interfaces"
+import { DocumentRepository } from "./interfaces"
 
 
 // TODO implement pagination for selectAll
-export class RealmDocumentRepository implements IDocumentRepository {
+export class RealmDocumentRepository implements DocumentRepository {
 
 
   private realm: Realm

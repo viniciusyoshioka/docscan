@@ -6,10 +6,10 @@ import { UnknownDatabaseError } from "../errors"
 import { IRealmDatabaseProvider } from "../providers"
 import { LogRealmSchema } from "../schemas"
 import { WithId } from "../types"
-import { ILogRepository } from "./interfaces"
+import { LogRepository } from "./interfaces"
 
 
-export class RealmLogRepository implements ILogRepository {
+export class RealmLogRepository implements LogRepository {
 
 
   private realm: Realm
