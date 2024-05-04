@@ -19,6 +19,8 @@ import {
   openExportedDatabase,
   useDocumentModel,
   useDocumentRealm,
+  Document,
+  IdOf,
 } from "@database"
 import { useBackHandler } from "@hooks"
 import { useLogger } from "@lib/log"
@@ -49,7 +51,7 @@ export function Home() {
   const { setDocumentModel } = useDocumentModel()
   const documentRealm = useDocumentRealm()
   const documents = useDocuments()
-  const documentSelection = useSelectionMode<string>()
+  const documentSelection = useSelectionMode<IdOf<Document>>()
   const [showDocumentDeletionModal, setShowDocumentDeletionModal] = useState(false)
 
 
@@ -63,9 +65,15 @@ export function Home() {
 
 
   function invertSelection() {
-    documentSelection.setSelectedData(current => documents
-      .filter(documentItem => !current.includes(documentItem.id.toHexString()))
-      .map(documentItem => documentItem.id.toHexString()))
+    documentSelection.setNewSelectedData(current => {
+      const newSelectedData = new Set<IdOf<Document>>()
+      documents.forEach(document => {
+        if (!current.has(document.id)) {
+          newSelectedData.add(document.id)
+        }
+      })
+      return newSelectedData
+    })
   }
 
   async function deleteSelectedDocument() {
@@ -354,7 +362,7 @@ export function Home() {
         onSelect={() => documentSelection.select(documentId)}
         onDeselect={() => documentSelection.deselect(documentId)}
         isSelectionMode={documentSelection.isSelectionMode}
-        isSelected={documentSelection.selectedData.includes(documentId)}
+        isSelected={documentSelection.isSelected(documentId)}
         document={item}
       />
     )
@@ -380,7 +388,7 @@ export function Home() {
     <View style={{ flex: 1 }}>
       <HomeHeader
         isSelectionMode={documentSelection.isSelectionMode}
-        selectedDocumentsAmount={documentSelection.selectedData.length}
+        selectedDocumentsAmount={documentSelection.length()}
         exitSelectionMode={documentSelection.exitSelection}
         invertSelection={invertSelection}
         deleteSelectedDocuments={alertDeleteDocument}
@@ -394,7 +402,7 @@ export function Home() {
         <FlashList
           data={documents.toJSON() as unknown as DocumentRealmSchema[]}
           renderItem={renderItem}
-          extraData={documentSelection.selectedData}
+          extraData={documentSelection.getSelectedData()}
           estimatedItemSize={DOCUMENT_ITEM_HEIGHT}
           ItemSeparatorComponent={() => <Divider style={{ marginHorizontal: 16 }} />}
           contentContainerStyle={{ paddingBottom: (16 * 2) + 56 + safeAreaInsets.bottom }}
