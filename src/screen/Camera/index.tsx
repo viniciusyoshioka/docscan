@@ -20,7 +20,7 @@ import {
 } from "@database"
 import { useBackHandler } from "@hooks"
 import { useLogger } from "@lib/log"
-import { getCameraRatioNumber, useSettings } from "@lib/settings"
+import { useSettings } from "@lib/settings"
 import { translate } from "@locales"
 import { NavigationProps, RouteProps } from "@router"
 import { DocumentService } from "@services/document"
@@ -42,7 +42,7 @@ import { useIsShowingCamera } from "./useIsShowingCamera"
 import { useRequestCameraPermission } from "./useRequestCameraPermission"
 import { useResetCameraOnChangeRatio } from "./useResetCameraOnChangeRatio"
 import { useStatusBarStyle } from "./useStatusBarStyle"
-import { getCameraSize } from "./utils"
+import { getCameraRatioNumber, getCameraSize } from "./utils"
 
 
 // TODO add support to multiple back cameras
