@@ -197,12 +197,12 @@ export function Gallery() {
     const imageFilesToCopy: string[] = []
     const imageFilesToAdd: string[] = []
 
-    for (let i = 0; i < gallerySelection.selectedData.length; i++) {
-      const newImagePath = await DocumentService.getNewPicturePath(
-        gallerySelection.selectedData[i]
-      )
+    const selectedImages = gallerySelection.getSelectedData()
+    for (let i = 0; i < selectedImages.length; i++) {
+      const selectedImage = selectedImages[i]
+      const newImagePath = await DocumentService.getNewPicturePath(selectedImage)
 
-      imageFilesToCopy.push(gallerySelection.selectedData[i].replace("file://", ""))
+      imageFilesToCopy.push(selectedImage.replace("file://", ""))
       imageFilesToCopy.push(newImagePath)
 
       imageFilesToAdd.push(newImagePath)
@@ -301,7 +301,7 @@ export function Gallery() {
         onSelect={() => gallerySelection.select(item.node.image.uri)}
         onDeselect={() => gallerySelection.deselect(item.node.image.uri)}
         isSelectionMode={gallerySelection.isSelectionMode}
-        isSelected={gallerySelection.selectedData.includes(item.node.image.uri)}
+        isSelected={gallerySelection.isSelected(item.node.image.uri)}
         imagePath={item.node.image.uri}
         screenAction={params.screenAction}
         columnCount={columnCount}
@@ -355,7 +355,7 @@ export function Gallery() {
         exitSelectionMode={gallerySelection.exitSelection}
         importImage={importMultipleImage}
         isSelectionMode={gallerySelection.isSelectionMode}
-        selectedImagesAmount={gallerySelection.selectedData.length}
+        selectedImagesAmount={gallerySelection.length()}
       />
 
       {(imageGallery && imageGallery.length > 0) && (
