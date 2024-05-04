@@ -1,3 +1,3 @@
-export * from "./Document"
-export * from "./DocumentPicture"
-export * from "./Log"
+export * from "./IDocumentModel"
+export * from "./IDocumentPictureModel"
+export * from "./ILogModel"
