@@ -1,4 +1,4 @@
-export * from "./Document"
-export * from "./DocumentPicture"
-export * from "./Log"
+export * from "./DocumentModel"
+export * from "./DocumentPictureModel"
+export * from "./LogModel"
 export * from "./interface"
