@@ -2,15 +2,9 @@ import { useNavigation, useRoute } from "@react-navigation/core"
 import { FlashList } from "@shopify/flash-list"
 import { useMemo, useRef, useState } from "react"
 import { Alert, View, useWindowDimensions } from "react-native"
-import RNFS from "react-native-fs"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-import {
-  DocumentPictureRealmSchema,
-  DocumentRealmSchema,
-  useDocumentModel,
-  useDocumentRealm,
-} from "@database"
+import { DocumentPictureRealmSchema, useDocumentRealm } from "@database"
 import { useBackHandler } from "@hooks"
 import { useLogger } from "@lib/log"
 import { translate } from "@locales"
@@ -18,7 +12,6 @@ import { NavigationProps, RouteProps } from "@router"
 import { DocumentService } from "@services/document"
 import { ImageCrop, OnImageSavedResponse } from "@services/image-crop"
 import { useAppTheme } from "@theme"
-import { stringifyError } from "@utils"
 import { VisualizePictureHeader } from "./Header"
 import { ImageRotation, ImageRotationRef } from "./ImageRotation"
 import { ImageVisualizationItem } from "./ImageVisualizationItem"
@@ -39,7 +32,6 @@ export function VisualizePicture() {
 
   const { isDark } = useAppTheme()
   const documentRealm = useDocumentRealm()
-  const { documentModel, setDocumentModel } = useDocumentModel()
 
   const imageRotationRef = useRef<ImageRotationRef>(null)
   const imageCropRef = useRef<ImageCrop>(null)
@@ -52,13 +44,8 @@ export function VisualizePicture() {
   const [isFlatListScrollEnable, setIsFlatListScrollEnable] = useState(true)
   const [currentIndex, setCurrentIndex] = useState(params.pictureIndex)
   const currentPicturePath = useMemo(() => {
-    if (!documentModel)
-      throw new Error("Document model is undefined. This should not happen")
-
-    const index = Math.round(currentIndex)
-    const fileName = documentModel.pictures[index].fileName
-    return DocumentService.getPicturePath(fileName)
-  }, [documentModel, currentIndex])
+    return ""
+  }, [currentIndex])
 
 
   useBackHandler(() => {
@@ -102,6 +89,7 @@ export function VisualizePicture() {
   }
 
   async function saveRotatedPicture() {
+    /*
     if (isRotationProcessing) return
     if (!documentModel)
       throw new Error("Document model is undefined. This should not happen")
@@ -143,6 +131,7 @@ export function VisualizePicture() {
 
     setIsRotating(false)
     setIsRotationProcessing(false)
+    */
   }
 
   function exitCrop() {
@@ -169,6 +158,7 @@ export function VisualizePicture() {
   }
 
   async function onCroppedImageSaved(response: OnImageSavedResponse) {
+    /*
     if (!documentModel)
       throw new Error("Document model is undefined. This should not happen")
 
@@ -205,6 +195,7 @@ export function VisualizePicture() {
 
     setIsCropping(false)
     setIsCropProcessing(false)
+    */
   }
 
   function onCropError(response: string) {
@@ -218,6 +209,7 @@ export function VisualizePicture() {
   }
 
   function replacePictureInDatabase(filePath: string) {
+    /*
     if (!documentModel)
       throw new Error("Document model is undefined. This should not happen")
 
@@ -237,6 +229,7 @@ export function VisualizePicture() {
       .sorted("position")
     if (!document) throw new Error("Document is undefined, this should not happen")
     setDocumentModel({ document, pictures })
+  */
   }
 
 
@@ -271,7 +264,7 @@ export function VisualizePicture() {
       {!isRotating && !isCropping && (
         <View style={{ flex: 1, flexDirection: "row" }}>
           <FlashList
-            data={documentModel?.pictures as unknown as DocumentPictureRealmSchema[]}
+            data={[]}
             renderItem={renderItem}
             estimatedItemSize={width}
             horizontal={true}

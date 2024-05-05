@@ -1,26 +1,16 @@
 import { useNavigation } from "@react-navigation/core"
 import { FlashList, ListRenderItem } from "@shopify/flash-list"
 import { useCallback, useMemo, useState } from "react"
-import { Alert, View, useWindowDimensions } from "react-native"
-import RNFS from "react-native-fs"
+import { View, useWindowDimensions } from "react-native"
 import { LoadingModal } from "react-native-paper-towel"
 import { useSelectionMode } from "react-native-selection-mode"
-import Share from "react-native-share"
 
-import {
-  DocumentPictureRealmSchema,
-  DocumentRealmSchema,
-  useDocumentModel,
-  useDocumentRealm,
-} from "@database"
+import { DocumentPictureRealmSchema, useDocumentRealm } from "@database"
 import { useBackHandler } from "@hooks"
 import { useLogger } from "@lib/log"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
 import { DocumentService } from "@services/document"
-import { PdfCreator } from "@services/pdf-creator"
-import { getReadPermission, getWritePermission } from "@services/permission"
-import { stringifyError } from "@utils"
 import { EditDocumentHeader } from "./Header"
 import {
   HORIZONTAL_COLUMN_COUNT,
@@ -44,17 +34,9 @@ export function EditDocument() {
 
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
 
-  const { documentModel, setDocumentModel } = useDocumentModel()
   const documentRealm = useDocumentRealm()
-  const document = documentModel?.document ?? undefined
-  const pictures = useMemo(() => {
-    if (document === undefined) return []
-
-    return documentRealm.objects(DocumentPictureRealmSchema)
-      .filtered("belongsTo = $0", document.id)
-      .sorted("position")
-      .toJSON() as unknown as DocumentPictureRealmSchema[]
-  }, [document])
+  const document = undefined
+  const pictures: string[] = []
 
   const columnCount = useMemo(
     () => (windowWidth < windowHeight)
@@ -80,11 +62,12 @@ export function EditDocument() {
       return
     }
 
-    setDocumentModel(undefined)
+    // setDocumentModel(undefined)
     navigation.goBack()
   }
 
   async function shareDocument() {
+    /*
     if (!document) {
       log.warn("There is no document to be shared")
       Alert.alert(
@@ -120,9 +103,11 @@ export function EditDocument() {
         translate("EditDocument_alert_errorSharingPdf_text")
       )
     }
+    */
   }
 
   async function visualizePdf() {
+    /*
     if (!document) {
       log.warn("There is no document to visualize the PDF")
       Alert.alert(
@@ -155,9 +140,11 @@ export function EditDocument() {
     }
 
     PdfCreator.viewPdf(pdfFilePath)
+    */
   }
 
   async function deletePdf() {
+    /*
     if (!document)
       throw new Error("There is no document to delete the PDF, this should not happen")
 
@@ -196,9 +183,11 @@ export function EditDocument() {
         translate("EditDocument_alert_errorDeletingPdfFile_text")
       )
     }
+    */
   }
 
   function alertDeletePdf() {
+    /*
     if (!document) {
       log.warn("There is no document to delete the PDF")
       Alert.alert(
@@ -216,6 +205,7 @@ export function EditDocument() {
         { text: translate("ok"), onPress: deletePdf },
       ]
     )
+    */
   }
 
   function invertSelection() {
@@ -231,6 +221,7 @@ export function EditDocument() {
   }
 
   async function deleteSelectedPicture() {
+    /*
     if (!document)
       throw new Error(
         "There is no document to delete its pictures, this should not happen"
@@ -278,9 +269,11 @@ export function EditDocument() {
 
     pictureSelection.exitSelection()
     setIsDeletingPictures(false)
+    */
   }
 
   function alertDeletePicture() {
+    /*
     if (!document)
       throw new Error(
         "There is no document to delete its pictures, this should not happen"
@@ -294,6 +287,7 @@ export function EditDocument() {
         { text: translate("ok"), onPress: deleteSelectedPicture },
       ]
     )
+    */
   }
 
   const renderItem: ListRenderItem<DocumentPictureRealmSchema> = ({ item, index }) => {
@@ -331,7 +325,7 @@ export function EditDocument() {
       />
 
       <FlashList
-        data={pictures}
+        data={[]}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         extraData={[pictureSelection.isSelectionMode]}

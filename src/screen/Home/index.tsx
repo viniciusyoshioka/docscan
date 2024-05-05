@@ -1,36 +1,23 @@
 import { useNavigation } from "@react-navigation/native"
-import { Realm } from "@realm/react"
 import { FlashList } from "@shopify/flash-list"
 import { useEffect, useState } from "react"
 import { Alert, View } from "react-native"
-import DocumentPicker from "react-native-document-picker"
-import RNFS from "react-native-fs"
 import { Divider, FAB } from "react-native-paper"
 import { EmptyScreen, LoadingModal } from "react-native-paper-towel"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useSelectionMode } from "react-native-selection-mode"
-import { unzip } from "react-native-zip-archive"
 
 import {
-  DocumentPictureRealmSchema,
-  DocumentRealmSchema,
-  IDocumentPictureRealmSchema,
-  IDocumentRealmSchema,
-  openExportedDatabase,
-  useDocumentModel,
-  useDocumentRealm,
   Document,
+  DocumentRealmSchema,
   IdOf,
 } from "@database"
 import { useBackHandler } from "@hooks"
 import { useLogger } from "@lib/log"
-import { TranslationKeyType, translate } from "@locales"
+import { translate } from "@locales"
 import { NavigationProps } from "@router"
 import { Constants } from "@services/constant"
-import { DocumentService } from "@services/document"
-import { createAllFolders } from "@services/folder-handler"
 import { getNotificationPermission } from "@services/permission"
-import { stringifyError } from "@utils"
 import { DOCUMENT_ITEM_HEIGHT, DocumentItem } from "./DocumentItem"
 import { HomeHeader } from "./Header"
 import { useDocuments } from "./useDocuments"
@@ -48,8 +35,6 @@ export function Home() {
   const navigation = useNavigation<NavigationProps<"Home">>()
   const log = useLogger()
 
-  const { setDocumentModel } = useDocumentModel()
-  const documentRealm = useDocumentRealm()
   const documents = useDocuments()
   const documentSelection = useSelectionMode<IdOf<Document>>()
   const [showDocumentDeletionModal, setShowDocumentDeletionModal] = useState(false)
@@ -68,8 +53,8 @@ export function Home() {
     documentSelection.setNewSelectedData(current => {
       const newSelectedData = new Set<IdOf<Document>>()
       documents.forEach(document => {
-        if (!current.has(document.id)) {
-          newSelectedData.add(document.id)
+        if (!current.has(document.id.toHexString())) {
+          newSelectedData.add(document.id.toHexString())
         }
       })
       return newSelectedData
@@ -77,6 +62,7 @@ export function Home() {
   }
 
   async function deleteSelectedDocument() {
+    /*
     setShowDocumentDeletionModal(true)
 
     try {
@@ -115,6 +101,7 @@ export function Home() {
       documentSelection.exitSelection()
       setShowDocumentDeletionModal(false)
     }
+    */
   }
 
   function alertDeleteDocument() {
@@ -129,6 +116,7 @@ export function Home() {
   }
 
   async function importDocument() {
+    /*
     try {
       const pickedFile = await DocumentPicker.pickSingle({
         copyTo: "cachesDirectory",
@@ -218,9 +206,11 @@ export function Home() {
         translate("Home_alert_errorImportingDocuments_text")
       )
     }
+    */
   }
 
   async function exportSelectedDocument() {
+    /*
     Alert.alert(
       translate("Home_alert_exportingDocuments_title"),
       translate("Home_alert_exportingDocuments_text")
@@ -289,9 +279,11 @@ export function Home() {
     if (documentSelection.isSelectionMode) {
       documentSelection.exitSelection()
     }
+    */
   }
 
   function alertExportDocument() {
+    /*
     if (documents.length === 0) {
       Alert.alert(
         translate("warn"),
@@ -312,6 +304,7 @@ export function Home() {
         { text: translate("Home_export"), onPress: exportSelectedDocument },
       ]
     )
+    */
   }
 
   // TODO merge selected documents
@@ -352,12 +345,14 @@ export function Home() {
     return (
       <DocumentItem
         onClick={() => {
+          /*
           const pictures = documentRealm
             .objects(DocumentPictureRealmSchema)
             .filtered("belongsTo = $0", item.id)
             .sorted("position")
           setDocumentModel({ document: item, pictures })
           navigation.navigate("EditDocument")
+          */
         }}
         onSelect={() => documentSelection.select(documentId)}
         onDeselect={() => documentSelection.deselect(documentId)}

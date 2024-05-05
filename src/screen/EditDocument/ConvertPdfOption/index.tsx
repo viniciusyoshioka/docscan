@@ -1,23 +1,15 @@
 import Slider from "@react-native-community/slider"
 import { useNavigation } from "@react-navigation/native"
 import { useState } from "react"
-import { Alert, View } from "react-native"
-import RNFS from "react-native-fs"
+import { View } from "react-native"
 import { Button, Dialog, RadioButton, Text } from "react-native-paper"
 import { useStyles } from "react-native-unistyles"
 
-import { useDocumentModel } from "@database"
 import { useBackHandler } from "@hooks"
 import { useLogger } from "@lib/log"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
-import { Constants } from "@services/constant"
-import { DocumentService } from "@services/document"
-import { createAllFolders } from "@services/folder-handler"
-import { PdfCreator } from "@services/pdf-creator"
-import { getWritePermission } from "@services/permission"
 import { useAppTheme } from "@theme"
-import { stringifyError } from "@utils"
 import { stylesheet } from "./style"
 
 
@@ -31,9 +23,8 @@ export function ConvertPdfOption() {
   const { styles } = useStyles(stylesheet)
   const log = useLogger()
 
-  const { documentModel } = useDocumentModel()
-  const document = documentModel?.document ?? null
-  const pictures = documentModel?.pictures ?? []
+  const document = null
+  const pictures = []
 
   const { colors } = useAppTheme()
 
@@ -55,6 +46,7 @@ export function ConvertPdfOption() {
 
 
   async function convertToPdf() {
+    /*
     if (!document) {
       log.warn("There is no document to be converted to PDF")
       Alert.alert(
@@ -103,6 +95,7 @@ export function ConvertPdfOption() {
       imageCompressQuality: 100 - compressionValue,
       temporaryPath: Constants.fullPathTemporaryCompressedPicture,
     })
+    */
   }
 
 
