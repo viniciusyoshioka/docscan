@@ -1,5 +1,4 @@
 import { useNavigation, useRoute } from "@react-navigation/native"
-import { Realm } from "@realm/react"
 import { useRef, useState } from "react"
 import { Alert, StyleSheet, View, ViewStyle, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
@@ -12,12 +11,6 @@ import {
   useCameraFormat,
 } from "react-native-vision-camera"
 
-import {
-  DocumentPictureRealmSchema,
-  DocumentRealmSchema,
-  useDocumentModel,
-  useDocumentRealm,
-} from "@database"
 import { useBackHandler } from "@hooks"
 import { useLogger } from "@lib/log"
 import { useSettings } from "@lib/settings"
@@ -56,9 +49,7 @@ export function Camera() {
   const { styles } = useStyles(stylesheet)
   const log = useLogger()
 
-  const documentRealm = useDocumentRealm()
   const { settings } = useSettings()
-  const { documentModel, setDocumentModel } = useDocumentModel()
 
   const cameraRef = useRef<VisionCamera>(null)
   const pictureTakenFeedbackRef = useRef<PictureTakenFeedbackRef>(null)
@@ -105,7 +96,7 @@ export function Camera() {
     } else if (params?.screenAction === "add-picture") {
       navigation.navigate("EditDocument")
     } else {
-      setDocumentModel(undefined)
+      // setDocumentModel(undefined)
       navigation.goBack()
     }
   }
@@ -148,6 +139,7 @@ export function Camera() {
   }
 
   function replacePicture(newPicturePath: string) {
+    /*
     if (params?.screenAction !== "replace-picture")
       throw new Error(
         "Screen action is different of 'replace-picture'. This should not happen"
@@ -180,9 +172,11 @@ export function Camera() {
     navigation.navigate("VisualizePicture", {
       pictureIndex: params.replaceIndex,
     })
+    */
   }
 
   function addPicture(newPicturePath: string) {
+    /*
     let modifiedDocumentId: Realm.BSON.ObjectId
 
     if (documentModel) {
@@ -226,6 +220,7 @@ export function Camera() {
       .sorted("position")
     if (!document) throw new Error("Document is undefined, this should not happen")
     setDocumentModel({ document, pictures })
+  */
   }
 
   function editDocument() {

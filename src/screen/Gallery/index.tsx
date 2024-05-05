@@ -1,6 +1,5 @@
 import { CameraRoll, PhotoIdentifier } from "@react-native-camera-roll/camera-roll"
 import { useNavigation, useRoute } from "@react-navigation/core"
-import { Realm } from "@realm/react"
 import { FlashList } from "@shopify/flash-list"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { ActivityIndicator, Alert, View, useWindowDimensions } from "react-native"
@@ -8,12 +7,6 @@ import RNFS from "react-native-fs"
 import { EmptyScreen, LoadingModal } from "react-native-paper-towel"
 import { useSelectionMode } from "react-native-selection-mode"
 
-import {
-  DocumentPictureRealmSchema,
-  DocumentRealmSchema,
-  useDocumentModel,
-  useDocumentRealm,
-} from "@database"
 import { useBackHandler } from "@hooks"
 import { useLogger } from "@lib/log"
 import { translate } from "@locales"
@@ -46,9 +39,6 @@ export function Gallery() {
   const { params } = useRoute<RouteProps<"Gallery">>()
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
   const log = useLogger()
-
-  const documentRealm = useDocumentRealm()
-  const { documentModel, setDocumentModel } = useDocumentModel()
 
   const { colors } = useAppTheme()
 
@@ -181,6 +171,7 @@ export function Gallery() {
   }
 
   async function importMultipleImage() {
+    /*
     setIsImportingImages(true)
 
     const hasReadMediaImagesPermission = await getReadMediaImagesPermission()
@@ -214,9 +205,11 @@ export function Gallery() {
     addImages(imageFilesToAdd)
     setIsImportingImages(false)
     navigation.goBack()
+    */
   }
 
   function replaceImage(filePath: string) {
+    /*
     if (params.screenAction !== "replace-picture")
       throw new Error(
         "Screen action is different of 'replace-picture'. This should not happen"
@@ -245,9 +238,11 @@ export function Gallery() {
     DocumentService.deletePicturesService({
       pictures: [DocumentService.getPicturePath(oldPictureName)],
     })
+    */
   }
 
   function addImages(filePaths: string[]) {
+    /*
     let modifiedDocumentId: Realm.BSON.ObjectId
     if (documentModel) {
       documentRealm.write(() => {
@@ -292,6 +287,7 @@ export function Gallery() {
       .sorted("position")
     if (!document) throw new Error("Document is undefined, this should not happen")
     setDocumentModel({ document, pictures })
+  */
   }
 
   function renderItem({ item }: { item: PhotoIdentifier }) {

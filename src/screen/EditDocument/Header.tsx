@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native"
 import { Appbar } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-import { useDocumentModel } from "@database"
 import { NavigationProps } from "@router"
 import { DocumentService } from "@services/document"
 import { EditDocumentMenu } from "./EditDocumentMenu"
@@ -28,13 +27,10 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
   const navigation = useNavigation<NavigationProps<"EditDocument">>()
   const safeAreaInsets = useSafeAreaInsets()
 
-  const { documentModel } = useDocumentModel()
-  const document = documentModel?.document ?? null
-
 
   function getTitle() {
     if (!props.isSelectionMode) {
-      return document?.name ?? DocumentService.getNewName()
+      return DocumentService.getNewName()
     }
     return props.selectedPicturesAmount.toString()
   }

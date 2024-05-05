@@ -1,7 +1,6 @@
 import { useRoute } from "@react-navigation/native"
 import { forwardRef, useImperativeHandle, useState } from "react"
 
-import { useDocumentModel } from "@database"
 import { RouteProps } from "@router"
 import { Action } from "./Action"
 import { ActionBar } from "./ActionBar"
@@ -33,8 +32,7 @@ export const CameraControl = forwardRef<CameraControlRef, CameraControlProps>((
 
   const { params } = useRoute<RouteProps<"Camera">>()
 
-  const { documentModel } = useDocumentModel()
-  const picturesCount = (documentModel?.pictures.length ?? 0).toString()
+  const picturesCount = "0"
   const [isActionDisabled, setIsActionDisabled] = useState(false)
 
 

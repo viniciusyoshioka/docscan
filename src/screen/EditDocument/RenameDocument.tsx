@@ -4,12 +4,6 @@ import { TextInput as RNTextInput } from "react-native"
 import { Button, Dialog, TextInput } from "react-native-paper"
 import { Input } from "react-native-paper-towel"
 
-import {
-  DocumentPictureRealmSchema,
-  DocumentRealmSchema,
-  useDocumentModel,
-  useDocumentRealm,
-} from "@database"
 import { useBackHandler, useKeyboard } from "@hooks"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
@@ -21,10 +15,8 @@ export function RenameDocument() {
 
   const navigation = useNavigation<NavigationProps<"RenameDocument">>()
 
-  const documentRealm = useDocumentRealm()
-  const { documentModel, setDocumentModel } = useDocumentModel()
-  const document = documentModel?.document ?? null
-  const initialDocumentName = document?.name ?? DocumentService.getNewName()
+  const document = null
+  const initialDocumentName = DocumentService.getNewName()
 
   const inputRef = createRef<RNTextInput>()
 
@@ -43,6 +35,7 @@ export function RenameDocument() {
   }
 
   function renameDocument() {
+    /*
     const renamedDocument = documentRealm.write(() => {
       if (document) {
         document.name = documentName
@@ -62,6 +55,7 @@ export function RenameDocument() {
       .filtered("belongsTo = $0", renamedDocument.id)
       .sorted("position")
     setDocumentModel({ document: renamedDocument, pictures })
+    */
   }
 
 
