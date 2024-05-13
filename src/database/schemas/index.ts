@@ -1,5 +1,0 @@
-export * from "./DocumentPictureRealmSchema"
-export * from "./DocumentRealmSchema"
-export * from "./ExportedDocumentPictureRealmSchema"
-export * from "./ExportedDocumentRealmSchema"
-export * from "./LogRealmSchema"

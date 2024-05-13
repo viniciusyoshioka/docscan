@@ -27,8 +27,8 @@ export class Constants {
 
   // Database folders
   static databaseFolder = RNFS.DocumentDirectoryPath
-  static appDatabaseFullPath = `${this.databaseFolder}/docscan_database.realm`
-  static logDatabaseFullPath = `${this.databaseFolder}/docscan_log.realm`
-  static exportDatabaseFullPath = `${this.databaseFolder}/docscan_export.realm`
-  static importDatabaseFullPath = `${this.fullPathTemporaryImported}/docscan_export.realm`
+  static appDatabaseFullPath = `${this.databaseFolder}/docscan_database.sqlite`
+  static logDatabaseFullPath = `${this.databaseFolder}/docscan_log.sqlite`
+  static exportDatabaseFullPath = `${this.databaseFolder}/docscan_export.sqlite`
+  static importDatabaseFullPath = `${this.fullPathTemporaryImported}/docscan_export.sqlite`
 }
