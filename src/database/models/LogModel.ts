@@ -15,7 +15,7 @@ export class LogModel implements ILogModel {
   }
 
 
-  public insert(log: Log): WithId<Log> {
-    return this.logRepository.insert(log)
+  public async insert(log: Log): Promise<WithId<Log>> {
+    return await this.logRepository.insert(log)
   }
 }

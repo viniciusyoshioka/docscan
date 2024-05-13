@@ -16,27 +16,27 @@ export class PictureModel implements IPictureModel {
   }
 
 
-  public select(id: IdOf<Picture>): WithId<Picture> {
-    return this.pictureRepository.select(id)
+  public async select(id: IdOf<Picture>): Promise<WithId<Picture>> {
+    return await this.pictureRepository.select(id)
   }
 
-  public selectAllForDocument(
+  public async selectAllForDocument(
     documentId: IdOf<Document>,
     options?: QueryOptions<Picture>
-  ): WithId<Picture>[]> {
-    return this.pictureRepository.selectAllForDocument(documentId, options)
+  ): Promise<WithId<Picture>[]> {
+    return await this.pictureRepository.selectAllForDocument(documentId, options)
   }
 
 
-  public insert(picture: Picture): WithId<Picture> {
-    return this.pictureRepository.insert(picture)
+  public async insert(picture: Picture): Promise<WithId<Picture>> {
+    return await this.pictureRepository.insert(picture)
   }
 
-  public insertMultiple(pictures: Picture[]): WithId<Picture>[] {
+  public async insertMultiple(pictures: Picture[]): Promise<WithId<Picture>[]> {
     const newPictures: WithId<Picture>[] = []
 
     for (const picture of pictures) {
-      const newPicture = this.insert(picture)
+      const newPicture = await this.insert(picture)
       newPictures.push(newPicture)
     }
 
@@ -44,18 +44,18 @@ export class PictureModel implements IPictureModel {
   }
 
 
-  public update(picture: WithId<Picture>): WithId<Picture> {
-    return this.pictureRepository.update(picture)
+  public async update(picture: WithId<Picture>): Promise<WithId<Picture>> {
+    return await this.pictureRepository.update(picture)
   }
 
 
-  public delete(id: IdOf<Picture>): void {
-    this.pictureRepository.delete(id)
+  public async delete(id: IdOf<Picture>): Promise<void> {
+    await this.pictureRepository.delete(id)
   }
 
-  public deleteMultiple(ids: IdOf<Picture>[]): void {
+  public async deleteMultiple(ids: IdOf<Picture>[]): Promise<void> {
     for (const id of ids) {
-      this.delete(id)
+      await this.delete(id)
     }
   }
 }

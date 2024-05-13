@@ -3,17 +3,17 @@ import { IdOf, QueryOptions, WithId } from "../../types"
 
 
 export interface IPictureModel {
-  select(id: IdOf<Picture>): WithId<Picture>
+  select(id: IdOf<Picture>): Promise<WithId<Picture>>
   selectAllForDocument(
     documentId: IdOf<Document>,
     options?: QueryOptions<Picture>
-  ): WithId<Picture>[]
+  ): Promise<WithId<Picture>[]>
 
-  insert(picture: Picture): WithId<Picture>
-  insertMultiple(pictures: Picture[]): WithId<Picture>[]
+  insert(picture: Picture): Promise<WithId<Picture>>
+  insertMultiple(pictures: Picture[]): Promise<WithId<Picture>[]>
 
-  update(picture: WithId<Picture>): WithId<Picture>
+  update(picture: WithId<Picture>): Promise<WithId<Picture>>
 
-  delete(id: IdOf<Picture>): void
-  deleteMultiple(ids: IdOf<Picture>[]): void
+  delete(id: IdOf<Picture>): Promise<void>
+  deleteMultiple(ids: IdOf<Picture>[]): Promise<void>
 }
