@@ -3,9 +3,9 @@ import { IdOf, QueryOptions, WithId } from "../../types"
 
 
 export interface DocumentRepository {
-  select(id: IdOf<Document>): WithId<Document>
-  selectAll(options?: QueryOptions<Document>): WithId<Document>[]
-  insert(document: Document): WithId<Document>
-  update(document: WithId<Document>): WithId<Document>
-  delete(id: IdOf<Document>): void
+  select(id: IdOf<Document>): Promise<WithId<Document>>
+  selectAll(options?: QueryOptions<Document>): Promise<WithId<Document>[]>
+  insert(document: Document): Promise<WithId<Document>>
+  update(document: WithId<Document>): Promise<WithId<Document>>
+  delete(id: IdOf<Document>): Promise<void>
 }
