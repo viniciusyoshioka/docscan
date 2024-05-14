@@ -1,11 +1,11 @@
 import { useNavigation } from "@react-navigation/core"
 import { FlashList, ListRenderItem } from "@shopify/flash-list"
-import { useCallback, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { View, useWindowDimensions } from "react-native"
 import { LoadingModal } from "react-native-paper-towel"
 import { useSelectionMode } from "react-native-selection-mode"
 
-import { DocumentPictureRealmSchema } from "@database"
+import { Picture, WithId } from "@database"
 import { useBackHandler } from "@hooks"
 import { useLogger } from "@lib/log"
 import { translate } from "@locales"
@@ -289,7 +289,7 @@ export function EditDocument() {
     */
   }
 
-  const renderItem: ListRenderItem<DocumentPictureRealmSchema> = ({ item, index }) => {
+  const renderItem: ListRenderItem<WithId<Picture>> = ({ item, index }) => {
     return (
       <PictureItem
         onClick={() => navigation.navigate("VisualizePicture", { pictureIndex: index })}
@@ -303,9 +303,9 @@ export function EditDocument() {
     )
   }
 
-  const keyExtractor = useCallback((_: DocumentPictureRealmSchema, index: number) => (
-    index.toString()
-  ), [])
+  function keyExtractor(item: WithId<Picture>) {
+    return item.id
+  }
 
 
   return (

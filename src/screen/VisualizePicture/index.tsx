@@ -1,10 +1,10 @@
 import { useNavigation, useRoute } from "@react-navigation/core"
-import { FlashList } from "@shopify/flash-list"
+import { FlashList, ListRenderItem } from "@shopify/flash-list"
 import { useMemo, useRef, useState } from "react"
 import { Alert, View, useWindowDimensions } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-import { DocumentPictureRealmSchema } from "@database"
+import { Picture, WithId } from "@database"
 import { useBackHandler } from "@hooks"
 import { useLogger } from "@lib/log"
 import { translate } from "@locales"
@@ -144,7 +144,7 @@ export function VisualizePicture() {
     }
   }
 
-  function renderItem({ item }: { item: DocumentPictureRealmSchema }) {
+  const renderItem: ListRenderItem<WithId<Picture>> = ({ item }) => {
     const picturePath = DocumentService.getPicturePath(item.fileName)
     return (
       <ImageVisualizationItem
