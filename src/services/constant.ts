@@ -25,10 +25,16 @@ export class Constants {
   static fullPathTemporaryImported = `${this.fullPathRootInternal}/TemporaryImported`
   static fullPathTemporaryCompressedPicture = `${this.fullPathRootInternal}/TemporaryCompressedPicture`
 
-  // Database folders
+  // Database
   static databaseFolder = RNFS.DocumentDirectoryPath
-  static appDatabaseFullPath = `${this.databaseFolder}/docscan_database.sqlite`
-  static logDatabaseFullPath = `${this.databaseFolder}/docscan_log.sqlite`
-  static exportDatabaseFullPath = `${this.databaseFolder}/docscan_export.sqlite`
-  static importDatabaseFullPath = `${this.fullPathTemporaryImported}/docscan_export.sqlite`
+
+  static appDatabaseFileName = "docscan_database.sqlite"
+  static logDatabaseFileName = "docscan_log.sqlite"
+  static exportDatabaseFileName = "docscan_export.sqlite"
+  static importDatabaseFileName = "docscan_import.sqlite"
+
+  static appDatabaseFullPath = `${this.databaseFolder}/${this.appDatabaseFileName}`
+  static logDatabaseFullPath = `${this.databaseFolder}/${this.logDatabaseFileName}`
+  static exportDatabaseFullPath = `${this.databaseFolder}/${this.exportDatabaseFileName}`
+  static importDatabaseFullPath = `${this.fullPathTemporaryImported}/${this.importDatabaseFileName}`
 }
