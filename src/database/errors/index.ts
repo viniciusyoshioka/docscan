@@ -1,4 +1,5 @@
 export * from "./BaseDatabaseError"
 export * from "./EntityNotFoundError"
+export * from "./InsertionError"
 export * from "./OpenDatabaseError"
 export * from "./UnknownDatabaseError"
