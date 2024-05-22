@@ -1,5 +1,4 @@
 export * from "./BaseDatabaseError"
-export * from "./DocumentNotFoundError"
 export * from "./EntityNotFoundError"
 export * from "./OpenDatabaseError"
 export * from "./PictureNotFoundError"
