@@ -1,9 +1,9 @@
 import { open } from "react-native-quick-sqlite"
 
-import { OpenDatabaseError } from "@database/errors"
-import { DocumentSqliteSchema, PictureSqliteSchema } from "@database/schemas"
 import { Constants } from "@services/constant"
 import { stringifyError } from "@utils"
+import { OpenDatabaseError } from "../../errors"
+import { DocumentSqliteSchema, PictureSqliteSchema } from "../../schemas"
 
 
 export function createAppDatabase() {

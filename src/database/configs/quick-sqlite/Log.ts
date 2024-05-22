@@ -1,9 +1,9 @@
 import { open } from "react-native-quick-sqlite"
 
-import { OpenDatabaseError } from "@database/errors"
-import { LogSqliteSchema } from "@database/schemas"
 import { Constants } from "@services/constant"
 import { stringifyError } from "@utils"
+import { OpenDatabaseError } from "../../errors"
+import { LogSqliteSchema } from "../../schemas"
 
 
 export function createLogDatabase() {
