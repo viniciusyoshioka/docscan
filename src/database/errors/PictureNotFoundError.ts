@@ -1,8 +1,9 @@
 import { Picture } from "../entities"
 import { IdOf } from "../types"
+import { BaseDatabaseError } from "./BaseDatabaseError"
 
 
-export class PictureNotFoundError extends Error {
+export class PictureNotFoundError extends BaseDatabaseError {
 
 
   private pictureId: IdOf<Picture>

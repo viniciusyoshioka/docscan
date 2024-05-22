@@ -1,8 +1,9 @@
 import { Document } from "../entities"
 import { IdOf } from "../types"
+import { BaseDatabaseError } from "./BaseDatabaseError"
 
 
-export class DocumentNotFoundError extends Error {
+export class DocumentNotFoundError extends BaseDatabaseError {
 
 
   private documentId: IdOf<Document>
