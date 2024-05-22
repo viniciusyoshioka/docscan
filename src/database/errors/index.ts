@@ -1,3 +1,4 @@
+export * from "./BaseDatabaseError"
 export * from "./DocumentNotFoundError"
 export * from "./OpenDatabaseError"
 export * from "./PictureNotFoundError"
