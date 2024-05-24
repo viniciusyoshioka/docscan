@@ -9,7 +9,7 @@ import { ILogModel } from "./interface"
 export class LogModel implements ILogModel {
 
 
-  private logRepository: LogRepository
+  protected logRepository: LogRepository
 
 
   constructor(logRepository: LogRepository) {

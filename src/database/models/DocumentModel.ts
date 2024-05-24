@@ -9,7 +9,7 @@ import { IDocumentModel } from "./interface"
 export class DocumentModel implements IDocumentModel {
 
 
-  private documentRepository: DocumentRepository
+  protected documentRepository: DocumentRepository
 
 
   constructor(documentRepository: DocumentRepository) {

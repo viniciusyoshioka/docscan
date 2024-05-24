@@ -8,7 +8,7 @@ import { IPictureModel } from "./interface"
 export class PictureModel implements IPictureModel {
 
 
-  private pictureRepository: PictureRepository
+  protected pictureRepository: PictureRepository
 
 
   constructor(pictureRepository: PictureRepository) {
