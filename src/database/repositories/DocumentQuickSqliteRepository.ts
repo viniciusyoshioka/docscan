@@ -39,8 +39,8 @@ export class DocumentQuickSqliteRepository implements DocumentRepository {
 
       const item = rows.item(0)
       return {
-        id: String(item.id),
         ...item,
+        id,
       }
     } catch (error) {
       if (error instanceof BaseDatabaseError) {
@@ -90,8 +90,8 @@ export class DocumentQuickSqliteRepository implements DocumentRepository {
       }
 
       return {
-        id: String(insertId),
         ...document,
+        id: String(insertId),
       }
     } catch (error) {
       if (error instanceof BaseDatabaseError) {
