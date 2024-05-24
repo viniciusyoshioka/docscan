@@ -1,2 +1,3 @@
 export * from "./DatabaseProvider"
-export * from "./types"
+export type * from "./models"
+export { useModels } from "./models"
