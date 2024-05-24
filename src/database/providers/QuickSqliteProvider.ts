@@ -6,7 +6,7 @@ import { IQuickSqliteProvider } from "./interfaces"
 export class QuickSqliteProvider implements IQuickSqliteProvider {
 
 
-  private database: QuickSQLiteConnection
+  protected database: QuickSQLiteConnection
 
 
   constructor(database: QuickSQLiteConnection) {
