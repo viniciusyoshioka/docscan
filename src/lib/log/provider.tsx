@@ -1,6 +1,6 @@
 import { PropsWithChildren, createContext, useContext, useMemo } from "react"
 
-import { useDatabase } from "@database"
+import { useModels } from "@database"
 import { StandardDateFormatter } from "@lib/date-formatter"
 import { ILogger } from "./interfaces"
 import { ConsoleLogger, DatabaseLogger, MultipleLogger } from "./loggers"
@@ -13,7 +13,7 @@ export function LoggerProvider({ children }: PropsWithChildren) {
 
 
   const isDevEnvironment = __DEV__ ?? true
-  const { logModel } = useDatabase()
+  const { logModel } = useModels()
 
 
   function getLoggers() {
