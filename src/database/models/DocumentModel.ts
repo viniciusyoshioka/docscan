@@ -17,27 +17,27 @@ export class DocumentModel implements IDocumentModel {
   }
 
 
-  public async select(id: IdOf<Document>): Promise<WithId<Document>> {
+  async select(id: IdOf<Document>): Promise<WithId<Document>> {
     return await this.documentRepository.select(id)
   }
 
-  public async selectAll(options?: QueryOptions<Document>): Promise<WithId<Document>[]> {
+  async selectAll(options?: QueryOptions<Document>): Promise<WithId<Document>[]> {
     return await this.documentRepository.selectAll(options)
   }
 
-  public async insert(document: Document): Promise<WithId<Document>> {
+  async insert(document: Document): Promise<WithId<Document>> {
     return await this.documentRepository.insert(document)
   }
 
-  public async update(document: WithId<Document>): Promise<WithId<Document>> {
+  async update(document: WithId<Document>): Promise<WithId<Document>> {
     return await this.documentRepository.update(document)
   }
 
-  public async delete(id: IdOf<Document>): Promise<void> {
+  async delete(id: IdOf<Document>): Promise<void> {
     await this.documentRepository.delete(id)
   }
 
-  public async deleteMultiple(ids: IdOf<Document>[]): Promise<void> {
+  async deleteMultiple(ids: IdOf<Document>[]): Promise<void> {
     for (const id of ids) {
       await this.delete(id)
     }
