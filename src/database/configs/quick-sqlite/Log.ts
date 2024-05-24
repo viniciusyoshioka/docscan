@@ -18,6 +18,6 @@ export function createLogDatabase() {
     return database
   } catch (error) {
     const message = stringifyError(error)
-    throw new OpenDatabaseError(message)
+    throw new OpenDatabaseError("QuickSqlite", message)
   }
 }
