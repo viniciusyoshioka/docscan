@@ -17,7 +17,7 @@ export class LogModel implements ILogModel {
   }
 
 
-  public async insert(log: SetOptional<Log, "timestamp">): Promise<WithId<Log>> {
+  async insert(log: SetOptional<Log, "timestamp">): Promise<WithId<Log>> {
     const newLog: Log = {
       ...log,
       timestamp: Date.now(),
