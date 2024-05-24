@@ -18,7 +18,7 @@ import { DocumentRepository } from "./interfaces"
 export class DocumentQuickSqliteRepository implements DocumentRepository {
 
 
-  private database: QuickSQLiteConnection
+  protected database: QuickSQLiteConnection
 
 
   constructor(quickSqliteProvider: QuickSqliteProvider) {
