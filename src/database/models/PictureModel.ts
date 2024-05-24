@@ -16,11 +16,11 @@ export class PictureModel implements IPictureModel {
   }
 
 
-  public async select(id: IdOf<Picture>): Promise<WithId<Picture>> {
+  async select(id: IdOf<Picture>): Promise<WithId<Picture>> {
     return await this.pictureRepository.select(id)
   }
 
-  public async selectAllForDocument(
+  async selectAllForDocument(
     documentId: IdOf<Document>,
     options?: QueryOptions<Picture>
   ): Promise<WithId<Picture>[]> {
@@ -28,11 +28,11 @@ export class PictureModel implements IPictureModel {
   }
 
 
-  public async insert(picture: Picture): Promise<WithId<Picture>> {
+  async insert(picture: Picture): Promise<WithId<Picture>> {
     return await this.pictureRepository.insert(picture)
   }
 
-  public async insertMultiple(pictures: Picture[]): Promise<WithId<Picture>[]> {
+  async insertMultiple(pictures: Picture[]): Promise<WithId<Picture>[]> {
     const newPictures: WithId<Picture>[] = []
 
     for (const picture of pictures) {
@@ -44,16 +44,16 @@ export class PictureModel implements IPictureModel {
   }
 
 
-  public async update(picture: WithId<Picture>): Promise<WithId<Picture>> {
+  async update(picture: WithId<Picture>): Promise<WithId<Picture>> {
     return await this.pictureRepository.update(picture)
   }
 
 
-  public async delete(id: IdOf<Picture>): Promise<void> {
+  async delete(id: IdOf<Picture>): Promise<void> {
     await this.pictureRepository.delete(id)
   }
 
-  public async deleteMultiple(ids: IdOf<Picture>[]): Promise<void> {
+  async deleteMultiple(ids: IdOf<Picture>[]): Promise<void> {
     for (const id of ids) {
       await this.delete(id)
     }
