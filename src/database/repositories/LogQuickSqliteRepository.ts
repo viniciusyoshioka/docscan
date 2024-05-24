@@ -11,7 +11,7 @@ import { LogRepository } from "./interfaces"
 export class LogQuickSqliteRepository implements LogRepository {
 
 
-  private database: QuickSQLiteConnection
+  protected database: QuickSQLiteConnection
 
 
   constructor(quickSqliteProvider: QuickSqliteProvider) {
