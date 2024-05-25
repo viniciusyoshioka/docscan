@@ -13,15 +13,15 @@ export class MMKVStorage implements StateStorage {
   }
 
 
-  public getItem(name: string): string | null {
+  getItem(name: string): string | null {
     return this.settingsStorage.getString(name) ?? null
   }
 
-  public setItem(name: string, value: string) {
+  setItem(name: string, value: string) {
     this.settingsStorage.set(name, value)
   }
 
-  public removeItem(name: string) {
+  removeItem(name: string) {
     this.settingsStorage.delete(name)
   }
 }
