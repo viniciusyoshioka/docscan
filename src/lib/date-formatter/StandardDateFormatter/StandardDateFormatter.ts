@@ -43,7 +43,7 @@ export class StandardDateFormatter implements IDateFormatter {
   }
 
 
-  public formatDate(date?: Date | number): string {
+  formatDate(date?: Date | number): string {
     date = this.parseDate(date)
 
     return this.patterns.date
@@ -54,7 +54,7 @@ export class StandardDateFormatter implements IDateFormatter {
       .replaceAll("-", this.separators.date)
   }
 
-  public formatTime(date?: Date | number): string {
+  formatTime(date?: Date | number): string {
     date = this.parseDate(date)
 
     return (this.hasSeconds ? this.patterns.timWithSeconds : this.patterns.time)
@@ -65,7 +65,7 @@ export class StandardDateFormatter implements IDateFormatter {
       .replaceAll(":", this.separators.time)
   }
 
-  public formatDateTime(date?: Date | number): string {
+  formatDateTime(date?: Date | number): string {
     date = this.parseDate(date)
 
     const datePart = this.formatDate(date)
@@ -75,7 +75,7 @@ export class StandardDateFormatter implements IDateFormatter {
   }
 
 
-  public getLocaleDate(date?: Date | number): string {
+  getLocaleDate(date?: Date | number): string {
     date = this.parseDate(date)
 
     const options: Intl.DateTimeFormatOptions = {}
@@ -83,7 +83,7 @@ export class StandardDateFormatter implements IDateFormatter {
     return dateTimeFormat.format(date)
   }
 
-  public getLocaleTime(date?: Date | number): string {
+  getLocaleTime(date?: Date | number): string {
     date = this.parseDate(date)
 
     const options: Intl.DateTimeFormatOptions = {
@@ -96,7 +96,7 @@ export class StandardDateFormatter implements IDateFormatter {
     return dateTimeFormat.format(date)
   }
 
-  public getLocaleDateTime(date?: Date | number): string {
+  getLocaleDateTime(date?: Date | number): string {
     date = this.parseDate(date)
 
     const options: Intl.DateTimeFormatOptions = {
