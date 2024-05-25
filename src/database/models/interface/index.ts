@@ -1,3 +1,3 @@
 export * from "./IDocumentModel"
-export * from "./IDocumentPictureModel"
 export * from "./ILogModel"
+export * from "./IPictureModel"

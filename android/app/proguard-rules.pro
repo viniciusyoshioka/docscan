@@ -18,6 +18,3 @@
   **[] $VALUES;
   public *;
 }
-
-# realm, @realm/react
--keep class io.realm.react.**

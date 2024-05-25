@@ -1,8 +1,5 @@
 module.exports = {
-  presets: [
-    "module:@react-native/babel-preset",
-    "@babel/preset-typescript",
-  ],
+  presets: ["module:@react-native/babel-preset"],
   plugins: [
     [
       "module-resolver",
@@ -25,12 +22,14 @@ module.exports = {
     ],
     "@babel/plugin-proposal-export-namespace-from",
     ["@babel/plugin-proposal-decorators", { legacy: true }],
-    "@realm/babel-plugin",
     "react-native-reanimated/plugin",
   ],
   env: {
     production: {
-      plugins: ["react-native-paper/babel"],
+      plugins: [
+        "transform-remove-console",
+        "react-native-paper/babel",
+      ],
     },
   },
 }

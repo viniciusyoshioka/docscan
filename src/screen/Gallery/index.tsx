@@ -7,7 +7,6 @@ import RNFS from "react-native-fs"
 import { EmptyScreen, LoadingModal } from "react-native-paper-towel"
 import { useSelectionMode } from "react-native-selection-mode"
 
-import { useDocumentRealm } from "@database"
 import { useBackHandler } from "@hooks"
 import { useLogger } from "@lib/log"
 import { translate } from "@locales"
@@ -40,8 +39,6 @@ export function Gallery() {
   const { params } = useRoute<RouteProps<"Gallery">>()
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
   const log = useLogger()
-
-  const documentRealm = useDocumentRealm()
 
   const { colors } = useAppTheme()
 

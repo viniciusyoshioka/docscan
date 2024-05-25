@@ -9,5 +9,5 @@ export enum LogCode {
 export interface Log {
   code: LogCode
   message: string
-  timestamp?: number
+  timestamp: number
 }

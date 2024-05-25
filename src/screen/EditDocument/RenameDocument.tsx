@@ -4,7 +4,6 @@ import { TextInput as RNTextInput } from "react-native"
 import { Button, Dialog, TextInput } from "react-native-paper"
 import { Input } from "react-native-paper-towel"
 
-import { useDocumentRealm } from "@database"
 import { useBackHandler, useKeyboard } from "@hooks"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
@@ -16,7 +15,6 @@ export function RenameDocument() {
 
   const navigation = useNavigation<NavigationProps<"RenameDocument">>()
 
-  const documentRealm = useDocumentRealm()
   const document = null
   const initialDocumentName = DocumentService.getNewName()
 

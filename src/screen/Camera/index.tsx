@@ -11,7 +11,6 @@ import {
   useCameraFormat,
 } from "react-native-vision-camera"
 
-import { useDocumentRealm } from "@database"
 import { useBackHandler } from "@hooks"
 import { useLogger } from "@lib/log"
 import { useSettings } from "@lib/settings"
@@ -50,7 +49,6 @@ export function Camera() {
   const { styles } = useStyles(stylesheet)
   const log = useLogger()
 
-  const documentRealm = useDocumentRealm()
   const { settings } = useSettings()
 
   const cameraRef = useRef<VisionCamera>(null)

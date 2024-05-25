@@ -1,1 +1,1 @@
-export * from "./IRealmDatabaseProvider"
+export * from "./IQuickSqliteProvider"

@@ -1,3 +1,5 @@
+import { SetOptional } from "type-fest"
+
 import { Log } from "../entities"
 import { LogRepository } from "../repositories"
 import { WithId } from "../types"
@@ -7,7 +9,7 @@ import { ILogModel } from "./interface"
 export class LogModel implements ILogModel {
 
 
-  private logRepository: LogRepository
+  protected logRepository: LogRepository
 
 
   constructor(logRepository: LogRepository) {
@@ -15,7 +17,12 @@ export class LogModel implements ILogModel {
   }
 
 
-  public insert(log: Log): WithId<Log> {
-    return this.logRepository.insert(log)
+  async insert(log: SetOptional<Log, "timestamp">): Promise<WithId<Log>> {
+    const newLog: Log = {
+      ...log,
+      timestamp: Date.now(),
+    }
+
+    return await this.logRepository.insert(newLog)
   }
 }

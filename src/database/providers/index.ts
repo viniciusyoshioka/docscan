@@ -1,2 +1,2 @@
-export * from "./RealmDatabaseProvider"
+export * from "./QuickSqliteProvider"
 export * from "./interfaces"

@@ -9,6 +9,9 @@ export type TranslationKeyType =
   | "save"
   | "dont_save"
 
+  // Database
+  | "database_errorOpening_text"
+
     // App alert
   | "App_alert_errorLoadingTheme_text"
   | "App_alert_errorSavingTheme_text"

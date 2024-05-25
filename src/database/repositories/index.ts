@@ -1,4 +1,4 @@
-export * from "./DocumentPictureRealmRepository"
-export * from "./DocumentRealmRepository"
-export * from "./LogRealmRepository"
+export * from "./DocumentQuickSqliteRepository"
+export * from "./LogQuickSqliteRepository"
+export * from "./PictureQuickSqliteRepository"
 export * from "./interfaces"

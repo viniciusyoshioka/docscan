@@ -1,5 +1,5 @@
 export interface Document {
   createdAt: number
-  modifiedAt: number
+  updatedAt: number
   name: string
 }

@@ -9,7 +9,7 @@ import { IDocumentModel } from "./interface"
 export class DocumentModel implements IDocumentModel {
 
 
-  private documentRepository: DocumentRepository
+  protected documentRepository: DocumentRepository
 
 
   constructor(documentRepository: DocumentRepository) {
@@ -17,29 +17,29 @@ export class DocumentModel implements IDocumentModel {
   }
 
 
-  public select(id: IdOf<Document>): WithId<Document> {
-    return this.documentRepository.select(id)
+  async select(id: IdOf<Document>): Promise<WithId<Document>> {
+    return await this.documentRepository.select(id)
   }
 
-  public selectAll(options?: QueryOptions<Document>): WithId<Document>[] {
-    return this.documentRepository.selectAll(options)
+  async selectAll(options?: QueryOptions<Document>): Promise<WithId<Document>[]> {
+    return await this.documentRepository.selectAll(options)
   }
 
-  public insert(document: Document): WithId<Document> {
-    return this.documentRepository.insert(document)
+  async insert(document: Document): Promise<WithId<Document>> {
+    return await this.documentRepository.insert(document)
   }
 
-  public update(document: WithId<Document>): WithId<Document> {
-    return this.documentRepository.update(document)
+  async update(document: WithId<Document>): Promise<WithId<Document>> {
+    return await this.documentRepository.update(document)
   }
 
-  public delete(id: IdOf<Document>): void {
-    this.documentRepository.delete(id)
+  async delete(id: IdOf<Document>): Promise<void> {
+    await this.documentRepository.delete(id)
   }
 
-  public deleteMultiple(ids: IdOf<Document>[]): void {
+  async deleteMultiple(ids: IdOf<Document>[]): Promise<void> {
     for (const id of ids) {
-      this.delete(id)
+      await this.delete(id)
     }
   }
 }

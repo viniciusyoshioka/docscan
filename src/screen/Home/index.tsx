@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
-import { FlashList } from "@shopify/flash-list"
+import { FlashList, ListRenderItem } from "@shopify/flash-list"
 import { useEffect, useState } from "react"
 import { Alert, View } from "react-native"
 import { Divider, FAB } from "react-native-paper"
@@ -9,8 +9,8 @@ import { useSelectionMode } from "react-native-selection-mode"
 
 import {
   Document,
-  DocumentRealmSchema,
   IdOf,
+  WithId,
 } from "@database"
 import { useBackHandler } from "@hooks"
 import { useLogger } from "@lib/log"
@@ -53,8 +53,8 @@ export function Home() {
     documentSelection.setNewSelectedData(current => {
       const newSelectedData = new Set<IdOf<Document>>()
       documents.forEach(document => {
-        if (!current.has(document.id.toHexString())) {
-          newSelectedData.add(document.id.toHexString())
+        if (!current.has(document.id)) {
+          newSelectedData.add(document.id)
         }
       })
       return newSelectedData
@@ -339,8 +339,8 @@ export function Home() {
     )
   }
 
-  function renderItem({ item }: { item: DocumentRealmSchema }) {
-    const documentId = item.id.toHexString()
+  const renderItem: ListRenderItem<WithId<Document>> = ({ item }) => {
+    const { id } = item
 
     return (
       <DocumentItem
@@ -354,10 +354,10 @@ export function Home() {
           navigation.navigate("EditDocument")
           */
         }}
-        onSelect={() => documentSelection.select(documentId)}
-        onDeselect={() => documentSelection.deselect(documentId)}
+        onSelect={() => documentSelection.select(id)}
+        onDeselect={() => documentSelection.deselect(id)}
         isSelectionMode={documentSelection.isSelectionMode}
-        isSelected={documentSelection.isSelected(documentId)}
+        isSelected={documentSelection.isSelected(id)}
         document={item}
       />
     )
@@ -395,7 +395,7 @@ export function Home() {
 
       {documents.length > 0 && (
         <FlashList
-          data={documents.toJSON() as unknown as DocumentRealmSchema[]}
+          data={documents}
           renderItem={renderItem}
           extraData={documentSelection.getSelectedData()}
           estimatedItemSize={DOCUMENT_ITEM_HEIGHT}
