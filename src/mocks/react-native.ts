@@ -1,10 +1,13 @@
 export const mockReactNative = {
-  Platform: {
-    OS: "android",
+  Alert: {
+    alert: jest.fn(),
   },
   NativeModules: {
     I18nManager: {
       localeIdentifier: "en-us",
     },
+  },
+  Platform: {
+    OS: "android",
   },
 }
