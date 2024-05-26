@@ -1,13 +1,8 @@
-jest.mock("react-native-fs", () => ({
-  ExternalStorageDirectoryPath: "ExternalStorageDirectoryPath",
-  DocumentDirectoryPath: "DocumentDirectoryPath",
-}))
+import { mockReactNativeFs, mockReactNativeQuickSqlite } from "@mocks"
 
-jest.mock("react-native-quick-sqlite", () => ({
-  open: jest.fn(() => ({
-    execute: jest.fn(),
-  })),
-}))
+
+jest.mock("react-native-fs", () => mockReactNativeFs)
+jest.mock("react-native-quick-sqlite", () => mockReactNativeQuickSqlite)
 
 
 import { OpenDatabaseError } from "../../../errors"
