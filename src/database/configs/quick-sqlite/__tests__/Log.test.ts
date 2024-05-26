@@ -21,6 +21,14 @@ describe("createLogDatabase", () => {
         throw new Error("Invalid path")
       })
 
-    expect(() => createLogDatabase()).toThrow(OpenDatabaseError)
+    try {
+      createLogDatabase()
+    } catch (error) {
+      const errorMessage = (error as OpenDatabaseError).message
+      const databaseName = (error as OpenDatabaseError).getDatabaseName()
+
+      expect(errorMessage).toBe("Failed to open QuickSqlite database: Invalid path")
+      expect(databaseName).toBe("QuickSqlite")
+    }
   })
 })
