@@ -4,18 +4,18 @@ import { BaseDatabaseError } from "./BaseDatabaseError"
 export class InsertionError extends BaseDatabaseError {
 
 
-  protected entity: string
+  protected _entity: string
 
 
   constructor(entity: string, options?: ErrorOptions) {
     const errorMessage = `Failed to insert data for ${entity}`
     super(errorMessage, options)
     this.name = "InsertionError"
-    this.entity = entity
+    this._entity = entity
   }
 
 
-  getEntity(): string {
-    return this.entity
+  get entity(): string {
+    return this._entity
   }
 }

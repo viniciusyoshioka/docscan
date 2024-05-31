@@ -7,24 +7,24 @@ import { BaseDatabaseError } from "./BaseDatabaseError"
 export class EntityNotFoundError<E = EmptyObject> extends BaseDatabaseError {
 
 
-  protected entity: string
-  protected id: IdOf<E>
+  protected _entity: string
+  protected _id: IdOf<E>
 
 
   constructor(entity: string, id: IdOf<E>, options?: ErrorOptions) {
     const errorMessage = `${entity} with id ${id} not found`
     super(errorMessage, options)
     this.name = "EntityNotFoundError"
-    this.entity = entity
-    this.id = id
+    this._entity = entity
+    this._id = id
   }
 
 
-  getEntity(): string {
-    return this.entity
+  get entity(): string {
+    return this._entity
   }
 
-  getId(): IdOf<E> {
-    return this.id
+  get id(): IdOf<E> {
+    return this._id
   }
 }
