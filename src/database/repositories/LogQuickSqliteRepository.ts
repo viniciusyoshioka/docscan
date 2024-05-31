@@ -21,7 +21,7 @@ export class LogQuickSqliteRepository implements LogRepository {
 
   async insert(log: Log): Promise<WithId<Log>> {
     try {
-      const { insertId } = this.database.execute(`
+      const { insertId } = await this.database.executeAsync(`
         INSERT INTO logs (code, message, timestamp) VALUES (?, ?, ?);
       `, [log.code, log.message, log.timestamp])
 
