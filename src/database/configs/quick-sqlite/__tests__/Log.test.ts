@@ -24,10 +24,9 @@ describe("createLogDatabase", () => {
     try {
       createLogDatabase()
     } catch (error) {
-      const errorMessage = (error as OpenDatabaseError).message
-      const databaseName = (error as OpenDatabaseError).getDatabaseName()
+      const { databaseName, message } = error as OpenDatabaseError
 
-      expect(errorMessage).toBe("Failed to open QuickSqlite database: Invalid path")
+      expect(message).toBe("Failed to open QuickSqlite database: Invalid path")
       expect(databaseName).toBe("QuickSqlite")
     }
   })
