@@ -36,15 +36,14 @@ describe("LogQuickSqliteRepository", () => {
   const logRepository = new LogQuickSqliteRepository(quickSqliteProvider)
   const spyOnRepository = jest.spyOn(logRepository, "insert")
 
+  const log: Log = {
+    code: LogCode.debug,
+    message: "Test error message",
+    timestamp: Date.now(),
+  }
+
 
   it("should insert log", async () => {
-    const log: Log = {
-      code: LogCode.debug,
-      message: "Test error message",
-      timestamp: Date.now(),
-    }
-
-
     await expect(logRepository.insert(log))
       .resolves
       .toEqual({ id: "1", ...log })
@@ -56,13 +55,6 @@ describe("LogQuickSqliteRepository", () => {
   })
 
   it("should handle insertion failure", async () => {
-    const log: Log = {
-      code: LogCode.debug,
-      message: "Test error message",
-      timestamp: Date.now(),
-    }
-
-
     async function testInsertionFailure() {
       try {
         await logRepository.insert(log)
@@ -84,13 +76,6 @@ describe("LogQuickSqliteRepository", () => {
   })
 
   it("should handle error during insertion", async () => {
-    const log: Log = {
-      code: LogCode.debug,
-      message: "Test error message",
-      timestamp: Date.now(),
-    }
-
-
     await expect(logRepository.insert(log))
       .rejects
       .toThrow(new UnknownDatabaseError("Test SQLite internal error"))
