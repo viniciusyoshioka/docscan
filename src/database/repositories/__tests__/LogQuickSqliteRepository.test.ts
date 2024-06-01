@@ -27,7 +27,6 @@ describe("LogQuickSqliteRepository", () => {
 
   const spyOnOpen = jest.spyOn(require("react-native-quick-sqlite"), "open")
 
-
   const database = open({ name: "test.sqlite" })
   const spyOnDatabase = jest.spyOn(database, "executeAsync")
 
