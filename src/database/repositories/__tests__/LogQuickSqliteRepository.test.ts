@@ -63,7 +63,17 @@ describe("LogQuickSqliteRepository", () => {
     }
 
 
-    await expect(logRepository.insert(log))
+    async function testInsertionFailure() {
+      try {
+        await logRepository.insert(log)
+      } catch (error) {
+        const { entity } = error as InsertionError
+        expect(entity).toEqual("Log")
+        throw error
+      }
+    }
+
+    await expect(testInsertionFailure())
       .rejects
       .toThrow(new InsertionError("Log"))
     expect(spyOnRepository).toHaveBeenCalledTimes(2)
