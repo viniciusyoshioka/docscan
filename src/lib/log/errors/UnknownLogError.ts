@@ -1,6 +1,6 @@
-export class UnknowLogError extends Error {
+export class UnknownLogError extends Error {
   constructor(message?: string, option?: ErrorOptions) {
     super(message, option)
-    this.name = "UnknowLogError"
+    this.name = "UnknownLogError"
   }
 }

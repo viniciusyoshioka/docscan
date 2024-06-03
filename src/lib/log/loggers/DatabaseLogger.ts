@@ -1,6 +1,6 @@
 import { ILogModel, LogCode } from "@database"
 import { stringifyError } from "@utils"
-import { UnknowLogError } from "../errors"
+import { UnknownLogError } from "../errors"
 import { ILogger } from "../interfaces"
 
 
@@ -21,7 +21,7 @@ export class DatabaseLogger implements ILogger {
       this.logModel.insert({ code, message })
     } catch (error) {
       const errorMessage = stringifyError(error)
-      throw new UnknowLogError(errorMessage)
+      throw new UnknownLogError(errorMessage)
     }
   }
 
@@ -31,7 +31,7 @@ export class DatabaseLogger implements ILogger {
       this.logModel.insert({ code, message })
     } catch (error) {
       const errorMessage = stringifyError(error)
-      throw new UnknowLogError(errorMessage)
+      throw new UnknownLogError(errorMessage)
     }
   }
 
@@ -41,7 +41,7 @@ export class DatabaseLogger implements ILogger {
       this.logModel.insert({ code, message })
     } catch (error) {
       const errorMessage = stringifyError(error)
-      throw new UnknowLogError(errorMessage)
+      throw new UnknownLogError(errorMessage)
     }
   }
 
@@ -51,7 +51,7 @@ export class DatabaseLogger implements ILogger {
       this.logModel.insert({ code, message })
     } catch (error) {
       const errorMessage = stringifyError(error)
-      throw new UnknowLogError(errorMessage)
+      throw new UnknownLogError(errorMessage)
     }
   }
 }

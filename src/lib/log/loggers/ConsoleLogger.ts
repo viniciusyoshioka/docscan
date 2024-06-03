@@ -1,7 +1,7 @@
 import { LogCode } from "@database"
 import { StandardDateFormatter } from "@lib/date-formatter"
 import { stringifyError } from "@utils"
-import { InvalidLogCodeError, UnknowLogError } from "../errors"
+import { InvalidLogCodeError, UnknownLogError } from "../errors"
 import { ILogger } from "../interfaces"
 
 
@@ -49,7 +49,7 @@ export class ConsoleLogger implements ILogger {
         throw error
       }
       const errorMessage = stringifyError(error)
-      throw new UnknowLogError(errorMessage)
+      throw new UnknownLogError(errorMessage)
     }
   }
 
@@ -65,7 +65,7 @@ export class ConsoleLogger implements ILogger {
         throw error
       }
       const errorMessage = stringifyError(error)
-      throw new UnknowLogError(errorMessage)
+      throw new UnknownLogError(errorMessage)
     }
   }
 
@@ -81,7 +81,7 @@ export class ConsoleLogger implements ILogger {
         throw error
       }
       const errorMessage = stringifyError(error)
-      throw new UnknowLogError(errorMessage)
+      throw new UnknownLogError(errorMessage)
     }
   }
 
@@ -97,7 +97,7 @@ export class ConsoleLogger implements ILogger {
         throw error
       }
       const errorMessage = stringifyError(error)
-      throw new UnknowLogError(errorMessage)
+      throw new UnknownLogError(errorMessage)
     }
   }
 
