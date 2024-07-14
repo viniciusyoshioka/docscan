@@ -1,7 +1,7 @@
 import { QuickSQLiteConnection } from "react-native-quick-sqlite"
 
 import { stringifyError } from "@utils"
-import { Picture } from "../entities"
+import { Document, Picture } from "../entities"
 import {
   BaseDatabaseError,
   EntityNotFoundError,
@@ -9,7 +9,7 @@ import {
   UnknownDatabaseError,
 } from "../errors"
 import { QuickSqliteProvider } from "../providers"
-import { QueryOptions, WithId } from "../types"
+import { IdOf, QueryOptions, WithId } from "../types"
 import { EntriesOfSorted, SortBy } from "../types/internal"
 import { PictureQuickSqliteTableMap } from "../utils"
 import { PictureRepository } from "./interfaces"
@@ -25,6 +25,29 @@ export class PictureQuickSqliteRepository implements PictureRepository {
     this.database = quickSqliteProvider.getDatabase()
   }
 
+
+  async count(documentId: IdOf<Document>): Promise<number> {
+    try {
+      const numberDocumentId = Number(documentId)
+
+      const { rows } = await this.database.executeAsync(`
+        SELECT COUNT(*) as total_pictures FROM pictures WHERE belongs_to = ?;  
+      `, [numberDocumentId])
+
+      if (!rows || rows.length === 0) {
+        return 0
+      }
+
+      return rows.item(0).total_pictures as number
+    } catch (error) {
+      if (error instanceof BaseDatabaseError) {
+        throw error
+      }
+
+      const stringifiedError = stringifyError(error)
+      throw new UnknownDatabaseError(stringifiedError)
+    }
+  }
 
   async select(id: string): Promise<WithId<Picture>> {
     try {

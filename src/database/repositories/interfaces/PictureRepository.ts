@@ -3,6 +3,8 @@ import { IdOf, QueryOptions, WithId } from "../../types"
 
 
 export interface PictureRepository {
+  count(documentId: IdOf<Document>): Promise<number>
+
   select(id: IdOf<Picture>): Promise<WithId<Picture>>
   selectAllForDocument(
     documentId: IdOf<Document>,
