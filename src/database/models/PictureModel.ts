@@ -16,6 +16,10 @@ export class PictureModel implements IPictureModel {
   }
 
 
+  async count(documentId: IdOf<Document>): Promise<number> {
+    return await this.pictureRepository.count(documentId)
+  }
+
   async select(id: IdOf<Picture>): Promise<WithId<Picture>> {
     return await this.pictureRepository.select(id)
   }
