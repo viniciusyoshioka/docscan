@@ -22,7 +22,7 @@
     "lodash": "^4.17.21",
     "react": "18.2.0",
     "react-material-design-provider": "^1.2.0",
-    "react-native": "0.73.6",
+    "react-native": "0.74.3",
     "react-native-document-picker": "^9.2.0",
     "react-native-fast-image": "^8.6.3",
     "react-native-fs": "^2.20.0",
@@ -52,8 +52,8 @@
     "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
     "@babel/preset-env": "^7.20.0",
     "@babel/runtime": "^7.20.0",
-    "@react-native/babel-preset": "0.73.21",
-    "@react-native/metro-config": "0.73.5",
+    "@react-native/babel-preset": "0.74.85",
+    "@react-native/metro-config": "0.74.85",
     "@sayem314/react-native-keep-awake": "^1.2.3",
     "@stylistic/eslint-plugin": "^1.7.0",
     "@testing-library/react-hooks": "^8.0.1",
@@ -81,5 +81,6 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "packageManager": "yarn@3.6.4"
 }
