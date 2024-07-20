@@ -3,6 +3,7 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationOptions,
 } from "@react-navigation/native-stack"
+import { useMemo } from "react"
 import { enableScreens } from "react-native-screens"
 
 import { Camera } from "@screen/Camera"
@@ -28,7 +29,7 @@ export function Router() {
   const { isDark, colors } = useAppTheme()
 
 
-  const stackNavigatorScreenOptions: NativeStackNavigationOptions = {
+  const stackNavigatorScreenOptions = useMemo<NativeStackNavigationOptions>(() => ({
     animation: "fade",
     headerShown: false,
     statusBarColor: "transparent",
@@ -37,18 +38,18 @@ export function Router() {
     contentStyle: {
       backgroundColor: colors.background,
     },
-  }
+  }), [isDark, colors])
 
-  const modalScreenOptions: NativeStackNavigationOptions = {
+  const modalScreenOptions = useMemo<NativeStackNavigationOptions>(() => ({
     presentation: "transparentModal",
     contentStyle: {
       backgroundColor: "transparent",
     },
-  }
+  }), [])
 
-  const cameraScreenOptions: NativeStackNavigationOptions = {
+  const cameraScreenOptions = useMemo<NativeStackNavigationOptions>(() => ({
     orientation: "portrait",
-  }
+  }), [])
 
 
   return (
