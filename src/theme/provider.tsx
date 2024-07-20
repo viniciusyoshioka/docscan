@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useEffect } from "react"
+import { createContext, PropsWithChildren, useContext, useEffect, useMemo } from "react"
 import {
   MaterialDarkTheme,
   MaterialLightTheme,
@@ -22,13 +22,17 @@ export function AppThemeProvider(props: PropsWithChildren) {
   const deviceTheme = useColorScheme()
 
   const { settings } = useSettings()
-  const isDarkTheme = (settings.theme === "auto" && deviceTheme === "dark")
-    || settings.theme === "dark"
 
 
-  const appTheme = isDarkTheme ? AppThemeDark : AppThemeLight
-  const materialTheme = isDarkTheme ? MaterialDarkTheme : MaterialLightTheme
-  const paperTheme = isDarkTheme ? MD3DarkTheme : MD3LightTheme
+  const isDarkTheme = useMemo(() => (
+    (settings.theme === "auto" && deviceTheme === "dark") || settings.theme === "dark"
+  ), [settings.theme, deviceTheme])
+
+  const { appTheme, materialTheme, paperTheme } = useMemo(() => ({
+    appTheme: isDarkTheme ? AppThemeDark : AppThemeLight,
+    materialTheme: isDarkTheme ? MaterialDarkTheme : MaterialLightTheme,
+    paperTheme: isDarkTheme ? MD3DarkTheme : MD3LightTheme,
+  }), [isDarkTheme])
 
 
   useEffect(() => {
