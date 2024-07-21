@@ -22,7 +22,6 @@ module.exports = {
       },
     ],
     "@babel/plugin-proposal-export-namespace-from",
-    ["@babel/plugin-proposal-decorators", { legacy: true }],
     "react-native-reanimated/plugin",
   ],
   env: {
