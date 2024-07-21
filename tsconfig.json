@@ -16,6 +16,5 @@
       "@theme": ["src/theme"],
       "@utils": ["src/utils"],
     },
-    "experimentalDecorators": true,
   },
 }
