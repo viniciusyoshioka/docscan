@@ -11,21 +11,21 @@ The minimum Android version supported is Android 8 (SDK 26).
 
 ## Develop
 
-Install dependencies with:
+- Install dependencies
 
 ```sh
 yarn install
 ```
 
-To develop the app, the development server is required. Start it with:
+- Start the development server
 
 ```sh
 yarn start
 ```
 
-## Build
+- Build the app
 
-Now, to build the development version, run:
+To build the development version, run:
 
 ```sh
 yarn android
@@ -34,5 +34,5 @@ yarn android
 If you want the release version, build with:
 
 ```sh
-yarn android --mode release
+yarn android --variant release
 ```
