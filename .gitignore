@@ -20,6 +20,3 @@ web-build/
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-
-# Env
-expo-env.d.ts
