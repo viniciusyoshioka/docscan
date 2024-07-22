@@ -1,4 +1,27 @@
 {
-  "name": "docscan",
-  "displayName": "docscan"
+  "expo": {
+    "name": "docscan",
+    "slug": "docscan",
+    "version": "1.20.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "docscan",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "android": {
+      "package": "com.docscan",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "ios": {
+      "bundleIdentifier": "com.docscan",
+      "supportsTablet": true
+    }
+  }
 }
