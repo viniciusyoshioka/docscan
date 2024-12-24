@@ -1,64 +1,84 @@
-import { ElementiumThemeProvider } from "@elementium/theme"
-import { createContext, ReactNode, useContext } from "react"
+import { createContext, PropsWithChildren, useContext, useEffect, useMemo } from "react"
+import {
+  MaterialDarkTheme,
+  MaterialLightTheme,
+  MaterialProvider,
+  MaterialTheme,
+} from "react-material-design-provider"
 import { useColorScheme } from "react-native"
-import { MD3DarkTheme, MD3LightTheme, PaperProvider } from "react-native-paper"
+import { MD3DarkTheme, MD3LightTheme, MD3Theme, PaperProvider } from "react-native-paper"
 import { UnistylesRuntime } from "react-native-unistyles"
 
-import { Settings } from "@services/settings"
-import { AppStorageKeys, useMMKVObject } from "@services/storage"
-import { themeDefault } from "./constants"
-import { AppLightTheme } from "./light"
-import { AppThemeType, ThemeType } from "./types"
+import { useSettings } from "@lib/settings"
+import { AppThemeDark } from "./theme-dark"
+import { AppThemeLight } from "./theme-light"
+import { AppTheme } from "./types"
 
 
-const AppThemeContext = createContext<AppThemeType>(AppLightTheme)
+type ThemeName = "light" | "dark"
 
+type ThemeObject = {
+  appTheme: AppTheme
+  materialTheme: MaterialTheme
+  paperTheme: MD3Theme
+}
 
-export interface AppThemeProviderProps {
-  children?: ReactNode
+type Themes = {
+  [key in ThemeName]: ThemeObject
+}
+
+const themes: Themes = {
+  light: {
+    appTheme: AppThemeLight,
+    materialTheme: MaterialLightTheme,
+    paperTheme: MD3LightTheme,
+  },
+  dark: {
+    appTheme: AppThemeDark,
+    materialTheme: MaterialDarkTheme,
+    paperTheme: MD3DarkTheme,
+  },
 }
 
 
-export function AppThemeProvider(props: AppThemeProviderProps) {
+const AppThemeContext = createContext(AppThemeLight)
+
+
+export function AppThemeProvider(props: PropsWithChildren) {
 
 
   const deviceTheme = useColorScheme()
 
-  const [settings, setSettings] = useMMKVObject<Settings>(AppStorageKeys.SETTINGS)
-  const isDarkTheme = (settings?.theme === "auto" && deviceTheme === "dark") || settings?.theme === "dark"
+  const { settings } = useSettings()
 
 
-  function getAppTheme(): AppThemeType {
-    const switchTheme = (newTheme: ThemeType) => {
-      if (settings) setSettings({ ...settings, theme: newTheme })
-    }
+  const currentTheme = useMemo<ThemeName>(() => {
+    const isDeviceThemeDark = (settings.theme === "auto" && deviceTheme === "dark")
+    const isAppThemeDark = settings.theme === "dark"
+    return (isDeviceThemeDark || isAppThemeDark) ? "dark" : "light"
+  }, [settings.theme, deviceTheme])
 
-    if (isDarkTheme) {
+  const { appTheme, materialTheme, paperTheme } = useMemo<ThemeObject>(() => (
+    themes[currentTheme]
+  ), [currentTheme])
+
+
+  useEffect(() => {
+    if (currentTheme === "dark") {
       UnistylesRuntime.setTheme("dark")
-      const { AppDarkTheme } = require("./dark")
-      AppDarkTheme.appTheme = settings?.theme
-      AppDarkTheme.switchTheme = switchTheme
-      return AppDarkTheme
+    } else {
+      UnistylesRuntime.setTheme("light")
     }
-
-    UnistylesRuntime.setTheme("light")
-    const { AppLightTheme } = require("./light")
-    AppLightTheme.appTheme = (settings?.theme ?? themeDefault) as ThemeType
-    AppLightTheme.switchTheme = switchTheme
-    return AppLightTheme
-  }
-
-
-  const appTheme = getAppTheme()
+  }, [currentTheme])
 
 
   return (
     <AppThemeContext.Provider value={appTheme}>
-      <ElementiumThemeProvider value={appTheme}>
-        <PaperProvider theme={isDarkTheme ? MD3DarkTheme : MD3LightTheme}>
+      <MaterialProvider theme={materialTheme}>
+        <PaperProvider theme={paperTheme}>
           {props.children}
         </PaperProvider>
-      </ElementiumThemeProvider>
+      </MaterialProvider>
     </AppThemeContext.Provider>
   )
 }
