@@ -31,8 +31,10 @@ export type ScreenParams = {
   VisualizePicture: VisualizePictureParam
 }
 
+export type ScreenName = keyof ScreenParams
 
-export type NavigationParamProps<T extends keyof ScreenParams> = NativeStackNavigationProp<ScreenParams, T>
 
+export type NavigationProps<T extends ScreenName> =
+  NativeStackNavigationProp<ScreenParams, T>
 
-export type RouteParamProps<T extends keyof ScreenParams> = RouteProp<ScreenParams, T>
+export type RouteProps<T extends ScreenName> = RouteProp<ScreenParams, T>
