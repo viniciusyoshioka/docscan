@@ -1,10 +1,10 @@
 
 export enum AppStorageKeys {
-    SETTINGS = "settings",
+  SETTINGS = "settings",
 }
 
 
 export type MMKVHook<T> = [
     value: T | undefined,
-    setValue: (value: T | ((current: T | undefined) => T | undefined) | undefined) => void
+    setValue: (value: T | ((current: T | undefined) => T | undefined) | undefined) => void,
 ]

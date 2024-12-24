@@ -11,22 +11,22 @@ import { AppThemeProvider } from "@theme"
 export function App() {
 
 
-    useKeepAwakeOnDev()
+  useKeepAwakeOnDev()
 
 
-    return (
-        <GestureHandlerRootView style={{ flex: 1 }}>
-            <RealmProvider>
-                <SettingsProvider>
-                    <DocumentModelProvider>
-                        <AppThemeProvider>
-                            <KeyboardProvider statusBarTranslucent={true}>
-                                <Router />
-                            </KeyboardProvider>
-                        </AppThemeProvider>
-                    </DocumentModelProvider>
-                </SettingsProvider>
-            </RealmProvider>
-        </GestureHandlerRootView>
-    )
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <RealmProvider>
+        <SettingsProvider>
+          <DocumentModelProvider>
+            <AppThemeProvider>
+              <KeyboardProvider statusBarTranslucent={true}>
+                <Router />
+              </KeyboardProvider>
+            </AppThemeProvider>
+          </DocumentModelProvider>
+        </SettingsProvider>
+      </RealmProvider>
+    </GestureHandlerRootView>
+  )
 }

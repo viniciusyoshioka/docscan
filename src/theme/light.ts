@@ -5,7 +5,7 @@ import { AppThemeType } from "./types"
 
 
 export const AppLightTheme: AppThemeType = {
-    ...ElementiumLightTheme,
-    appTheme: themeDefault,
-    switchTheme: () => {},
+  ...ElementiumLightTheme,
+  appTheme: themeDefault,
+  switchTheme: () => {},
 }

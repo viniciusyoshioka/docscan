@@ -5,15 +5,15 @@ import { DocumentPictureSchema, DocumentSchema } from "../schemas"
 
 
 const DocumentRealmContext = createRealmContext({
-    schema: [DocumentSchema, DocumentPictureSchema],
-    schemaVersion: 1,
-    path: Constants.appDatabaseFullPath,
-    deleteRealmIfMigrationNeeded: __DEV__,
+  schema: [DocumentSchema, DocumentPictureSchema],
+  schemaVersion: 1,
+  path: Constants.appDatabaseFullPath,
+  deleteRealmIfMigrationNeeded: __DEV__,
 })
 
 export const {
-    RealmProvider: DocumentRealmProvider,
-    useRealm: useDocumentRealm,
-    useObject: useDocumentObject,
-    useQuery: useDocumentQuery,
+  RealmProvider: DocumentRealmProvider,
+  useRealm: useDocumentRealm,
+  useObject: useDocumentObject,
+  useQuery: useDocumentQuery,
 } = DocumentRealmContext

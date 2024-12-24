@@ -6,29 +6,29 @@ import { DocumentRealmProvider, LogRealmProvider, useLogRealm } from "../configs
 
 function DatabaseConsumer(props: { children?: ReactNode }) {
 
-    const logRealm = useLogRealm()
+  const logRealm = useLogRealm()
 
-    useEffect(() => {
-        log.setRealm(logRealm)
-    }, [])
+  useEffect(() => {
+    log.setRealm(logRealm)
+  }, [])
 
-    return <>{props.children}</>
+  return <>{props.children}</>
 }
 
 
 export interface RealmProviderProps {
-    children?: ReactNode
+  children?: ReactNode
 }
 
 
 export function RealmProvider(props: RealmProviderProps) {
-    return (
-        <LogRealmProvider>
-            <DocumentRealmProvider>
-                <DatabaseConsumer>
-                    {props.children}
-                </DatabaseConsumer>
-            </DocumentRealmProvider>
-        </LogRealmProvider>
-    )
+  return (
+    <LogRealmProvider>
+      <DocumentRealmProvider>
+        <DatabaseConsumer>
+          {props.children}
+        </DatabaseConsumer>
+      </DocumentRealmProvider>
+    </LogRealmProvider>
+  )
 }

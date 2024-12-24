@@ -16,92 +16,92 @@ import { DocumentService } from "@services/document"
 export function RenameDocument() {
 
 
-    const navigation = useNavigation<NavigationParamProps<"RenameDocument">>()
+  const navigation = useNavigation<NavigationParamProps<"RenameDocument">>()
 
-    const documentRealm = useDocumentRealm()
-    const { documentModel, setDocumentModel } = useDocumentModel()
-    const document = documentModel?.document ?? null
-    const initialDocumentName = document?.name ?? DocumentService.getNewName()
+  const documentRealm = useDocumentRealm()
+  const { documentModel, setDocumentModel } = useDocumentModel()
+  const document = documentModel?.document ?? null
+  const initialDocumentName = document?.name ?? DocumentService.getNewName()
 
-    const inputRef = createRef<TextInput>()
+  const inputRef = createRef<TextInput>()
 
-    const [documentName, setDocumentName] = useState(initialDocumentName)
-
-
-    useKeyboard("keyboardDidHide", () => inputRef.current?.blur())
+  const [documentName, setDocumentName] = useState(initialDocumentName)
 
 
-    useBackHandler(goBack)
+  useKeyboard("keyboardDidHide", () => inputRef.current?.blur())
 
 
-    function goBack() {
-        navigation.goBack()
-        return true
-    }
-
-    function renameDocument() {
-        const renamedDocument = documentRealm.write(() => {
-            if (document) {
-                document.name = documentName
-                document.modifiedAt = Date.now()
-                return document
-            }
-
-            const createdDocument = documentRealm.create(DocumentSchema, { name: documentName })
-            return createdDocument
-        })
-
-        const pictures = documentRealm
-            .objects(DocumentPictureSchema)
-            .filtered("belongsToDocument = $0", renamedDocument.id)
-            .sorted("position")
-        setDocumentModel({ document: renamedDocument, pictures })
-    }
+  useBackHandler(goBack)
 
 
-    useEffect(() => {
-        setTimeout(() => {
-            if (!inputRef.current) return
-            inputRef.current.focus()
-        }, 100)
-    }, [])
+  function goBack() {
+    navigation.goBack()
+    return true
+  }
+
+  function renameDocument() {
+    const renamedDocument = documentRealm.write(() => {
+      if (document) {
+        document.name = documentName
+        document.modifiedAt = Date.now()
+        return document
+      }
+
+      const createdDocument = documentRealm.create(DocumentSchema, { name: documentName })
+      return createdDocument
+    })
+
+    const pictures = documentRealm
+      .objects(DocumentPictureSchema)
+      .filtered("belongsToDocument = $0", renamedDocument.id)
+      .sorted("position")
+    setDocumentModel({ document: renamedDocument, pictures })
+  }
 
 
-    return (
-        <Modal.Scrim onPress={goBack}>
-            <KeyboardAvoidingView behavior={"position"}>
-                <Modal.Container>
-                    <Modal.Title>
-                        {translate("RenameDocument_title")}
-                    </Modal.Title>
+  useEffect(() => {
+    setTimeout(() => {
+      if (!inputRef.current) return
+      inputRef.current.focus()
+    }, 100)
+  }, [])
 
-                    <Input
-                        ref={inputRef}
-                        placeholder={translate("RenameDocument_documentName_placeholder")}
-                        value={documentName}
-                        onChangeText={setDocumentName}
-                        selectTextOnFocus={true}
-                        style={{ marginTop: 16, marginHorizontal: 24 }}
-                    />
 
-                    <Modal.Actions>
-                        <Button
-                            mode={"text"}
-                            children={translate("cancel")}
-                            onPress={goBack}
-                        />
+  return (
+    <Modal.Scrim onPress={goBack}>
+      <KeyboardAvoidingView behavior={"position"}>
+        <Modal.Container>
+          <Modal.Title>
+            {translate("RenameDocument_title")}
+          </Modal.Title>
 
-                        <Button
-                            mode={"text"}
-                            children={translate("ok")}
-                            onPress={() => {
-                                renameDocument()
-                                goBack()
-                            }}
-                        />
-                    </Modal.Actions>
-                </Modal.Container>
-            </KeyboardAvoidingView>
-        </Modal.Scrim>
-    )
+          <Input
+            ref={inputRef}
+            placeholder={translate("RenameDocument_documentName_placeholder")}
+            value={documentName}
+            onChangeText={setDocumentName}
+            selectTextOnFocus={true}
+            style={{ marginTop: 16, marginHorizontal: 24 }}
+          />
+
+          <Modal.Actions>
+            <Button
+              mode={"text"}
+              children={translate("cancel")}
+              onPress={goBack}
+            />
+
+            <Button
+              mode={"text"}
+              children={translate("ok")}
+              onPress={() => {
+                renameDocument()
+                goBack()
+              }}
+            />
+          </Modal.Actions>
+        </Modal.Container>
+      </KeyboardAvoidingView>
+    </Modal.Scrim>
+  )
 }

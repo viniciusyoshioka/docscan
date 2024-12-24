@@ -12,16 +12,16 @@ export interface SettingsHeaderProps {}
 export function SettingsHeader(props: SettingsHeaderProps) {
 
 
-    const safeAreaInsets = useSafeAreaInsets()
+  const safeAreaInsets = useSafeAreaInsets()
 
-    const navigation = useNavigation<NavigationParamProps<"Settings">>()
+  const navigation = useNavigation<NavigationParamProps<"Settings">>()
 
 
-    return (
-        <Appbar.Header elevated={true} statusBarHeight={safeAreaInsets.top}>
-            <Appbar.BackAction onPress={() => navigation.navigate("Home")} />
+  return (
+    <Appbar.Header elevated={true} statusBarHeight={safeAreaInsets.top}>
+      <Appbar.BackAction onPress={() => navigation.navigate("Home")} />
 
-            <Appbar.Content title={translate("Settings_header_title")} />
-        </Appbar.Header>
-    )
+      <Appbar.Content title={translate("Settings_header_title")} />
+    </Appbar.Header>
+  )
 }

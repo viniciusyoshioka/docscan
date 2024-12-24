@@ -11,33 +11,33 @@ type DocumentsChanges = CollectionChangeCallback<DocumentSchema, [number, Docume
 export function useDocuments(): Realm.Results<DocumentSchema> {
 
 
-    const documentRealm = useDocumentRealm()
-    const documentSchemas = documentRealm.objects(DocumentSchema).sorted("modifiedAt", true)
+  const documentRealm = useDocumentRealm()
+  const documentSchemas = documentRealm.objects(DocumentSchema).sorted("modifiedAt", true)
 
-    const [documents, setDocuments] = useState(documentSchemas)
+  const [documents, setDocuments] = useState(documentSchemas)
 
 
-    const onChange: DocumentsChanges = (_, changes) => {
-        const hasDeletion = changes.deletions.length > 0
-        const hasInsertion = changes.insertions.length > 0
-        const hasNewModifications = changes.newModifications.length > 0
-        const hasOldModifications = changes.oldModifications.length > 0
+  const onChange: DocumentsChanges = (_, changes) => {
+    const hasDeletion = changes.deletions.length > 0
+    const hasInsertion = changes.insertions.length > 0
+    const hasNewModifications = changes.newModifications.length > 0
+    const hasOldModifications = changes.oldModifications.length > 0
 
-        if (hasDeletion || hasInsertion || hasNewModifications || hasOldModifications) {
-            const newDocuments = documentRealm
-                .objects(DocumentSchema)
-                .sorted("modifiedAt", true)
-            setDocuments(newDocuments)
-        }
+    if (hasDeletion || hasInsertion || hasNewModifications || hasOldModifications) {
+      const newDocuments = documentRealm
+        .objects(DocumentSchema)
+        .sorted("modifiedAt", true)
+      setDocuments(newDocuments)
     }
+  }
 
 
-    useEffect(() => {
-        documentSchemas.addListener(onChange)
+  useEffect(() => {
+    documentSchemas.addListener(onChange)
 
-        return () => documentSchemas.removeListener(onChange)
-    })
+    return () => documentSchemas.removeListener(onChange)
+  })
 
 
-    return documents
+  return documents
 }
