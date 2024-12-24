@@ -3,7 +3,12 @@ import OrientationLocker, { OrientationType } from "react-native-orientation-loc
 
 
 export function useDeviceOrientation(): OrientationType {
-  const [orientation, setOrientation] = useState(OrientationLocker.getInitialOrientation())
+
+
+  const [orientation, setOrientation] = useState<OrientationType>(() => (
+    OrientationLocker.getInitialOrientation()
+  ))
+
 
   useEffect(() => {
     function onDeviceOrientationChange(deviceOrientation: OrientationType) {
@@ -14,7 +19,8 @@ export function useDeviceOrientation(): OrientationType {
     return () => {
       OrientationLocker.removeDeviceOrientationListener(onDeviceOrientationChange)
     }
-  })
+  }, [])
+
 
   return orientation
 }
