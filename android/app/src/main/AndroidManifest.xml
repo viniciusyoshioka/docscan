@@ -21,6 +21,7 @@
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
       android:theme="@style/AppTheme"
+      android:supportsRtl="true"
       android:requestLegacyExternalStorage="true">
       <activity
         android:name=".MainActivity"
@@ -38,14 +39,14 @@
       <service android:name=".DocumentService.DocumentServiceService" />
       <service android:name=".PdfCreator.PdfCreatorService" />
 
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.provider"
-            android:grantUriPermissions="true"
-            android:exported="false">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths" />
-        </provider>
+      <provider
+        android:name="androidx.core.content.FileProvider"
+        android:authorities="${applicationId}.provider"
+        android:grantUriPermissions="true"
+        android:exported="false">
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/filepaths" />
+      </provider>
     </application>
 </manifest>
