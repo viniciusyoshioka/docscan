@@ -10,6 +10,7 @@ module.exports = {
           "@components": "./src/components",
           "@database": "./src/database",
           "@hooks": "./src/hooks",
+          "@libs": "./src/libs",
           "@locales": "./src/locales",
           "@router": "./src/router",
           "@screen": "./src/screen",

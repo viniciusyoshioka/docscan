@@ -9,7 +9,7 @@ import { useColorScheme } from "react-native"
 import { MD3DarkTheme, MD3LightTheme, MD3Theme, PaperProvider } from "react-native-paper"
 import { UnistylesRuntime } from "react-native-unistyles"
 
-import { useSettings } from "@lib/settings"
+import { useSettings } from "@libs/settings"
 import { AppThemeDark } from "./theme-dark"
 import { AppThemeLight } from "./theme-light"
 import { AppTheme } from "./types"
