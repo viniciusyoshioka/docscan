@@ -3,7 +3,6 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "@components": ["src/components"],
             "@database": ["src/database"],
             "@database/*": ["src/database/*"],
             "@hooks": ["src/hooks"],
