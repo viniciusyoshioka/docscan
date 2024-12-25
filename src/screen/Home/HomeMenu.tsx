@@ -4,7 +4,7 @@ import { StatusBar } from "react-native"
 import { Appbar, Menu } from "react-native-paper"
 
 import { translate } from "@locales"
-import { NavigationParamProps } from "@router"
+import { NavigationProps } from "@router"
 
 
 export interface HomeMenuProps {
@@ -19,7 +19,7 @@ export interface HomeMenuProps {
 export function HomeMenu(props: HomeMenuProps) {
 
 
-  const navigation = useNavigation<NavigationParamProps<"Home">>()
+  const navigation = useNavigation<NavigationProps<"Home">>()
 
   const [isOpen, setIsOpen] = useState(false)
 

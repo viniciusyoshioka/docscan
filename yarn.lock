@@ -1566,37 +1566,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@elementium/color@file:../elementium/packages/color::locator=docscan%40workspace%3A.":
-  version: 1.0.3
-  resolution: "@elementium/color@file:../elementium/packages/color#../elementium/packages/color::hash=1240a1&locator=docscan%40workspace%3A."
-  checksum: 10c0/99716d9ca4691cbe8da34ddd493b56570538c7ac708c85b629f36ff209a10a3dac998fac2116c0d4eab0798a5505258d0b1bf2f3eb9e8bfe2a51640a8ce826d7
-  languageName: node
-  linkType: hard
-
-"@elementium/native@file:../elementium/packages/native::locator=docscan%40workspace%3A.":
-  version: 0.0.1
-  resolution: "@elementium/native@file:../elementium/packages/native#../elementium/packages/native::hash=5e49f2&locator=docscan%40workspace%3A."
-  peerDependencies:
-    "@elementium/color": "*"
-    "@elementium/theme": "*"
-    react: "*"
-    react-native: "*"
-    react-native-paper: ^5.11.0
-    react-native-safe-area-context: ^4.7.3
-    react-native-vector-icons: ^10.0.0
-  checksum: 10c0/0d8b249d9959e6984aea6318b721b730860c269c560cfb2bc99a6de35396d0512e2a5cd271c95f7bbb3922260bf52a03da682c8863bb6c5d3ff2931c0625ecbc
-  languageName: node
-  linkType: hard
-
-"@elementium/theme@file:../elementium/packages/theme::locator=docscan%40workspace%3A.":
-  version: 1.0.1
-  resolution: "@elementium/theme@file:../elementium/packages/theme#../elementium/packages/theme::hash=2e96e9&locator=docscan%40workspace%3A."
-  peerDependencies:
-    react: "*"
-  checksum: 10c0/6ce4432b96f04a1a2c23edadf0602706781dbdfdeb28c565b2e7e421f8852242e274e410b2f88696f0551e244c3555efabe3de7eca1b74b219851ae98f254c99
-  languageName: node
-  linkType: hard
-
 "@eslint-community/eslint-utils@npm:^4.2.0, @eslint-community/eslint-utils@npm:^4.4.0":
   version: 4.4.1
   resolution: "@eslint-community/eslint-utils@npm:4.4.1"
@@ -4181,9 +4150,6 @@ __metadata:
     "@babel/plugin-proposal-export-namespace-from": "npm:^7.18.9"
     "@babel/preset-env": "npm:^7.25.3"
     "@babel/runtime": "npm:^7.25.0"
-    "@elementium/color": "file:../elementium/packages/color"
-    "@elementium/native": "file:../elementium/packages/native"
-    "@elementium/theme": "file:../elementium/packages/theme"
     "@react-native-camera-roll/camera-roll": "npm:^7.9.0"
     "@react-native-community/checkbox": "npm:^0.5.17"
     "@react-native-community/cli": "npm:15.0.1"
