@@ -10,7 +10,7 @@ export class Constants {
   static appType = __DEV__ ? "dev" : "release"
 
   // Icons
-  static appIconOutline = require("./../image/docscan_outline.png")
+  static appIconOutline = require("./../images/docscan_outline.png")
 
   // Folder
   // Root folders
