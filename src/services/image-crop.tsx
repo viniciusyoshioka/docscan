@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { createRef, PureComponent } from "react"
-import { findNodeHandle, NativeSyntheticEvent, requireNativeComponent, UIManager, ViewProps } from "react-native"
+import {
+  findNodeHandle,
+  NativeSyntheticEvent,
+  requireNativeComponent,
+  UIManager,
+  ViewProps,
+} from "react-native"
 
 
 export type OnImageSavedResponse = {
@@ -40,7 +46,9 @@ interface ImageCropViewManagerProps extends ViewProps {
 }
 
 
-const ImageCropViewManager = requireNativeComponent<ImageCropViewManagerProps>("ImageCropView")
+const ImageCropViewManager = requireNativeComponent<ImageCropViewManagerProps>(
+  "ImageCropView"
+)
 
 
 export class ImageCrop extends PureComponent<ImageCropProps> {
@@ -69,7 +77,9 @@ export class ImageCrop extends PureComponent<ImageCropProps> {
 
 
   render() {
-    const { style, sourceUrl, keepAspectRatio, aspectRatio, onSaveImage, onCropError } = this.props
+    const {
+      style, sourceUrl, keepAspectRatio, aspectRatio, onSaveImage, onCropError,
+    } = this.props
 
     return (
       <ImageCropViewManager
