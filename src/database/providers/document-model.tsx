@@ -1,5 +1,12 @@
 import { Realm } from "@realm/react"
-import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useState } from "react"
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useContext,
+  useState,
+} from "react"
 
 import { DocumentPictureSchema, DocumentSchema } from "../schemas"
 
@@ -29,7 +36,7 @@ export interface DocumentModelProviderProps {
 
 export function DocumentModelProvider(props: DocumentModelProviderProps) {
 
-  const [documentModel, setDocumentModel] = useState<DocumentModelValue | undefined>(undefined)
+  const [documentModel, setDocumentModel] = useState<DocumentModelValue | undefined>()
 
   return (
     <DocumentModelContext.Provider
