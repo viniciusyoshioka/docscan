@@ -1,14 +1,26 @@
-import { ComponentClass, ForwardedRef, forwardRef, useEffect, useImperativeHandle, useState } from "react"
+import {
+  ComponentClass,
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react"
 import { Image, StyleProp, View, ViewStyle } from "react-native"
 import FastImage, { FastImageProps } from "react-native-fast-image"
 import RNFS from "react-native-fs"
-import Reanimated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
+import Reanimated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated"
 
 import { ImageTools } from "@services/image-tools"
 import { LoadingOverlay } from "./LoadingOverlay"
 
 
-const AnimatedFastImage = Reanimated.createAnimatedComponent(FastImage as ComponentClass<FastImageProps>)
+const AnimatedFastImage = Reanimated.createAnimatedComponent(
+  FastImage as ComponentClass<FastImageProps>
+)
 
 const perpendicularAngles = [0, 90, 180, 270, 360]
 
@@ -28,7 +40,10 @@ export interface ImageRotationRef {
 }
 
 
-export const ImageRotation = forwardRef((props: ImageRotationProps, ref: ForwardedRef<ImageRotationRef>) => {
+export const ImageRotation = forwardRef<ImageRotationRef, ImageRotationProps>((
+  props,
+  ref
+) => {
 
 
   const [windowWidth, setWindowWidth] = useState(0)
