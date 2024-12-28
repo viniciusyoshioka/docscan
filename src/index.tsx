@@ -21,7 +21,7 @@ export function App() {
         <LoggerProvider>
           <DocumentModelProvider>
             <AppThemeProvider>
-              <KeyboardProvider statusBarTranslucent={true}>
+              <KeyboardProvider>
                 <KeyboardAvoidingView
                   style={{ flex: 1 }}
                   behavior={"padding"}
