@@ -3,6 +3,7 @@ import { KeyboardProvider } from "react-native-keyboard-controller"
 
 import { DocumentModelProvider, RealmProvider } from "@database"
 import { useKeepAwakeOnDev } from "@hooks"
+import { LoggerProvider } from "@libs/log"
 import { Router } from "@router"
 import { AppThemeProvider } from "@theme"
 
@@ -16,13 +17,15 @@ export function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <RealmProvider>
-        <DocumentModelProvider>
-          <AppThemeProvider>
-            <KeyboardProvider statusBarTranslucent={true}>
-              <Router />
-            </KeyboardProvider>
-          </AppThemeProvider>
-        </DocumentModelProvider>
+        <LoggerProvider>
+          <DocumentModelProvider>
+            <AppThemeProvider>
+              <KeyboardProvider statusBarTranslucent={true}>
+                <Router />
+              </KeyboardProvider>
+            </AppThemeProvider>
+          </DocumentModelProvider>
+        </LoggerProvider>
       </RealmProvider>
     </GestureHandlerRootView>
   )

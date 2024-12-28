@@ -5,7 +5,7 @@ import { LogRealm } from "../interfaces"
 
 export class LogSchema extends Realm.Object<LogSchema> implements LogRealm {
   id = new Realm.BSON.ObjectId()
-  code!: string
+  code!: number
   message!: string
   timestamp: number = Date.now()
 
