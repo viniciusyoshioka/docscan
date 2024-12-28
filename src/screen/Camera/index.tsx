@@ -33,7 +33,6 @@ import { NoPermissionMessage } from "./NoPermissionMessage"
 import { PictureTakenFeedback, PictureTakenFeedbackRef } from "./PictureTakenFeedback"
 import { stylesheet } from "./style"
 import { useCameraMargin } from "./useCameraMargin"
-import { useCameraOrientation } from "./useCameraOrientation"
 import { useControlActionEnabled } from "./useControlActionEnabled"
 import { useDisableFocusOnSettingsOpen } from "./useDisableFocusOnSettingsOpened"
 import { useIsCameraActive } from "./useIsCameraActive"
@@ -72,7 +71,6 @@ export function Camera() {
     { photoResolution: "max" },
   ])
   const cameraSize = getCameraSize({ width, height }, settings.camera.ratio)
-  const cameraOrientation = useCameraOrientation()
   const { hasCameraPermission, requestCameraPermission } = useRequestCameraPermission()
   const isCameraActive = useIsCameraActive({ hasCameraPermission })
   const isShowingCamera = useIsShowingCamera({ hasCameraPermission, cameraDevice })
