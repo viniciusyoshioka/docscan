@@ -23,7 +23,9 @@ export function CameraHeader(props: CameraHeaderProps) {
   const { isDark } = useAppTheme()
 
   const headerAbsoulteStyle = { ...styles.absolute, top: safeAreaInsets.top }
-  const headerCameraBasedStyle = props.isShowingCamera ? styles.headerWithCamera : styles.headerWithoutCamera
+  const headerCameraBasedStyle = props.isShowingCamera
+    ? styles.headerWithCamera
+    : styles.headerWithoutCamera
   const headerStyle = { ...headerCameraBasedStyle, ...headerAbsoulteStyle }
   const iconColor = (props.isShowingCamera || isDark) ? "white" : "black"
 

@@ -1,8 +1,8 @@
 import { useRoute } from "@react-navigation/native"
-import { ForwardedRef, forwardRef, useImperativeHandle, useState } from "react"
+import { forwardRef, useImperativeHandle, useState } from "react"
 
 import { useDocumentModel } from "@database"
-import { RouteParamProps } from "@router"
+import { RouteProps } from "@router"
 import { Action } from "./Action"
 import { ActionBar } from "./ActionBar"
 import { MainAction } from "./MainAction"
@@ -25,12 +25,16 @@ export interface CameraControlRef {
 }
 
 
-export const CameraControl = forwardRef((props: CameraControlProps, ref: ForwardedRef<CameraControlRef>) => {
+export const CameraControl = forwardRef<CameraControlRef, CameraControlProps>((
+  props,
+  ref
+) => {
 
 
-  const { params } = useRoute<RouteParamProps<"Camera">>()
+  const { params } = useRoute<RouteProps<"Camera">>()
 
   const { documentModel } = useDocumentModel()
+
   const picturesCount = (documentModel?.pictures.length ?? 0).toString()
   const [isActionDisabled, setIsActionDisabled] = useState(false)
 

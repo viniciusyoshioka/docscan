@@ -177,7 +177,7 @@ export function Home() {
           documentRealm.create(DocumentPictureSchema, {
             fileName: newPictureName,
             position: exportedPicture.position,
-            belongsToDocument: importedDocument.id,
+            belongsTo: importedDocument.id,
           })
 
           pictureToMove.push(

@@ -1,8 +1,16 @@
-import { Color } from "@elementium/color"
-import { GestureResponderEvent, StyleSheet, TouchableOpacity, TouchableOpacityProps } from "react-native"
-import Reanimated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
-
-import { useAppTheme } from "@theme"
+import Color from "color"
+import { useMaterialTheme } from "react-material-design-provider"
+import {
+  GestureResponderEvent,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableOpacityProps,
+} from "react-native"
+import Reanimated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated"
 
 
 const AnimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpacity)
@@ -19,7 +27,7 @@ export interface MainActionProps extends TouchableOpacityProps {
 export function MainAction(props: MainActionProps) {
 
 
-  const { color, state } = useAppTheme()
+  const { colors, state } = useMaterialTheme()
 
   const newScale = useSharedValue(1)
 
@@ -43,14 +51,17 @@ export function MainAction(props: MainActionProps) {
 
 
   const style = StyleSheet.flatten(props.style)
-  const backgroundColorStyle = (style && style.backgroundColor)
+  const hasBackgroundColor = (style !== undefined && style.backgroundColor !== undefined)
+  const backgroundColorStyle = hasBackgroundColor
     ? style.backgroundColor as string
     : props.isShowingCamera
       ? "white"
-      : color.onBackground
-  const backgroundColor = props.disabled
-    ? new Color(backgroundColorStyle).setA(state.content.disabled)
-      .toRgba()
+      : colors.onBackground
+  const backgroundColor = (props.disabled === true)
+    ? Color(backgroundColorStyle)
+      .alpha(state.disabled)
+      .rgb()
+      .toString()
     : backgroundColorStyle
 
 

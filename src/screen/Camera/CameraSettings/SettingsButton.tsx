@@ -1,10 +1,15 @@
-import { Icon } from "@elementium/native"
 import { useDeviceOrientation } from "@hooks"
 import { useEffect } from "react"
 import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from "react-native"
 import { OrientationType } from "react-native-orientation-locker"
 import { Text } from "react-native-paper"
-import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
+import { Icon } from "react-native-paper-towel"
+import Reanimated, {
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated"
 
 
 const AnimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpacity)
@@ -70,9 +75,10 @@ export function SettingsButton(props: SettingsButtonProps) {
     }
   }, [deviceOrientation])
 
-  const animatedRotation = useDerivedValue(() => withTiming(rotationDegree.value, {
-    duration: 200,
-  }))
+  const animatedRotation = useDerivedValue(() => withTiming(
+    rotationDegree.value,
+    { duration: 200 }
+  ))
 
   const orientationStyle = useAnimatedStyle(() => ({
     ...styles.container,

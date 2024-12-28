@@ -1,4 +1,4 @@
-import { ForwardedRef, forwardRef, useImperativeHandle, useState } from "react"
+import { forwardRef, useImperativeHandle, useState } from "react"
 import { StyleSheet, View, ViewProps } from "react-native"
 
 
@@ -20,7 +20,10 @@ export interface FocusIndicatorRef {
 }
 
 
-export const FocusIndicator = forwardRef((props: FocusIndicatorProps, ref: ForwardedRef<FocusIndicatorRef>) => {
+export const FocusIndicator = forwardRef<FocusIndicatorRef, FocusIndicatorProps>((
+  props,
+  ref
+) => {
 
 
   const [pos, setPos] = useState<FocusIndicatorPos>({ x: 0, y: 0 })

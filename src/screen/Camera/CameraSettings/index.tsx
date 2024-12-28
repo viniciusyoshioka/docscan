@@ -1,10 +1,17 @@
+import { defaultSettings, useSettings } from "@libs/settings"
 import { translate } from "@locales"
-import { settingsCameraFlashDefault, settingsCameraRatioDefault, settingsCameraTypeDefault, useSettings } from "@services/settings"
 import { useCameraControlDimensions } from "../CameraControl"
 import { useIsCameraFlippable } from "../useIsCameraFlippable"
 import { SettingsButton } from "./SettingsButton"
 import { SettingsModal, SettingsModalProps } from "./SettingsModal"
-import { getChangeRatioButtonText, getFlashIcon, getSwitchCameraButtonText, nextCameraTypeSetting, nextFlashSetting, nextRatioSetting } from "./utils"
+import {
+  getChangeRatioButtonText,
+  getFlashIcon,
+  getSwitchCameraButtonText,
+  nextCameraPositionSetting,
+  nextFlashSetting,
+  nextRatioSetting,
+} from "./utils"
 
 
 export interface CameraSettingsProps extends SettingsModalProps {}
@@ -16,7 +23,6 @@ export function CameraSettings(props: CameraSettingsProps) {
   const { settings, setSettings } = useSettings()
 
   const isCameraFlippable = useIsCameraFlippable()
-
   const cameraControlDimensions = useCameraControlDimensions()
   const { size, shouldUseWithoutCameraStyle } = cameraControlDimensions
   const cameraControlheight = shouldUseWithoutCameraStyle
@@ -25,39 +31,46 @@ export function CameraSettings(props: CameraSettingsProps) {
 
 
   const flashIcon = getFlashIcon(settings.camera.flash)
-  const switchCameraButtonText = getSwitchCameraButtonText(settings.camera.type)
+  const switchCameraButtonText = getSwitchCameraButtonText(settings.camera.position)
   const changeRatioButtonText = getChangeRatioButtonText(settings.camera.ratio)
 
 
   async function changeFlash() {
-    const newSettings = { ...settings }
-    newSettings.camera.flash = nextFlashSetting[settings.camera.flash]
-    setSettings(newSettings)
+    setSettings({
+      camera: {
+        flash: nextFlashSetting[settings.camera.flash],
+      },
+    })
   }
 
-  async function switchCameraType() {
-    const newSettings = { ...settings }
-    newSettings.camera.type = nextCameraTypeSetting[settings.camera.type]
-    setSettings(newSettings)
+  async function switchCameraPosition() {
+    setSettings({
+      camera: {
+        position: nextCameraPositionSetting[settings.camera.position],
+      },
+    })
   }
 
   async function changeCameraRatio() {
-    const newSettings = { ...settings }
-    newSettings.camera.ratio = nextRatioSetting[settings.camera.ratio]
-    setSettings(newSettings)
+    setSettings({
+      camera: {
+        ratio: nextRatioSetting[settings.camera.ratio],
+      },
+    })
   }
 
   async function resetCameraSettings() {
-    const newSettings = { ...settings }
-    newSettings.camera.flash = settingsCameraFlashDefault
-    newSettings.camera.type = settingsCameraTypeDefault
-    newSettings.camera.ratio = settingsCameraRatioDefault
-    setSettings(newSettings)
+    setSettings({
+      camera: defaultSettings.camera,
+    })
   }
 
 
   return (
-    <SettingsModal {...props} containerStyle={{ marginBottom: cameraControlheight }}>
+    <SettingsModal
+      {...props}
+      containerStyle={{ marginBottom: cameraControlheight }}
+    >
       <SettingsButton
         icon={flashIcon}
         optionName={translate("CameraSettings_flash")}
@@ -68,7 +81,7 @@ export function CameraSettings(props: CameraSettingsProps) {
         <SettingsButton
           icon={"orbit-variant"}
           optionName={switchCameraButtonText}
-          onPress={switchCameraType}
+          onPress={switchCameraPosition}
         />
       )}
 

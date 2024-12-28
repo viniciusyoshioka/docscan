@@ -7,7 +7,7 @@ export class DocumentPictureSchema extends Realm.Object<DocumentPictureSchema> i
   id = new Realm.BSON.ObjectId()
   fileName!: string
   position!: number
-  belongsToDocument!: Realm.BSON.ObjectId
+  belongsTo!: Realm.BSON.ObjectId
 
   static primaryKey = "id"
 }

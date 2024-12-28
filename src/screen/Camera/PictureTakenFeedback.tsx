@@ -1,4 +1,4 @@
-import { ForwardedRef, forwardRef, useImperativeHandle, useState } from "react"
+import { forwardRef, useImperativeHandle, useState } from "react"
 import { StyleSheet, View, ViewProps } from "react-native"
 
 
@@ -7,7 +7,10 @@ export interface PictureTakenFeedbackRef {
 }
 
 
-export const PictureTakenFeedback = forwardRef((props: ViewProps, ref: ForwardedRef<PictureTakenFeedbackRef>) => {
+export const PictureTakenFeedback = forwardRef<PictureTakenFeedbackRef, ViewProps>((
+  props,
+  ref
+) => {
 
 
   const [isVisible, setIsVisible] = useState(false)

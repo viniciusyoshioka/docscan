@@ -1,22 +1,30 @@
-import { Screen } from "@elementium/native"
 import { useNavigation, useRoute } from "@react-navigation/native"
-import { Realm } from "@realm/react"
 import { useRef, useState } from "react"
-import { Alert, StyleProp, StyleSheet, View, ViewStyle, useWindowDimensions } from "react-native"
+import { Alert, StyleSheet, View, ViewStyle, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
-import { HandlerStateChangeEvent, State, TapGestureHandler, TapGestureHandlerEventPayload } from "react-native-gesture-handler"
+import { Gesture, GestureDetector } from "react-native-gesture-handler"
+import { EmptyScreen, useModal } from "react-native-paper-towel"
 import { useStyles } from "react-native-unistyles"
-import { Camera as VisionCamera, useCameraDevice, useCameraFormat } from "react-native-vision-camera"
+import {
+  Camera as VisionCamera,
+  useCameraDevice,
+  useCameraFormat,
+} from "react-native-vision-camera"
 
-import { EmptyList } from "@components"
-import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "@database"
+import {
+  DocumentPictureSchema,
+  DocumentSchema,
+  useDocumentModel,
+  useDocumentRealm,
+} from "@database"
 import { useBackHandler } from "@hooks"
+import { useLogger } from "@libs/log"
+import { useSettings } from "@libs/settings"
 import { translate } from "@locales"
-import { NavigationParamProps, RouteParamProps } from "@router"
+import { NavigationProps, RouteProps } from "@router"
 import { DocumentService } from "@services/document"
 import { createAllFolders } from "@services/folder-handler"
-import { log, stringfyError } from "@services/log"
-import { getCameraRatioNumber, useSettings } from "@services/settings"
+import { stringifyError } from "@utils"
 import { CameraControl, CameraControlRef } from "./CameraControl"
 import { CameraSettings } from "./CameraSettings"
 import { FocusIndicator, FocusIndicatorRef } from "./FocusIndicator"
@@ -27,13 +35,13 @@ import { stylesheet } from "./style"
 import { useCameraMargin } from "./useCameraMargin"
 import { useCameraOrientation } from "./useCameraOrientation"
 import { useControlActionEnabled } from "./useControlActionEnabled"
-import { useDisableFocusOnSettingsOpened } from "./useDisableFocusOnSettingsOpened"
+import { useDisableFocusOnSettingsOpen } from "./useDisableFocusOnSettingsOpened"
 import { useIsCameraActive } from "./useIsCameraActive"
 import { useIsShowingCamera } from "./useIsShowingCamera"
 import { useRequestCameraPermission } from "./useRequestCameraPermission"
 import { useResetCameraOnChangeRatio } from "./useResetCameraOnChangeRatio"
 import { useStatusBarStyle } from "./useStatusBarStyle"
-import { getCameraSize } from "./utils"
+import { getCameraRatioNumber, getCameraSize } from "./utils"
 
 
 // TODO add support to multiple back cameras
@@ -41,23 +49,24 @@ import { getCameraSize } from "./utils"
 export function Camera() {
 
 
-  const navigation = useNavigation<NavigationParamProps<"Camera">>()
-  const { params } = useRoute<RouteParamProps<"Camera">>()
+  const navigation = useNavigation<NavigationProps<"Camera">>()
+  const { params } = useRoute<RouteProps<"Camera">>()
   const { width, height } = useWindowDimensions()
   const { styles } = useStyles(stylesheet)
+  const log = useLogger()
 
-  const documentRealm = useDocumentRealm()
   const { settings } = useSettings()
   const { documentModel, setDocumentModel } = useDocumentModel()
+  const documentRealm = useDocumentRealm()
 
   const cameraRef = useRef<VisionCamera>(null)
   const pictureTakenFeedbackRef = useRef<PictureTakenFeedbackRef>(null)
   const cameraControlRef = useRef<CameraControlRef>(null)
   const focusIndicatorRef = useRef<FocusIndicatorRef>(null)
 
-  const [isCameraSettingsVisible, setIsCameraSettingsVisible] = useState(false)
+  const cameraSettings = useModal()
 
-  const cameraDevice = useCameraDevice(settings.camera.type)
+  const cameraDevice = useCameraDevice(settings.camera.position)
   const cameraFormat = useCameraFormat(cameraDevice, [
     { photoAspectRatio: getCameraRatioNumber(settings.camera.ratio) },
     { photoResolution: "max" },
@@ -72,7 +81,10 @@ export function Camera() {
   const [isResetingCamera, setIsResetingCamera] = useState(false)
 
 
-  const screenStyle: StyleProp<ViewStyle> = isShowingCamera ? { backgroundColor: "black" } : undefined
+  const screenStyle: ViewStyle = {
+    flex: 1,
+    backgroundColor: isShowingCamera ? "black" : undefined,
+  }
 
 
   useBackHandler(() => {
@@ -82,8 +94,8 @@ export function Camera() {
 
 
   function goBack() {
-    if (isCameraSettingsVisible) {
-      setIsCameraSettingsVisible(false)
+    if (cameraSettings.isVisible) {
+      cameraSettings.hide()
       return
     }
 
@@ -106,10 +118,12 @@ export function Camera() {
   }
 
   async function takePicture() {
-    await createAllFolders()
-
     try {
-      if (!cameraRef.current) throw new Error("Camera ref is undefined")
+      if (!cameraRef.current) {
+        throw new Error("Camera ref is undefined")
+      }
+
+      await createAllFolders()
 
       pictureTakenFeedbackRef.current?.showFeedback()
       const response = await cameraRef.current.takePhoto({
@@ -126,7 +140,7 @@ export function Camera() {
         addPicture(picturePath)
       }
     } catch (error) {
-      log.error(`Error taking picture: "${stringfyError(error)}"`)
+      log.error(`Error taking picture: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("Camera_alert_unknownErrorTakingPicture_text")
@@ -136,20 +150,26 @@ export function Camera() {
 
   function replacePicture(newPicturePath: string) {
     if (params?.screenAction !== "replace-picture")
-      throw new Error("Screen action is different of 'replace-picture'. This should not happen")
+      throw new Error(
+        "Screen action is different of 'replace-picture'. This should not happen"
+      )
     if (!documentModel)
       throw new Error("Document model is undefined. This should not happen")
 
     const oldPictureName = documentModel.pictures[params.replaceIndex].fileName
     documentRealm.write(() => {
       documentModel.document.modifiedAt = Date.now()
-      documentModel.pictures[params.replaceIndex].fileName = DocumentService.getFileFullname(newPicturePath)
+      documentModel.pictures[params.replaceIndex].fileName =
+        DocumentService.getFileFullname(newPicturePath)
     })
 
-    const document = documentRealm.objectForPrimaryKey(DocumentSchema, documentModel.document.id)
+    const document = documentRealm.objectForPrimaryKey(
+      DocumentSchema,
+      documentModel.document.id
+    )
     const pictures = documentRealm
       .objects(DocumentPictureSchema)
-      .filtered("belongsToDocument = $0", documentModel.document.id)
+      .filtered("belongsTo = $0", documentModel.document.id)
       .sorted("position")
     if (!document) throw new Error("Document is undefined, this should not happen")
     setDocumentModel({ document, pictures })
@@ -170,7 +190,7 @@ export function Camera() {
       documentRealm.write(() => {
         documentRealm.create(DocumentPictureSchema, {
           fileName: DocumentService.getFileFullname(newPicturePath),
-          belongsToDocument: documentModel.document.id,
+          belongsTo: documentModel.document.id,
           position: documentModel.pictures.length,
         })
 
@@ -189,7 +209,7 @@ export function Camera() {
 
         documentRealm.create(DocumentPictureSchema, {
           fileName: DocumentService.getFileFullname(newPicturePath),
-          belongsToDocument: createdDocument.id,
+          belongsTo: createdDocument.id,
           position: 0,
         })
 
@@ -197,10 +217,13 @@ export function Camera() {
       })
     }
 
-    const document = documentRealm.objectForPrimaryKey(DocumentSchema, modifiedDocumentId)
+    const document = documentRealm.objectForPrimaryKey(
+      DocumentSchema,
+      modifiedDocumentId
+    )
     const pictures = documentRealm
       .objects(DocumentPictureSchema)
-      .filtered("belongsToDocument = $0", modifiedDocumentId)
+      .filtered("belongsTo = $0", modifiedDocumentId)
       .sorted("position")
     if (!document) throw new Error("Document is undefined, this should not happen")
     setDocumentModel({ document, pictures })
@@ -214,41 +237,50 @@ export function Camera() {
     }
   }
 
-  async function onTapStateChange(event: HandlerStateChangeEvent<TapGestureHandlerEventPayload>) {
-    if (!cameraDevice?.supportsFocus || !isFocusEnabled) return
-    if (!cameraRef.current || !focusIndicatorRef.current) return
-    if (event.nativeEvent.state !== State.ACTIVE) return
+  const tapGesture = Gesture.Tap()
+    .enabled(isCameraActive && isFocusEnabled)
+    .minPointers(1)
+    .onEnd(async event => {
+      if (cameraDevice?.supportsFocus !== true) return
+      if (!isFocusEnabled) return
+      if (!cameraRef.current || !focusIndicatorRef.current) return
 
-    try {
-      setIsFocusEnabled(false)
+      try {
+        setIsFocusEnabled(false)
 
-      const x = parseInt(event.nativeEvent.x.toFixed())
-      const y = parseInt(event.nativeEvent.y.toFixed())
+        const x = parseInt(event.x.toFixed())
+        const y = parseInt(event.y.toFixed())
 
-      focusIndicatorRef.current.setFocusPos({ x, y })
-      focusIndicatorRef.current.setIsFocusing(true)
+        focusIndicatorRef.current.setFocusPos({ x, y })
+        focusIndicatorRef.current.setIsFocusing(true)
 
-      await cameraRef.current.focus({ x, y })
-    } catch (error) {
-      log.warn(`Error focusing camera ${stringfyError(error)}`)
-    } finally {
-      setIsFocusEnabled(true)
-      focusIndicatorRef.current.setIsFocusing(false)
-    }
-  }
+        await cameraRef.current.focus({ x, y })
+      } catch (error) {
+        log.warn(`Error focusing camera ${stringifyError(error)}`)
+      } finally {
+        setIsFocusEnabled(true)
+        focusIndicatorRef.current.setIsFocusing(false)
+      }
+    })
 
 
-  useControlActionEnabled({ isCameraActive, cameraControlRef })
-  useDisableFocusOnSettingsOpened({ isSettingsOpened: isCameraSettingsVisible, setIsFocusEnabled })
-  useResetCameraOnChangeRatio(setIsResetingCamera)
+  useControlActionEnabled({
+    isCameraActive,
+    cameraControlRef,
+  })
+  useDisableFocusOnSettingsOpen({
+    isSettingsOpen: cameraSettings.isVisible,
+    setIsFocusEnabled,
+  })
+  useResetCameraOnChangeRatio({ setIsResetingCamera })
   useStatusBarStyle(isShowingCamera)
 
 
   return (
-    <Screen style={screenStyle}>
+    <View style={screenStyle}>
       <CameraHeader
         goBack={goBack}
-        openSettings={() => setIsCameraSettingsVisible(true)}
+        openSettings={() => cameraSettings.show()}
         isShowingCamera={isShowingCamera}
       />
 
@@ -257,21 +289,21 @@ export function Camera() {
         requestCameraPermission={requestCameraPermission}
       />
 
-      <EmptyList
-        name={"camera-off-outline"}
-        group={"material-community"}
-        size={56}
-        message={translate("Camera_cameraNotAvailable")}
-        visible={hasCameraPermission && !cameraDevice}
-      />
+      <EmptyScreen.Content visible={hasCameraPermission && !cameraDevice}>
+        <EmptyScreen.Icon
+          name={"camera-off-outline"}
+          group={"material-community"}
+          size={56}
+        />
+
+        <EmptyScreen.Message>
+          {translate("Camera_cameraNotAvailable")}
+        </EmptyScreen.Message>
+      </EmptyScreen.Content>
 
       {(hasCameraPermission && cameraDevice && !isResetingCamera) && (
         <View style={[styles.cameraWrapper, { marginTop: cameraMargin.top }]}>
-          <TapGestureHandler
-            minPointers={1}
-            enabled={isCameraActive && isFocusEnabled}
-            onHandlerStateChange={onTapStateChange}
-          >
+          <GestureDetector gesture={tapGesture}>
             <View style={cameraSize}>
               <VisionCamera
                 ref={cameraRef}
@@ -281,7 +313,6 @@ export function Camera() {
                 photo={true}
                 audio={false}
                 enableZoomGesture={true}
-                orientation={cameraOrientation}
                 style={StyleSheet.absoluteFill}
               />
 
@@ -289,7 +320,7 @@ export function Camera() {
 
               <PictureTakenFeedback ref={pictureTakenFeedbackRef} />
             </View>
-          </TapGestureHandler>
+          </GestureDetector>
         </View>
       )}
 
@@ -302,9 +333,9 @@ export function Camera() {
       />
 
       <CameraSettings
-        visible={isCameraSettingsVisible}
-        onRequestClose={() => setIsCameraSettingsVisible(false)}
+        visible={cameraSettings.isVisible}
+        onRequestClose={() => cameraSettings.hide()}
       />
-    </Screen>
+    </View>
   )
 }

@@ -15,7 +15,11 @@ export function ActionBar(props: ActionBarProps) {
 
 
   const cameraControlDimensions = useCameraControlDimensions()
-  const { styleWithCamera, styleWithouCamera, shouldUseWithoutCameraStyle } = cameraControlDimensions
+  const {
+    styleWithCamera,
+    styleWithouCamera,
+    shouldUseWithoutCameraStyle,
+  } = cameraControlDimensions
 
 
   const actionBarStyle: ViewStyle = shouldUseWithoutCameraStyle
@@ -23,11 +27,16 @@ export function ActionBar(props: ActionBarProps) {
     : props.isShowingCamera
       ? styleWithCamera
       : styleWithouCamera
+
   const actionBarBackgroundStyle: ViewStyle = {
     backgroundColor: props.isShowingCamera ? "rgba(0, 0, 0, 0.4)" : "transparent",
   }
+
   const wrapperStyle: ViewStyle = StyleSheet.flatten([
-    styles.wrapper, actionBarBackgroundStyle, actionBarStyle, props.style,
+    styles.wrapper,
+    actionBarBackgroundStyle,
+    actionBarStyle,
+    props.style,
   ])
 
 

@@ -1,5 +1,11 @@
 import { ReactNode } from "react"
-import { ScrollView, StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from "react-native"
+import {
+  ScrollView,
+  StyleProp,
+  StyleSheet,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native"
 
 import { useAppTheme } from "@theme"
 import { SETTINGS_BUTTON_SIZE } from "./SettingsButton"
@@ -22,7 +28,7 @@ export function SettingsModal(props: SettingsModalProps) {
   const { shape } = useAppTheme()
 
 
-  if (!props.visible) return null
+  if (props.visible !== true) return null
 
 
   return (
@@ -33,7 +39,11 @@ export function SettingsModal(props: SettingsModalProps) {
     >
       <TouchableOpacity
         activeOpacity={1}
-        style={[styles.container, { borderRadius: shape.medium }, props.containerStyle]}
+        style={[
+          styles.container,
+          { borderRadius: shape.medium },
+          props.containerStyle,
+        ]}
       >
         <ScrollView
           fadingEdgeLength={32}

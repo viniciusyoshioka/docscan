@@ -1,13 +1,18 @@
-import { Color } from "@elementium/color"
-import { Icon } from "@elementium/native"
+import Color from "color"
 import { useEffect } from "react"
+import { useMaterialTheme } from "react-material-design-provider"
 import { Pressable, PressableProps, StyleProp, StyleSheet, ViewStyle } from "react-native"
 import { OrientationType } from "react-native-orientation-locker"
 import { Text } from "react-native-paper"
-import Reanimated, { useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from "react-native-reanimated"
+import { Icon } from "react-native-paper-towel"
+import Reanimated, {
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated"
 
 import { useDeviceOrientation } from "@hooks"
-import { useAppTheme } from "@theme"
 
 
 const AnimatedPressable = Reanimated.createAnimatedComponent(Pressable)
@@ -27,23 +32,27 @@ export interface ActionProps extends PressableProps {
 export function Action(props: ActionProps) {
 
 
-  const { color, state } = useAppTheme()
+  const { colors, state } = useMaterialTheme()
 
   const deviceOrientation = useDeviceOrientation()
   const rotationDegree = useSharedValue(0)
 
 
-  const colorStyle = props.isShowingCamera ? "white" : color.onBackground
-  const contentColor = props.disabled
-    ? new Color(colorStyle).setA(state.content.disabled)
-      .toRgba()
+  const colorStyle = props.isShowingCamera ? "white" : colors.onBackground
+  const contentColor = (props.disabled === true)
+    ? Color(colorStyle)
+      .alpha(state.disabled)
+      .rgb()
+      .toString()
     : colorStyle
-  const rippleColor = new Color(colorStyle).setA(state.container.pressed)
-    .toRgba()
+  const rippleColor = Color(colorStyle)
+    .alpha(state.press)
+    .rgb()
+    .toString()
 
 
   function ActionIcon() {
-    if (!props.icon) return null
+    if (props.icon === undefined) return null
 
     return (
       <Icon
@@ -55,7 +64,7 @@ export function Action(props: ActionProps) {
   }
 
   function CounterText() {
-    if (!props.counter) return null
+    if (props.counter === undefined) return null
 
     return (
       <Text
@@ -107,9 +116,10 @@ export function Action(props: ActionProps) {
     }
   }, [deviceOrientation])
 
-  const animatedRotation = useDerivedValue(() => withTiming(rotationDegree.value, {
-    duration: 200,
-  }))
+  const animatedRotation = useDerivedValue(() => withTiming(
+    rotationDegree.value,
+    { duration: 200 }
+  ))
 
   const orientationStyle = useAnimatedStyle(() => ({
     transform: [
