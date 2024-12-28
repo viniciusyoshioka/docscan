@@ -3,7 +3,7 @@ import { Appbar } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { useDocumentModel } from "@database"
-import { NavigationParamProps } from "@router"
+import { NavigationProps } from "@router"
 import { DocumentService } from "@services/document"
 import { EditDocumentMenu } from "./EditDocumentMenu"
 
@@ -25,7 +25,7 @@ export interface EditDocumentHeaderProps {
 export function EditDocumentHeader(props: EditDocumentHeaderProps) {
 
 
-  const navigation = useNavigation<NavigationParamProps<"EditDocument">>()
+  const navigation = useNavigation<NavigationProps<"EditDocument">>()
   const safeAreaInsets = useSafeAreaInsets()
 
   const { documentModel } = useDocumentModel()

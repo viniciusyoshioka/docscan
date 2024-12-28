@@ -80,7 +80,7 @@ export function Home() {
 
       const picturesToDelete = documentRealm
         .objects(DocumentPictureSchema)
-        .filtered("belongsToDocument IN $0", documentIdsToDelete)
+        .filtered("belongsTo IN $0", documentIdsToDelete)
 
       const documentsToDelete = documentRealm
         .objects(DocumentSchema)
@@ -166,7 +166,7 @@ export function Home() {
 
         const exportedPictures = exportedDatabase
           .objects<ExportedDocumentPictureRealm>("ExportedDocumentPictureSchema")
-          .filtered("belongsToDocument = $0", exportedDocument.id)
+          .filtered("belongsTo = $0", exportedDocument.id)
         for (let j = 0; j < exportedPictures.length; j++) {
           const exportedPicture = exportedPictures[j]
           const newPicturePath = await DocumentService.getNewPicturePath(
@@ -251,7 +251,7 @@ export function Home() {
 
           documentRealm
             .objects(DocumentPictureSchema)
-            .filtered("belongsToDocument = $0", documentToExport.id)
+            .filtered("belongsTo = $0", documentToExport.id)
             .forEach(pictureToExport => {
               filesToCopy.push(DocumentService.getPicturePath(pictureToExport.fileName))
 
@@ -260,7 +260,7 @@ export function Home() {
                 {
                   fileName: pictureToExport.fileName,
                   position: pictureToExport.position,
-                  belongsToDocument: exportedDocument.id,
+                  belongsTo: exportedDocument.id,
                 }
               )
             })
@@ -406,7 +406,7 @@ export function Home() {
 
       {documents.length > 0 && (
         <FlashList
-          data={documents.toJSON() as unknown as DocumentSchema[]}
+          data={documents as unknown as DocumentSchema[]}
           renderItem={renderItem}
           extraData={documentSelection.getSelectedData()}
           estimatedItemSize={DOCUMENT_ITEM_HEIGHT}

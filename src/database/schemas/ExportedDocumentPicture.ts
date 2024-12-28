@@ -7,7 +7,7 @@ export const ExportedDocumentPictureSchema: Realm.ObjectSchema = {
     id: { type: "objectId", indexed: true, default: () => new Realm.BSON.ObjectId() },
     fileName: "string",
     position: "int",
-    belongsToDocument: "objectId",
+    belongsTo: "objectId",
   },
   primaryKey: "id",
 }

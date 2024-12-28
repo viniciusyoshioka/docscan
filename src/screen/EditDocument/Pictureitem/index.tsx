@@ -1,9 +1,7 @@
-import { Color } from "@elementium/color"
-import { Icon } from "@elementium/native"
-import { useMemo } from "react"
-import { Pressable, View, useWindowDimensions } from "react-native"
+import { View, useWindowDimensions } from "react-native"
 import FastImage from "react-native-fast-image"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
+import { Icon, Pressable } from "react-native-paper-towel"
 import { runOnJS } from "react-native-reanimated"
 import { SelectableItem, useSelectableItem } from "react-native-selection-mode"
 import { useStyles } from "react-native-unistyles"
@@ -33,15 +31,11 @@ export function PictureItem(props: PictureItemProps) {
 
 
   const { width } = useWindowDimensions()
+  const { colors } = useAppTheme()
   const { styles } = useStyles(stylesheet)
-
-  const { color } = useAppTheme()
   const { onPress, onLongPress } = useSelectableItem(props)
 
-  const pictureItemSize = useMemo(() => getPictureItemSize(width, props.columnCount), [width, props.columnCount])
-
-  const rippleColor = new Color(color.primary).setA(0.5)
-    .toRgba()
+  const pictureItemSize = getPictureItemSize(width, props.columnCount)
 
 
   const longPressGesture = Gesture.LongPress()
@@ -53,9 +47,9 @@ export function PictureItem(props: PictureItemProps) {
   return (
     <GestureDetector gesture={longPressGesture}>
       <Pressable
-        style={[styles.pictureButton, { maxWidth: pictureItemSize }]}
+        style={styles.pictureButton(pictureItemSize)}
         onPress={onPress}
-        android_ripple={{ color: rippleColor, foreground: true }}
+        android_ripple={{ color: colors.primary, foreground: true }}
       >
         <FastImage
           source={{ uri: `file://${props.picturePath}` }}
@@ -69,7 +63,7 @@ export function PictureItem(props: PictureItemProps) {
             <Icon
               name={"check"}
               size={32}
-              color={color.onPrimary}
+              color={colors.onPrimary}
               style={{ position: "absolute" }}
             />
           </>

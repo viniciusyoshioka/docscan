@@ -1,23 +1,33 @@
-import { Screen } from "@elementium/native"
 import { useNavigation } from "@react-navigation/core"
-import { FlashList } from "@shopify/flash-list"
-import { useCallback, useMemo, useState } from "react"
-import { Alert, useWindowDimensions } from "react-native"
+import { FlashList, ListRenderItem } from "@shopify/flash-list"
+import { useMemo, useState } from "react"
+import { Alert, View, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
+import { LoadingModal } from "react-native-paper-towel"
 import { useSelectionMode } from "react-native-selection-mode"
 import Share from "react-native-share"
 
-import { LoadingModal } from "@components"
-import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "@database"
+import {
+  DocumentPictureSchema,
+  DocumentSchema,
+  useDocumentModel,
+  useDocumentRealm,
+} from "@database"
 import { useBackHandler } from "@hooks"
+import { useLogger } from "@libs/log"
 import { translate } from "@locales"
-import { NavigationParamProps } from "@router"
+import { NavigationProps } from "@router"
 import { DocumentService } from "@services/document"
-import { log, stringfyError } from "@services/log"
 import { PdfCreator } from "@services/pdf-creator"
 import { getReadPermission, getWritePermission } from "@services/permission"
+import { stringifyError } from "@utils"
 import { EditDocumentHeader } from "./Header"
-import { HORIZONTAL_COLUMN_COUNT, PictureItem, VERTICAL_COLUMN_COUNT, getPictureItemSize } from "./Pictureitem"
+import {
+  HORIZONTAL_COLUMN_COUNT,
+  PictureItem,
+  VERTICAL_COLUMN_COUNT,
+  getPictureItemSize,
+} from "./Pictureitem"
 
 
 export { ConvertPdfOption } from "./ConvertPdfOption"
@@ -29,7 +39,8 @@ export { RenameDocument } from "./RenameDocument"
 export function EditDocument() {
 
 
-  const navigation = useNavigation<NavigationParamProps<"EditDocument">>()
+  const navigation = useNavigation<NavigationProps<"EditDocument">>()
+  const log = useLogger()
 
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
 
@@ -40,9 +51,8 @@ export function EditDocument() {
     if (document === undefined) return []
 
     return documentRealm.objects(DocumentPictureSchema)
-      .filtered("belongsToDocument = $0", document.id)
-      .sorted("position")
-      .toJSON() as unknown as DocumentPictureSchema[]
+      .filtered("belongsTo = $0", document.id)
+      .sorted("position") as unknown as DocumentPictureSchema[]
   }, [document])
 
   const columnCount = useMemo(
@@ -51,7 +61,7 @@ export function EditDocument() {
       : HORIZONTAL_COLUMN_COUNT
     , [windowWidth, windowHeight]
   )
-  const estimatedItemSize = useMemo(() => getPictureItemSize(windowWidth, columnCount), [windowWidth, columnCount])
+  const estimatedItemSize = getPictureItemSize(windowWidth, columnCount)
 
   const pictureSelection = useSelectionMode<number>()
   const [isDeletingPictures, setIsDeletingPictures] = useState(false)
@@ -103,7 +113,7 @@ export function EditDocument() {
         failOnCancel: false,
       })
     } catch (error) {
-      log.error(`Error sharing PDF file: "${stringfyError(error)}"`)
+      log.error(`Error sharing PDF file: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("EditDocument_alert_errorSharingPdf_text")
@@ -147,7 +157,8 @@ export function EditDocument() {
   }
 
   async function deletePdf() {
-    if (!document) throw new Error("There is no document to delete the PDF, this should not happen")
+    if (!document)
+      throw new Error("There is no document to delete the PDF, this should not happen")
 
     const hasPermission = await getWritePermission()
     if (!hasPermission) {
@@ -178,7 +189,7 @@ export function EditDocument() {
         translate("EditDocument_alert_pdfFileDeletedSuccessfully_text")
       )
     } catch (error) {
-      log.error(`Error deleting PDF file "${stringfyError(error)}"`)
+      log.error(`Error deleting PDF file "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("EditDocument_alert_errorDeletingPdfFile_text")
@@ -207,44 +218,57 @@ export function EditDocument() {
   }
 
   function invertSelection() {
-    pictureSelection.setSelectedData(current => {
-      const newSelectedData: number[] = []
+    pictureSelection.setNewSelectedData(current => {
+      const newSelectedData = new Set<number>()
       for (let i = 0; i < pictures.length; i++) {
-        if (!current.includes(i)) newSelectedData.push(i)
+        if (!current.has(i)) {
+          newSelectedData.add(i)
+        }
       }
       return newSelectedData
     })
   }
 
   async function deleteSelectedPicture() {
-    if (!document) throw new Error("There is no document to delete its pictures, this should not happen")
+    if (!document)
+      throw new Error(
+        "There is no document to delete its pictures, this should not happen"
+      )
 
     setIsDeletingPictures(true)
 
-    const picturePathsToDelete = pictureSelection.selectedData.map(index => DocumentService.getPicturePath(pictures[index].fileName))
+    const selectedPicture = pictureSelection.getSelectedData()
+
+    const picturePathsToDelete = selectedPicture.map(index => (
+      DocumentService.getPicturePath(pictures[index].fileName)
+    ))
 
     try {
       documentRealm.write(() => {
         const realmPicturesToDelete = documentRealm.objects(DocumentPictureSchema)
-          .filtered("belongsToDocument = $0", document.id)
+          .filtered("belongsTo = $0", document.id)
           .sorted("position")
-          .filter((_, index) => pictureSelection.selectedData.includes(index))
+          .filter((_, index) => selectedPicture.includes(index))
 
         documentRealm.delete(realmPicturesToDelete)
         document.modifiedAt = Date.now()
       })
 
-      const updatedDocument = documentRealm.objectForPrimaryKey(DocumentSchema, document.id)
+      const updatedDocument = documentRealm.objectForPrimaryKey(
+        DocumentSchema,
+        document.id
+      )
       const updatedPictures = documentRealm
         .objects(DocumentPictureSchema)
-        .filtered("belongsToDocument = $0", document.id)
+        .filtered("belongsTo = $0", document.id)
         .sorted("position")
-      if (!updatedDocument) throw new Error("Document is undefined, this should not happen")
+      if (!updatedDocument)
+        throw new Error("Document is undefined, this should not happen")
       setDocumentModel({ document: updatedDocument, pictures: updatedPictures })
 
       DocumentService.deletePicturesService({ pictures: picturePathsToDelete })
     } catch (error) {
-      log.error(`Error deleting selected pictures from database: "${stringfyError(error)}"`)
+      log.error(`Error deleting selected pictures from database: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("EditDocument_alert_errorDeletingSelectedPictures_text")
@@ -256,7 +280,10 @@ export function EditDocument() {
   }
 
   function alertDeletePicture() {
-    if (!document) throw new Error("There is no document to delete its pictures, this should not happen")
+    if (!document)
+      throw new Error(
+        "There is no document to delete its pictures, this should not happen"
+      )
 
     Alert.alert(
       translate("EditDocument_alert_deletePicture_title"),
@@ -268,30 +295,32 @@ export function EditDocument() {
     )
   }
 
-  function renderItem({ item, index }: { item: DocumentPictureSchema, index: number }) {
+  const renderItem: ListRenderItem<DocumentPictureSchema> = ({ item, index }) => {
     return (
       <PictureItem
         onClick={() => navigation.navigate("VisualizePicture", { pictureIndex: index })}
         onSelect={() => pictureSelection.select(index)}
         onDeselect={() => pictureSelection.deselect(index)}
         isSelectionMode={pictureSelection.isSelectionMode}
-        isSelected={pictureSelection.selectedData.includes(index)}
+        isSelected={pictureSelection.isSelected(index)}
         picturePath={DocumentService.getPicturePath(item.fileName)}
         columnCount={columnCount}
       />
     )
   }
 
-  const keyExtractor = useCallback((_: DocumentPictureSchema, index: number) => index.toString(), [])
+  function keyExtractor(item: DocumentPictureSchema): string {
+    return item.id.toHexString()
+  }
 
 
   return (
-    <Screen>
+    <View style={{ flex: 1 }}>
       <EditDocumentHeader
         goBack={goBack}
         exitSelectionMode={pictureSelection.exitSelection}
         isSelectionMode={pictureSelection.isSelectionMode}
-        selectedPicturesAmount={pictureSelection.selectedData.length}
+        selectedPicturesAmount={pictureSelection.length}
         invertSelection={invertSelection}
         deletePicture={alertDeletePicture}
         openCamera={() => navigation.navigate("Camera", { screenAction: "add-picture" })}
@@ -314,6 +343,6 @@ export function EditDocument() {
         message={translate("EditDocument_deletingPictures")}
         visible={isDeletingPictures}
       />
-    </Screen>
+    </View>
   )
 }

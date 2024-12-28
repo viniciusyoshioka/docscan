@@ -1,23 +1,23 @@
-import { Modal } from "@elementium/native"
 import Slider from "@react-native-community/slider"
 import { useNavigation } from "@react-navigation/native"
 import { useState } from "react"
 import { Alert, View } from "react-native"
 import RNFS from "react-native-fs"
-import { Button, RadioButton, Text } from "react-native-paper"
+import { Button, Dialog, RadioButton, Text } from "react-native-paper"
 import { useStyles } from "react-native-unistyles"
 
 import { useDocumentModel } from "@database"
 import { useBackHandler } from "@hooks"
+import { useLogger } from "@libs/log"
 import { translate } from "@locales"
-import { NavigationParamProps } from "@router"
+import { NavigationProps } from "@router"
 import { Constants } from "@services/constant"
 import { DocumentService } from "@services/document"
 import { createAllFolders } from "@services/folder-handler"
-import { log, stringfyError } from "@services/log"
 import { PdfCreator } from "@services/pdf-creator"
 import { getWritePermission } from "@services/permission"
 import { useAppTheme } from "@theme"
+import { stringifyError } from "@utils"
 import { stylesheet } from "./style"
 
 
@@ -27,18 +27,21 @@ type DocumentPdfCompressionLevel = "low" | "high" | "custom"
 export function ConvertPdfOption() {
 
 
-  const navigation = useNavigation<NavigationParamProps<"ConvertPdfOption">>()
+  const navigation = useNavigation<NavigationProps<"ConvertPdfOption">>()
   const { styles } = useStyles(stylesheet)
+  const log = useLogger()
 
   const { documentModel } = useDocumentModel()
   const document = documentModel?.document ?? null
   const pictures = documentModel?.pictures ?? []
 
-  const { color } = useAppTheme()
+  const { colors } = useAppTheme()
 
   const [compressionVisualValue, setCompressionVisualValue] = useState(60)
   const [compressionValue, setCompressionValue] = useState(60)
-  const [compressionLevel, setCompressionLevel] = useState<DocumentPdfCompressionLevel>("high")
+  const [compressionLevel, setCompressionLevel] = useState<DocumentPdfCompressionLevel>(
+    "high"
+  )
   const isSliderDisabled = compressionLevel !== "custom"
 
 
@@ -87,11 +90,13 @@ export function ConvertPdfOption() {
       try {
         await RNFS.unlink(documentPath)
       } catch (error) {
-        log.error(`Error deleting PDF file with the same name of the document to be converted: "${stringfyError(error)}"`)
+        log.error(`Error deleting PDF file with the same name of the document to be converted: "${stringifyError(error)}"`)
       }
     }
 
-    const pictureList: string[] = pictures.map(item => DocumentService.getPicturePath(item.fileName))
+    const pictureList: string[] = pictures.map(item => (
+      DocumentService.getPicturePath(item.fileName)
+    ))
 
     await createAllFolders()
     PdfCreator.createPdf(pictureList, documentPath, {
@@ -122,82 +127,78 @@ export function ConvertPdfOption() {
 
 
   return (
-    <Modal.Scrim onPress={goBack}>
-      <Modal.Container>
-        <Modal.Title>
-          {translate("ConvertPdfOption_title")}
-        </Modal.Title>
+    <Dialog visible onDismiss={goBack}>
+      <Dialog.Title>
+        {translate("ConvertPdfOption_title")}
+      </Dialog.Title>
 
-        <Modal.Description>
+      <Dialog.Content>
+        <Text variant={"bodyMedium"} style={{ marginBottom: 16 }}>
           {translate("ConvertPdfOption_description")}
-        </Modal.Description>
+        </Text>
 
-        <Modal.Content hasDivider={false}>
-          <RadioButton.Group
-            value={compressionLevel}
-            onValueChange={value => onOptionChange(value as DocumentPdfCompressionLevel)}
-          >
-            <RadioButton.Item
-              label={translate("ConvertPdfOption_highCompression")}
-              value={"high"}
-              style={{ paddingHorizontal: 24 }}
-            />
-
-            <RadioButton.Item
-              label={translate("ConvertPdfOption_lowCompression")}
-              value={"low"}
-              style={{ paddingHorizontal: 24 }}
-            />
-
-            <RadioButton.Item
-              label={translate("ConvertPdfOption_customCompression")}
-              value={"custom"}
-              style={{ paddingHorizontal: 24 }}
-            />
-          </RadioButton.Group>
-
-          <View style={styles.viewSlider}>
-            <Text
-              disabled={isSliderDisabled}
-              style={styles.compressionText(isSliderDisabled)}
-            >
-              {compressionVisualValue}
-              %
-            </Text>
-
-            <Slider
-              disabled={isSliderDisabled}
-              style={{ flex: 1 }}
-              minimumValue={0}
-              maximumValue={100}
-              step={1}
-              value={compressionValue}
-              onSlidingComplete={value => setCompressionValue(value)}
-              onValueChange={value => setCompressionVisualValue(value)}
-              minimumTrackTintColor={color.primary}
-              maximumTrackTintColor={color.onBackground}
-              thumbTintColor={compressionLevel === "custom" ? color.primary : color.onSurface}
-            />
-          </View>
-        </Modal.Content>
-
-        <Modal.Actions>
-          <Button
-            mode={"text"}
-            children={translate("cancel")}
-            onPress={goBack}
+        <RadioButton.Group
+          value={compressionLevel}
+          onValueChange={value => onOptionChange(value as DocumentPdfCompressionLevel)}
+        >
+          <RadioButton.Item
+            label={translate("ConvertPdfOption_highCompression")}
+            value={"high"}
+            style={{ paddingHorizontal: 0 }}
           />
 
-          <Button
-            mode={"text"}
-            children={translate("ok")}
-            onPress={() => {
-              convertToPdf()
-              goBack()
-            }}
+          <RadioButton.Item
+            label={translate("ConvertPdfOption_lowCompression")}
+            value={"low"}
+            style={{ paddingHorizontal: 0 }}
           />
-        </Modal.Actions>
-      </Modal.Container>
-    </Modal.Scrim>
+
+          <RadioButton.Item
+            label={translate("ConvertPdfOption_customCompression")}
+            value={"custom"}
+            style={{ paddingHorizontal: 0 }}
+          />
+        </RadioButton.Group>
+
+        <View style={styles.viewSlider}>
+          <Text
+            disabled={isSliderDisabled}
+            style={styles.compressionText(isSliderDisabled)}
+            children={`${compressionVisualValue}%`}
+          />
+
+          <Slider
+            disabled={isSliderDisabled}
+            style={{ flex: 1 }}
+            minimumValue={0}
+            maximumValue={100}
+            step={1}
+            value={compressionValue}
+            onSlidingComplete={value => setCompressionValue(value)}
+            onValueChange={value => setCompressionVisualValue(value)}
+            minimumTrackTintColor={colors.primary}
+            maximumTrackTintColor={colors.onBackground}
+            thumbTintColor={(
+              compressionLevel === "custom" ? colors.primary : colors.onSurface
+            )}
+          />
+        </View>
+      </Dialog.Content>
+
+      <Dialog.Actions>
+        <Button
+          children={translate("cancel")}
+          onPress={goBack}
+        />
+
+        <Button
+          children={translate("ok")}
+          onPress={() => {
+            convertToPdf()
+            goBack()
+          }}
+        />
+      </Dialog.Actions>
+    </Dialog>
   )
 }
