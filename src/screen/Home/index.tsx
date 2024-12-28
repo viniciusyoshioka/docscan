@@ -20,12 +20,12 @@ import {
   useDocumentRealm,
 } from "@database"
 import { useBackHandler } from "@hooks"
+import { useLogger } from "@libs/log"
 import { TranslationKeyType, translate } from "@locales"
 import { NavigationProps } from "@router"
 import { Constants } from "@services/constant"
 import { DocumentService } from "@services/document"
 import { createAllFolders } from "@services/folder-handler"
-import { log } from "@services/log"
 import { getNotificationPermission } from "@services/permission"
 import { stringifyError } from "@utils"
 import { EmptyScreen, LoadingModal } from "react-native-paper-towel"
@@ -45,6 +45,7 @@ export function Home() {
   const safeAreaInsets = useSafeAreaInsets()
   const navigation = useNavigation<NavigationProps<"Home">>()
 
+  const logger = useLogger()
   const { setDocumentModel } = useDocumentModel()
   const documentRealm = useDocumentRealm()
   const documents = useDocuments()
@@ -99,7 +100,7 @@ export function Home() {
         documentRealm.cancelTransaction()
       }
 
-      log.error(`Error deleting selected documents: "${stringifyError(error)}"`)
+      await logger.error(`Error deleting selected documents: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("Home_alert_errorDeletingSelectedDocuments_text")
@@ -205,10 +206,10 @@ export function Home() {
           await RNFS.unlink(Constants.fullPathTemporaryImported)
         }
       } catch (error) {
-        log.error(`Error deleting temporary imported files after error in document import: "${stringifyError(error)}"`)
+        await logger.error(`Error deleting temporary imported files after error in document import: "${stringifyError(error)}"`)
       }
 
-      log.error(`Error importing document: "${stringifyError(error)}"`)
+      await logger.error(`Error importing document: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("Home_alert_errorImportingDocuments_text")
@@ -275,7 +276,7 @@ export function Home() {
         pathExportedDocument: DocumentService.getExportedDocumentPath(),
       })
     } catch (error) {
-      log.error(`Error exporting documents before invoking the background service: "${stringifyError(error)}"`)
+      await logger.error(`Error exporting documents before invoking the background service: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("Home_alert_errorExportingDocuments_text")
