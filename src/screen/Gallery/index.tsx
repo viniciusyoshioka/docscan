@@ -1,25 +1,29 @@
-import { Screen } from "@elementium/native"
 import { CameraRoll, PhotoIdentifier } from "@react-native-camera-roll/camera-roll"
 import { useNavigation, useRoute } from "@react-navigation/core"
-import { Realm } from "@realm/react"
 import { FlashList } from "@shopify/flash-list"
 import { useCallback, useEffect, useMemo, useState } from "react"
-import { ActivityIndicator, Alert, useWindowDimensions } from "react-native"
+import { ActivityIndicator, Alert, View, useWindowDimensions } from "react-native"
 import RNFS from "react-native-fs"
+import { EmptyScreen, LoadingModal } from "react-native-paper-towel"
 import { useSelectionMode } from "react-native-selection-mode"
 
-import { EmptyList, LoadingModal } from "@components"
 import { DocumentPictureSchema, DocumentSchema, useDocumentModel, useDocumentRealm } from "@database"
 import { useBackHandler } from "@hooks"
+import { useLogger } from "@libs/log"
 import { translate } from "@locales"
-import { NavigationParamProps, RouteParamProps } from "@router"
+import { NavigationProps, RouteProps } from "@router"
 import { DocumentService } from "@services/document"
 import { createAllFolders } from "@services/folder-handler"
-import { log, stringfyError } from "@services/log"
 import { getReadMediaImagesPermission } from "@services/permission"
 import { useAppTheme } from "@theme"
+import { stringifyError } from "@utils"
 import { GalleryHeader } from "./Header"
-import { HORIZONTAL_COLUMN_COUNT, ImageItem, VERTICAL_COLUMN_COUNT, getImageItemSize } from "./ImageItem"
+import {
+  HORIZONTAL_COLUMN_COUNT,
+  ImageItem,
+  VERTICAL_COLUMN_COUNT,
+  getImageItemSize,
+} from "./ImageItem"
 import { LoadingIndicator } from "./LoadingIndicator"
 
 
@@ -32,14 +36,14 @@ const HEADER_HEIGHT = 56
 export function Gallery() {
 
 
-  const navigation = useNavigation<NavigationParamProps<"Gallery">>()
-  const { params } = useRoute<RouteParamProps<"Gallery">>()
+  const navigation = useNavigation<NavigationProps<"Gallery">>()
+  const { params } = useRoute<RouteProps<"Gallery">>()
   const { width: windowWidth, height: windowHeight } = useWindowDimensions()
+  const log = useLogger()
 
   const documentRealm = useDocumentRealm()
   const { documentModel, setDocumentModel } = useDocumentModel()
-
-  const { color } = useAppTheme()
+  const { colors } = useAppTheme()
 
   const gallerySelection = useSelectionMode<string>()
   const [isLoading, setIsLoading] = useState(false)
@@ -55,7 +59,7 @@ export function Gallery() {
       : HORIZONTAL_COLUMN_COUNT
     , [windowWidth, windowHeight]
   )
-  const estimatedItemSize = useMemo(() => getImageItemSize(windowWidth, columnCount), [windowWidth, columnCount])
+  const estimatedItemSize = getImageItemSize(windowWidth, columnCount)
 
   const minimumRowAmountInScreen = useMemo(() => Math.ceil(
     (windowHeight - HEADER_HEIGHT) / estimatedItemSize
@@ -89,7 +93,7 @@ export function Gallery() {
     }
 
     let amoutToLoad = amountOfImageToLoadPerTime
-    if (!refreshing && imageGallery) {
+    if ((refreshing === false || refreshing === undefined) && imageGallery) {
       amoutToLoad += imageGallery.length
     }
 
@@ -99,7 +103,8 @@ export function Gallery() {
         assetType: "Photos",
       })
 
-      if (cameraRollPhotos.edges.length === currentAmountOfImages && !refreshing) {
+      if (cameraRollPhotos.edges.length === currentAmountOfImages
+        && (refreshing === false || refreshing === undefined)) {
         setIsGalleryFullLoaded(true)
         setIsLoading(false)
         return
@@ -110,7 +115,7 @@ export function Gallery() {
     } catch (error) {
       setImageGallery([])
       setIsLoading(false)
-      log.error(`Error getting images from CameraRoll: "${stringfyError(error)}"`)
+      log.error(`Error getting images from CameraRoll: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("Gallery_alert_errorOpeningGallery_text")
@@ -141,31 +146,31 @@ export function Gallery() {
       return
     }
 
-    await createAllFolders()
-
-    const newImagePath = await DocumentService.getNewPicturePath(imagePath)
     try {
-      await RNFS.copyFile(imagePath, newImagePath)
+      await createAllFolders()
+
+      const { originalFilepath } = await RNFS.stat(imagePath)
+      const newImagePath = await DocumentService.getNewPicturePath(originalFilepath)
+      await RNFS.copyFile(originalFilepath, newImagePath)
+
+      if (params.screenAction === "replace-picture") {
+        replaceImage(newImagePath)
+        setIsImportingImages(false)
+        navigation.navigate("VisualizePicture", { pictureIndex: params.replaceIndex })
+        return
+      }
+
+      addImages([newImagePath])
+      setIsImportingImages(false)
+      navigation.goBack()
     } catch (error) {
-      log.error(`Error importing a single image from gallery: "${stringfyError(error)}"`)
+      log.error(`Error importing a single image from gallery: "${stringifyError(error)}"`)
       setIsImportingImages(false)
       Alert.alert(
         translate("warn"),
         translate("Gallery_alert_unknownErrorImportingSingle_text")
       )
-      return
     }
-
-    if (params.screenAction === "replace-picture") {
-      replaceImage(newImagePath)
-      setIsImportingImages(false)
-      navigation.navigate("VisualizePicture", { pictureIndex: params.replaceIndex })
-      return
-    }
-
-    addImages([newImagePath])
-    setIsImportingImages(false)
-    navigation.goBack()
   }
 
   async function importMultipleImage() {
@@ -185,10 +190,13 @@ export function Gallery() {
     const imageFilesToCopy: string[] = []
     const imageFilesToAdd: string[] = []
 
-    for (let i = 0; i < gallerySelection.selectedData.length; i++) {
-      const newImagePath = await DocumentService.getNewPicturePath(gallerySelection.selectedData[i])
+    const selectedImages = gallerySelection.getSelectedData()
+    for (let i = 0; i < selectedImages.length; i++) {
+      const selectedImage = selectedImages[i]
+      const { originalFilepath } = await RNFS.stat(selectedImage)
+      const newImagePath = await DocumentService.getNewPicturePath(originalFilepath)
 
-      imageFilesToCopy.push(gallerySelection.selectedData[i].replace("file://", ""))
+      imageFilesToCopy.push(originalFilepath.replace("file://", ""))
       imageFilesToCopy.push(newImagePath)
 
       imageFilesToAdd.push(newImagePath)
@@ -204,7 +212,9 @@ export function Gallery() {
 
   function replaceImage(filePath: string) {
     if (params.screenAction !== "replace-picture")
-      throw new Error("Screen action is different of 'replace-picture'. This should not happen")
+      throw new Error(
+        "Screen action is different of 'replace-picture'. This should not happen"
+      )
     if (!documentModel)
       throw new Error("Document model is undefined. This should not happen")
 
@@ -215,10 +225,13 @@ export function Gallery() {
       documentModel.pictures[params.replaceIndex].fileName = newPictureName
     })
 
-    const document = documentRealm.objectForPrimaryKey(DocumentSchema, documentModel.document.id)
+    const document = documentRealm.objectForPrimaryKey(
+      DocumentSchema,
+      documentModel.document.id
+    )
     const pictures = documentRealm
       .objects(DocumentPictureSchema)
-      .filtered("belongsToDocument = $0", documentModel.document.id)
+      .filtered("belongsTo = $0", documentModel.document.id)
       .sorted("position")
     if (!document) throw new Error("Document is undefined, this should not happen")
     setDocumentModel({ document, pictures })
@@ -236,7 +249,7 @@ export function Gallery() {
         filePaths.forEach(filePath => documentRealm.create(DocumentPictureSchema, {
           fileName: DocumentService.getFileFullname(filePath),
           position: position++,
-          belongsToDocument: documentModel.document.id,
+          belongsTo: documentModel.document.id,
         }))
 
         documentModel.document.modifiedAt = Date.now()
@@ -256,17 +269,20 @@ export function Gallery() {
         filePaths.forEach(filePath => documentRealm.create(DocumentPictureSchema, {
           fileName: DocumentService.getFileFullname(filePath),
           position: position++,
-          belongsToDocument: createdDocument.id,
+          belongsTo: createdDocument.id,
         }))
 
         return createdDocument.id
       })
     }
 
-    const document = documentRealm.objectForPrimaryKey(DocumentSchema, modifiedDocumentId)
+    const document = documentRealm.objectForPrimaryKey(
+      DocumentSchema,
+      modifiedDocumentId
+    )
     const pictures = documentRealm
       .objects(DocumentPictureSchema)
-      .filtered("belongsToDocument = $0", modifiedDocumentId)
+      .filtered("belongsTo = $0", modifiedDocumentId)
       .sorted("position")
     if (!document) throw new Error("Document is undefined, this should not happen")
     setDocumentModel({ document, pictures })
@@ -279,7 +295,7 @@ export function Gallery() {
         onSelect={() => gallerySelection.select(item.node.image.uri)}
         onDeselect={() => gallerySelection.deselect(item.node.image.uri)}
         isSelectionMode={gallerySelection.isSelectionMode}
-        isSelected={gallerySelection.selectedData.includes(item.node.image.uri)}
+        isSelected={gallerySelection.isSelected(item.node.image.uri)}
         imagePath={item.node.image.uri}
         screenAction={params.screenAction}
         columnCount={columnCount}
@@ -287,7 +303,9 @@ export function Gallery() {
     )
   }
 
-  const keyExtractor = useCallback((_: PhotoIdentifier, index: number) => index.toString(), [])
+  const keyExtractor = useCallback((_: PhotoIdentifier, index: number) => (
+    index.toString()
+  ), [])
 
   async function onEndReached() {
     if (isGalleryFullLoaded) {
@@ -325,16 +343,16 @@ export function Gallery() {
 
 
   return (
-    <Screen>
+    <View style={{ flex: 1 }}>
       <GalleryHeader
         goBack={goBack}
         exitSelectionMode={gallerySelection.exitSelection}
         importImage={importMultipleImage}
         isSelectionMode={gallerySelection.isSelectionMode}
-        selectedImagesAmount={gallerySelection.selectedData.length}
+        selectedImagesAmount={gallerySelection.length}
       />
 
-      {imageGallery?.length && imageGallery.length > 0 && (
+      {(imageGallery && imageGallery.length > 0) && (
         <FlashList
           data={imageGallery}
           renderItem={renderItem}
@@ -350,24 +368,25 @@ export function Gallery() {
         />
       )}
 
-      <EmptyList visible={!imageGallery && !isRefreshing}>
+      <EmptyScreen.Content visible={!imageGallery && !isRefreshing}>
         <ActivityIndicator
-          color={color.onBackground}
+          color={colors.onBackground}
           size={"large"}
         />
-      </EmptyList>
+      </EmptyScreen.Content>
 
-      <EmptyList
-        name={"image-outline"}
-        size={56}
-        message={translate("Gallery_emptyGallery")}
-        visible={imageGallery?.length === 0}
-      />
+      <EmptyScreen.Content visible={imageGallery?.length === 0}>
+        <EmptyScreen.Icon name={"image-outline"} size={56} />
+
+        <EmptyScreen.Message>
+          {translate("Gallery_emptyGallery")}
+        </EmptyScreen.Message>
+      </EmptyScreen.Content>
 
       <LoadingModal
         message={translate("Gallery_importingPictures")}
         visible={isImportingImages}
       />
-    </Screen>
+    </View>
   )
 }

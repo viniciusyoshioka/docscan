@@ -99,14 +99,14 @@ export function Camera() {
       return
     }
 
-    if (params?.screenAction === "replace-picture") {
-      navigation.navigate("VisualizePicture", { pictureIndex: params.replaceIndex })
-    } else if (params?.screenAction === "add-picture") {
-      navigation.navigate("EditDocument")
-    } else {
-      setDocumentModel(undefined)
+    const screenAction = params?.screenAction
+    if (screenAction === "replace-picture" || screenAction === "add-picture") {
       navigation.goBack()
+      return
     }
+
+    setDocumentModel(undefined)
+    navigation.goBack()
   }
 
   function addPictureFromGallery() {

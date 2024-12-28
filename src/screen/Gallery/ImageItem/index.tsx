@@ -1,8 +1,7 @@
-import { Icon } from "@elementium/native"
-import { useMemo } from "react"
 import { Pressable, View, useWindowDimensions } from "react-native"
 import FastImage from "react-native-fast-image"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
+import { Icon } from "react-native-paper-towel"
 import { runOnJS } from "react-native-reanimated"
 import { SelectableItem, useSelectableItem } from "react-native-selection-mode"
 import { useStyles } from "react-native-unistyles"
@@ -34,10 +33,10 @@ export function ImageItem(props: ImageItemProps) {
   const { width } = useWindowDimensions()
   const { styles } = useStyles(stylesheet)
 
-  const { color } = useAppTheme()
+  const { colors } = useAppTheme()
   const { onPress, onLongPress } = useSelectableItem(props)
 
-  const imageSize = useMemo(() => getImageItemSize(width, props.columnCount), [width, props.columnCount])
+  const imageSize = getImageItemSize(width, props.columnCount)
 
 
   const longPressGesture = Gesture.LongPress()
@@ -56,7 +55,7 @@ export function ImageItem(props: ImageItemProps) {
         style={[styles.imageItemButton, { width: imageSize }]}
       >
         <FastImage
-          source={{ uri: `file://${props.imagePath}` }}
+          source={{ uri: props.imagePath }}
           style={{ width: imageSize, aspectRatio: 1 }}
         />
 
@@ -67,7 +66,7 @@ export function ImageItem(props: ImageItemProps) {
             <Icon
               name={"check"}
               size={32}
-              color={color.onPrimary}
+              color={colors.onPrimary}
               style={{ position: "absolute" }}
             />
           </>
