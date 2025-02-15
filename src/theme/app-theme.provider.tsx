@@ -10,9 +10,9 @@ import { MD3DarkTheme, MD3LightTheme, MD3Theme, PaperProvider } from "react-nati
 import { UnistylesRuntime } from "react-native-unistyles"
 
 import { useSettings } from "@libs/settings"
-import { AppThemeDark } from "./theme-dark"
-import { AppThemeLight } from "./theme-light"
-import { AppTheme } from "./types"
+import { AppThemeDark } from "./app-theme.dark"
+import { AppThemeLight } from "./app-theme.light"
+import { AppTheme } from "./app-theme.types"
 
 
 type ThemeName = "light" | "dark"

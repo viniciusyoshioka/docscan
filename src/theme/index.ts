@@ -1,6 +1,6 @@
 import "./unistyles"
 
-export * from "./provider"
-export * from "./theme-dark"
-export * from "./theme-light"
-export * from "./types"
+export * from "./app-theme.dark"
+export * from "./app-theme.light"
+export * from "./app-theme.provider"
+export * from "./app-theme.types"
