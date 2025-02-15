@@ -9,5 +9,5 @@ export function useKeyboard(
   useEffect(() => {
     const subscription = Keyboard.addListener(eventName, keyboardFunction)
     return () => subscription.remove()
-  })
+  }, [eventName, keyboardFunction])
 }

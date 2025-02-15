@@ -13,5 +13,5 @@ export function useBackHandler(backHandlerFunction: BackHandlerCallback) {
     )
 
     return () => subscription.remove()
-  })
+  }, [backHandlerFunction])
 }
