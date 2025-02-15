@@ -153,7 +153,7 @@ export function Gallery() {
       const newImagePath = await DocumentService.getNewPicturePath(originalFilepath)
       await RNFS.copyFile(originalFilepath, newImagePath)
 
-      if (params.screenAction === "replace-picture") {
+      if (params.action === "replace-picture") {
         replaceImage(newImagePath)
         setIsImportingImages(false)
         navigation.navigate("VisualizePicture", { pictureIndex: params.replaceIndex })
@@ -211,7 +211,7 @@ export function Gallery() {
   }
 
   function replaceImage(filePath: string) {
-    if (params.screenAction !== "replace-picture")
+    if (params.action !== "replace-picture")
       throw new Error(
         "Screen action is different of 'replace-picture'. This should not happen"
       )
@@ -297,7 +297,7 @@ export function Gallery() {
         isSelectionMode={gallerySelection.isSelectionMode}
         isSelected={gallerySelection.isSelected(item.node.image.uri)}
         imagePath={item.node.image.uri}
-        screenAction={params.screenAction}
+        action={params.action}
         columnCount={columnCount}
       />
     )

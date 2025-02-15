@@ -6,7 +6,7 @@ import { runOnJS } from "react-native-reanimated"
 import { SelectableItem, useSelectableItem } from "react-native-selection-mode"
 import { useStyles } from "react-native-unistyles"
 
-import { ScreenAction } from "@router"
+import { PictureAction } from "@router"
 import { useAppTheme } from "@theme"
 import { stylesheet } from "./style"
 
@@ -22,7 +22,7 @@ export function getImageItemSize(windowWidth: number, columnCount: number): numb
 
 export interface ImageItemProps extends SelectableItem {
   imagePath: string
-  screenAction: ScreenAction
+  action: PictureAction
   columnCount: number
 }
 
@@ -43,7 +43,7 @@ export function ImageItem(props: ImageItemProps) {
     .maxDistance(30)
     .minDuration(400)
     .onStart(event => {
-      if (props.screenAction === "replace-picture") return
+      if (props.action === "replace-picture") return
       runOnJS(onLongPress)()
     })
 

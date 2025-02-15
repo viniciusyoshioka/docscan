@@ -323,7 +323,7 @@ export function EditDocument() {
         selectedPicturesAmount={pictureSelection.length}
         invertSelection={invertSelection}
         deletePicture={alertDeletePicture}
-        openCamera={() => navigation.navigate("Camera", { screenAction: "add-picture" })}
+        openCamera={() => navigation.navigate("Camera", { action: "add-picture" })}
         shareDocument={shareDocument}
         visualizePdf={visualizePdf}
         deletePdf={alertDeletePdf}

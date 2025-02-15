@@ -97,7 +97,7 @@ export function Camera() {
       return
     }
 
-    const screenAction = params?.screenAction
+    const screenAction = params?.action
     if (screenAction === "replace-picture" || screenAction === "add-picture") {
       navigation.goBack()
       return
@@ -108,10 +108,10 @@ export function Camera() {
   }
 
   function addPictureFromGallery() {
-    if (params?.screenAction === "replace-picture") {
+    if (params?.action === "replace-picture") {
       navigation.navigate("Gallery", params)
     } else {
-      navigation.navigate("Gallery", { screenAction: "add-picture" })
+      navigation.navigate("Gallery", { action: "add-picture" })
     }
   }
 
@@ -132,7 +132,7 @@ export function Camera() {
       const picturePath = await DocumentService.getNewPicturePath(response.path)
       await RNFS.moveFile(response.path, picturePath)
 
-      if (params?.screenAction === "replace-picture") {
+      if (params?.action === "replace-picture") {
         replacePicture(picturePath)
       } else {
         addPicture(picturePath)
@@ -147,7 +147,7 @@ export function Camera() {
   }
 
   function replacePicture(newPicturePath: string) {
-    if (params?.screenAction !== "replace-picture")
+    if (params?.action !== "replace-picture")
       throw new Error(
         "Screen action is different of 'replace-picture'. This should not happen"
       )
@@ -228,7 +228,7 @@ export function Camera() {
   }
 
   function editDocument() {
-    if (params?.screenAction === "add-picture") {
+    if (params?.action === "add-picture") {
       navigation.goBack()
     } else {
       navigation.replace("EditDocument")

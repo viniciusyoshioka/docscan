@@ -83,7 +83,7 @@ export function VisualizePicture() {
 
   function replacePicture() {
     navigation.navigate("Camera", {
-      screenAction: "replace-picture",
+      action: "replace-picture",
       replaceIndex: currentIndex,
     })
   }

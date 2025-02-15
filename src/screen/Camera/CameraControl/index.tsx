@@ -61,7 +61,7 @@ export const CameraControl = forwardRef<CameraControlRef, CameraControlProps>((
       />
 
 
-      {params?.screenAction !== "replace-picture" && (
+      {params?.action !== "replace-picture" && (
         <Action
           icon={"file-document-outline"}
           counter={picturesCount}
@@ -70,7 +70,7 @@ export const CameraControl = forwardRef<CameraControlRef, CameraControlProps>((
         />
       )}
 
-      {params?.screenAction === "replace-picture" && (
+      {params?.action === "replace-picture" && (
         <Action isShowingCamera={props.isShowingCamera} />
       )}
     </ActionBar>
