@@ -1,4 +1,4 @@
-import { act, renderHook } from "@testing-library/react-hooks"
+import { act, renderHook, RenderHookResult } from "@testing-library/react-native"
 import { merge } from "lodash"
 import { MMKV } from "react-native-mmkv"
 import { PartialDeep } from "type-fest"
@@ -12,7 +12,7 @@ import { Settings, SettingsStore } from "../types"
 describe("createSettingsHook", () => {
   const mmkvSettingsStorage = new MMKV({ id: "test-settings-storage" })
   const mmkvStateStorage = new MMKVStorage(mmkvSettingsStorage)
-  let renderedUseSettings: ReturnType<typeof renderHook<unknown, SettingsStore>>
+  let renderedUseSettings: RenderHookResult<SettingsStore, never>
 
   const spyOnGetItem = jest.spyOn(mmkvStateStorage, "getItem")
   const spyOnSetItem = jest.spyOn(mmkvStateStorage, "setItem")
