@@ -5,7 +5,7 @@ import { StateStorage } from "zustand/middleware"
 export class MMKVStorage implements StateStorage {
 
 
-  private settingsStorage: MMKV
+  private readonly settingsStorage: MMKV
 
 
   constructor(mmkv: MMKV) {
