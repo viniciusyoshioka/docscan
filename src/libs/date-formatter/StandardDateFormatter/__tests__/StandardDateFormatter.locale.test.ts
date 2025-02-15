@@ -24,9 +24,10 @@ describe("Test StandardDateFormatter with locale option", () => {
 
 
     localesData.forEach(({ locale, value, error }) => {
+      const stringifiedLocale = JSON.stringify(locale)
       const dateFormatter = new StandardDateFormatter({ locales: locale })
 
-      it(`should handle ${locale} using current date`, () => {
+      it(`should handle ${stringifiedLocale} using current date`, () => {
         if (error === true) {
           expect(() => dateFormatter.getLocaleDate()).toThrow(RangeError)
           return
@@ -41,7 +42,7 @@ describe("Test StandardDateFormatter with locale option", () => {
         throw new Error("Unexpected test case")
       })
 
-      it(`should handle ${locale} using timestamp`, () => {
+      it(`should handle ${stringifiedLocale} using timestamp`, () => {
         const timestamp = dateObject.getTime()
 
         if (error === true) {
@@ -62,7 +63,7 @@ describe("Test StandardDateFormatter with locale option", () => {
         throw new Error("Unexpected test case")
       })
 
-      it(`should handle ${locale} using date object`, () => {
+      it(`should handle ${stringifiedLocale} using date object`, () => {
         if (error === true) {
           expect(() => dateFormatter.getLocaleDate(dateObject)).toThrow(RangeError)
           return
@@ -97,9 +98,10 @@ describe("Test StandardDateFormatter with locale option", () => {
 
 
     localesData.forEach(({ locale, value, error }) => {
+      const stringifiedLocale = JSON.stringify(locale)
       const dateFormatter = new StandardDateFormatter({ locales: locale })
 
-      it(`should handle ${locale} using current date`, () => {
+      it(`should handle ${stringifiedLocale} using current date`, () => {
         if (error === true) {
           expect(() => dateFormatter.getLocaleTime()).toThrow(RangeError)
           return
@@ -114,7 +116,7 @@ describe("Test StandardDateFormatter with locale option", () => {
         throw new Error("Unexpected test case")
       })
 
-      it(`should handle ${locale} using timestamp`, () => {
+      it(`should handle ${stringifiedLocale} using timestamp`, () => {
         const timestamp = dateObject.getTime()
         if (error === true) {
           expect(() => dateFormatter.getLocaleTime(timestamp)).toThrow(RangeError)
@@ -134,7 +136,7 @@ describe("Test StandardDateFormatter with locale option", () => {
         throw new Error("Unexpected test case")
       })
 
-      it(`should handle ${locale} using date object`, () => {
+      it(`should handle ${stringifiedLocale} using date object`, () => {
         if (error === true) {
           expect(() => dateFormatter.getLocaleTime(dateObject)).toThrow(RangeError)
           return
@@ -169,9 +171,10 @@ describe("Test StandardDateFormatter with locale option", () => {
 
 
     localesData.forEach(({ locale, value, error }) => {
+      const stringifiedLocale = JSON.stringify(locale)
       const dateFormatter = new StandardDateFormatter({ locales: locale })
 
-      it(`should handle ${locale} using current date`, () => {
+      it(`should handle ${stringifiedLocale} using current date`, () => {
         if (error === true) {
           expect(() => dateFormatter.getLocaleDateTime()).toThrow(RangeError)
           return
@@ -186,7 +189,7 @@ describe("Test StandardDateFormatter with locale option", () => {
         throw new Error("Unexpected test case")
       })
 
-      it(`should handle ${locale} using timestamp`, () => {
+      it(`should handle ${stringifiedLocale} using timestamp`, () => {
         const timestamp = dateObject.getTime()
         if (error === true) {
           expect(() => dateFormatter.getLocaleDateTime(timestamp)).toThrow(RangeError)
@@ -206,7 +209,7 @@ describe("Test StandardDateFormatter with locale option", () => {
         throw new Error("Unexpected test case")
       })
 
-      it(`should handle ${locale} using date object`, () => {
+      it(`should handle ${stringifiedLocale} using date object`, () => {
         if (error === true) {
           expect(() => dateFormatter.getLocaleDateTime(dateObject)).toThrow(RangeError)
           return

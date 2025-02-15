@@ -24,10 +24,10 @@ const defaultSeparators: DateTimeSeparators = {
 export class StandardDateFormatter implements DateFormatter {
 
 
-  private locales: undefined | string | string[]
-  private patterns: DateTimePatterns = defaultPatterns
-  private separators: DateTimeSeparators
-  private hasSeconds: boolean
+  private readonly locales: undefined | string | string[]
+  private readonly patterns: DateTimePatterns = defaultPatterns
+  private readonly separators: DateTimeSeparators
+  private readonly hasSeconds: boolean
 
 
   constructor(options?: StandardDateFormatterOptions) {
