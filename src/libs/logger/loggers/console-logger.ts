@@ -2,7 +2,7 @@ import { LogCode } from "@database"
 import { StandardDateFormatter } from "@libs/date-formatter"
 import { stringifyError } from "@utils"
 import { InvalidLogCodeError, UnknownLogError } from "../errors"
-import { Logger } from "../interfaces"
+import { Logger } from "../logger.interface"
 
 
 type PrintOptions = {

@@ -18,7 +18,7 @@ import {
   useDocumentRealm,
 } from "@database"
 import { useBackHandler } from "@hooks"
-import { useLogger } from "@libs/log"
+import { useLogger } from "@libs/logger"
 import { useSettings } from "@libs/settings"
 import { translate } from "@locales"
 import { NavigationProps, RouteProps } from "@router"

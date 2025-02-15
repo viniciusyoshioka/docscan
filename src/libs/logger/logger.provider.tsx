@@ -2,7 +2,7 @@ import { PropsWithChildren, createContext, useCallback, useContext, useMemo } fr
 
 import { useLogRealm } from "@database"
 import { StandardDateFormatter } from "@libs/date-formatter"
-import { Logger } from "./interfaces"
+import { Logger } from "./logger.interface"
 import { ConsoleLogger, DatabaseLogger, MultipleLogger } from "./loggers"
 
 

@@ -3,7 +3,7 @@ import Realm from "realm"
 import { LogCode, LogSchema } from "@database"
 import { stringifyError } from "@utils"
 import { UnknownLogError } from "../errors"
-import { Logger } from "../interfaces"
+import { Logger } from "../logger.interface"
 
 
 export class DatabaseLogger implements Logger {

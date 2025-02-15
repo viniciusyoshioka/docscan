@@ -1,5 +1,5 @@
 import { LogCode } from "@database"
-import { BaseLogError } from "./BaseLogError"
+import { BaseLogError } from "./base-log-error"
 
 
 export class InvalidLogCodeError extends BaseLogError {

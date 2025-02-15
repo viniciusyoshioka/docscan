@@ -20,7 +20,7 @@ import {
   useDocumentRealm,
 } from "@database"
 import { useBackHandler } from "@hooks"
-import { useLogger } from "@libs/log"
+import { useLogger } from "@libs/logger"
 import { TranslationKeyType, translate } from "@locales"
 import { NavigationProps } from "@router"
 import { Constants } from "@services/constant"

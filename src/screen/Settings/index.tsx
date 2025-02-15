@@ -4,7 +4,7 @@ import { List } from "react-native-paper"
 import Share from "react-native-share"
 
 import { useBackHandler } from "@hooks"
-import { useLogger } from "@libs/log"
+import { useLogger } from "@libs/logger"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
 import { Constants } from "@services/constant"

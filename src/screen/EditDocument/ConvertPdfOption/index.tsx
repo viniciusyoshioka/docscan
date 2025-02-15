@@ -8,7 +8,7 @@ import { useStyles } from "react-native-unistyles"
 
 import { useDocumentModel } from "@database"
 import { useBackHandler } from "@hooks"
-import { useLogger } from "@libs/log"
+import { useLogger } from "@libs/logger"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
 import { Constants } from "@services/constant"

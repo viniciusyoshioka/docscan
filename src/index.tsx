@@ -4,7 +4,7 @@ import { KeyboardAvoidingView, KeyboardProvider } from "react-native-keyboard-co
 
 import { DocumentModelProvider, RealmProvider } from "@database"
 import { useKeepAwakeOnDev } from "@hooks"
-import { LoggerProvider } from "@libs/log"
+import { LoggerProvider } from "@libs/logger"
 import { Router } from "@router"
 import { AppThemeProvider } from "@theme"
 

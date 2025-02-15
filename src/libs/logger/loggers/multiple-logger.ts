@@ -1,4 +1,4 @@
-import { Logger } from "../interfaces"
+import { Logger } from "../logger.interface"
 
 
 export class MultipleLogger implements Logger {
