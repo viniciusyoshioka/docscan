@@ -40,7 +40,7 @@ export function ConvertPdfOption() {
   const [compressionVisualValue, setCompressionVisualValue] = useState(60)
   const [compressionValue, setCompressionValue] = useState(60)
   const [compressionLevel, setCompressionLevel] = useState<DocumentPdfCompressionLevel>(
-    "high"
+    "high",
   )
   const isSliderDisabled = compressionLevel !== "custom"
 
@@ -59,7 +59,7 @@ export function ConvertPdfOption() {
       log.warn("There is no document to be converted to PDF")
       Alert.alert(
         translate("warn"),
-        translate("ConvertPdfOption_alert_noDocumentOpened_text")
+        translate("ConvertPdfOption_alert_noDocumentOpened_text"),
       )
       return
     }
@@ -68,7 +68,7 @@ export function ConvertPdfOption() {
       log.warn("There is no pictures in the document to be converted to PDF")
       Alert.alert(
         translate("warn"),
-        translate("ConvertPdfOption_alert_documentWithoutPictures_text")
+        translate("ConvertPdfOption_alert_documentWithoutPictures_text"),
       )
       return
     }
@@ -78,7 +78,7 @@ export function ConvertPdfOption() {
       log.warn("Can not convert document to PDF because the permission was not granted")
       Alert.alert(
         translate("warn"),
-        translate("ConvertPdfOption_alert_noPermissionToConvertToPdf_text")
+        translate("ConvertPdfOption_alert_noPermissionToConvertToPdf_text"),
       )
       return
     }
@@ -107,7 +107,7 @@ export function ConvertPdfOption() {
 
 
   function onOptionChange(newValue: DocumentPdfCompressionLevel) {
-    switch (newValue as DocumentPdfCompressionLevel) {
+    switch (newValue) {
       case "high":
         setCompressionVisualValue(60)
         setCompressionValue(60)

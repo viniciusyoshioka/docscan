@@ -33,7 +33,7 @@ export function useCameraControlDimensions(): CameraControlDimensions {
   const SCREEN_HEIGHT = SCREEN_DIMENSIONS.height - STATUS_BAR_HEIGHT
   const DEFAULT_CAMERA_SIZE = getCameraSize(
     { width: SCREEN_WIDTH, height: SCREEN_HEIGHT },
-    "4:3"
+    "4:3",
   )
 
 
@@ -42,12 +42,12 @@ export function useCameraControlDimensions(): CameraControlDimensions {
 
   const HEIGHT_WITHOUT_CAMERA = Math.max(
     MAIN_ACTION_SIZE + (2 * PADDING_VERTICAL_WITHOUT_CAMERA),
-    ACTION_SIZE + (2 * PADDING_VERTICAL_WITHOUT_CAMERA)
+    ACTION_SIZE + (2 * PADDING_VERTICAL_WITHOUT_CAMERA),
   )
   const HEIGHT_WITH_CAMERA = Math.max(
     MAIN_ACTION_SIZE + (2 * PADDING_VERTICAL_WITH_CAMERA),
     ACTION_SIZE + (2 * PADDING_VERTICAL_WITH_CAMERA),
-    SCREEN_HEIGHT - HEADER_HEIGHT - DEFAULT_CAMERA_SIZE.height
+    SCREEN_HEIGHT - HEADER_HEIGHT - DEFAULT_CAMERA_SIZE.height,
   )
 
 

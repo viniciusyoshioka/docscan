@@ -19,7 +19,7 @@ import { LoadingOverlay } from "./LoadingOverlay"
 
 
 const AnimatedFastImage = Reanimated.createAnimatedComponent(
-  FastImage as ComponentClass<FastImageProps>
+  FastImage as ComponentClass<FastImageProps>,
 )
 
 const perpendicularAngles = [0, 90, 180, 270, 360]
@@ -42,7 +42,7 @@ export interface ImageRotationRef {
 
 export const ImageRotation = forwardRef<ImageRotationRef, ImageRotationProps>((
   props,
-  ref
+  ref,
 ) => {
 
 

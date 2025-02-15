@@ -9,7 +9,7 @@ export interface PictureTakenFeedbackRef {
 
 export const PictureTakenFeedback = forwardRef<PictureTakenFeedbackRef, ViewProps>((
   props,
-  ref
+  ref,
 ) => {
 
 

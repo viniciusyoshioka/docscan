@@ -57,7 +57,7 @@ export function VisualizePicture() {
     }
 
     const index = Math.round(currentIndex)
-    const fileName = documentModel.pictures[index].fileName
+    const { fileName } = documentModel.pictures[index]
     return DocumentService.getPicturePath(fileName)
   }, [documentModel, currentIndex])
 
@@ -118,7 +118,7 @@ export function VisualizePicture() {
 
     const pictureNameToRotate = documentModel.pictures[currentIndex].fileName
     const picturePathRotated = await DocumentService.getNewPicturePath(
-      pictureNameToRotate
+      pictureNameToRotate,
     )
     try {
       await imageRotationRef.current.save(picturePathRotated)
@@ -127,7 +127,7 @@ export function VisualizePicture() {
       log.error(`Error saving rotated picture: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
-        translate("VisualizePicture_alert_errorSavingRotatedImage_text")
+        translate("VisualizePicture_alert_errorSavingRotatedImage_text"),
       )
 
       setIsRotating(false)
@@ -188,7 +188,7 @@ export function VisualizePicture() {
       log.error(`Error replacing image by cropped image: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
-        translate("VisualizePicture_alert_errorSavingCroppedImage_text")
+        translate("VisualizePicture_alert_errorSavingCroppedImage_text"),
       )
 
       setIsCropping(false)
@@ -212,7 +212,7 @@ export function VisualizePicture() {
     log.error(`Error cropping image: "${response}"`)
     Alert.alert(
       translate("warn"),
-      translate("VisualizePicture_alert_errorCroppingImage_text")
+      translate("VisualizePicture_alert_errorCroppingImage_text"),
     )
     setIsCropping(false)
     setIsCropProcessing(false)
@@ -230,7 +230,7 @@ export function VisualizePicture() {
 
     const document = documentRealm.objectForPrimaryKey(
       DocumentSchema,
-      documentModel.document.id
+      documentModel.document.id,
     )
     const pictures = documentRealm
       .objects(DocumentPictureSchema)

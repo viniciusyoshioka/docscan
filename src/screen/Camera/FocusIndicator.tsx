@@ -22,7 +22,7 @@ export interface FocusIndicatorRef {
 
 export const FocusIndicator = forwardRef<FocusIndicatorRef, FocusIndicatorProps>((
   props,
-  ref
+  ref,
 ) => {
 
 

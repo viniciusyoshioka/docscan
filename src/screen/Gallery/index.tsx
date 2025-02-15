@@ -56,13 +56,13 @@ export function Gallery() {
   const columnCount = useMemo(
     () => (windowWidth < windowHeight)
       ? VERTICAL_COLUMN_COUNT
-      : HORIZONTAL_COLUMN_COUNT
-    , [windowWidth, windowHeight]
+      : HORIZONTAL_COLUMN_COUNT,
+    [windowWidth, windowHeight],
   )
   const estimatedItemSize = getImageItemSize(windowWidth, columnCount)
 
   const minimumRowAmountInScreen = useMemo(() => Math.ceil(
-    (windowHeight - HEADER_HEIGHT) / estimatedItemSize
+    (windowHeight - HEADER_HEIGHT) / estimatedItemSize,
   ), [windowHeight, estimatedItemSize])
   const amountOfImageToLoadPerTime = useMemo(() => (
     (minimumRowAmountInScreen + 1) * columnCount
@@ -87,7 +87,7 @@ export function Gallery() {
       log.warn("No permission to access CameraRoll")
       Alert.alert(
         translate("warn"),
-        translate("Gallery_alert_noPermissionForGallery_text")
+        translate("Gallery_alert_noPermissionForGallery_text"),
       )
       return
     }
@@ -118,7 +118,7 @@ export function Gallery() {
       log.error(`Error getting images from CameraRoll: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
-        translate("Gallery_alert_errorOpeningGallery_text")
+        translate("Gallery_alert_errorOpeningGallery_text"),
       )
     }
   }
@@ -141,7 +141,7 @@ export function Gallery() {
       setIsImportingImages(false)
       Alert.alert(
         translate("warn"),
-        translate("Gallery_alert_noPermissionToImportSingle_text")
+        translate("Gallery_alert_noPermissionToImportSingle_text"),
       )
       return
     }
@@ -168,7 +168,7 @@ export function Gallery() {
       setIsImportingImages(false)
       Alert.alert(
         translate("warn"),
-        translate("Gallery_alert_unknownErrorImportingSingle_text")
+        translate("Gallery_alert_unknownErrorImportingSingle_text"),
       )
     }
   }
@@ -182,7 +182,7 @@ export function Gallery() {
       setIsImportingImages(false)
       Alert.alert(
         translate("warn"),
-        translate("Gallery_alert_noPermissionToImportMultiple_text")
+        translate("Gallery_alert_noPermissionToImportMultiple_text"),
       )
       return
     }
@@ -213,7 +213,7 @@ export function Gallery() {
   function replaceImage(filePath: string) {
     if (params.action !== "replace-picture")
       throw new Error(
-        "Screen action is different of 'replace-picture'. This should not happen"
+        "Screen action is different of 'replace-picture'. This should not happen",
       )
     if (!documentModel)
       throw new Error("Document model is undefined. This should not happen")
@@ -227,7 +227,7 @@ export function Gallery() {
 
     const document = documentRealm.objectForPrimaryKey(
       DocumentSchema,
-      documentModel.document.id
+      documentModel.document.id,
     )
     const pictures = documentRealm
       .objects(DocumentPictureSchema)
@@ -278,7 +278,7 @@ export function Gallery() {
 
     const document = documentRealm.objectForPrimaryKey(
       DocumentSchema,
-      modifiedDocumentId
+      modifiedDocumentId,
     )
     const pictures = documentRealm
       .objects(DocumentPictureSchema)
@@ -363,7 +363,7 @@ export function Gallery() {
           onEndReachedThreshold={0.05}
           onEndReached={onEndReached}
           ListFooterComponent={ListFooterComponent}
-          onRefresh={imageGallery?.length ? onRefresh : undefined}
+          onRefresh={imageGallery.length ? onRefresh : undefined}
           refreshing={isRefreshing}
         />
       )}

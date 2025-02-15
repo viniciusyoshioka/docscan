@@ -9,7 +9,7 @@ export function useBackHandler(backHandlerFunction: BackHandlerCallback) {
   useEffect(() => {
     const subscription = BackHandler.addEventListener(
       "hardwareBackPress",
-      backHandlerFunction
+      backHandlerFunction,
     )
 
     return () => subscription.remove()

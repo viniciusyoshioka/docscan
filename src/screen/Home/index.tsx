@@ -103,7 +103,7 @@ export function Home() {
       await logger.error(`Error deleting selected documents: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
-        translate("Home_alert_errorDeletingSelectedDocuments_text")
+        translate("Home_alert_errorDeletingSelectedDocuments_text"),
       )
     } finally {
       documentSelection.exitSelection()
@@ -118,7 +118,7 @@ export function Home() {
       [
         { text: translate("cancel"), onPress: () => {} },
         { text: translate("delete"), onPress: deleteSelectedDocuments },
-      ]
+      ],
     )
   }
 
@@ -136,7 +136,7 @@ export function Home() {
 
       Alert.alert(
         translate("Home_alert_importDocuments_title"),
-        translate("Home_alert_importDocuments_text")
+        translate("Home_alert_importDocuments_text"),
       )
       await createAllFolders()
 
@@ -149,7 +149,7 @@ export function Home() {
 
       const pictureToMove: string[] = []
       const exportedDatabase = await openExportedDatabase(
-        Constants.importDatabaseFullPath
+        Constants.importDatabaseFullPath,
       )
       const exportedDocuments = exportedDatabase
         .objects<ExportedDocumentRealm>("ExportedDocumentSchema")
@@ -170,7 +170,7 @@ export function Home() {
         for (let j = 0; j < exportedPictures.length; j++) {
           const exportedPicture = exportedPictures[j]
           const newPicturePath = await DocumentService.getNewPicturePath(
-            exportedPicture.fileName
+            exportedPicture.fileName,
           )
           const newPictureName = DocumentService.getFileFullname(newPicturePath)
 
@@ -181,7 +181,7 @@ export function Home() {
           })
 
           pictureToMove.push(
-            DocumentService.getTemporaryImportedPicturePath(exportedPicture.fileName)
+            DocumentService.getTemporaryImportedPicturePath(exportedPicture.fileName),
           )
           pictureToMove.push(newPicturePath)
         }
@@ -212,7 +212,7 @@ export function Home() {
       await logger.error(`Error importing document: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
-        translate("Home_alert_errorImportingDocuments_text")
+        translate("Home_alert_errorImportingDocuments_text"),
       )
     }
   }
@@ -220,13 +220,13 @@ export function Home() {
   async function exportSelectedDocuments() {
     Alert.alert(
       translate("Home_alert_exportingDocuments_title"),
-      translate("Home_alert_exportingDocuments_text")
+      translate("Home_alert_exportingDocuments_text"),
     )
 
     await createAllFolders()
     try {
       const exportedDatabase = await openExportedDatabase(
-        Constants.exportDatabaseFullPath
+        Constants.exportDatabaseFullPath,
       )
 
       const selectedDocumentsObjectId = documentSelection
@@ -246,7 +246,7 @@ export function Home() {
               createdAt: documentToExport.createdAt,
               modifiedAt: documentToExport.modifiedAt,
               name: documentToExport.name,
-            }
+            },
           )
 
           documentRealm
@@ -261,7 +261,7 @@ export function Home() {
                   fileName: pictureToExport.fileName,
                   position: pictureToExport.position,
                   belongsTo: exportedDocument.id,
-                }
+                },
               )
             })
         })
@@ -279,7 +279,7 @@ export function Home() {
       await logger.error(`Error exporting documents before invoking the background service: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
-        translate("Home_alert_errorExportingDocuments_text")
+        translate("Home_alert_errorExportingDocuments_text"),
       )
     }
 
@@ -292,7 +292,7 @@ export function Home() {
     if (documents.length === 0) {
       Alert.alert(
         translate("warn"),
-        translate("Home_alert_noDocumentsToExport_text")
+        translate("Home_alert_noDocumentsToExport_text"),
       )
       return
     }
@@ -307,7 +307,7 @@ export function Home() {
       [
         { text: translate("cancel"), onPress: () => {} },
         { text: translate("Home_export"), onPress: exportSelectedDocuments },
-      ]
+      ],
     )
   }
 
@@ -323,7 +323,7 @@ export function Home() {
       [
         { text: translate("cancel"), onPress: () => {} },
         { text: translate("Home_merge"), onPress: mergeSelectedDocuments },
-      ]
+      ],
     )
   }
 
@@ -339,7 +339,7 @@ export function Home() {
       [
         { text: translate("cancel"), onPress: () => {} },
         { text: translate("Home_duplicate"), onPress: duplicateSelectedDocuments },
-      ]
+      ],
     )
   }
 
@@ -381,7 +381,7 @@ export function Home() {
       if (!hasPermission) {
         Alert.alert(
           translate("Home_alert_notificationPermissionDenied_title"),
-          translate("Home_alert_notificationPermissionDenied_text")
+          translate("Home_alert_notificationPermissionDenied_text"),
         )
       }
     }

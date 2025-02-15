@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { TranslationObjectType } from "./types"
 
 

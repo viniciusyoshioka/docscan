@@ -59,9 +59,9 @@ export function MainAction(props: MainActionProps) {
       : colors.onBackground
   const backgroundColor = (props.disabled === true)
     ? Color(backgroundColorStyle)
-      .alpha(state.disabled)
-      .rgb()
-      .toString()
+        .alpha(state.disabled)
+        .rgb()
+        .toString()
     : backgroundColorStyle
 
 

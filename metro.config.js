@@ -12,5 +12,5 @@ const config = {}
 
 
 module.exports = wrapWithReanimatedMetroConfig(
-  mergeConfig(getDefaultConfig(__dirname), config)
+  mergeConfig(getDefaultConfig(__dirname), config),
 )

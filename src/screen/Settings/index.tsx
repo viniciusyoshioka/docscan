@@ -39,7 +39,7 @@ export function Settings() {
       log.error(`Error sharing log database file: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
-        translate("Settings_alert_errorSharingLogDatabase_text")
+        translate("Settings_alert_errorSharingLogDatabase_text"),
       )
     }
   }
@@ -55,7 +55,7 @@ export function Settings() {
       log.error(`Error sharing app database file: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
-        translate("Settings_alert_errorSharingAppDatabase_text")
+        translate("Settings_alert_errorSharingAppDatabase_text"),
       )
     }
   }

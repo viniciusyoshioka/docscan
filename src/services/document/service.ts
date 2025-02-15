@@ -20,7 +20,7 @@ const NativeDocumentService = NativeModules.DocumentService as DocumentServiceTy
 export class DocumentService {
 
 
-  private static dateFormatter = new StandardDateFormatter({
+  private static readonly dateFormatter = new StandardDateFormatter({
     separators: {
       date: "",
       time: "",

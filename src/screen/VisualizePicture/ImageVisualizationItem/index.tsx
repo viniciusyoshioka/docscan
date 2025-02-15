@@ -21,7 +21,7 @@ import { TIMING_CONFIG } from "./animation-config"
 
 
 const AnimatedFastImage = Reanimated.createAnimatedComponent(
-  FastImage as ComponentClass<FastImageProps>
+  FastImage as ComponentClass<FastImageProps>,
 )
 
 

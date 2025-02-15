@@ -52,7 +52,7 @@ export function RenameDocument() {
 
       const createdDocument = documentRealm.create(
         DocumentSchema,
-        { name: documentName }
+        { name: documentName },
       )
       return createdDocument
     })

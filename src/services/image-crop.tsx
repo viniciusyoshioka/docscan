@@ -47,7 +47,7 @@ interface ImageCropViewManagerProps extends ViewProps {
 
 
 const ImageCropViewManager = requireNativeComponent<ImageCropViewManagerProps>(
-  "ImageCropView"
+  "ImageCropView",
 )
 
 
@@ -59,19 +59,19 @@ export class ImageCrop extends PureComponent<ImageCropProps> {
   }
 
 
-  public static defaultProps = {
+  static defaultProps = {
     keepAspectRatio: false,
   }
 
 
-  private imageCropRef = createRef<any>()
+  private readonly imageCropRef = createRef<any>()
 
 
   saveImage = () => {
     UIManager.dispatchViewManagerCommand(
-      findNodeHandle(this.imageCropRef.current!),
+      findNodeHandle(this.imageCropRef.current),
       UIManager.getViewManagerConfig("ImageCropView").Commands.saveImage,
-      []
+      [],
     )
   }
 

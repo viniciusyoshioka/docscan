@@ -58,8 +58,8 @@ export function EditDocument() {
   const columnCount = useMemo(
     () => (windowWidth < windowHeight)
       ? VERTICAL_COLUMN_COUNT
-      : HORIZONTAL_COLUMN_COUNT
-    , [windowWidth, windowHeight]
+      : HORIZONTAL_COLUMN_COUNT,
+    [windowWidth, windowHeight],
   )
   const estimatedItemSize = getPictureItemSize(windowWidth, columnCount)
 
@@ -88,7 +88,7 @@ export function EditDocument() {
       log.warn("There is no document to be shared")
       Alert.alert(
         translate("warn"),
-        translate("EditDocument_alert_noDocumentOpened_text")
+        translate("EditDocument_alert_noDocumentOpened_text"),
       )
       return
     }
@@ -100,7 +100,7 @@ export function EditDocument() {
       log.warn("Can not shared PDF file because it doesn't exists")
       Alert.alert(
         translate("warn"),
-        translate("EditDocument_alert_convertNotExistentPdfToShare_text")
+        translate("EditDocument_alert_convertNotExistentPdfToShare_text"),
       )
       return
     }
@@ -116,7 +116,7 @@ export function EditDocument() {
       log.error(`Error sharing PDF file: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
-        translate("EditDocument_alert_errorSharingPdf_text")
+        translate("EditDocument_alert_errorSharingPdf_text"),
       )
     }
   }
@@ -126,7 +126,7 @@ export function EditDocument() {
       log.warn("There is no document to visualize the PDF")
       Alert.alert(
         translate("warn"),
-        translate("EditDocument_alert_noDocumentOpened_text")
+        translate("EditDocument_alert_noDocumentOpened_text"),
       )
       return
     }
@@ -136,7 +136,7 @@ export function EditDocument() {
       log.warn("Can not visualize PDF because the permission was not granted")
       Alert.alert(
         translate("warn"),
-        translate("EditDocument_alert_noPermissionToVisualizePdf_text")
+        translate("EditDocument_alert_noPermissionToVisualizePdf_text"),
       )
       return
     }
@@ -148,7 +148,7 @@ export function EditDocument() {
       log.warn("Can not visualize PDF because it doesn't exists")
       Alert.alert(
         translate("warn"),
-        translate("EditDocument_alert_convertNotExistentPdfToVisualize_text")
+        translate("EditDocument_alert_convertNotExistentPdfToVisualize_text"),
       )
       return
     }
@@ -165,7 +165,7 @@ export function EditDocument() {
       log.warn("Can not delete PDF because the permission was not granted")
       Alert.alert(
         translate("warn"),
-        translate("EditDocument_alert_noPermissionToDeletePdf_text")
+        translate("EditDocument_alert_noPermissionToDeletePdf_text"),
       )
       return
     }
@@ -177,7 +177,7 @@ export function EditDocument() {
       log.warn("Can not delete PDF because it doesn't exists")
       Alert.alert(
         translate("warn"),
-        translate("EditDocument_alert_pdfFileDoesNotExists_text")
+        translate("EditDocument_alert_pdfFileDoesNotExists_text"),
       )
       return
     }
@@ -186,13 +186,13 @@ export function EditDocument() {
       await RNFS.unlink(pdfFilePath)
       Alert.alert(
         translate("success"),
-        translate("EditDocument_alert_pdfFileDeletedSuccessfully_text")
+        translate("EditDocument_alert_pdfFileDeletedSuccessfully_text"),
       )
     } catch (error) {
       log.error(`Error deleting PDF file "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
-        translate("EditDocument_alert_errorDeletingPdfFile_text")
+        translate("EditDocument_alert_errorDeletingPdfFile_text"),
       )
     }
   }
@@ -202,7 +202,7 @@ export function EditDocument() {
       log.warn("There is no document to delete the PDF")
       Alert.alert(
         translate("warn"),
-        translate("EditDocument_alert_noDocumentOpened_text")
+        translate("EditDocument_alert_noDocumentOpened_text"),
       )
       return
     }
@@ -213,7 +213,7 @@ export function EditDocument() {
       [
         { text: translate("cancel"), onPress: () => {} },
         { text: translate("ok"), onPress: deletePdf },
-      ]
+      ],
     )
   }
 
@@ -232,7 +232,7 @@ export function EditDocument() {
   async function deleteSelectedPicture() {
     if (!document)
       throw new Error(
-        "There is no document to delete its pictures, this should not happen"
+        "There is no document to delete its pictures, this should not happen",
       )
 
     setIsDeletingPictures(true)
@@ -256,7 +256,7 @@ export function EditDocument() {
 
       const updatedDocument = documentRealm.objectForPrimaryKey(
         DocumentSchema,
-        document.id
+        document.id,
       )
       const updatedPictures = documentRealm
         .objects(DocumentPictureSchema)
@@ -271,7 +271,7 @@ export function EditDocument() {
       log.error(`Error deleting selected pictures from database: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
-        translate("EditDocument_alert_errorDeletingSelectedPictures_text")
+        translate("EditDocument_alert_errorDeletingSelectedPictures_text"),
       )
     }
 
@@ -282,7 +282,7 @@ export function EditDocument() {
   function alertDeletePicture() {
     if (!document)
       throw new Error(
-        "There is no document to delete its pictures, this should not happen"
+        "There is no document to delete its pictures, this should not happen",
       )
 
     Alert.alert(
@@ -291,7 +291,7 @@ export function EditDocument() {
       [
         { text: translate("cancel"), onPress: () => {} },
         { text: translate("ok"), onPress: deleteSelectedPicture },
-      ]
+      ],
     )
   }
 

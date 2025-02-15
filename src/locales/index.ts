@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { I18n } from "i18n-js"
 import { NativeModules, Platform } from "react-native"
 

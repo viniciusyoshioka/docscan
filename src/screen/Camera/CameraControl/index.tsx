@@ -27,7 +27,7 @@ export interface CameraControlRef {
 
 export const CameraControl = forwardRef<CameraControlRef, CameraControlProps>((
   props,
-  ref
+  ref,
 ) => {
 
 

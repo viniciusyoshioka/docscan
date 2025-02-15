@@ -141,7 +141,7 @@ export function Camera() {
       log.error(`Error taking picture: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
-        translate("Camera_alert_unknownErrorTakingPicture_text")
+        translate("Camera_alert_unknownErrorTakingPicture_text"),
       )
     }
   }
@@ -149,7 +149,7 @@ export function Camera() {
   function replacePicture(newPicturePath: string) {
     if (params?.action !== "replace-picture")
       throw new Error(
-        "Screen action is different of 'replace-picture'. This should not happen"
+        "Screen action is different of 'replace-picture'. This should not happen",
       )
     if (!documentModel)
       throw new Error("Document model is undefined. This should not happen")
@@ -163,7 +163,7 @@ export function Camera() {
 
     const document = documentRealm.objectForPrimaryKey(
       DocumentSchema,
-      documentModel.document.id
+      documentModel.document.id,
     )
     const pictures = documentRealm
       .objects(DocumentPictureSchema)
@@ -217,7 +217,7 @@ export function Camera() {
 
     const document = documentRealm.objectForPrimaryKey(
       DocumentSchema,
-      modifiedDocumentId
+      modifiedDocumentId,
     )
     const pictures = documentRealm
       .objects(DocumentPictureSchema)
