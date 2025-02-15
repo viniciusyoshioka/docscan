@@ -30,7 +30,7 @@ describe("stringifyError", () => {
     const error = /^Error RegEx$/
     const result = stringifyError(error)
 
-    expect(typeof result).not.toBe("string")
-    expect(result).toBe(error)
+    expect(typeof result).toBe("string")
+    expect(result).toBe(String(error))
   })
 })

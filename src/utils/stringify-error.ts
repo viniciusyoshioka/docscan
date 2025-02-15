@@ -8,7 +8,7 @@ export function stringifyError(error: unknown): string {
 
   const stringifiedObject = JSON.stringify(error)
   if (stringifiedObject === "{}") {
-    return error as string
+    return String(error)
   }
   return stringifiedObject
 }
