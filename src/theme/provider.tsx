@@ -41,7 +41,7 @@ const themes: Themes = {
 }
 
 
-const AppThemeContext = createContext(AppThemeLight)
+const AppThemeContext = createContext<AppTheme>(AppThemeLight)
 
 
 export function AppThemeProvider(props: PropsWithChildren) {
@@ -52,30 +52,30 @@ export function AppThemeProvider(props: PropsWithChildren) {
   const { settings } = useSettings()
 
 
-  const currentTheme = useMemo<ThemeName>(() => {
+  const currentThemeName = useMemo<ThemeName>(() => {
     const isDeviceThemeDark = (settings.theme === "auto" && deviceTheme === "dark")
     const isAppThemeDark = settings.theme === "dark"
     return (isDeviceThemeDark || isAppThemeDark) ? "dark" : "light"
   }, [settings.theme, deviceTheme])
 
-  const { appTheme, materialTheme, paperTheme } = useMemo<ThemeObject>(() => (
-    themes[currentTheme]
-  ), [currentTheme])
+  const currentThemeObject = useMemo<ThemeObject>(() => (
+    themes[currentThemeName]
+  ), [currentThemeName])
 
 
   useEffect(() => {
-    if (currentTheme === "dark") {
+    if (currentThemeName === "dark") {
       UnistylesRuntime.setTheme("dark")
     } else {
       UnistylesRuntime.setTheme("light")
     }
-  }, [currentTheme])
+  }, [currentThemeName])
 
 
   return (
-    <AppThemeContext.Provider value={appTheme}>
-      <MaterialProvider theme={materialTheme}>
-        <PaperProvider theme={paperTheme}>
+    <AppThemeContext.Provider value={currentThemeObject.appTheme}>
+      <MaterialProvider theme={currentThemeObject.materialTheme}>
+        <PaperProvider theme={currentThemeObject.paperTheme}>
           {props.children}
         </PaperProvider>
       </MaterialProvider>
@@ -84,6 +84,6 @@ export function AppThemeProvider(props: PropsWithChildren) {
 }
 
 
-export function useAppTheme() {
+export function useAppTheme(): AppTheme {
   return useContext(AppThemeContext)
 }
