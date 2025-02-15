@@ -1,2 +1,2 @@
-export * from "./interfaces"
-export * from "./StandardDateFormatter"
+export * from "./date-formatter.interface"
+export * from "./standard-date-formatter"

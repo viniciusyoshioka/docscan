@@ -1,5 +1,5 @@
-import { DateFormatter } from "../interfaces"
-import { DateTimeSeparators, StandardDateFormatterOptions } from "./types"
+import { DateFormatter } from "../date-formatter.interface"
+import { DateTimeSeparators, StandardDateFormatterOptions } from "./standard-date-formatter.types"
 
 
 type DateTimePatterns = {

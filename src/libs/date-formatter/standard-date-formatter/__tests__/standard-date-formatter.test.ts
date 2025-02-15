@@ -18,4 +18,17 @@ describe("StandardDateFormatter is instantiated with default options", () => {
   it("formatDateTime should not throw", () => {
     expect(() => dateFormatter.formatDateTime()).not.toThrow()
   })
+
+
+  it("getLocaleDate should not throw", () => {
+    expect(() => dateFormatter.getLocaleDate()).not.toThrow()
+  })
+
+  it("getLocaleTime should not throw", () => {
+    expect(() => dateFormatter.getLocaleTime()).not.toThrow()
+  })
+
+  it("getLocaleDateTime should not throw", () => {
+    expect(() => dateFormatter.getLocaleDateTime()).not.toThrow()
+  })
 })
