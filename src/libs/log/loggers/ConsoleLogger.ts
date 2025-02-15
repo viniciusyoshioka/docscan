@@ -15,11 +15,11 @@ type PrintOptions = {
 export class ConsoleLogger implements Logger {
 
 
-  private dateFormatter: StandardDateFormatter
-  private resetColor = "\x1b[m"
-  private infoColor = "\x1b[96m"
-  private warnColor = "\x1b[93m"
-  private errorColor = "\x1b[97;41m"
+  private readonly dateFormatter: StandardDateFormatter
+  private readonly resetColor = "\x1b[m"
+  private readonly infoColor = "\x1b[96m"
+  private readonly warnColor = "\x1b[93m"
+  private readonly errorColor = "\x1b[97;41m"
 
 
   constructor(dateFormatter: StandardDateFormatter) {

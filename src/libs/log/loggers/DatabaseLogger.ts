@@ -9,7 +9,7 @@ import { Logger } from "../interfaces"
 export class DatabaseLogger implements Logger {
 
 
-  private logDatabase: Realm
+  private readonly logDatabase: Realm
 
 
   constructor(logDatabase: Realm) {

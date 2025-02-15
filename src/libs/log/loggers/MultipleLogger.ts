@@ -4,11 +4,11 @@ import { Logger } from "../interfaces"
 export class MultipleLogger implements Logger {
 
 
-  private loggers: Logger[]
+  private readonly loggers: Logger[]
 
 
   constructor(...loggers: Logger[]) {
-    this.loggers = loggers ?? []
+    this.loggers = loggers
   }
 
 

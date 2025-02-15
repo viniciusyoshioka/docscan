@@ -12,14 +12,13 @@ const LoggerContext = createContext<Logger>({} as Logger)
 export function LoggerProvider({ children }: PropsWithChildren) {
 
 
-  const isDevEnvironment = __DEV__ ?? true
   const logRealm = useLogRealm()
 
 
   const getLoggers = useCallback(() => {
     const loggers: Logger[] = []
 
-    if (isDevEnvironment) {
+    if (__DEV__) {
       const dateFormatter = new StandardDateFormatter()
       const consoleLogger = new ConsoleLogger(dateFormatter)
       loggers.push(consoleLogger)
@@ -41,6 +40,6 @@ export function LoggerProvider({ children }: PropsWithChildren) {
 }
 
 
-export function useLogger() {
+export function useLogger(): Logger {
   return useContext(LoggerContext)
 }
