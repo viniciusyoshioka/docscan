@@ -1,2 +1,2 @@
-export * from "./normilize-error"
+export * from "./normalize-error"
 export * from "./stringify-error"
