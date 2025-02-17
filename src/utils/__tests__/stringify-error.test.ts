@@ -26,7 +26,7 @@ describe("stringifyError", () => {
     expect(result).toBe(JSON.stringify(error))
   })
 
-  it("should return the error when receives another type of error", () => {
+  it("should return the error as string when receives another type of error", () => {
     const error = /^Error RegEx$/
     const result = stringifyError(error)
 
