@@ -15,6 +15,7 @@
             "@theme": ["src/theme"],
             "@utils": ["src/utils"],
         },
+        "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
     },
     "include": [
