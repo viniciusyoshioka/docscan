@@ -1,6 +1,4 @@
-import Realm from "realm"
-
-import { LogCode, LogSchema } from "@database"
+import { LogCode, LogModel } from "@database"
 import { stringifyError } from "@utils"
 import { UnknownLogError } from "../errors"
 import { Logger } from "../logger.interface"
@@ -9,19 +7,17 @@ import { Logger } from "../logger.interface"
 export class DatabaseLogger implements Logger {
 
 
-  private readonly logDatabase: Realm
+  private readonly logModel: LogModel
 
 
-  constructor(logDatabase: Realm) {
-    this.logDatabase = logDatabase
+  constructor(logModel: LogModel) {
+    this.logModel = logModel
   }
 
 
   private async insertLog(code: LogCode, message: string): Promise<void> {
     try {
-      this.logDatabase.write(() => {
-        this.logDatabase.create(LogSchema, { code, message })
-      })
+      await this.logModel.create({ code, message })
     } catch (error) {
       const errorMessage = stringifyError(error)
       throw new UnknownLogError(errorMessage)

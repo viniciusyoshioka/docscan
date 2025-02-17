@@ -1,6 +1,6 @@
 import { PropsWithChildren, createContext, useCallback, useContext, useMemo } from "react"
 
-import { useLogRealm } from "@database"
+import { useEntityModels } from "@database"
 import { StandardDateFormatter } from "@libs/date-formatter"
 import { Logger } from "./logger.interface"
 import { ConsoleLogger, DatabaseLogger, MultipleLogger } from "./loggers"
@@ -12,7 +12,7 @@ const LoggerContext = createContext<Logger>({} as Logger)
 export function LoggerProvider({ children }: PropsWithChildren) {
 
 
-  const logRealm = useLogRealm()
+  const { logModel } = useEntityModels()
 
 
   const getLoggers = useCallback(() => {
@@ -24,7 +24,7 @@ export function LoggerProvider({ children }: PropsWithChildren) {
       loggers.push(consoleLogger)
     }
 
-    const databaseLogger = new DatabaseLogger(logRealm)
+    const databaseLogger = new DatabaseLogger(logModel)
     loggers.push(databaseLogger)
 
     return loggers

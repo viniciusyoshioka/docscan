@@ -1,6 +1,3 @@
-export * from "./configs"
 export * from "./entities"
-export * from "./interfaces"
-export * from "./providers"
-export * from "./schemas"
+export * from "./entity-models-provider"
 export * from "./types"

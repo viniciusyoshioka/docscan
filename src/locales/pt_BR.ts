@@ -11,6 +11,10 @@ export const pt_BR: TranslationObjectType = {
   save: "Salvar",
   dont_save: "Não salvar",
 
+  // Database
+  Database_errorInitializingDatabase: "Erro iniciando banco de dados",
+  Database_errorOpeningDatabase: "Erro abrindo banco de dados",
+
   // App alert
   App_alert_errorLoadingTheme_text: "Erro carregando tema de cores",
   App_alert_errorSavingTheme_text: "Erro salvando novo tema de cores",
