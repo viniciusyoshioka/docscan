@@ -1,3 +1,4 @@
+import { useCallback } from "react"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import { Checkbox, List } from "react-native-paper"
 import { runOnJS } from "react-native-reanimated"
@@ -30,8 +31,12 @@ export function DocumentItem(props: DocumentItemProps) {
     .onStart(event => runOnJS(onLongPress)())
 
 
-  function SelectionCheckbok() {
-    if (props.isSelectionMode) return (
+  const SelectionCheckbok = useCallback(() => {
+    if (!props.isSelectionMode) {
+      return null
+    }
+
+    return (
       <Checkbox
         status={props.isSelected ? "checked" : "unchecked"}
         color={colors.primary}
@@ -39,8 +44,7 @@ export function DocumentItem(props: DocumentItemProps) {
         onPress={onPress}
       />
     )
-    return null
-  }
+  }, [props.isSelectionMode, props.isSelected, onPress, colors.primary, colors.onSurfaceVariant])
 
 
   return (
@@ -51,7 +55,7 @@ export function DocumentItem(props: DocumentItemProps) {
         description={dateFormatter.getLocaleDateTime(props.document.modifiedAt)}
         descriptionNumberOfLines={1}
         onPress={onPress}
-        right={() => <SelectionCheckbok />}
+        right={SelectionCheckbok}
         style={{
           paddingRight: props.isSelectionMode ? 8 : 16,
         }}
