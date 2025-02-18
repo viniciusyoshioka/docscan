@@ -52,7 +52,7 @@ export function DocumentItem(props: DocumentItemProps) {
       <List.Item
         title={props.document.name}
         titleNumberOfLines={1}
-        description={dateFormatter.getLocaleDateTime(props.document.modifiedAt)}
+        description={dateFormatter.getLocaleDateTime(props.document.updatedAt)}
         descriptionNumberOfLines={1}
         onPress={onPress}
         right={SelectionCheckbok}
