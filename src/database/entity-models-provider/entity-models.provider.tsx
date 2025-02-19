@@ -23,16 +23,28 @@ export function EntityModelsProvider(props: PropsWithChildren) {
 
   const [models, setModels] = useState<EntityModels | undefined>()
 
-  const { initializeDataSources, closeDataSources } = useDataSources()
+  const { initializeDataSources, migrateDatabases, closeDataSources } = useDataSources()
   const { createRepositories, createModels } = useCreateModels()
 
 
   const initialize = useCallback(async () => {
     const initializationStatus = await initializeDataSources()
-
     if (!initializationStatus.success) {
       const errorMessage = stringifyError(initializationStatus.error)
       console.error(`Error opening "${initializationStatus.database}" database: ${errorMessage}`)
+
+      Alert.alert(
+        translate("criticalError"),
+        translate("Database_errorInitializingDatabase"),
+      )
+
+      return
+    }
+
+    const migrationStatus = await migrateDatabases()
+    if (!migrationStatus.success) {
+      const errorMessage = stringifyError(migrationStatus.error)
+      console.error(`Error migrating database "${migrationStatus.database}": ${errorMessage}`)
 
       Alert.alert(
         translate("criticalError"),
@@ -55,7 +67,7 @@ export function EntityModelsProvider(props: PropsWithChildren) {
         translate("Database_errorOpeningDatabase"),
       )
     }
-  }, [initializeDataSources, createRepositories, createModels])
+  }, [initializeDataSources, migrateDatabases, createRepositories, createModels])
 
 
   useEffect(() => {
