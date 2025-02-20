@@ -1,5 +1,6 @@
+import { GetDocumentsPaginatedBO } from "./bo"
 import { DocumentEntity } from "./document.entity"
-import { DocumentDTO } from "./dto"
+import { DocumentDTO, GetDocumentsPaginatedDTO } from "./dto"
 
 
 export class DocumentMapper {
@@ -10,5 +11,12 @@ export class DocumentMapper {
     dto.createdAt = entity.createdAt
     dto.updatedAt = entity.updatedAt
     return dto
+  }
+
+  static fromGetDocumentsPaginatedDtoToBo(dto: GetDocumentsPaginatedDTO): GetDocumentsPaginatedBO {
+    const bo = new GetDocumentsPaginatedBO()
+    bo.limit = dto.limit
+    bo.offset = dto.offset
+    return bo
   }
 }
