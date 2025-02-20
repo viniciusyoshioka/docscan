@@ -6,12 +6,12 @@ import { LogCode } from "./log.constants"
 
 @Entity({ name: "logs" })
 export class LogEntity extends BaseEntity {
-  @Column("int")
+  @Column({ name: "code", type: "int" })
   code!: LogCode
 
-  @Column("text")
+  @Column({ name: "message", type: "text" })
   message!: string
 
-  @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
+  @Column({ name: "timestamp", type: "text", default: () => "CURRENT_TIMESTAMP" })
   timestamp!: Date
 }

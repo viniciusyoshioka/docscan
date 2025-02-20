@@ -5,12 +5,12 @@ import { BaseEntity } from "../base-entity"
 
 @Entity({ name: "documents" })
 export class DocumentEntity extends BaseEntity {
-  @Column("text")
+  @Column({ name: "name", type: "text" })
   name!: string
 
-  @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
+  @Column({ name: "created_at", type: "text", default: () => "CURRENT_TIMESTAMP" })
   createdAt!: Date
 
-  @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
+  @Column({ name: "updated_at", type: "text", default: () => "CURRENT_TIMESTAMP" })
   updatedAt!: Date
 }

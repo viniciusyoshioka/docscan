@@ -6,12 +6,12 @@ import { BaseEntity } from "../base-entity"
 
 @Entity({ name: "pictures" })
 export class PictureEntity extends BaseEntity {
-  @Column("text")
+  @Column({ name: "file_name", type: "text" })
   fileName!: string
 
-  @Column("int")
+  @Column({ name: "position", type: "int" })
   position!: number
 
-  @Column("uuid")
+  @Column({ name: "document_id", type: "uuid" })
   documentId!: EntityId
 }
