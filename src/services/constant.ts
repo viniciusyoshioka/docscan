@@ -7,7 +7,6 @@ export class Constants {
   static appId = "com.docscan"
   static appName = "DocScan"
   static appVersion = "1.20.0"
-  static appType = __DEV__ ? "dev" : "release"
 
   // Icons
   static appIconOutline = require("./../images/docscan_outline.png")

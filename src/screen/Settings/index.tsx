@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/core"
+import { useCallback } from "react"
 import { Alert, ScrollView, View } from "react-native"
 import { List } from "react-native-paper"
 import Share from "react-native-share"
@@ -19,16 +20,18 @@ export function Settings() {
 
 
   const navigation = useNavigation<NavigationProps<"Settings">>()
-  const log = useLogger()
+  const logger = useLogger()
 
 
-  useBackHandler(() => {
+  const handleGoBack = useCallback(() => {
     navigation.navigate("Home")
     return true
-  })
+  }, [navigation])
+
+  useBackHandler(handleGoBack)
 
 
-  async function shareLogDatabaseFile() {
+  const shareLogDatabaseFile = useCallback(async () => {
     try {
       await Share.open({
         type: "application/x-sqlite3",
@@ -36,15 +39,15 @@ export function Settings() {
         failOnCancel: false,
       })
     } catch (error) {
-      log.error(`Error sharing log database file: "${stringifyError(error)}"`)
+      logger.error(`Error sharing log database file: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("Settings_alert_errorSharingLogDatabase_text"),
       )
     }
-  }
+  }, [logger])
 
-  async function shareAppDatabaseFile() {
+  const shareAppDatabaseFile = useCallback(async () => {
     try {
       await Share.open({
         type: "application/x-sqlite3",
@@ -52,13 +55,13 @@ export function Settings() {
         failOnCancel: false,
       })
     } catch (error) {
-      log.error(`Error sharing app database file: "${stringifyError(error)}"`)
+      logger.error(`Error sharing app database file: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("Settings_alert_errorSharingAppDatabase_text"),
       )
     }
-  }
+  }, [logger])
 
 
   return (
@@ -95,7 +98,7 @@ export function Settings() {
         <List.Item
           left={() => <List.Icon icon={"information-outline"} />}
           title={translate("Settings_appVersionInfo_title")}
-          description={`${Constants.appName} ${Constants.appVersion} - ${Constants.appType}`}
+          description={`${Constants.appName} ${Constants.appVersion}`}
           style={{ paddingLeft: 16 }}
         />
       </ScrollView>

@@ -11,9 +11,18 @@ export function ChangeTheme() {
 
 
   const navigation = useNavigation<NavigationProps<"ChangeTheme">>()
-  const { settings, setSettings } = useSettings()
-  const [newTheme, setNewTheme] = useState(settings.theme)
 
+  const { settings, setSettings } = useSettings()
+  const [newTheme, setNewTheme] = useState<ThemeType>(settings.theme)
+
+
+  function selectNewTheme(newTheme: string) {
+    setNewTheme(newTheme as ThemeType)
+  }
+
+  function cancelThemeChange() {
+    navigation.goBack()
+  }
 
   function updateTheme() {
     setSettings({ theme: newTheme })
@@ -22,7 +31,7 @@ export function ChangeTheme() {
 
 
   return (
-    <Dialog visible={true} onDismiss={navigation.goBack}>
+    <Dialog visible={true} onDismiss={cancelThemeChange}>
       <Dialog.Title>
         {translate("ChangeTheme_title")}
       </Dialog.Title>
@@ -30,7 +39,7 @@ export function ChangeTheme() {
       <Dialog.Content>
         <RadioButton.Group
           value={newTheme}
-          onValueChange={newValue => setNewTheme(newValue as ThemeType)}
+          onValueChange={selectNewTheme}
         >
           <RadioButton.Item
             label={translate("ChangeTheme_auto")}
@@ -55,7 +64,7 @@ export function ChangeTheme() {
       <Dialog.Actions>
         <Button
           children={translate("cancel")}
-          onPress={navigation.goBack}
+          onPress={cancelThemeChange}
         />
 
         <Button
