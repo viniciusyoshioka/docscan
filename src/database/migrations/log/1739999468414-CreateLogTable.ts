@@ -17,7 +17,7 @@ export class CreateLogTable1739999468414 implements MigrationInterface {
 
   async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-      DTOP TABLE IF EXISTS logs;
+      DROP TABLE IF EXISTS logs;
     `)
   }
 }
