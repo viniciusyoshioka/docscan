@@ -1,3 +1,4 @@
+import { useMemo } from "react"
 import { Appbar } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -18,18 +19,19 @@ export interface HomeHeaderProps {
 }
 
 
+// TODO: Try to avoid re-renders
 export function HomeHeader(props: HomeHeaderProps) {
 
 
   const safeAreaInsets = useSafeAreaInsets()
 
 
-  function getTitle(): string {
+  const title = useMemo(() => {
     if (props.isSelectionMode) {
       return props.selectedDocumentsAmount.toString()
     }
     return translate("Home_header_title")
-  }
+  }, [props.isSelectionMode, props.selectedDocumentsAmount])
 
 
   return (
@@ -38,7 +40,7 @@ export function HomeHeader(props: HomeHeaderProps) {
         <Appbar.Action icon={"close"} onPress={props.exitSelectionMode} />
       )}
 
-      <Appbar.Content title={getTitle()} />
+      <Appbar.Content title={title} />
 
       {props.isSelectionMode && (
         <>

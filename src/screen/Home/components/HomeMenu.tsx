@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
-import { useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { StatusBar } from "react-native"
 import { Appbar, Menu } from "react-native-paper"
 
@@ -16,6 +16,7 @@ export interface HomeMenuProps {
 }
 
 
+// TODO: Try to avoid re-renders
 export function HomeMenu(props: HomeMenuProps) {
 
 
@@ -24,45 +25,52 @@ export function HomeMenu(props: HomeMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
 
 
-  function MenuAnchor() {
+  const MenuAnchor = useMemo(() => {
     return (
       <Appbar.Action
         icon={"dots-vertical"}
         onPress={() => setIsOpen(true)}
       />
     )
-  }
+  }, [])
+
+  const closeMenu = useCallback(() => {
+    setIsOpen(false)
+  }, [])
 
 
   return (
     <Menu
-      anchor={<MenuAnchor />}
+      anchor={MenuAnchor}
       visible={isOpen}
-      onDismiss={() => setIsOpen(false)}
+      onDismiss={closeMenu}
       statusBarHeight={StatusBar.currentHeight}
     >
       {!props.isSelectionMode && (
         <>
           <Menu.Item
+            leadingIcon={"tray-arrow-down"}
             title={translate("Home_menu_importDocument")}
             onPress={() => {
-              setIsOpen(false)
+              closeMenu()
               props.importDocument()
             }}
           />
 
           <Menu.Item
+            leadingIcon={"tray-arrow-up"}
             title={translate("Home_menu_exportDocument")}
             onPress={() => {
-              setIsOpen(false)
+              closeMenu()
               props.exportDocument()
             }}
           />
 
           <Menu.Item
+            leadingIcon={"cog-outline"}
             title={translate("Home_menu_settings")}
             onPress={() => {
-              setIsOpen(false)
+              closeMenu()
               navigation.navigate("Settings")
             }}
           />
@@ -72,25 +80,28 @@ export function HomeMenu(props: HomeMenuProps) {
       {props.isSelectionMode && (
         <>
           <Menu.Item
+            leadingIcon={"tray-arrow-up"}
             title={translate("Home_menu_exportDocument")}
             onPress={() => {
-              setIsOpen(false)
+              closeMenu()
               props.exportDocument()
             }}
           />
 
           <Menu.Item
+            leadingIcon={"vector-combine"}
             title={translate("Home_menu_mergeDocument")}
             onPress={() => {
-              setIsOpen(false)
+              closeMenu()
               props.mergeDocument()
             }}
           />
 
           <Menu.Item
+            leadingIcon={"content-duplicate"}
             title={translate("Home_menu_duplicateDocument")}
             onPress={() => {
-              setIsOpen(false)
+              closeMenu()
               props.duplicateDocument()
             }}
           />
