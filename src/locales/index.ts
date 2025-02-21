@@ -1,5 +1,4 @@
 import { I18n } from "i18n-js"
-import { NativeModules, Platform } from "react-native"
 
 import { pt_BR } from "./pt_BR"
 import { TranslationKeyType } from "./types"
@@ -26,14 +25,7 @@ export const i18n = new I18n({
 
 
 function getDeviceLanguage(): string {
-  switch (Platform.OS) {
-    case "android":
-      return normalizedLanguageCode[NativeModules.I18nManager.localeIdentifier as string]
-    case "ios":
-      return normalizedLanguageCode[NativeModules.SettingsManager.settings.AppleLocale as string]
-    default:
-      throw new Error("Only Android and iOS are supported.")
-  }
+  return normalizedLanguageCode["pt_BR"]
 }
 
 
@@ -42,9 +34,11 @@ function setLanguageToI18n() {
   const allSupportedLanguages = Object.keys(i18n.translations)
 
   const isLanguageSupported = allSupportedLanguages.includes(deviceLanguage)
-  isLanguageSupported
-    ? i18n.locale = deviceLanguage
-    : i18n.defaultLocale = "en_US"
+  if (isLanguageSupported) {
+    i18n.locale = deviceLanguage
+  } else {
+    i18n.defaultLocale = "pt_BR"
+  }
 }
 
 
