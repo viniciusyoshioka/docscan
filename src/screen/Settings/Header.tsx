@@ -5,7 +5,7 @@ import { translate } from "@locales"
 import { NavigationProps } from "@router"
 
 
-export interface SettingsHeaderProps {}
+interface SettingsHeaderProps {}
 
 
 export function SettingsHeader(props: SettingsHeaderProps) {

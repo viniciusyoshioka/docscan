@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 
 
-export interface DisableFocusOnSettingsOpenParams {
+interface DisableFocusOnSettingsOpenParams {
   isSettingsOpen: boolean
   setIsFocusEnabled: (isEnabled: boolean) => void
 }
