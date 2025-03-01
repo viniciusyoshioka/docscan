@@ -1,82 +1,68 @@
-import { useNavigation, useRoute } from "@react-navigation/native"
-import { useRef, useState } from "react"
-import { Alert, StyleSheet, View, ViewStyle, useWindowDimensions } from "react-native"
-import RNFS from "react-native-fs"
-import { Gesture, GestureDetector } from "react-native-gesture-handler"
-import { EmptyScreen, useModal } from "react-native-paper-towel"
-import { useStyles } from "react-native-unistyles"
-import {
-  Camera as VisionCamera,
-  useCameraDevice,
-  useCameraFormat,
-} from "react-native-vision-camera"
+import { useRef } from "react"
+import { View, ViewStyle } from "react-native"
+import { useModal } from "react-native-paper-towel"
+import { useCameraDevice, useCameraFormat } from "react-native-vision-camera"
 
-import {
-  DocumentPictureSchema,
-  DocumentSchema,
-  useDocumentModel,
-  useDocumentRealm,
-} from "@database"
 import { useBackHandler } from "@hooks"
 import { useLogger } from "@libs/logger"
 import { useSettings } from "@libs/settings"
-import { translate } from "@locales"
-import { NavigationProps, RouteProps } from "@router"
-import { DocumentService } from "@services/document"
-import { createAllFolders } from "@services/folder-handler"
-import { stringifyError } from "@utils"
-import { CameraControl, CameraControlRef } from "./CameraControl"
-import { CameraSettings } from "./CameraSettings"
-import { FocusIndicator, FocusIndicatorRef } from "./FocusIndicator"
-import { CameraHeader } from "./Header"
-import { NoPermissionMessage } from "./NoPermissionMessage"
-import { PictureTakenFeedback, PictureTakenFeedbackRef } from "./PictureTakenFeedback"
-import { stylesheet } from "./style"
-import { useCameraMargin } from "./useCameraMargin"
-import { useControlActionEnabled } from "./useControlActionEnabled"
-import { useDisableFocusOnSettingsOpen } from "./useDisableFocusOnSettingsOpened"
-import { useIsCameraActive } from "./useIsCameraActive"
-import { useIsShowingCamera } from "./useIsShowingCamera"
-import { useRequestCameraPermission } from "./useRequestCameraPermission"
-import { useResetCameraOnChangeRatio } from "./useResetCameraOnChangeRatio"
-import { useStatusBarStyle } from "./useStatusBarStyle"
-import { getCameraRatioNumber, getCameraSize } from "./utils"
+import {
+  CameraControl,
+  CameraHeader,
+  CameraSettings,
+  CameraView,
+  CameraViewRef,
+} from "./components"
+import {
+  useAddPictureFromGallery,
+  useEditDocument,
+  useGoBack,
+  useIsShowingCamera,
+  useOnPictureTaken,
+  useOnTakePictureError,
+  useRequestCameraPermission,
+  useStatusBarStyle,
+  useTakePicture,
+} from "./hooks"
+import { getCameraRatioNumber } from "./utils"
 
 
-// TODO add support to multiple back cameras
-// TODO add zoom indicator
+// TODO: Add support to multiple back cameras
+// TODO: Add zoom indicator
+// TODO: Add proper StatusBar color
 export function Camera() {
 
 
-  const navigation = useNavigation<NavigationProps<"Camera">>()
-  const { params } = useRoute<RouteProps<"Camera">>()
-  const { width, height } = useWindowDimensions()
-  const { styles } = useStyles(stylesheet)
-  const log = useLogger()
-
+  const logger = useLogger()
   const { settings } = useSettings()
-  const { documentModel, setDocumentModel } = useDocumentModel()
-  const documentRealm = useDocumentRealm()
 
-  const cameraRef = useRef<VisionCamera>(null)
-  const pictureTakenFeedbackRef = useRef<PictureTakenFeedbackRef>(null)
-  const cameraControlRef = useRef<CameraControlRef>(null)
-  const focusIndicatorRef = useRef<FocusIndicatorRef>(null)
-
-  const cameraSettings = useModal()
+  const cameraViewRef = useRef<CameraViewRef>(null)
 
   const cameraDevice = useCameraDevice(settings.camera.position)
   const cameraFormat = useCameraFormat(cameraDevice, [
     { photoAspectRatio: getCameraRatioNumber(settings.camera.ratio) },
     { photoResolution: "max" },
   ])
-  const cameraSize = getCameraSize({ width, height }, settings.camera.ratio)
+
+  const cameraSettings = useModal()
   const { hasCameraPermission, requestCameraPermission } = useRequestCameraPermission()
-  const isCameraActive = useIsCameraActive({ hasCameraPermission })
   const isShowingCamera = useIsShowingCamera({ hasCameraPermission, cameraDevice })
-  const cameraMargin = useCameraMargin({ isShowingCamera })
-  const [isFocusEnabled, setIsFocusEnabled] = useState(true)
-  const [isResetingCamera, setIsResetingCamera] = useState(false)
+
+
+  const goBack = useGoBack({
+    isSettingsVisible: cameraSettings.isVisible,
+    hideSettings: cameraSettings.hide,
+  })
+
+  useBackHandler(goBack)
+  useStatusBarStyle(isShowingCamera)
+
+  const addPictureFromGallery = useAddPictureFromGallery()
+  const takePicture = useTakePicture(cameraViewRef)
+  const editDocument = useEditDocument()
+
+  const onPictureTaken = useOnPictureTaken()
+  const onTakePictureError = useOnTakePictureError()
 
 
   const screenStyle: ViewStyle = {
@@ -85,245 +71,27 @@ export function Camera() {
   }
 
 
-  useBackHandler(() => {
-    goBack()
-    return true
-  })
-
-
-  function goBack() {
-    if (cameraSettings.isVisible) {
-      cameraSettings.hide()
-      return
-    }
-
-    const screenAction = params?.action
-    if (screenAction === "replace-picture" || screenAction === "add-picture") {
-      navigation.goBack()
-      return
-    }
-
-    setDocumentModel(undefined)
-    navigation.goBack()
-  }
-
-  function addPictureFromGallery() {
-    if (params?.action === "replace-picture") {
-      navigation.navigate("Gallery", params)
-    } else {
-      navigation.navigate("Gallery", { action: "add-picture" })
-    }
-  }
-
-  async function takePicture() {
-    try {
-      if (!cameraRef.current) {
-        throw new Error("Camera ref is undefined")
-      }
-
-      await createAllFolders()
-
-      pictureTakenFeedbackRef.current?.showFeedback()
-      const response = await cameraRef.current.takePhoto({
-        flash: settings.camera.flash,
-        enableShutterSound: false,
-      })
-
-      const picturePath = await DocumentService.getNewPicturePath(response.path)
-      await RNFS.moveFile(response.path, picturePath)
-
-      if (params?.action === "replace-picture") {
-        replacePicture(picturePath)
-      } else {
-        addPicture(picturePath)
-      }
-    } catch (error) {
-      log.error(`Error taking picture: "${stringifyError(error)}"`)
-      Alert.alert(
-        translate("warn"),
-        translate("Camera_alert_unknownErrorTakingPicture_text"),
-      )
-    }
-  }
-
-  function replacePicture(newPicturePath: string) {
-    if (params?.action !== "replace-picture")
-      throw new Error(
-        "Screen action is different of 'replace-picture'. This should not happen",
-      )
-    if (!documentModel)
-      throw new Error("Document model is undefined. This should not happen")
-
-    const oldPictureName = documentModel.pictures[params.replaceIndex].fileName
-    documentRealm.write(() => {
-      documentModel.document.modifiedAt = Date.now()
-      documentModel.pictures[params.replaceIndex].fileName =
-        DocumentService.getFileFullname(newPicturePath)
-    })
-
-    const document = documentRealm.objectForPrimaryKey(
-      DocumentSchema,
-      documentModel.document.id,
-    )
-    const pictures = documentRealm
-      .objects(DocumentPictureSchema)
-      .filtered("belongsTo = $0", documentModel.document.id)
-      .sorted("position")
-    if (!document) throw new Error("Document is undefined, this should not happen")
-    setDocumentModel({ document, pictures })
-
-    DocumentService.deletePicturesService({
-      pictures: [DocumentService.getPicturePath(oldPictureName)],
-    })
-
-    navigation.navigate("VisualizePicture", {
-      pictureIndex: params.replaceIndex,
-    })
-  }
-
-  function addPicture(newPicturePath: string) {
-    let modifiedDocumentId: Realm.BSON.ObjectId
-
-    if (documentModel) {
-      documentRealm.write(() => {
-        documentRealm.create(DocumentPictureSchema, {
-          fileName: DocumentService.getFileFullname(newPicturePath),
-          belongsTo: documentModel.document.id,
-          position: documentModel.pictures.length,
-        })
-
-        documentModel.document.modifiedAt = Date.now()
-      })
-
-      modifiedDocumentId = documentModel.document.id
-    } else {
-      modifiedDocumentId = documentRealm.write(() => {
-        const now = Date.now()
-        const createdDocument = documentRealm.create(DocumentSchema, {
-          createdAt: now,
-          modifiedAt: now,
-          name: DocumentService.getNewName(),
-        })
-
-        documentRealm.create(DocumentPictureSchema, {
-          fileName: DocumentService.getFileFullname(newPicturePath),
-          belongsTo: createdDocument.id,
-          position: 0,
-        })
-
-        return createdDocument.id
-      })
-    }
-
-    const document = documentRealm.objectForPrimaryKey(
-      DocumentSchema,
-      modifiedDocumentId,
-    )
-    const pictures = documentRealm
-      .objects(DocumentPictureSchema)
-      .filtered("belongsTo = $0", modifiedDocumentId)
-      .sorted("position")
-    if (!document) throw new Error("Document is undefined, this should not happen")
-    setDocumentModel({ document, pictures })
-  }
-
-  function editDocument() {
-    if (params?.action === "add-picture") {
-      navigation.goBack()
-    } else {
-      navigation.replace("EditDocument")
-    }
-  }
-
-  const tapGesture = Gesture.Tap()
-    .enabled(isCameraActive && isFocusEnabled)
-    .minPointers(1)
-    .onEnd(async event => {
-      if (cameraDevice?.supportsFocus !== true) return
-      if (!isFocusEnabled) return
-      if (!cameraRef.current || !focusIndicatorRef.current) return
-
-      try {
-        setIsFocusEnabled(false)
-
-        const x = parseInt(event.x.toFixed())
-        const y = parseInt(event.y.toFixed())
-
-        focusIndicatorRef.current.setFocusPos({ x, y })
-        focusIndicatorRef.current.setIsFocusing(true)
-
-        await cameraRef.current.focus({ x, y })
-      } catch (error) {
-        log.warn(`Error focusing camera ${stringifyError(error)}`)
-      } finally {
-        setIsFocusEnabled(true)
-        focusIndicatorRef.current.setIsFocusing(false)
-      }
-    })
-
-
-  useControlActionEnabled({
-    isCameraActive,
-    cameraControlRef,
-  })
-  useDisableFocusOnSettingsOpen({
-    isSettingsOpen: cameraSettings.isVisible,
-    setIsFocusEnabled,
-  })
-  useResetCameraOnChangeRatio({ setIsResetingCamera })
-  useStatusBarStyle(isShowingCamera)
-
-
   return (
     <View style={screenStyle}>
       <CameraHeader
         goBack={goBack}
-        openSettings={() => cameraSettings.show()}
+        openCameraSettings={cameraSettings.show}
         isShowingCamera={isShowingCamera}
       />
 
-      <NoPermissionMessage
+      <CameraView
+        ref={cameraViewRef}
         hasCameraPermission={hasCameraPermission}
         requestCameraPermission={requestCameraPermission}
+        cameraDevice={cameraDevice}
+        cameraFormat={cameraFormat}
+        isShowingCamera={isShowingCamera}
+        isSettingsOpen={cameraSettings.isVisible}
+        onPictureTaken={onPictureTaken}
+        onTakePictureError={onTakePictureError}
       />
 
-      <EmptyScreen.Content visible={hasCameraPermission && !cameraDevice}>
-        <EmptyScreen.Icon
-          name={"camera-off-outline"}
-          group={"material-community"}
-          size={56}
-        />
-
-        <EmptyScreen.Message>
-          {translate("Camera_cameraNotAvailable")}
-        </EmptyScreen.Message>
-      </EmptyScreen.Content>
-
-      {(hasCameraPermission && cameraDevice && !isResetingCamera) && (
-        <View style={[styles.cameraWrapper, { marginTop: cameraMargin.top }]}>
-          <GestureDetector gesture={tapGesture}>
-            <View style={cameraSize}>
-              <VisionCamera
-                ref={cameraRef}
-                isActive={isCameraActive}
-                device={cameraDevice}
-                format={cameraFormat}
-                photo={true}
-                audio={false}
-                enableZoomGesture={true}
-                style={StyleSheet.absoluteFill}
-              />
-
-              <FocusIndicator ref={focusIndicatorRef} />
-
-              <PictureTakenFeedback ref={pictureTakenFeedbackRef} />
-            </View>
-          </GestureDetector>
-        </View>
-      )}
-
       <CameraControl
-        ref={cameraControlRef}
         isShowingCamera={isShowingCamera}
         addPictureFromGallery={addPictureFromGallery}
         takePicture={takePicture}
@@ -331,8 +99,9 @@ export function Camera() {
       />
 
       <CameraSettings
-        visible={cameraSettings.isVisible}
-        onRequestClose={() => cameraSettings.hide()}
+        isVisible={cameraSettings.isVisible}
+        onRequestClose={cameraSettings.hide}
+        isShowingCamera={isShowingCamera}
       />
     </View>
   )

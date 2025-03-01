@@ -29,7 +29,7 @@ export const pt_BR: TranslationObjectType = {
   Camera_enableCamera: "Ou habilite o uso da câmera nas configurações de privacidade do dispositivo",
   Camera_openSettings: "Abrir configurações",
   Camera_grantPermission: "Conceder permissão",
-  Camera_cameraNotAvailable: "Câmera indisponível",
+  Camera_noCameraAvailable: "Nenhuma câmera disponível",
   // Camera CameraSettings alert
   CameraSettings_alert_errorSavingNewFlashSetting_text: "Erro salvando nova configuração de flash",
   CameraSettings_alert_errorSavingNewWhiteBalanceSetting_text: "Erro salvando nova configuração de balanço de branco",
