@@ -10,7 +10,7 @@ import { translate } from "@locales"
 import { NavigationProps } from "@router"
 import { Constants } from "@services/constant"
 import { stringifyError } from "@utils"
-import { SettingsHeader } from "./Header"
+import { SettingsHeader } from "./components"
 
 
 export { ChangeTheme } from "./ChangeTheme"
