@@ -9,23 +9,23 @@ import { StandardDateFormatter } from "@libs/date-formatter"
 import { useAppTheme } from "@theme"
 
 
-// TODO: Check if value is correct
-export const DOCUMENT_ITEM_HEIGHT = 64
+export * from "./constants"
 
 
-export interface DocumentItemProps extends SelectableItem {
+const dateFormatter = new StandardDateFormatter()
+
+
+interface DocumentItemProps extends SelectableItem {
   document: DocumentDTO
 }
 
 
-// TODO: Add memo
-// TODO: Try to avoid re-renders
 export function DocumentItem(props: DocumentItemProps) {
 
 
-  const { colors } = useAppTheme()
   const { onPress, onLongPress } = useSelectableItem(props)
-  const dateFormatter = new StandardDateFormatter()
+
+  const { colors } = useAppTheme()
 
 
   const longPressGesture = Gesture.LongPress()

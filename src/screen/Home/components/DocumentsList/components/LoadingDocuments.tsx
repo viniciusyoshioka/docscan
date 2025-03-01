@@ -2,7 +2,7 @@ import { ActivityIndicator } from "react-native-paper"
 import { EmptyScreen } from "react-native-paper-towel"
 
 
-export interface LoadingDocumentsProps {}
+interface LoadingDocumentsProps {}
 
 
 // TODO: Replace ActivityIndicator by skeleton

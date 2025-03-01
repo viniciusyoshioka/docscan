@@ -4,7 +4,7 @@ import { translate } from "@locales"
 import { Constants } from "@services/constant"
 
 
-export interface EmptyDocumentsProps {}
+interface EmptyDocumentsProps {}
 
 
 // TODO: Improve app icon

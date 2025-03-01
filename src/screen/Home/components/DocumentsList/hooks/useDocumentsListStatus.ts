@@ -1,7 +1,7 @@
 import { DocumentDTO } from "@database"
 
 
-export type DocumentsListStatus = "isLoading" | "hasError" | "isEmpty" | "hasData" | "isLoadingMore"
+type DocumentsListStatus = "isLoading" | "hasError" | "isEmpty" | "hasData" | "isLoadingMore"
 
 
 interface DocumentsListStatusProps {

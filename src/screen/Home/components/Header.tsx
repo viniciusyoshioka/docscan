@@ -6,7 +6,7 @@ import { translate } from "@locales"
 import { HomeMenu } from "./HomeMenu"
 
 
-export interface HomeHeaderProps {
+interface HomeHeaderProps {
   isSelectionMode: boolean
   selectedDocumentsAmount: number
   exitSelectionMode: () => void

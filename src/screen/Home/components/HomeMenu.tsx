@@ -7,7 +7,7 @@ import { translate } from "@locales"
 import { NavigationProps } from "@router"
 
 
-export interface HomeMenuProps {
+interface HomeMenuProps {
   isSelectionMode: boolean
   importDocument: () => void
   exportDocument: () => void

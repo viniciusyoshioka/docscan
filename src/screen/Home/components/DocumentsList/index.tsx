@@ -6,17 +6,12 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { DocumentDTO } from "@database"
 import { NavigationProps } from "@router"
-import { DOCUMENT_ITEM_HEIGHT, DocumentItem } from "./DocumentItem"
-import { EmptyDocuments } from "./EmptyDocuments"
-import { LoadingDocuments } from "./LoadingDocuments"
-import { useDocumentsListStatus } from "./useDocumentsListStatus"
+import { DOCUMENT_ITEM_HEIGHT, DocumentItem, EmptyDocuments, LoadingDocuments } from "./components"
+import { FAB_HEIGHT, FAB_PADDING_VERTICAL } from "./constants"
+import { useDocumentsListStatus } from "./hooks"
 
 
-const FAB_PADDING_VERTICAL = 16
-const FAB_HEIGHT = 56
-
-
-export interface DocumentsListProps {
+interface DocumentsListProps {
   isLoading: boolean
   data: DocumentDTO[]
   error?: Error
@@ -41,6 +36,7 @@ export function DocumentsList(props: DocumentsListProps) {
     data: props.data,
     error: props.error,
   })
+
 
   const openDocument = useCallback((document: DocumentDTO) => {
     // TODO: Set document and pictures to state before navigating
