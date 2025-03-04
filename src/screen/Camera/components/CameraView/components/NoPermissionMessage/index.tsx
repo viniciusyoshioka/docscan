@@ -4,7 +4,7 @@ import { useStyles } from "react-native-unistyles"
 
 import { translate } from "@locales"
 import { useCameraControlStyle } from "../../../CameraControl"
-import { HEADER_HEIGHT } from "../../../Header"
+import { CAMERA_HEADER_HEIGHT } from "../../../Header"
 import { stylesheet } from "./styles"
 
 
@@ -23,12 +23,12 @@ export function NoPermissionMessage(props: NoPermissionMessageProps) {
 
 
   const scrollScreenStyle: ViewStyle = {
-    marginTop: HEADER_HEIGHT,
+    marginTop: CAMERA_HEADER_HEIGHT,
     marginBottom: cameraControlStyle.height,
   }
 
   const scrollScreenContentContainerStyle: ViewStyle = {
-    minHeight: height - HEADER_HEIGHT - cameraControlStyle.height,
+    minHeight: height - CAMERA_HEADER_HEIGHT - cameraControlStyle.height,
   }
 
 

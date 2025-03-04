@@ -1,1 +1,1 @@
-export const HEADER_HEIGHT = 64
+export const CAMERA_HEADER_HEIGHT = 64

@@ -2,7 +2,7 @@ import { useMemo } from "react"
 import { Dimensions, StatusBar, ViewStyle, useWindowDimensions } from "react-native"
 
 import { getCameraSizeToFitInScreen } from "../../../utils"
-import { HEADER_HEIGHT } from "../../Header"
+import { CAMERA_HEADER_HEIGHT } from "../../Header"
 import { ACTION_BUTTON_SIZE, CAPTURE_BUTTON_SIZE } from "../components"
 
 
@@ -48,7 +48,9 @@ export function useCameraControlStyle(isShowingCamera: boolean): CameraControlSt
 
     const maxHeightBasedOnCaptureButton = CAPTURE_BUTTON_SIZE + paddingVertical
     const maxHeightBasedOnActionButton = ACTION_BUTTON_SIZE + paddingVertical
-    const maxHeightBasedOnSpaceLeft = usableScreenHeight - HEADER_HEIGHT - defaultCameraSize.height
+    const maxHeightBasedOnSpaceLeft = usableScreenHeight
+      - CAMERA_HEADER_HEIGHT
+      - defaultCameraSize.height
     return Math.max(
       maxHeightBasedOnCaptureButton,
       maxHeightBasedOnActionButton,

@@ -1,7 +1,7 @@
 import { useWindowDimensions } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-import { HEADER_HEIGHT } from "../../Header"
+import { CAMERA_HEADER_HEIGHT } from "../../Header"
 import { useCameraSize } from "./useCameraSize"
 
 
@@ -22,8 +22,8 @@ export function useCameraMargin(isShowingCamera: boolean): CameraMargin {
 
   const topSafeAreaInset = isShowingCamera ? 0 : safeAreaInsets.top
 
-  if ((defaultCameraSize.height + HEADER_HEIGHT + safeAreaInsets.top) < height) {
-    return { top: HEADER_HEIGHT + topSafeAreaInset }
+  if ((defaultCameraSize.height + CAMERA_HEADER_HEIGHT + safeAreaInsets.top) < height) {
+    return { top: CAMERA_HEADER_HEIGHT + topSafeAreaInset }
   }
   return { top: 0 }
 }
