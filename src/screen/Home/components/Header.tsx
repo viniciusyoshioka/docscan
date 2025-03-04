@@ -1,4 +1,3 @@
-import { useMemo } from "react"
 import { Appbar } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -19,39 +18,45 @@ interface HomeHeaderProps {
 }
 
 
-// TODO: Try to avoid re-renders
 export function HomeHeader(props: HomeHeaderProps) {
 
 
   const safeAreaInsets = useSafeAreaInsets()
 
 
-  const title = useMemo(() => {
-    if (props.isSelectionMode) {
-      return props.selectedDocumentsAmount.toString()
-    }
-    return translate("Home_header_title")
-  }, [props.isSelectionMode, props.selectedDocumentsAmount])
+  if (props.isSelectionMode) return (
+    <Appbar.Header elevated={true} statusBarHeight={safeAreaInsets.top}>
+      <Appbar.Action
+        icon={"close"}
+        onPress={props.exitSelectionMode}
+      />
+
+      <Appbar.Content title={props.selectedDocumentsAmount.toString()} />
+
+      <Appbar.Action
+        icon={"swap-horizontal"}
+        onPress={props.invertSelection}
+      />
+
+      <Appbar.Action
+        icon={"trash-can-outline"}
+        onPress={props.deleteSelectedDocuments}
+      />
+
+      <HomeMenu
+        isSelectionMode={props.isSelectionMode}
+        importDocument={props.importDocument}
+        exportDocument={props.exportDocument}
+        mergeDocument={props.mergeDocument}
+        duplicateDocument={props.duplicateDocument}
+      />
+    </Appbar.Header>
+  )
 
 
   return (
     <Appbar.Header elevated={true} statusBarHeight={safeAreaInsets.top}>
-      {props.isSelectionMode && (
-        <Appbar.Action icon={"close"} onPress={props.exitSelectionMode} />
-      )}
-
-      <Appbar.Content title={title} />
-
-      {props.isSelectionMode && (
-        <>
-          <Appbar.Action icon={"swap-horizontal"} onPress={props.invertSelection} />
-
-          <Appbar.Action
-            icon={"trash-can-outline"}
-            onPress={props.deleteSelectedDocuments}
-          />
-        </>
-      )}
+      <Appbar.Content title={translate("Home_header_title")} />
 
       <HomeMenu
         isSelectionMode={props.isSelectionMode}
