@@ -1,5 +1,6 @@
 import { EntityManager } from "typeorm"
 
+import { EntityId } from "../../types"
 import { DocumentEntity } from "./document.entity"
 import { DocumentMapper } from "./document.mapper"
 import { customDocumentRepository, DocumentRepository } from "./document.repository"
@@ -39,5 +40,15 @@ export class DocumentModel {
 
     const document = await documentRepo.createDocument(createBo)
     return DocumentMapper.fromEntityToDto(document)
+  }
+
+  async updateDocumentLastUpdateDate(
+    id: EntityId,
+    transaction: EntityManager,
+  ): Promise<DocumentDTO> {
+    const documentRepo = transaction.getRepository(DocumentEntity).extend(customDocumentRepository)
+
+    const updatedDocument = await documentRepo.updateDocumentLastUpdateDate(id)
+    return DocumentMapper.fromEntityToDto(updatedDocument)
   }
 }

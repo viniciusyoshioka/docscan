@@ -1,5 +1,7 @@
 import { EntityManager, Repository } from "typeorm"
 
+import { EntityNotFoundError } from "../../errors"
+import { EntityId } from "../../types"
 import { CreateDocumentBO, GetDocumentsPaginatedBO } from "./bo"
 import { DocumentEntity } from "./document.entity"
 
@@ -8,6 +10,7 @@ export interface DocumentRepository {
   transaction<T = unknown>(query: (tx: EntityManager) => Promise<T>): Promise<T>
   getDocumentsPaginated(options?: GetDocumentsPaginatedBO): Promise<DocumentEntity[]>
   createDocument(createBo: CreateDocumentBO): Promise<DocumentEntity>
+  updateDocumentLastUpdateDate(id: EntityId): Promise<DocumentEntity>
 }
 
 
@@ -36,5 +39,18 @@ export const customDocumentRepository: CustomDocumentRepository = {
 
   async createDocument(createBo: CreateDocumentBO): Promise<DocumentEntity> {
     return await this.save(createBo)
+  },
+
+  async updateDocumentLastUpdateDate(id: EntityId): Promise<DocumentEntity> {
+    const existingDocument = await this.findOne({
+      where: { id },
+    })
+    if (!existingDocument) {
+      throw new EntityNotFoundError(`Document not found with id: ${id}`)
+    }
+
+    existingDocument.updatedAt = new Date()
+
+    return await this.save(existingDocument)
   },
 }
