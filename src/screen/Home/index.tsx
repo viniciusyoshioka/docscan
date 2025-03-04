@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native"
 import { useCallback } from "react"
 import { View } from "react-native"
 import { FAB } from "react-native-paper"
-import { LoadingModal } from "react-native-paper-towel"
+import { LoadingModal, useModal } from "react-native-paper-towel"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useSelectionMode } from "react-native-selection-mode"
 
@@ -10,7 +10,7 @@ import { EntityId } from "@database"
 import { useBackHandler } from "@hooks"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
-import { DocumentsList, HomeHeader } from "./components"
+import { DocumentsList, HomeHeader, NotificationPermissionDeniedModal } from "./components"
 import {
   useDeleteDocuments,
   useDocuments,
@@ -36,6 +36,7 @@ export function Home() {
   const documentSelection = useSelectionMode<EntityId>()
 
   const documents = useDocuments()
+  const notificationPermissionDeniedModal = useModal()
 
   const invertDocumentSelection = useInvertDocumentSelection({
     setSelectedData: documentSelection.setNewSelectedData,
@@ -48,15 +49,33 @@ export function Home() {
   const duplicateDocuments = useDuplicateDocuments()
 
 
-  useRequestNotificationPermission()
+  const onNotificationPermissionDenied = useCallback(() => {
+    notificationPermissionDeniedModal.show()
+  }, [notificationPermissionDeniedModal.show])
+
+  const requestNotificationPermission = useRequestNotificationPermission({
+    onPermissionDenied: onNotificationPermissionDenied,
+  })
+
 
   const goBack = useCallback(() => {
     if (documentSelection.isSelectionMode) {
       documentSelection.exitSelection()
       return true
     }
+
+    if (notificationPermissionDeniedModal.isVisible) {
+      notificationPermissionDeniedModal.hide()
+      return true
+    }
+
     return false
-  }, [documentSelection.isSelectionMode, documentSelection.exitSelection])
+  }, [
+    documentSelection.isSelectionMode,
+    documentSelection.exitSelection,
+    notificationPermissionDeniedModal.isVisible,
+    notificationPermissionDeniedModal.hide,
+  ])
 
   useBackHandler(goBack)
 
@@ -102,6 +121,12 @@ export function Home() {
       <LoadingModal
         visible={false}
         message={translate("Home_deletingDocuments")}
+      />
+
+      <NotificationPermissionDeniedModal
+        isVisible={notificationPermissionDeniedModal.isVisible}
+        onDismiss={notificationPermissionDeniedModal.hide}
+        requestPermission={requestNotificationPermission}
       />
     </View>
   )

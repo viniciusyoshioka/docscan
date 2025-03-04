@@ -159,6 +159,11 @@ export const pt_BR: TranslationObjectType = {
   Home_menu_settings: "Configurações",
   Home_menu_mergeDocument: "Unir documentos",
   Home_menu_duplicateDocument: "Duplicar documentos",
+  // Home NotificationPermissionDeniedModal
+  NotificationPermissionDeniedModal_title: "Permissão negada",
+  NotificationPermissionDeniedModal_description: "As notificações são usadas para importar e exportar documentos, importar imagens e exportar um documento para PDF. Ao negar essa permissão, você não poderá usar essas funcionalidades.",
+  NotificationPermissionDeniedModal_close: "Fechar",
+  NotificationPermissionDeniedModal_allow: "Permitir",
 
   // Settings alert
   Settings_alert_errorSharingLogDatabase_text: "Erro ao compartilhar logs",

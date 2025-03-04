@@ -156,6 +156,11 @@ export type TranslationKeyType =
   | "Home_menu_settings"
   | "Home_menu_mergeDocument"
   | "Home_menu_duplicateDocument"
+    // Home NotificationPermissionDeniedModal
+  | "NotificationPermissionDeniedModal_title"
+  | "NotificationPermissionDeniedModal_description"
+  | "NotificationPermissionDeniedModal_close"
+  | "NotificationPermissionDeniedModal_allow"
 
     // Settings alert
   | "Settings_alert_errorSharingLogDatabase_text"
