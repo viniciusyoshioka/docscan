@@ -9,14 +9,21 @@ import { NavigationProps } from "@router"
 
 interface HomeHeaderMenuProps {
   isSelectionMode: boolean
-  importDocument: () => void
-  exportDocument: () => void
-  mergeDocument: () => void
-  duplicateDocument: () => void
+  importDocuments: () => void
+  exportDocuments: () => void
+  mergeDocuments: () => void
+  duplicateDocuments: () => void
 }
 
 
 export function HomeHeaderMenu(props: HomeHeaderMenuProps) {
+  const {
+    isSelectionMode,
+    importDocuments,
+    exportDocuments,
+    mergeDocuments,
+    duplicateDocuments,
+  } = props
 
 
   const navigation = useNavigation<NavigationProps<"Home">>()
@@ -37,6 +44,59 @@ export function HomeHeaderMenu(props: HomeHeaderMenuProps) {
     setIsOpen(false)
   }, [])
 
+  const onPressImportDocuments = useCallback(() => {
+    closeMenu()
+    importDocuments()
+  }, [closeMenu, importDocuments])
+
+  const onPressExportDocuments = useCallback(() => {
+    closeMenu()
+    exportDocuments()
+  }, [closeMenu, exportDocuments])
+
+  const onPressMergeDocuments = useCallback(() => {
+    closeMenu()
+    mergeDocuments()
+  }, [closeMenu, mergeDocuments])
+
+  const onPressDuplicateDocuments = useCallback(() => {
+    closeMenu()
+    duplicateDocuments()
+  }, [closeMenu, duplicateDocuments])
+
+  const onPressOpenSettings = useCallback(() => {
+    closeMenu()
+    navigation.navigate("Settings")
+  }, [closeMenu, navigation.navigate])
+
+
+  if (isSelectionMode) return (
+    <Menu
+      anchor={MenuAnchor}
+      visible={isOpen}
+      onDismiss={closeMenu}
+      statusBarHeight={StatusBar.currentHeight}
+    >
+      <Menu.Item
+        leadingIcon={"tray-arrow-up"}
+        title={translate("Home_menu_exportDocument")}
+        onPress={onPressExportDocuments}
+      />
+
+      <Menu.Item
+        leadingIcon={"vector-combine"}
+        title={translate("Home_menu_mergeDocument")}
+        onPress={onPressMergeDocuments}
+      />
+
+      <Menu.Item
+        leadingIcon={"content-duplicate"}
+        title={translate("Home_menu_duplicateDocument")}
+        onPress={onPressDuplicateDocuments}
+      />
+    </Menu>
+  )
+
 
   return (
     <Menu
@@ -45,67 +105,23 @@ export function HomeHeaderMenu(props: HomeHeaderMenuProps) {
       onDismiss={closeMenu}
       statusBarHeight={StatusBar.currentHeight}
     >
-      {!props.isSelectionMode && (
-        <>
-          <Menu.Item
-            leadingIcon={"tray-arrow-down"}
-            title={translate("Home_menu_importDocument")}
-            onPress={() => {
-              closeMenu()
-              props.importDocument()
-            }}
-          />
+      <Menu.Item
+        leadingIcon={"tray-arrow-down"}
+        title={translate("Home_menu_importDocument")}
+        onPress={onPressImportDocuments}
+      />
 
-          <Menu.Item
-            leadingIcon={"tray-arrow-up"}
-            title={translate("Home_menu_exportDocument")}
-            onPress={() => {
-              closeMenu()
-              props.exportDocument()
-            }}
-          />
+      <Menu.Item
+        leadingIcon={"tray-arrow-up"}
+        title={translate("Home_menu_exportDocument")}
+        onPress={onPressExportDocuments}
+      />
 
-          <Menu.Item
-            leadingIcon={"cog-outline"}
-            title={translate("Home_menu_settings")}
-            onPress={() => {
-              closeMenu()
-              navigation.navigate("Settings")
-            }}
-          />
-        </>
-      )}
-
-      {props.isSelectionMode && (
-        <>
-          <Menu.Item
-            leadingIcon={"tray-arrow-up"}
-            title={translate("Home_menu_exportDocument")}
-            onPress={() => {
-              closeMenu()
-              props.exportDocument()
-            }}
-          />
-
-          <Menu.Item
-            leadingIcon={"vector-combine"}
-            title={translate("Home_menu_mergeDocument")}
-            onPress={() => {
-              closeMenu()
-              props.mergeDocument()
-            }}
-          />
-
-          <Menu.Item
-            leadingIcon={"content-duplicate"}
-            title={translate("Home_menu_duplicateDocument")}
-            onPress={() => {
-              closeMenu()
-              props.duplicateDocument()
-            }}
-          />
-        </>
-      )}
+      <Menu.Item
+        leadingIcon={"cog-outline"}
+        title={translate("Home_menu_settings")}
+        onPress={onPressOpenSettings}
+      />
     </Menu>
   )
 }
