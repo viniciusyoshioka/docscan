@@ -1,12 +1,13 @@
 import { EntityManager, Repository } from "typeorm"
 
-import { GetDocumentsPaginatedBO } from "./bo"
+import { CreateDocumentBO, GetDocumentsPaginatedBO } from "./bo"
 import { DocumentEntity } from "./document.entity"
 
 
 export interface DocumentRepository {
   transaction<T = unknown>(query: (tx: EntityManager) => Promise<T>): Promise<T>
   getDocumentsPaginated(options?: GetDocumentsPaginatedBO): Promise<DocumentEntity[]>
+  createDocument(createBo: CreateDocumentBO): Promise<DocumentEntity>
 }
 
 
@@ -31,5 +32,9 @@ export const customDocumentRepository: CustomDocumentRepository = {
       take: limit,
       skip: offset,
     })
+  },
+
+  async createDocument(createBo: CreateDocumentBO): Promise<DocumentEntity> {
+    return await this.save(createBo)
   },
 }

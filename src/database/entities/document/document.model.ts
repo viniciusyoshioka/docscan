@@ -1,7 +1,9 @@
 import { EntityManager } from "typeorm"
+
+import { DocumentEntity } from "./document.entity"
 import { DocumentMapper } from "./document.mapper"
-import { DocumentRepository } from "./document.repository"
-import { DocumentDTO, GetDocumentsPaginatedDTO } from "./dto"
+import { customDocumentRepository, DocumentRepository } from "./document.repository"
+import { CreateDocumentDTO, DocumentDTO, GetDocumentsPaginatedDTO } from "./dto"
 
 
 export class DocumentModel {
@@ -22,5 +24,20 @@ export class DocumentModel {
 
     const documents = await this.documentRepository.getDocumentsPaginated(getDocumentPaginatedBo)
     return documents.map(DocumentMapper.fromEntityToDto)
+  }
+
+  async create(params: {
+    createDto: CreateDocumentDTO
+    transaction: EntityManager
+  }): Promise<DocumentDTO> {
+    const { createDto, transaction } = params
+
+    const documentRepo = transaction.getRepository(DocumentEntity).extend(customDocumentRepository)
+    const createBo = DocumentMapper.fromCreateDtoToCreateBo(createDto)
+
+    // TODO: Add validation
+
+    const document = await documentRepo.createDocument(createBo)
+    return DocumentMapper.fromEntityToDto(document)
   }
 }

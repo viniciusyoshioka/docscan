@@ -1,6 +1,6 @@
-import { GetDocumentsPaginatedBO } from "./bo"
+import { CreateDocumentBO, GetDocumentsPaginatedBO } from "./bo"
 import { DocumentEntity } from "./document.entity"
-import { DocumentDTO, GetDocumentsPaginatedDTO } from "./dto"
+import { CreateDocumentDTO, DocumentDTO, GetDocumentsPaginatedDTO } from "./dto"
 
 
 export class DocumentMapper {
@@ -17,6 +17,12 @@ export class DocumentMapper {
     const bo = new GetDocumentsPaginatedBO()
     bo.limit = dto.limit
     bo.offset = dto.offset
+    return bo
+  }
+
+  static fromCreateDtoToCreateBo(dto: CreateDocumentDTO): CreateDocumentBO {
+    const bo = new CreateDocumentBO()
+    bo.name = dto.name
     return bo
   }
 }
