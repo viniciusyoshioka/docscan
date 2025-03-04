@@ -1,26 +1,35 @@
 import { useNavigation } from "@react-navigation/native"
 import { FlashList, ListRenderItem } from "@shopify/flash-list"
-import { useCallback } from "react"
-import { ActivityIndicator, Divider } from "react-native-paper"
+import { useCallback, useMemo } from "react"
+import { Divider } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { DocumentDTO } from "@database"
 import { NavigationProps } from "@router"
-import { DOCUMENT_ITEM_HEIGHT, DocumentItem, EmptyDocuments, LoadingDocuments } from "./components"
+import { DocumentStatus } from "../../hooks"
+import {
+  DOCUMENT_ITEM_HEIGHT,
+  DocumentItem,
+  EmptyDocuments,
+  ErrorLoadingDocuments,
+  ErrorLoadingMoreDocuments,
+  LoadingDocuments,
+  LoadingMoreDocuments,
+} from "./components"
 import { FAB_HEIGHT, FAB_PADDING_VERTICAL } from "./constants"
-import { useDocumentsListStatus } from "./hooks"
 
 
 interface DocumentsListProps {
-  isLoading: boolean
+  status: DocumentStatus
   data: DocumentDTO[]
   error?: Error
+  loadDocuments: () => Promise<void>
+  loadMoreDocuments: () => Promise<void>
 
   selectItem: (id: string) => void
   deselectItem: (id: string) => void
   isItemSelected: (id: string) => boolean
   isSelectionMode: boolean
-  getSelectedData: () => string[]
 }
 
 
@@ -30,12 +39,6 @@ export function DocumentsList(props: DocumentsListProps) {
 
   const navigation = useNavigation<NavigationProps<"Home">>()
   const safeAreaInsets = useSafeAreaInsets()
-
-  const documentsListStatus = useDocumentsListStatus({
-    isLoading: props.isLoading,
-    data: props.data,
-    error: props.error,
-  })
 
 
   const openDocument = useCallback((document: DocumentDTO) => {
@@ -69,24 +72,36 @@ export function DocumentsList(props: DocumentsListProps) {
     return item.id
   }, [])
 
+  const extraData = useMemo(() => {
+    return [renderItem]
+  }, [renderItem])
+
   const ItemSeparatorComponent = useCallback(() => {
     return <Divider style={{ marginHorizontal: 16 }} />
   }, [])
 
   const ListFooterComponent = useCallback(() => {
-    if (documentsListStatus !== "isLoadingMore") {
-      return null
+    if (props.status === DocumentStatus.IS_LOADING_MORE) {
+      return <LoadingMoreDocuments />
     }
 
-    return <ActivityIndicator size={"small"} style={{ margin: 16 }} />
-  }, [documentsListStatus])
+    if (props.status === DocumentStatus.HAS_ERROR_LOADING_MORE) {
+      return <ErrorLoadingMoreDocuments onPress={props.loadMoreDocuments} />
+    }
+
+    return null
+  }, [props.status, props.loadMoreDocuments])
 
 
-  if (documentsListStatus === "isLoading") {
+  if (props.status === DocumentStatus.IS_LOADING) {
     return <LoadingDocuments />
   }
 
-  if (documentsListStatus === "isEmpty") {
+  if (props.status === DocumentStatus.HAS_ERROR) {
+    return <ErrorLoadingDocuments loadDocuments={props.loadDocuments} />
+  }
+
+  if (props.status === DocumentStatus.IS_EMPTY) {
     return <EmptyDocuments />
   }
 
@@ -95,7 +110,7 @@ export function DocumentsList(props: DocumentsListProps) {
       data={props.data}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
-      extraData={props.getSelectedData()}
+      extraData={extraData}
       estimatedItemSize={DOCUMENT_ITEM_HEIGHT}
       ItemSeparatorComponent={ItemSeparatorComponent}
       ListFooterComponent={ListFooterComponent}

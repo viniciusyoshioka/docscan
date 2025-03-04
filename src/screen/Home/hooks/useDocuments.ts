@@ -23,11 +23,12 @@ type DocumentListState = {
   status: DocumentStatus
   data: DocumentDTO[]
   error?: Error
-  loadDocuments: (count: number) => Promise<void>
-  loadMoreDocuments: (count: number) => Promise<void>
+  loadDocuments: (count?: number) => Promise<void>
+  loadMoreDocuments: (count?: number) => Promise<void>
 }
 
 
+// TODO: Calculate DOCUMENT_COUNT_TO_LOAD according to screen and DocumentItem heights
 export function useDocuments(): DocumentListState {
 
 

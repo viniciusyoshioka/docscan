@@ -148,6 +148,11 @@ export const pt_BR: TranslationObjectType = {
   Home_duplicate: "Duplicar",
   Home_emptyDocumentList: "Nenhum documento",
   Home_deletingDocuments: "Apagando documentos...",
+  Home_errorLoadingMoreDocuments_title: "Erro carregando mais documentos",
+  Home_errorLoadingMoreDocuments_text: "Clique aqui para tentar novamente.",
+  Home_errorLoadingDocuments_title: "Erro",
+  Home_errorLoadingDocuments_text: "Ocorreu um erro inesperado ao carregar documentos.",
+  Home_errorLoadingDocuments_tryAgain: "Tentar novamente",
   // Home menu
   Home_menu_importDocument: "Importar documentos",
   Home_menu_exportDocument: "Exportar documentos",

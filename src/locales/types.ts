@@ -145,6 +145,11 @@ export type TranslationKeyType =
   | "Home_duplicate"
   | "Home_emptyDocumentList"
   | "Home_deletingDocuments"
+  | "Home_errorLoadingMoreDocuments_title"
+  | "Home_errorLoadingMoreDocuments_text"
+  | "Home_errorLoadingDocuments_title"
+  | "Home_errorLoadingDocuments_text"
+  | "Home_errorLoadingDocuments_tryAgain"
     // Home menu
   | "Home_menu_importDocument"
   | "Home_menu_exportDocument"

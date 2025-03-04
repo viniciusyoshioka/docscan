@@ -1,3 +1,6 @@
 export * from "./DocumentItem"
 export * from "./EmptyDocuments"
+export * from "./ErrorLoadingDocuments"
+export * from "./ErrorLoadingMoreDocuments"
 export * from "./LoadingDocuments"
+export * from "./LoadingMoreDocuments"

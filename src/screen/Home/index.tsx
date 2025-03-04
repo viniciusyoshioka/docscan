@@ -77,13 +77,14 @@ export function Home() {
 
       <DocumentsList
         data={documents.data}
-        isLoading={documents.isLoading}
+        status={documents.status}
         error={documents.error}
+        loadDocuments={documents.loadDocuments}
+        loadMoreDocuments={documents.loadMoreDocuments}
         selectItem={documentSelection.select}
         deselectItem={documentSelection.deselect}
         isItemSelected={documentSelection.isSelected}
         isSelectionMode={documentSelection.isSelectionMode}
-        getSelectedData={documentSelection.getSelectedData}
       />
 
       <FAB
