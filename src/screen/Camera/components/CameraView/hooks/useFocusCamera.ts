@@ -29,19 +29,19 @@ export function useFocusCamera(params: FocusCameraParams): FocusCamera {
 
   const focusCamera = useCallback(async (posX: number, posY: number) => {
     if (!isFocusEnabled) {
-      logger.debug("Can't focus camera because focus is disabled")
+      await logger.debug("Can't focus camera because focus is disabled")
       return
     }
     if (!cameraDeviceSupportsFocus) {
-      logger.debug("Can't focus camera because the camera device does not support focus")
+      await logger.debug("Can't focus camera because the camera device does not support focus")
       return
     }
     if (!focusIndicatorRef.current) {
-      logger.debug("Can't focus camera because the focus indicator ref is not set")
+      await logger.debug("Can't focus camera because the focus indicator ref is not set")
       return
     }
     if (!cameraRef.current) {
-      logger.debug("Can't focus camera because the camera ref is not set")
+      await logger.debug("Can't focus camera because the camera ref is not set")
       return
     }
 
@@ -59,7 +59,7 @@ export function useFocusCamera(params: FocusCameraParams): FocusCamera {
       focusIndicatorRef.current.setIsFocusing(false)
     } catch (error) {
       const errorMessage = stringifyError(error)
-      logger.error(`Error focusing camera: ${errorMessage}`)
+      await logger.error(`Error focusing camera: ${errorMessage}`)
 
       setIsFocusEnabled(true)
       focusIndicatorRef.current.setIsFocusing(false)
