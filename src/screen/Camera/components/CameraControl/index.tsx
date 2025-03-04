@@ -1,5 +1,6 @@
 import { useRoute } from "@react-navigation/native"
 
+import { useDocumentState } from "@libs/document-state"
 import { RouteProps } from "@router"
 import { ActionBar, ActionButton, CaptureButton } from "./components"
 import { useIsCaptureButtonEnabled } from "./hooks"
@@ -16,13 +17,14 @@ interface CameraControlProps {
 }
 
 
-// TODO: Get picture count from state
 export function CameraControl(props: CameraControlProps) {
 
 
   const { params } = useRoute<RouteProps<"Camera">>()
 
-  const picturesCount = (0).toString()
+  const { documentState } = useDocumentState()
+
+  const picturesCount = (documentState?.pictures.length ?? 0).toString()
   const isCaptureButtonEnabled = useIsCaptureButtonEnabled(props.isShowingCamera)
 
 
