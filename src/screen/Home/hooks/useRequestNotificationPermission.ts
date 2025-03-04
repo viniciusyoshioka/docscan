@@ -8,12 +8,9 @@ interface RequestNotificationPermissionParams {
 }
 
 
-type RequestNotificationPermission = () => Promise<void>
-
-
 export function useRequestNotificationPermission(
   params: RequestNotificationPermissionParams,
-): RequestNotificationPermission {
+): void {
 
 
   const requestPermissions = useCallback(async () => {
@@ -27,7 +24,4 @@ export function useRequestNotificationPermission(
   useEffect(() => {
     requestPermissions()
   }, [])
-
-
-  return requestPermissions
 }

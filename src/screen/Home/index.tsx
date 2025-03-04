@@ -53,7 +53,7 @@ export function Home() {
     notificationPermissionDeniedModal.show()
   }, [notificationPermissionDeniedModal.show])
 
-  const requestNotificationPermission = useRequestNotificationPermission({
+  useRequestNotificationPermission({
     onPermissionDenied: onNotificationPermissionDenied,
   })
 
@@ -126,7 +126,6 @@ export function Home() {
       <NotificationPermissionDeniedModal
         isVisible={notificationPermissionDeniedModal.isVisible}
         onDismiss={notificationPermissionDeniedModal.hide}
-        requestPermission={requestNotificationPermission}
       />
     </View>
   )
