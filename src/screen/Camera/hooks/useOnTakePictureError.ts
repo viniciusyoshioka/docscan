@@ -6,6 +6,7 @@ import { translate } from "@locales"
 import { stringifyError } from "@utils"
 
 
+// TODO: Replace Alert by Modal
 export function useOnTakePictureError() {
 
 
