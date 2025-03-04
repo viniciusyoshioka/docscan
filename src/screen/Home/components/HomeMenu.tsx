@@ -16,7 +16,6 @@ interface HomeMenuProps {
 }
 
 
-// TODO: Try to avoid re-renders
 export function HomeMenu(props: HomeMenuProps) {
 
 
