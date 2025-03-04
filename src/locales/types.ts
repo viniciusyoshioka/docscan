@@ -99,8 +99,22 @@ export type TranslationKeyType =
     // Gallery header
   | "Gallery_header_title"
     // Gallery screen
+  | "Gallery_noPermission"
+  | "Gallery_photoAccessPermissionDescription"
+  | "Gallery_allowPhotoAccessWithGrantPermission"
+  | "Gallery_allowPhotoAccessThroughSettings"
+  | "Gallery_openSettings"
+  | "Gallery_grantPermission"
+  | "Gallery_errorLoadingImages_title"
+  | "Gallery_errorLoadingImages_text"
+  | "Gallery_errorLoadingImages_tryAgain"
+  | "Gallery_errorLoadingMoreImages_title"
+  | "Gallery_errorLoadingMoreImages_text"
   | "Gallery_emptyGallery"
   | "Gallery_importingPictures"
+    // Gallery ErrorImportingImagesModal
+  | "ErrorImportingImagesModal_title"
+  | "ErrorImportingImagesModal_text"
 
     // Home alert
   | "Home_alert_errorLoadingDocuments_text"

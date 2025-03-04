@@ -101,8 +101,23 @@ export const pt_BR: TranslationObjectType = {
   // Gallery header
   Gallery_header_title: "Importar imagem",
   // Gallery screen
+  Gallery_noPermission: "Sem permissão",
+  Gallery_photoAccessPermissionDescription: "É necessária a permissão para acessar as fotos do dispositivo para exibí-las na tela e selecionar quais fotos deseja importar para o aplicativo.",
+  Gallery_allowPhotoAccessWithGrantPermission: "Permita o acesso às fotos com \"Conceder permissão\"",
+  Gallery_allowPhotoAccessThroughSettings: "Permita o acesso às fotos através das configurações do aplicativo com \"Abrir configurações\"",
+  Gallery_openSettings: "Abrir configurações",
+  Gallery_grantPermission: "Conceder permissão",
+  Gallery_errorLoadingImages_title: "Erro",
+  Gallery_errorLoadingImages_text: "Ocorreu um erro inesperado ao carregar imagens.",
+  Gallery_errorLoadingImages_tryAgain: "Tentar novamente",
+  Gallery_errorLoadingMoreImages_title: "Erro carregando mais imagens",
+  Gallery_errorLoadingMoreImages_text: "Clique aqui para tentar novamente.",
   Gallery_emptyGallery: "Galeria vazia",
   Gallery_importingPictures: "Importando imagens...",
+  // Gallery ErrorImportingImagesModal
+  ErrorImportingImagesModal_title: "Atenção",
+  ErrorImportingImagesModal_text: "Houve um erro inesperado e não foi possível importar imagens",
+
 
   // Home alert
   Home_alert_errorLoadingDocuments_text: "Erro ao carregar documentos",
