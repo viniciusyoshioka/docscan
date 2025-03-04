@@ -5,6 +5,7 @@ import { Divider } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { DocumentDTO } from "@database"
+import { useDocumentState } from "@libs/document-state"
 import { NavigationProps } from "@router"
 import { DocumentStatus } from "../../hooks"
 import {
@@ -42,11 +43,20 @@ export function DocumentsList(props: DocumentsListProps) {
   const navigation = useNavigation<NavigationProps<"Home">>()
   const safeAreaInsets = useSafeAreaInsets()
 
+  const { updateDocumentState } = useDocumentState()
+
 
   const openDocument = useCallback((document: DocumentDTO) => {
-    // TODO: Set document and pictures to state before navigating
+    updateDocumentState({
+      type: "set",
+      payload: {
+        document,
+        pictures: [],
+      },
+    })
+
     navigation.navigate("EditDocument")
-  }, [navigation])
+  }, [updateDocumentState, navigation])
 
   const renderItem: ListRenderItem<DocumentDTO> = useCallback(({ item }) => {
     // TODO: Check if is required to replace inline functions with useCallback
