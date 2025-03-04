@@ -24,8 +24,8 @@ import {
 } from "./hooks"
 
 
-// TODO: Finish screen refactor
 // TODO: Check if loading modal can be used to other operations
+// TODO: Update isDeletingDocumentsModal
 // TODO add comunication with background service to alert when export is done
 // TODO add comunication with background service to alert when import is done
 export function Home() {
