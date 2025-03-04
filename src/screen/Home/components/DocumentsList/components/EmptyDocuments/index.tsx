@@ -8,6 +8,7 @@ interface EmptyDocumentsProps {}
 
 
 // TODO: Improve app icon
+// TODO: Replace EmptyScreen component after update the library
 export function EmptyDocuments(props: EmptyDocumentsProps) {
   return (
     <EmptyScreen.Content visible={true}>

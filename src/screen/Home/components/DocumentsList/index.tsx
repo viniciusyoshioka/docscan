@@ -36,7 +36,6 @@ interface DocumentsListProps {
 }
 
 
-// TODO: Handle error state
 export function DocumentsList(props: DocumentsListProps) {
 
 

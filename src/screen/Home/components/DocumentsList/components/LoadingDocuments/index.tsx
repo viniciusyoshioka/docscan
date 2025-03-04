@@ -6,6 +6,7 @@ interface LoadingDocumentsProps {}
 
 
 // TODO: Replace ActivityIndicator by skeleton
+// TODO: Replace EmptyScreen component after update the library
 export function LoadingDocuments(props: LoadingDocumentsProps) {
   return (
     <EmptyScreen.Content visible={true}>
