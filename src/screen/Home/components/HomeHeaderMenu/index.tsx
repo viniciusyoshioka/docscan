@@ -7,7 +7,7 @@ import { translate } from "@locales"
 import { NavigationProps } from "@router"
 
 
-interface HomeMenuProps {
+interface HomeHeaderMenuProps {
   isSelectionMode: boolean
   importDocument: () => void
   exportDocument: () => void
@@ -16,7 +16,7 @@ interface HomeMenuProps {
 }
 
 
-export function HomeMenu(props: HomeMenuProps) {
+export function HomeHeaderMenu(props: HomeHeaderMenuProps) {
 
 
   const navigation = useNavigation<NavigationProps<"Home">>()

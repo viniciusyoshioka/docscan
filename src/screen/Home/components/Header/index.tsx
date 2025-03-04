@@ -2,7 +2,7 @@ import { Appbar } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { translate } from "@locales"
-import { HomeMenu } from "../HomeMenu"
+import { HomeHeaderMenu } from "../HomeHeaderMenu"
 
 
 export * from "./constants"
@@ -46,7 +46,7 @@ export function HomeHeader(props: HomeHeaderProps) {
         onPress={props.deleteSelectedDocuments}
       />
 
-      <HomeMenu
+      <HomeHeaderMenu
         isSelectionMode={props.isSelectionMode}
         importDocument={props.importDocument}
         exportDocument={props.exportDocument}
@@ -61,7 +61,7 @@ export function HomeHeader(props: HomeHeaderProps) {
     <Appbar.Header elevated={true} statusBarHeight={safeAreaInsets.top}>
       <Appbar.Content title={translate("Home_header_title")} />
 
-      <HomeMenu
+      <HomeHeaderMenu
         isSelectionMode={props.isSelectionMode}
         importDocument={props.importDocument}
         exportDocument={props.exportDocument}
