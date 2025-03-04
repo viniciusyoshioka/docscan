@@ -19,6 +19,9 @@ import {
 import { FAB_HEIGHT, FAB_PADDING_VERTICAL } from "./constants"
 
 
+export { DOCUMENT_ITEM_HEIGHT } from "./components"
+
+
 interface DocumentsListProps {
   status: DocumentStatus
   data: DocumentDTO[]

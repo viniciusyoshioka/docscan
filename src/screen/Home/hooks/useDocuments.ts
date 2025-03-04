@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
+import { useWindowDimensions } from "react-native"
 
 import { DocumentDTO, useEntityModels } from "@database"
 import { useLogger } from "@libs/logger"
 import { normalizeError, stringifyError } from "@utils"
-
-
-const DOCUMENT_COUNT_TO_LOAD = 10
+import { DOCUMENT_ITEM_HEIGHT, HOME_HEADER_HEIGHT } from "../components"
 
 
 export enum DocumentStatus {
@@ -28,29 +27,35 @@ type DocumentListState = {
 }
 
 
-// TODO: Calculate DOCUMENT_COUNT_TO_LOAD according to screen and DocumentItem heights
 export function useDocuments(): DocumentListState {
 
+
+  const { height } = useWindowDimensions()
 
   const { documentModel } = useEntityModels()
   const logger = useLogger()
 
   const [hasLoadedAllDocuments, setHasLoadedAllDocuments] = useState(false)
-
   const [status, setStatus] = useState(DocumentStatus.INITIAL)
-  const [data, setData] = useState<DocumentDTO[]>([])
   const [error, setError] = useState<Error | undefined>()
+  const [data, setData] = useState<DocumentDTO[]>([])
+
+  const initialCountToLoad = useMemo(() => {
+    const availableHeightForDocumentsList = height - HOME_HEADER_HEIGHT
+    const countToLoad = Math.ceil(availableHeightForDocumentsList / DOCUMENT_ITEM_HEIGHT)
+    return countToLoad
+  }, [height])
 
 
-  const loadDocuments = useCallback(async (count = DOCUMENT_COUNT_TO_LOAD) => {
+  const loadDocuments = useCallback(async (count = initialCountToLoad) => {
     if (status === DocumentStatus.IS_LOADING) return
     if (status === DocumentStatus.IS_LOADING_MORE) return
 
     try {
       setHasLoadedAllDocuments(false)
       setStatus(DocumentStatus.IS_LOADING)
-      setData([])
       setError(undefined)
+      setData([])
 
       const documents = await documentModel.getDocumentsPaginated({
         limit: count,
@@ -71,14 +76,14 @@ export function useDocuments(): DocumentListState {
 
       setHasLoadedAllDocuments(false)
       setStatus(DocumentStatus.HAS_ERROR)
-      setData([])
       setError(normalizedError)
+      setData([])
 
       await logger.error(`Error loading documents: ${errorMessage}`)
     }
-  }, [status, documentModel, logger])
+  }, [initialCountToLoad, status, documentModel, logger])
 
-  const loadMoreDocuments = useCallback(async (count = DOCUMENT_COUNT_TO_LOAD) => {
+  const loadMoreDocuments = useCallback(async (count = initialCountToLoad) => {
     if (status === DocumentStatus.IS_LOADING) return
     if (status === DocumentStatus.IS_LOADING_MORE) return
     if (hasLoadedAllDocuments) return
@@ -99,8 +104,8 @@ export function useDocuments(): DocumentListState {
 
       setHasLoadedAllDocuments(newHasLoadedAllDocuments)
       setStatus(newState)
-      setData(documents)
       setError(undefined)
+      setData(documents)
     } catch (error) {
       const errorMessage = stringifyError(error)
       const normalizedError = normalizeError(error)
@@ -110,11 +115,11 @@ export function useDocuments(): DocumentListState {
 
       await logger.error(`Error loading more documents: ${errorMessage}`)
     }
-  }, [status, hasLoadedAllDocuments, documentModel, data, logger])
+  }, [initialCountToLoad, status, hasLoadedAllDocuments, documentModel, data, logger])
 
 
   useEffect(() => {
-    loadDocuments(DOCUMENT_COUNT_TO_LOAD)
+    loadDocuments(initialCountToLoad)
   }, [])
 
 

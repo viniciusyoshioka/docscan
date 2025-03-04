@@ -2,7 +2,10 @@ import { Appbar } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { translate } from "@locales"
-import { HomeMenu } from "./HomeMenu"
+import { HomeMenu } from "../HomeMenu"
+
+
+export * from "./constants"
 
 
 interface HomeHeaderProps {
