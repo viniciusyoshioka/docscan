@@ -5,7 +5,7 @@ import { translate } from "@locales"
 import { getNotificationPermission } from "@services/permission"
 
 
-export function useRequestNotificationPermission() {
+export function useRequestNotificationPermission(): void {
 
 
   const requestPermissions = useCallback(async () => {
