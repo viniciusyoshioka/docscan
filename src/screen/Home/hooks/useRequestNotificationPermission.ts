@@ -1,25 +1,33 @@
 import { useCallback, useEffect } from "react"
-import { Alert } from "react-native"
 
-import { translate } from "@locales"
 import { getNotificationPermission } from "@services/permission"
 
 
-export function useRequestNotificationPermission(): void {
+interface RequestNotificationPermissionParams {
+  onPermissionDenied: () => void
+}
+
+
+type RequestNotificationPermission = () => Promise<void>
+
+
+export function useRequestNotificationPermission(
+  params: RequestNotificationPermissionParams,
+): RequestNotificationPermission {
 
 
   const requestPermissions = useCallback(async () => {
     const hasPermission = await getNotificationPermission()
     if (!hasPermission) {
-      Alert.alert(
-        translate("Home_alert_notificationPermissionDenied_title"),
-        translate("Home_alert_notificationPermissionDenied_text"),
-      )
+      params.onPermissionDenied()
     }
-  }, [])
+  }, [params.onPermissionDenied])
 
 
   useEffect(() => {
     requestPermissions()
   }, [])
+
+
+  return requestPermissions
 }
