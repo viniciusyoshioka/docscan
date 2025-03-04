@@ -10,14 +10,14 @@ export * from "./constants"
 
 interface HomeHeaderProps {
   isSelectionMode: boolean
-  selectedDocumentsAmount: number
+  selectedDocumentsCount: number
   exitSelectionMode: () => void
   invertSelection: () => void
-  deleteSelectedDocuments: () => void
-  importDocument: () => void
-  exportDocument: () => void
-  mergeDocument: () => void
-  duplicateDocument: () => void
+  deleteDocuments: () => void
+  importDocuments: () => void
+  exportDocuments: () => void
+  mergeDocuments: () => void
+  duplicateDocuments: () => void
 }
 
 
@@ -34,7 +34,7 @@ export function HomeHeader(props: HomeHeaderProps) {
         onPress={props.exitSelectionMode}
       />
 
-      <Appbar.Content title={props.selectedDocumentsAmount.toString()} />
+      <Appbar.Content title={props.selectedDocumentsCount.toString()} />
 
       <Appbar.Action
         icon={"swap-horizontal"}
@@ -43,15 +43,15 @@ export function HomeHeader(props: HomeHeaderProps) {
 
       <Appbar.Action
         icon={"trash-can-outline"}
-        onPress={props.deleteSelectedDocuments}
+        onPress={props.deleteDocuments}
       />
 
       <HomeHeaderMenu
         isSelectionMode={props.isSelectionMode}
-        importDocument={props.importDocument}
-        exportDocument={props.exportDocument}
-        mergeDocument={props.mergeDocument}
-        duplicateDocument={props.duplicateDocument}
+        importDocuments={props.importDocuments}
+        exportDocuments={props.exportDocuments}
+        mergeDocuments={props.mergeDocuments}
+        duplicateDocuments={props.duplicateDocuments}
       />
     </Appbar.Header>
   )
@@ -63,10 +63,10 @@ export function HomeHeader(props: HomeHeaderProps) {
 
       <HomeHeaderMenu
         isSelectionMode={props.isSelectionMode}
-        importDocument={props.importDocument}
-        exportDocument={props.exportDocument}
-        mergeDocument={props.mergeDocument}
-        duplicateDocument={props.duplicateDocument}
+        importDocuments={props.importDocuments}
+        exportDocuments={props.exportDocuments}
+        mergeDocuments={props.mergeDocuments}
+        duplicateDocuments={props.duplicateDocuments}
       />
     </Appbar.Header>
   )

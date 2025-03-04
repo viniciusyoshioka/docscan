@@ -65,14 +65,14 @@ export function Home() {
     <View style={{ flex: 1 }}>
       <HomeHeader
         isSelectionMode={documentSelection.isSelectionMode}
-        selectedDocumentsAmount={documentSelection.length}
+        selectedDocumentsCount={documentSelection.length}
         exitSelectionMode={documentSelection.exitSelection}
         invertSelection={invertDocumentSelection}
-        deleteSelectedDocuments={deleteDocuments}
-        importDocument={importDocuments}
-        exportDocument={exportDocuments}
-        mergeDocument={mergeDocuments}
-        duplicateDocument={duplicateDocuments}
+        deleteDocuments={deleteDocuments}
+        importDocuments={importDocuments}
+        exportDocuments={exportDocuments}
+        mergeDocuments={mergeDocuments}
+        duplicateDocuments={duplicateDocuments}
       />
 
       <DocumentsList
