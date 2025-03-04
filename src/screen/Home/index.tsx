@@ -16,6 +16,7 @@ import {
   useDocuments,
   useDuplicateDocuments,
   useExportDocuments,
+  useGoBack,
   useImportDocuments,
   useInvertDocumentSelection,
   useMergeDocuments,
@@ -58,24 +59,12 @@ export function Home() {
   })
 
 
-  const goBack = useCallback(() => {
-    if (documentSelection.isSelectionMode) {
-      documentSelection.exitSelection()
-      return true
-    }
-
-    if (notificationPermissionDeniedModal.isVisible) {
-      notificationPermissionDeniedModal.hide()
-      return true
-    }
-
-    return false
-  }, [
-    documentSelection.isSelectionMode,
-    documentSelection.exitSelection,
-    notificationPermissionDeniedModal.isVisible,
-    notificationPermissionDeniedModal.hide,
-  ])
+  const goBack = useGoBack({
+    isSelectionMode: documentSelection.isSelectionMode,
+    exitSelection: documentSelection.exitSelection,
+    isNotificationPermissionDeniedModalVisible: notificationPermissionDeniedModal.isVisible,
+    hideNotificationPermissionDeniedModal: notificationPermissionDeniedModal.hide,
+  })
 
   useBackHandler(goBack)
 
