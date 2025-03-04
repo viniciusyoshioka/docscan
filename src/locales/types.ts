@@ -187,6 +187,9 @@ export type TranslationKeyType =
   | "VisualizePicture_alert_warnCurrentPicture_text"
   | "VisualizePicture_alert_errorSavingCroppedImage_text"
 
+  // document state
+  | "untitleDocument"
+
     // document service
   | "document_newDocumentName"
   | "document_exportedDocumentName"

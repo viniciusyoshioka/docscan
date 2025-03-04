@@ -190,6 +190,9 @@ export const pt_BR: TranslationObjectType = {
   VisualizePicture_alert_warnCurrentPicture_text: "A imagem atual a ser substituída não existe",
   VisualizePicture_alert_errorSavingCroppedImage_text: "Não foi possível salvar imagem cortada",
 
+  // document state
+  untitleDocument: "Documento sem título",
+
   // document service
   document_newDocumentName: "Novo documento",
   document_exportedDocumentName: "DocScan Exportado",
