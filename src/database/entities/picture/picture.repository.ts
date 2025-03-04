@@ -1,10 +1,12 @@
 import { EntityManager, Repository } from "typeorm"
 
+import { CreatePictureBO } from "./bo"
 import { PictureEntity } from "./picture.entity"
 
 
 export interface PictureRepository {
   transaction<T = unknown>(query: (tx: EntityManager) => Promise<T>): Promise<T>
+  createPicture(createBo: CreatePictureBO): Promise<PictureEntity>
 }
 
 
@@ -19,4 +21,7 @@ export const customPictureRepository: CustomPictureRepository = {
   },
 
 
+  async createPicture(createBo: CreatePictureBO): Promise<PictureEntity> {
+    return await this.save(createBo)
+  },
 }

@@ -1,6 +1,9 @@
 import { EntityManager } from "typeorm"
 
-import { PictureRepository } from "./picture.repository"
+import { CreatePictureDTO, PictureDTO } from "./dto"
+import { PictureEntity } from "./picture.entity"
+import { PictureMapper } from "./picture.mapper"
+import { customPictureRepository, PictureRepository } from "./picture.repository"
 
 
 export class PictureModel {
@@ -12,4 +15,18 @@ export class PictureModel {
   }
 
 
+  async create(params: {
+    createDto: CreatePictureDTO
+    transaction: EntityManager
+  }): Promise<PictureDTO> {
+    const { createDto, transaction } = params
+
+    const pictureRepo = transaction.getRepository(PictureEntity).extend(customPictureRepository)
+    const createBo = PictureMapper.fromCreateDtoToCreateBo(createDto)
+
+    // TODO: Add validation
+
+    const createdPicture = await pictureRepo.createPicture(createBo)
+    return PictureMapper.fromEntityToDto(createdPicture)
+  }
 }
