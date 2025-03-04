@@ -67,7 +67,7 @@ export function HomeHeaderMenu(props: HomeHeaderMenuProps) {
   const onPressOpenSettings = useCallback(() => {
     closeMenu()
     navigation.navigate("Settings")
-  }, [closeMenu, navigation.navigate])
+  }, [closeMenu, navigation])
 
 
   if (isSelectionMode) return (
