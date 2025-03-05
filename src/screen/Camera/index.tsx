@@ -4,7 +4,6 @@ import { useModal } from "react-native-paper-towel"
 import { useCameraDevice, useCameraFormat } from "react-native-vision-camera"
 
 import { useBackHandler } from "@hooks"
-import { useLogger } from "@libs/logger"
 import { useSettings } from "@libs/settings"
 import {
   CameraControl,
@@ -32,7 +31,6 @@ import { getCameraRatioNumber } from "./utils"
 export function Camera() {
 
 
-  const logger = useLogger()
   const { settings } = useSettings()
 
   const cameraViewRef = useRef<CameraViewRef>(null)
