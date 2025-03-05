@@ -39,11 +39,11 @@ export function Settings() {
         failOnCancel: false,
       })
     } catch (error) {
-      logger.error(`Error sharing log database file: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("Settings_alert_errorSharingLogDatabase_text"),
       )
+      await logger.error(`Error sharing log database file: "${stringifyError(error)}"`)
     }
   }, [logger])
 
@@ -55,11 +55,11 @@ export function Settings() {
         failOnCancel: false,
       })
     } catch (error) {
-      logger.error(`Error sharing app database file: "${stringifyError(error)}"`)
       Alert.alert(
         translate("warn"),
         translate("Settings_alert_errorSharingAppDatabase_text"),
       )
+      await logger.error(`Error sharing app database file: "${stringifyError(error)}"`)
     }
   }, [logger])
 
