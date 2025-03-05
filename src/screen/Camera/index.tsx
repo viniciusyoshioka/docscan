@@ -29,7 +29,6 @@ import { getCameraRatioNumber } from "./utils"
 
 // TODO: Add support to multiple back cameras
 // TODO: Add zoom indicator
-// TODO: Add proper StatusBar color
 export function Camera() {
 
 
