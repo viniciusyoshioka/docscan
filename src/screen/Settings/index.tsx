@@ -13,7 +13,7 @@ import { stringifyError } from "@utils"
 import { SettingsHeader } from "./components"
 
 
-export { ChangeTheme } from "./ChangeTheme"
+export { ChangeTheme } from "./modals"
 
 
 export function Settings() {
