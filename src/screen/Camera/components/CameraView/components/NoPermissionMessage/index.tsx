@@ -4,7 +4,7 @@ import { useStyles } from "react-native-unistyles"
 
 import { translate } from "@locales"
 import { useCameraControlStyle } from "../../../CameraControl"
-import { CAMERA_HEADER_HEIGHT } from "../../../Header"
+import { CAMERA_HEADER_HEIGHT } from "../../../CameraHeader"
 import { stylesheet } from "./styles"
 
 

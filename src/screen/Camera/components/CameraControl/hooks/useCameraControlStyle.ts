@@ -2,7 +2,7 @@ import { useMemo } from "react"
 import { Dimensions, StatusBar, ViewStyle, useWindowDimensions } from "react-native"
 
 import { getCameraSizeToFitInScreen } from "../../../utils"
-import { CAMERA_HEADER_HEIGHT } from "../../Header"
+import { CAMERA_HEADER_HEIGHT } from "../../CameraHeader"
 import { ACTION_BUTTON_SIZE, CAPTURE_BUTTON_SIZE } from "../components"
 
 

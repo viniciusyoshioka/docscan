@@ -1,7 +1,7 @@
 import { useWindowDimensions } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-import { CAMERA_HEADER_HEIGHT } from "../../Header"
+import { CAMERA_HEADER_HEIGHT } from "../../CameraHeader"
 import { useCameraSize } from "./useCameraSize"
 
 
