@@ -1,6 +1,6 @@
 import { useWindowDimensions } from "react-native"
 
-import { GALLERY_HEADER_HEIGHT } from "../../Header"
+import { GALLERY_HEADER_HEIGHT } from "../../GalleryHeader"
 import { useImageItemSize } from "../../ImageItem"
 
 
