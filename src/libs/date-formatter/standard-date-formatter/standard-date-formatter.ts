@@ -2,6 +2,8 @@ import { DateFormatter } from "../date-formatter.interface"
 import { DateTimeSeparators, StandardDateFormatterOptions } from "./standard-date-formatter.types"
 
 
+type ParseableDate = Date | number | string
+
 type DateTimePatterns = {
   date: string
   time: string
@@ -43,7 +45,7 @@ export class StandardDateFormatter implements DateFormatter {
   }
 
 
-  formatDate(date?: Date | number): string {
+  formatDate(date?: ParseableDate): string {
     date = this.parseDate(date)
 
     return this.patterns.date
@@ -54,7 +56,7 @@ export class StandardDateFormatter implements DateFormatter {
       .replaceAll("-", this.separators.date)
   }
 
-  formatTime(date?: Date | number): string {
+  formatTime(date?: ParseableDate): string {
     date = this.parseDate(date)
 
     return (this.hasSeconds ? this.patterns.timWithSeconds : this.patterns.time)
@@ -65,7 +67,7 @@ export class StandardDateFormatter implements DateFormatter {
       .replaceAll(":", this.separators.time)
   }
 
-  formatDateTime(date?: Date | number): string {
+  formatDateTime(date?: ParseableDate): string {
     date = this.parseDate(date)
 
     const datePart = this.formatDate(date)
@@ -75,7 +77,7 @@ export class StandardDateFormatter implements DateFormatter {
   }
 
 
-  getLocaleDate(date?: Date | number): string {
+  getLocaleDate(date?: ParseableDate): string {
     date = this.parseDate(date)
 
     const options: Intl.DateTimeFormatOptions = {}
@@ -83,7 +85,7 @@ export class StandardDateFormatter implements DateFormatter {
     return dateTimeFormat.format(date)
   }
 
-  getLocaleTime(date?: Date | number): string {
+  getLocaleTime(date?: ParseableDate): string {
     date = this.parseDate(date)
 
     const options: Intl.DateTimeFormatOptions = {
@@ -96,7 +98,7 @@ export class StandardDateFormatter implements DateFormatter {
     return dateTimeFormat.format(date)
   }
 
-  getLocaleDateTime(date?: Date | number): string {
+  getLocaleDateTime(date?: ParseableDate): string {
     date = this.parseDate(date)
 
     const options: Intl.DateTimeFormatOptions = {
@@ -113,11 +115,11 @@ export class StandardDateFormatter implements DateFormatter {
   }
 
 
-  private parseDate(date?: Date | number): Date {
+  private parseDate(date?: ParseableDate): Date {
     if (date instanceof Date) {
       return date
     }
-    if (typeof date === "number") {
+    if (typeof date === "number" || typeof date === "string") {
       return new Date(date)
     }
     return new Date()
