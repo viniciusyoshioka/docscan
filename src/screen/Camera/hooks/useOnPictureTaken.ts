@@ -94,14 +94,14 @@ export function useOnPictureTaken() {
     })
 
 
-    const { document, createdPicture } = data
-    const pictures = (documentState?.pictures ?? []).concat(createdPicture)
-
     updateDocumentState({
-      type: "set",
-      payload: { document, pictures },
+      type: "openDocument",
+      payload: {
+        document: data.document,
+        picture: data.createdPicture,
+      },
     })
-  }, [documentModel, pictureModel, documentState, updateDocumentState])
+  }, [documentModel, documentState, pictureModel, updateDocumentState])
 
 
   const onPictureTaken = useCallback(async (picturePath: string) => {

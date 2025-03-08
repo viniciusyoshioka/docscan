@@ -11,6 +11,7 @@ export interface DocumentRepository {
   getDocumentsPaginated(options?: GetDocumentsPaginatedBO): Promise<DocumentEntity[]>
   createDocument(createBo: CreateDocumentBO): Promise<DocumentEntity>
   updateDocumentLastUpdateDate(id: EntityId): Promise<DocumentEntity>
+  updateDocumentName(id: EntityId, newName: string): Promise<DocumentEntity>
 }
 
 
@@ -49,6 +50,20 @@ export const customDocumentRepository: CustomDocumentRepository = {
       throw new EntityNotFoundError(`Document not found with id: ${id}`)
     }
 
+    existingDocument.updatedAt = new Date()
+
+    return await this.save(existingDocument)
+  },
+
+  async updateDocumentName(id: EntityId, newName: string): Promise<DocumentEntity> {
+    const existingDocument = await this.findOne({
+      where: { id },
+    })
+    if (!existingDocument) {
+      throw new EntityNotFoundError(`Document not found with id: ${id}`)
+    }
+
+    existingDocument.name = newName
     existingDocument.updatedAt = new Date()
 
     return await this.save(existingDocument)

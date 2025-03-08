@@ -1,37 +1,24 @@
 import { useNavigation } from "@react-navigation/core"
-import { FlashList, ListRenderItem } from "@shopify/flash-list"
-import { useMemo, useState } from "react"
-import { Alert, View, useWindowDimensions } from "react-native"
-import RNFS from "react-native-fs"
+import { useCallback } from "react"
+import { View } from "react-native"
 import { LoadingModal } from "react-native-paper-towel"
 import { useSelectionMode } from "react-native-selection-mode"
-import Share from "react-native-share"
 
-import {
-  DocumentPictureSchema,
-  DocumentSchema,
-  useDocumentModel,
-  useDocumentRealm,
-} from "@database"
 import { useBackHandler } from "@hooks"
-import { useLogger } from "@libs/logger"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
-import { DocumentService } from "@services/document"
-import { PdfCreator } from "@services/pdf-creator"
-import { getReadPermission, getWritePermission } from "@services/permission"
-import { stringifyError } from "@utils"
-import { EditDocumentHeader } from "./Header"
+import { EditDocumentHeader, PicturesList } from "./components"
 import {
-  HORIZONTAL_COLUMN_COUNT,
-  PictureItem,
-  VERTICAL_COLUMN_COUNT,
-  getPictureItemSize,
-} from "./Pictureitem"
+  useDeletePdf,
+  useDeletePictures,
+  useGoBack,
+  useInvertPicturesSelection,
+  useSharePdf,
+  useVisualizePdf,
+} from "./hooks"
 
 
-export { ConvertPdfOption } from "./ConvertPdfOption"
-export { RenameDocument } from "./RenameDocument"
+export * from "./modals"
 
 
 // TODO implement drag and drop to reorder list
@@ -40,308 +27,65 @@ export function EditDocument() {
 
 
   const navigation = useNavigation<NavigationProps<"EditDocument">>()
-  const log = useLogger()
 
-  const { width: windowWidth, height: windowHeight } = useWindowDimensions()
-
-  const { documentModel, setDocumentModel } = useDocumentModel()
-  const documentRealm = useDocumentRealm()
-  const document = documentModel?.document ?? undefined
-  const pictures = useMemo(() => {
-    if (document === undefined) return []
-
-    return documentRealm.objects(DocumentPictureSchema)
-      .filtered("belongsTo = $0", document.id)
-      .sorted("position") as unknown as DocumentPictureSchema[]
-  }, [document])
-
-  const columnCount = useMemo(
-    () => (windowWidth < windowHeight)
-      ? VERTICAL_COLUMN_COUNT
-      : HORIZONTAL_COLUMN_COUNT,
-    [windowWidth, windowHeight],
-  )
-  const estimatedItemSize = getPictureItemSize(windowWidth, columnCount)
-
-  const pictureSelection = useSelectionMode<number>()
-  const [isDeletingPictures, setIsDeletingPictures] = useState(false)
+  const pictureSelection = useSelectionMode<string>()
 
 
-  useBackHandler(() => {
-    goBack()
-    return true
+  const goBack = useGoBack({
+    isSelectionMode: pictureSelection.isSelectionMode,
+    exitSelection: pictureSelection.exitSelection,
   })
 
+  useBackHandler(goBack)
 
-  function goBack() {
-    if (pictureSelection.isSelectionMode) {
-      pictureSelection.exitSelection()
-      return
-    }
 
-    setDocumentModel(undefined)
-    navigation.goBack()
-  }
+  const invertPicturesSelection = useInvertPicturesSelection()
+  const deletePictures = useDeletePictures()
+  const sharePdf = useSharePdf()
+  const visualizePdf = useVisualizePdf()
+  const deletePdf = useDeletePdf()
 
-  async function shareDocument() {
-    if (!document) {
-      log.warn("There is no document to be shared")
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_noDocumentOpened_text"),
-      )
-      return
-    }
 
-    const documentPath = DocumentService.getPdfPath(document.name)
+  const openCamera = useCallback(() => {
+    navigation.navigate("Camera", { action: "add-picture" })
+  }, [navigation])
 
-    const pdfFileExists = await RNFS.exists(documentPath)
-    if (!pdfFileExists) {
-      log.warn("Can not shared PDF file because it doesn't exists")
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_convertNotExistentPdfToShare_text"),
-      )
-      return
-    }
+  const convertToPdf = useCallback(() => {
+    navigation.navigate("ConvertPdfOption")
+  }, [navigation])
 
-    try {
-      await Share.open({
-        title: translate("EditDocument_shareDocument"),
-        type: "pdf/application",
-        url: `file://${documentPath}`,
-        failOnCancel: false,
-      })
-    } catch (error) {
-      log.error(`Error sharing PDF file: "${stringifyError(error)}"`)
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_errorSharingPdf_text"),
-      )
-    }
-  }
-
-  async function visualizePdf() {
-    if (!document) {
-      log.warn("There is no document to visualize the PDF")
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_noDocumentOpened_text"),
-      )
-      return
-    }
-
-    const hasPermission = await getReadPermission()
-    if (!hasPermission) {
-      log.warn("Can not visualize PDF because the permission was not granted")
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_noPermissionToVisualizePdf_text"),
-      )
-      return
-    }
-
-    const pdfFilePath = DocumentService.getPdfPath(document.name)
-
-    const pdfFileExists = await RNFS.exists(pdfFilePath)
-    if (!pdfFileExists) {
-      log.warn("Can not visualize PDF because it doesn't exists")
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_convertNotExistentPdfToVisualize_text"),
-      )
-      return
-    }
-
-    PdfCreator.viewPdf(pdfFilePath)
-  }
-
-  async function deletePdf() {
-    if (!document)
-      throw new Error("There is no document to delete the PDF, this should not happen")
-
-    const hasPermission = await getWritePermission()
-    if (!hasPermission) {
-      log.warn("Can not delete PDF because the permission was not granted")
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_noPermissionToDeletePdf_text"),
-      )
-      return
-    }
-
-    const pdfFilePath = DocumentService.getPdfPath(document.name)
-
-    const pdfFileExists = await RNFS.exists(pdfFilePath)
-    if (!pdfFileExists) {
-      log.warn("Can not delete PDF because it doesn't exists")
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_pdfFileDoesNotExists_text"),
-      )
-      return
-    }
-
-    try {
-      await RNFS.unlink(pdfFilePath)
-      Alert.alert(
-        translate("success"),
-        translate("EditDocument_alert_pdfFileDeletedSuccessfully_text"),
-      )
-    } catch (error) {
-      log.error(`Error deleting PDF file "${stringifyError(error)}"`)
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_errorDeletingPdfFile_text"),
-      )
-    }
-  }
-
-  function alertDeletePdf() {
-    if (!document) {
-      log.warn("There is no document to delete the PDF")
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_noDocumentOpened_text"),
-      )
-      return
-    }
-
-    Alert.alert(
-      translate("EditDocument_alert_deletePdf_title"),
-      translate("EditDocument_alert_deletePdf_text"),
-      [
-        { text: translate("cancel"), onPress: () => {} },
-        { text: translate("ok"), onPress: deletePdf },
-      ],
-    )
-  }
-
-  function invertSelection() {
-    pictureSelection.setNewSelectedData(current => {
-      const newSelectedData = new Set<number>()
-      for (let i = 0; i < pictures.length; i++) {
-        if (!current.has(i)) {
-          newSelectedData.add(i)
-        }
-      }
-      return newSelectedData
-    })
-  }
-
-  async function deleteSelectedPicture() {
-    if (!document)
-      throw new Error(
-        "There is no document to delete its pictures, this should not happen",
-      )
-
-    setIsDeletingPictures(true)
-
-    const selectedPicture = pictureSelection.getSelectedData()
-
-    const picturePathsToDelete = selectedPicture.map(index => (
-      DocumentService.getPicturePath(pictures[index].fileName)
-    ))
-
-    try {
-      documentRealm.write(() => {
-        const realmPicturesToDelete = documentRealm.objects(DocumentPictureSchema)
-          .filtered("belongsTo = $0", document.id)
-          .sorted("position")
-          .filter((_, index) => selectedPicture.includes(index))
-
-        documentRealm.delete(realmPicturesToDelete)
-        document.modifiedAt = Date.now()
-      })
-
-      const updatedDocument = documentRealm.objectForPrimaryKey(
-        DocumentSchema,
-        document.id,
-      )
-      const updatedPictures = documentRealm
-        .objects(DocumentPictureSchema)
-        .filtered("belongsTo = $0", document.id)
-        .sorted("position")
-      if (!updatedDocument)
-        throw new Error("Document is undefined, this should not happen")
-      setDocumentModel({ document: updatedDocument, pictures: updatedPictures })
-
-      DocumentService.deletePicturesService({ pictures: picturePathsToDelete })
-    } catch (error) {
-      log.error(`Error deleting selected pictures from database: "${stringifyError(error)}"`)
-      Alert.alert(
-        translate("warn"),
-        translate("EditDocument_alert_errorDeletingSelectedPictures_text"),
-      )
-    }
-
-    pictureSelection.exitSelection()
-    setIsDeletingPictures(false)
-  }
-
-  function alertDeletePicture() {
-    if (!document)
-      throw new Error(
-        "There is no document to delete its pictures, this should not happen",
-      )
-
-    Alert.alert(
-      translate("EditDocument_alert_deletePicture_title"),
-      translate("EditDocument_alert_deletePicture_text"),
-      [
-        { text: translate("cancel"), onPress: () => {} },
-        { text: translate("ok"), onPress: deleteSelectedPicture },
-      ],
-    )
-  }
-
-  const renderItem: ListRenderItem<DocumentPictureSchema> = ({ item, index }) => {
-    return (
-      <PictureItem
-        onClick={() => navigation.navigate("VisualizePicture", { pictureIndex: index })}
-        onSelect={() => pictureSelection.select(index)}
-        onDeselect={() => pictureSelection.deselect(index)}
-        isSelectionMode={pictureSelection.isSelectionMode}
-        isSelected={pictureSelection.isSelected(index)}
-        picturePath={DocumentService.getPicturePath(item.fileName)}
-        columnCount={columnCount}
-      />
-    )
-  }
-
-  function keyExtractor(item: DocumentPictureSchema): string {
-    return item.id.toHexString()
-  }
+  const renameDocument = useCallback(() => {
+    navigation.navigate("RenameDocument")
+  }, [navigation])
 
 
   return (
     <View style={{ flex: 1 }}>
       <EditDocumentHeader
-        goBack={goBack}
-        exitSelectionMode={pictureSelection.exitSelection}
         isSelectionMode={pictureSelection.isSelectionMode}
-        selectedPicturesAmount={pictureSelection.length}
-        invertSelection={invertSelection}
-        deletePicture={alertDeletePicture}
-        openCamera={() => navigation.navigate("Camera", { action: "add-picture" })}
-        shareDocument={shareDocument}
+        goBack={goBack}
+        exitSelection={pictureSelection.exitSelection}
+        selectedPicturesCount={pictureSelection.length}
+        openCamera={openCamera}
+        convertToPdf={convertToPdf}
+        sharePdf={sharePdf}
         visualizePdf={visualizePdf}
-        deletePdf={alertDeletePdf}
+        renameDocument={renameDocument}
+        deletePdf={deletePdf}
+        invertPicturesSelection={invertPicturesSelection}
+        deletePictures={deletePictures}
       />
 
-      <FlashList
-        data={pictures}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        extraData={[pictureSelection.isSelectionMode]}
-        estimatedItemSize={estimatedItemSize}
-        numColumns={columnCount}
-        contentContainerStyle={{ padding: 4 }}
+      <PicturesList
+        isSelectionMode={pictureSelection.isSelectionMode}
+        selectItem={pictureSelection.select}
+        deselectItem={pictureSelection.deselect}
+        isItemSelected={pictureSelection.isSelected}
       />
 
       <LoadingModal
         message={translate("EditDocument_deletingPictures")}
-        visible={isDeletingPictures}
+        visible={false}
       />
     </View>
   )

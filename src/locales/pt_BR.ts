@@ -10,6 +10,9 @@ export const pt_BR: TranslationObjectType = {
   success: "Sucesso",
   save: "Salvar",
   dont_save: "Não salvar",
+  tryAgain: "Tentar novamente",
+  clickHereToTryAgain: "Clique aqui para tentar novamente",
+  error: "Erro",
 
   // Database
   Database_errorInitializingDatabase: "Erro iniciando banco de dados",
@@ -72,6 +75,9 @@ export const pt_BR: TranslationObjectType = {
   // EditDocument screen
   EditDocument_shareDocument: "Compartilhar documento",
   EditDocument_deletingPictures: "Apagando imagens...",
+  EditDocument_emptyDocument: "Documento vazio",
+  EditDocument_errorLoadingMorePictures_title: "Erro carregando mais imagens",
+  EditDocument_errorLoadingPictures_text: "Ocorreu um erro inesperado ao carregar imagens do documento.",
   // EditDocument menu
   EditDocument_menu_convertToPdf: "Converter para PDF",
   EditDocument_menu_sharePdf: "Compartilhar PDF",
@@ -84,7 +90,7 @@ export const pt_BR: TranslationObjectType = {
   ConvertPdfOption_alert_noPermissionToConvertToPdf_text: "Sem permissão para converter documento para PDF",
   // EditDocument ConvertPdfOption
   ConvertPdfOption_title: "Converter para PDF",
-  ConvertPdfOption_description: "Escolha a taxa compressão das imagens do documento",
+  ConvertPdfOption_description: "Escolha a taxa de compressão das imagens do documento",
   ConvertPdfOption_highCompression: "Alta",
   ConvertPdfOption_lowCompression: "Baixa",
   ConvertPdfOption_customCompression: "Personalizada",

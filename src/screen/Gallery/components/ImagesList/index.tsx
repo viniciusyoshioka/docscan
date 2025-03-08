@@ -2,16 +2,11 @@ import { useRoute } from "@react-navigation/native"
 import { FlashList, ListRenderItem } from "@shopify/flash-list"
 import { memo, useCallback, useMemo } from "react"
 
+import { ErrorLoadingList, ErrorLoadingMoreItems, LoadingMoreItems } from "@components"
+import { translate } from "@locales"
 import { RouteProps } from "@router"
 import { ImageItem, useImageItemSize } from "../ImageItem"
-import {
-  EmptyImagesList,
-  ErrorLoadingImagesList,
-  ErrorLoadingMoreImagesList,
-  LoadingImagesList,
-  LoadingMoreImagesList,
-  NoImagesListPermission,
-} from "./components"
+import { EmptyImagesList, LoadingImagesList, NoImagesListPermission } from "./components"
 import {
   ImagesListStatus,
   useGalleryColumnCount,
@@ -98,11 +93,16 @@ export const ImagesList = memo((props: ImagesListProps) => {
 
   const ListFooterComponent = useCallback(() => {
     if (imagesList.status === ImagesListStatus.IS_LOADING_MORE) {
-      return <LoadingMoreImagesList />
+      return <LoadingMoreItems />
     }
 
     if (imagesList.status === ImagesListStatus.HAS_ERROR_LOADING_MORE) {
-      return <ErrorLoadingMoreImagesList onPress={imagesList.loadMoreImages} />
+      return (
+        <ErrorLoadingMoreItems
+          title={translate("Gallery_errorLoadingMoreImages_title")}
+          tryAgain={imagesList.loadMoreImages}
+        />
+      )
     }
 
     return null
@@ -118,7 +118,12 @@ export const ImagesList = memo((props: ImagesListProps) => {
   }
 
   if (imagesList.status === ImagesListStatus.HAS_ERROR_LOADING) {
-    return <ErrorLoadingImagesList loadImages={imagesList.loadImages} />
+    return (
+      <ErrorLoadingList
+        description={translate("Gallery_errorLoadingImages_text")}
+        tryAgain={imagesList.loadImages}
+      />
+    )
   }
 
   if (imagesList.status === ImagesListStatus.IS_EMPTY) {

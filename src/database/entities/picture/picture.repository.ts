@@ -2,12 +2,14 @@ import { EntityManager, Repository } from "typeorm"
 
 import { EntityNotFoundError } from "../../errors"
 import { EntityId } from "../../types"
-import { CreatePictureBO } from "./bo"
+import { CreatePictureBO, GetPicturesByDocumentIdPaginatedBO } from "./bo"
+import { PictureDTO } from "./dto"
 import { PictureEntity } from "./picture.entity"
 
 
 export interface PictureRepository {
   transaction<T = unknown>(query: (tx: EntityManager) => Promise<T>): Promise<T>
+  findByDocumentIdPaginated(params: GetPicturesByDocumentIdPaginatedBO): Promise<PictureDTO[]>
   createPicture(createBo: CreatePictureBO): Promise<PictureEntity>
   updateFileName(id: EntityId, fileName: string): Promise<PictureEntity>
 }
@@ -23,6 +25,23 @@ export const customPictureRepository: CustomPictureRepository = {
     return await this.manager.transaction(query)
   },
 
+
+  async findByDocumentIdPaginated(
+    params: GetPicturesByDocumentIdPaginatedBO,
+  ): Promise<PictureDTO[]> {
+    const { documentId, limit = 10, offset = 0 } = params
+
+    return await this.find({
+      where: {
+        documentId,
+      },
+      order: {
+        position: "ASC",
+      },
+      take: limit,
+      skip: offset,
+    })
+  },
 
   async createPicture(createBo: CreatePictureBO): Promise<PictureEntity> {
     return await this.save(createBo)

@@ -29,7 +29,7 @@ export class DocumentService {
 
 
   static getNewName(): string {
-    return translate("document_newDocumentName")
+    return translate("untitleDocument")
   }
 
 

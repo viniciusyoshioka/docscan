@@ -8,6 +8,9 @@ export type TranslationKeyType =
   | "success"
   | "save"
   | "dont_save"
+  | "tryAgain"
+  | "clickHereToTryAgain"
+  | "error"
 
     // Database
   | "Database_errorInitializingDatabase"
@@ -70,6 +73,9 @@ export type TranslationKeyType =
     // EditDocument screen
   | "EditDocument_shareDocument"
   | "EditDocument_deletingPictures"
+  | "EditDocument_emptyDocument"
+  | "EditDocument_errorLoadingMorePictures_title"
+  | "EditDocument_errorLoadingPictures_text"
     // EditDocument menu
   | "EditDocument_menu_convertToPdf"
   | "EditDocument_menu_sharePdf"

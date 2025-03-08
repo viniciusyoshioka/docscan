@@ -1,7 +1,7 @@
 import { EntityManager } from "typeorm"
 
 import { EntityId } from "../../types"
-import { CreatePictureDTO, PictureDTO } from "./dto"
+import { CreatePictureDTO, GetPicturesByDocumentIdPaginatedDTO, PictureDTO } from "./dto"
 import { PictureEntity } from "./picture.entity"
 import { PictureMapper } from "./picture.mapper"
 import { customPictureRepository, PictureRepository } from "./picture.repository"
@@ -15,6 +15,17 @@ export class PictureModel {
     return await this.pictureRepository.transaction(tx)
   }
 
+
+  async findByDocumentIdPaginated(
+    params: GetPicturesByDocumentIdPaginatedDTO,
+  ): Promise<PictureDTO[]> {
+    const paramsBo = PictureMapper.fromGetPicturesByDocumentIdPaginatedDtoToBo(params)
+
+    // TODO: Add validation
+
+    const pictures = await this.pictureRepository.findByDocumentIdPaginated(paramsBo)
+    return pictures.map(PictureMapper.fromEntityToDto)
+  }
 
   async create(params: {
     createDto: CreatePictureDTO

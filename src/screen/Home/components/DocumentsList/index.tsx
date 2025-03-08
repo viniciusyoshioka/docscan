@@ -4,19 +4,13 @@ import { useCallback, useMemo } from "react"
 import { Divider } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
+import { ErrorLoadingList, ErrorLoadingMoreItems, LoadingMoreItems } from "@components"
 import { DocumentDTO } from "@database"
 import { useDocumentState } from "@libs/document-state"
+import { translate } from "@locales"
 import { NavigationProps } from "@router"
 import { DocumentStatus } from "../../hooks"
-import {
-  DOCUMENT_ITEM_HEIGHT,
-  DocumentItem,
-  EmptyDocuments,
-  ErrorLoadingDocuments,
-  ErrorLoadingMoreDocuments,
-  LoadingDocuments,
-  LoadingMoreDocuments,
-} from "./components"
+import { DOCUMENT_ITEM_HEIGHT, DocumentItem, EmptyDocuments, LoadingDocuments } from "./components"
 import { FAB_HEIGHT, FAB_PADDING_VERTICAL } from "./constants"
 
 
@@ -48,10 +42,9 @@ export function DocumentsList(props: DocumentsListProps) {
 
   const openDocument = useCallback((document: DocumentDTO) => {
     updateDocumentState({
-      type: "set",
+      type: "openDocument",
       payload: {
         document,
-        pictures: [],
       },
     })
 
@@ -94,11 +87,16 @@ export function DocumentsList(props: DocumentsListProps) {
 
   const ListFooterComponent = useCallback(() => {
     if (props.status === DocumentStatus.IS_LOADING_MORE) {
-      return <LoadingMoreDocuments />
+      return <LoadingMoreItems />
     }
 
     if (props.status === DocumentStatus.HAS_ERROR_LOADING_MORE) {
-      return <ErrorLoadingMoreDocuments onPress={props.loadMoreDocuments} />
+      return (
+        <ErrorLoadingMoreItems
+          title={translate("Home_errorLoadingMoreDocuments_title")}
+          tryAgain={props.loadMoreDocuments}
+        />
+      )
     }
 
     return null
@@ -110,7 +108,12 @@ export function DocumentsList(props: DocumentsListProps) {
   }
 
   if (props.status === DocumentStatus.HAS_ERROR) {
-    return <ErrorLoadingDocuments loadDocuments={props.loadDocuments} />
+    return (
+      <ErrorLoadingList
+        description={translate("Home_errorLoadingDocuments_text")}
+        tryAgain={props.loadDocuments}
+      />
+    )
   }
 
   if (props.status === DocumentStatus.IS_EMPTY) {

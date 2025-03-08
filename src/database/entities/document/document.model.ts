@@ -51,4 +51,9 @@ export class DocumentModel {
     const updatedDocument = await documentRepo.updateDocumentLastUpdateDate(id)
     return DocumentMapper.fromEntityToDto(updatedDocument)
   }
+
+  async updateDocumentName(id: EntityId, newName: string): Promise<DocumentDTO> {
+    const updatedDocument = await this.documentRepository.updateDocumentName(id, newName)
+    return DocumentMapper.fromEntityToDto(updatedDocument)
+  }
 }
