@@ -29,26 +29,28 @@ export function ErrorLoadingMoreItems(props: ErrorLoadingMoreItemsProps) {
 
 
   return (
-    <Pressable
-      style={styles.button}
-      android_ripple={{ color: rippleColor }}
-      onPress={props.tryAgain}
-    >
-      <View style={styles.titleContainer}>
-        <Icon
-          source={"alert-circle-outline"}
-          size={18}
-          color={colors.onErrorContainer}
-        />
+    <View style={styles.container}>
+      <Pressable
+        style={styles.button}
+        android_ripple={{ color: rippleColor }}
+        onPress={props.tryAgain}
+      >
+        <View style={styles.titleContainer}>
+          <Icon
+            source={"alert-circle-outline"}
+            size={18}
+            color={colors.onErrorContainer}
+          />
 
-        <Text variant={"bodyMedium"} style={styles.title}>
-          {props.title}
+          <Text variant={"bodyMedium"} style={styles.title}>
+            {props.title}
+          </Text>
+        </View>
+
+        <Text variant={"bodyMedium"} style={styles.text}>
+          {translate("clickHereToTryAgain")}
         </Text>
-      </View>
-
-      <Text variant={"bodyMedium"} style={styles.text}>
-        {translate("clickHereToTryAgain")}
-      </Text>
-    </Pressable>
+      </Pressable>
+    </View>
   )
 }

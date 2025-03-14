@@ -2,7 +2,14 @@ import { createStyleSheet } from "react-native-unistyles"
 
 
 export const stylesheet = createStyleSheet(theme => ({
+  container: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
   button: {
+    maxWidth: 360,
     backgroundColor: theme.colors.errorContainer,
     borderRadius: theme.shape.large,
     margin: 16,
