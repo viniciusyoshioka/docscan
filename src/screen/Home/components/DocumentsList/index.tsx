@@ -17,6 +17,15 @@ import { FAB_HEIGHT, FAB_PADDING_VERTICAL } from "./constants"
 export { DOCUMENT_ITEM_HEIGHT } from "./components"
 
 
+interface ExtraData {
+  openDocument: (document: DocumentDTO) => void
+  selectItem: (id: string) => void
+  deselectItem: (id: string) => void
+  isItemSelected: (id: string) => boolean
+  isSelectionMode: boolean
+}
+
+
 interface DocumentsListProps {
   status: DocumentStatus
   data: DocumentDTO[]
@@ -51,20 +60,38 @@ export function DocumentsList(props: DocumentsListProps) {
     navigation.navigate("EditDocument")
   }, [updateDocumentState, navigation])
 
-  const renderItem: ListRenderItem<DocumentDTO> = useCallback(({ item }) => {
+  const renderItem: ListRenderItem<DocumentDTO> = useCallback(info => {
     // TODO: Check if is required to replace inline functions with useCallback
     // TODO: Update react-native-selection-mode to allow passing the functions to the component
     // and the useSelectableItem passes the value to these funcions
+
+    const document = info.item
+    const extraData = info.extraData as ExtraData
+
     return (
       <DocumentItem
-        onClick={() => openDocument(item)}
-        onSelect={() => props.selectItem(item.id)}
-        onDeselect={() => props.deselectItem(item.id)}
-        isSelectionMode={props.isSelectionMode}
-        isSelected={props.isItemSelected(item.id)}
-        document={item}
+        onClick={() => extraData.openDocument(document)}
+        onSelect={() => extraData.selectItem(document.id)}
+        onDeselect={() => extraData.deselectItem(document.id)}
+        isSelectionMode={extraData.isSelectionMode}
+        isSelected={extraData.isItemSelected(document.id)}
+        document={document}
       />
     )
+  }, [])
+
+  const keyExtractor = useCallback((item: DocumentDTO) => {
+    return item.id
+  }, [])
+
+  const extraData = useMemo<ExtraData>(() => {
+    return {
+      openDocument,
+      selectItem: props.selectItem,
+      deselectItem: props.deselectItem,
+      isSelectionMode: props.isSelectionMode,
+      isItemSelected: props.isItemSelected,
+    }
   }, [
     openDocument,
     props.selectItem,
@@ -72,14 +99,6 @@ export function DocumentsList(props: DocumentsListProps) {
     props.isSelectionMode,
     props.isItemSelected,
   ])
-
-  const keyExtractor = useCallback((item: DocumentDTO) => {
-    return item.id
-  }, [])
-
-  const extraData = useMemo(() => {
-    return [renderItem]
-  }, [renderItem])
 
   const ItemSeparatorComponent = useCallback(() => {
     return <Divider style={{ marginHorizontal: 16 }} />
