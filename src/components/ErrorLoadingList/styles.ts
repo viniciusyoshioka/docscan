@@ -11,6 +11,7 @@ export const stylesheet = createStyleSheet(theme => ({
 
   errorContainer: {
     width: "100%",
+    maxWidth: 360,
     padding: 16,
     gap: 16,
     backgroundColor: theme.colors.errorContainer,
