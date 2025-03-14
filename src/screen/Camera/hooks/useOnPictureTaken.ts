@@ -6,6 +6,7 @@ import { useDocumentState } from "@libs/document-state"
 import { translate } from "@locales"
 import { NavigationProps, RouteProps } from "@router"
 import { DocumentService } from "@services/document"
+import { PathUtils, PictureUtils } from "@utils"
 
 
 // TODO: Add error handling showing a modal with the error message
@@ -40,7 +41,7 @@ export function useOnPictureTaken() {
       )
       const updatedPicture = await pictureModel.updateFileName(
         oldPicture.id,
-        DocumentService.getFileFullname(newPicturePath),
+        PathUtils.getFileNameFromPath(newPicturePath),
         tx,
       )
 
@@ -59,7 +60,7 @@ export function useOnPictureTaken() {
     })
 
     DocumentService.deletePicturesService({
-      pictures: [DocumentService.getPicturePath(oldPicture.fileName)],
+      pictures: [PictureUtils.getPicturePathForFileName(oldPicture.fileName)],
     })
 
     navigation.navigate("VisualizePicture", {
@@ -81,7 +82,7 @@ export function useOnPictureTaken() {
           transaction: tx,
         })
 
-      const fileName = DocumentService.getFileFullname(newPicturePath)
+      const fileName = PathUtils.getFileNameFromPath(newPicturePath)
       const position = documentState?.pictures.length ?? 0
       const documentId = document.id
 

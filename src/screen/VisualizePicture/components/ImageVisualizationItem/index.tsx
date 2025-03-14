@@ -25,7 +25,7 @@ const AnimatedFastImage = Reanimated.createAnimatedComponent(
 )
 
 
-export interface ImageVisualizationItemProps {
+interface ImageVisualizationItemProps {
   source: Source
   onError?: (error?: unknown) => void
   style?: StyleProp<ViewStyle>
@@ -42,6 +42,7 @@ export interface ImageVisualizationItemProps {
 }
 
 
+// TODO: Refact
 export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
 

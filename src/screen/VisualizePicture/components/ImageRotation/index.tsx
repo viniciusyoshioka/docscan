@@ -25,7 +25,7 @@ const AnimatedFastImage = Reanimated.createAnimatedComponent(
 const perpendicularAngles = [0, 90, 180, 270, 360]
 
 
-export interface ImageRotationProps {
+interface ImageRotationProps {
   source: string
   style?: StyleProp<ViewStyle>
   onError?: (error?: unknown) => void
@@ -40,6 +40,7 @@ export interface ImageRotationRef {
 }
 
 
+// TODO: Refact
 export const ImageRotation = forwardRef<ImageRotationRef, ImageRotationProps>((
   props,
   ref,

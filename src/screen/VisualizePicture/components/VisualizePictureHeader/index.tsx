@@ -1,10 +1,11 @@
-import { StyleSheet } from "react-native"
 import { Appbar } from "react-native-paper"
+import { useStyles } from "react-native-unistyles"
 
 import { useAppTheme } from "@theme"
+import { stylesheet } from "./styles"
 
 
-export interface VisualizePictureHeaderProps {
+interface VisualizePictureHeaderProps {
   goBack: () => void
   replacePicture: () => void
   rotation: {
@@ -27,6 +28,8 @@ export interface VisualizePictureHeaderProps {
 
 export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
 
+
+  const { styles } = useStyles(stylesheet)
 
   const { isDark } = useAppTheme()
 
@@ -92,10 +95,7 @@ export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
   )
 
   return (
-    <Appbar.Header
-      style={[styles.absolute, { backgroundColor: headerColor }]}
-      statusBarHeight={0}
-    >
+    <Appbar.Header style={styles.absolute(headerColor)} statusBarHeight={0}>
       <Appbar.BackAction
         iconColor={iconColor}
         onPress={props.goBack}
@@ -127,24 +127,3 @@ export function VisualizePictureHeader(props: VisualizePictureHeaderProps) {
     </Appbar.Header>
   )
 }
-
-
-const styles = StyleSheet.create({
-  absolute: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: "transparent",
-    elevation: 0,
-    zIndex: 1,
-  },
-  relative: {
-    top: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: "transparent",
-    elevation: 0,
-    zIndex: 1,
-  },
-})

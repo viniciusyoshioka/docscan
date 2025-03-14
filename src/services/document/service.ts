@@ -1,6 +1,4 @@
 import { NativeModules } from "react-native"
-import RNFS from "react-native-fs"
-import { v4 as uuid4 } from "uuid"
 
 import { StandardDateFormatter } from "@libs/date-formatter"
 import { translate } from "@locales"
@@ -32,21 +30,6 @@ export class DocumentService {
     return translate("untitleDocument")
   }
 
-
-  static getFileFullname(filePath: string): string {
-    const splittedFilePath = filePath.split("/")
-    return splittedFilePath[splittedFilePath.length - 1]
-  }
-
-  static getFileExtension(filePath: string): string {
-    if (filePath.startsWith("."))
-      return filePath
-
-    const splittedFilePath = filePath.split(".")
-    return splittedFilePath[splittedFilePath.length - 1]
-  }
-
-
   static getTemporaryExportedDocumentPath(): string {
     return `${Constants.fullPathTemporaryExported}/temporary_exported_document.zip`
   }
@@ -64,22 +47,6 @@ export class DocumentService {
   static getPdfPath(documentName: string): string {
     return `${Constants.fullPathPdf}/${documentName}.pdf`
   }
-
-  static getPicturePath(fileName: string): string {
-    return `${Constants.fullPathPicture}/${fileName}`
-  }
-
-  static async getNewPicturePath(filePath: string): Promise<string> {
-    const fileExtension = this.getFileExtension(filePath)
-
-    let newPath: string
-    do {
-      const fileName = uuid4()
-      newPath = `${Constants.fullPathPicture}/${fileName}.${fileExtension}`
-    } while (await RNFS.exists(newPath))
-    return newPath
-  }
-
 
   static deletePicturesService(data: PictureDataToDelete) {
     NativeDocumentService.deletePictures({

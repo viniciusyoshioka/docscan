@@ -7,7 +7,7 @@ import { PictureDTO } from "@database"
 import { useDocumentState } from "@libs/document-state"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
-import { DocumentService } from "@services/document"
+import { PictureUtils } from "@utils"
 import {
   EmptyPictures,
   LoadingPictures,
@@ -59,7 +59,7 @@ export function PicturesList(props: PicturesListProps) {
         onSelect={() => props.selectItem(item.id)}
         onDeselect={() => props.deselectItem(item.id)}
         isSelected={props.isItemSelected(item.id)}
-        picturePath={DocumentService.getPicturePath(item.fileName)}
+        picturePath={PictureUtils.getPicturePathForFileName(item.fileName)}
         pictureItemSize={pictureItemSize}
       />
     )

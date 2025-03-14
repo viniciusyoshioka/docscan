@@ -3,9 +3,8 @@ import RNFS from "react-native-fs"
 import { Camera as VisionCamera } from "react-native-vision-camera"
 
 import { useSettings } from "@libs/settings"
-import { DocumentService } from "@services/document"
 import { createAllFolders } from "@services/folder-handler"
-import { normalizeError } from "@utils"
+import { normalizeError, PictureUtils } from "@utils"
 import { PictureTakenFeedbackRef } from "../components"
 
 
@@ -41,7 +40,7 @@ export function useTakePictureWithCallback(params: TakePictureWithCallbackParams
         flash: settings.camera.flash,
       })
 
-      const picturePath = await DocumentService.getNewPicturePath(response.path)
+      const picturePath = await PictureUtils.getNewPicturePathWithSameExtension(response.path)
       await RNFS.moveFile(response.path, picturePath)
 
       await onPictureTaken(picturePath)
