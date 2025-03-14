@@ -74,7 +74,7 @@ export function Home() {
       <HomeHeader
         isSelectionMode={documentSelection.isSelectionMode}
         selectedDocumentsCount={documentSelection.length}
-        exitSelectionMode={documentSelection.exitSelection}
+        exitSelection={documentSelection.exitSelection}
         invertSelection={invertDocumentSelection}
         deleteDocuments={deleteDocuments}
         importDocuments={importDocuments}

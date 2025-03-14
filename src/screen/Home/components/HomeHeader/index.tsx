@@ -11,7 +11,7 @@ export * from "./constants"
 interface HomeHeaderProps {
   isSelectionMode: boolean
   selectedDocumentsCount: number
-  exitSelectionMode: () => void
+  exitSelection: () => void
   invertSelection: () => void
   deleteDocuments: () => void
   importDocuments: () => void
@@ -31,7 +31,7 @@ export function HomeHeader(props: HomeHeaderProps) {
     <Appbar.Header elevated={true} statusBarHeight={safeAreaInsets.top}>
       <Appbar.Action
         icon={"close"}
-        onPress={props.exitSelectionMode}
+        onPress={props.exitSelection}
       />
 
       <Appbar.Content title={props.selectedDocumentsCount.toString()} />
