@@ -46,10 +46,14 @@ export function DocumentsList(props: DocumentsListProps) {
   const navigation = useNavigation<NavigationProps<"Home">>()
   const safeAreaInsets = useSafeAreaInsets()
 
-  const { updateDocumentState } = useDocumentState()
+  const { documentState, updateDocumentState } = useDocumentState()
 
 
   const openDocument = useCallback((document: DocumentDTO) => {
+    if (documentState) {
+      return
+    }
+
     updateDocumentState({
       type: "openDocument",
       payload: {
@@ -58,7 +62,7 @@ export function DocumentsList(props: DocumentsListProps) {
     })
 
     navigation.navigate("EditDocument")
-  }, [updateDocumentState, navigation])
+  }, [documentState, updateDocumentState, navigation])
 
   const renderItem: ListRenderItem<DocumentDTO> = useCallback(info => {
     // TODO: Check if is required to replace inline functions with useCallback
