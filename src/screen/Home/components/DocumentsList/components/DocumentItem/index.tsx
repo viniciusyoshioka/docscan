@@ -2,6 +2,7 @@ import { useCallback } from "react"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import { Checkbox, List } from "react-native-paper"
 import { runOnJS } from "react-native-reanimated"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { SelectableItem, useSelectableItem } from "react-native-selection-mode"
 
 import { DocumentDTO } from "@database"
@@ -23,6 +24,7 @@ interface DocumentItemProps extends SelectableItem {
 export function DocumentItem(props: DocumentItemProps) {
 
 
+  const safeAreaInsets = useSafeAreaInsets()
   const { onPress, onLongPress } = useSelectableItem(props)
 
   const { colors } = useAppTheme()
@@ -60,7 +62,8 @@ export function DocumentItem(props: DocumentItemProps) {
         onPress={onPress}
         right={SelectionCheckbok}
         style={{
-          paddingRight: props.isSelectionMode ? 8 : 16,
+          paddingLeft: safeAreaInsets.left,
+          paddingRight: safeAreaInsets.right + (props.isSelectionMode ? 8 : 16),
         }}
         titleStyle={{
           marginRight: props.isSelectionMode ? 8 : 0,
