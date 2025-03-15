@@ -1,7 +1,8 @@
 import { useNavigation } from "@react-navigation/core"
 import { useCallback } from "react"
-import { Alert, ScrollView, View } from "react-native"
+import { Alert, ScrollView, View, ViewStyle } from "react-native"
 import { List } from "react-native-paper"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import Share from "react-native-share"
 
 import { useBackHandler } from "@hooks"
@@ -20,6 +21,7 @@ export function Settings() {
 
 
   const navigation = useNavigation<NavigationProps<"Settings">>()
+  const safeAreaInsets = useSafeAreaInsets()
 
   const logger = useLogger()
 
@@ -65,6 +67,12 @@ export function Settings() {
   }, [logger])
 
 
+  const listItemStyle: ViewStyle = {
+    paddingLeft: 16 + safeAreaInsets.left,
+    paddingRight: safeAreaInsets.right,
+  }
+
+
   return (
     <View style={{ flex: 1 }}>
       <SettingsHeader />
@@ -75,7 +83,7 @@ export function Settings() {
           title={translate("Settings_theme_title")}
           description={translate("Settings_theme_text")}
           onPress={() => navigation.navigate("ChangeTheme")}
-          style={{ paddingLeft: 16 }}
+          style={listItemStyle}
         />
 
         <List.Item
@@ -83,7 +91,7 @@ export function Settings() {
           title={translate("Settings_shareLogDatabase_title")}
           description={translate("Settings_shareLogDatabase_text")}
           onPress={shareLogDatabaseFile}
-          style={{ paddingLeft: 16 }}
+          style={listItemStyle}
         />
 
         {__DEV__ && (
@@ -92,7 +100,7 @@ export function Settings() {
             title={translate("Settings_shareAppDatabase_title")}
             description={translate("Settings_shareAppDatabase_text")}
             onPress={shareAppDatabaseFile}
-            style={{ paddingLeft: 16 }}
+            style={listItemStyle}
           />
         )}
 
@@ -100,7 +108,7 @@ export function Settings() {
           left={() => <List.Icon icon={"information-outline"} />}
           title={translate("Settings_appVersionInfo_title")}
           description={`${Constants.appName} ${Constants.appVersion}`}
-          style={{ paddingLeft: 16 }}
+          style={listItemStyle}
         />
       </ScrollView>
     </View>
