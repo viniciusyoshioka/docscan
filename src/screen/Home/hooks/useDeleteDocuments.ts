@@ -59,7 +59,7 @@ export function useDeleteDocuments(params: DeleteDocumentsParams): DeleteDocumen
       const errorMessage = stringifyError(error)
 
       params.onError(errorInstance)
-      await logger.error(errorMessage)
+      await logger.error(`Error deleting selected documents: ${errorMessage}`)
     }
   }, [
     params.getSelectedDocumentIds,
