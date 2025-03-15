@@ -70,9 +70,9 @@ export function useOnPictureTaken() {
 
 
   const addPicture = useCallback(async (newPicturePath: string) => {
-    const data = await documentModel.transaction(async tx => {
-      const existingDocumentId = documentState?.document.id
+    const existingDocumentId = documentState?.document.id
 
+    const data = await documentModel.transaction(async tx => {
       const document = existingDocumentId
         ? await documentModel.updateDocumentLastUpdateDate(existingDocumentId, tx)
         : await documentModel.create({
@@ -94,6 +94,17 @@ export function useOnPictureTaken() {
       return { document, createdPicture }
     })
 
+
+    if (existingDocumentId) {
+      updateDocumentState({
+        type: "addPictures",
+        payload: {
+          document: data.document,
+          pictures: [data.createdPicture],
+        },
+      })
+      return
+    }
 
     updateDocumentState({
       type: "openDocument",
