@@ -1,8 +1,9 @@
 import { useCallback, useState } from "react"
 
 import { EntityId, useEntityModels } from "@database"
+import { useLogger } from "@libs/logger"
 import { DocumentService } from "@services/document"
-import { normalizeError, PictureUtils } from "@utils"
+import { normalizeError, PictureUtils, stringifyError } from "@utils"
 
 
 interface DeleteDocumentsParams {
@@ -22,6 +23,7 @@ export function useDeleteDocuments(params: DeleteDocumentsParams): DeleteDocumen
 
 
   const { documentModel, pictureModel } = useEntityModels()
+  const logger = useLogger()
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -54,7 +56,10 @@ export function useDeleteDocuments(params: DeleteDocumentsParams): DeleteDocumen
       setIsLoading(false)
 
       const errorInstance = normalizeError(error)
+      const errorMessage = stringifyError(error)
+
       params.onError(errorInstance)
+      await logger.error(errorMessage)
     }
   }, [
     params.getSelectedDocumentIds,
@@ -62,6 +67,7 @@ export function useDeleteDocuments(params: DeleteDocumentsParams): DeleteDocumen
     pictureModel,
     params.onSuccess,
     params.onError,
+    logger,
   ])
 
 

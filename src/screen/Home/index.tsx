@@ -7,10 +7,8 @@ import { useSelectionMode } from "react-native-selection-mode"
 
 import { EntityId } from "@database"
 import { useBackHandler } from "@hooks"
-import { useLogger } from "@libs/logger"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
-import { stringifyError } from "@utils"
 import {
   DeleteSelectedDocumentsModal,
   DocumentsList,
@@ -40,8 +38,6 @@ export function Home() {
   const navigation = useNavigation<NavigationProps<"Home">>()
   const documentSelection = useSelectionMode<EntityId>()
 
-  const logger = useLogger()
-
   const documents = useDocumentList()
   const notificationPermissionDeniedModal = useModal()
   const deleteSelectedDocumentsModal = useModal()
@@ -54,11 +50,7 @@ export function Home() {
   const deleteDocuments = useDeleteDocuments({
     getSelectedDocumentIds: documentSelection.getSelectedData,
     onSuccess: async () => await documents.loadDocuments(),
-    onError: async error => {
-      errorDeletingSelectedDocumentsModal.show()
-      const stringifiedError = stringifyError(error)
-      await logger.error(stringifiedError)
-    },
+    onError: () => errorDeletingSelectedDocumentsModal.show(),
   })
   const importDocuments = useImportDocuments()
   const exportDocuments = useExportDocuments()
