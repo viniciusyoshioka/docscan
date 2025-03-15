@@ -56,4 +56,9 @@ export class DocumentModel {
     const updatedDocument = await this.documentRepository.updateDocumentName(id, newName)
     return DocumentMapper.fromEntityToDto(updatedDocument)
   }
+
+  async deleteByIds(ids: EntityId[], transaction: EntityManager): Promise<void> {
+    const documentRepo = transaction.getRepository(DocumentEntity).extend(customDocumentRepository)
+    await documentRepo.deleteByIds(ids)
+  }
 }

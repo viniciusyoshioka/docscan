@@ -170,6 +170,12 @@ export const pt_BR: TranslationObjectType = {
   NotificationPermissionDeniedModal_description: "As notificações são usadas para importar e exportar documentos, importar imagens e exportar um documento para PDF. Ao negar essa permissão, você não poderá usar essas funcionalidades.",
   NotificationPermissionDeniedModal_close: "Fechar",
   NotificationPermissionDeniedModal_allow: "Permitir",
+  // Home DeleteSelectedDocumentsModal
+  DeleteSelectedDocumentsModal_title: "Apagar documentos",
+  DeleteSelectedDocumentsModal_description: "Os documentos selecionados serão apagados permanentemente. Esta ação não poderá ser desfeita.",
+  // Home ErrorDeletingSelectedDocumentsModal
+  ErrorDeletingSelectedDocumentsModal_title: "Erro ao apagar documentos",
+  ErrorDeletingSelectedDocumentsModal_description: "Ocorreu um erro inesperado ao tentar apagar os documentos selecionados. Por favor, tente novamente.",
 
   // Settings alert
   Settings_alert_errorSharingLogDatabase_text: "Erro ao compartilhar logs",

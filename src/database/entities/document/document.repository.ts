@@ -1,4 +1,4 @@
-import { EntityManager, Repository } from "typeorm"
+import { EntityManager, In, Repository } from "typeorm"
 
 import { EntityNotFoundError } from "../../errors"
 import { EntityId } from "../../types"
@@ -12,6 +12,7 @@ export interface DocumentRepository {
   createDocument(createBo: CreateDocumentBO): Promise<DocumentEntity>
   updateDocumentLastUpdateDate(id: EntityId): Promise<DocumentEntity>
   updateDocumentName(id: EntityId, newName: string): Promise<DocumentEntity>
+  deleteByIds(ids: EntityId[]): Promise<void>
 }
 
 
@@ -67,5 +68,11 @@ export const customDocumentRepository: CustomDocumentRepository = {
     existingDocument.updatedAt = new Date()
 
     return await this.save(existingDocument)
+  },
+
+  async deleteByIds(ids: EntityId[]): Promise<void> {
+    await this.delete({
+      id: In(ids),
+    })
   },
 }

@@ -2,10 +2,13 @@ import { useCallback } from "react"
 
 
 interface GoBackParams {
+  hasBlockingModal: boolean
   isSelectionMode: boolean
   exitSelection: () => void
   isNotificationPermissionDeniedModalVisible: boolean
   hideNotificationPermissionDeniedModal: () => void
+  isDeleteSelectedDocumentsModalVisible: boolean
+  hideDeleteSelectedDocumentsModal: () => void
 }
 
 
@@ -16,8 +19,7 @@ export function useGoBack(params: GoBackParams): GoBack {
 
 
   const goBack = useCallback(() => {
-    if (params.isSelectionMode) {
-      params.exitSelection()
+    if (params.hasBlockingModal) {
       return true
     }
 
@@ -26,12 +28,25 @@ export function useGoBack(params: GoBackParams): GoBack {
       return true
     }
 
+    if (params.isDeleteSelectedDocumentsModalVisible) {
+      params.hideDeleteSelectedDocumentsModal()
+      return true
+    }
+
+    if (params.isSelectionMode) {
+      params.exitSelection()
+      return true
+    }
+
     return false
   }, [
-    params.isSelectionMode,
-    params.exitSelection,
+    params.hasBlockingModal,
     params.isNotificationPermissionDeniedModalVisible,
     params.hideNotificationPermissionDeniedModal,
+    params.isDeleteSelectedDocumentsModalVisible,
+    params.hideDeleteSelectedDocumentsModal,
+    params.isSelectionMode,
+    params.exitSelection,
   ])
 
 

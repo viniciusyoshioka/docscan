@@ -167,6 +167,12 @@ export type TranslationKeyType =
   | "NotificationPermissionDeniedModal_description"
   | "NotificationPermissionDeniedModal_close"
   | "NotificationPermissionDeniedModal_allow"
+  // Home DeleteSelectedDocumentsModal
+  | "DeleteSelectedDocumentsModal_title"
+  | "DeleteSelectedDocumentsModal_description"
+  // Home ErrorDeletingSelectedDocumentsModal
+  | "ErrorDeletingSelectedDocumentsModal_title"
+  | "ErrorDeletingSelectedDocumentsModal_description"
 
     // Settings alert
   | "Settings_alert_errorSharingLogDatabase_text"

@@ -8,9 +8,17 @@ import { useSelectionMode } from "react-native-selection-mode"
 
 import { EntityId } from "@database"
 import { useBackHandler } from "@hooks"
+import { useLogger } from "@libs/logger"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
-import { DocumentsList, HomeHeader, NotificationPermissionDeniedModal } from "./components"
+import { stringifyError } from "@utils"
+import {
+  DeleteSelectedDocumentsModal,
+  DocumentsList,
+  ErrorDeletingSelectedDocumentsModal,
+  HomeHeader,
+  NotificationPermissionDeniedModal,
+} from "./components"
 import {
   useDeleteDocuments,
   useDocumentList,
@@ -24,8 +32,6 @@ import {
 } from "./hooks"
 
 
-// TODO: Check if loading modal can be used to other operations
-// TODO: Update isDeletingDocumentsModal
 // TODO add comunication with background service to alert when export is done
 // TODO add comunication with background service to alert when import is done
 export function Home() {
@@ -33,17 +39,28 @@ export function Home() {
 
   const safeAreaInsets = useSafeAreaInsets()
   const navigation = useNavigation<NavigationProps<"Home">>()
-
   const documentSelection = useSelectionMode<EntityId>()
+
+  const logger = useLogger()
 
   const documents = useDocumentList()
   const notificationPermissionDeniedModal = useModal()
+  const deleteSelectedDocumentsModal = useModal()
+  const errorDeletingSelectedDocumentsModal = useModal()
 
   const invertDocumentSelection = useInvertDocumentSelection({
     setSelectedData: documentSelection.setNewSelectedData,
     documents: documents.data,
   })
-  const deleteDocuments = useDeleteDocuments()
+  const deleteDocuments = useDeleteDocuments({
+    getSelectedDocumentIds: documentSelection.getSelectedData,
+    onSuccess: async () => await documents.loadDocuments(),
+    onError: async error => {
+      errorDeletingSelectedDocumentsModal.show()
+      const stringifiedError = stringifyError(error)
+      await logger.error(stringifiedError)
+    },
+  })
   const importDocuments = useImportDocuments()
   const exportDocuments = useExportDocuments()
   const mergeDocuments = useMergeDocuments()
@@ -60,10 +77,13 @@ export function Home() {
 
 
   const goBack = useGoBack({
+    hasBlockingModal: deleteDocuments.isLoading,
     isSelectionMode: documentSelection.isSelectionMode,
     exitSelection: documentSelection.exitSelection,
     isNotificationPermissionDeniedModalVisible: notificationPermissionDeniedModal.isVisible,
     hideNotificationPermissionDeniedModal: notificationPermissionDeniedModal.hide,
+    isDeleteSelectedDocumentsModalVisible: deleteSelectedDocumentsModal.isVisible,
+    hideDeleteSelectedDocumentsModal: deleteSelectedDocumentsModal.hide,
   })
 
   useBackHandler(goBack)
@@ -76,7 +96,7 @@ export function Home() {
         selectedDocumentsCount={documentSelection.length}
         exitSelection={documentSelection.exitSelection}
         invertSelection={invertDocumentSelection}
-        deleteDocuments={deleteDocuments}
+        deleteDocuments={deleteSelectedDocumentsModal.show}
         importDocuments={importDocuments}
         exportDocuments={exportDocuments}
         mergeDocuments={mergeDocuments}
@@ -107,14 +127,26 @@ export function Home() {
         onPress={() => navigation.navigate("Camera")}
       />
 
-      <LoadingModal
-        visible={false}
-        message={translate("Home_deletingDocuments")}
-      />
-
       <NotificationPermissionDeniedModal
         isVisible={notificationPermissionDeniedModal.isVisible}
         onDismiss={notificationPermissionDeniedModal.hide}
+      />
+
+      <DeleteSelectedDocumentsModal
+        isVisible={deleteSelectedDocumentsModal.isVisible}
+        onDismiss={deleteSelectedDocumentsModal.hide}
+        deleteSelectedDocuments={deleteDocuments.deleteDocuments}
+        exitSelection={documentSelection.exitSelection}
+      />
+
+      <LoadingModal
+        visible={deleteDocuments.isLoading}
+        message={translate("Home_deletingDocuments")}
+      />
+
+      <ErrorDeletingSelectedDocumentsModal
+        isVisible={errorDeletingSelectedDocumentsModal.isVisible}
+        onDismiss={errorDeletingSelectedDocumentsModal.hide}
       />
     </View>
   )

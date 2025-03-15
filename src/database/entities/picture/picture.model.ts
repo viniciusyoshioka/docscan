@@ -27,6 +27,14 @@ export class PictureModel {
     return pictures.map(PictureMapper.fromEntityToDto)
   }
 
+  async getFileNamesByDocumentIds(
+    documentIds: EntityId[],
+    transaction: EntityManager,
+  ): Promise<string[]> {
+    const pictureRepo = transaction.getRepository(PictureEntity).extend(customPictureRepository)
+    return await pictureRepo.getFileNamesByDocumentIds(documentIds)
+  }
+
   async create(params: {
     createDto: CreatePictureDTO
     transaction: EntityManager
@@ -51,5 +59,10 @@ export class PictureModel {
 
     const updatedPicture = await pictureRepo.updateFileName(id, fileName)
     return PictureMapper.fromEntityToDto(updatedPicture)
+  }
+
+  async deleteByDocumentIds(documentIds: EntityId[], transaction: EntityManager): Promise<void> {
+    const pictureRepo = transaction.getRepository(PictureEntity).extend(customPictureRepository)
+    await pictureRepo.deleteByDocumentIds(documentIds)
   }
 }

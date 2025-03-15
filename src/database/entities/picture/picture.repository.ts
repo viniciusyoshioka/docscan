@@ -1,4 +1,4 @@
-import { EntityManager, Repository } from "typeorm"
+import { EntityManager, In, Repository } from "typeorm"
 
 import { EntityNotFoundError } from "../../errors"
 import { EntityId } from "../../types"
@@ -10,8 +10,10 @@ import { PictureEntity } from "./picture.entity"
 export interface PictureRepository {
   transaction<T = unknown>(query: (tx: EntityManager) => Promise<T>): Promise<T>
   findByDocumentIdPaginated(params: GetPicturesByDocumentIdPaginatedBO): Promise<PictureDTO[]>
+  getFileNamesByDocumentIds(documentIds: EntityId[]): Promise<string[]>
   createPicture(createBo: CreatePictureBO): Promise<PictureEntity>
   updateFileName(id: EntityId, fileName: string): Promise<PictureEntity>
+  deleteByDocumentIds(documentIds: EntityId[]): Promise<void>
 }
 
 
@@ -43,6 +45,15 @@ export const customPictureRepository: CustomPictureRepository = {
     })
   },
 
+  async getFileNamesByDocumentIds(documentIds: EntityId[]): Promise<string[]> {
+    const pictures = await this.createQueryBuilder("pictures")
+      .select("file_name")
+      .where("document_id IN (:...documentIds)", { documentIds })
+      .getRawMany<{ file_name: string }>()
+
+    return pictures.map(picture => picture.file_name)
+  },
+
   async createPicture(createBo: CreatePictureBO): Promise<PictureEntity> {
     return await this.save(createBo)
   },
@@ -58,5 +69,11 @@ export const customPictureRepository: CustomPictureRepository = {
     existingPicture.fileName = fileName
 
     return await this.save(existingPicture)
+  },
+
+  async deleteByDocumentIds(documentIds: EntityId[]): Promise<void> {
+    await this.delete({
+      documentId: In(documentIds),
+    })
   },
 }

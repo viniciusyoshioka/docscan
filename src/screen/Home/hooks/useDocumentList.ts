@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useFocusEffect } from "@react-navigation/native"
+import { useCallback, useMemo, useState } from "react"
 import { useWindowDimensions } from "react-native"
 
 import { DocumentDTO, useEntityModels } from "@database"
@@ -118,9 +119,9 @@ export function useDocumentList(): DocumentList {
   }, [initialCountToLoad, status, hasLoadedAllDocuments, documentModel, data, logger])
 
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     loadDocuments(initialCountToLoad)
-  }, [])
+  }, []))
 
 
   return {
