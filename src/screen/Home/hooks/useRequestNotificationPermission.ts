@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from "react"
 
+import { useLogger } from "@libs/logger"
 import { getNotificationPermission } from "@services/permission"
 
 
@@ -13,12 +14,16 @@ export function useRequestNotificationPermission(
 ): void {
 
 
+  const logger = useLogger()
+
+
   const requestPermissions = useCallback(async () => {
     const hasPermission = await getNotificationPermission()
     if (!hasPermission) {
       params.onPermissionDenied()
+      await logger.debug("Notification permission denied")
     }
-  }, [params.onPermissionDenied])
+  }, [params.onPermissionDenied, logger])
 
 
   useEffect(() => {

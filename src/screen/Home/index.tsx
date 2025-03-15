@@ -1,5 +1,4 @@
 import { useNavigation } from "@react-navigation/native"
-import { useCallback } from "react"
 import { View } from "react-native"
 import { FAB } from "react-native-paper"
 import { LoadingModal, useModal } from "react-native-paper-towel"
@@ -67,12 +66,8 @@ export function Home() {
   const duplicateDocuments = useDuplicateDocuments()
 
 
-  const onNotificationPermissionDenied = useCallback(() => {
-    notificationPermissionDeniedModal.show()
-  }, [notificationPermissionDeniedModal.show])
-
   useRequestNotificationPermission({
-    onPermissionDenied: onNotificationPermissionDenied,
+    onPermissionDenied: notificationPermissionDeniedModal.show,
   })
 
 
