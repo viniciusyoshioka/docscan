@@ -18,7 +18,7 @@ export enum DocumentStatus {
 }
 
 
-type DocumentListState = {
+type DocumentList = {
   status: DocumentStatus
   data: DocumentDTO[]
   error?: Error
@@ -27,7 +27,7 @@ type DocumentListState = {
 }
 
 
-export function useDocuments(): DocumentListState {
+export function useDocumentList(): DocumentList {
 
 
   const { height } = useWindowDimensions()

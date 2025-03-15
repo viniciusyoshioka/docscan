@@ -13,7 +13,7 @@ import { NavigationProps } from "@router"
 import { DocumentsList, HomeHeader, NotificationPermissionDeniedModal } from "./components"
 import {
   useDeleteDocuments,
-  useDocuments,
+  useDocumentList,
   useDuplicateDocuments,
   useExportDocuments,
   useGoBack,
@@ -36,7 +36,7 @@ export function Home() {
 
   const documentSelection = useSelectionMode<EntityId>()
 
-  const documents = useDocuments()
+  const documents = useDocumentList()
   const notificationPermissionDeniedModal = useModal()
 
   const invertDocumentSelection = useInvertDocumentSelection({

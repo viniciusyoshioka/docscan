@@ -1,5 +1,5 @@
 export * from "./useDeleteDocuments"
-export * from "./useDocuments"
+export * from "./useDocumentList"
 export * from "./useDuplicateDocuments"
 export * from "./useExportDocuments"
 export * from "./useGoBack"
