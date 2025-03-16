@@ -1,8 +1,7 @@
-import { useNavigation } from "@react-navigation/native"
 import { Appbar } from "react-native-paper"
 
 import { translate } from "@locales"
-import { NavigationProps } from "@router"
+import { useGoBack } from "../../hooks"
 
 
 interface SettingsHeaderProps {}
@@ -11,12 +10,7 @@ interface SettingsHeaderProps {}
 export function SettingsHeader(props: SettingsHeaderProps) {
 
 
-  const navigation = useNavigation<NavigationProps<"Settings">>()
-
-
-  function goBack() {
-    navigation.navigate("Home")
-  }
+  const goBack = useGoBack()
 
 
   return (

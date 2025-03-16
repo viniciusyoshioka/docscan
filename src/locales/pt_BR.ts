@@ -179,7 +179,7 @@ export const pt_BR: TranslationObjectType = {
 
   // Settings alert
   Settings_alert_errorSharingLogDatabase_text: "Erro ao compartilhar logs",
-  Settings_alert_errorSharingAppDatabase_text: "Erro ao compartilhar banco de dados dos documentos",
+  Settings_alert_errorSharingAppDatabase_text: "Erro ao compartilhar banco de dados do aplicativo",
   // Settings header
   Settings_header_title: "Configurações",
   // Settings screen
@@ -188,7 +188,7 @@ export const pt_BR: TranslationObjectType = {
   Settings_shareLogDatabase_title: "Compartilhar logs",
   Settings_shareLogDatabase_text: "Enviar registro de erros",
   Settings_shareAppDatabase_title: "Compartilhar banco de dados",
-  Settings_shareAppDatabase_text: "Enviar banco de dados dos documentos",
+  Settings_shareAppDatabase_text: "Enviar banco de dados do aplicativo",
   Settings_appVersionInfo_title: "Versão do aplicativo",
   // Settings ChangeTheme
   ChangeTheme_title: "Mudar tema",

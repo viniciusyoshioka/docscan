@@ -1,17 +1,14 @@
 import { useNavigation } from "@react-navigation/core"
-import { useCallback } from "react"
-import { Alert, ScrollView, View, ViewStyle } from "react-native"
+import { ScrollView, View, ViewStyle } from "react-native"
 import { List } from "react-native-paper"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import Share from "react-native-share"
 
 import { useBackHandler } from "@hooks"
-import { useLogger } from "@libs/logger"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
 import { Constants } from "@services/constant"
-import { stringifyError } from "@utils"
 import { SettingsHeader } from "./components"
+import { useGoBack, useShareAppDatabase, useShareLogDatabase } from "./hooks"
 
 
 export { ChangeTheme } from "./modals"
@@ -23,48 +20,12 @@ export function Settings() {
   const navigation = useNavigation<NavigationProps<"Settings">>()
   const safeAreaInsets = useSafeAreaInsets()
 
-  const logger = useLogger()
+  const goBack = useGoBack()
+  const shareAppDatabase = useShareAppDatabase()
+  const shareLogDatabase = useShareLogDatabase()
 
 
-  const handleGoBack = useCallback(() => {
-    navigation.navigate("Home")
-    return true
-  }, [navigation])
-
-  useBackHandler(handleGoBack)
-
-
-  const shareLogDatabaseFile = useCallback(async () => {
-    try {
-      await Share.open({
-        type: "application/x-sqlite3",
-        url: `file://${Constants.logDatabaseFullPath}`,
-        failOnCancel: false,
-      })
-    } catch (error) {
-      Alert.alert(
-        translate("warn"),
-        translate("Settings_alert_errorSharingLogDatabase_text"),
-      )
-      await logger.error(`Error sharing log database file: "${stringifyError(error)}"`)
-    }
-  }, [logger])
-
-  const shareAppDatabaseFile = useCallback(async () => {
-    try {
-      await Share.open({
-        type: "application/x-sqlite3",
-        url: `file://${Constants.appDatabaseFullPath}`,
-        failOnCancel: false,
-      })
-    } catch (error) {
-      Alert.alert(
-        translate("warn"),
-        translate("Settings_alert_errorSharingAppDatabase_text"),
-      )
-      await logger.error(`Error sharing app database file: "${stringifyError(error)}"`)
-    }
-  }, [logger])
+  useBackHandler(goBack)
 
 
   const listItemStyle: ViewStyle = {
@@ -90,7 +51,7 @@ export function Settings() {
           left={() => <List.Icon icon={"receipt-text-clock-outline"} />}
           title={translate("Settings_shareLogDatabase_title")}
           description={translate("Settings_shareLogDatabase_text")}
-          onPress={shareLogDatabaseFile}
+          onPress={shareLogDatabase}
           style={listItemStyle}
         />
 
@@ -99,7 +60,7 @@ export function Settings() {
             left={() => <List.Icon icon={"receipt-text-clock-outline"} />}
             title={translate("Settings_shareAppDatabase_title")}
             description={translate("Settings_shareAppDatabase_text")}
-            onPress={shareAppDatabaseFile}
+            onPress={shareAppDatabase}
             style={listItemStyle}
           />
         )}

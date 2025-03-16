@@ -38,4 +38,8 @@ export class PathUtils {
   static joinFileNames(...fileNames: string[]): string {
     return fileNames.join(this.dot)
   }
+
+  static fullPathToFileProtocol(fullPath: string): string {
+    return `file://${fullPath}`
+  }
 }
