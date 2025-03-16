@@ -1,6 +1,7 @@
 import { useRoute } from "@react-navigation/native"
 import { FlashList, ListRenderItem } from "@shopify/flash-list"
 import { memo, useCallback, useMemo } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { ErrorLoadingList, ErrorLoadingMoreItems, LoadingMoreItems } from "@components"
 import { translate } from "@locales"
@@ -35,6 +36,7 @@ export const ImagesList = memo((props: ImagesListProps) => {
 
 
   const { params } = useRoute<RouteProps<"Gallery">>()
+  const safeAreaInsets = useSafeAreaInsets()
 
   const columnCount = useGalleryColumnCount()
   const imageItemSize = useImageItemSize()
@@ -147,6 +149,10 @@ export const ImagesList = memo((props: ImagesListProps) => {
       onEndReachedThreshold={0.05}
       onEndReached={onEndReached}
       ListFooterComponent={ListFooterComponent}
+      contentContainerStyle={{
+        paddingLeft: safeAreaInsets.left,
+        paddingRight: safeAreaInsets.right,
+      }}
     />
   )
 })
