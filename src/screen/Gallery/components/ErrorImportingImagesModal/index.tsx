@@ -25,7 +25,9 @@ export function ErrorImportingImagesModal(props: ErrorImportingImagesModalProps)
       </Dialog.Content>
 
       <Dialog.Actions>
-        <Button children={"Ok"} onPress={props.onDismiss} />
+        <Button onPress={props.onDismiss}>
+          {translate("ok")}
+        </Button>
       </Dialog.Actions>
     </Dialog>
   )
