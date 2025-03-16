@@ -12,6 +12,6 @@ export class LogEntity extends BaseEntity {
   @Column({ name: "message", type: "text" })
   message!: string
 
-  @Column({ name: "timestamp", type: "text", default: () => "CURRENT_TIMESTAMP" })
+  @Column({ name: "timestamp", type: "text", default: () => "strftime('%Y-%m-%d %H:%M:%f', 'now')" })
   timestamp!: Date
 }
