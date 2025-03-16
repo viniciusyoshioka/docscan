@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import { useWindowDimensions } from "react-native"
 
-import { useGalleryColumnCount } from "../../ImagesList/hooks"
+import { useGalleryColumnCount } from "../../../hooks"
 import { getImageItemSize } from "../utils"
 
 

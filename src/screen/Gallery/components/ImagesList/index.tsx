@@ -5,8 +5,13 @@ import { memo, useCallback, useMemo } from "react"
 import { ErrorLoadingList, ErrorLoadingMoreItems, LoadingMoreItems } from "@components"
 import { translate } from "@locales"
 import { RouteProps } from "@router"
-import { ImageItem, useImageItemSize } from "../ImageItem"
-import { EmptyImagesList, LoadingImagesList, NoImagesListPermission } from "./components"
+import {
+  EmptyImagesList,
+  ImageItem,
+  LoadingImagesList,
+  NoImagesListPermission,
+  useImageItemSize,
+} from "./components"
 import {
   ImagesListStatus,
   useGalleryColumnCount,
