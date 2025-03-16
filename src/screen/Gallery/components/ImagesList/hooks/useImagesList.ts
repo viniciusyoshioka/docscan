@@ -55,8 +55,6 @@ export function useImagesList(amountToLoadPerTime = 20): ImagesList {
       const hasReadMediaImagesPermission = await requestReadMediaImagesPermission()
       if (!hasReadMediaImagesPermission) {
         setStatus(ImagesListStatus.NO_PERMISSION)
-
-        await logger.debug("Cannot load images from gallery without 'READ_MEDIA_IMAGES' permission")
         return
       }
 
@@ -107,8 +105,6 @@ export function useImagesList(amountToLoadPerTime = 20): ImagesList {
         setStatus(ImagesListStatus.NO_PERMISSION)
         setError(undefined)
         setImages([])
-
-        await logger.debug("Cannot load more images from gallery without 'READ_MEDIA_IMAGES' permission")
         return
       }
 
