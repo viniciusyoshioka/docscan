@@ -3,7 +3,7 @@ import { Button, Text } from "react-native-paper"
 import { useStyles } from "react-native-unistyles"
 
 import { translate } from "@locales"
-import { GALLERY_HEADER_HEIGHT } from "../../../../components"
+import { GALLERY_HEADER_HEIGHT } from "../../../GalleryHeader"
 import { useRequestReadMediaImagesPermission } from "../../hooks"
 import { stylesheet } from "./styles"
 
@@ -46,17 +46,13 @@ export function NoImagesListPermission(props: NoImagesListPermissionProps) {
       </View>
 
       <View style={styles.buttonContainer}>
-        <Button
-          mode={"outlined"}
-          children={translate("Gallery_openSettings")}
-          onPress={Linking.openSettings}
-        />
+        <Button mode={"outlined"} onPress={Linking.openSettings}>
+          {translate("Gallery_openSettings")}
+        </Button>
 
-        <Button
-          mode={"contained"}
-          children={translate("Gallery_grantPermission")}
-          onPress={requestPermission}
-        />
+        <Button mode={"contained"} onPress={requestPermission}>
+          {translate("Gallery_grantPermission")}
+        </Button>
       </View>
     </ScrollView>
   )
