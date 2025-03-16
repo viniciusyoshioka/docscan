@@ -1,6 +1,6 @@
 import { CameraFlash, CameraPosition, CameraRatio } from "./types"
 
 
-export const defaultCameraFlash: CameraFlash = "off"
-export const defaultCameraPosition: CameraPosition = "back"
-export const defaultCameraRatio: CameraRatio = "4:3"
+export const defaultCameraFlash: CameraFlash = CameraFlash.OFF
+export const defaultCameraPosition: CameraPosition = CameraPosition.BACK
+export const defaultCameraRatio: CameraRatio = CameraRatio["4_3"]

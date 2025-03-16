@@ -1,6 +1,7 @@
 import { useMemo } from "react"
 import { Dimensions, StatusBar, ViewStyle, useWindowDimensions } from "react-native"
 
+import { CameraRatio } from "@libs/settings"
 import { getCameraSizeToFitInScreen } from "../../../utils"
 import { CAMERA_HEADER_HEIGHT } from "../../CameraHeader"
 import { ACTION_BUTTON_SIZE, CAPTURE_BUTTON_SIZE } from "../components"
@@ -25,7 +26,7 @@ export function useCameraControlStyle(isShowingCamera: boolean): CameraControlSt
   const defaultCameraSize = useMemo(() => (
     getCameraSizeToFitInScreen(
       { width: usableScreenWidth, height: usableScreenHeight },
-      "4:3",
+      CameraRatio["4_3"],
     )
   ), [usableScreenWidth, usableScreenHeight])
 

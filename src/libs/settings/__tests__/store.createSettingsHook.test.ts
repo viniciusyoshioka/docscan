@@ -5,7 +5,7 @@ import { PartialDeep } from "type-fest"
 
 import { MMKVStorage } from "../MMKVStorage"
 import { defaultSettings } from "../default"
-import { Theme } from "../settings"
+import { CameraFlash, CameraPosition, CameraRatio, Theme } from "../settings"
 import { createSettingsHook } from "../store"
 import { Settings, SettingsStore } from "../types"
 
@@ -54,7 +54,7 @@ describe("createSettingsHook", () => {
 
   describe("Testing the update of camera setting", () => {
     it("should update the flash setting with a new value", () => {
-      const newSettings: PartialDeep<Settings> = { camera: { flash: "on" } }
+      const newSettings: PartialDeep<Settings> = { camera: { flash: CameraFlash.ON } }
 
       act(() => {
         renderedUseSettings.result.current.setSettings(newSettings)
@@ -66,7 +66,7 @@ describe("createSettingsHook", () => {
     })
 
     it("should update the position setting with a new value", () => {
-      const newSettings: PartialDeep<Settings> = { camera: { position: "front" } }
+      const newSettings: PartialDeep<Settings> = { camera: { position: CameraPosition.FRONT } }
 
       act(() => {
         renderedUseSettings.result.current.setSettings(newSettings)
@@ -78,7 +78,7 @@ describe("createSettingsHook", () => {
     })
 
     it("should update the ratio setting with a new value", () => {
-      const newSettings: PartialDeep<Settings> = { camera: { ratio: "16:9" } }
+      const newSettings: PartialDeep<Settings> = { camera: { ratio: CameraRatio["16_9"] } }
 
       act(() => {
         renderedUseSettings.result.current.setSettings(newSettings)

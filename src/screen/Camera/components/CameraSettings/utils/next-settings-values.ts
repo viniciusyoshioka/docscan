@@ -6,9 +6,9 @@ type NextFlashSetting = {
 }
 
 export const nextFlashSetting: NextFlashSetting = {
-  auto: "on",
-  on: "off",
-  off: "auto",
+  [CameraFlash.AUTO]: CameraFlash.ON,
+  [CameraFlash.ON]: CameraFlash.OFF,
+  [CameraFlash.OFF]: CameraFlash.AUTO,
 }
 
 
@@ -17,8 +17,8 @@ type NextCameraPositionSetting = {
 }
 
 export const nextCameraPositionSetting: NextCameraPositionSetting = {
-  back: "front",
-  front: "back",
+  [CameraPosition.BACK]: CameraPosition.FRONT,
+  [CameraPosition.FRONT]: CameraPosition.BACK,
 }
 
 
@@ -27,6 +27,6 @@ type NextRatioSetting = {
 }
 
 export const nextRatioSetting: NextRatioSetting = {
-  "4:3": "16:9",
-  "16:9": "4:3",
+  [CameraRatio["4_3"]]: CameraRatio["16_9"],
+  [CameraRatio["16_9"]]: CameraRatio["4_3"],
 }

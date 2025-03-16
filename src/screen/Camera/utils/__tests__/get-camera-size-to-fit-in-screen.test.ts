@@ -12,7 +12,7 @@ describe("Test getCameraSizeToFitInScreen", () => {
 
 
   it("should return the correct camera size to fit in screen for '4:3' ratio", () => {
-    const cameraRatio: CameraRatio = "4:3"
+    const cameraRatio = CameraRatio["4_3"]
     const cameraSize = getCameraSizeToFitInScreen(screenSize, cameraRatio)
 
     expect(cameraSize).toEqual({
@@ -22,7 +22,7 @@ describe("Test getCameraSizeToFitInScreen", () => {
   })
 
   it("should return the correct camera size to fit in screen for '16:9' ratio", () => {
-    const cameraRatio: CameraRatio = "16:9"
+    const cameraRatio = CameraRatio["16_9"]
     const cameraSize = getCameraSizeToFitInScreen(screenSize, cameraRatio)
 
     expect(cameraSize).toEqual({
