@@ -8,9 +8,9 @@ export class DocumentEntity extends BaseEntity {
   @Column({ name: "name", type: "text" })
   name!: string
 
-  @Column({ name: "created_at", type: "text", default: () => "CURRENT_TIMESTAMP" })
+  @Column({ name: "created_at", type: "text", default: () => "strftime('%Y-%m-%d %H:%M:%f', 'now')" })
   createdAt!: Date
 
-  @Column({ name: "updated_at", type: "text", default: () => "CURRENT_TIMESTAMP" })
+  @Column({ name: "updated_at", type: "text", default: () => "strftime('%Y-%m-%d %H:%M:%f', 'now')" })
   updatedAt!: Date
 }
