@@ -55,7 +55,7 @@ export function Gallery() {
     <View style={{ flex: 1 }}>
       <GalleryHeader
         goBack={goBack}
-        exitSelectionMode={gallerySelection.exitSelection}
+        exitSelection={gallerySelection.exitSelection}
         importImages={importSelectedImages}
         isSelectionMode={gallerySelection.isSelectionMode}
         selectedImagesCount={gallerySelection.length}

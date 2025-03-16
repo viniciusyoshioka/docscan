@@ -9,7 +9,7 @@ export * from "./constants"
 
 interface GalleryHeaderProps {
   goBack: () => void
-  exitSelectionMode: () => void
+  exitSelection: () => void
   importImages: () => void
   isSelectionMode: boolean
   selectedImagesCount: number
@@ -24,7 +24,7 @@ export function GalleryHeader(props: GalleryHeaderProps) {
 
   if (props.isSelectionMode) return (
     <Appbar.Header elevated={true} statusBarHeight={safeAreaInsets.top}>
-      <Appbar.Action icon={"close"} onPress={props.exitSelectionMode} />
+      <Appbar.Action icon={"close"} onPress={props.exitSelection} />
       <Appbar.Content title={props.selectedImagesCount.toString()} />
       <Appbar.Action icon={"check"} onPress={props.importImages} />
     </Appbar.Header>
