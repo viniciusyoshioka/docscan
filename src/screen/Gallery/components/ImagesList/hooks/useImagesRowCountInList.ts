@@ -1,7 +1,7 @@
 import { useWindowDimensions } from "react-native"
 
 import { GALLERY_HEADER_HEIGHT } from "../../GalleryHeader"
-import { useImageItemSize } from "../../ImageItem"
+import { useImageItemSize } from "../components"
 
 
 export function useImagesRowCountInList(): number {
