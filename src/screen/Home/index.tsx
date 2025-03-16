@@ -29,8 +29,8 @@ import {
 } from "./hooks"
 
 
-// TODO add comunication with background service to alert when export is done
-// TODO add comunication with background service to alert when import is done
+// TODO: Add comunication with background service to alert when export is done
+// TODO: Add comunication with background service to alert when import is done
 export function Home() {
 
 
