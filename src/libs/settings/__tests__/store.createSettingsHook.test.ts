@@ -78,7 +78,7 @@ describe("createSettingsHook", () => {
     })
 
     it("should update the ratio setting with a new value", () => {
-      const newSettings: PartialDeep<Settings> = { camera: { ratio: CameraRatio["16_9"] } }
+      const newSettings: PartialDeep<Settings> = { camera: { ratio: CameraRatio.RATIO_16_9 } }
 
       act(() => {
         renderedUseSettings.result.current.setSettings(newSettings)

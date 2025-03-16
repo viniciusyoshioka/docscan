@@ -26,7 +26,7 @@ export function useCameraControlStyle(isShowingCamera: boolean): CameraControlSt
   const defaultCameraSize = useMemo(() => (
     getCameraSizeToFitInScreen(
       { width: usableScreenWidth, height: usableScreenHeight },
-      CameraRatio["4_3"],
+      CameraRatio.RATIO_4_3,
     )
   ), [usableScreenWidth, usableScreenHeight])
 

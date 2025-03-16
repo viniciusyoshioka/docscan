@@ -11,6 +11,6 @@ export enum CameraPosition {
 }
 
 export enum CameraRatio {
-  ["4_3"] = "4:3",
-  ["16_9"] = "16:9",
+  RATIO_4_3 = "4:3",
+  RATIO_16_9 = "16:9",
 }

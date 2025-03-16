@@ -27,6 +27,6 @@ type NextRatioSetting = {
 }
 
 export const nextRatioSetting: NextRatioSetting = {
-  [CameraRatio["4_3"]]: CameraRatio["16_9"],
-  [CameraRatio["16_9"]]: CameraRatio["4_3"],
+  [CameraRatio.RATIO_4_3]: CameraRatio.RATIO_16_9,
+  [CameraRatio.RATIO_16_9]: CameraRatio.RATIO_4_3,
 }
