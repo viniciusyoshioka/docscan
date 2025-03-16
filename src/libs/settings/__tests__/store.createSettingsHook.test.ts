@@ -5,6 +5,7 @@ import { PartialDeep } from "type-fest"
 
 import { MMKVStorage } from "../MMKVStorage"
 import { defaultSettings } from "../default"
+import { Theme } from "../settings"
 import { createSettingsHook } from "../store"
 import { Settings, SettingsStore } from "../types"
 
@@ -39,7 +40,7 @@ describe("createSettingsHook", () => {
 
   describe("Testing the update of theme setting", () => {
     it("should update the theme setting with a new value", () => {
-      const newSettings: PartialDeep<Settings> = { theme: "dark" }
+      const newSettings: PartialDeep<Settings> = { theme: Theme.DARK }
 
       act(() => {
         renderedUseSettings.result.current.setSettings(newSettings)

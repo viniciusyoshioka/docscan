@@ -1,4 +1,4 @@
-import { ThemeType } from "./types"
+import { Theme } from "./types"
 
 
-export const defaultTheme: ThemeType = "auto"
+export const defaultTheme: Theme = Theme.AUTO

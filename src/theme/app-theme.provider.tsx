@@ -9,13 +9,16 @@ import { useColorScheme } from "react-native"
 import { MD3DarkTheme, MD3LightTheme, MD3Theme, PaperProvider } from "react-native-paper"
 import { UnistylesRuntime } from "react-native-unistyles"
 
-import { useSettings } from "@libs/settings"
+import { Theme, useSettings } from "@libs/settings"
 import { AppThemeDark } from "./app-theme.dark"
 import { AppThemeLight } from "./app-theme.light"
 import { AppTheme } from "./app-theme.types"
 
 
-type ThemeName = "light" | "dark"
+enum ThemeName {
+  LIGHT = "light",
+  DARK = "dark",
+}
 
 type ThemeObject = {
   appTheme: AppTheme
@@ -53,9 +56,9 @@ export function AppThemeProvider(props: PropsWithChildren) {
 
 
   const currentThemeName = useMemo<ThemeName>(() => {
-    const isDeviceThemeDark = (settings.theme === "auto" && deviceTheme === "dark")
-    const isAppThemeDark = settings.theme === "dark"
-    return (isDeviceThemeDark || isAppThemeDark) ? "dark" : "light"
+    const isDeviceThemeDark = settings.theme === Theme.AUTO && deviceTheme === "dark"
+    const isAppThemeDark = settings.theme === Theme.DARK
+    return (isDeviceThemeDark || isAppThemeDark) ? ThemeName.DARK : ThemeName.LIGHT
   }, [settings.theme, deviceTheme])
 
   const currentThemeObject = useMemo<ThemeObject>(() => (
@@ -64,7 +67,7 @@ export function AppThemeProvider(props: PropsWithChildren) {
 
 
   useEffect(() => {
-    if (currentThemeName === "dark") {
+    if (currentThemeName === ThemeName.DARK) {
       UnistylesRuntime.setTheme("dark")
     } else {
       UnistylesRuntime.setTheme("light")

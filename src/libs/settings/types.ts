@@ -1,6 +1,6 @@
 import { PartialDeep } from "type-fest"
 
-import { CameraFlash, CameraPosition, CameraRatio, ThemeType } from "./settings"
+import { CameraFlash, CameraPosition, CameraRatio, Theme } from "./settings"
 
 
 export type Settings = {
@@ -9,7 +9,7 @@ export type Settings = {
     position: CameraPosition
     ratio: CameraRatio
   }
-  theme: ThemeType
+  theme: Theme
 }
 
 

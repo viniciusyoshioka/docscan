@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native"
 import { useState } from "react"
 import { Button, Dialog, RadioButton } from "react-native-paper"
 
-import { ThemeType, useSettings } from "@libs/settings"
+import { Theme, useSettings } from "@libs/settings"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
 
@@ -13,11 +13,12 @@ export function ChangeTheme() {
   const navigation = useNavigation<NavigationProps<"ChangeTheme">>()
 
   const { settings, setSettings } = useSettings()
-  const [newTheme, setNewTheme] = useState<ThemeType>(settings.theme)
+  const [newTheme, setNewTheme] = useState(settings.theme)
 
 
-  function selectNewTheme(newTheme: string) {
-    setNewTheme(newTheme as ThemeType)
+  function selectNewTheme(value: string) {
+    const selectedNewTheme = value as Theme
+    setNewTheme(selectedNewTheme)
   }
 
   function cancelThemeChange() {
@@ -37,40 +38,35 @@ export function ChangeTheme() {
       </Dialog.Title>
 
       <Dialog.Content>
-        <RadioButton.Group
-          value={newTheme}
-          onValueChange={selectNewTheme}
-        >
+        <RadioButton.Group value={newTheme} onValueChange={selectNewTheme}>
           <RadioButton.Item
             label={translate("ChangeTheme_auto")}
-            value={"auto"}
+            value={Theme.AUTO}
             style={{ paddingHorizontal: 0 }}
           />
 
           <RadioButton.Item
             label={translate("ChangeTheme_light")}
-            value={"light"}
+            value={Theme.LIGHT}
             style={{ paddingHorizontal: 0 }}
           />
 
           <RadioButton.Item
             label={translate("ChangeTheme_dark")}
-            value={"dark"}
+            value={Theme.DARK}
             style={{ paddingHorizontal: 0 }}
           />
         </RadioButton.Group>
       </Dialog.Content>
 
       <Dialog.Actions>
-        <Button
-          children={translate("cancel")}
-          onPress={cancelThemeChange}
-        />
+        <Button onPress={cancelThemeChange}>
+          {translate("cancel")}
+        </Button>
 
-        <Button
-          children={translate("ok")}
-          onPress={updateTheme}
-        />
+        <Button onPress={updateTheme}>
+          {translate("ok")}
+        </Button>
       </Dialog.Actions>
     </Dialog>
   )

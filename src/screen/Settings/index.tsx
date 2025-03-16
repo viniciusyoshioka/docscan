@@ -11,7 +11,7 @@ import { SettingsHeader } from "./components"
 import { useGoBack, useShareAppDatabase, useShareLogDatabase } from "./hooks"
 
 
-export { ChangeTheme } from "./modals"
+export * from "./modals"
 
 
 export function Settings() {
