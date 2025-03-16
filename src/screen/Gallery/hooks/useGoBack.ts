@@ -5,6 +5,7 @@ import { NavigationProps } from "@router"
 
 
 interface GoBackParams {
+  hasBlockingModal: boolean
   isSelectionMode: boolean
   exitSelection: () => void
   isErrorImportingImagesModalVisible: boolean
@@ -22,6 +23,10 @@ export function useGoBack(params: GoBackParams): GoBack {
 
 
   const goBack = useCallback((): boolean => {
+    if (params.hasBlockingModal) {
+      return true
+    }
+
     if (params.isErrorImportingImagesModalVisible) {
       params.hideErrorImportingImagesModal()
       return true
@@ -35,6 +40,7 @@ export function useGoBack(params: GoBackParams): GoBack {
     navigation.goBack()
     return true
   }, [
+    params.hasBlockingModal,
     params.isErrorImportingImagesModalVisible,
     params.hideErrorImportingImagesModal,
     params.isSelectionMode,
