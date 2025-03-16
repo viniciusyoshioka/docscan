@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { ErrorLoadingList, ErrorLoadingMoreItems, LoadingMoreItems } from "@components"
 import { translate } from "@locales"
-import { RouteProps } from "@router"
+import { PictureAction, RouteProps } from "@router"
 import {
   EmptyImagesList,
   ImageItem,
@@ -20,6 +20,17 @@ import {
   useImagesList,
   useImagesRowCountInList,
 } from "./hooks"
+
+
+interface ExtraData {
+  importSingleImage: (imagePath: string) => Promise<void>
+  selectItem: (imagePath: string) => void
+  deselectItem: (imagePath: string) => void
+  isItemSelected: (imagePath: string) => boolean
+  isSelectionMode: boolean
+  action: PictureAction
+  imageItemSize: number
+}
 
 
 interface ImagesListProps {
@@ -49,22 +60,38 @@ export const ImagesList = memo((props: ImagesListProps) => {
     await props.importImages([imagePath])
   }, [props.importImages])
 
-  const renderItem: ListRenderItem<string> = useCallback(({ item }) => {
+  const renderItem: ListRenderItem<string> = useCallback(info => {
     // TODO: Check if is required to replace inline functions with useCallback
     // TODO: Update react-native-selection-mode to allow passing the functions to the component
     // and the useSelectableItem passes the value to these funcions
+
+    const imagePath = info.item
+    const extraData = info.extraData as ExtraData
+
     return (
       <ImageItem
-        onClick={async () => await props.importImages([item])}
-        onSelect={() => props.selectItem(item)}
-        onDeselect={() => props.deselectItem(item)}
-        isSelectionMode={props.isSelectionMode}
-        isSelected={props.isItemSelected(item)}
-        imagePath={item}
-        action={params.action}
-        imageItemSize={imageItemSize}
+        onClick={async () => await extraData.importSingleImage(imagePath)}
+        onSelect={() => extraData.selectItem(imagePath)}
+        onDeselect={() => extraData.deselectItem(imagePath)}
+        isSelectionMode={extraData.isSelectionMode}
+        isSelected={extraData.isItemSelected(imagePath)}
+        imagePath={imagePath}
+        action={extraData.action}
+        imageItemSize={extraData.imageItemSize}
       />
     )
+  }, [])
+
+  const extraData = useMemo<ExtraData>(() => {
+    return {
+      importSingleImage,
+      selectItem: props.selectItem,
+      deselectItem: props.deselectItem,
+      isSelectionMode: props.isSelectionMode,
+      isItemSelected: props.isItemSelected,
+      action: params.action,
+      imageItemSize,
+    }
   }, [
     importSingleImage,
     props.selectItem,
@@ -74,10 +101,6 @@ export const ImagesList = memo((props: ImagesListProps) => {
     params.action,
     imageItemSize,
   ])
-
-  const extraData = useMemo(() => {
-    return [renderItem]
-  }, [renderItem])
 
   const keyExtractor = useCallback((item: string) => {
     return item
@@ -136,7 +159,6 @@ export const ImagesList = memo((props: ImagesListProps) => {
   if (imagesList.status === ImagesListStatus.IS_EMPTY) {
     return <EmptyImagesList />
   }
-
 
   return (
     <FlashList
