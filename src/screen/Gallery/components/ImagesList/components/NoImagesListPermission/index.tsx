@@ -1,5 +1,6 @@
 import { Linking, ScrollView, useWindowDimensions, View, ViewStyle } from "react-native"
 import { Button, Text } from "react-native-paper"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useStyles } from "react-native-unistyles"
 
 import { translate } from "@locales"
@@ -15,6 +16,7 @@ export function NoImagesListPermission(props: NoImagesListPermissionProps) {
 
 
   const { height } = useWindowDimensions()
+  const safeAreaInsets = useSafeAreaInsets()
   const { styles } = useStyles(stylesheet)
 
   const requestPermission = useRequestReadMediaImagesPermission()
@@ -22,6 +24,8 @@ export function NoImagesListPermission(props: NoImagesListPermissionProps) {
 
   const scrollScreenContentContainerStyle: ViewStyle = {
     minHeight: height - GALLERY_HEADER_HEIGHT,
+    paddingLeft: safeAreaInsets.left,
+    paddingRight: safeAreaInsets.right,
   }
 
 
