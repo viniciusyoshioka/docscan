@@ -12,30 +12,33 @@ interface GoBackParams {
 }
 
 
-export function useGoBack(params: GoBackParams) {
+type GoBack = () => boolean
+
+
+export function useGoBack(params: GoBackParams): GoBack {
 
 
   const navigation = useNavigation<NavigationProps<"Gallery">>()
 
 
   const goBack = useCallback((): boolean => {
-    if (params.isSelectionMode) {
-      params.exitSelection()
+    if (params.isErrorImportingImagesModalVisible) {
+      params.hideErrorImportingImagesModal()
       return true
     }
 
-    if (params.isErrorImportingImagesModalVisible) {
-      params.hideErrorImportingImagesModal()
+    if (params.isSelectionMode) {
+      params.exitSelection()
       return true
     }
 
     navigation.goBack()
     return true
   }, [
-    params.isSelectionMode,
-    params.exitSelection,
     params.isErrorImportingImagesModalVisible,
     params.hideErrorImportingImagesModal,
+    params.isSelectionMode,
+    params.exitSelection,
     navigation.goBack,
   ])
 
