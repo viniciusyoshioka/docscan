@@ -1,3 +1,4 @@
+import { TimeUtils } from "@utils"
 import { DateFormatter } from "../date-formatter.interface"
 import { DateTimeSeparators, StandardDateFormatterOptions } from "./standard-date-formatter.types"
 
@@ -119,8 +120,18 @@ export class StandardDateFormatter implements DateFormatter {
     if (date instanceof Date) {
       return date
     }
-    if (typeof date === "number" || typeof date === "string") {
+    if (typeof date === "number") {
       return new Date(date)
+    }
+    if (typeof date === "string") {
+      const parsedDate = new Date(date)
+
+      const timezoneOffset = parsedDate.getTimezoneOffset()
+      const timezoneOffsetInMs = TimeUtils.minutesToMilisseconds(timezoneOffset)
+      const timeAfterTimezoneCorrection = parsedDate.getTime() - timezoneOffsetInMs
+      parsedDate.setTime(timeAfterTimezoneCorrection)
+
+      return parsedDate
     }
     return new Date()
   }
