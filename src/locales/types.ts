@@ -12,18 +12,18 @@ export type TranslationKeyType =
   | "clickHereToTryAgain"
   | "error"
 
-    // Database
+  // Database
   | "Database_errorInitializingDatabase"
   | "Database_errorOpeningDatabase"
 
-    // App alert
+  // App alert
   | "App_alert_errorLoadingTheme_text"
   | "App_alert_errorSavingTheme_text"
 
-    // Camera alert
+  // Camera alert
   | "Camera_alert_unsavedPictures_text"
   | "Camera_alert_unknownErrorTakingPicture_text"
-    // Camera screen
+  // Camera screen
   | "Camera_noPermission"
   | "Camera_allowCameraWithGrantPermission"
   | "Camera_allowCameraThroughSettings"
@@ -31,7 +31,7 @@ export type TranslationKeyType =
   | "Camera_openSettings"
   | "Camera_grantPermission"
   | "Camera_noCameraAvailable"
-    // Camera CameraSettings alert
+  // Camera CameraSettings alert
   | "CameraSettings_alert_errorSavingNewFlashSetting_text"
   | "CameraSettings_alert_errorSavingNewWhiteBalanceSetting_text"
   | "CameraSettings_alert_errorSavingNewCameraTypeSetting_text"
@@ -41,7 +41,7 @@ export type TranslationKeyType =
   | "CameraSettings_alert_errorResetingCameraTypeSetting_text"
   | "CameraSettings_alert_errorResetingCameraIdSetting_text"
   | "CameraSettings_alert_errorResetingRatioSetting_text"
-    // Camera CameraSettings
+  // Camera CameraSettings
   | "CameraSettings_frontalCamera"
   | "CameraSettings_backCamera"
   | "CameraSettings_flip"
@@ -50,7 +50,7 @@ export type TranslationKeyType =
   | "CameraSettings_whiteBalance"
   | "CameraSettings_reset"
 
-    // EditDocument alert
+  // EditDocument alert
   | "EditDocument_alert_errorLoadingDocument_text"
   | "EditDocument_alert_errorLoadingDocumentPicture_text"
   | "EditDocument_alert_emptyDocument_text"
@@ -70,41 +70,41 @@ export type TranslationKeyType =
   | "EditDocument_alert_errorDeletingSelectedPictures_text"
   | "EditDocument_alert_deletePicture_title"
   | "EditDocument_alert_deletePicture_text"
-    // EditDocument screen
+  // EditDocument screen
   | "EditDocument_shareDocument"
   | "EditDocument_deletingPictures"
   | "EditDocument_emptyDocument"
   | "EditDocument_errorLoadingMorePictures_title"
   | "EditDocument_errorLoadingPictures_text"
-    // EditDocument menu
+  // EditDocument menu
   | "EditDocument_menu_convertToPdf"
   | "EditDocument_menu_sharePdf"
   | "EditDocument_menu_visualizePdf"
   | "EditDocument_menu_rename"
   | "EditDocument_menu_deletePdf"
-    // EditDocument ConvertPdfOption alert
+  // EditDocument ConvertPdfOption alert
   | "ConvertPdfOption_alert_noDocumentOpened_text"
   | "ConvertPdfOption_alert_documentWithoutPictures_text"
   | "ConvertPdfOption_alert_noPermissionToConvertToPdf_text"
-    // EditDocument ConvertPdfOption
+  // EditDocument ConvertPdfOption
   | "ConvertPdfOption_title"
   | "ConvertPdfOption_description"
   | "ConvertPdfOption_highCompression"
   | "ConvertPdfOption_lowCompression"
   | "ConvertPdfOption_customCompression"
-    // EditDocument RenameDocument
+  // EditDocument RenameDocument
   | "RenameDocument_title"
   | "RenameDocument_documentName_placeholder"
 
-    // Gallery alert
+  // Gallery alert
   | "Gallery_alert_noPermissionForGallery_text"
   | "Gallery_alert_errorOpeningGallery_text"
   | "Gallery_alert_noPermissionToImportSingle_text"
   | "Gallery_alert_unknownErrorImportingSingle_text"
   | "Gallery_alert_noPermissionToImportMultiple_text"
-    // Gallery header
+  // Gallery header
   | "Gallery_header_title"
-    // Gallery screen
+  // Gallery screen
   | "Gallery_noPermission"
   | "Gallery_photoAccessPermissionDescription"
   | "Gallery_allowPhotoAccessWithGrantPermission"
@@ -118,11 +118,11 @@ export type TranslationKeyType =
   | "Gallery_errorLoadingMoreImages_text"
   | "Gallery_emptyGallery"
   | "Gallery_importingPictures"
-    // Gallery ErrorImportingImagesModal
+  // Gallery ErrorImportingImagesModal
   | "ErrorImportingImagesModal_title"
   | "ErrorImportingImagesModal_text"
 
-    // Home alert
+  // Home alert
   | "Home_alert_errorLoadingDocuments_text"
   | "Home_alert_errorDeletingSelectedDocuments_text"
   | "Home_alert_deleteDocuments_title"
@@ -143,9 +143,9 @@ export type TranslationKeyType =
   | "Home_alert_duplicateDocuments_text"
   | "Home_alert_notificationPermissionDenied_title"
   | "Home_alert_notificationPermissionDenied_text"
-    // Home header
+  // Home header
   | "Home_header_title"
-    // Home screen
+  // Home screen
   | "Home_export"
   | "Home_merge"
   | "Home_duplicate"
@@ -156,13 +156,13 @@ export type TranslationKeyType =
   | "Home_errorLoadingDocuments_title"
   | "Home_errorLoadingDocuments_text"
   | "Home_errorLoadingDocuments_tryAgain"
-    // Home menu
+  // Home menu
   | "Home_menu_importDocument"
   | "Home_menu_exportDocument"
   | "Home_menu_settings"
   | "Home_menu_mergeDocument"
   | "Home_menu_duplicateDocument"
-    // Home NotificationPermissionDeniedModal
+  // Home NotificationPermissionDeniedModal
   | "NotificationPermissionDeniedModal_title"
   | "NotificationPermissionDeniedModal_description"
   | "NotificationPermissionDeniedModal_close"
@@ -174,12 +174,12 @@ export type TranslationKeyType =
   | "ErrorDeletingSelectedDocumentsModal_title"
   | "ErrorDeletingSelectedDocumentsModal_description"
 
-    // Settings alert
+  // Settings alert
   | "Settings_alert_errorSharingLogDatabase_text"
   | "Settings_alert_errorSharingAppDatabase_text"
-    // Settings header
+  // Settings header
   | "Settings_header_title"
-    // Settings screen
+  // Settings screen
   | "Settings_theme_title"
   | "Settings_theme_text"
   | "Settings_shareLogDatabase_title"
@@ -187,13 +187,13 @@ export type TranslationKeyType =
   | "Settings_shareAppDatabase_title"
   | "Settings_shareAppDatabase_text"
   | "Settings_appVersionInfo_title"
-    // Settings ChangeTheme
+  // Settings ChangeTheme
   | "ChangeTheme_title"
   | "ChangeTheme_auto"
   | "ChangeTheme_light"
   | "ChangeTheme_dark"
 
-    // VisualizePicture alert
+  // VisualizePicture alert
   | "VisualizePicture_alert_errorSavingRotatedImage_text"
   | "VisualizePicture_alert_errorCroppingImage_text"
   | "VisualizePicture_alert_warnCurrentPicture_text"
@@ -202,7 +202,7 @@ export type TranslationKeyType =
   // document state
   | "untitleDocument"
 
-    // document service
+  // document service
   | "document_newDocumentName"
   | "document_exportedDocumentName"
   | "document_alert_errorSavingDocument_text"
@@ -211,7 +211,7 @@ export type TranslationKeyType =
   | "document_notification_copyingImages_title"
   | "document_notification_movingImages_title"
   | "document_notification_exportingDocuments_title"
-    // Log service
+  // Log service
   | "log_alert_reportCriticalError_text"
 
 
