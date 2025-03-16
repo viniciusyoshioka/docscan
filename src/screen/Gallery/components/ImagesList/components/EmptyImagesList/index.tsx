@@ -6,6 +6,7 @@ import { translate } from "@locales"
 interface EmptyImagesListProps {}
 
 
+// TODO: Replace EmptyScreen component after update the library
 export function EmptyImagesList(props: EmptyImagesListProps) {
   return (
     <EmptyScreen.Content visible={true}>
