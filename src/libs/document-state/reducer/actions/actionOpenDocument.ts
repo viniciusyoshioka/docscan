@@ -9,7 +9,9 @@ export const openDocument: DocumentStateActionFunction<"openDocument"> = (state,
   }
 
   const { document, picture } = payload
-  const pictures: PictureDTO[] = picture ? [picture] : []
+  const pictures: PictureDTO[] = picture
+    ? Array.isArray(picture) ? picture : [picture]
+    : []
 
   return { document, pictures }
 }

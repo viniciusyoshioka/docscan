@@ -1,7 +1,12 @@
 import { EntityManager } from "typeorm"
 
 import { EntityId } from "../../types"
-import { CreatePictureDTO, GetPicturesByDocumentIdPaginatedDTO, PictureDTO } from "./dto"
+import {
+  CreateManyPicturesDTO,
+  CreatePictureDTO,
+  GetPicturesByDocumentIdPaginatedDTO,
+  PictureDTO,
+} from "./dto"
 import { PictureEntity } from "./picture.entity"
 import { PictureMapper } from "./picture.mapper"
 import { customPictureRepository, PictureRepository } from "./picture.repository"
@@ -48,6 +53,21 @@ export class PictureModel {
 
     const createdPicture = await pictureRepo.createPicture(createBo)
     return PictureMapper.fromEntityToDto(createdPicture)
+  }
+
+  async createMany(params: {
+    createManyDto: CreateManyPicturesDTO
+    transaction: EntityManager
+  }): Promise<PictureDTO[]> {
+    const { createManyDto, transaction } = params
+
+    const pictureRepo = transaction.getRepository(PictureEntity).extend(customPictureRepository)
+    const createManyBo = PictureMapper.fromCreateManyDtoToCreateBo(createManyDto)
+
+    // TODO: Add validation
+
+    const createdPictures = await pictureRepo.createManyPictures(createManyBo)
+    return createdPictures.map(PictureMapper.fromEntityToDto)
   }
 
   async updateFileName(

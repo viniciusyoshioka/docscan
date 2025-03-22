@@ -4,9 +4,7 @@ import { LoadingModal, useModal } from "react-native-paper-towel"
 import { useSelectionMode } from "react-native-selection-mode"
 
 import { useBackHandler } from "@hooks"
-import { useLogger } from "@libs/logger"
 import { translate } from "@locales"
-import { stringifyError } from "@utils"
 import { ErrorImportingImagesModal, GalleryHeader, ImagesList } from "./components"
 import { useGoBack, useImportImages } from "./hooks"
 
@@ -16,36 +14,25 @@ export function Gallery() {
 
 
   const gallerySelection = useSelectionMode<string>()
-
-  const logger = useLogger()
-
   const errorImportingImagesModal = useModal()
 
 
-  const onErrorImportingImages = useCallback(async (error: Error) => {
-    const errorMessage = stringifyError(error)
-
-    errorImportingImagesModal.show()
-    await logger.error(`Error importing images: ${errorMessage}`)
-  }, [errorImportingImagesModal.show, logger])
-
-
-  const goBack = useGoBack({
-    isSelectionMode: gallerySelection.isSelectionMode,
-    exitSelection: gallerySelection.exitSelection,
-    isErrorImportingImagesModalVisible: errorImportingImagesModal.isVisible,
-    hideErrorImportingImagesModal: errorImportingImagesModal.hide,
-  })
-
   const importImages = useImportImages({
-    onError: onErrorImportingImages,
+    onError: errorImportingImagesModal.show,
   })
-
 
   const importSelectedImages = useCallback(async () => {
     const selectedImagesPath = gallerySelection.getSelectedData()
     await importImages.importImages(selectedImagesPath)
   }, [gallerySelection.getSelectedData, importImages.importImages])
+
+  const goBack = useGoBack({
+    hasBlockingModal: importImages.isImporting,
+    isSelectionMode: gallerySelection.isSelectionMode,
+    exitSelection: gallerySelection.exitSelection,
+    isErrorImportingImagesModalVisible: errorImportingImagesModal.isVisible,
+    hideErrorImportingImagesModal: errorImportingImagesModal.hide,
+  })
 
 
   useBackHandler(goBack)

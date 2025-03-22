@@ -1,5 +1,14 @@
-import { CreatePictureBO, GetPicturesByDocumentIdPaginatedBO } from "./bo"
-import { CreatePictureDTO, GetPicturesByDocumentIdPaginatedDTO, PictureDTO } from "./dto"
+import {
+  CreateManyPicturesBO,
+  CreatePictureBO,
+  GetPicturesByDocumentIdPaginatedBO,
+} from "./bo"
+import {
+  CreateManyPicturesDTO,
+  CreatePictureDTO,
+  GetPicturesByDocumentIdPaginatedDTO,
+  PictureDTO,
+} from "./dto"
 import { PictureEntity } from "./picture.entity"
 
 
@@ -27,6 +36,14 @@ export class PictureMapper {
     const bo = new CreatePictureBO()
     bo.fileName = dto.fileName
     bo.position = dto.position
+    bo.documentId = dto.documentId
+    return bo
+  }
+
+  static fromCreateManyDtoToCreateBo(dto: CreateManyPicturesDTO): CreateManyPicturesBO {
+    const bo = new CreateManyPicturesBO()
+    bo.fileNames = dto.fileNames
+    bo.existingPicturesCount = dto.existingPicturesCount
     bo.documentId = dto.documentId
     return bo
   }

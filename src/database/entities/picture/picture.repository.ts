@@ -2,7 +2,7 @@ import { EntityManager, In, Repository } from "typeorm"
 
 import { EntityNotFoundError } from "../../errors"
 import { EntityId } from "../../types"
-import { CreatePictureBO, GetPicturesByDocumentIdPaginatedBO } from "./bo"
+import { CreateManyPicturesBO, CreatePictureBO, GetPicturesByDocumentIdPaginatedBO } from "./bo"
 import { PictureDTO } from "./dto"
 import { PictureEntity } from "./picture.entity"
 
@@ -12,6 +12,7 @@ export interface PictureRepository {
   findByDocumentIdPaginated(params: GetPicturesByDocumentIdPaginatedBO): Promise<PictureDTO[]>
   getFileNamesByDocumentIds(documentIds: EntityId[]): Promise<string[]>
   createPicture(createBo: CreatePictureBO): Promise<PictureEntity>
+  createManyPictures(createManyBo: CreateManyPicturesBO): Promise<PictureEntity[]>
   updateFileName(id: EntityId, fileName: string): Promise<PictureEntity>
   deleteByDocumentIds(documentIds: EntityId[]): Promise<void>
 }
@@ -56,6 +57,18 @@ export const customPictureRepository: CustomPictureRepository = {
 
   async createPicture(createBo: CreatePictureBO): Promise<PictureEntity> {
     return await this.save(createBo)
+  },
+
+  async createManyPictures(createManyBo: CreateManyPicturesBO): Promise<PictureEntity[]> {
+    const { fileNames, existingPicturesCount, documentId } = createManyBo
+
+    const pictiresToCreate = fileNames.map<CreatePictureBO>((fileName, index) => ({
+      fileName,
+      position: existingPicturesCount + index,
+      documentId,
+    }))
+
+    return await this.save(pictiresToCreate)
   },
 
   async updateFileName(id: EntityId, fileName: string): Promise<PictureEntity> {

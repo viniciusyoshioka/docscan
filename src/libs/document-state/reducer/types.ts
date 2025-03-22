@@ -14,7 +14,7 @@ type DocumentStateActionsPayload = {
 
   openDocument: {
     document: DocumentDTO
-    picture?: PictureDTO
+    picture?: PictureDTO | PictureDTO[]
   }
   renameDocument: {
     document: DocumentDTO
