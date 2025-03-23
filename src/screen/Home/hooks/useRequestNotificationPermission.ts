@@ -20,8 +20,8 @@ export function useRequestNotificationPermission(
   const requestPermissions = useCallback(async () => {
     const hasPermission = await getNotificationPermission()
     if (!hasPermission) {
-      params.onPermissionDenied()
       await logger.debug("Notification permission denied")
+      params.onPermissionDenied()
     }
   }, [params.onPermissionDenied, logger])
 
