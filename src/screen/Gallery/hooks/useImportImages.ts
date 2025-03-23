@@ -104,7 +104,9 @@ export function useImportImages(params: ImportImagesParams): ImportImages {
     }
 
     const data = await documentModel.transaction(async tx => {
-      const picturesFileNames = imagesPath.map(PathUtils.getFileNameFromPath)
+      const picturesFileNames = imagesPath.map(imagePath => {
+        return PathUtils.getFileNameFromPath(imagePath)
+      })
 
       const createdPictures = await pictureModel.createMany({
         createManyDto: {
@@ -146,7 +148,9 @@ export function useImportImages(params: ImportImagesParams): ImportImages {
       })
 
 
-      const picturesFileNames = imagesPath.map(PathUtils.getFileNameFromPath)
+      const picturesFileNames = imagesPath.map(imagePath => {
+        return PathUtils.getFileNameFromPath(imagePath)
+      })
 
       const createdPictures = await pictureModel.createMany({
         createManyDto: {

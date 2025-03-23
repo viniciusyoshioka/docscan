@@ -1,5 +1,6 @@
 import { CameraRoll } from "@react-native-camera-roll/camera-roll"
 import { useCallback, useEffect, useRef, useState } from "react"
+import RNFS from "react-native-fs"
 
 import { useLogger } from "@libs/logger"
 import { normalizeError, stringifyError } from "@utils"
@@ -41,6 +42,17 @@ export function useImagesList(amountToLoadPerTime = 20): ImagesList {
   const requestReadMediaImagesPermission = useRequestReadMediaImagesPermission()
 
 
+  const fromUriToFullPath = useCallback(async (imagesUri: string[]): Promise<string[]> => {
+    const fullPaths: string[] = []
+
+    for (const uri of imagesUri) {
+      const uriStatus = await RNFS.stat(uri)
+      fullPaths.push(uriStatus.originalFilepath)
+    }
+
+    return fullPaths
+  }, [])
+
   const loadImages = useCallback(async () => {
     if (status === ImagesListStatus.IS_LOADING) return
     if (status === ImagesListStatus.IS_LOADING_MORE) return
@@ -65,7 +77,8 @@ export function useImagesList(amountToLoadPerTime = 20): ImagesList {
       })
 
       const hasLoadedAllImagesFromGallery = !photoIdentifier.page_info.has_next_page
-      const imagesLoaded = photoIdentifier.edges.map(edge => edge.node.image.uri)
+      const loadedImagesUri = photoIdentifier.edges.map(edge => edge.node.image.uri)
+      const imagesLoaded = await fromUriToFullPath(loadedImagesUri)
       const newStatus = imagesLoaded.length
         ? ImagesListStatus.HAS_DATA
         : ImagesListStatus.IS_EMPTY
@@ -87,7 +100,7 @@ export function useImagesList(amountToLoadPerTime = 20): ImagesList {
 
       await logger.error(`Error loading images from gallery: ${errorMessage}`)
     }
-  }, [status, requestReadMediaImagesPermission, logger])
+  }, [status, requestReadMediaImagesPermission, fromUriToFullPath, logger])
 
   const loadMoreImages = useCallback(async () => {
     if (status === ImagesListStatus.IS_LOADING) return
@@ -115,7 +128,8 @@ export function useImagesList(amountToLoadPerTime = 20): ImagesList {
       })
 
       const hasLoadedAllImagesFromGallery = !photoIdentifier.page_info.has_next_page
-      const imagesLoaded = photoIdentifier.edges.map(edge => edge.node.image.uri)
+      const loadedImagesUri = photoIdentifier.edges.map(edge => edge.node.image.uri)
+      const imagesLoaded = await fromUriToFullPath(loadedImagesUri)
       const newStatus = !!imagesLoaded.length || !!images.length
         ? ImagesListStatus.HAS_DATA
         : ImagesListStatus.IS_EMPTY
@@ -134,7 +148,7 @@ export function useImagesList(amountToLoadPerTime = 20): ImagesList {
 
       await logger.error(`Error loading more images from gallery: ${errorMessage}`)
     }
-  }, [status, hasLoadedAllImages, requestReadMediaImagesPermission, logger])
+  }, [status, hasLoadedAllImages, requestReadMediaImagesPermission, fromUriToFullPath, logger])
 
 
   useEffect(() => {

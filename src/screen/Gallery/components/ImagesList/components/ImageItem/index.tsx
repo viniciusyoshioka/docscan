@@ -7,6 +7,7 @@ import { SelectableItem, useSelectableItem } from "react-native-selection-mode"
 import { useStyles } from "react-native-unistyles"
 
 import { PictureAction } from "@router"
+import { PathUtils } from "@utils"
 import { SelectionOverlay } from "./components"
 import { stylesheet } from "./style"
 
@@ -28,6 +29,7 @@ export const ImageItem = memo((props: ImageItemProps) => {
   const { onPress, onLongPress } = useSelectableItem(props)
   const unistyles = useStyles(stylesheet)
 
+  const imagePathWithFileProtocol = PathUtils.fullPathToFileProtocol(imagePath)
   const styles = useMemo(() => {
     const imageItemButton = unistyles.styles.imageItemButton(imageItemSize)
     const image = unistyles.styles.image(imageItemSize)
@@ -47,7 +49,7 @@ export const ImageItem = memo((props: ImageItemProps) => {
   return (
     <GestureDetector gesture={longPressGesture}>
       <Pressable onPress={onPress} style={styles.imageItemButton}>
-        <FastImage source={{ uri: imagePath }} style={styles.image} />
+        <FastImage source={{ uri: imagePathWithFileProtocol }} style={styles.image} />
 
         <SelectionOverlay
           isSelectionMode={props.isSelectionMode}
