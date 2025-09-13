@@ -41,7 +41,7 @@
         "react-native-selection-mode": "^2.2.0",
         "react-native-share": "^12.0.9",
         "react-native-unistyles": "^2.30.0",
-        "react-native-vector-icons": "https://github.com/viniciusyoshioka/react-native-vector-icons.git",
+        "react-native-vector-icons": "^10.3.0",
         "react-native-vision-camera": "^4.6.4",
         "react-native-zip-archive": "^7.0.1",
         "reflect-metadata": "^0.2.2",

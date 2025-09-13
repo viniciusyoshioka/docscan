@@ -4256,7 +4256,7 @@ __metadata:
     react-native-selection-mode: "npm:^2.2.0"
     react-native-share: "npm:^12.0.9"
     react-native-unistyles: "npm:^2.30.0"
-    react-native-vector-icons: "https://github.com/viniciusyoshioka/react-native-vector-icons.git"
+    react-native-vector-icons: "npm:^10.3.0"
     react-native-vision-camera: "npm:^4.6.4"
     react-native-zip-archive: "npm:^7.0.1"
     react-test-renderer: "npm:18.3.1"
@@ -7712,18 +7712,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-vector-icons@https://github.com/viniciusyoshioka/react-native-vector-icons.git":
-  version: 10.2.0
-  resolution: "react-native-vector-icons@https://github.com/viniciusyoshioka/react-native-vector-icons.git#commit=6cf1aaa94e23cff30718443b4557cca56addd774"
+"react-native-vector-icons@npm:^10.3.0":
+  version: 10.3.0
+  resolution: "react-native-vector-icons@npm:10.3.0"
   dependencies:
     prop-types: "npm:^15.7.2"
     yargs: "npm:^16.1.1"
   bin:
-    fa-upgrade.sh: ./bin/fa-upgrade.sh
-    fa5-upgrade: ./bin/fa5-upgrade.sh
-    fa6-upgrade: ./bin/fa6-upgrade.sh
-    generate-icon: ./bin/generate-icon.js
-  checksum: 10c0/2e40b0da0ff638551aebf2b08835acd328d20e200a3c3b1aa3d8238a31630bab2443b615ff57571807d311f204b89a0068f9c281772e4a2b0cdab723898740da
+    fa-upgrade.sh: bin/fa-upgrade.sh
+    fa5-upgrade: bin/fa5-upgrade.sh
+    fa6-upgrade: bin/fa6-upgrade.sh
+    generate-icon: bin/generate-icon.js
+  checksum: 10c0/247804affcf74906062ed088d755c3d4632e3f2b62c38226ccb05e2a8dc42414c2378040a4acb474704bed09cd06cb285770c765ffff67fb2d3b896cd46e76ca
   languageName: node
   linkType: hard
 
