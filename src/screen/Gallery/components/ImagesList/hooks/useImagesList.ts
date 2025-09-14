@@ -32,7 +32,7 @@ export function useImagesList(amountToLoadPerTime = 20): ImagesList {
 
   const logger = useLogger()
 
-  const cursor = useRef<string | undefined>()
+  const cursor = useRef<string | undefined>(undefined)
   const [hasLoadedAllImages, setHasLoadedAllImages] = useState(false)
 
   const [status, setStatus] = useState(ImagesListStatus.NO_PERMISSION)
