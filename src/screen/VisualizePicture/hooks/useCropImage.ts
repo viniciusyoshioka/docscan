@@ -7,7 +7,7 @@ import { ImageCrop, OnImageSavedResponse } from "@services/image-crop"
 
 
 interface CropImage {
-  imageCropRef: RefObject<ImageCrop>
+  imageCropRef: RefObject<ImageCrop | null>
   isCropping: boolean
   openCrop: () => void
   exitCrop: () => void
@@ -22,7 +22,7 @@ export function useCropImage(): CropImage {
 
   const logger = useLogger()
 
-  const imageCropRef = useRef<ImageCrop>(null)
+  const imageCropRef = useRef<ImageCrop | null>(null)
 
   const [isCropping, setIsCropping] = useState(false)
   const [isProcessingCrop, setIsProcessingCrop] = useState(false)

@@ -11,7 +11,7 @@ import { ImageRotationRef } from "../components"
 
 
 interface RotateImage {
-  imageRotationRef: RefObject<ImageRotationRef>
+  imageRotationRef: RefObject<ImageRotationRef | null>
   isRotating: boolean
   openRotation: () => void
   exitRotation: () => void
@@ -28,7 +28,7 @@ export function useRotateImage(currentIndex: number): RotateImage {
   const { documentModel, pictureModel } = useEntityModels()
   const { documentState, updateDocumentState } = useDocumentState()
 
-  const imageRotationRef = useRef<ImageRotationRef>(null)
+  const imageRotationRef = useRef<ImageRotationRef | null>(null)
 
   const [isRotating, setIsRotating] = useState(false)
   const [isProcessingRotation, setIsProcessingRotation] = useState(false)
