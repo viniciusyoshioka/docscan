@@ -42,4 +42,9 @@ export class PathUtils {
   static fullPathToFileProtocol(fullPath: string): string {
     return `file://${fullPath}`
   }
+
+  static removeFileProtocol(fullPath: string): string {
+    const fileProtocolPrefixRegex = /^file:\/\//
+    return fullPath.replace(fileProtocolPrefixRegex, "")
+  }
 }
