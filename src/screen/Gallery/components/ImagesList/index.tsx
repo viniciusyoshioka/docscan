@@ -166,7 +166,6 @@ export const ImagesList = memo((props: ImagesListProps) => {
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       extraData={extraData}
-      estimatedItemSize={imageItemSize}
       numColumns={columnCount}
       onEndReachedThreshold={0.05}
       onEndReached={onEndReached}
