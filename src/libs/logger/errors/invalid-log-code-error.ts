@@ -11,7 +11,7 @@ export class InvalidLogCodeError extends BaseLogError {
   constructor(givenCode: LogCode, options?: ErrorOptions) {
     const errorMessage = `Invalid log code provided: ${givenCode}`
     super(errorMessage, options)
-    this.name = "InvalidLogCodeError"
+    this.name = InvalidLogCodeError.name
     this.givenCode = givenCode
   }
 }
