@@ -4,7 +4,7 @@ import { useLogger } from "@libs/logger"
 import { CameraViewRef } from "../components"
 
 
-export function useTakePicture(cameraViewRef: RefObject<CameraViewRef>) {
+export function useTakePicture(cameraViewRef: RefObject<CameraViewRef | null>) {
 
 
   const logger = useLogger()
