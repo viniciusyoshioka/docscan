@@ -127,7 +127,7 @@ export class StandardDateFormatter implements DateFormatter {
       const parsedDate = new Date(date)
 
       const timezoneOffset = parsedDate.getTimezoneOffset()
-      const timezoneOffsetInMs = TimeUtils.minutesToMilisseconds(timezoneOffset)
+      const timezoneOffsetInMs = TimeUtils.minutesToMilliseconds(timezoneOffset)
       const timeAfterTimezoneCorrection = parsedDate.getTime() - timezoneOffsetInMs
       parsedDate.setTime(timeAfterTimezoneCorrection)
 
