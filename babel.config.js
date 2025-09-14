@@ -21,7 +21,7 @@ module.exports = {
       },
     ],
     ["@babel/plugin-proposal-decorators", { legacy: true }],
-    "react-native-reanimated/plugin",
+    "react-native-worklets/plugin",
   ],
   env: {
     production: {

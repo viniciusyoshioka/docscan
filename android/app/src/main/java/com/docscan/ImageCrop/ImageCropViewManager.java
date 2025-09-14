@@ -6,7 +6,7 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.theartofdev.edmodo.cropper.CropImageView;
+import com.canhub.cropper.CropImageView;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableArray;
@@ -52,7 +52,8 @@ public class ImageCropViewManager extends SimpleViewManager<CropImageView> {
             @Override
             public void onCropImageComplete(@NonNull CropImageView cropImageView, @NonNull CropImageView.CropResult cropResult) {
                 WritableMap response = Arguments.createMap();
-                response.putString("uri", cropResult.getUri().getPath());
+                // TODO: Fix
+                response.putString("uri", cropResult.getUriContent().toString());
                 response.putInt("width", cropResult.getCropRect().width());
                 response.putInt("height", cropResult.getCropRect().height());
 
@@ -99,7 +100,8 @@ public class ImageCropViewManager extends SimpleViewManager<CropImageView> {
 
                 try {
                     String path = new File(root.getContext().getCacheDir(), UUID.randomUUID().toString() + "." + extension).toURI().toString();
-                    root.saveCroppedImageAsync(Uri.parse(path), format, 100);
+                    // TODO
+                    // root.saveCroppedImageAsync(Uri.parse(path), format, 100);
                 } catch (Exception e) {
                     WritableMap response = Arguments.createMap();
                     response.putString("message", e.getMessage());
