@@ -71,7 +71,10 @@ export const PictureItem = memo((props: PictureItemProps) => {
 }, propsAreEqual)
 
 
-function propsAreEqual(prevProps: PictureItemProps, nextProps: PictureItemProps): boolean {
+function propsAreEqual(
+  prevProps: Readonly<PictureItemProps>,
+  nextProps: Readonly<PictureItemProps>,
+): boolean {
   const samePicturePath = prevProps.picturePath === nextProps.picturePath
   const samePictureItemSize = prevProps.pictureItemSize === nextProps.pictureItemSize
   const sameIsSelected = prevProps.isSelected === nextProps.isSelected
