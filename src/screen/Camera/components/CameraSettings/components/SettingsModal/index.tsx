@@ -40,7 +40,6 @@ export function SettingsModal(props: SettingsModalProps) {
         ]}
       >
         <ScrollView
-          fadingEdgeLength={32}
           showsVerticalScrollIndicator={false}
           style={styles.content}
         >
