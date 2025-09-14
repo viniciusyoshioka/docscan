@@ -4596,7 +4596,7 @@ __metadata:
     react-native-nitro-sqlite: "npm:^9.1.11"
     react-native-orientation-locker: "npm:^1.7.0"
     react-native-paper: "npm:^5.14.5"
-    react-native-paper-towel: "npm:^1.0.0"
+    react-native-paper-towel: "npm:^1.1.0"
     react-native-reanimated: "npm:^4.1.0"
     react-native-safe-area-context: "npm:^5.6.1"
     react-native-screens: "npm:^4.16.0"
@@ -8104,16 +8104,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-paper-towel@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "react-native-paper-towel@npm:1.0.0"
+"react-native-paper-towel@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "react-native-paper-towel@npm:1.1.0"
   peerDependencies:
+    "@react-native-vector-icons/material-design-icons": "*"
     react: "*"
     react-material-design-provider: "*"
     react-native: "*"
     react-native-paper: "*"
-    react-native-vector-icons: "*"
-  checksum: 10c0/2a52871cd8dcd55890ea1b08a78742488d2b72bbbf8c9598898c63d3f1c16e38b2f61494241789ba40441bf376c251d9af567fa6fe0dd2cb972c91fac3d252e3
+  checksum: 10c0/7c4fb24683a745e7daea72bf3c1f1f9bd24e0bfff5e67bfedb99264f449cb7daa51830888e2fcf9cd69c3cef6874d67c908c6995ff59ef807b7a8906656e395b
   languageName: node
   linkType: hard
 
