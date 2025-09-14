@@ -11,7 +11,7 @@ export class PictureUtils {
   }
 
   static async getNewPicturePathWithSameExtension(filePath: string): Promise<string> {
-    const extension = PathUtils.getExtensionFromPath(filePath)
+    const extension = PathUtils.getExtensionFromPath(filePath) ?? ""
 
     let count = 0
     const limit = 3

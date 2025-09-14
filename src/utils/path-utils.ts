@@ -10,21 +10,21 @@ export class PathUtils {
     return splittedPath[splittedPath.length - 1]
   }
 
-  static getExtensionFromPath(path: string): string {
+  static getExtensionFromPath(path: string): string | null {
     const fileName = this.getFileNameFromPath(path)
     if (!fileName) {
-      return ""
+      return null
     }
 
     const hasDot = fileName.includes(this.dot)
     if (!hasDot) {
-      return ""
+      return null
     }
 
     const startsWithDot = fileName.startsWith(this.dot)
     const hasDotAfterTheInitialDot = fileName.substring(1).includes(this.dot)
     if (startsWithDot && !hasDotAfterTheInitialDot) {
-      return ""
+      return null
     }
 
     const splittedFileName = fileName.split(this.dot)
