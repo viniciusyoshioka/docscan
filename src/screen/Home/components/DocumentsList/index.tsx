@@ -10,7 +10,7 @@ import { useDocumentState } from "@libs/document-state"
 import { translate } from "@locales"
 import { NavigationProps } from "@router"
 import { DocumentStatus } from "../../hooks"
-import { DOCUMENT_ITEM_HEIGHT, DocumentItem, EmptyDocuments, LoadingDocuments } from "./components"
+import { DocumentItem, EmptyDocuments, LoadingDocuments } from "./components"
 import { FAB_HEIGHT, FAB_PADDING_VERTICAL } from "./constants"
 
 
@@ -125,6 +125,10 @@ export function DocumentsList(props: DocumentsListProps) {
     return null
   }, [props.status, props.loadMoreDocuments])
 
+  const contentContainerStyle = useMemo(() => ({
+    paddingBottom: (FAB_PADDING_VERTICAL * 2) + FAB_HEIGHT + safeAreaInsets.bottom,
+  }), [safeAreaInsets.bottom])
+
 
   if (props.status === DocumentStatus.IS_LOADING) {
     return <LoadingDocuments />
@@ -149,12 +153,9 @@ export function DocumentsList(props: DocumentsListProps) {
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       extraData={extraData}
-      estimatedItemSize={DOCUMENT_ITEM_HEIGHT}
       ItemSeparatorComponent={ItemSeparatorComponent}
       ListFooterComponent={ListFooterComponent}
-      contentContainerStyle={{
-        paddingBottom: (FAB_PADDING_VERTICAL * 2) + FAB_HEIGHT + safeAreaInsets.bottom,
-      }}
+      contentContainerStyle={contentContainerStyle}
     />
   )
 }
