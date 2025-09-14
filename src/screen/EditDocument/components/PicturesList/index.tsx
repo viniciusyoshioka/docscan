@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native"
 import { FlashList, ListRenderItem } from "@shopify/flash-list"
 import { useCallback, useMemo } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { ErrorLoadingList, ErrorLoadingMoreItems, LoadingMoreItems } from "@components"
 import { PictureDTO } from "@database"
@@ -35,6 +36,7 @@ export function PicturesList(props: PicturesListProps) {
 
 
   const navigation = useNavigation<NavigationProps<"EditDocument">>()
+  const safeAreaInsets = useSafeAreaInsets()
 
   const { documentState } = useDocumentState()
 
@@ -125,6 +127,8 @@ export function PicturesList(props: PicturesListProps) {
       ListFooterComponent={ListFooterComponent}
       contentContainerStyle={{
         padding: PICTURE_ITEM_MARGIN,
+        paddingLeft: PICTURE_ITEM_MARGIN + safeAreaInsets.left,
+        paddingRight: PICTURE_ITEM_MARGIN + safeAreaInsets.right,
       }}
     />
   )
