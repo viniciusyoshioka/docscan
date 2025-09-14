@@ -121,7 +121,6 @@ export function PicturesList(props: PicturesListProps) {
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       extraData={extraData}
-      estimatedItemSize={pictureItemSize}
       numColumns={columnCount}
       ListFooterComponent={ListFooterComponent}
       contentContainerStyle={{
