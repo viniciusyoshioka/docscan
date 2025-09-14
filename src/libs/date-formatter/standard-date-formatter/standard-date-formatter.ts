@@ -3,7 +3,7 @@ import { DateFormatter } from "../date-formatter.interface"
 import { DateTimeSeparators, StandardDateFormatterOptions } from "./standard-date-formatter.types"
 
 
-type ParseableDate = Date | number | string
+type ParsableDate = Date | number | string
 
 type DateTimePatterns = {
   date: string
@@ -46,7 +46,7 @@ export class StandardDateFormatter implements DateFormatter {
   }
 
 
-  formatDate(date?: ParseableDate): string {
+  formatDate(date?: ParsableDate): string {
     date = this.parseDate(date)
 
     return this.patterns.date
@@ -57,7 +57,7 @@ export class StandardDateFormatter implements DateFormatter {
       .replaceAll("-", this.separators.date)
   }
 
-  formatTime(date?: ParseableDate): string {
+  formatTime(date?: ParsableDate): string {
     date = this.parseDate(date)
 
     return (this.hasSeconds ? this.patterns.timWithSeconds : this.patterns.time)
@@ -68,7 +68,7 @@ export class StandardDateFormatter implements DateFormatter {
       .replaceAll(":", this.separators.time)
   }
 
-  formatDateTime(date?: ParseableDate): string {
+  formatDateTime(date?: ParsableDate): string {
     date = this.parseDate(date)
 
     const datePart = this.formatDate(date)
@@ -78,7 +78,7 @@ export class StandardDateFormatter implements DateFormatter {
   }
 
 
-  getLocaleDate(date?: ParseableDate): string {
+  getLocaleDate(date?: ParsableDate): string {
     date = this.parseDate(date)
 
     const options: Intl.DateTimeFormatOptions = {}
@@ -86,7 +86,7 @@ export class StandardDateFormatter implements DateFormatter {
     return dateTimeFormat.format(date)
   }
 
-  getLocaleTime(date?: ParseableDate): string {
+  getLocaleTime(date?: ParsableDate): string {
     date = this.parseDate(date)
 
     const options: Intl.DateTimeFormatOptions = {
@@ -99,7 +99,7 @@ export class StandardDateFormatter implements DateFormatter {
     return dateTimeFormat.format(date)
   }
 
-  getLocaleDateTime(date?: ParseableDate): string {
+  getLocaleDateTime(date?: ParsableDate): string {
     date = this.parseDate(date)
 
     const options: Intl.DateTimeFormatOptions = {
@@ -116,7 +116,7 @@ export class StandardDateFormatter implements DateFormatter {
   }
 
 
-  private parseDate(date?: ParseableDate): Date {
+  private parseDate(date?: ParsableDate): Date {
     if (date instanceof Date) {
       return date
     }
