@@ -120,7 +120,6 @@ export function VisualizePicture() {
           <FlashList
             data={documentState?.pictures ?? []}
             renderItem={renderItem}
-            estimatedItemSize={width}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             pagingEnabled={true}
