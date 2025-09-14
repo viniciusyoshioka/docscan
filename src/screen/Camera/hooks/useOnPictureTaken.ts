@@ -76,11 +76,11 @@ export function useOnPictureTaken() {
       const document = existingDocumentId
         ? await documentModel.updateDocumentLastUpdateDate(existingDocumentId, tx)
         : await documentModel.create({
-          createDto: {
-            name: translate("untitleDocument"),
-          },
-          transaction: tx,
-        })
+            createDto: {
+              name: translate("untitleDocument"),
+            },
+            transaction: tx,
+          })
 
       const fileName = PathUtils.getFileNameFromPath(newPicturePath)
       const position = documentState?.pictures.length ?? 0
