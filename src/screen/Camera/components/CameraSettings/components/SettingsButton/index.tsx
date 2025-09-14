@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from "react-native"
 import { Text } from "react-native-paper"
-import { Icon } from "react-native-paper-towel"
+import { Icon, IconNames } from "react-native-paper-towel"
 import Reanimated, { useAnimatedStyle } from "react-native-reanimated"
 
 import { useAnimatedRotationDegree } from "../../../../hooks"
@@ -14,7 +14,7 @@ const AnimatedTouchableOpacity = Reanimated.createAnimatedComponent(TouchableOpa
 
 
 interface SettingsButtonProps extends TouchableOpacityProps {
-  icon: string
+  icon: IconNames
   optionName: string
   isVisible?: boolean
   isDisabled?: boolean
@@ -54,7 +54,6 @@ export function SettingsButton(props: SettingsButtonProps) {
     >
       <Icon
         name={icon}
-        group={"material-community"}
         color={color}
         style={{ flex: 1 }}
       />

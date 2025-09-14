@@ -1,9 +1,11 @@
+import { IconNames } from "react-native-paper-towel"
+
 import { CameraFlash, CameraPosition, CameraRatio } from "@libs/settings"
 import { translate } from "@locales"
 
 
 type FlashSettingIcon = {
-  [key in CameraFlash]: string
+  [key in CameraFlash]: IconNames
 }
 
 export const flashSettingIcon: FlashSettingIcon = {

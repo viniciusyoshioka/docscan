@@ -11,7 +11,6 @@ export function NoDeviceFound(props: NoDeviceFoundProps) {
     <EmptyScreen.Content visible={true}>
       <EmptyScreen.Icon
         name={"camera-off-outline"}
-        group={"material-community"}
         size={56}
       />
 

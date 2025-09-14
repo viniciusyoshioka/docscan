@@ -2,7 +2,7 @@ import Color from "color"
 import { useCallback } from "react"
 import { Pressable } from "react-native"
 import { Text } from "react-native-paper"
-import { Icon } from "react-native-paper-towel"
+import { Icon, IconNames } from "react-native-paper-towel"
 import Reanimated, { useAnimatedStyle } from "react-native-reanimated"
 
 import { useAppTheme } from "@theme"
@@ -19,7 +19,7 @@ const AnimatedPressable = Reanimated.createAnimatedComponent(Pressable)
 
 interface ActionButtonProps {
   isShowingCamera: boolean
-  icon?: string
+  icon?: IconNames
   counter?: string
   isDisabled?: boolean
   onPress?: () => void
@@ -51,7 +51,6 @@ export function ActionButton(props: ActionButtonProps) {
     return (
       <Icon
         name={props.icon}
-        group={"material-community"}
         color={contentColor}
       />
     )
