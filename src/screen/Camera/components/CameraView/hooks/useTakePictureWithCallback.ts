@@ -9,8 +9,8 @@ import { PictureTakenFeedbackRef } from "../components"
 
 
 interface TakePictureWithCallbackParams {
-  cameraRef: RefObject<VisionCamera>
-  pictureTakenFeedbackRef: RefObject<PictureTakenFeedbackRef>
+  cameraRef: RefObject<VisionCamera | null>
+  pictureTakenFeedbackRef: RefObject<PictureTakenFeedbackRef | null>
   onPictureTaken: (picturePath: string) => Promise<void>
   onTakePictureError: (error: Error) => Promise<void>
 }

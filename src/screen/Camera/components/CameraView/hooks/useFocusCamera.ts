@@ -8,8 +8,8 @@ import { FocusIndicatorRef } from "../components"
 
 interface FocusCameraParams {
   cameraDevice: CameraDevice | undefined
-  cameraRef: RefObject<VisionCamera>
-  focusIndicatorRef: RefObject<FocusIndicatorRef>
+  cameraRef: RefObject<VisionCamera | null>
+  focusIndicatorRef: RefObject<FocusIndicatorRef | null>
   isFocusEnabled: boolean
   setIsFocusEnabled: (newIsFocused: boolean) => void
 }
