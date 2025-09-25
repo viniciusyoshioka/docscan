@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 
 
 interface ScreenOverlay {
@@ -13,13 +13,19 @@ export function useScreenOverlay(): ScreenOverlay {
   const [isVisible, setIsVisible] = useState(true)
 
 
-  function toggleVisibility() {
+  const toggleVisibility = useCallback(() => {
     setIsVisible(currentIsVisible => !currentIsVisible)
-  }
+  }, [])
 
 
-  return {
+  const screenOverlay = useMemo(() => ({
     isVisible,
     toggleVisibility,
-  }
+  }), [
+    isVisible,
+    toggleVisibility,
+  ])
+
+
+  return screenOverlay
 }
