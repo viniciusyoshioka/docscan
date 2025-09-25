@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 
 
 interface ZoomActivation {
@@ -14,18 +14,25 @@ export function useZoomActivation(): ZoomActivation {
   const [isZoomActive, setIsZoomActive] = useState(false)
 
 
-  function onZoomActivated() {
+  const onZoomActivated = useCallback(() => {
     setIsZoomActive(true)
-  }
+  }, [])
 
-  function onZoomDeactivated() {
+  const onZoomDeactivated = useCallback(() => {
     setIsZoomActive(false)
-  }
+  }, [])
 
 
-  return {
+  const zoomActivation = useMemo(() => ({
     isZoomActive,
     onZoomActivated,
     onZoomDeactivated,
-  }
+  }), [
+    isZoomActive,
+    onZoomActivated,
+    onZoomDeactivated,
+  ])
+
+
+  return zoomActivation
 }
