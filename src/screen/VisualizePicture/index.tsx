@@ -1,6 +1,6 @@
 import { useRoute } from "@react-navigation/core"
 import { FlashList, ListRenderItem } from "@shopify/flash-list"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { NativeScrollEvent, NativeSyntheticEvent, View, useWindowDimensions } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -60,7 +60,7 @@ export function VisualizePicture() {
   useBackHandler(goBack)
 
 
-  const renderItem: ListRenderItem<PictureDTO> = ({ item }) => {
+  const renderItem: ListRenderItem<PictureDTO> = useCallback(({ item }) => {
     const picturePath = PictureUtils.getPicturePathForFileName(item.fileName)
 
     return (
@@ -71,7 +71,11 @@ export function VisualizePicture() {
         onSingleTap={screenOverlay.toggleVisibility}
       />
     )
-  }
+  }, [
+    zoomActivation.onZoomActivated,
+    zoomActivation.onZoomDeactivated,
+    screenOverlay.toggleVisibility,
+  ])
 
   function onMomentumScrollEnd(event: NativeSyntheticEvent<NativeScrollEvent>) {
     const newCurrentIndex = Math.round(event.nativeEvent.contentOffset.x / width)
