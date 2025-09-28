@@ -10,12 +10,12 @@ import {
 import Reanimated, {
   cancelAnimation,
   clamp,
-  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withDecay,
   withTiming,
 } from "react-native-reanimated"
+import { scheduleOnRN } from "react-native-worklets"
 
 import { TIMING_CONFIG } from "./animation-config"
 
@@ -43,6 +43,7 @@ interface ImageVisualizationItemProps {
 
 
 // TODO: Refact
+// TODO: Fix zoom not working after upgrading react-native
 export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
 
@@ -98,7 +99,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
       initialTranslateY.value = translateY.value
 
       if (props.onZoomActivated) {
-        runOnJS(props.onZoomActivated)()
+        scheduleOnRN(() => props.onZoomActivated?.())
       }
     })
     .onChange(event => {
@@ -177,15 +178,15 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
         translateX.value = 0
         translateY.value = 0
 
-        runOnJS(setIsPanGestureEnabled)(false)
+        scheduleOnRN(() => setIsPanGestureEnabled(false))
         if (props.onZoomDeactivated) {
-          runOnJS(props.onZoomDeactivated)()
+          scheduleOnRN(() => props.onZoomDeactivated?.())
         }
         return
       }
 
       savedZoom.value = zoom.value
-      runOnJS(setIsPanGestureEnabled)(true)
+      scheduleOnRN(() => setIsPanGestureEnabled(true))
     })
 
   const singleTapGesture = Gesture.Tap()
@@ -198,7 +199,7 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
       }
 
       if (props.onSingleTap) {
-        runOnJS(props.onSingleTap)(event)
+        scheduleOnRN(() => props.onSingleTap?.(event))
       }
     })
 
@@ -223,9 +224,9 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
         translateX.value = withTiming(0, TIMING_CONFIG)
         translateY.value = withTiming(0, TIMING_CONFIG)
 
-        runOnJS(setIsPanGestureEnabled)(false)
+        scheduleOnRN(() => setIsPanGestureEnabled(false))
         if (props.onZoomDeactivated) {
-          runOnJS(props.onZoomDeactivated)()
+          scheduleOnRN(() => props.onZoomDeactivated?.())
         }
         return
       }
@@ -262,9 +263,9 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
         translateY.value = withTiming(displacementDistanceY, TIMING_CONFIG)
       }
 
-      runOnJS(setIsPanGestureEnabled)(true)
+      scheduleOnRN(() => setIsPanGestureEnabled(true))
       if (props.onZoomActivated) {
-        runOnJS(props.onZoomActivated)()
+        scheduleOnRN(() => props.onZoomActivated?.())
       }
     })
 
@@ -353,7 +354,15 @@ export function ImageVisualizationItem(props: ImageVisualizationItemProps) {
 
   return (
     <GestureDetector gesture={simultaneousGestures}>
-      <View style={[{ flex: 1, width, overflow: "hidden" }, props.style]}>
+      <View
+        style={[
+          {
+            width,
+            overflow: "hidden",
+          },
+          props.style,
+        ]}
+      >
         <AnimatedFastImage
           source={props.source}
           resizeMode={"contain"}
