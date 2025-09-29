@@ -9,6 +9,7 @@ import { translate } from "@locales"
 import { NavigationProps } from "@router"
 import { EditDocumentHeader, PicturesList } from "./components"
 import {
+  useDeleteDocument,
   useDeletePdf,
   useDeletePictures,
   useGoBack,
@@ -44,6 +45,7 @@ export function EditDocument() {
   const sharePdf = useSharePdf()
   const visualizePdf = useVisualizePdf()
   const deletePdf = useDeletePdf()
+  const deleteDocument = useDeleteDocument()
 
 
   const openCamera = useCallback(() => {
@@ -74,6 +76,7 @@ export function EditDocument() {
         deletePdf={deletePdf}
         invertPicturesSelection={invertPicturesSelection}
         deletePictures={deletePictures}
+        deleteDocument={deleteDocument}
       />
 
       <PicturesList

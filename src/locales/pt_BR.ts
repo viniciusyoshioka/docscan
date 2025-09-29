@@ -84,6 +84,7 @@ export const pt_BR: TranslationObjectType = {
   EditDocument_menu_visualizePdf: "Visualizar PDF",
   EditDocument_menu_rename: "Renomear",
   EditDocument_menu_deletePdf: "Apagar PDF",
+  EditDocument_menu_deleteDocument: "Apagar documento",
   // EditDocument ConvertPdfOption alert
   ConvertPdfOption_alert_noDocumentOpened_text: "Não há documento aberto",
   ConvertPdfOption_alert_documentWithoutPictures_text: "Não é possível converter um documento sem fotos para PDF",

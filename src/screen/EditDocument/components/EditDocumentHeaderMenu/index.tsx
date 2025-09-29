@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { StatusBar } from "react-native"
 import { Appbar, Menu } from "react-native-paper"
 
@@ -11,12 +11,13 @@ interface EditDocumentHeaderMenuProps {
   visualizePdf: () => void
   renameDocument: () => void
   deletePdf: () => void
+  deleteDocument: () => void
 }
 
 
 // TODO: Add option to split selected pictures into a new document
 export function EditDocumentHeaderMenu(props: EditDocumentHeaderMenuProps) {
-  const { convertToPdf, sharePdf, visualizePdf, renameDocument, deletePdf } = props
+  const { convertToPdf, sharePdf, visualizePdf, renameDocument, deletePdf, deleteDocument } = props
 
 
   const [isOpen, setIsOpen] = useState(false)
@@ -31,34 +32,40 @@ export function EditDocumentHeaderMenu(props: EditDocumentHeaderMenuProps) {
     )
   }, [])
 
-  function onDismiss() {
-    setIsOpen(false)
-  }
 
-  function onConvertToPdf() {
+  const onDismiss = useCallback(() => {
+    setIsOpen(false)
+  }, [])
+
+  const onConvertToPdf = useCallback(() => {
     onDismiss()
     convertToPdf()
-  }
+  }, [onDismiss, convertToPdf])
 
-  function onSharePdf() {
+  const onSharePdf = useCallback(() => {
     onDismiss()
     sharePdf()
-  }
+  }, [onDismiss, sharePdf])
 
-  function onVisualizePdf() {
+  const onVisualizePdf = useCallback(() => {
     onDismiss()
     visualizePdf()
-  }
+  }, [onDismiss, visualizePdf])
 
-  function onRenameDocument() {
+  const onRenameDocument = useCallback(() => {
     onDismiss()
     renameDocument()
-  }
+  }, [onDismiss, renameDocument])
 
-  function onDeletePdf() {
+  const onDeletePdf = useCallback(() => {
     onDismiss()
     deletePdf()
-  }
+  }, [onDismiss, deletePdf])
+
+  const onDeleteDocument = useCallback(() => {
+    onDismiss()
+    deleteDocument()
+  }, [onDismiss, deleteDocument])
 
 
   return (
@@ -93,9 +100,15 @@ export function EditDocumentHeaderMenu(props: EditDocumentHeaderMenuProps) {
       />
 
       <Menu.Item
-        leadingIcon={"trash-can-outline"}
+        leadingIcon={"file-document-remove-outline"}
         title={translate("EditDocument_menu_deletePdf")}
         onPress={onDeletePdf}
+      />
+
+      <Menu.Item
+        leadingIcon={"trash-can-outline"}
+        title={translate("EditDocument_menu_deleteDocument")}
+        onPress={onDeleteDocument}
       />
     </Menu>
   )

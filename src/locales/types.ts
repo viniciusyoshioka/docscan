@@ -82,6 +82,7 @@ export type TranslationKeyType =
   | "EditDocument_menu_visualizePdf"
   | "EditDocument_menu_rename"
   | "EditDocument_menu_deletePdf"
+  | "EditDocument_menu_deleteDocument"
   // EditDocument ConvertPdfOption alert
   | "ConvertPdfOption_alert_noDocumentOpened_text"
   | "ConvertPdfOption_alert_documentWithoutPictures_text"

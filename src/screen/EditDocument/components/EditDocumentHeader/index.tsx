@@ -22,6 +22,7 @@ interface EditDocumentHeaderProps {
   visualizePdf: () => void
   renameDocument: () => void
   deletePdf: () => void
+  deleteDocument: () => void
 }
 
 
@@ -75,6 +76,7 @@ export function EditDocumentHeader(props: EditDocumentHeaderProps) {
         visualizePdf={props.visualizePdf}
         renameDocument={props.renameDocument}
         deletePdf={props.deletePdf}
+        deleteDocument={props.deleteDocument}
       />
     </Appbar.Header>
   )
