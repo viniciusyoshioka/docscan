@@ -1,4 +1,4 @@
-import { RefObject, useRef, useState } from "react"
+import { RefObject, useCallback, useMemo, useRef, useState } from "react"
 import { Alert } from "react-native"
 
 import { useLogger } from "@libs/logger"
@@ -28,28 +28,28 @@ export function useCropImage(): CropImage {
   const [isProcessingCrop, setIsProcessingCrop] = useState(false)
 
 
-  function openCrop() {
+  const openCrop = useCallback(() => {
     setIsCropping(true)
-  }
+  }, [])
 
-  function exitCrop() {
+  const exitCrop = useCallback(() => {
     if (isProcessingCrop) return
     setIsCropping(false)
-  }
+  }, [isProcessingCrop])
 
-  function saveCroppedImage() {
+  const saveCroppedImage = useCallback(() => {
     if (!imageCropRef.current) return
     if (isProcessingCrop) return
 
     setIsProcessingCrop(true)
     imageCropRef.current.saveImage()
-  }
+  }, [isProcessingCrop])
 
-  function onCroppedImageSaved(response: OnImageSavedResponse) {
+  const onCroppedImageSaved = useCallback((response: OnImageSavedResponse) => {
     // TODO: Implement
-  }
+  }, [])
 
-  async function onCropError(response: string) {
+  const onCropError = useCallback(async (response: string) => {
     setIsCropping(false)
     setIsProcessingCrop(false)
 
@@ -58,10 +58,10 @@ export function useCropImage(): CropImage {
       translate("VisualizePicture_alert_errorCroppingImage_text"),
     )
     await logger.error(`Error cropping image: "${response}"`)
-  }
+  }, [logger])
 
 
-  return {
+  const cropImage = useMemo(() => ({
     imageCropRef,
     isCropping,
     openCrop,
@@ -69,5 +69,16 @@ export function useCropImage(): CropImage {
     saveCroppedImage,
     onCroppedImageSaved,
     onCropError,
-  }
+  }), [
+    imageCropRef,
+    isCropping,
+    openCrop,
+    exitCrop,
+    saveCroppedImage,
+    onCroppedImageSaved,
+    onCropError,
+  ])
+
+
+  return cropImage
 }

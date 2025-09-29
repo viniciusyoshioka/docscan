@@ -1,4 +1,4 @@
-import { RefObject, useRef, useState } from "react"
+import { RefObject, useCallback, useMemo, useRef, useState } from "react"
 import { Alert } from "react-native"
 import RNFS from "react-native-fs"
 
@@ -34,30 +34,30 @@ export function useRotateImage(currentIndex: number): RotateImage {
   const [isProcessingRotation, setIsProcessingRotation] = useState(false)
 
 
-  function openRotation() {
+  const openRotation = useCallback(() => {
     setIsRotating(true)
-  }
+  }, [])
 
-  function exitRotation() {
+  const exitRotation = useCallback(() => {
     if (isProcessingRotation) return
     setIsRotating(false)
-  }
+  }, [isProcessingRotation])
 
-  function rotateLeft() {
+  const rotateLeft = useCallback(() => {
     if (!imageRotationRef.current) return
     if (isProcessingRotation) return
 
     imageRotationRef.current.rotateLeft()
-  }
+  }, [isProcessingRotation])
 
-  function rotateRight() {
+  const rotateRight = useCallback(() => {
     if (!imageRotationRef.current) return
     if (isProcessingRotation) return
 
     imageRotationRef.current.rotateRight()
-  }
+  }, [isProcessingRotation])
 
-  async function updateRotatedPicture(pictureId: EntityId, rotatedFilePath: string) {
+  const updateRotatedPicture = useCallback(async (pictureId: EntityId, rotatedFilePath: string) => {
     const documentId = documentState?.document.id as string
 
     const data = await pictureModel.transaction(async tx => {
@@ -73,9 +73,14 @@ export function useRotateImage(currentIndex: number): RotateImage {
         picture: data.updatedPicture,
       },
     })
-  }
+  }, [
+    documentState,
+    pictureModel,
+    documentModel,
+    updateDocumentState,
+  ])
 
-  async function saveRotatedImage() {
+  const saveRotatedImage = useCallback(async () => {
     if (!imageRotationRef.current) return
     if (isProcessingRotation) return
     if (!documentState) throw new Error("Cannot rotate picture if document is not opened")
@@ -119,10 +124,15 @@ export function useRotateImage(currentIndex: number): RotateImage {
         const errorMessage = stringifyError(error)
         await logger.debug(`Error deleting original picture after rotation: "${errorMessage}"`)
       })
-  }
+  }, [
+    isProcessingRotation,
+    documentState,
+    updateRotatedPicture,
+    logger,
+  ])
 
 
-  return {
+  const rotateImage = useMemo(() => ({
     imageRotationRef,
     isRotating,
     openRotation,
@@ -130,5 +140,16 @@ export function useRotateImage(currentIndex: number): RotateImage {
     saveRotatedImage,
     rotateLeft,
     rotateRight,
-  }
+  }), [
+    imageRotationRef,
+    isRotating,
+    openRotation,
+    exitRotation,
+    saveRotatedImage,
+    rotateLeft,
+    rotateRight,
+  ])
+
+
+  return rotateImage
 }
