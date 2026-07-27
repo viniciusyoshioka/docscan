@@ -1,0 +1,8 @@
+<resources>
+    <style name="BootTheme" parent="Theme.BootSplash">
+        <item name="darkContentBarsStyle">false</item>
+        <item name="bootSplashBackground">@color/bootsplash_background_dark</item>
+        <item name="bootSplashLogo">@drawable/bootsplash_logo_dark</item>
+        <item name="postBootSplashTheme">@style/AppTheme</item>
+    </style>
+</resources>
