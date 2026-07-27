@@ -39,6 +39,7 @@ module.exports = {
       '@babel/plugin-proposal-decorators',
       { version: 'legacy' },
     ],
+    '@babel/plugin-transform-class-static-block',
     'react-native-worklets/plugin',
   ],
   env: {
