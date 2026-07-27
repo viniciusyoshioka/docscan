@@ -1,36 +1,58 @@
-import { stringifyError } from "../stringify-error"
+import { stringifyError } from '../stringify-error.ts'
 
 
-describe("stringifyError", () => {
-  it("should return the same string when it receives one", () => {
-    const errorString = "Error message as string"
-    const result = stringifyError(errorString)
+describe('stringifyError', () => {
+  it('should return the same string when a string is provided', () => {
+    const errorAsString = 'An unexpected error occurred'
 
-    expect(typeof result).toBe("string")
-    expect(result).toBe(errorString)
+    const stringifiedError = stringifyError(errorAsString)
+    expect(stringifiedError).toBe(errorAsString)
   })
 
-  it("should return an string when receives an Error object", () => {
-    const error = new Error("Error message as instance of Error class")
-    const result = stringifyError(error)
+  it('should return the message when an Error instance is provided', () => {
+    const errorMessage = 'Error message of Error instance'
+    const errorAsError = new Error(errorMessage)
 
-    expect(typeof result).toBe("string")
-    expect(result).toBe(error.message)
+    const stringifiedError = stringifyError(errorAsError)
+    expect(stringifiedError).toBe(errorMessage)
   })
 
-  it("should return a stringified object when receives an object", () => {
-    const error = { message: "Error message as object" }
-    const result = stringifyError(error)
+  it('should return an equivalent string when an array is provided', () => {
+    const arrayAsErrorMessage = [0, 1, 2, 3, 4]
+    const stringifiedArrayAsErrorMessage = JSON.stringify(arrayAsErrorMessage)
 
-    expect(typeof result).toBe("string")
-    expect(result).toBe(JSON.stringify(error))
+    const stringifiedError = stringifyError(arrayAsErrorMessage)
+    expect(stringifiedError).toBe(stringifiedArrayAsErrorMessage)
   })
 
-  it("should return the error as string when receives another type of error", () => {
-    const error = /^Error RegEx$/
-    const result = stringifyError(error)
+  it('should return an equivalent string when an object is provided', () => {
+    const objectAsErrorMessage = { key: 'value', otherKey: 1 }
+    const stringifiedObjectAsErrorMessage = JSON.stringify(objectAsErrorMessage)
 
-    expect(typeof result).toBe("string")
-    expect(result).toBe(String(error))
+    const stringifiedError = stringifyError(objectAsErrorMessage)
+    expect(stringifiedError).toBe(stringifiedObjectAsErrorMessage)
+  })
+
+  it('should handle when undefined is provided', () => {
+    const stringifiedError = stringifyError(undefined)
+    expect(stringifiedError).toBe(undefined)
+  })
+
+  it('should handle when null is provided', () => {
+    const stringifiedError = stringifyError(null)
+    expect(stringifiedError).toBe('null')
+  })
+
+  it('should handle when boolean is provided', () => {
+    const stringifiedError = stringifyError(true)
+    expect(stringifiedError).toBe('true')
+  })
+
+  it('should handle when a Set is provided', () => {
+    const setAsErrorMessage = new Set<number>([0, 1, 2, 3, 4])
+    const stringifiedSetAsErrorMessage = String(setAsErrorMessage as unknown)
+
+    const stringifiedError = stringifyError(setAsErrorMessage)
+    expect(stringifiedError).toBe(stringifiedSetAsErrorMessage)
   })
 })

@@ -1,0 +1,14 @@
+{
+    "database_initialization_error_title": "Erro abrindo banco de dados",
+    "database_initialization_error_description": "Houve um erro inesperado ao abrir o banco de dados. Tente:",
+    "database_initialization_error_description_option_1": "Fechar o aplicativo e abrir novamente;",
+    "database_initialization_error_description_option_2": "Atualizar o aplicativo para a versão mais recente;",
+    "database_initialization_error_description_option_3": "Se nenhuma das alternativas funcionar, entre em contato com o suporte.",
+    "database_migration_error_title": "Erro atualizando banco de dados",
+    "database_migration_error_description": "Houve um erro inesperado ao atualizar o banco de dados. Tente:",
+    "database_migration_error_description_option_1": "Fechar o aplicativo e abrir novamente;",
+    "database_migration_error_description_option_2": "Atualizar o aplicativo para a versão mais recente;",
+    "database_migration_error_description_option_3": "Se nenhuma das alternativas funcionar, entre em contato com o suporte.",
+    "database_close_error_title": "Erro fechando banco de dados",
+    "database_close_error_description": "Houve um erro inesperado ao fechar o banco de dados"
+}

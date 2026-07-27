@@ -1,1 +1,0 @@
-export const EDIT_DOCUMENT_HEADER_HEIGHT = 64

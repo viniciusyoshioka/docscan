@@ -1,5 +1,5 @@
-import { activateKeepAwake, deactivateKeepAwake } from "@sayem314/react-native-keep-awake"
-import { useEffect } from "react"
+import { activateKeepAwake, deactivateKeepAwake } from '@sayem314/react-native-keep-awake'
+import { useEffect } from 'react'
 
 
 export function useKeepAwakeOnDev() {

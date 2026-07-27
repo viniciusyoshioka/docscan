@@ -1,5 +1,5 @@
 export function stringifyError(error: unknown): string {
-  if (typeof error === "string") {
+  if (typeof error === 'string') {
     return error
   }
   if (error instanceof Error) {
@@ -7,7 +7,7 @@ export function stringifyError(error: unknown): string {
   }
 
   const stringifiedObject = JSON.stringify(error)
-  if (stringifiedObject === "{}") {
+  if (stringifiedObject === '{}') {
     return String(error)
   }
   return stringifiedObject

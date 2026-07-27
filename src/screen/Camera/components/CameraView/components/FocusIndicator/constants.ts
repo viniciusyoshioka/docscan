@@ -1,1 +1,0 @@
-export const FOCUS_INDICATOR_SIZE = 56

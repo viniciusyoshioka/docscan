@@ -1,5 +1,0 @@
-export * from "./DeleteSelectedDocumentsModal"
-export * from "./DocumentsList"
-export * from "./ErrorDeletingSelectedDocumentsModal"
-export * from "./HomeHeader"
-export * from "./NotificationPermissionDeniedModal"

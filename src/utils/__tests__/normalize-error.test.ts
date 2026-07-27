@@ -1,36 +1,56 @@
-import { normalizeError } from "../normalize-error"
+import { normalizeError } from '../normalize-error.ts'
 
 
-describe("normalizeError", () => {
-  it("should return an Error instance with the same string that it received in message property", () => {
-    const errorString = "Error message as string"
-    const result = normalizeError(errorString)
+describe('normalizeError', () => {
+  it('should return the error when an Error instance is provided', () => {
+    const error = new Error('The error instance with a message')
 
-    expect(result).toBeInstanceOf(Error)
-    expect(result.message).toBe(errorString)
+    const normalizedError = normalizeError(error)
+    expect(normalizedError).toBe(error)
   })
 
-  it("should return an Error instance with the same message of given Error", () => {
-    const error = new Error("Error message as instance of Error class")
-    const result = normalizeError(error)
+  describe(
+    'should stringify and set as the Error message when other type is provided',
+    () => {
+      it('string', () => {
+        const errorAsString = 'Error as string'
 
-    expect(result).toBeInstanceOf(Error)
-    expect(result.message).toBe(error.message)
-  })
+        const normalizedError = normalizeError(errorAsString)
+        expect(normalizedError).toBeInstanceOf(Error)
+        expect(normalizedError.message).toBe(errorAsString)
+      })
 
-  it("should return an Error instance with stringified object error in message property", () => {
-    const error = { message: "Error message as object" }
-    const result = normalizeError(error)
+      it('number', () => {
+        const errorAsNumber = 404
 
-    expect(result).toBeInstanceOf(Error)
-    expect(result.message).toBe(JSON.stringify(error))
-  })
+        const normalizedError = normalizeError(errorAsNumber)
+        expect(normalizedError).toBeInstanceOf(Error)
+        expect(normalizedError.message).toBe(String(errorAsNumber))
+      })
 
-  it("should return an Error instance with given error stringified in message property", () => {
-    const error = /^Error RegEx$/
-    const result = normalizeError(error)
+      it('boolean', () => {
+        const errorAsBoolean = true
 
-    expect(result).toBeInstanceOf(Error)
-    expect(result.message).toBe(String(error))
-  })
+        const normalizedError = normalizeError(errorAsBoolean)
+        expect(normalizedError).toBeInstanceOf(Error)
+        expect(normalizedError.message).toBe(String(errorAsBoolean))
+      })
+
+      it('undefined', () => {
+        const errorAsUndefined = undefined
+
+        const normalizedError = normalizeError(errorAsUndefined)
+        expect(normalizedError).toBeInstanceOf(Error)
+        expect(normalizedError.message).toBe('')
+      })
+
+      it('null', () => {
+        const errorAsNull = null
+
+        const normalizedError = normalizeError(errorAsNull)
+        expect(normalizedError).toBeInstanceOf(Error)
+        expect(normalizedError.message).toBe(String(errorAsNull))
+      })
+    },
+  )
 })

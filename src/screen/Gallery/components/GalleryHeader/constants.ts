@@ -1,1 +1,0 @@
-export const GALLERY_HEADER_HEIGHT = 64

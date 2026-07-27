@@ -1,1 +1,0 @@
-export const DOCUMENT_ITEM_HEIGHT = 64

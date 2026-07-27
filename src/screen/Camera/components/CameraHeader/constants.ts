@@ -1,1 +1,0 @@
-export const CAMERA_HEADER_HEIGHT = 64

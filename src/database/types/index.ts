@@ -1,4 +1,2 @@
-import { BaseEntity } from "../entities/base-entity"
-
-
-export type EntityId = BaseEntity["id"]
+export type * from './pagination.ts'
+export * from './sort.ts'
