@@ -39,19 +39,19 @@ export function App() {
     <>
       <KeyboardProvider>
         <GestureHandlerRootView>
-        <StatusBar />
+          <StatusBar />
 
-        <AppThemeProvider theme={settings.theme}>
-          <LocaleProvider>
-            <AlertProvider>
-              <FileSystemProvider fileSystem={fileSystem}>
-                <DatabaseProvider database={typeormDatabase}>
-                  <Router />
-                </DatabaseProvider>
-              </FileSystemProvider>
-            </AlertProvider>
-          </LocaleProvider>
-        </AppThemeProvider>
+          <AppThemeProvider theme={settings.theme}>
+            <LocaleProvider>
+              <AlertProvider>
+                <FileSystemProvider fileSystem={fileSystem}>
+                  <DatabaseProvider database={typeormDatabase}>
+                    <Router />
+                  </DatabaseProvider>
+                </FileSystemProvider>
+              </AlertProvider>
+            </LocaleProvider>
+          </AppThemeProvider>
         </GestureHandlerRootView>
       </KeyboardProvider>
     </>
