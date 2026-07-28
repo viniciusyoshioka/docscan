@@ -6,6 +6,10 @@ export type ScreenParams = {
   Home: undefined
   Settings: undefined
   ChangeTheme: undefined
+  Camera: undefined
+  Gallery: undefined
+  DocumentDetail: undefined
+  PictureDetail: undefined
 }
 
 export type ScreenName = keyof ScreenParams

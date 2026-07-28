@@ -8,7 +8,11 @@ import type { NativeStackNavigationOptions } from '@react-navigation/native-stac
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { useMemo } from 'react'
 
+import { Camera } from '@screens/Camera'
+import { DocumentDetail } from '@screens/DocumentDetail'
+import { Gallery } from '@screens/Gallery'
 import { Home } from '@screens/Home'
+import { PictureDetail } from '@screens/PictureDetail'
 import { ChangeTheme, Settings } from '@screens/Settings'
 import { useAppTheme } from '@theme'
 import type { ScreenParams } from './routes.types.ts'
@@ -56,6 +60,10 @@ export function Router() {
         >
           <NativeStack.Screen name={'Home'} component={Home} />
           <NativeStack.Screen name={'Settings'} component={Settings} />
+          <NativeStack.Screen name={'Camera'} component={Camera} />
+          <NativeStack.Screen name={'Gallery'} component={Gallery} />
+          <NativeStack.Screen name={'DocumentDetail'} component={DocumentDetail} />
+          <NativeStack.Screen name={'PictureDetail'} component={PictureDetail} />
 
           <NativeStack.Group screenOptions={modalScreenOptions}>
             <NativeStack.Screen name={'ChangeTheme'} component={ChangeTheme} />
