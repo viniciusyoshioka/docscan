@@ -1,4 +1,3 @@
-import { DatabaseName } from '@database'
 import {
   AbsolutePath,
   APP_DOCUMENT_FOLDER,
@@ -75,23 +74,34 @@ export class Info {
   }
 
 
-  // TODO
-  static readonly database: DatabaseInfo = {
-    [DatabaseName.APP]: {
-      fileName: 'docscan_database.sqlite',
-      exportFileName: 'docscan_export.sqlite',
-      importFileName: 'docscan_import.sqlite',
-      fullPath: '',
-      exportFullPath: '',
-      importFullPath: '',
+  private static readonly appDatabaseFileName = 'docscan_database.sqlite'
+  private static readonly appDatabaseAbsolutePath = AbsolutePath.join([
+    this.folders.internal.databases,
+    this.appDatabaseFileName,
+  ])
+
+  private static readonly logDatabaseFileName = 'docscan_log.sqlite'
+  private static readonly logDatabaseAbsolutePath = AbsolutePath.join([
+    this.folders.internal.databases,
+    this.logDatabaseFileName,
+  ])
+
+  private static readonly databaseFolderRelativePath =
+    AbsolutePath.getRelativePathBetweenPaths(
+      APP_DOCUMENT_FOLDER,
+      this.folders.internal.databases,
+    )
+
+  static readonly databases: DatabaseInfo = {
+    app: {
+      fileName: this.appDatabaseFileName,
+      absolutePath: this.appDatabaseAbsolutePath,
+      relativePath: this.databaseFolderRelativePath,
     },
-    [DatabaseName.LOG]: {
-      fileName: 'docscan_log.sqlite',
-      exportFileName: 'docscan_log.sqlite',
-      importFileName: null,
-      fullPath: '',
-      exportFullPath: '',
-      importFullPath: null,
+    log: {
+      fileName: this.logDatabaseFileName,
+      absolutePath: this.logDatabaseAbsolutePath,
+      relativePath: this.databaseFolderRelativePath,
     },
   }
 }

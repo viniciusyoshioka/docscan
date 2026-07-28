@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
 import Share from 'react-native-share'
 
-import { DatabaseName } from '@database'
 import { Namespaces, useLocale } from '@locale'
 import { useAlert } from '@modules/alert'
 import { PathUtils } from '@modules/file-system'
@@ -22,7 +21,7 @@ export function useShareLogDatabase(): ShareLogDatabase {
   const shareLogDatabase = useCallback(async () => {
     try {
       const logDatabasePathWithFileProtocol = PathUtils.withFileProtocol(
-        Info.database[DatabaseName.LOG].fullPath,
+        Info.databases.log.absolutePath,
       )
 
       await Share.open({

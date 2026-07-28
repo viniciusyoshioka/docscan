@@ -1,5 +1,3 @@
-import type { DatabaseName } from '@database'
-
 
 export interface AppInfo {
   name: string
@@ -28,13 +26,12 @@ export interface FoldersInfo {
 }
 
 
+type Databases = 'app' | 'log'
+
 export type DatabaseInfo = {
-  [K in DatabaseName]: {
+  [K in Databases]: {
     fileName: string
-    exportFileName: string
-    importFileName: string | null
-    fullPath: string
-    exportFullPath: string
-    importFullPath: string | null
+    absolutePath: string
+    relativePath: string
   }
 }
