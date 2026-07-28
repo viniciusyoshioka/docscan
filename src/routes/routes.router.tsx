@@ -9,7 +9,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { useMemo } from 'react'
 
 import { Camera } from '@screens/Camera'
-import { DocumentDetail } from '@screens/DocumentDetail'
+import {
+  ConvertDocumentToPdf,
+  DocumentDetail,
+  RenameDocument,
+} from '@screens/DocumentDetail'
 import { Gallery } from '@screens/Gallery'
 import { Home } from '@screens/Home'
 import { PictureDetail } from '@screens/PictureDetail'
@@ -67,6 +71,8 @@ export function Router() {
 
           <NativeStack.Group screenOptions={modalScreenOptions}>
             <NativeStack.Screen name={'ChangeTheme'} component={ChangeTheme} />
+            <NativeStack.Screen name={'ConvertDocumentToPdf'} component={ConvertDocumentToPdf} />
+            <NativeStack.Screen name={'RenameDocument'} component={RenameDocument} />
           </NativeStack.Group>
         </NativeStack.Navigator>
       </ThemeProvider>

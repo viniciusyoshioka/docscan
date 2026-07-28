@@ -9,6 +9,8 @@ export type ScreenParams = {
   Camera: undefined
   Gallery: undefined
   DocumentDetail: undefined
+  ConvertDocumentToPdf: undefined
+  RenameDocument: undefined
   PictureDetail: undefined
 }
 
