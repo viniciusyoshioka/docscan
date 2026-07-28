@@ -5,9 +5,11 @@
         "AUTOINCREMENT",
         "bootsplash",
         "datasource",
+        "docscan",
         "mmkv",
         "MMKV",
         "newarch",
+        "Pdfs",
         "requestable",
     ]
 }
