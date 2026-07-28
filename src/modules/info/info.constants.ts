@@ -1,5 +1,10 @@
 import { DatabaseName } from '@database'
-
+import {
+  AbsolutePath,
+  APP_DOCUMENT_FOLDER,
+  APP_TEMP_FOLDER,
+  SYS_EXTERNAL_STORAGE_FOLDER,
+} from '@modules/file-system'
 import type { AppInfo, DatabaseInfo, FoldersInfo } from './info.types.ts'
 
 
@@ -14,21 +19,58 @@ export class Info {
   }
 
 
-  // TODO
+  private static readonly internalDataPath = AbsolutePath.join([
+    APP_DOCUMENT_FOLDER,
+    this.app.name,
+  ])
+  private static readonly internalTempPath = AbsolutePath.join([
+    APP_TEMP_FOLDER,
+    this.app.name,
+  ])
+  private static readonly externalDataPath = AbsolutePath.join([
+    SYS_EXTERNAL_STORAGE_FOLDER,
+    this.app.name,
+  ])
+
   static readonly folders: FoldersInfo = {
     internal: {
-      data: '',
-      temp: '',
-      pictures: '',
-      temporaryImportedDocuments: '',
-      temporaryExportedDocuments: '',
-      temporaryCompressedPictures: '',
-      temporaryExportedPdfs: '',
+      data: this.internalDataPath,
+      temp: this.internalTempPath,
+      databases: AbsolutePath.join([
+        this.internalDataPath,
+        'databases',
+      ]),
+      pictures: AbsolutePath.join([
+        this.internalDataPath,
+        'pictures',
+      ]),
+      temporaryImportedDocuments: AbsolutePath.join([
+        this.internalTempPath,
+        'imported-documents',
+      ]),
+      temporaryExportedDocuments: AbsolutePath.join([
+        this.internalTempPath,
+        'exported-documents',
+      ]),
+      temporaryCompressedPictures: AbsolutePath.join([
+        this.internalTempPath,
+        'compressed-pictures',
+      ]),
+      temporaryExportedPdfs: AbsolutePath.join([
+        this.internalTempPath,
+        'exported-pdfs',
+      ]),
     },
     external: {
-      data: '',
-      exportedDocuments: '',
-      exportedPdfs: '',
+      data: this.externalDataPath,
+      exportedDocuments: AbsolutePath.join([
+        this.externalDataPath,
+        'exported-documents',
+      ]),
+      exportedPdfs: AbsolutePath.join([
+        this.externalDataPath,
+        'exported-pdfs',
+      ]),
     },
   }
 

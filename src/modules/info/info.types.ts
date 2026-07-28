@@ -13,6 +13,7 @@ export interface FoldersInfo {
   internal: {
     data: string
     temp: string
+    databases: string
     pictures: string
     temporaryImportedDocuments: string
     temporaryExportedDocuments: string
