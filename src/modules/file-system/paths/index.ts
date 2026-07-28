@@ -1,4 +1,5 @@
 export * from './absolute-path.ts'
 export * from './path.constants.ts'
 export * from './path.types.ts'
+export * from './path.utils.ts'
 export * from './relative-path.ts'
