@@ -2,7 +2,7 @@ import { View } from 'react-native'
 
 import { Header } from '@components'
 import { useHideSplashscreen } from '@hooks'
-import { useLocale } from '@locale'
+import { Namespaces, useLocale } from '@locale'
 import { Info } from '@modules/info'
 import { useOpenSettings } from './hooks'
 
@@ -25,7 +25,7 @@ export function Home() {
         menuItems={[
           {
             iconName: 'cog-outline',
-            title: t('Home_menu_settings'),
+            title: t('Home_menu_settings', { ns: Namespaces.APP }),
             onPress: openSettings,
           },
         ]}

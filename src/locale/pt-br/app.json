@@ -1,5 +1,61 @@
 {
+    "Home_alert_errorLoadingDocuments_text": "Erro ao carregar documentos",
+    "Home_alert_errorDeletingSelectedDocuments_text": "Erro ao apagar documentos selecionados",
+    "Home_alert_deleteDocuments_title": "Apagar",
+    "Home_alert_deleteDocuments_text": "Estes documentos serão apagados permanentemente",
+    "Home_alert_importDocuments_title": "Importar",
+    "Home_alert_importDocuments_text": "A importação de documentos pode demorar um pouco. Não feche o aplicativo",
+    "Home_alert_errorImportingDocuments_text": "Erro importando documentos",
+    "Home_alert_exportingDocuments_title": "Aguarde",
+    "Home_alert_exportingDocuments_text": "A exportação de documentos pode demorar um pouco. Não feche o aplicativo",
+    "Home_alert_errorExportingDocuments_text": "Erro exportando documentos",
+    "Home_alert_noDocumentsToExport_text": "Nenhum documento existente para ser exportado",
+    "Home_alert_exportDocuments_title": "Exportar",
+    "Home_alert_allSelectedDocumentsWillBeExported_text": "Os documentos selecionados serão exportados",
+    "Home_alert_allDocumentsWillBeExported_text": "Todos os documentos serão exportados",
+    "Home_alert_mergeDocuments_title": "Unir",
+    "Home_alert_mergeDocuments_text": "Os documento selecionados serão unidos em um único documento",
+    "Home_alert_duplicateDocuments_title": "Duplicar",
+    "Home_alert_duplicateDocuments_text": "Os documentos selecionados serão duplicados",
+    "Home_alert_notificationPermissionDenied_title": "Permisão negada para notificação",
+    "Home_alert_notificationPermissionDenied_text": "Notificação são necessárias para o funcionamento do aplicativo. Você pode permitir mais tarde nas configurações do aplicativo",
+
+    "Home_header_title": "DocScan",
+
+    "Home_export": "Exportar",
+    "Home_merge": "Unir",
+    "Home_duplicate": "Duplicar",
+    "Home_emptyDocumentList": "Nenhum documento",
+    "Home_deletingDocuments": "Apagando documentos...",
+    "Home_errorLoadingMoreDocuments_title": "Erro carregando mais documentos",
+    "Home_errorLoadingMoreDocuments_text": "Clique aqui para tentar novamente.",
+    "Home_errorLoadingDocuments_title": "Erro",
+    "Home_errorLoadingDocuments_text": "Ocorreu um erro inesperado ao carregar documentos.",
+    "Home_errorLoadingDocuments_tryAgain": "Tentar novamente",
+
+    "Home_menu_importDocument": "Importar documentos",
+    "Home_menu_exportDocument": "Exportar documentos",
+    "Home_menu_settings": "Configurações",
+    "Home_menu_mergeDocument": "Unir documentos",
+    "Home_menu_duplicateDocument": "Duplicar documentos",
+
+    "NotificationPermissionDeniedModal_title": "Permissão negada",
+    "NotificationPermissionDeniedModal_description": "As notificações são usadas para importar e exportar documentos, importar imagens e exportar um documento para PDF. Ao negar essa permissão, você não poderá usar essas funcionalidades.",
+    "NotificationPermissionDeniedModal_close": "Fechar",
+    "NotificationPermissionDeniedModal_allow": "Permitir",
+
+    "DeleteSelectedDocumentsModal_title": "Apagar documentos",
+    "DeleteSelectedDocumentsModal_description": "Os documentos selecionados serão apagados permanentemente. Esta ação não poderá ser desfeita.",
+
+    "ErrorDeletingSelectedDocumentsModal_title": "Erro ao apagar documentos",
+    "ErrorDeletingSelectedDocumentsModal_description": "Ocorreu um erro inesperado ao tentar apagar os documentos selecionados. Por favor, tente novamente.",
+
+
+    "Settings_alert_errorSharingLogDatabase_text": "Erro ao compartilhar banco de dados de logs",
+    "Settings_alert_errorSharingAppDatabase_text": "Erro ao compartilhar banco de dados do aplicativo",
+
     "Settings_header_title": "Configurações",
+
     "Settings_theme_title": "Tema",
     "Settings_theme_text": "Mudar tema de cores do aplicativo",
     "Settings_shareLogDatabase_title": "Compartilhar logs",
@@ -7,9 +63,7 @@
     "Settings_shareAppDatabase_title": "Compartilhar banco de dados",
     "Settings_shareAppDatabase_text": "Enviar banco de dados com os dados do aplicativo",
     "Settings_appVersionInfo_title": "Versão do aplicativo",
-    "Settings_alert_errorSharingLogDatabase_text": "Erro ao compartilhar banco de dados de logs",
-    "Settings_alert_errorSharingAppDatabase_text": "Erro ao compartilhar banco de dados do aplicativo",
- 
+
     "ChangeTheme_title": "Mudar tema",
     "ChangeTheme_auto": "Automático",
     "ChangeTheme_light": "Claro",
