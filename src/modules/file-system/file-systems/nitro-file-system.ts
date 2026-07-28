@@ -84,31 +84,39 @@ export class NitroFileSystem extends FileSystem {
 
     const pathExists = await this.exists(path)
     if (!pathExists) {
+      path.updateType(PathType.NULL)
       return PathType.NULL
     }
 
     try {
       const lStats = await fs.promises.lstat(path.absolutePath)
       if (lStats.isFile()) {
+        path.updateType(PathType.FILE)
         return PathType.FILE
       }
       if (lStats.isDirectory()) {
+        path.updateType(PathType.FOLDER)
         return PathType.FOLDER
       }
 
       if (lStats.isSymbolicLink()) {
         const stats = await fs.promises.stat(path.absolutePath)
         if (stats.isFile()) {
+          path.updateType(PathType.SYMLINK_FILE)
           return PathType.SYMLINK_FILE
         }
         if (stats.isDirectory()) {
+          path.updateType(PathType.SYMLINK_FOLDER)
           return PathType.SYMLINK_FOLDER
         }
+        path.updateType(PathType.SYMLINK_OTHER)
         return PathType.SYMLINK_OTHER
       }
 
+      path.updateType(PathType.OTHER)
       return PathType.OTHER
     } catch (error) {
+      path.updateType(PathType.NULL)
       return PathType.NULL
     }
   }
