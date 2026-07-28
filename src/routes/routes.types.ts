@@ -4,6 +4,8 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
 export type ScreenParams = {
   Home: undefined
+  Settings: undefined
+  ChangeTheme: undefined
 }
 
 export type ScreenName = keyof ScreenParams

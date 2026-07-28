@@ -9,6 +9,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { useMemo } from 'react'
 
 import { Home } from '@screens/Home'
+import { ChangeTheme, Settings } from '@screens/Settings'
 import { useAppTheme } from '@theme'
 import type { ScreenParams } from './routes.types.ts'
 
@@ -54,9 +55,10 @@ export function Router() {
           screenOptions={stackNavigatorScreenOptions}
         >
           <NativeStack.Screen name={'Home'} component={Home} />
+          <NativeStack.Screen name={'Settings'} component={Settings} />
 
           <NativeStack.Group screenOptions={modalScreenOptions}>
-            {null}
+            <NativeStack.Screen name={'ChangeTheme'} component={ChangeTheme} />
           </NativeStack.Group>
         </NativeStack.Navigator>
       </ThemeProvider>
