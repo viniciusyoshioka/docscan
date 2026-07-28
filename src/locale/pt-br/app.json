@@ -1,0 +1,17 @@
+{
+    "Settings_header_title": "Configurações",
+    "Settings_theme_title": "Tema",
+    "Settings_theme_text": "Mudar tema de cores do aplicativo",
+    "Settings_shareLogDatabase_title": "Compartilhar logs",
+    "Settings_shareLogDatabase_text": "Enviar banco de dados com o registro de erros",
+    "Settings_shareAppDatabase_title": "Compartilhar banco de dados",
+    "Settings_shareAppDatabase_text": "Enviar banco de dados com os dados do aplicativo",
+    "Settings_appVersionInfo_title": "Versão do aplicativo",
+    "Settings_alert_errorSharingLogDatabase_text": "Erro ao compartilhar banco de dados de logs",
+    "Settings_alert_errorSharingAppDatabase_text": "Erro ao compartilhar banco de dados do aplicativo",
+ 
+    "ChangeTheme_title": "Mudar tema",
+    "ChangeTheme_auto": "Automático",
+    "ChangeTheme_light": "Claro",
+    "ChangeTheme_dark": "Escuro"
+}

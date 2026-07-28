@@ -14,6 +14,7 @@ function getMissingTranslationKeys(): MissingTranslationKeys {
   const namespaces = Object.values(Namespaces)
 
   const missingKeys: MissingTranslationKeys = {
+    [Namespaces.APP]: new Set<string>(),
     [Namespaces.COMMON]: new Set<string>(),
     [Namespaces.HOME]: new Set<string>(),
     [Namespaces.INITIALIZATION]: new Set<string>(),
