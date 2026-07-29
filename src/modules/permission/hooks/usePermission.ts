@@ -84,7 +84,7 @@ export function usePermission<P extends Permissions>(
   const permissionOptions = useMemo((): PermissionOptions<P> => {
     if (permission === Permissions.READ_STORAGE) {
       const opts = options as UsePermissionOptions<Permissions.READ_STORAGE>
-      return <PermissionOptions<Permissions.READ_STORAGE>>{
+      return {
         mediaType: opts.mediaType,
       } as PermissionOptions<P>
     }
