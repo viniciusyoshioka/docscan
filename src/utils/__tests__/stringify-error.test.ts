@@ -50,7 +50,8 @@ describe('stringifyError', () => {
 
   it('should handle when a Set is provided', () => {
     const setAsErrorMessage = new Set<number>([0, 1, 2, 3, 4])
-    const stringifiedSetAsErrorMessage = String(setAsErrorMessage as unknown)
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
+    const stringifiedSetAsErrorMessage = String(setAsErrorMessage)
 
     const stringifiedError = stringifyError(setAsErrorMessage)
     expect(stringifiedError).toBe(stringifiedSetAsErrorMessage)
