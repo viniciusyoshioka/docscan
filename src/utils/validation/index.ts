@@ -1,1 +1,1 @@
-export * from './is-number'
+export * from './is-number.ts'
