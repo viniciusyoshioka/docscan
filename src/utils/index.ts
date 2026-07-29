@@ -1,4 +1,5 @@
 export * from './create-batch-array.ts'
 export * from './normalize-error.ts'
 export * from './stringify-error.ts'
+export * from './time-utils.ts'
 export * from './validation'
