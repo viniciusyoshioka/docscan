@@ -1,4 +1,107 @@
 {
+    "Camera_alert_unsavedPictures_text": "Você tem fotos que não foram salvas, ao voltar elas serão perdidas",
+    "Camera_alert_unknownErrorTakingPicture_text": "Erro desconhecido ao tirar foto, tente novamente",
+
+    "Camera_noPermission": "Sem permissão",
+    "Camera_allowCameraWithGrantPermission": "Permita o uso da câmera com \"Conceder permissão\"",
+    "Camera_allowCameraThroughSettings": "Permita o uso da câmera através das configurações do aplicativo com \"Abrir configurações\"",
+    "Camera_enableCamera": "Ou habilite o uso da câmera nas configurações de privacidade do dispositivo",
+    "Camera_openSettings": "Abrir configurações",
+    "Camera_grantPermission": "Conceder permissão",
+    "Camera_noCameraAvailable": "Nenhuma câmera disponível",
+
+    "CameraSettings_alert_errorSavingNewFlashSetting_text": "Erro salvando nova configuração de flash",
+    "CameraSettings_alert_errorSavingNewWhiteBalanceSetting_text": "Erro salvando nova configuração de balanço de branco",
+    "CameraSettings_alert_errorSavingNewCameraTypeSetting_text": "Erro salvando nova configuração de tipo da câmera",
+    "CameraSettings_alert_errorSavingNewRatioSetting_text": "Erro salvando nova configuração de proporção",
+    "CameraSettings_alert_errorResetingFlashSetting_text": "Erro redefinindo configuração de flash da câmera",
+    "CameraSettings_alert_errorResetingWhiteBalanceSetting_text": "Erro redefinindo configuração de balanço de branco da câmera",
+    "CameraSettings_alert_errorResetingCameraTypeSetting_text": "Erro redefinindo configuração de tipo de câmera",
+    "CameraSettings_alert_errorResetingCameraIdSetting_text": "Erro redefinindo configuração de id da câmera",
+    "CameraSettings_alert_errorResetingRatioSetting_text": "Erro redefinindo configuração de porporção da câmera",
+
+    "CameraSettings_frontalCamera": "Câmera frontal",
+    "CameraSettings_backCamera": "Câmera traseira",
+    "CameraSettings_flip": "Virar",
+    "CameraSettings_ratio": "Proporção",
+    "CameraSettings_flash": "Flash",
+    "CameraSettings_whiteBalance": "Balanço de branco",
+    "CameraSettings_reset": "Redefinir",
+
+
+    "DocumentDetail_alert_errorLoadingDocument_text": "Erro ao carregar documento",
+    "DocumentDetail_alert_errorLoadingDocumentPicture_text": "Erro ao carregar imagens do documento",
+    "DocumentDetail_alert_emptyDocument_text": "O documento está vazio",
+    "DocumentDetail_alert_documentWithoutName_text": "Não é possível converter um documento sem nome para PDF",
+    "DocumentDetail_alert_noDocumentOpened_text": "Não há documento aberto",
+    "DocumentDetail_alert_convertNotExistentPdfToShare_text": "Arquivo PDF não existe, converta o documento para compartilhá-lo",
+    "DocumentDetail_alert_errorSharingPdf_text": "Erro compartilhando PDF",
+    "DocumentDetail_alert_noPermissionToVisualizePdf_text": "Sem permissão para visualizar PDF",
+    "DocumentDetail_alert_convertNotExistentPdfToVisualize_text": "Arquivo PDF não existe, converta o documento para visualizá-lo",
+    "DocumentDetail_alert_noPermissionToDeletePdf_text": "Sem permissão para apagar PDF",
+    "DocumentDetail_alert_pdfFileDoesNotExists_text": "Arquivo PDF não existe",
+    "DocumentDetail_alert_pdfFileDeletedSuccessfully_text": "Arquivo PDF apagado com sucesso",
+    "DocumentDetail_alert_errorDeletingPdfFile_text": "Erro apagando arquivo PDF",
+    "DocumentDetail_alert_deletePdf_title": "Apagar PDF",
+    "DocumentDetail_alert_deletePdf_text": "O PDF deste documento será apagado permanentemente",
+    "DocumentDetail_alert_cantDeletePictureFromEmptyDocument_text": "Não é possível apagar imagens selecionadas, o documento está vazio",
+    "DocumentDetail_alert_errorDeletingSelectedPictures_text": "Erro apagando imagens selecionadas",
+    "DocumentDetail_alert_deletePicture_title": "Apagar foto",
+    "DocumentDetail_alert_deletePicture_text": "Esta foto será apagada permanentemente",
+
+    "DocumentDetail_shareDocument": "Compartilhar documento",
+    "DocumentDetail_deletingPictures": "Apagando imagens...",
+    "DocumentDetail_emptyDocument": "Documento vazio",
+    "DocumentDetail_errorLoadingMorePictures_title": "Erro carregando mais imagens",
+    "DocumentDetail_errorLoadingPictures_text": "Ocorreu um erro inesperado ao carregar imagens do documento.",
+
+    "DocumentDetail_menu_convertToPdf": "Converter para PDF",
+    "DocumentDetail_menu_sharePdf": "Compartilhar PDF",
+    "DocumentDetail_menu_visualizePdf": "Visualizar PDF",
+    "DocumentDetail_menu_rename": "Renomear",
+    "DocumentDetail_menu_deletePdf": "Apagar PDF",
+    "DocumentDetail_menu_deleteDocument": "Apagar documento",
+
+    "ConvertDocumentToPdf_alert_noDocumentOpened_text": "Não há documento aberto",
+    "ConvertDocumentToPdf_alert_documentWithoutPictures_text": "Não é possível converter um documento sem fotos para PDF",
+    "ConvertDocumentToPdf_alert_noPermissionToConvertToPdf_text": "Sem permissão para converter documento para PDF",
+
+    "ConvertDocumentToPdf_title": "Converter para PDF",
+    "ConvertDocumentToPdf_description": "Escolha a taxa de compressão das imagens do documento",
+    "ConvertDocumentToPdf_highCompression": "Alta",
+    "ConvertDocumentToPdf_lowCompression": "Baixa",
+    "ConvertDocumentToPdf_customCompression": "Personalizada",
+
+    "RenameDocument_title": "Renomear",
+    "RenameDocument_documentName_placeholder": "Nome do documento",
+
+
+    "Gallery_alert_noPermissionForGallery_text": "Sem permissão para abrir galeria",
+    "Gallery_alert_errorOpeningGallery_text": "Erro desconhecido ao abrir galeria",
+    "Gallery_alert_noPermissionToImportSingle_text": "Sem permissão para importar imagem",
+    "Gallery_alert_unknownErrorImportingSingle_text": "Erro desconhecido ao importar imagem da galeria",
+    "Gallery_alert_noPermissionToImportMultiple_text": "Sem permissão para importar múltiplas imagens",
+
+    "Gallery_header_title": "Importar imagem",
+
+    "Gallery_noPermission": "Sem permissão",
+    "Gallery_photoAccessPermissionDescription": "É necessária a permissão para acessar as fotos do dispositivo para exibí-las na tela e selecionar quais fotos deseja importar para o aplicativo.",
+    "Gallery_allowPhotoAccessWithGrantPermission": "Permita o acesso às fotos com \"Conceder permissão\"",
+    "Gallery_allowPhotoAccessThroughSettings": "Permita o acesso às fotos através das configurações do aplicativo com \"Abrir configurações\"",
+    "Gallery_openSettings": "Abrir configurações",
+    "Gallery_grantPermission": "Conceder permissão",
+    "Gallery_errorLoadingImages_title": "Erro",
+    "Gallery_errorLoadingImages_text": "Ocorreu um erro inesperado ao carregar imagens.",
+    "Gallery_errorLoadingImages_tryAgain": "Tentar novamente",
+    "Gallery_errorLoadingMoreImages_title": "Erro carregando mais imagens",
+    "Gallery_errorLoadingMoreImages_text": "Clique aqui para tentar novamente.",
+    "Gallery_emptyGallery": "Galeria vazia",
+    "Gallery_importingPictures": "Importando imagens...",
+
+    "ErrorImportingImagesModal_title": "Atenção",
+    "ErrorImportingImagesModal_text": "Houve um erro inesperado e não foi possível importar imagens",
+
+
     "Home_alert_errorLoadingDocuments_text": "Erro ao carregar documentos",
     "Home_alert_errorDeletingSelectedDocuments_text": "Erro ao apagar documentos selecionados",
     "Home_alert_deleteDocuments_title": "Apagar",
@@ -67,5 +170,11 @@
     "ChangeTheme_title": "Mudar tema",
     "ChangeTheme_auto": "Automático",
     "ChangeTheme_light": "Claro",
-    "ChangeTheme_dark": "Escuro"
+    "ChangeTheme_dark": "Escuro",
+
+
+    "PictureDetail_alert_errorSavingRotatedImage_text": "Erro salvando imagem rotacionada",
+    "PictureDetail_alert_errorCroppingImage_text": "Erro cortando imagem",
+    "PictureDetail_alert_warnCurrentPicture_text": "A imagem atual a ser substituída não existe",
+    "PictureDetail_alert_errorSavingCroppedImage_text": "Não foi possível salvar imagem cortada"
 }
