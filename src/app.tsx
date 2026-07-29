@@ -13,6 +13,7 @@ import {
 import { LocaleProvider } from '@locale'
 import { AlertProvider } from '@modules/alert'
 import { FileSystemProvider, NitroFileSystem } from '@modules/file-system'
+import { LoggerProvider } from '@modules/logger'
 import { useSettings } from '@modules/settings'
 import { Router } from '@routes'
 import { AppThemeProvider } from '@theme'
@@ -46,7 +47,9 @@ export function App() {
               <AlertProvider>
                 <FileSystemProvider fileSystem={fileSystem}>
                   <DatabaseProvider database={typeormDatabase}>
-                    <Router />
+                    <LoggerProvider>
+                      <Router />
+                    </LoggerProvider>
                   </DatabaseProvider>
                 </FileSystemProvider>
               </AlertProvider>
