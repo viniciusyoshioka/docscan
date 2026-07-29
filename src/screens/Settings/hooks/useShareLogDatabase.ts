@@ -5,7 +5,8 @@ import { Namespaces, useLocale } from '@locale'
 import { useAlert } from '@modules/alert'
 import { PathUtils } from '@modules/file-system'
 import { Info } from '@modules/info'
-import { stringifyError } from '@utils'
+import { useLogger } from '@modules/logger'
+import { getErrorStackTrace, stringifyError } from '@utils'
 
 
 type ShareLogDatabase = () => Promise<void>
@@ -16,6 +17,7 @@ export function useShareLogDatabase(): ShareLogDatabase {
 
   const { t } = useLocale()
   const alert = useAlert()
+  const logger = useLogger()
 
 
   const shareLogDatabase = useCallback(async () => {
@@ -38,11 +40,14 @@ export function useShareLogDatabase(): ShareLogDatabase {
         ),
       })
 
-      // TODO: Add logger
       const errorMessage = stringifyError(error)
-      console.error('[shareLogDatabase]', errorMessage)
+      const errorStack = getErrorStackTrace(error)
+      await logger.error(
+        `Error sharing log database file: "${errorMessage}"`,
+        errorStack,
+      )
     }
-  }, [t, alert])
+  }, [t, alert, logger])
 
 
   return shareLogDatabase
