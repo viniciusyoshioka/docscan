@@ -11,8 +11,16 @@ import {
   DatabaseNotInitializedError,
 } from '../../errors'
 import type { Repositories } from '../../internal-types'
-import { TypeOrmLogEntity } from '../entities'
-import { TypeOrmLogRepository } from '../repositories'
+import {
+  TypeOrmDocumentEntity,
+  TypeOrmLogEntity,
+  TypeOrmPictureEntity,
+} from '../entities'
+import {
+  TypeOrmDocumentRepository,
+  TypeOrmLogRepository,
+  TypeOrmPictureRepository,
+} from '../repositories'
 
 
 export class TypeOrmDatabase extends Database<DataSource> {
@@ -124,6 +132,14 @@ export class TypeOrmDatabase extends Database<DataSource> {
     const logDatabase = this.databases[DatabaseName.LOG]
 
 
+    const documentRepository = new TypeOrmDocumentRepository(
+      TypeOrmDocumentEntity,
+      appDatabase.manager,
+    )
+    const pictureRepository = new TypeOrmPictureRepository(
+      TypeOrmPictureEntity,
+      appDatabase.manager,
+    )
     const logRepository = new TypeOrmLogRepository(
       TypeOrmLogEntity,
       logDatabase.manager,
@@ -131,6 +147,8 @@ export class TypeOrmDatabase extends Database<DataSource> {
 
 
     return {
+      documentRepository,
+      pictureRepository,
       logRepository,
     }
   }
