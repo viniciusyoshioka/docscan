@@ -1,6 +1,5 @@
 export { DatabaseName } from './database'
-export { LogType } from './entities'
-export type { LogId } from './entities'
+export * from './entities'
 export * from './errors'
 export * from './provider'
 export * from './services'
