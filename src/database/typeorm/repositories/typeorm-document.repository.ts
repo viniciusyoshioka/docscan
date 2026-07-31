@@ -32,16 +32,17 @@ export class TypeOrmDocumentRepository
     const {
       page = 1,
       limit = 10,
+      offset,
       sortBy = {
         updatedAt: SortOrder.DESC,
       },
     } = options
 
-    const offset = (page - 1) * limit
+    const offsetToUse = offset ?? ((page - 1) * limit)
 
     const query = this.createQueryBuilder('documents')
       .limit(limit)
-      .offset(offset)
+      .offset(offsetToUse)
 
     Object.entries(sortBy).forEach(([column, sortOrder]) => {
       query.addOrderBy(column, sortOrder)

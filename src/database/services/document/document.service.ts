@@ -9,7 +9,7 @@ import type {
 } from '../../repositories'
 import type { Paginated, SortBy } from '../../types'
 import { SortOrder } from '../../types'
-import { assertPaginationIsValid } from '../../utils'
+import { assertOffsetIsValid, assertPaginationIsValid } from '../../utils'
 
 
 export class DocumentService {
@@ -40,6 +40,7 @@ export class DocumentService {
   async findPaginated(
     options: {
       page?: number
+      offset?: number
       limit?: number
       sortBy?: SortBy<DocumentEntity>
     },
@@ -53,6 +54,7 @@ export class DocumentService {
 
     const {
       page = 1,
+      offset,
       limit = 10,
       sortBy = {
         updatedAt: SortOrder.DESC,
@@ -60,6 +62,7 @@ export class DocumentService {
     } = options
 
     assertPaginationIsValid({ page, limit })
+    assertOffsetIsValid(offset)
 
     const txDocumentRepository = this.documentRepository.withinTransaction(
       transaction,
@@ -67,6 +70,7 @@ export class DocumentService {
 
     return await txDocumentRepository.findPaginated({
       page,
+      offset,
       limit,
       sortBy,
     })

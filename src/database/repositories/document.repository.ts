@@ -4,6 +4,7 @@ import type { BaseRepository } from './base.repository.ts'
 
 
 export interface FindDocumentsPaginated extends Pagination {
+  offset?: number
   sortBy?: SortBy<DocumentEntity>
 }
 
