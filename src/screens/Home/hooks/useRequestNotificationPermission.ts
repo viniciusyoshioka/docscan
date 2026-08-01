@@ -23,7 +23,6 @@ export function useRequestNotificationPermission(
   const notificationPermission = usePermission(
     Permissions.NOTIFICATION,
     {
-      autoCheck: true,
       autoCheckAndRequestIfDenied: true,
     },
   )
