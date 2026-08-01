@@ -63,6 +63,23 @@ export class PictureService {
     })
   }
 
+  async findFileNamesByDocumentId(
+    documentId: DocumentId,
+    transaction?: Transaction,
+  ): Promise<PictureEntity['fileName'][]> {
+    if (!transaction) {
+      return await this.pictureRepository.transaction(async tx => {
+        return await this.findFileNamesByDocumentId(documentId, tx)
+      })
+    }
+
+    const txPictureRepository = this.pictureRepository.withinTransaction(
+      transaction,
+    )
+
+    return await txPictureRepository.findFileNamesByDocumentId(documentId)
+  }
+
   async create(
     data: CreatePicture,
     transaction?: Transaction,
