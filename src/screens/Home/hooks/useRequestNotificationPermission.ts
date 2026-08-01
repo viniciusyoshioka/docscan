@@ -41,7 +41,7 @@ export function useRequestNotificationPermission(
       await logger.debug('Notification permission denied')
       params.onPermissionDenied()
     }
-  }, [notificationPermission.error, logger, params.onPermissionDenied])
+  }, [notificationPermission, logger, params.onPermissionDenied])
 
 
   useEffect(() => {
