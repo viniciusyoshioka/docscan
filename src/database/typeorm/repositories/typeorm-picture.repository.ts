@@ -46,7 +46,7 @@ export class TypeOrmPictureRepository
       .offset(offset)
 
     Object.entries(sortBy).forEach(([column, sortOrder]) => {
-      query.addOrderBy(column, sortOrder)
+      query.addOrderBy(`pictures.${column}`, sortOrder)
     })
 
     const [data, total] = await query.getManyAndCount()

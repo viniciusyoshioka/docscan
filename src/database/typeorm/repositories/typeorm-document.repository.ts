@@ -45,7 +45,7 @@ export class TypeOrmDocumentRepository
       .offset(offsetToUse)
 
     Object.entries(sortBy).forEach(([column, sortOrder]) => {
-      query.addOrderBy(column, sortOrder)
+      query.addOrderBy(`documents.${column}`, sortOrder)
     })
 
     const [data, total] = await query.getManyAndCount()
