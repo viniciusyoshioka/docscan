@@ -28,7 +28,7 @@ export function useRequestNotificationPermission(
   )
 
 
-  const requestPermissions = useCallback(async () => {
+  const onPermissionStatusChange = useCallback(async () => {
     if (notificationPermission.error) {
       const errorMessage = `Error requesting notification permission: "${notificationPermission.error.message}"`
       const errorStack = getErrorStackTrace(notificationPermission.error)
@@ -45,6 +45,6 @@ export function useRequestNotificationPermission(
 
 
   useEffect(() => {
-    requestPermissions()
+    onPermissionStatusChange()
   }, [notificationPermission.status])
 }
