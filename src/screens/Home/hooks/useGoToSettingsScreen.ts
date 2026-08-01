@@ -4,19 +4,19 @@ import { useCallback } from 'react'
 import type { NavigationProps } from '@routes'
 
 
-type OpenSettings = () => void
+type GoToSettingsScreen = () => void
 
 
-export function useOpenSettings(): OpenSettings {
+export function useGoToSettingsScreen(): GoToSettingsScreen {
 
 
   const navigation = useNavigation<NavigationProps<'Home'>>()
 
 
-  const openSettings = useCallback(() => {
+  const goToSettingsScreen = useCallback<GoToSettingsScreen>(() => {
     navigation.navigate('Settings')
   }, [navigation])
 
 
-  return openSettings
+  return goToSettingsScreen
 }
