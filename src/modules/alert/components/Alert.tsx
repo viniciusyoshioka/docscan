@@ -1,4 +1,5 @@
 import { memo, useCallback, useMemo } from 'react'
+import type { StyleProp, TextStyle } from 'react-native'
 import { Button, Dialog, Text } from 'react-native-paper'
 
 import { useLocale } from '@locale'
@@ -15,11 +16,20 @@ interface AlertProps {
 export const Alert = memo((props: AlertProps) => {
   const { alertStackItem } = props
 
-  const { id, title, description, type, buttons } = alertStackItem
+  const { id, icon, title, description, type, buttons } = alertStackItem
 
 
   const alert = useAlert()
   const { t } = useLocale()
+
+
+  const titleStyle = useMemo<StyleProp<TextStyle>>(() => {
+    if (!icon) return undefined
+
+    return {
+      textAlign: 'center',
+    }
+  }, [icon])
 
 
   const dismissItself = useCallback(() => {
@@ -58,7 +68,11 @@ export const Alert = memo((props: AlertProps) => {
 
   return (
     <Dialog visible={true} onDismiss={dismissItself}>
-      <Dialog.Title>
+      {icon && (
+        <Dialog.Icon icon={icon} />
+      )}
+
+      <Dialog.Title style={titleStyle}>
         {title}
       </Dialog.Title>
 

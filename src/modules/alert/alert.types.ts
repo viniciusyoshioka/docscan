@@ -21,6 +21,7 @@ export interface AlertButton {
 
 export interface AlertItemData {
   id: string
+  icon?: string
   title: string
   description?: string
   type?: AlertType
