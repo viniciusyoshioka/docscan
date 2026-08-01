@@ -7,6 +7,14 @@ function buildOffsetErrorMessage(offset: number): string {
 
 
 describe('assertOffsetIsValid', () => {
+  it('should ignore and not throw when offset param is not provided', () => {
+    const offset = undefined
+
+    expect(
+      () => assertOffsetIsValid(offset),
+    ).not.toThrow()
+  })
+
   it('should not throw when offset is positive', () => {
     const offset = 1
 
