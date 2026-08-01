@@ -30,6 +30,10 @@ export interface PictureRepository extends BaseRepository {
     options: FindPicturesPaginated,
   ): Promise<Paginated<PictureEntity>>
 
+  findFileNamesByDocumentId(
+    documentId: DocumentId,
+  ): Promise<PictureEntity['fileName'][]>
+
   createPicture(
     data: CreatePicture,
   ): Promise<PictureEntity>

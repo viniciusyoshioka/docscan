@@ -57,6 +57,21 @@ export class TypeOrmPictureRepository
     }
   }
 
+  async findFileNamesByDocumentId(
+    documentId: DocumentId,
+  ): Promise<PictureEntity['fileName'][]> {
+    const pictures = await this.find({
+      select: {
+        fileName: true,
+      },
+      where: {
+        documentId,
+      },
+    })
+
+    return pictures.map(picture => picture.fileName)
+  }
+
   async createPicture(
     data: CreatePicture,
   ): Promise<PictureEntity> {
