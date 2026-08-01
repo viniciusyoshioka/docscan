@@ -162,6 +162,21 @@ export class DocumentService {
     }
   }
 
+  async deleteById(id: DocumentId, transaction?: Transaction): Promise<void> {
+    if (!transaction) {
+      await this.documentRepository.transaction(async tx => {
+        await this.deleteById(id, tx)
+      })
+      return
+    }
+
+    const txDocumentRepository = this.documentRepository.withinTransaction(
+      transaction,
+    )
+
+    await txDocumentRepository.deleteById(id)
+  }
+
   async deleteByIds(
     ids: DocumentId[],
     transaction?: Transaction,
