@@ -12,6 +12,7 @@
         "pdfs",
         "Pdfs",
         "Pressable",
-        "requestable"
+        "requestable",
+        "worklets"
     ]
 }
