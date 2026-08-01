@@ -176,5 +176,15 @@
     "PictureDetail_alert_errorSavingRotatedImage_text": "Erro salvando imagem rotacionada",
     "PictureDetail_alert_errorCroppingImage_text": "Erro cortando imagem",
     "PictureDetail_alert_warnCurrentPicture_text": "A imagem atual a ser substituída não existe",
-    "PictureDetail_alert_errorSavingCroppedImage_text": "Não foi possível salvar imagem cortada"
+    "PictureDetail_alert_errorSavingCroppedImage_text": "Não foi possível salvar imagem cortada",
+    "untitled_document": "Documento sem título",
+    "document_newDocumentName": "Novo documento",
+    "document_exportedDocumentName": "DocScan Exportado",
+    "document_alert_errorSavingDocument_text": "Erro salvando documento",
+    "document_alert_errorSavingDocumentChanges_text": "Erro ao salvar alterações do documento",
+    "document_notification_deletingImages_title": "Apagando imagem(ns)",
+    "document_notification_copyingImages_title": "Copiando imagem(ns)",
+    "document_notification_movingImages_title": "Movendo imagem(ns)",
+    "document_notification_exportingDocuments_title": "Exportando documento(s)",
+    "log_alert_reportCriticalError_text": "Um erro crítico ocorreu, reporte os log para o desenvolvedor"
 }

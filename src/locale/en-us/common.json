@@ -1,3 +1,13 @@
 {
-    "ok": "Ok"
+    "ok": "Ok",
+    "cancel": "Cancel",
+    "warn": "Warn",
+    "delete": "Delete",
+    "criticalError": "Critical error",
+    "success": "Success",
+    "save": "Save",
+    "dont_save": "Don't save",
+    "tryAgain": "Try again",
+    "clickHereToTryAgain": "Click here to try again",
+    "error": "Error"
 }
