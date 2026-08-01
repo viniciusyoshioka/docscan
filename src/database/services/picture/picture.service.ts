@@ -21,6 +21,15 @@ export class PictureService {
   ) {}
 
 
+  async transaction<R = unknown>(
+    fn: (tx: Transaction) => Promise<R>,
+  ): Promise<R> {
+    return await this.pictureRepository.transaction(async tx => {
+      return await fn(tx)
+    })
+  }
+
+
   async findPaginated(
     options: FindPicturesPaginated,
     transaction?: Transaction,

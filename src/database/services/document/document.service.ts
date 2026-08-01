@@ -20,6 +20,15 @@ export class DocumentService {
   ) {}
 
 
+  async transaction<R = unknown>(
+    fn: (tx: Transaction) => Promise<R>,
+  ): Promise<R> {
+    return await this.documentRepository.transaction(async tx => {
+      return await fn(tx)
+    })
+  }
+
+
   async findById(
     id: DocumentId,
     transaction?: Transaction,
