@@ -1,4 +1,11 @@
+import type { SystemBarsProps } from 'react-native-edge-to-edge'
 import { SystemBars } from 'react-native-edge-to-edge'
+
+
+const style: SystemBarsProps['style'] = {
+  statusBar: 'auto',
+  navigationBar: 'auto',
+}
 
 
 export interface StatusBarProps {
@@ -13,10 +20,7 @@ export function StatusBar(props: StatusBarProps) {
   return (
     <SystemBars
       hidden={isHidden}
-      style={{
-        statusBar: 'auto',
-        navigationBar: 'auto',
-      }}
+      style={style}
     />
   )
 }
