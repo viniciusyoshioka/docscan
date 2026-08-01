@@ -5,8 +5,6 @@ interface GoBackParams {
   hasBlockingModal: boolean
   isSelectionMode: boolean
   exitSelection: () => void
-  isNotificationPermissionDeniedModalVisible: boolean
-  hideNotificationPermissionDeniedModal: () => void
   isDeleteSelectedDocumentsModalVisible: boolean
   hideDeleteSelectedDocumentsModal: () => void
 }
@@ -23,11 +21,6 @@ export function useGoBack(params: GoBackParams): GoBack {
       return true
     }
 
-    if (params.isNotificationPermissionDeniedModalVisible) {
-      params.hideNotificationPermissionDeniedModal()
-      return true
-    }
-
     if (params.isDeleteSelectedDocumentsModalVisible) {
       params.hideDeleteSelectedDocumentsModal()
       return true
@@ -41,8 +34,6 @@ export function useGoBack(params: GoBackParams): GoBack {
     return false
   }, [
     params.hasBlockingModal,
-    params.isNotificationPermissionDeniedModalVisible,
-    params.hideNotificationPermissionDeniedModal,
     params.isDeleteSelectedDocumentsModalVisible,
     params.hideDeleteSelectedDocumentsModal,
     params.isSelectionMode,

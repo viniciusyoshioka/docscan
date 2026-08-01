@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { View } from 'react-native'
 import { Appbar, FAB } from 'react-native-paper'
 import { LoadingModal, useModal } from 'react-native-paper-towel'
@@ -9,12 +10,10 @@ import type { DocumentId } from '@database'
 import { useBackHandler, useHideSplashscreen } from '@hooks'
 import { Namespaces, useLocale } from '@locale'
 import { Info } from '@modules/info'
-import { useMemo } from 'react'
 import {
   DeleteSelectedDocumentsModal,
   DocumentsList,
   ErrorDeletingSelectedDocumentsModal,
-  NotificationPermissionDeniedModal,
 } from './components'
 import {
   useDeleteDocuments,
@@ -28,6 +27,7 @@ import {
   useInvertDocumentSelection,
   useMergeDocuments,
   useRequestNotificationPermission,
+  useShowNotificationPermissionDeniedAlert,
 } from './hooks'
 
 
@@ -43,7 +43,6 @@ export function Home() {
   const documents = useDocumentList({
     onDocumentsLoaded: hideSplashscreen,
   })
-  const notificationPermissionDeniedModal = useModal()
   const deleteSelectedDocumentsModal = useModal()
   const errorDeletingSelectedDocumentsModal = useModal()
 
@@ -69,10 +68,6 @@ export function Home() {
       documentSelection.isSelectionMode,
     exitSelection:
       documentSelection.exitSelection,
-    isNotificationPermissionDeniedModalVisible:
-      notificationPermissionDeniedModal.isVisible,
-    hideNotificationPermissionDeniedModal:
-      notificationPermissionDeniedModal.hide,
     isDeleteSelectedDocumentsModalVisible:
       deleteSelectedDocumentsModal.isVisible,
     hideDeleteSelectedDocumentsModal:
@@ -80,8 +75,11 @@ export function Home() {
   })
 
 
+  const showNotificationPermissionDeniedAlert =
+    useShowNotificationPermissionDeniedAlert()
+
   useRequestNotificationPermission({
-    onPermissionDenied: notificationPermissionDeniedModal.show,
+    onPermissionDenied: showNotificationPermissionDeniedAlert,
   })
 
   useBackHandler(goBack)
@@ -175,11 +173,6 @@ export function Home() {
           margin: 16,
         }}
         onPress={goToCameraScreen}
-      />
-
-      <NotificationPermissionDeniedModal
-        isVisible={notificationPermissionDeniedModal.isVisible}
-        onDismiss={notificationPermissionDeniedModal.hide}
       />
 
       <DeleteSelectedDocumentsModal
