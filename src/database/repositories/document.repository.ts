@@ -38,6 +38,10 @@ export interface DocumentRepository extends BaseRepository {
     newDocument: DocumentEntity,
   ): Promise<DocumentEntity>
 
+  deleteById(
+    id: DocumentId
+  ): Promise<void>
+
   deleteByIds(
     ids: DocumentId[],
   ): Promise<void>

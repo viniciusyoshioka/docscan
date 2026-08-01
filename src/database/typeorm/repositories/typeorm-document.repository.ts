@@ -83,6 +83,14 @@ export class TypeOrmDocumentRepository
     return await this.save(documentToUpdate)
   }
 
+  async deleteById(
+    id: DocumentId,
+  ): Promise<void> {
+    await this.delete({
+      id,
+    })
+  }
+
   async deleteByIds(
     ids: DocumentId[],
   ): Promise<void> {
