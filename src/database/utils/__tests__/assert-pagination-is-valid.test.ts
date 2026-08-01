@@ -1,4 +1,4 @@
-import type { Pagination } from '../../types/pagination.ts'
+import type { Pagination } from '../../types'
 import { assertPaginationIsValid } from '../assert-pagination-is-valid.ts'
 
 
