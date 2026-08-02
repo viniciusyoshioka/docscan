@@ -36,7 +36,7 @@ export function Home() {
 
   const deleteDocuments = useDeleteDocuments({
     getSelectedDocumentIds: documentSelection.getSelectedData,
-    onSuccess: async () => await documents.loadDocuments(),
+    onSuccess: documents.loadDocuments,
   })
 
 
