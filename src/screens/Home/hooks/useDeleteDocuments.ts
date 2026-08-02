@@ -19,6 +19,7 @@ interface DeleteDocuments {
 }
 
 
+// TODO: Rename to useDeleteSelectedDocuments/deleteSelectedDocuments
 export function useDeleteDocuments(
   params: DeleteDocumentsParams,
 ): DeleteDocuments {
