@@ -5,8 +5,6 @@ interface GoBackParams {
   hasBlockingModal: boolean
   isSelectionMode: boolean
   exitSelection: () => void
-  isDeleteSelectedDocumentsModalVisible: boolean
-  hideDeleteSelectedDocumentsModal: () => void
 }
 
 
@@ -21,11 +19,6 @@ export function useGoBack(params: GoBackParams): GoBack {
       return true
     }
 
-    if (params.isDeleteSelectedDocumentsModalVisible) {
-      params.hideDeleteSelectedDocumentsModal()
-      return true
-    }
-
     if (params.isSelectionMode) {
       params.exitSelection()
       return true
@@ -34,8 +27,6 @@ export function useGoBack(params: GoBackParams): GoBack {
     return false
   }, [
     params.hasBlockingModal,
-    params.isDeleteSelectedDocumentsModalVisible,
-    params.hideDeleteSelectedDocumentsModal,
     params.isSelectionMode,
     params.exitSelection,
   ])

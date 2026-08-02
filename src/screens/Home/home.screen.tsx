@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { View } from 'react-native'
 import { Appbar, FAB } from 'react-native-paper'
-import { LoadingModal, useModal } from 'react-native-paper-towel'
+import { LoadingModal } from 'react-native-paper-towel'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useSelectionMode } from 'react-native-selection-mode'
 
@@ -10,10 +10,7 @@ import type { DocumentId } from '@database'
 import { useBackHandler, useHideSplashscreen } from '@hooks'
 import { Namespaces, useLocale } from '@locale'
 import { Info } from '@modules/info'
-import {
-  DeleteSelectedDocumentsModal,
-  DocumentsList,
-} from './components'
+import { DocumentsList } from './components'
 import {
   useDeleteDocuments,
   useDocumentList,
@@ -26,6 +23,7 @@ import {
   useInvertDocumentSelection,
   useMergeDocuments,
   useRequestNotificationPermission,
+  useShowDeleteSelectedDocumentsAlert,
   useShowErrorDeletingSelectedDocumentsAlert,
   useShowNotificationPermissionDeniedAlert,
 } from './hooks'
@@ -43,7 +41,6 @@ export function Home() {
   const documents = useDocumentList({
     onDocumentsLoaded: hideSplashscreen,
   })
-  const deleteSelectedDocumentsModal = useModal()
 
   const showNotificationPermissionDeniedAlert =
     useShowNotificationPermissionDeniedAlert()
@@ -60,22 +57,20 @@ export function Home() {
     onSuccess: async () => await documents.loadDocuments(),
     onError: showErrorDeletingSelectedDocumentsAlert,
   })
+  const showDeleteSelectedDocumentsAlert = useShowDeleteSelectedDocumentsAlert({
+    deleteSelectedDocuments: deleteDocuments.deleteDocuments,
+    exitSelection: documentSelection.exitSelection,
+  })
+
   const importDocuments = useImportDocuments()
   const exportDocuments = useExportDocuments()
   const mergeDocuments = useMergeDocuments()
   const duplicateDocuments = useDuplicateDocuments()
   const goToSettingsScreen = useGoToSettingsScreen()
   const goBack = useGoBack({
-    hasBlockingModal:
-      deleteDocuments.isLoading,
-    isSelectionMode:
-      documentSelection.isSelectionMode,
-    exitSelection:
-      documentSelection.exitSelection,
-    isDeleteSelectedDocumentsModalVisible:
-      deleteSelectedDocumentsModal.isVisible,
-    hideDeleteSelectedDocumentsModal:
-      deleteSelectedDocumentsModal.hide,
+    hasBlockingModal: deleteDocuments.isLoading,
+    isSelectionMode: documentSelection.isSelectionMode,
+    exitSelection: documentSelection.exitSelection,
   })
 
 
@@ -99,10 +94,10 @@ export function Home() {
 
       <Appbar.Action
         icon={'trash-can-outline'}
-        onPress={deleteDocuments.deleteDocuments}
+        onPress={showDeleteSelectedDocumentsAlert}
       />
     </>
-  ), [invertDocumentSelection, deleteDocuments.deleteDocuments])
+  ), [invertDocumentSelection, showDeleteSelectedDocumentsAlert])
 
   const menuItems = useMemo(() => [
     {
@@ -174,13 +169,6 @@ export function Home() {
           margin: 16,
         }}
         onPress={goToCameraScreen}
-      />
-
-      <DeleteSelectedDocumentsModal
-        isVisible={deleteSelectedDocumentsModal.isVisible}
-        onDismiss={deleteSelectedDocumentsModal.hide}
-        deleteSelectedDocuments={deleteDocuments.deleteDocuments}
-        exitSelection={documentSelection.exitSelection}
       />
 
       <LoadingModal
