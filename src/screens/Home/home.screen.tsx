@@ -1,6 +1,5 @@
-import { useMemo } from 'react'
 import { View } from 'react-native'
-import { Appbar, FAB } from 'react-native-paper'
+import { FAB } from 'react-native-paper'
 import { LoadingModal } from 'react-native-paper-towel'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useSelectionMode } from 'react-native-selection-mode'
@@ -9,21 +8,14 @@ import { Header } from '@components'
 import type { DocumentId } from '@database'
 import { useBackHandler, useHideSplashscreen } from '@hooks'
 import { Namespaces, useLocale } from '@locale'
-import { Info } from '@modules/info'
 import { DocumentsList } from './components'
 import {
   useDeleteDocuments,
   useDocumentList,
-  useDuplicateDocuments,
-  useExportDocuments,
   useGoBack,
   useGoToCameraScreen,
-  useGoToSettingsScreen,
-  useImportDocuments,
-  useInvertDocumentSelection,
-  useMergeDocuments,
+  useHomeHeader,
   useRequestNotificationPermission,
-  useShowDeleteSelectedDocumentsAlert,
   useShowErrorDeletingSelectedDocumentsAlert,
   useShowNotificationPermissionDeniedAlert,
 } from './hooks'
@@ -48,25 +40,14 @@ export function Home() {
     useShowErrorDeletingSelectedDocumentsAlert()
 
   const goToCameraScreen = useGoToCameraScreen()
-  const invertDocumentSelection = useInvertDocumentSelection({
-    setSelectedData: documentSelection.setNewSelectedData,
-    documents: documents.data,
-  })
+
   const deleteDocuments = useDeleteDocuments({
     getSelectedDocumentIds: documentSelection.getSelectedData,
     onSuccess: async () => await documents.loadDocuments(),
     onError: showErrorDeletingSelectedDocumentsAlert,
   })
-  const showDeleteSelectedDocumentsAlert = useShowDeleteSelectedDocumentsAlert({
-    deleteSelectedDocuments: deleteDocuments.deleteDocuments,
-    exitSelection: documentSelection.exitSelection,
-  })
 
-  const importDocuments = useImportDocuments()
-  const exportDocuments = useExportDocuments()
-  const mergeDocuments = useMergeDocuments()
-  const duplicateDocuments = useDuplicateDocuments()
-  const goToSettingsScreen = useGoToSettingsScreen()
+
   const goBack = useGoBack({
     hasBlockingModal: deleteDocuments.isLoading,
     isSelectionMode: documentSelection.isSelectionMode,
@@ -81,59 +62,14 @@ export function Home() {
   useBackHandler(goBack)
 
 
-  const headerTitle = documentSelection.isSelectionMode
-    ? String(documentSelection.length)
-    : Info.app.name
-
-  const RightComponentSelectionMode = useMemo(() => (
-    <>
-      <Appbar.Action
-        icon={'swap-horizontal'}
-        onPress={invertDocumentSelection}
-      />
-
-      <Appbar.Action
-        icon={'trash-can-outline'}
-        onPress={showDeleteSelectedDocumentsAlert}
-      />
-    </>
-  ), [invertDocumentSelection, showDeleteSelectedDocumentsAlert])
-
-  const menuItems = useMemo(() => [
-    {
-      iconName: 'tray-arrow-down',
-      title: t('Home_menu_importDocument', { ns: Namespaces.APP }),
-      onPress: importDocuments,
-    },
-    {
-      iconName: 'tray-arrow-up',
-      title: t('Home_menu_exportDocument', { ns: Namespaces.APP }),
-      onPress: exportDocuments,
-    },
-    {
-      iconName: 'cog-outline',
-      title: t('Home_menu_settings', { ns: Namespaces.APP }),
-      onPress: goToSettingsScreen,
-    },
-  ], [t, importDocuments, exportDocuments, goToSettingsScreen])
-
-  const menuItemsSelectionMode = useMemo(() => [
-    {
-      iconName: 'tray-arrow-up',
-      title: t('Home_menu_exportDocument', { ns: Namespaces.APP }),
-      onPress: exportDocuments,
-    },
-    {
-      iconName: 'vector-combine',
-      title: t('Home_menu_mergeDocument', { ns: Namespaces.APP }),
-      onPress: mergeDocuments,
-    },
-    {
-      iconName: 'content-duplicate',
-      title: t('Home_menu_duplicateDocument', { ns: Namespaces.APP }),
-      onPress: duplicateDocuments,
-    },
-  ], [t, exportDocuments, mergeDocuments, duplicateDocuments])
+  const homeHeader = useHomeHeader({
+    documents: documents.data,
+    isSelectionMode: documentSelection.isSelectionMode,
+    exitSelection: documentSelection.exitSelection,
+    setSelectedData: documentSelection.setNewSelectedData,
+    selectedDocumentsCount: documentSelection.getSelectedData().length,
+    deleteDocuments: deleteDocuments.deleteDocuments,
+  })
 
 
   return (
@@ -141,10 +77,10 @@ export function Home() {
       <Header
         isSelectionMode={documentSelection.isSelectionMode}
         onExitSelection={documentSelection.exitSelection}
-        title={headerTitle}
-        RightComponentSelectionMode={RightComponentSelectionMode}
-        menuItems={menuItems}
-        menuItemsSelectionMode={menuItemsSelectionMode}
+        title={homeHeader.headerTitle}
+        RightComponentSelectionMode={homeHeader.RightComponentSelectionMode}
+        menuItems={homeHeader.menuItems}
+        menuItemsSelectionMode={homeHeader.menuItemsSelectionMode}
       />
 
       <DocumentsList
