@@ -13,7 +13,6 @@ import { Info } from '@modules/info'
 import {
   DeleteSelectedDocumentsModal,
   DocumentsList,
-  ErrorDeletingSelectedDocumentsModal,
 } from './components'
 import {
   useDeleteDocuments,
@@ -27,6 +26,7 @@ import {
   useInvertDocumentSelection,
   useMergeDocuments,
   useRequestNotificationPermission,
+  useShowErrorDeletingSelectedDocumentsAlert,
   useShowNotificationPermissionDeniedAlert,
 } from './hooks'
 
@@ -44,7 +44,11 @@ export function Home() {
     onDocumentsLoaded: hideSplashscreen,
   })
   const deleteSelectedDocumentsModal = useModal()
-  const errorDeletingSelectedDocumentsModal = useModal()
+
+  const showNotificationPermissionDeniedAlert =
+    useShowNotificationPermissionDeniedAlert()
+  const showErrorDeletingSelectedDocumentsAlert =
+    useShowErrorDeletingSelectedDocumentsAlert()
 
   const goToCameraScreen = useGoToCameraScreen()
   const invertDocumentSelection = useInvertDocumentSelection({
@@ -54,7 +58,7 @@ export function Home() {
   const deleteDocuments = useDeleteDocuments({
     getSelectedDocumentIds: documentSelection.getSelectedData,
     onSuccess: async () => await documents.loadDocuments(),
-    onError: () => errorDeletingSelectedDocumentsModal.show(),
+    onError: showErrorDeletingSelectedDocumentsAlert,
   })
   const importDocuments = useImportDocuments()
   const exportDocuments = useExportDocuments()
@@ -74,9 +78,6 @@ export function Home() {
       deleteSelectedDocumentsModal.hide,
   })
 
-
-  const showNotificationPermissionDeniedAlert =
-    useShowNotificationPermissionDeniedAlert()
 
   useRequestNotificationPermission({
     onPermissionDenied: showNotificationPermissionDeniedAlert,
@@ -185,11 +186,6 @@ export function Home() {
       <LoadingModal
         visible={deleteDocuments.isLoading}
         message={t('Home_deletingDocuments', { ns: Namespaces.APP })}
-      />
-
-      <ErrorDeletingSelectedDocumentsModal
-        isVisible={errorDeletingSelectedDocumentsModal.isVisible}
-        onDismiss={errorDeletingSelectedDocumentsModal.hide}
       />
     </View>
   )
