@@ -16,7 +16,6 @@ import {
   useGoToCameraScreen,
   useHomeHeader,
   useRequestNotificationPermission,
-  useShowErrorDeletingSelectedDocumentsAlert,
 } from './hooks'
 
 
@@ -33,15 +32,11 @@ export function Home() {
     onDocumentsLoaded: hideSplashscreen,
   })
 
-  const showErrorDeletingSelectedDocumentsAlert =
-    useShowErrorDeletingSelectedDocumentsAlert()
-
   const goToCameraScreen = useGoToCameraScreen()
 
   const deleteDocuments = useDeleteDocuments({
     getSelectedDocumentIds: documentSelection.getSelectedData,
     onSuccess: async () => await documents.loadDocuments(),
-    onError: showErrorDeletingSelectedDocumentsAlert,
   })
 
 

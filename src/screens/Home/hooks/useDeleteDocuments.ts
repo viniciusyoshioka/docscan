@@ -4,12 +4,13 @@ import type { DocumentId } from '@database'
 import { useServices } from '@database'
 import { useLogger } from '@modules/logger'
 import { getErrorStackTrace, normalizeError, stringifyError } from '@utils'
+import { useShowErrorDeletingSelectedDocumentsAlert } from './useShowErrorDeletingSelectedDocumentsAlert.ts'
 
 
 interface DeleteDocumentsParams {
   getSelectedDocumentIds: () => DocumentId[]
   onSuccess: () => void
-  onError: (error: Error) => void
+  onError?: (error: Error) => void
 }
 
 
@@ -29,6 +30,9 @@ export function useDeleteDocuments(
   const logger = useLogger()
 
   const [isLoading, setIsLoading] = useState(false)
+
+  const showErrorDeletingSelectedDocumentsAlert =
+    useShowErrorDeletingSelectedDocumentsAlert()
 
 
   const deleteDocumentsFunction = useCallback(async () => {
@@ -66,7 +70,8 @@ export function useDeleteDocuments(
         `Error deleting selected documents: "${errorMessage}"`,
         errorStack,
       )
-      params.onError(errorInstance)
+      showErrorDeletingSelectedDocumentsAlert()
+      params.onError?.(errorInstance)
     }
   }, [
     params.getSelectedDocumentIds,
