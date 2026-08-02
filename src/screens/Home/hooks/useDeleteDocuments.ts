@@ -24,6 +24,7 @@ interface DeleteDocuments {
 export function useDeleteDocuments(
   params: DeleteDocumentsParams,
 ): DeleteDocuments {
+  const { getSelectedDocumentIds, onSuccess, onError } = params
 
 
   const { documentService, pictureService } = useServices()
@@ -36,7 +37,7 @@ export function useDeleteDocuments(
 
 
   const deleteDocumentsFunction = useCallback(async () => {
-    const documentIds = params.getSelectedDocumentIds()
+    const documentIds = getSelectedDocumentIds()
 
     try {
       setIsLoading(true)
@@ -58,7 +59,7 @@ export function useDeleteDocuments(
       }
 
       setIsLoading(false)
-      params.onSuccess?.()
+      onSuccess?.()
     } catch (error) {
       setIsLoading(false)
 
@@ -71,15 +72,15 @@ export function useDeleteDocuments(
         errorStack,
       )
       showErrorDeletingSelectedDocumentsAlert()
-      params.onError?.(errorInstance)
+      onError?.(errorInstance)
     }
   }, [
-    params.getSelectedDocumentIds,
+    getSelectedDocumentIds,
     documentService,
     pictureService,
-    params.onSuccess,
+    onSuccess,
     logger,
-    params.onError,
+    onError,
   ])
 
 
