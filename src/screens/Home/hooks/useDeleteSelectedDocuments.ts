@@ -3,27 +3,26 @@ import { useCallback, useMemo, useState } from 'react'
 import type { DocumentId } from '@database'
 import { useServices } from '@database'
 import { useLogger } from '@modules/logger'
-import { getErrorStackTrace, normalizeError, stringifyError } from '@utils'
+import { getErrorStackTrace, normalizeError } from '@utils'
 import { useShowErrorDeletingSelectedDocumentsAlert } from './useShowErrorDeletingSelectedDocumentsAlert.ts'
 
 
-interface DeleteDocumentsParams {
+interface DeleteSelectedDocumentsParams {
   getSelectedDocumentIds: () => DocumentId[]
   onSuccess?: () => void
   onError?: (error: Error) => void
 }
 
 
-interface DeleteDocuments {
+interface DeleteSelectedDocuments {
   isLoading: boolean
-  deleteDocuments: () => Promise<void>
+  deleteSelectedDocuments: () => Promise<void>
 }
 
 
-// TODO: Rename to useDeleteSelectedDocuments/deleteSelectedDocuments
-export function useDeleteDocuments(
-  params: DeleteDocumentsParams,
-): DeleteDocuments {
+export function useDeleteSelectedDocuments(
+  params: DeleteSelectedDocumentsParams,
+): DeleteSelectedDocuments {
   const { getSelectedDocumentIds, onSuccess, onError } = params
 
 
@@ -36,14 +35,14 @@ export function useDeleteDocuments(
     useShowErrorDeletingSelectedDocumentsAlert()
 
 
-  const deleteDocumentsFunction = useCallback(async () => {
-    const documentIds = getSelectedDocumentIds()
+  const deleteSelectedDocumentsFunction = useCallback(async () => {
+    const selectedDocumentIds = getSelectedDocumentIds()
 
     try {
       setIsLoading(true)
 
-      for (let i = 0; i < documentIds.length; i++) {
-        const documentId = documentIds[i]
+      for (let i = 0; i < selectedDocumentIds.length; i++) {
+        const documentId = selectedDocumentIds[i]
 
         await documentService.transaction(async tx => {
           const fileNames = await pictureService.findFileNamesByDocumentId(
@@ -64,8 +63,8 @@ export function useDeleteDocuments(
       setIsLoading(false)
 
       const errorInstance = normalizeError(error)
-      const errorStack = getErrorStackTrace(error)
-      const errorMessage = stringifyError(error)
+      const errorMessage = errorInstance.message
+      const errorStack = getErrorStackTrace(errorInstance)
 
       await logger.error(
         `Error deleting selected documents: "${errorMessage}"`,
@@ -84,11 +83,11 @@ export function useDeleteDocuments(
   ])
 
 
-  const deleteDocuments = useMemo<DeleteDocuments>(() => ({
+  const deleteSelectedDocuments = useMemo<DeleteSelectedDocuments>(() => ({
     isLoading,
-    deleteDocuments: deleteDocumentsFunction,
-  }), [isLoading, deleteDocumentsFunction])
+    deleteSelectedDocuments: deleteSelectedDocumentsFunction,
+  }), [isLoading, deleteSelectedDocumentsFunction])
 
 
-  return deleteDocuments
+  return deleteSelectedDocuments
 }

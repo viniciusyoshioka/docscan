@@ -10,7 +10,7 @@ import { useBackHandler, useHideSplashscreen } from '@hooks'
 import { Namespaces, useLocale } from '@locale'
 import { DocumentsList } from './components'
 import {
-  useDeleteDocuments,
+  useDeleteSelectedDocuments,
   useDocumentList,
   useGoBack,
   useGoToCameraScreen,
@@ -34,14 +34,14 @@ export function Home() {
 
   const goToCameraScreen = useGoToCameraScreen()
 
-  const deleteDocuments = useDeleteDocuments({
+  const deleteSelectedDocuments = useDeleteSelectedDocuments({
     getSelectedDocumentIds: documentSelection.getSelectedData,
     onSuccess: documents.loadDocuments,
   })
 
 
   const goBack = useGoBack({
-    hasBlockingModal: deleteDocuments.isLoading,
+    hasBlockingModal: deleteSelectedDocuments.isLoading,
     isSelectionMode: documentSelection.isSelectionMode,
     exitSelection: documentSelection.exitSelection,
   })
@@ -58,7 +58,7 @@ export function Home() {
     exitSelection: documentSelection.exitSelection,
     setSelectedData: documentSelection.setNewSelectedData,
     selectedDocumentsCount: documentSelection.getSelectedData().length,
-    deleteDocuments: deleteDocuments.deleteDocuments,
+    deleteDocuments: deleteSelectedDocuments.deleteSelectedDocuments,
   })
 
 
@@ -98,7 +98,7 @@ export function Home() {
       />
 
       <LoadingModal
-        visible={deleteDocuments.isLoading}
+        visible={deleteSelectedDocuments.isLoading}
         message={t('Home_deletingDocuments', { ns: Namespaces.APP })}
       />
     </View>

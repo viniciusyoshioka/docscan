@@ -1,4 +1,4 @@
-export * from './useDeleteDocuments.ts'
+export * from './useDeleteSelectedDocuments.ts'
 export * from './useDocumentList.ts'
 export * from './useDuplicateDocuments.ts'
 export * from './useExportDocuments.ts'
