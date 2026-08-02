@@ -7,6 +7,7 @@ import {
   usePermission,
 } from '@modules/permission'
 import { getErrorStackTrace } from '@utils'
+import { useShowNotificationPermissionDeniedAlert } from './useShowNotificationPermissionDeniedAlert.ts'
 
 
 interface RequestNotificationPermissionParams {
@@ -15,7 +16,7 @@ interface RequestNotificationPermissionParams {
 
 
 export function useRequestNotificationPermission(
-  params: RequestNotificationPermissionParams,
+  params?: RequestNotificationPermissionParams,
 ): void {
 
 
@@ -26,6 +27,9 @@ export function useRequestNotificationPermission(
       autoCheckAndRequestIfDenied: true,
     },
   )
+
+  const showNotificationPermissionDeniedAlert =
+    useShowNotificationPermissionDeniedAlert()
 
 
   const onPermissionStatusChange = useCallback(async () => {
@@ -39,9 +43,15 @@ export function useRequestNotificationPermission(
     const isDenied = PermissionUtils.isDenied(notificationPermission.status)
     if (isDenied) {
       await logger.debug('Notification permission denied')
-      params.onPermissionDenied()
+      showNotificationPermissionDeniedAlert()
+      params?.onPermissionDenied()
     }
-  }, [notificationPermission, logger, params.onPermissionDenied])
+  }, [
+    notificationPermission,
+    logger,
+    showNotificationPermissionDeniedAlert,
+    params?.onPermissionDenied,
+  ])
 
 
   useEffect(() => {

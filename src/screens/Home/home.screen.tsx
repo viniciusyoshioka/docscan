@@ -17,7 +17,6 @@ import {
   useHomeHeader,
   useRequestNotificationPermission,
   useShowErrorDeletingSelectedDocumentsAlert,
-  useShowNotificationPermissionDeniedAlert,
 } from './hooks'
 
 
@@ -34,8 +33,6 @@ export function Home() {
     onDocumentsLoaded: hideSplashscreen,
   })
 
-  const showNotificationPermissionDeniedAlert =
-    useShowNotificationPermissionDeniedAlert()
   const showErrorDeletingSelectedDocumentsAlert =
     useShowErrorDeletingSelectedDocumentsAlert()
 
@@ -55,9 +52,7 @@ export function Home() {
   })
 
 
-  useRequestNotificationPermission({
-    onPermissionDenied: showNotificationPermissionDeniedAlert,
-  })
+  useRequestNotificationPermission()
 
   useBackHandler(goBack)
 
