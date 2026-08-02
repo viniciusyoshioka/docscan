@@ -9,7 +9,7 @@ import { useShowErrorDeletingSelectedDocumentsAlert } from './useShowErrorDeleti
 
 interface DeleteDocumentsParams {
   getSelectedDocumentIds: () => DocumentId[]
-  onSuccess: () => void
+  onSuccess?: () => void
   onError?: (error: Error) => void
 }
 
@@ -58,7 +58,7 @@ export function useDeleteDocuments(
       }
 
       setIsLoading(false)
-      params.onSuccess()
+      params.onSuccess?.()
     } catch (error) {
       setIsLoading(false)
 
