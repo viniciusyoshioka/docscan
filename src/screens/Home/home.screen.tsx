@@ -23,11 +23,11 @@ export function Home() {
 
 
   const safeAreaInsets = useSafeAreaInsets()
-  const documentSelection = useSelectionMode<DocumentId>()
 
   const { t } = useLocale()
   const hideSplashscreen = useHideSplashscreen(false)
 
+  const documentSelection = useSelectionMode<DocumentId>()
   const documents = useDocumentList({
     onDocumentsLoaded: hideSplashscreen,
   })
