@@ -12,7 +12,7 @@ import { useExportDocuments } from './useExportDocuments.ts'
 import { useGoToSettingsScreen } from './useGoToSettingsScreen.ts'
 import { useImportDocuments } from './useImportDocuments.ts'
 import { useInvertDocumentSelection } from './useInvertDocumentSelection.ts'
-import { useMergeDocuments } from './useMergeDocuments.ts'
+import { useMergeSelectedDocuments } from './useMergeSelectedDocuments.ts'
 import { useShowDeleteSelectedDocumentsAlert } from './useShowDeleteSelectedDocumentsAlert.ts'
 
 
@@ -60,7 +60,7 @@ export function useHomeHeader(params: UseHomeHeaderParams): UseHomeHeader {
 
   const importDocuments = useImportDocuments()
   const exportDocuments = useExportDocuments()
-  const mergeDocuments = useMergeDocuments()
+  const mergeSelectedDocuments = useMergeSelectedDocuments()
   const duplicateDocuments = useDuplicateSelectedDocuments()
   const goToSettingsScreen = useGoToSettingsScreen()
 
@@ -110,14 +110,14 @@ export function useHomeHeader(params: UseHomeHeaderParams): UseHomeHeader {
     {
       iconName: 'vector-combine',
       title: t('Home_menu_mergeDocument', { ns: Namespaces.APP }),
-      onPress: mergeDocuments,
+      onPress: mergeSelectedDocuments,
     },
     {
       iconName: 'content-duplicate',
       title: t('Home_menu_duplicateDocument', { ns: Namespaces.APP }),
       onPress: duplicateDocuments,
     },
-  ], [t, exportDocuments, mergeDocuments, duplicateDocuments])
+  ], [t, exportDocuments, mergeSelectedDocuments, duplicateDocuments])
 
 
   const homeHeader = useMemo<UseHomeHeader>(() => ({
