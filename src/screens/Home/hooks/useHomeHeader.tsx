@@ -22,7 +22,7 @@ interface UseHomeHeaderParams {
   exitSelection: () => void
   setSelectedData: SelectionMode<DocumentId>['setNewSelectedData']
   selectedDocumentsCount: number
-  deleteDocuments: () => Promise<void>
+  deleteSelectedDocuments: () => Promise<void>
 }
 
 
@@ -41,7 +41,7 @@ export function useHomeHeader(params: UseHomeHeaderParams): UseHomeHeader {
     exitSelection,
     setSelectedData,
     selectedDocumentsCount,
-    deleteDocuments,
+    deleteSelectedDocuments,
   } = params
 
 
@@ -54,7 +54,7 @@ export function useHomeHeader(params: UseHomeHeaderParams): UseHomeHeader {
   })
 
   const showDeleteSelectedDocumentsAlert = useShowDeleteSelectedDocumentsAlert({
-    deleteSelectedDocuments: deleteDocuments,
+    deleteSelectedDocuments,
     exitSelection,
   })
 

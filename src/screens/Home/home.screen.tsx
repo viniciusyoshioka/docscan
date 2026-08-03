@@ -58,7 +58,7 @@ export function Home() {
     exitSelection: documentSelection.exitSelection,
     setSelectedData: documentSelection.setNewSelectedData,
     selectedDocumentsCount: documentSelection.getSelectedData().length,
-    deleteDocuments: deleteSelectedDocuments.deleteSelectedDocuments,
+    deleteSelectedDocuments: deleteSelectedDocuments.deleteSelectedDocuments,
   })
 
 
