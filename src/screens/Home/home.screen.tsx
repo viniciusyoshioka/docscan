@@ -27,6 +27,7 @@ export function Home() {
   const { t } = useLocale()
   const hideSplashscreen = useHideSplashscreen(false)
 
+
   const documentSelection = useSelectionMode<DocumentId>()
   const documents = useDocumentList({
     onDocumentsLoaded: hideSplashscreen,
@@ -39,18 +40,11 @@ export function Home() {
     onSuccess: documents.loadDocuments,
   })
 
-
   const goBack = useGoBack({
     hasBlockingModal: deleteSelectedDocuments.isLoading,
     isSelectionMode: documentSelection.isSelectionMode,
     exitSelection: documentSelection.exitSelection,
   })
-
-
-  useRequestNotificationPermission()
-
-  useBackHandler(goBack)
-
 
   const homeHeader = useHomeHeader({
     documents: documents.data,
@@ -60,6 +54,11 @@ export function Home() {
     selectedDocumentsCount: documentSelection.getSelectedData().length,
     deleteSelectedDocuments: deleteSelectedDocuments.deleteSelectedDocuments,
   })
+
+
+  useBackHandler(goBack)
+
+  useRequestNotificationPermission()
 
 
   return (
