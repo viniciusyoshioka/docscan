@@ -1,6 +1,6 @@
 export * from './useDeleteSelectedDocuments.ts'
 export * from './useDocumentList.ts'
-export * from './useDuplicateDocuments.ts'
+export * from './useDuplicateSelectedDocuments.ts'
 export * from './useExportDocuments.ts'
 export * from './useGoBack.ts'
 export * from './useGoToCameraScreen.ts'

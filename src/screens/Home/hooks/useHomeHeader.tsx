@@ -7,7 +7,7 @@ import type { MenuItems } from '@components'
 import type { DocumentEntity, DocumentId } from '@database'
 import { Namespaces, useLocale } from '@locale'
 import { Info } from '@modules/info'
-import { useDuplicateDocuments } from './useDuplicateDocuments.ts'
+import { useDuplicateSelectedDocuments } from './useDuplicateSelectedDocuments.ts'
 import { useExportDocuments } from './useExportDocuments.ts'
 import { useGoToSettingsScreen } from './useGoToSettingsScreen.ts'
 import { useImportDocuments } from './useImportDocuments.ts'
@@ -61,7 +61,7 @@ export function useHomeHeader(params: UseHomeHeaderParams): UseHomeHeader {
   const importDocuments = useImportDocuments()
   const exportDocuments = useExportDocuments()
   const mergeDocuments = useMergeDocuments()
-  const duplicateDocuments = useDuplicateDocuments()
+  const duplicateDocuments = useDuplicateSelectedDocuments()
   const goToSettingsScreen = useGoToSettingsScreen()
 
 
