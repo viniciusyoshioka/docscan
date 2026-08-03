@@ -5,46 +5,51 @@ import { Namespaces, useLocale } from '@locale'
 import { useAlert } from '@modules/alert'
 
 
-export function useShowNotificationPermissionDeniedAlert() {
+type ShowNotificationPermissionDeniedAlert = () => void
+
+
+export function useShowNotificationPermissionDeniedAlert():
+ShowNotificationPermissionDeniedAlert {
 
 
   const alert = useAlert()
   const { t } = useLocale()
 
 
-  const showNotificationPermissionDeniedAlert = useCallback(() => {
-    alert.show({
-      title: t(
-        'NotificationPermissionDeniedModal_title',
-        { ns: Namespaces.APP },
-      ),
-      description: t(
-        'NotificationPermissionDeniedModal_description',
-        { ns: Namespaces.APP },
-      ),
-      buttons: [
-        {
-          label: t(
-            'NotificationPermissionDeniedModal_close',
-            { ns: Namespaces.APP },
-          ),
-          onPress: ({ dismiss }) => {
-            dismiss()
+  const showNotificationPermissionDeniedAlert =
+    useCallback<ShowNotificationPermissionDeniedAlert>(() => {
+      alert.show({
+        title: t(
+          'NotificationPermissionDeniedModal_title',
+          { ns: Namespaces.APP },
+        ),
+        description: t(
+          'NotificationPermissionDeniedModal_description',
+          { ns: Namespaces.APP },
+        ),
+        buttons: [
+          {
+            label: t(
+              'NotificationPermissionDeniedModal_close',
+              { ns: Namespaces.APP },
+            ),
+            onPress: ({ dismiss }) => {
+              dismiss()
+            },
           },
-        },
-        {
-          label: t(
-            'NotificationPermissionDeniedModal_allow',
-            { ns: Namespaces.APP },
-          ),
-          onPress: ({ dismiss }) => {
-            dismiss()
-            Linking.openSettings()
+          {
+            label: t(
+              'NotificationPermissionDeniedModal_allow',
+              { ns: Namespaces.APP },
+            ),
+            onPress: ({ dismiss }) => {
+              dismiss()
+              Linking.openSettings()
+            },
           },
-        },
-      ],
-    })
-  }, [alert, t])
+        ],
+      })
+    }, [alert, t])
 
 
   return showNotificationPermissionDeniedAlert

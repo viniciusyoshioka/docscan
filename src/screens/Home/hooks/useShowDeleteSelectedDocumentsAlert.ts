@@ -10,9 +10,12 @@ interface ShowDeleteSelectedDocumentsAlertParams {
 }
 
 
+type ShowDeleteSelectedDocumentsAlert = () => void
+
+
 export function useShowDeleteSelectedDocumentsAlert(
   params: ShowDeleteSelectedDocumentsAlertParams,
-) {
+): ShowDeleteSelectedDocumentsAlert {
   const { deleteSelectedDocuments, exitSelection } = params
 
 
@@ -20,35 +23,36 @@ export function useShowDeleteSelectedDocumentsAlert(
   const { t } = useLocale()
 
 
-  const showDeleteSelectedDocumentsAlert = useCallback(() => {
-    alert.show({
-      icon: 'trash-can-outline',
-      title: t(
-        'DeleteSelectedDocumentsModal_title',
-        { ns: Namespaces.APP },
-      ),
-      description: t(
-        'DeleteSelectedDocumentsModal_description',
-        { ns: Namespaces.APP },
-      ),
-      buttons: [
-        {
-          label: t('cancel'),
-          onPress: ({ dismiss }) => {
-            dismiss()
+  const showDeleteSelectedDocumentsAlert =
+    useCallback<ShowDeleteSelectedDocumentsAlert>(() => {
+      alert.show({
+        icon: 'trash-can-outline',
+        title: t(
+          'DeleteSelectedDocumentsModal_title',
+          { ns: Namespaces.APP },
+        ),
+        description: t(
+          'DeleteSelectedDocumentsModal_description',
+          { ns: Namespaces.APP },
+        ),
+        buttons: [
+          {
+            label: t('cancel'),
+            onPress: ({ dismiss }) => {
+              dismiss()
+            },
           },
-        },
-        {
-          label: t('delete'),
-          onPress: ({ dismiss }) => {
-            deleteSelectedDocuments()
-            dismiss()
-            exitSelection()
+          {
+            label: t('delete'),
+            onPress: ({ dismiss }) => {
+              deleteSelectedDocuments()
+              dismiss()
+              exitSelection()
+            },
           },
-        },
-      ],
-    })
-  }, [alert, t, deleteSelectedDocuments, exitSelection])
+        ],
+      })
+    }, [alert, t, deleteSelectedDocuments, exitSelection])
 
 
   return showDeleteSelectedDocumentsAlert
