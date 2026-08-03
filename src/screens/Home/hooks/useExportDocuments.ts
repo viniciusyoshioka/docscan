@@ -1,11 +1,14 @@
 import { useCallback } from 'react'
 
 
+type ExportDocuments = () => void
+
+
 // TODO: Implement
-export function useExportDocuments() {
+export function useExportDocuments(): ExportDocuments {
 
 
-  const exportDocuments = useCallback(() => {
+  const exportDocuments = useCallback<ExportDocuments>(() => {
 
   }, [])
 

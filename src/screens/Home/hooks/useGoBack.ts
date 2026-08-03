@@ -14,7 +14,7 @@ type GoBack = () => boolean
 export function useGoBack(params: GoBackParams): GoBack {
 
 
-  const goBack = useCallback(() => {
+  const goBack = useCallback<GoBack>(() => {
     if (params.hasBlockingModal) {
       return true
     }

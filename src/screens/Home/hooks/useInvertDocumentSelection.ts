@@ -25,7 +25,7 @@ export function useInvertDocumentSelection(
   const { setSelectedData, documents } = params
 
 
-  const invertDocumentSelection = useCallback(() => {
+  const invertDocumentSelection = useCallback<InvertDocumentSelection>(() => {
     setSelectedData(currentSelectedData => {
       const newSelectedData = new Set<DocumentId>()
 
