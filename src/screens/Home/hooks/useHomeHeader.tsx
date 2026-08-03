@@ -27,10 +27,10 @@ interface UseHomeHeaderParams {
 
 
 interface UseHomeHeader {
-  headerTitle: string
-  RightComponentSelectionMode: ReactNode
-  menuItems: MenuItems
-  menuItemsSelectionMode: MenuItems
+  headerTitle?: string
+  RightComponentSelectionMode?: ReactNode
+  menuItems?: MenuItems
+  menuItemsSelectionMode?: MenuItems
 }
 
 
