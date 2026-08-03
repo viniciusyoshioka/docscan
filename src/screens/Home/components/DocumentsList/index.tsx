@@ -7,7 +7,7 @@ import { ErrorLoadingList, ErrorLoadingMoreItems, LoadingMoreItems } from '@comp
 import type { DocumentEntity, DocumentId } from '@database'
 import { Namespaces, useLocale } from '@locale'
 import { useDocumentState } from '@modules/document-state'
-import { DocumentStatus, useGoToDocumentDetail } from '../../hooks'
+import { DocumentStatus, useGoToDocumentDetailScreen } from '../../hooks'
 import { DocumentItem, EmptyDocuments, LoadingDocuments } from './components'
 import { FAB_HEIGHT, FAB_PADDING_VERTICAL } from './constants'
 
@@ -46,13 +46,13 @@ export function DocumentsList(props: DocumentsListProps) {
   const { t } = useLocale()
   const documentState = useDocumentState()
 
-  const goToDocumentDetail = useGoToDocumentDetail()
+  const goToDocumentDetailScreen = useGoToDocumentDetailScreen()
 
 
   const openDocument = useCallback((document: DocumentEntity) => {
     documentState.setDocument(document)
-    goToDocumentDetail()
-  }, [documentState, goToDocumentDetail])
+    goToDocumentDetailScreen()
+  }, [documentState, goToDocumentDetailScreen])
 
   const renderItem = useCallback(
     (info: LegendListRenderItemProps<DocumentEntity>) => {

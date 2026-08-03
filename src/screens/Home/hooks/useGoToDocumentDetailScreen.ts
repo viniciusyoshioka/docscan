@@ -4,19 +4,19 @@ import { useCallback } from 'react'
 import type { NavigationProps } from '@routes'
 
 
-type GoToDocumentDetail = () => void
+type GoToDocumentDetailScreen = () => void
 
 
-export function useGoToDocumentDetail(): GoToDocumentDetail {
+export function useGoToDocumentDetailScreen(): GoToDocumentDetailScreen {
 
 
   const navigation = useNavigation<NavigationProps<'Home'>>()
 
 
-  const goToDocumentDetail = useCallback<GoToDocumentDetail>(() => {
+  const goToDocumentDetailScreen = useCallback<GoToDocumentDetailScreen>(() => {
     navigation.navigate('DocumentDetail')
   }, [navigation])
 
 
-  return goToDocumentDetail
+  return goToDocumentDetailScreen
 }
