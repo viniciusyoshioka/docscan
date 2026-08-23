@@ -1,7 +1,9 @@
 import { Buffer } from 'react-native-nitro-buffer'
 import type { RmOptions } from 'react-native-nitro-file-system'
 import fs from 'react-native-nitro-file-system'
+import { v4 as uuidV4 } from 'uuid'
 
+import { Info } from '@modules/info'
 import { normalizeError } from '@utils'
 import {
   BaseFileSystemError,
@@ -545,6 +547,67 @@ export class NitroFileSystem extends FileSystem {
       default:
         encoding satisfies never
         throw new InvalidParamError(`Invalid encoding ${String(encoding)}`)
+    }
+  }
+
+
+  async copyUriToApp(
+    uri: string,
+    extension?: string | null,
+  ): Promise<AbsolutePath> {
+    const parentFolderPath = new AbsolutePath(Info.folders.internal.temp)
+
+    const copiedFileName = extension
+      ? `${uuidV4()}.${extension}`
+      : uuidV4()
+    const copiedFilePath = new AbsolutePath([
+      parentFolderPath.absolutePath,
+      copiedFileName,
+    ])
+
+    let fd: number | null = null
+    try {
+      const fileStat = await fs.promises.stat(uri)
+
+      const startByte = 0
+      const endByte = fileStat.size
+      // 1 MB
+      const chunkSizeInBytes = 1024 * 1024 * 1
+      const encoding = FileEncoding.BASE64
+
+      await this.createFolder(parentFolderPath)
+
+      fd = fs.openSync(uri)
+      const buffer = new Buffer(chunkSizeInBytes)
+
+      for (let i = startByte; i < endByte; i += chunkSizeInBytes) {
+        await fs.promises.read(
+          fd,
+          buffer,
+          0,
+          chunkSizeInBytes,
+          null,
+        )
+
+        await fs.promises.appendFile(
+          copiedFilePath.absolutePath,
+          buffer,
+          { encoding },
+        )
+      }
+
+      fs.closeSync(fd)
+
+      return copiedFilePath
+    } catch (error) {
+      if (fd) {
+        fs.closeSync(fd)
+      }
+      if (error instanceof BaseFileSystemError) {
+        throw error
+      }
+      const errorInstance = normalizeError(error)
+      throw new UnexpectedFileSystemError(errorInstance.message)
     }
   }
 }

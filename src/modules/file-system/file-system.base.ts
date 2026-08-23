@@ -105,4 +105,10 @@ export abstract class FileSystem {
   abstract deleteFolder(
     path: AbsolutePath | RelativePath,
   ): Promise<void>
+
+
+  abstract copyUriToApp(
+    uri: string,
+    extension?: string | null,
+  ): Promise<AbsolutePath>
 }
