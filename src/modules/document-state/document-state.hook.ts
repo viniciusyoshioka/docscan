@@ -1,18 +1,23 @@
-import { merge } from 'lodash'
 import { create } from 'zustand'
 
-import type { DocumentEntity, PictureEntity, PictureId } from '@database'
-import type { DocumentState } from './document-state.types.ts'
+import type { PictureId } from '@database'
+import type {
+  DocumentState,
+  PersistedDocument,
+  Picture,
+} from './document-state.types.ts'
 
 
 function createDocumentStateHook() {
   const documentStateHook = create<DocumentState>()(
     set => ({
+
+
       document: null,
       pictures: null,
 
 
-      closeDocument: () => {
+      closeDocument: (): void => {
         set(state => {
           return {
             document: null,
@@ -22,40 +27,25 @@ function createDocumentStateHook() {
       },
 
 
-      setDocument: (document: DocumentEntity) => {
+      setDocument: (
+        document: PersistedDocument,
+        pictures?: Picture[],
+      ): void => {
         set(state => {
           return {
             document: document,
-            pictures: [],
+            pictures: pictures ?? [],
           }
         })
       },
 
-      updateDocumentTitle: (newTitle: DocumentEntity['title']) => {
+
+      setPictures: (pictures: Picture[]): void => {
         set(state => {
           if (state.document === null) {
             throw new Error(
-              'Cannot update document title when no document is open',
+              'Cannot set pictures when no document is open',
             )
-          }
-
-          const updatedDocument = merge(
-            state.document,
-            { title: newTitle },
-          )
-
-          return {
-            ...state,
-            document: updatedDocument,
-          }
-        })
-      },
-
-
-      setPictures: (pictures: PictureEntity[]) => {
-        set(state => {
-          if (state.document === null) {
-            throw new Error('Cannot set pictures when no document is open')
           }
 
           return {
@@ -65,25 +55,57 @@ function createDocumentStateHook() {
         })
       },
 
-      addPictures: (pictures: PictureEntity[]) => {
+      addPictures: (
+        pictures: Picture[],
+        document: PersistedDocument,
+      ): void => {
         set(state => {
-          if (state.document === null) {
-            throw new Error('Cannot add pictures when no document is open')
-          }
-
-          const newPictures = [...state.pictures, ...pictures]
+          const newPictures = [
+            ...(state.document ? state.pictures : []),
+            ...pictures,
+          ]
 
           return {
-            ...state,
+            document: document,
             pictures: newPictures,
           }
         })
       },
 
-      removePictures: (pictureIds: PictureId[]) => {
+      updatePicture: (
+        picture: Picture,
+        document: PersistedDocument,
+      ): void => {
         set(state => {
           if (state.document === null) {
-            throw new Error('Cannot remove pictures when no document is open')
+            throw new Error(
+              'Cannot update picture when no document is open',
+            )
+          }
+
+          const newPictures = state.pictures.map(pictureFromState => {
+            if (pictureFromState.id === picture.id) {
+              return picture
+            }
+            return pictureFromState
+          })
+
+          return {
+            document: document,
+            pictures: newPictures,
+          }
+        })
+      },
+
+      removePictures: (
+        pictureIds: PictureId[],
+        document: PersistedDocument,
+      ): void => {
+        set(state => {
+          if (state.document === null) {
+            throw new Error(
+              'Cannot remove pictures when no document is open',
+            )
           }
 
           const newPictures = state.pictures.filter(picture => {
@@ -91,7 +113,7 @@ function createDocumentStateHook() {
           })
 
           return {
-            ...state,
+            document: document,
             pictures: newPictures,
           }
         })

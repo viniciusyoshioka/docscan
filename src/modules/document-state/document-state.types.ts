@@ -1,15 +1,29 @@
+import type { SetOptional } from 'type-fest'
+
 import type { DocumentEntity, PictureEntity, PictureId } from '@database'
+
+
+export type PersistedDocument = DocumentEntity
+
+export type InMemoryDocument = SetOptional<
+  DocumentEntity,
+  'id' | 'createdAt' | 'updatedAt'
+>
+
+export type Document = InMemoryDocument | PersistedDocument
+
+export type Picture = PictureEntity
 
 
 type DocumentStateMethods = {
   closeDocument: () => void
 
-  setDocument: (document: DocumentEntity) => void
-  updateDocumentTitle: (newTitle: DocumentEntity['title']) => void
+  setDocument: (document: PersistedDocument, pictures?: Picture[]) => void
 
-  setPictures: (pictures: PictureEntity[]) => void
-  addPictures: (pictures: PictureEntity[]) => void
-  removePictures: (pictureIds: PictureId[]) => void
+  setPictures: (pictures: Picture[]) => void
+  addPictures: (pictures: Picture[], document: PersistedDocument) => void
+  updatePicture: (picture: Picture, document: PersistedDocument) => void
+  removePictures: (pictureIds: PictureId[], document: PersistedDocument) => void
 }
 
 
@@ -19,6 +33,6 @@ export type DocumentState =
     pictures: null
   } & DocumentStateMethods
   | {
-    document: DocumentEntity
-    pictures: PictureEntity[]
+    document: Document
+    pictures: Picture[]
   } & DocumentStateMethods
