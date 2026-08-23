@@ -449,9 +449,7 @@ export class NitroFileSystem extends FileSystem {
 
     const pathExists = await this.exists(path)
     if (pathExists) {
-      throw new PathNotExistsError(
-        'Cannot create directory because path already exists',
-      )
+      return
     }
 
     try {
