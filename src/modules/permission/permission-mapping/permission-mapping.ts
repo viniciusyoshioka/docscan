@@ -24,9 +24,9 @@ const { ANDROID, IOS } = PERMISSIONS
 export class PermissionMapping {
 
 
-  private static readonly platform = this.getPlatform()
+  private static readonly platform = PermissionMapping.getPlatform()
   private static readonly permissionToMapNativePermissionMethodMap =
-    this.getPermissionToMapNativePermissionMethodMap()
+    PermissionMapping.getPermissionToMapNativePermissionMethodMap()
 
 
   static mapPermissionToNativePermission<P extends Permissions>(
@@ -34,7 +34,7 @@ export class PermissionMapping {
     options: PermissionOptions<P>,
   ): NativePermission | null {
     const mapNativePermissionMethod =
-      this.permissionToMapNativePermissionMethodMap[permission]
+      PermissionMapping.permissionToMapNativePermissionMethodMap[permission]
 
     const nativePermission = mapNativePermissionMethod(options)
     return nativePermission
@@ -61,11 +61,11 @@ export class PermissionMapping {
   private static getPermissionToMapNativePermissionMethodMap():
   PermissionToMapNativePermissionMethodMap {
     return {
-      [Permissions.CAMERA]: this.mapCameraPermission,
-      [Permissions.MICROPHONE]: this.mapMicrophonePermission,
-      [Permissions.NOTIFICATION]: this.mapNotificationPermission,
-      [Permissions.READ_STORAGE]: this.mapReadStoragePermission,
-      [Permissions.WRITE_STORAGE]: this.mapWriteStoragePermission,
+      [Permissions.CAMERA]: PermissionMapping.mapCameraPermission,
+      [Permissions.MICROPHONE]: PermissionMapping.mapMicrophonePermission,
+      [Permissions.NOTIFICATION]: PermissionMapping.mapNotificationPermission,
+      [Permissions.READ_STORAGE]: PermissionMapping.mapReadStoragePermission,
+      [Permissions.WRITE_STORAGE]: PermissionMapping.mapWriteStoragePermission,
     }
   }
 
@@ -76,7 +76,7 @@ export class PermissionMapping {
       ios: IOS.CAMERA,
     }
 
-    return platformToNativePermissionMap[this.platform]
+    return platformToNativePermissionMap[PermissionMapping.platform]
   }
 
   private static mapMicrophonePermission(): NativePermission | null {
@@ -85,7 +85,7 @@ export class PermissionMapping {
       ios: IOS.MICROPHONE,
     }
 
-    return platformToNativePermissionMap[this.platform]
+    return platformToNativePermissionMap[PermissionMapping.platform]
   }
 
   private static mapNotificationPermission(): NativePermission | null {
@@ -95,10 +95,10 @@ export class PermissionMapping {
   private static mapReadStoragePermission(
     options: PermissionOptions<Permissions.READ_STORAGE>,
   ): NativePermission | null {
-    if (this.platform === 'ios') {
-      return this.mapReadStoragePermissionIos(options)
+    if (PermissionMapping.platform === 'ios') {
+      return PermissionMapping.mapReadStoragePermissionIos(options)
     }
-    return this.mapReadStoragePermissionAndroid(options)
+    return PermissionMapping.mapReadStoragePermissionAndroid(options)
   }
 
   private static mapReadStoragePermissionAndroid(
@@ -165,10 +165,10 @@ export class PermissionMapping {
   }
 
   private static mapWriteStoragePermission(): NativePermission | null {
-    if (this.platform === 'ios') {
-      return this.mapWriteStoragePermissionIos()
+    if (PermissionMapping.platform === 'ios') {
+      return PermissionMapping.mapWriteStoragePermissionIos()
     }
-    return this.mapWriteStoragePermissionAndroid()
+    return PermissionMapping.mapWriteStoragePermissionAndroid()
   }
 
   private static mapWriteStoragePermissionAndroid(): NativePermission | null {
