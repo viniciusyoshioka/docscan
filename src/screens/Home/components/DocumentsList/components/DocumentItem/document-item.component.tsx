@@ -44,7 +44,7 @@ export function DocumentItem(props: DocumentItemProps) {
   const longPressGesture = useLongPressGesture({
     maxDistance: 30,
     minDuration: 400,
-    onBegin: event => scheduleOnRN(onLongPress),
+    onActivate: event => scheduleOnRN(onLongPress),
   })
 
 
