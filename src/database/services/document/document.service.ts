@@ -152,6 +152,41 @@ export class DocumentService {
     return updatedDocument
   }
 
+  async updateUpdatedAt(
+    id: DocumentId,
+    transaction?: Transaction,
+  ): Promise<DocumentEntity> {
+    if (!transaction) {
+      return await this.documentRepository.transaction(async tx => {
+        return await this.updateUpdatedAt(id, tx)
+      })
+    }
+
+    const txDocumentRepository = this.documentRepository.withinTransaction(
+      transaction,
+    )
+
+    const existingDocument = await txDocumentRepository.findById(id)
+    if (!existingDocument) {
+      throw new Error(`Document (id: ${id}) was not found`)
+    }
+
+    const documentToUpdate = merge(
+      existingDocument,
+      {
+        updatedAt: Date.now(),
+      },
+    )
+
+    this.assertDocumentToUpdateIsValid(documentToUpdate)
+
+    const updatedDocument = await txDocumentRepository.updateDocument(
+      documentToUpdate,
+    )
+
+    return updatedDocument
+  }
+
   private assertDocumentToUpdateIsValid(
     documentToUpdate: DocumentEntity,
   ): void {
