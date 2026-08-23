@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Linking } from 'react-native'
 
+import type { ResultArray } from '@types'
 import type { BasePermissionError } from '../errors'
 import { PermissionManager } from '../permission-manager.ts'
 import type {
@@ -47,10 +48,16 @@ export type UsePermissionOptions<P extends Permissions> =
 export interface UsePermissionResult {
   status: UsePermissionStatus
   error: BasePermissionError | null
-  check: () => Promise<void>
-  request: () => Promise<void>
   openSettings: () => void
-  checkAndRequestIfDenied: () => Promise<void>
+  check: () => Promise<
+    ResultArray<UsePermissionStatus, BasePermissionError>
+  >
+  request: () => Promise<
+    ResultArray<UsePermissionStatus, BasePermissionError>
+  >
+  checkAndRequestIfDenied: () => Promise<
+    ResultArray<UsePermissionStatus, BasePermissionError>
+  >
 }
 
 
@@ -105,9 +112,11 @@ export function usePermission<P extends Permissions>(
   }, [permission, options])
 
 
-  const check = useCallback(async (): Promise<void> => {
+  const check = useCallback(async (): Promise<
+    ResultArray<UsePermissionStatus, BasePermissionError>
+  > => {
     const skipCheck = SKIP_PERMISSION_CHECK_STATUSES.includes(status)
-    if (skipCheck) return
+    if (skipCheck) return [status, null]
 
     setStatus(UsePermissionStatus.IS_CHECKING)
     setError(null)
@@ -121,22 +130,23 @@ export function usePermission<P extends Permissions>(
       setStatus(UsePermissionStatus.ERROR_CHECKING)
       setError(error)
       onError?.(error)
-      return
+      return [null, error]
     }
 
     if (newResponse.isGranted) {
       setStatus(UsePermissionStatus.GRANTED)
-      return
+      return [UsePermissionStatus.GRANTED, null]
     }
 
     if (newResponse.canRequest) {
       setStatus(UsePermissionStatus.DENIED_CAN_REQUEST)
       onPermissionDenied?.(UsePermissionStatus.DENIED_CAN_REQUEST)
-      return
+      return [UsePermissionStatus.DENIED_CAN_REQUEST, null]
     }
 
     setStatus(UsePermissionStatus.DENIED_CANNOT_REQUEST)
     onPermissionDenied?.(UsePermissionStatus.DENIED_CANNOT_REQUEST)
+    return [UsePermissionStatus.DENIED_CANNOT_REQUEST, null]
   }, [
     status,
     permission,
@@ -145,9 +155,11 @@ export function usePermission<P extends Permissions>(
     onPermissionDenied,
   ])
 
-  const request = useCallback(async (): Promise<void> => {
+  const request = useCallback(async (): Promise<
+    ResultArray<UsePermissionStatus, BasePermissionError>
+  > => {
     const skipRequest = SKIP_PERMISSION_REQUEST_STATUSES.includes(status)
-    if (skipRequest) return
+    if (skipRequest) return [status, null]
 
     setStatus(UsePermissionStatus.IS_REQUESTING)
     setError(null)
@@ -161,22 +173,23 @@ export function usePermission<P extends Permissions>(
       setStatus(UsePermissionStatus.ERROR_REQUESTING)
       setError(error)
       onError?.(error)
-      return
+      return [null, error]
     }
 
     if (newResponse.isGranted) {
       setStatus(UsePermissionStatus.GRANTED)
-      return
+      return [UsePermissionStatus.GRANTED, null]
     }
 
     if (newResponse.canRequest) {
       setStatus(UsePermissionStatus.DENIED_CAN_REQUEST)
       onPermissionDenied?.(UsePermissionStatus.DENIED_CAN_REQUEST)
-      return
+      return [UsePermissionStatus.DENIED_CAN_REQUEST, null]
     }
 
     setStatus(UsePermissionStatus.DENIED_CANNOT_REQUEST)
     onPermissionDenied?.(UsePermissionStatus.DENIED_CANNOT_REQUEST)
+    return [UsePermissionStatus.DENIED_CANNOT_REQUEST, null]
   }, [
     status,
     permission,
@@ -189,12 +202,14 @@ export function usePermission<P extends Permissions>(
     Linking.openSettings()
   }, [])
 
-  const checkAndRequestIfDenied = useCallback(async (): Promise<void> => {
+  const checkAndRequestIfDenied = useCallback(async (): Promise<
+    ResultArray<UsePermissionStatus, BasePermissionError>
+  > => {
     const skipCheck = SKIP_PERMISSION_CHECK_STATUSES.includes(status)
-    if (skipCheck) return
+    if (skipCheck) return [status, null]
 
     const skipRequest = SKIP_PERMISSION_REQUEST_STATUSES.includes(status)
-    if (skipRequest) return
+    if (skipRequest) return [status, null]
 
     setStatus(UsePermissionStatus.IS_CHECKING)
     setError(null)
@@ -209,18 +224,18 @@ export function usePermission<P extends Permissions>(
       setStatus(UsePermissionStatus.ERROR_CHECKING)
       setError(checkError)
       onError?.(checkError)
-      return
+      return [null, checkError]
     }
 
     if (checkResponse.isGranted) {
       setStatus(UsePermissionStatus.GRANTED)
-      return
+      return [UsePermissionStatus.GRANTED, null]
     }
 
     if (!checkResponse.canRequest) {
       setStatus(UsePermissionStatus.DENIED_CANNOT_REQUEST)
       onPermissionDenied?.(UsePermissionStatus.DENIED_CANNOT_REQUEST)
-      return
+      return [UsePermissionStatus.DENIED_CANNOT_REQUEST, null]
     }
 
     setStatus(UsePermissionStatus.IS_REQUESTING)
@@ -235,22 +250,23 @@ export function usePermission<P extends Permissions>(
       setStatus(UsePermissionStatus.ERROR_REQUESTING)
       setError(requestError)
       onError?.(requestError)
-      return
+      return [null, requestError]
     }
 
     if (requestResponse.isGranted) {
       setStatus(UsePermissionStatus.GRANTED)
-      return
+      return [UsePermissionStatus.GRANTED, null]
     }
 
     if (requestResponse.canRequest) {
       setStatus(UsePermissionStatus.DENIED_CAN_REQUEST)
       onPermissionDenied?.(UsePermissionStatus.DENIED_CAN_REQUEST)
-      return
+      return [UsePermissionStatus.DENIED_CAN_REQUEST, null]
     }
 
     setStatus(UsePermissionStatus.DENIED_CANNOT_REQUEST)
     onPermissionDenied?.(UsePermissionStatus.DENIED_CANNOT_REQUEST)
+    return [UsePermissionStatus.DENIED_CANNOT_REQUEST, null]
   }, [
     status,
     permission,
