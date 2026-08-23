@@ -11,17 +11,6 @@ import type {
 import { Permissions } from '../permission-manager.types.ts'
 
 
-type CommonPermissionOptions = {
-  autoCheck?: boolean
-  autoCheckAndRequestIfDenied?: boolean
-}
-
-export type UsePermissionOptions<P extends Permissions> =
-  P extends PermissionsWithOptions
-    ? PermissionOptions<P> & CommonPermissionOptions
-    : CommonPermissionOptions
-
-
 export enum UsePermissionStatus {
   UNKNOWN = 'UNKNOWN',
   IS_CHECKING = 'IS_CHECKING',
@@ -32,6 +21,27 @@ export enum UsePermissionStatus {
   DENIED_CAN_REQUEST = 'DENIED_CAN_REQUEST',
   DENIED_CANNOT_REQUEST = 'DENIED_CANNOT_REQUEST',
 }
+
+
+export type OnPermissionError = (error: BasePermissionError) => void
+
+export type OnPermissionDenied = (
+  status:
+    | UsePermissionStatus.DENIED_CAN_REQUEST
+    | UsePermissionStatus.DENIED_CANNOT_REQUEST,
+) => void
+
+type CommonPermissionOptions = {
+  autoCheck?: boolean
+  autoCheckAndRequestIfDenied?: boolean
+  onError?: OnPermissionError
+  onPermissionDenied?: OnPermissionDenied
+}
+
+export type UsePermissionOptions<P extends Permissions> =
+  P extends PermissionsWithOptions
+    ? PermissionOptions<P> & CommonPermissionOptions
+    : CommonPermissionOptions
 
 
 export interface UsePermissionResult {
@@ -74,6 +84,8 @@ export function usePermission<P extends Permissions>(
   const {
     autoCheck = false,
     autoCheckAndRequestIfDenied = false,
+    onError,
+    onPermissionDenied,
   } = options ?? {}
 
 
@@ -108,6 +120,7 @@ export function usePermission<P extends Permissions>(
     if (error) {
       setStatus(UsePermissionStatus.ERROR_CHECKING)
       setError(error)
+      onError?.(error)
       return
     }
 
@@ -118,14 +131,18 @@ export function usePermission<P extends Permissions>(
 
     if (newResponse.canRequest) {
       setStatus(UsePermissionStatus.DENIED_CAN_REQUEST)
+      onPermissionDenied?.(UsePermissionStatus.DENIED_CAN_REQUEST)
       return
     }
 
     setStatus(UsePermissionStatus.DENIED_CANNOT_REQUEST)
+    onPermissionDenied?.(UsePermissionStatus.DENIED_CANNOT_REQUEST)
   }, [
     status,
     permission,
     permissionOptions,
+    onError,
+    onPermissionDenied,
   ])
 
   const request = useCallback(async (): Promise<void> => {
@@ -143,6 +160,7 @@ export function usePermission<P extends Permissions>(
     if (error) {
       setStatus(UsePermissionStatus.ERROR_REQUESTING)
       setError(error)
+      onError?.(error)
       return
     }
 
@@ -153,14 +171,18 @@ export function usePermission<P extends Permissions>(
 
     if (newResponse.canRequest) {
       setStatus(UsePermissionStatus.DENIED_CAN_REQUEST)
+      onPermissionDenied?.(UsePermissionStatus.DENIED_CAN_REQUEST)
       return
     }
 
     setStatus(UsePermissionStatus.DENIED_CANNOT_REQUEST)
+    onPermissionDenied?.(UsePermissionStatus.DENIED_CANNOT_REQUEST)
   }, [
     status,
     permission,
     permissionOptions,
+    onError,
+    onPermissionDenied,
   ])
 
   const openSettings = useCallback((): void => {
@@ -186,6 +208,7 @@ export function usePermission<P extends Permissions>(
     if (checkError) {
       setStatus(UsePermissionStatus.ERROR_CHECKING)
       setError(checkError)
+      onError?.(checkError)
       return
     }
 
@@ -196,6 +219,7 @@ export function usePermission<P extends Permissions>(
 
     if (!checkResponse.canRequest) {
       setStatus(UsePermissionStatus.DENIED_CANNOT_REQUEST)
+      onPermissionDenied?.(UsePermissionStatus.DENIED_CANNOT_REQUEST)
       return
     }
 
@@ -210,6 +234,7 @@ export function usePermission<P extends Permissions>(
     if (requestError) {
       setStatus(UsePermissionStatus.ERROR_REQUESTING)
       setError(requestError)
+      onError?.(requestError)
       return
     }
 
@@ -220,14 +245,18 @@ export function usePermission<P extends Permissions>(
 
     if (requestResponse.canRequest) {
       setStatus(UsePermissionStatus.DENIED_CAN_REQUEST)
+      onPermissionDenied?.(UsePermissionStatus.DENIED_CAN_REQUEST)
       return
     }
 
     setStatus(UsePermissionStatus.DENIED_CANNOT_REQUEST)
+    onPermissionDenied?.(UsePermissionStatus.DENIED_CANNOT_REQUEST)
   }, [
     status,
     permission,
     permissionOptions,
+    onError,
+    onPermissionDenied,
   ])
 
 
