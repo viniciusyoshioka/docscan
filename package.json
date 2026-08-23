@@ -13,6 +13,7 @@
         "ios": "react-native run-ios"
     },
     "dependencies": {
+        "@d11/react-native-fast-image": "^8.13.0",
         "@legendapp/list": "^3.3.3",
         "@react-native-camera-roll/camera-roll": "^7.10.2",
         "@react-native-community/slider": "^5.2.0",
