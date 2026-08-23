@@ -84,6 +84,12 @@ export class TypeOrmPictureRepository
     return await this.save(pictureToCreate)
   }
 
+  async createManyPictures(
+    data: CreatePicture[],
+  ): Promise<PictureEntity[]> {
+    return await this.save(data)
+  }
+
   async updatePicture(
     newPicture: PictureEntity,
   ): Promise<PictureEntity> {

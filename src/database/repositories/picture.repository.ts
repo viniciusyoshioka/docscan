@@ -38,6 +38,10 @@ export interface PictureRepository extends BaseRepository {
     data: CreatePicture,
   ): Promise<PictureEntity>
 
+  createManyPictures(
+    data: CreatePicture[],
+  ): Promise<PictureEntity[]>
+
   updatePicture(
     newPicture: PictureEntity,
   ): Promise<PictureEntity>

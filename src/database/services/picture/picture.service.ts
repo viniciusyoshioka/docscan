@@ -105,15 +105,86 @@ export class PictureService {
     return createdPicture
   }
 
+  async createMany(
+    data: {
+      documentId: DocumentId
+      fileNames: CreatePicture['fileName'][]
+    },
+    transaction?: Transaction,
+  ): Promise<PictureEntity[]> {
+    if (!transaction) {
+      return await this.pictureRepository.transaction(async tx => {
+        return await this.createMany(data, tx)
+      })
+    }
+
+    const { documentId, fileNames } = data
+
+    this.assertPicturesToCreateIsValid({ fileNames })
+
+    const txPictureRepository = this.pictureRepository.withinTransaction(
+      transaction,
+    )
+
+    const existingPictures = await txPictureRepository.findPaginated({
+      documentId,
+      limit: 1,
+      page: 1,
+      sortBy: {
+        position: SortOrder.DESC,
+      },
+    })
+
+    const lastPicture = existingPictures.data.at(0)
+    const lastPicturePosition = lastPicture?.position ?? 0
+
+    const picturesToCreate = fileNames.map<CreatePicture>(
+      (fileName, index) => ({
+        documentId,
+        fileName,
+        position: lastPicturePosition + index,
+      }),
+    )
+
+    const createdPictures = await txPictureRepository.createManyPictures(
+      picturesToCreate,
+    )
+
+    return createdPictures
+  }
+
   private assertPictureToCreateIsValid(
     data: CreatePicture,
   ): void {
     const { fileName, position } = data
 
+    this.assertPictureFileNameIsValid(fileName)
+    this.assertPicturePositionIsValid(position)
+  }
+
+  private assertPicturesToCreateIsValid(
+    data: {
+      fileNames: string[]
+    },
+  ): void {
+    const { fileNames } = data
+
+    fileNames.forEach(fileName => {
+      this.assertPictureFileNameIsValid(fileName)
+    })
+  }
+
+  private assertPictureFileNameIsValid(
+    fileName: PictureEntity['fileName'],
+  ): void {
     if (!fileName.length) {
       throw new Error('Picture fileName cannot be empty')
     }
+  }
 
+  private assertPicturePositionIsValid(
+    position: PictureEntity['position'],
+  ): void {
     if (position <= 0) {
       throw new Error('Picture position must be equal or greater than 1')
     }
