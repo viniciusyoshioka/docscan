@@ -32,6 +32,13 @@ function createDocumentStateHook() {
         pictures?: Picture[],
       ): void => {
         set(state => {
+          if (state.document?.id) {
+            return {
+              document: document,
+              pictures: pictures ?? state.pictures,
+            }
+          }
+
           return {
             document: document,
             pictures: pictures ?? [],
