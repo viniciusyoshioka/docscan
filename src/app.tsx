@@ -10,6 +10,7 @@ import {
   LogDataSource,
   TypeOrmDatabase,
 } from '@database'
+import { useKeepAwakeOnDev } from '@hooks'
 import { LocaleProvider } from '@locale'
 import { AlertProvider } from '@modules/alert'
 import { FileSystemProvider, NitroFileSystem } from '@modules/file-system'
@@ -20,6 +21,9 @@ import { AppThemeProvider } from '@theme'
 
 
 export function App() {
+
+
+  useKeepAwakeOnDev()
 
 
   const { settings } = useSettings()
