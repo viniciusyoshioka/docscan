@@ -32,7 +32,7 @@ export interface ImageResource {
 
 interface ImagesList {
   status: ImagesListStatus
-  error?: Error
+  error: Error | null
   images: ImageResource[]
   loadImages: () => Promise<void>
   loadMoreImages: () => Promise<void>
@@ -49,7 +49,7 @@ export function useImagesList(amountToLoadPerTime = 20): ImagesList {
   const [hasLoadedAllImages, setHasLoadedAllImages] = useState(false)
 
   const [status, setStatus] = useState(ImagesListStatus.NO_PERMISSION)
-  const [error, setError] = useState<Error | undefined>()
+  const [error, setError] = useState<Error | null>(null)
   const [images, setImages] = useState<ImageResource[]>([])
 
   const checkAndRequestReadStoragePermission = useRequestReadStoragePermission()
@@ -68,7 +68,7 @@ export function useImagesList(amountToLoadPerTime = 20): ImagesList {
       cursor.current = undefined
       setHasLoadedAllImages(false)
       setStatus(loadingStatus)
-      setError(undefined)
+      setError(null)
       setImages([])
 
       const permissionResult = await checkAndRequestReadStoragePermission()
@@ -109,7 +109,7 @@ export function useImagesList(amountToLoadPerTime = 20): ImagesList {
       cursor.current = photoIdentifier.page_info.end_cursor
       setHasLoadedAllImages(newHasLoadedAllImages)
       setStatus(newStatus)
-      setError(undefined)
+      setError(null)
       setImages(imagesLoaded)
     } catch (err) {
       const errorInstance = normalizeError(err)
@@ -148,7 +148,7 @@ export function useImagesList(amountToLoadPerTime = 20): ImagesList {
 
     try {
       setStatus(ImagesListStatus.IS_LOADING_MORE)
-      setError(undefined)
+      setError(null)
 
       const permissionResult = await checkAndRequestReadStoragePermission()
       const [permissionStatus, permissionError] = permissionResult
@@ -168,7 +168,7 @@ export function useImagesList(amountToLoadPerTime = 20): ImagesList {
         cursor.current = undefined
         setHasLoadedAllImages(false)
         setStatus(ImagesListStatus.NO_PERMISSION)
-        setError(undefined)
+        setError(null)
         setImages([])
         await logger.debug(`Permission ${Permissions.READ_STORAGE} was not granted to load more gallery images`)
         return
@@ -192,7 +192,7 @@ export function useImagesList(amountToLoadPerTime = 20): ImagesList {
       cursor.current = photoIdentifier.page_info.end_cursor
       setHasLoadedAllImages(newHasLoadedAllImages)
       setStatus(newStatus)
-      setError(undefined)
+      setError(null)
       setImages(currentImages => [...currentImages, ...imagesLoaded])
     } catch (err) {
       const errorInstance = normalizeError(err)
