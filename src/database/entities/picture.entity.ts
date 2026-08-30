@@ -1,4 +1,4 @@
-import type { Brand } from '../internal-types'
+import type { Brand } from '@types'
 import type { DocumentId } from './document.entity.ts'
 
 

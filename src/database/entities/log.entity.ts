@@ -1,4 +1,4 @@
-import type { Brand } from '../internal-types'
+import type { Brand } from '@types'
 
 
 export type LogId = Brand<number, 'logId'>
