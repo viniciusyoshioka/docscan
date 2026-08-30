@@ -33,4 +33,16 @@ export class PermissionUtils {
   static isGranted(status: UsePermissionStatus): boolean {
     return status === UsePermissionStatus.GRANTED
   }
+
+  static canRequestDenied(status: UsePermissionStatus): boolean {
+    const isDenied = PermissionUtils.isDenied(status)
+    if (!isDenied) {
+      console.warn(
+        `Permission status "${status}" is not a denied status to check "canRequestDenied"`,
+      )
+      return false
+    }
+
+    return status === UsePermissionStatus.DENIED_CAN_REQUEST
+  }
 }
