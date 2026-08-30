@@ -3,16 +3,18 @@ import type { StyleProp, TextStyle } from 'react-native'
 import { Button, Dialog, Text } from 'react-native-paper'
 
 import { useLocale } from '@locale'
-import type { AlertButton, AlertItemData } from '../alert.types.ts'
+import type { AlertButton, AlertItemData, AlertType } from '../alert.types.ts'
 import { useAlert } from '../provider'
 
 
 interface AlertProps {
-  alertStackItem: AlertItemData
+  alertStackItem: AlertItemData<
+    Exclude<AlertType, AlertType.LOADING>
+  >
 }
 
 
-// TODO: Create type variants
+// TODO: Implement UI changes for type variants
 export const Alert = memo((props: AlertProps) => {
   const { alertStackItem } = props
 

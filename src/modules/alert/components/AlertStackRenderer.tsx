@@ -1,11 +1,13 @@
 import { memo, useMemo } from 'react'
 
 import type { AlertItemData } from '../alert.types.ts'
+import { AlertType } from '../alert.types.ts'
 import { Alert } from './Alert.tsx'
+import { LoadingAlert } from './LoadingAlert.tsx'
 
 
 interface AlertStackRendererProps {
-  alertStack: AlertItemData[]
+  alertStack: AlertItemData<AlertType>[]
 }
 
 
@@ -14,12 +16,23 @@ export const AlertStackRenderer = memo((props: AlertStackRendererProps) => {
 
 
   const AlertStackItems = useMemo(() => {
-    return alertStack.map(alertStackItem => (
-      <Alert
-        key={alertStackItem.id}
-        alertStackItem={alertStackItem}
-      />
-    ))
+    return alertStack.map(alertStackItem => {
+      if (alertStackItem.type === AlertType.LOADING) {
+        return (
+          <LoadingAlert
+            key={alertStackItem.id}
+            alertStackItem={alertStackItem}
+          />
+        )
+      }
+
+      return (
+        <Alert
+          key={alertStackItem.id}
+          alertStackItem={alertStackItem}
+        />
+      )
+    })
   }, [alertStack])
 
 
