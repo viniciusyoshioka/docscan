@@ -34,6 +34,10 @@ export interface PictureRepository extends BaseRepository {
     documentId: DocumentId,
   ): Promise<PictureEntity['fileName'][]>
 
+  findFileNamesByPictureIds(
+    pictureIds: PictureId[],
+  ): Promise<PictureEntity['fileName'][]>
+
   createPicture(
     data: CreatePicture,
   ): Promise<PictureEntity>
