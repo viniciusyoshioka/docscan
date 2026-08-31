@@ -1,14 +1,14 @@
 {
     "database_initialization_error_title": "Error opening database",
     "database_initialization_error_description": "An unexpected error occurred while opening the database. Try:",
-    "database_initialization_error_description_option_1": "Closing the app and reopening it;",
-    "database_initialization_error_description_option_2": "Updating the app to the latest version;",
-    "database_initialization_error_description_option_3": "If none of the options work, contact support.",
+    "database_initialization_error_description_option_1": "Close the app and open it again;",
+    "database_initialization_error_description_option_2": "Update the app to the latest version;",
+    "database_initialization_error_description_option_3": "If none of the alternatives work, contact support.",
     "database_migration_error_title": "Error updating database",
     "database_migration_error_description": "An unexpected error occurred while updating the database. Try:",
-    "database_migration_error_description_option_1": "Closing the app and reopening it;",
-    "database_migration_error_description_option_2": "Updating the app to the latest version;",
-    "database_migration_error_description_option_3": "If none of the options work, contact support.",
+    "database_migration_error_description_option_1": "Close the app and open it again;",
+    "database_migration_error_description_option_2": "Update the app to the latest version;",
+    "database_migration_error_description_option_3": "If none of the alternatives work, contact support.",
     "database_close_error_title": "Error closing database",
     "database_close_error_description": "An unexpected error occurred while closing the database"
 }
