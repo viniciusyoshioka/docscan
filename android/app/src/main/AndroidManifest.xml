@@ -12,6 +12,11 @@
     <queries>
       <package android:name="com.docscan.store" />
       <package android:name="com.docscan.services" />
+
+      <intent>
+        <action android:name="android.intent.action.VIEW" />
+        <data android:mimeType="application/pdf" />
+      </intent>
     </queries>
 
     <application
