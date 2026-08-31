@@ -1,5 +1,7 @@
+import type { ImageStyle } from '@d11/react-native-fast-image'
 import FastImage from '@d11/react-native-fast-image'
 import { memo, useMemo } from 'react'
+import type { StyleProp, ViewStyle } from 'react-native'
 import { Pressable } from 'react-native'
 import { GestureDetector, useLongPressGesture } from 'react-native-gesture-handler'
 import type { SelectableItem } from 'react-native-selection-mode'
@@ -28,12 +30,12 @@ export const ImageItem = memo((props: ImageItemProps) => {
   const { onPress, onLongPress } = useSelectableItem(props)
 
 
-  const imageItemButtonStyle = useMemo(() => ({
+  const imageItemButtonStyle = useMemo<StyleProp<ViewStyle>>(() => ({
     ...styles.imageItemButton,
     width: imageItemSize,
   }), [imageItemSize])
 
-  const imageStyle = useMemo(() => ({
+  const imageStyle = useMemo<StyleProp<ImageStyle>>(() => ({
     ...styles.image,
     width: imageItemSize,
   }), [imageItemSize])

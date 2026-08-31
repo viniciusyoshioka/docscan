@@ -1,5 +1,6 @@
 import Color from 'color'
 import { memo } from 'react'
+import type { StyleProp, ViewStyle } from 'react-native'
 import { View } from 'react-native'
 import { Icon } from 'react-native-paper-towel'
 
@@ -27,7 +28,7 @@ export const SelectionOverlay = memo((props: SelectionOverlayProps) => {
     .rgb()
     .toString()
 
-  const selectionOverlayStyle = {
+  const selectionOverlayStyle: StyleProp<ViewStyle> = {
     ...styles.selectionOverlay,
     backgroundColor,
     opacity,
