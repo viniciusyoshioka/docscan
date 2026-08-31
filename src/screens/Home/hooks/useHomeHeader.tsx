@@ -13,16 +13,14 @@ import { useGoToSettingsScreen } from './useGoToSettingsScreen.ts'
 import { useImportDocuments } from './useImportDocuments.ts'
 import { useInvertDocumentSelection } from './useInvertDocumentSelection.ts'
 import { useMergeSelectedDocuments } from './useMergeSelectedDocuments.ts'
-import { useShowDeleteSelectedDocumentsAlert } from './useShowDeleteSelectedDocumentsAlert.ts'
 
 
 interface UseHomeHeaderParams {
   documents: DocumentEntity[]
   isSelectionMode: boolean
-  exitSelection: () => void
   setSelectedData: SelectionMode<DocumentId>['setNewSelectedData']
   selectedDocumentsCount: number
-  deleteSelectedDocuments: () => Promise<void>
+  deleteSelectedDocuments: () => void
 }
 
 
@@ -38,7 +36,6 @@ export function useHomeHeader(params: UseHomeHeaderParams): UseHomeHeader {
   const {
     documents,
     isSelectionMode,
-    exitSelection,
     setSelectedData,
     selectedDocumentsCount,
     deleteSelectedDocuments,
@@ -53,10 +50,6 @@ export function useHomeHeader(params: UseHomeHeaderParams): UseHomeHeader {
     documents,
   })
 
-  const showDeleteSelectedDocumentsAlert = useShowDeleteSelectedDocumentsAlert({
-    deleteSelectedDocuments,
-    exitSelection,
-  })
 
   const importDocuments = useImportDocuments()
   const exportDocuments = useExportDocuments()
@@ -78,10 +71,10 @@ export function useHomeHeader(params: UseHomeHeaderParams): UseHomeHeader {
 
       <Appbar.Action
         icon={'trash-can-outline'}
-        onPress={showDeleteSelectedDocumentsAlert}
+        onPress={deleteSelectedDocuments}
       />
     </>
-  ), [invertDocumentSelection, showDeleteSelectedDocumentsAlert])
+  ), [invertDocumentSelection, deleteSelectedDocuments])
 
   const menuItems = useMemo(() => [
     {
