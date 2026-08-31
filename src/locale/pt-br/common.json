@@ -9,5 +9,12 @@
     "dont_save": "Não salvar",
     "tryAgain": "Tentar novamente",
     "clickHereToTryAgain": "Clique aqui para tentar novamente",
-    "error": "Erro"
+    "error": "Erro",
+    "yes": "Sim",
+    "no": "Não",
+    "confirm": "Confirmar",
+    "permissionDenied": "Permissão negada",
+    "openSettings": "Abrir configurações",
+    "requestPermission": "Conceder permissão",
+    "convert": "Converter"
 }

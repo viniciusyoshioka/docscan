@@ -1,7 +1,7 @@
 {
     "ok": "Ok",
     "cancel": "Cancel",
-    "warn": "Warn",
+    "warn": "Warning",
     "delete": "Delete",
     "criticalError": "Critical error",
     "success": "Success",
@@ -9,5 +9,12 @@
     "dont_save": "Don't save",
     "tryAgain": "Try again",
     "clickHereToTryAgain": "Click here to try again",
-    "error": "Error"
+    "error": "Error",
+    "yes": "Yes",
+    "no": "No",
+    "confirm": "Confirm",
+    "permissionDenied": "Permission denied",
+    "openSettings": "Open settings",
+    "requestPermission": "Grant permission",
+    "convert": "Convert"
 }

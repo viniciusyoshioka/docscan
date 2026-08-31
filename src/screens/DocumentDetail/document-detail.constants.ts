@@ -1,0 +1,1 @@
+export const DOCUMENT_DETAIL_HEADER_HEIGHT = 64
