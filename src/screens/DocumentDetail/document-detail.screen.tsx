@@ -16,7 +16,6 @@ export * from './modals'
 
 
 // TODO implement drag and drop to reorder list
-// TODO implement split selected images to new document
 export function DocumentDetail() {
 
 

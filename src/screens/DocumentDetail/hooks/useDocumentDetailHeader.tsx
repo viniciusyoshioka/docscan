@@ -14,6 +14,7 @@ import { useOpenCameraToAddPictures } from './useOpenCameraToAddPictures.ts'
 import { useOpenConvertDocumentToPdfModal } from './useOpenConvertDocumentToPdfModal.ts'
 import { useOpenRenameDocumentModal } from './useOpenRenameDocumentModal.ts'
 import { useShareDocumentAsPdf } from './useShareDocumentAsPdf.ts'
+import { useSplitSelectedPictures } from './useSplitSelectedPictures.ts'
 import { useVisualizeDocumentPdfFile } from './useVisualizeDocumentPdfFile.ts'
 
 
@@ -56,6 +57,7 @@ export function useDocumentDetailHeader(
     setSelectedData,
   })
 
+  const splitSelectedPictures = useSplitSelectedPictures()
   const openConvertDocumentToPdfModal = useOpenConvertDocumentToPdfModal()
   const shareDocumentAsPdf = useShareDocumentAsPdf()
   const visualizeDocumentPdfFile = useVisualizeDocumentPdfFile()
@@ -85,11 +87,16 @@ export function useDocumentDetailHeader(
       />
 
       <Appbar.Action
+        icon={'arrow-split-vertical'}
+        onPress={splitSelectedPictures.splitSelectedPictures}
+      />
+
+      <Appbar.Action
         icon={'trash-can-outline'}
         onPress={deleteSelectedPictures}
       />
     </>
-  ), [invertPictureSelection, deleteSelectedPictures])
+  ), [invertPictureSelection, splitSelectedPictures, deleteSelectedPictures])
 
   const menuItems = useMemo(() => [
     {
