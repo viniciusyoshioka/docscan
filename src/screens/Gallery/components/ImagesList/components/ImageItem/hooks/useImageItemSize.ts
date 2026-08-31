@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 import { useWindowDimensions } from 'react-native'
 
 import { useGalleryColumnCount } from '../../../hooks'
-import { getImageItemSize } from '../utils'
 
 
 export function useImageItemSize(): number {
@@ -14,7 +13,7 @@ export function useImageItemSize(): number {
 
 
   const imageItemSize = useMemo(() => {
-    return getImageItemSize(width, columnCount)
+    return (width / columnCount)
   }, [width, columnCount])
 
 
