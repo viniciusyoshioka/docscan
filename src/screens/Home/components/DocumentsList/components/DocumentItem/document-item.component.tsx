@@ -3,12 +3,12 @@ import type { StyleProp, TextStyle, ViewStyle } from 'react-native'
 import { GestureDetector, useLongPressGesture } from 'react-native-gesture-handler'
 import { Checkbox, List } from 'react-native-paper'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import type { SelectableItem } from 'react-native-selection-mode'
-import { useSelectableItem } from 'react-native-selection-mode'
 import { scheduleOnRN } from 'react-native-worklets'
 
 import type { DocumentEntity } from '@database'
 import { StandardDateFormatter } from '@modules/date-formatter'
+import type { SelectableItem } from '@modules/selection-mode'
+import { useSelectableItem } from '@modules/selection-mode'
 import { useAppTheme } from '@theme'
 
 

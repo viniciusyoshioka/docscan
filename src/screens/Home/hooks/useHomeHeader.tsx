@@ -1,24 +1,20 @@
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 import { Appbar } from 'react-native-paper'
-import type { SelectionMode } from 'react-native-selection-mode'
 
 import type { MenuItems } from '@components'
-import type { DocumentEntity, DocumentId } from '@database'
 import { Namespaces, useLocale } from '@locale'
 import { Info } from '@modules/info'
 import { useDuplicateSelectedDocuments } from './useDuplicateSelectedDocuments.ts'
 import { useExportDocuments } from './useExportDocuments.ts'
 import { useGoToSettingsScreen } from './useGoToSettingsScreen.ts'
 import { useImportDocuments } from './useImportDocuments.ts'
-import { useInvertDocumentSelection } from './useInvertDocumentSelection.ts'
 import { useMergeSelectedDocuments } from './useMergeSelectedDocuments.ts'
 
 
 interface UseHomeHeaderParams {
-  documents: DocumentEntity[]
   isSelectionMode: boolean
-  setSelectedData: SelectionMode<DocumentId>['setNewSelectedData']
+  invertSelection: () => void
   selectedDocumentsCount: number
   deleteSelectedDocuments: () => void
 }
@@ -34,21 +30,14 @@ interface UseHomeHeader {
 
 export function useHomeHeader(params: UseHomeHeaderParams): UseHomeHeader {
   const {
-    documents,
     isSelectionMode,
-    setSelectedData,
+    invertSelection,
     selectedDocumentsCount,
     deleteSelectedDocuments,
   } = params
 
 
   const { t } = useLocale()
-
-
-  const invertDocumentSelection = useInvertDocumentSelection({
-    setSelectedData,
-    documents,
-  })
 
 
   const importDocuments = useImportDocuments()
@@ -66,7 +55,7 @@ export function useHomeHeader(params: UseHomeHeaderParams): UseHomeHeader {
     <>
       <Appbar.Action
         icon={'swap-horizontal'}
-        onPress={invertDocumentSelection}
+        onPress={invertSelection}
       />
 
       <Appbar.Action
@@ -74,7 +63,7 @@ export function useHomeHeader(params: UseHomeHeaderParams): UseHomeHeader {
         onPress={deleteSelectedDocuments}
       />
     </>
-  ), [invertDocumentSelection, deleteSelectedDocuments])
+  ), [invertSelection, deleteSelectedDocuments])
 
   const menuItems = useMemo(() => [
     {

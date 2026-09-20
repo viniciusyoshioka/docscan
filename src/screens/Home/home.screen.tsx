@@ -1,11 +1,11 @@
 import { View } from 'react-native'
 import { FAB } from 'react-native-paper'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { useSelectionMode } from 'react-native-selection-mode'
 
 import { Header } from '@components'
 import type { DocumentId } from '@database'
 import { useBackHandler, useHideSplashscreen } from '@hooks'
+import { useSelectionMode } from '@modules/selection-mode'
 import { DocumentsList } from './components'
 import {
   useDeleteSelectedDocuments,
@@ -25,9 +25,11 @@ export function Home() {
   const hideSplashscreen = useHideSplashscreen(false)
 
 
-  const documentSelection = useSelectionMode<DocumentId>()
   const documents = useDocumentList({
     onDocumentsLoaded: hideSplashscreen,
+  })
+  const documentSelection = useSelectionMode<DocumentId>({
+    totalCount: documents.total,
   })
 
   const goToCameraScreen = useGoToCameraScreen()
@@ -45,10 +47,9 @@ export function Home() {
   })
 
   const homeHeader = useHomeHeader({
-    documents: documents.data,
     isSelectionMode: documentSelection.isSelectionMode,
-    setSelectedData: documentSelection.setNewSelectedData,
-    selectedDocumentsCount: documentSelection.getSelectedData().length,
+    invertSelection: documentSelection.invert,
+    selectedDocumentsCount: documentSelection.length,
     deleteSelectedDocuments: deleteSelectedDocuments.deleteSelectedDocuments,
   })
 
