@@ -111,4 +111,9 @@ export abstract class FileSystem {
     uri: string,
     extension?: string | null,
   ): Promise<AbsolutePath>
+
+
+  abstract getNewRandomFileBasedAt(
+    filePath: AbsolutePath,
+  ): Promise<AbsolutePath>
 }

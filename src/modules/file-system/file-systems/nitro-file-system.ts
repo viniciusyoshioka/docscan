@@ -608,4 +608,34 @@ export class NitroFileSystem extends FileSystem {
       throw new UnexpectedFileSystemError(errorInstance.message)
     }
   }
+
+
+  async getNewRandomFileBasedAt(
+    filePath: AbsolutePath,
+  ): Promise<AbsolutePath> {
+    const pathType = await this.resolvePathType(filePath)
+    if (pathType !== PathType.FILE) {
+      throw new InvalidPathTypeError(
+        `Cannot get new random file based on a path that is not of type ${PathType.FILE}`,
+      )
+    }
+
+    const { parentAbsolutePath, fileExtension } = filePath
+
+    while (true) {
+      const newFileName = fileExtension
+        ? `${uuidV4()}.${fileExtension}`
+        : uuidV4()
+      const newRandomFilePath = new AbsolutePath([
+        parentAbsolutePath,
+        newFileName,
+      ])
+
+      const newRandomFilePathExists = await this.exists(newRandomFilePath)
+      if (newRandomFilePathExists) {
+        continue
+      }
+      return newRandomFilePath
+    }
+  }
 }
