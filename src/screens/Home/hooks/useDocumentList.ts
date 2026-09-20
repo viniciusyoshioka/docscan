@@ -28,6 +28,7 @@ interface DocumentListParams {
 type DocumentList = {
   status: DocumentStatus
   data: DocumentEntity[]
+  total: number
   error: Error | null
   loadDocuments: (count?: number) => Promise<void>
   loadMoreDocuments: (count?: number) => Promise<void>
@@ -47,6 +48,7 @@ export function useDocumentList(params?: DocumentListParams): DocumentList {
   const [status, setStatus] = useState(DocumentStatus.INITIAL)
   const [error, setError] = useState<Error | null>(null)
   const [data, setData] = useState<DocumentEntity[]>([])
+  const [total, setTotal] = useState(0)
 
   const initialCountToLoad = useMemo(() => {
     const availableHeightForDocumentsList = height - HOME_HEADER_HEIGHT
@@ -67,7 +69,10 @@ export function useDocumentList(params?: DocumentListParams): DocumentList {
       setError(null)
       setData([])
 
-      const { data: documents } = await documentService.findPaginated({
+      const {
+        data: documents,
+        total: totalDocumentCountResult,
+      } = await documentService.findPaginated({
         limit: count,
         page: 1,
       })
@@ -80,6 +85,7 @@ export function useDocumentList(params?: DocumentListParams): DocumentList {
       setHasLoadedAllDocuments(newHasLoadedAllDocuments)
       setStatus(newState)
       setData(documents)
+      setTotal(totalDocumentCountResult)
       onDocumentsLoaded?.()
     } catch (error) {
       const errorMessage = stringifyError(error)
@@ -90,6 +96,7 @@ export function useDocumentList(params?: DocumentListParams): DocumentList {
       setStatus(DocumentStatus.HAS_ERROR)
       setError(normalizedError)
       setData([])
+      setTotal(0)
 
       await logger.error(
         `Error loading documents: "${errorMessage}"`,
@@ -107,7 +114,10 @@ export function useDocumentList(params?: DocumentListParams): DocumentList {
       setStatus(DocumentStatus.IS_LOADING_MORE)
       setError(null)
 
-      const { data: documents } = await documentService.findPaginated({
+      const {
+        data: documents,
+        total: totalDocumentCountResult,
+      } = await documentService.findPaginated({
         limit: count,
         offset: data.length,
       })
@@ -121,6 +131,7 @@ export function useDocumentList(params?: DocumentListParams): DocumentList {
       setStatus(newState)
       setError(null)
       setData(currentData => [...currentData, ...documents])
+      setTotal(totalDocumentCountResult)
     } catch (error) {
       const errorMessage = stringifyError(error)
       const errorStack = getErrorStackTrace(error)
@@ -152,12 +163,14 @@ export function useDocumentList(params?: DocumentListParams): DocumentList {
   const documentList = useMemo(() => ({
     status,
     data,
+    total,
     error,
     loadDocuments,
     loadMoreDocuments,
   }), [
     status,
     data,
+    total,
     error,
     loadDocuments,
     loadMoreDocuments,
