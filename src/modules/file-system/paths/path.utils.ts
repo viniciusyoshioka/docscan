@@ -3,9 +3,14 @@ import { AbsolutePath } from './absolute-path.ts'
 
 
 export class PathUtils {
+
+
+  private static readonly FILE_PROTOCOL = 'file://'
+
+
   static withFileProtocol(path: string | AbsolutePath): string {
     if (path instanceof AbsolutePath) {
-      return `file://${path.absolutePath}`
+      return `${PathUtils.FILE_PROTOCOL}${path.absolutePath}`
     }
 
     const isAbsolute = AbsolutePath.isAbsolute(path)
@@ -15,7 +20,11 @@ export class PathUtils {
       )
     }
 
-    return `file://${path}`
+    const hasFileProtocol = path.startsWith(PathUtils.FILE_PROTOCOL)
+    if (hasFileProtocol) {
+      return path
+    }
+    return `${PathUtils.FILE_PROTOCOL}${path}`
   }
 
   static removeFileProtocol(path: string | AbsolutePath): string {
