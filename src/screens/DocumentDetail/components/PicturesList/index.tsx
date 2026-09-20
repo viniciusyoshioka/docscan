@@ -109,7 +109,7 @@ export function PicturesList(props: PicturesListProps) {
   */
 
   const keyExtractor = useCallback((item: PictureEntity): string => {
-    return String(item.id)
+    return item.fileName
   }, [])
 
   const onEndReached = useCallback(async () => {
