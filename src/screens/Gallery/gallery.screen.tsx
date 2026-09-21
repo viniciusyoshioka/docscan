@@ -1,10 +1,10 @@
 import { View } from 'react-native'
 import { LoadingModal } from 'react-native-paper-towel'
-import { useSelectionMode } from 'react-native-selection-mode'
 
 import { Header } from '@components'
 import { useBackHandler } from '@hooks'
 import { Namespaces, useLocale } from '@locale'
+import { useSelectionMode } from '@modules/selection-mode'
 import type { ImageResource } from './components'
 import { ImagesList } from './components'
 import { useGalleryHeader, useGoBack, useImportImages } from './hooks'
