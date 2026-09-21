@@ -21,6 +21,7 @@ export enum PicturesListStatus {
 interface PicturesList {
   status: PicturesListStatus
   error: Error | null
+  totalPictures: number
   loadPictures: () => Promise<void>
   loadMorePictures: () => Promise<void>
 }
@@ -38,6 +39,7 @@ export function usePicturesList(): PicturesList {
   const [hasLoadedAllPictures, setHasLoadedAllPictures] = useState(false)
   const [status, setStatus] = useState(PicturesListStatus.INITIAL)
   const [error, setError] = useState<Error | null>(null)
+  const [totalPictures, setTotalPictures] = useState(0)
 
 
   const loadPictures = useCallback(async () => {
@@ -64,6 +66,7 @@ export function usePicturesList(): PicturesList {
 
       setHasLoadedAllPictures(newHasLoadedAllPictures)
       setStatus(newStatus)
+      setTotalPictures(picturesLoaded.total)
 
       setPictures(picturesLoaded.data)
     } catch (err) {
@@ -74,6 +77,7 @@ export function usePicturesList(): PicturesList {
       setHasLoadedAllPictures(false)
       setStatus(PicturesListStatus.HAS_ERROR)
       setError(errorInstance)
+      setTotalPictures(0)
 
       setPictures([])
 
@@ -117,6 +121,7 @@ export function usePicturesList(): PicturesList {
       setHasLoadedAllPictures(newHasLoadedAllPictures)
       setStatus(newStatus)
       setError(null)
+      setTotalPictures(picturesLoaded.total)
 
       setPictures([
         ...pictures,
@@ -155,11 +160,13 @@ export function usePicturesList(): PicturesList {
   const picturesList = useMemo(() => ({
     status,
     error,
+    totalPictures,
     loadPictures,
     loadMorePictures,
   }), [
     status,
     error,
+    totalPictures,
     loadPictures,
     loadMorePictures,
   ])

@@ -1,9 +1,11 @@
+import { useCallback } from 'react'
 import { View } from 'react-native'
-import { useSelectionMode } from 'react-native-selection-mode'
 
 import { Header } from '@components'
 import type { PictureId } from '@database'
 import { useBackHandler } from '@hooks'
+import { useSelectionMode } from '@modules/selection-mode'
+import type { OnFinishLoadingPictureList } from './components'
 import { PicturesList } from './components'
 import {
   useDeleteSelectedPictures,
@@ -35,8 +37,15 @@ export function DocumentDetail() {
     deleteSelectedPictures: deleteSelectedPictures.deleteSelectedPictures,
     isSelectionMode: pictureSelection.isSelectionMode,
     selectedPicturesCount: pictureSelection.length,
-    setSelectedData: pictureSelection.setNewSelectedData,
+    invertPictureSelection: pictureSelection.invert,
   })
+
+  const onFinishLoadingPictureList: OnFinishLoadingPictureList = useCallback(
+    params => {
+      pictureSelection.setTotalCount(params.totalPictures)
+    },
+    [pictureSelection],
+  )
 
 
   useBackHandler(goBack)
@@ -55,6 +64,7 @@ export function DocumentDetail() {
       />
 
       <PicturesList
+        onFinishLoadingPictureList={onFinishLoadingPictureList}
         isSelectionMode={pictureSelection.isSelectionMode}
         selectItem={pictureSelection.select}
         deselectItem={pictureSelection.deselect}

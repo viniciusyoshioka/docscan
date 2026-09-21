@@ -21,6 +21,7 @@ import {
 import {
   PicturesListStatus,
   useGoToPictureDetailScreen,
+  useOnFinishLoadingPictureList,
   usePicturesColumnCount,
   usePicturesList,
   usePicturesRowCountInList,
@@ -37,7 +38,17 @@ interface ExtraData {
 }
 
 
+export interface OnFinishLoadingPictureListParams {
+  totalPictures: number
+}
+
+export type OnFinishLoadingPictureList = (
+  params: OnFinishLoadingPictureListParams,
+) => void
+
+
 interface PicturesListProps {
+  onFinishLoadingPictureList: OnFinishLoadingPictureList
   isSelectionMode: boolean
   selectItem: (pictureId: PictureId) => void
   deselectItem: (pictureId: PictureId) => void
@@ -146,6 +157,15 @@ export function PicturesList(props: PicturesListProps) {
 
     return null
   }, [picturesList.status, t, picturesList.loadMorePictures])
+
+
+  useOnFinishLoadingPictureList({
+    status: picturesList.status,
+    totalPictures: picturesList.totalPictures,
+    onFinishLoadingPictureList: ({ totalPictures }) => {
+      props.onFinishLoadingPictureList({ totalPictures })
+    },
+  })
 
 
   if (picturesList.status === PicturesListStatus.IS_LOADING) {

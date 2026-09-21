@@ -1,15 +1,12 @@
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 import { Appbar } from 'react-native-paper'
-import type { SelectionMode } from 'react-native-selection-mode'
 
 import type { MenuItems } from '@components'
-import type { PictureId } from '@database'
 import { Namespaces, useLocale } from '@locale'
 import { useDocumentState } from '@modules/document-state'
 import { useDeleteCurrentDocument } from './useDeleteCurrentDocument.ts'
 import { useDeleteDocumentPdfFile } from './useDeleteDocumentPdfFile.ts'
-import { useInvertPictureSelection } from './useInvertPictureSelection.ts'
 import { useOpenCameraToAddPictures } from './useOpenCameraToAddPictures.ts'
 import { useOpenConvertDocumentToPdfModal } from './useOpenConvertDocumentToPdfModal.ts'
 import { useOpenRenameDocumentModal } from './useOpenRenameDocumentModal.ts'
@@ -20,7 +17,7 @@ import { useVisualizeDocumentPdfFile } from './useVisualizeDocumentPdfFile.ts'
 
 interface UseDocumentDetailHeaderParams {
   isSelectionMode: boolean
-  setSelectedData: SelectionMode<PictureId>['setNewSelectedData']
+  invertPictureSelection: () => void
   selectedPicturesCount: number
   deleteSelectedPictures: () => void
 }
@@ -39,7 +36,7 @@ export function useDocumentDetailHeader(
 ): UseDocumentDetailHeader {
   const {
     isSelectionMode,
-    setSelectedData,
+    invertPictureSelection,
     selectedPicturesCount,
     deleteSelectedPictures,
   } = params
@@ -47,15 +44,10 @@ export function useDocumentDetailHeader(
 
   const { t } = useLocale()
 
-  const { document, pictures } = useDocumentState()
+  const { document } = useDocumentState()
 
 
   const openCameraToAddPictures = useOpenCameraToAddPictures()
-
-  const invertPictureSelection = useInvertPictureSelection({
-    pictures: pictures ?? [],
-    setSelectedData,
-  })
 
   const splitSelectedPictures = useSplitSelectedPictures()
   const openConvertDocumentToPdfModal = useOpenConvertDocumentToPdfModal()
