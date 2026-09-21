@@ -120,9 +120,6 @@ importers:
       react-native-screens:
         specifier: ^4.26.2
         version: 4.26.2(react-native@0.86.2(@babel/core@7.29.7)(@react-native-community/cli@20.1.0(typescript@6.0.3))(@react-native/jest-preset@0.86.2(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.2(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
-      react-native-selection-mode:
-        specifier: ^2.4.1
-        version: 2.4.1(react@19.2.3)
       react-native-share:
         specifier: ^12.3.1
         version: 12.3.1
@@ -3620,11 +3617,6 @@ packages:
     peerDependencies:
       react: '*'
       react-native: '*'
-
-  react-native-selection-mode@2.4.1:
-    resolution: {integrity: sha512-p9ejs9wv3JuyrHi3GANsAbEa0G7/KG7Ef8+o6nf7TgaJ5RBKcJ5RKVoxwiLaIy+htGzsUywSpZ3A4b27eVW8nw==}
-    peerDependencies:
-      react: '*'
 
   react-native-share@12.3.1:
     resolution: {integrity: sha512-mRVRie0qKbtj+jWqJ2POPkeSd8SxnMp6aazFZVmq8ZbkUGtQLENR/L58ky8zH4VUEF/WYRmdBiBHWHVtzOewtQ==}
@@ -8441,10 +8433,6 @@ snapshots:
       react-freeze: 1.0.4(react@19.2.3)
       react-native: 0.86.2(@babel/core@7.29.7)(@react-native-community/cli@20.1.0(typescript@6.0.3))(@react-native/jest-preset@0.86.2(@babel/core@7.29.7)(react@19.2.3))(@react-native/metro-config@0.86.2(@babel/core@7.29.7))(@types/react@19.2.17)(react@19.2.3)
       warn-once: 0.1.1
-
-  react-native-selection-mode@2.4.1(react@19.2.3):
-    dependencies:
-      react: 19.2.3
 
   react-native-share@12.3.1: {}
 
