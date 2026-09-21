@@ -13,6 +13,7 @@ import {
   useGoBack,
   useGoToCameraScreen,
   useHomeHeader,
+  useOnFinishLoadingDocumentList,
   useRequestNotificationPermission,
 } from './hooks'
 
@@ -25,11 +26,9 @@ export function Home() {
   const hideSplashscreen = useHideSplashscreen(false)
 
 
+  const documentSelection = useSelectionMode<DocumentId>()
   const documents = useDocumentList({
     onDocumentsLoaded: hideSplashscreen,
-  })
-  const documentSelection = useSelectionMode<DocumentId>({
-    totalCount: documents.total,
   })
 
   const goToCameraScreen = useGoToCameraScreen()
@@ -51,6 +50,15 @@ export function Home() {
     invertSelection: documentSelection.invert,
     selectedDocumentsCount: documentSelection.length,
     deleteSelectedDocuments: deleteSelectedDocuments.deleteSelectedDocuments,
+  })
+
+
+  useOnFinishLoadingDocumentList({
+    status: documents.status,
+    totalDocuments: documents.total,
+    onFinishLoadingDocumentList: ({ totalDocuments }) => {
+      documentSelection.setTotalCount(totalDocuments)
+    },
   })
 
 
