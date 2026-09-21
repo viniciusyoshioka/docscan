@@ -5,10 +5,6 @@ interface SelectionModeState<T> {
   isSelectionMode: boolean
   isSelectionInverted: boolean
   selectedData: Set<T>
-}
-
-
-export interface SelectionModeParams {
   totalCount: number
 }
 
@@ -82,19 +78,30 @@ export interface SelectionMode<T> {
    * Exits the selection mode and deselects all items.
    */
   exitSelection: () => void
+
+  /**
+   * Sets the total count of selectable items.
+   *
+   * It is required to be set if the selection mode can be inverted.
+   * When inverted, the `totalCount` is used to calculate how many items
+   * are selected. It can be called once, if the total count is known, or many
+   * times to update the total count as the items are fetched.
+   *
+   * Not calling this function correctly may cause a negative amount of
+   * selected items.
+   */
+  setTotalCount: (totalCount: number) => void
 }
 
 
-export function useSelectionMode<T>(
-  params: SelectionModeParams,
-): SelectionMode<T> {
-  const { totalCount } = params
+export function useSelectionMode<T>(): SelectionMode<T> {
 
 
   const [state, setState] = useState<SelectionModeState<T>>({
     isSelectionMode: false,
     isSelectionInverted: false,
     selectedData: new Set<T>(),
+    totalCount: 0,
   })
 
 
@@ -112,9 +119,9 @@ export function useSelectionMode<T>(
       currentState.selectedData.add(item)
 
       return {
+        ...currentState,
         isSelectionMode,
         isSelectionInverted,
-        selectedData: currentState.selectedData,
       }
     })
   }, [])
@@ -140,9 +147,9 @@ export function useSelectionMode<T>(
           : currentState.isSelectionInverted
 
       return {
+        ...currentState,
         isSelectionMode,
         isSelectionInverted,
-        selectedData: currentState.selectedData,
       }
     })
   }, [])
@@ -172,9 +179,8 @@ export function useSelectionMode<T>(
       }
 
       return {
-        isSelectionMode: currentState.isSelectionMode,
+        ...currentState,
         isSelectionInverted: !currentState.isSelectionInverted,
-        selectedData: currentState.selectedData,
       }
     })
   }, [])
@@ -195,7 +201,7 @@ export function useSelectionMode<T>(
 
 
   const length = state.isSelectionInverted
-    ? totalCount - state.selectedData.size
+    ? state.totalCount - state.selectedData.size
     : state.selectedData.size
 
 
@@ -209,9 +215,19 @@ export function useSelectionMode<T>(
       currentState.selectedData.clear()
 
       return {
+        ...currentState,
         isSelectionMode: false,
         isSelectionInverted: false,
-        selectedData: currentState.selectedData,
+      }
+    })
+  }, [])
+
+
+  const setTotalCount = useCallback((totalCount: number) => {
+    setState(currentState => {
+      return {
+        ...currentState,
+        totalCount,
       }
     })
   }, [])
@@ -228,6 +244,7 @@ export function useSelectionMode<T>(
       length,
       getSelectedData,
       exitSelection,
+      setTotalCount,
     }
   }, [
     state,
@@ -238,6 +255,7 @@ export function useSelectionMode<T>(
     length,
     getSelectedData,
     exitSelection,
+    setTotalCount,
   ])
 
 
