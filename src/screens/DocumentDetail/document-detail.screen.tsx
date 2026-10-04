@@ -14,9 +14,6 @@ import {
 } from './hooks'
 
 
-export * from './modals'
-
-
 // TODO implement drag and drop to reorder list
 export function DocumentDetail() {
 
