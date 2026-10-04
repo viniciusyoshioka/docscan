@@ -1,0 +1,1 @@
+export const SETTINGS_BUTTON_SIZE = 80

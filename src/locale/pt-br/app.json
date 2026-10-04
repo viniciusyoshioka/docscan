@@ -1,6 +1,7 @@
 {
     "Camera_alert_unsavedPictures_text": "Você tem fotos que não foram salvas. Ao voltar, elas serão perdidas.",
     "Camera_alert_unknownErrorTakingPicture_text": "Erro desconhecido ao tirar foto. Tente novamente.",
+    "Camera_alert_unexpectedErrorCheckingOrRequestingCameraPermission_text": "Ocorreu um erro inesperado ao verificar ou requisitar permissão da câmera. Tente novamente mais tarde ou tente conceder a permissão pelas configurações do dispositivo.",
 
     "Camera_noPermission": "Sem permissão",
     "Camera_allowCameraWithGrantPermission": "Permita o uso da câmera com \"Conceder permissão\"",
@@ -9,6 +10,7 @@
     "Camera_openSettings": "Abrir configurações",
     "Camera_grantPermission": "Conceder permissão",
     "Camera_noCameraAvailable": "Nenhuma câmera disponível",
+    "Camera_unexpectedErrorInitializingCameraDevice": "Erro inesperado ao iniciar câmera",
 
     "CameraSettings_alert_errorSavingNewFlashSetting_text": "Erro ao salvar a nova configuração de flash",
     "CameraSettings_alert_errorSavingNewWhiteBalanceSetting_text": "Erro ao salvar a nova configuração de balanço de branco",

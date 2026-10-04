@@ -1,6 +1,7 @@
 {
     "Camera_alert_unsavedPictures_text": "You have unsaved pictures. If you go back, they will be lost.",
     "Camera_alert_unknownErrorTakingPicture_text": "Unknown error while taking picture, please try again.",
+    "Camera_alert_unexpectedErrorCheckingOrRequestingCameraPermission_text": "An unexpected error occurred while checking for or requesting camera permission. Please try again later or try granting permission via your device settings.",
 
     "Camera_noPermission": "No permission",
     "Camera_allowCameraWithGrantPermission": "Allow camera access with \"Grant permission\"",
@@ -9,6 +10,7 @@
     "Camera_openSettings": "Open settings",
     "Camera_grantPermission": "Grant permission",
     "Camera_noCameraAvailable": "No camera available",
+    "Camera_unexpectedErrorInitializingCameraDevice": "Unexpected error initializing camera",
 
     "CameraSettings_alert_errorSavingNewFlashSetting_text": "Error saving new flash setting",
     "CameraSettings_alert_errorSavingNewWhiteBalanceSetting_text": "Error saving new white balance setting",
