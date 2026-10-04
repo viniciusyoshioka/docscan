@@ -1,4 +1,5 @@
-import { LegendList, type LegendListRenderItemProps } from '@legendapp/list/react-native'
+import type { LegendListRenderItemProps } from '@legendapp/list/react-native'
+import { LegendList } from '@legendapp/list/react-native'
 import { useCallback, useMemo } from 'react'
 import { Divider } from 'react-native-paper'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
