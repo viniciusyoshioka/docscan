@@ -624,7 +624,7 @@ export class NitroFileSystem extends FileSystem {
 
     while (true) {
       const newFileName = fileExtension
-        ? `${uuidV4()}.${fileExtension}`
+        ? `${uuidV4()}${fileExtension}`
         : uuidV4()
       const newRandomFilePath = new AbsolutePath([
         parentAbsolutePath,
