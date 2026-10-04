@@ -18,6 +18,10 @@ export class PermissionUtils {
   ])
 
 
+  static isUnknown(status: UsePermissionStatus): boolean {
+    return status === UsePermissionStatus.UNKNOWN
+  }
+
   static isLoading(status: UsePermissionStatus): boolean {
     return this.LOADING_STATUS.has(status)
   }
@@ -28,6 +32,12 @@ export class PermissionUtils {
 
   static isDenied(status: UsePermissionStatus): boolean {
     return this.DENIED_STATUS.has(status)
+  }
+
+  static isDeniedOrUnknown(status: UsePermissionStatus): boolean {
+    const isDenied = PermissionUtils.isDenied(status)
+    const isUnknown = PermissionUtils.isUnknown(status)
+    return isDenied || isUnknown
   }
 
   static isGranted(status: UsePermissionStatus): boolean {
